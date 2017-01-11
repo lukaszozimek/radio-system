@@ -1,0 +1,87 @@
+
+<div>
+    <h2><span data-translate="protoneApp.sCHBlock.detail.title">SCH Block</span> {{vm.sCHBlock.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.sCHBlock.seq">Seq</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.seq}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.name">Name</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.type">Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.SCHBlockTypeEnum.' + vm.sCHBlock.type}}">{{vm.sCHBlock.type}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.startTime">Start Time</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.startTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.startType">Start Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.SCHStartTypeEnum.' + vm.sCHBlock.startType}}">{{vm.sCHBlock.startType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.relativeDelay">Relative Delay</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.relativeDelay}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.endTime">End Time</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.endTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.length">Length</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.length}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.dimYear">Dim Year</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.dimYear}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.dimMonth">Dim Month</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.dimMonth}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.dimDay">Dim Day</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.dimDay}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.dimHour">Dim Hour</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.dimHour}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.dimMinute">Dim Minute</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.dimMinute}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.dimSecond">Dim Second</span></dt>
+        <dd>
+            <span>{{vm.sCHBlock.dimSecond}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.parentBlock">Parent Block</span></dt>
+        <dd>
+            <a ui-sref="s-ch-block-detail({id:vm.sCHBlock.parentBlockId})">{{vm.sCHBlock.parentBlockId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.channel">Channel</span></dt>
+        <dd>
+            <a ui-sref="c-or-channel-detail({id:vm.sCHBlock.channelId})">{{vm.sCHBlock.channelId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.sCHBlock.template">Template</span></dt>
+        <dd>
+            <a ui-sref="s-ch-template-detail({id:vm.sCHBlock.templateId})">{{vm.sCHBlock.templateId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="s-ch-block-detail.edit({id:vm.sCHBlock.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

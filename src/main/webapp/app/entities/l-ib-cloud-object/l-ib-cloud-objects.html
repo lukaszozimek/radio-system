@@ -1,0 +1,78 @@
+<div>
+    <h2 data-translate="protoneApp.lIBCloudObject.home.title">LIB Cloud Objects</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="l-ib-cloud-object.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.lIBCloudObject.home.createLabel">
+                        Create new LIB Cloud Object
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.uuid">Uuid</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.objectType">Object Type</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.originalName">Original Name</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.contentType">Content Type</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.size">Size</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.original">Original</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.hash">Hash</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.createDate">Create Date</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.network">Network</span></th>
+                    <th><span data-translate="protoneApp.lIBCloudObject.createdBy">Created By</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="lIBCloudObject in vm.lIBCloudObjects track by lIBCloudObject.id">
+                    <td><a ui-sref="l-ib-cloud-object-detail({id:lIBCloudObject.id})">{{lIBCloudObject.id}}</a></td>
+                    <td>{{lIBCloudObject.uuid}}</td>
+                    <td data-translate="{{'protoneApp.LIBObjectTypeEnum.' + lIBCloudObject.objectType}}">{{lIBCloudObject.objectType}}</td>
+                    <td>{{lIBCloudObject.originalName}}</td>
+                    <td>{{lIBCloudObject.contentType}}</td>
+                    <td>{{lIBCloudObject.size}}</td>
+                    <td>{{lIBCloudObject.original}}</td>
+                    <td>{{lIBCloudObject.hash}}</td>
+                    <td>{{lIBCloudObject.createDate | date:'medium'}}</td>
+                    <td>
+                        <a ui-sref="c-or-network-detail({id:lIBCloudObject.network.id})">{{lIBCloudObject.network.id}}</a>
+                    </td>
+                    <td>
+                        {{lIBCloudObject.createdBy.id}}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="l-ib-cloud-object-detail({id:lIBCloudObject.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="l-ib-cloud-object.edit({id:lIBCloudObject.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="l-ib-cloud-object.delete({id:lIBCloudObject.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

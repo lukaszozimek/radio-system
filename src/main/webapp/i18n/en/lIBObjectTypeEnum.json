@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "LIBObjectTypeEnum" : {
+            "null": "",
+            "OT_IMAGE": "OT_IMAGE",
+            "OT_AUDIO": "OT_AUDIO",
+            "OT_VIDEO": "OT_VIDEO",
+            "OT_FILE": "OT_FILE"
+        }
+    }
+}

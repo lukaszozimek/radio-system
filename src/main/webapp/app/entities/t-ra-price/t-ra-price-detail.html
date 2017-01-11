@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="protoneApp.tRAPrice.detail.title">TRA Price</span> {{vm.tRAPrice.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.tRAPrice.name">Name</span></dt>
+        <dd>
+            <span>{{vm.tRAPrice.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAPrice.validFrom">Valid From</span></dt>
+        <dd>
+            <span>{{vm.tRAPrice.validFrom | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAPrice.validTo">Valid To</span></dt>
+        <dd>
+            <span>{{vm.tRAPrice.validTo | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAPrice.price">Price</span></dt>
+        <dd>
+            <span>{{vm.tRAPrice.price}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAPrice.baseLength">Base Length</span></dt>
+        <dd>
+            <span>{{vm.tRAPrice.baseLength}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAPrice.priceAlternative">Price Alternative</span></dt>
+        <dd>
+            <span>{{vm.tRAPrice.priceAlternative}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAPrice.network">Network</span></dt>
+        <dd>
+            <a ui-sref="c-or-network-detail({id:vm.tRAPrice.networkId})">{{vm.tRAPrice.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="t-ra-price-detail.edit({id:vm.tRAPrice.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

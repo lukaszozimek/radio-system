@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "network",
+            "otherEntityName": "cORNetwork",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lastTry",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "closeDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "probability",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170111193456",
+    "entityTableName": "crm_opportunity",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

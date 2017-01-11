@@ -1,0 +1,68 @@
+<div>
+    <h2 data-translate="protoneApp.cORAssociation.home.title">COR Associations</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="c-or-association.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.cORAssociation.home.createLabel">
+                        Create new COR Association
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.cORAssociation.name">Name</span></th>
+                    <th><span data-translate="protoneApp.cORAssociation.sourceClass">Source Class</span></th>
+                    <th><span data-translate="protoneApp.cORAssociation.sourceId">Source Id</span></th>
+                    <th><span data-translate="protoneApp.cORAssociation.targetClass">Target Class</span></th>
+                    <th><span data-translate="protoneApp.cORAssociation.targetId">Target Id</span></th>
+                    <th><span data-translate="protoneApp.cORAssociation.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cORAssociation in vm.cORAssociations track by cORAssociation.id">
+                    <td><a ui-sref="c-or-association-detail({id:cORAssociation.id})">{{cORAssociation.id}}</a></td>
+                    <td>{{cORAssociation.name}}</td>
+                    <td>{{cORAssociation.sourceClass}}</td>
+                    <td>{{cORAssociation.sourceId}}</td>
+                    <td>{{cORAssociation.targetClass}}</td>
+                    <td>{{cORAssociation.targetId}}</td>
+                    <td>
+                        <a ui-sref="c-or-network-detail({id:cORAssociation.networkId})">{{cORAssociation.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="c-or-association-detail({id:cORAssociation.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-or-association.edit({id:cORAssociation.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-or-association.delete({id:cORAssociation.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

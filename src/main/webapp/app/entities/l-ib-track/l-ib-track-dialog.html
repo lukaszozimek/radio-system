@@ -1,0 +1,114 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myLIBTrackLabel" data-translate="protoneApp.lIBTrack.home.createOrEditLabel">Create or edit a LIB Track</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.lIBTrack.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.lIBTrack.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBTrack.discNo" for="field_discNo">Disc No</label>
+            <input type="number" class="form-control" name="discNo" id="field_discNo"
+                    ng-model="vm.lIBTrack.discNo"
+                    required />
+            <div ng-show="editForm.discNo.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.discNo.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.discNo.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBTrack.trackNo" for="field_trackNo">Track No</label>
+            <input type="number" class="form-control" name="trackNo" id="field_trackNo"
+                    ng-model="vm.lIBTrack.trackNo"
+                    required />
+            <div ng-show="editForm.trackNo.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.trackNo.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.trackNo.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBTrack.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.lIBTrack.name"
+                    required ng-maxlength="100" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBTrack.length" for="field_length">Length</label>
+            <input type="number" class="form-control" name="length" id="field_length"
+                    ng-model="vm.lIBTrack.length"
+                    required />
+            <div ng-show="editForm.length.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.length.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.length.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBTrack.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                    ng-model="vm.lIBTrack.description"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.lIBTrack.album" for="field_album">Album</label>
+            <select class="form-control" id="field_album" name="album" ng-model="vm.lIBTrack.albumId" ng-options="lIBAlbum.id as lIBAlbum.id for lIBAlbum in vm.libalbums"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.lIBTrack.artist" for="field_artist">Artist</label>
+            <select class="form-control" id="field_artist" name="artist" ng-model="vm.lIBTrack.artistId" ng-options="lIBArtist.id as lIBArtist.id for lIBArtist in vm.libartists"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.lIBTrack.network" for="field_network">Network</label>
+            <select class="form-control" id="field_network" name="network" ng-model="vm.lIBTrack.networkId" ng-options="cORNetwork.id as cORNetwork.id for cORNetwork in vm.cornetworks"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

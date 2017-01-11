@@ -1,0 +1,29 @@
+{
+    "protoneApp": {
+        "lIBTrack" : {
+            "home": {
+                "title": "LIB Tracks",
+                "createLabel": "Create a new LIB Track",
+                "createOrEditLabel": "Create or edit a LIB Track",
+                "search": "Search for LIB Track"
+            },
+            "created": "A new LIB Track is created with identifier {{ param }}",
+            "updated": "A LIB Track is updated with identifier {{ param }}",
+            "deleted": "A LIB Track is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete LIB Track {{ id }}?"
+            },
+            "detail": {
+                "title": "LIB Track"
+            },
+            "discNo": "Disc No",
+            "trackNo": "Track No",
+            "name": "Name",
+            "length": "Length",
+            "description": "Description",
+            "album": "Album",
+            "artist": "Artist",
+            "network": "Network"
+        }
+    }
+}

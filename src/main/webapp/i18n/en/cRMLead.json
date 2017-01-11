@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "cRMLead" : {
+            "home": {
+                "title": "CRM Leads",
+                "createLabel": "Create a new CRM Lead",
+                "createOrEditLabel": "Create or edit a CRM Lead",
+                "search": "Search for CRM Lead"
+            },
+            "created": "A new CRM Lead is created with identifier {{ param }}",
+            "updated": "A CRM Lead is updated with identifier {{ param }}",
+            "deleted": "A CRM Lead is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete CRM Lead {{ id }}?"
+            },
+            "detail": {
+                "title": "CRM Lead"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

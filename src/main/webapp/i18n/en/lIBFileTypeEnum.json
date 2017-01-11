@@ -1,0 +1,10 @@
+{
+    "protoneApp": {
+        "LIBFileTypeEnum" : {
+            "null": "",
+            "FT_ROOT": "FT_ROOT",
+            "FT_DIRECTORY": "FT_DIRECTORY",
+            "FT_FILE": "FT_FILE"
+        }
+    }
+}

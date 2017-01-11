@@ -1,0 +1,22 @@
+{
+    "protoneApp": {
+        "tRABlockPrice" : {
+            "home": {
+                "title": "TRA Block Prices",
+                "createLabel": "Create a new TRA Block Price",
+                "createOrEditLabel": "Create or edit a TRA Block Price",
+                "search": "Search for TRA Block Price"
+            },
+            "created": "A new TRA Block Price is created with identifier {{ param }}",
+            "updated": "A TRA Block Price is updated with identifier {{ param }}",
+            "deleted": "A TRA Block Price is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete TRA Block Price {{ id }}?"
+            },
+            "detail": {
+                "title": "TRA Block Price"
+            },
+            "calculatedPrice": "Calculated Price"
+        }
+    }
+}

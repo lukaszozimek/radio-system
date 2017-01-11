@@ -1,0 +1,141 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myLIBVideoObjectLabel" data-translate="protoneApp.lIBVideoObject.home.createOrEditLabel">Create or edit a LIB Video Object</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.lIBVideoObject.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.lIBVideoObject.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.width" for="field_width">Width</label>
+            <input type="number" class="form-control" name="width" id="field_width"
+                    ng-model="vm.lIBVideoObject.width"
+                    required />
+            <div ng-show="editForm.width.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.width.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.width.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.height" for="field_height">Height</label>
+            <input type="number" class="form-control" name="height" id="field_height"
+                    ng-model="vm.lIBVideoObject.height"
+                    required />
+            <div ng-show="editForm.height.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.height.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.height.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.length" for="field_length">Length</label>
+            <input type="number" class="form-control" name="length" id="field_length"
+                    ng-model="vm.lIBVideoObject.length"
+                    required />
+            <div ng-show="editForm.length.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.length.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.length.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.bitrate" for="field_bitrate">Bitrate</label>
+            <input type="number" class="form-control" name="bitrate" id="field_bitrate"
+                    ng-model="vm.lIBVideoObject.bitrate"
+                    required />
+            <div ng-show="editForm.bitrate.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.bitrate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.bitrate.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.codec" for="field_codec">Codec</label>
+            <input type="text" class="form-control" name="codec" id="field_codec"
+                    ng-model="vm.lIBVideoObject.codec"
+                    required ng-maxlength="100" />
+            <div ng-show="editForm.codec.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.codec.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.codec.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.quality" for="field_quality">Quality</label>
+            <select class="form-control" name="quality" ng-model="vm.lIBVideoObject.quality" id="field_quality">
+                <option value="VQ_2160P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_2160P">VQ_2160P</option>
+                <option value="VQ_1440P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_1440P">VQ_1440P</option>
+                <option value="VQ_1080P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_1080P">VQ_1080P</option>
+                <option value="VQ_720P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_720P">VQ_720P</option>
+                <option value="VQ_480P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_480P">VQ_480P</option>
+                <option value="VQ_360P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_360P">VQ_360P</option>
+                <option value="VQ_240P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_240P">VQ_240P</option>
+                <option value="VQ_144P" data-translate="protoneApp.LIBVideoQualityEnum.VQ_144P">VQ_144P</option>
+                <option value="VQ_OTHER" data-translate="protoneApp.LIBVideoQualityEnum.VQ_OTHER">VQ_OTHER</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.lIBVideoObject.aspectRatio" for="field_aspectRatio">Aspect Ratio</label>
+            <select class="form-control" name="aspectRatio" ng-model="vm.lIBVideoObject.aspectRatio" id="field_aspectRatio">
+                <option value="AR_4BY3" data-translate="protoneApp.LIBAspectRatioEnum.AR_4BY3">AR_4BY3</option>
+                <option value="AR_16BY9" data-translate="protoneApp.LIBAspectRatioEnum.AR_16BY9">AR_16BY9</option>
+                <option value="AR_ULTRAWIDE" data-translate="protoneApp.LIBAspectRatioEnum.AR_ULTRAWIDE">AR_ULTRAWIDE</option>
+                <option value="AR_OTHER" data-translate="protoneApp.LIBAspectRatioEnum.AR_OTHER">AR_OTHER</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.lIBVideoObject.cloudObject" for="field_cloudObject">Cloud Object</label>
+            <select class="form-control" id="field_cloudObject" name="cloudObject" ng-model="vm.lIBVideoObject.cloudObjectId" ng-options="lIBCloudObject.id as lIBCloudObject.id for lIBCloudObject in vm.cloudobjects | orderBy:'id'">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.lIBVideoObject.mediaItem" for="field_mediaItem">Media Item</label>
+            <select class="form-control" id="field_mediaItem" name="mediaItem" ng-model="vm.lIBVideoObject.mediaItemId" ng-options="lIBMediaItem.id as lIBMediaItem.id for lIBMediaItem in vm.libmediaitems"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

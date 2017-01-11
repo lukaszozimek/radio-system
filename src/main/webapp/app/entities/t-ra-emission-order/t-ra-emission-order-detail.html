@@ -1,0 +1,23 @@
+
+<div>
+    <h2><span data-translate="protoneApp.tRAEmissionOrder.detail.title">TRA Emission Order</span> {{vm.tRAEmissionOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.tRAEmissionOrder.calculatedPrice">Calculated Price</span></dt>
+        <dd>
+            <span>{{vm.tRAEmissionOrder.calculatedPrice}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="t-ra-emission-order-detail.edit({id:vm.tRAEmissionOrder.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

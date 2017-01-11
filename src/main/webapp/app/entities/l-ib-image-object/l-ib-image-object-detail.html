@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="protoneApp.lIBImageObject.detail.title">LIB Image Object</span> {{vm.lIBImageObject.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.lIBImageObject.width">Width</span></dt>
+        <dd>
+            <span>{{vm.lIBImageObject.width}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBImageObject.height">Height</span></dt>
+        <dd>
+            <span>{{vm.lIBImageObject.height}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBImageObject.imageSize">Image Size</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LIBImageSizeEnum.' + vm.lIBImageObject.imageSize}}">{{vm.lIBImageObject.imageSize}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBImageObject.cloudObject">Cloud Object</span></dt>
+        <dd>
+            <a ui-sref="l-ib-cloud-object-detail({id:vm.lIBImageObject.cloudObjectId})">{{vm.lIBImageObject.cloudObjectId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBImageObject.imageItem">Image Item</span></dt>
+        <dd>
+            <a ui-sref="l-ib-image-item-detail({id:vm.lIBImageObject.imageItemId})">{{vm.lIBImageObject.imageItemId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="l-ib-image-object-detail.edit({id:vm.lIBImageObject.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

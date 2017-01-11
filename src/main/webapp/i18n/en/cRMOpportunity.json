@@ -1,0 +1,26 @@
+{
+    "protoneApp": {
+        "cRMOpportunity" : {
+            "home": {
+                "title": "CRM Opportunities",
+                "createLabel": "Create a new CRM Opportunity",
+                "createOrEditLabel": "Create or edit a CRM Opportunity",
+                "search": "Search for CRM Opportunity"
+            },
+            "created": "A new CRM Opportunity is created with identifier {{ param }}",
+            "updated": "A CRM Opportunity is updated with identifier {{ param }}",
+            "deleted": "A CRM Opportunity is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete CRM Opportunity {{ id }}?"
+            },
+            "detail": {
+                "title": "CRM Opportunity"
+            },
+            "name": "Name",
+            "lastTry": "Last Try",
+            "closeDate": "Close Date",
+            "probability": "Probability",
+            "network": "Network"
+        }
+    }
+}

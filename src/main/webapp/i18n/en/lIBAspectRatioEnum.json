@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "LIBAspectRatioEnum" : {
+            "null": "",
+            "AR_4BY3": "AR_4BY3",
+            "AR_16BY9": "AR_16BY9",
+            "AR_ULTRAWIDE": "AR_ULTRAWIDE",
+            "AR_OTHER": "AR_OTHER"
+        }
+    }
+}

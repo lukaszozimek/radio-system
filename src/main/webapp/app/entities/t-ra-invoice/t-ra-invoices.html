@@ -1,0 +1,64 @@
+<div>
+    <h2 data-translate="protoneApp.tRAInvoice.home.title">TRA Invoices</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="t-ra-invoice.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.tRAInvoice.home.createLabel">
+                        Create new TRA Invoice
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.tRAInvoice.paid">Paid</span></th>
+                    <th><span data-translate="protoneApp.tRAInvoice.price">Price</span></th>
+                    <th><span data-translate="protoneApp.tRAInvoice.paymentDay">Payment Day</span></th>
+                    <th><span data-translate="protoneApp.tRAInvoice.order">Order</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="tRAInvoice in vm.tRAInvoices track by tRAInvoice.id">
+                    <td><a ui-sref="t-ra-invoice-detail({id:tRAInvoice.id})">{{tRAInvoice.id}}</a></td>
+                    <td>{{tRAInvoice.paid}}</td>
+                    <td>{{tRAInvoice.price}}</td>
+                        <td>{{tRAInvoice.paymentDay | date:'mediumDate'}}</td>
+                    <td>
+                        <a ui-sref="t-ra-order-detail({id:tRAInvoice.orderId})">{{tRAInvoice.orderId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="t-ra-invoice-detail({id:tRAInvoice.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="t-ra-invoice.edit({id:tRAInvoice.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="t-ra-invoice.delete({id:tRAInvoice.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

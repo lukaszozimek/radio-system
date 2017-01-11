@@ -1,0 +1,66 @@
+<div>
+    <h2 data-translate="protoneApp.cRMTask.home.title">CRM Tasks</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="c-rm-task.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.cRMTask.home.createLabel">
+                        Create new CRM Task
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.cRMTask.subject">Subject</span></th>
+                    <th><span data-translate="protoneApp.cRMTask.activityDate">Activity Date</span></th>
+                    <th><span data-translate="protoneApp.cRMTask.activityLength">Activity Length</span></th>
+                    <th><span data-translate="protoneApp.cRMTask.comment">Comment</span></th>
+                    <th><span data-translate="protoneApp.cRMTask.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cRMTask in vm.cRMTasks track by cRMTask.id">
+                    <td><a ui-sref="c-rm-task-detail({id:cRMTask.id})">{{cRMTask.id}}</a></td>
+                    <td>{{cRMTask.subject}}</td>
+                        <td>{{cRMTask.activityDate | date:'mediumDate'}}</td>
+                    <td>{{cRMTask.activityLength}}</td>
+                    <td>{{cRMTask.comment}}</td>
+                    <td>
+                        <a ui-sref="c-or-network-detail({id:cRMTask.networkId})">{{cRMTask.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="c-rm-task-detail({id:cRMTask.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-rm-task.edit({id:cRMTask.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-rm-task.delete({id:cRMTask.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

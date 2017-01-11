@@ -1,0 +1,25 @@
+{
+    "protoneApp": {
+        "tRADiscount" : {
+            "home": {
+                "title": "TRA Discounts",
+                "createLabel": "Create a new TRA Discount",
+                "createOrEditLabel": "Create or edit a TRA Discount",
+                "search": "Search for TRA Discount"
+            },
+            "created": "A new TRA Discount is created with identifier {{ param }}",
+            "updated": "A TRA Discount is updated with identifier {{ param }}",
+            "deleted": "A TRA Discount is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete TRA Discount {{ id }}?"
+            },
+            "detail": {
+                "title": "TRA Discount"
+            },
+            "validFrom": "Valid From",
+            "validTo": "Valid To",
+            "discount": "Discount",
+            "customer": "Customer"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="protoneApp.lIBLibrary.detail.title">LIB Library</span> {{vm.lIBLibrary.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.lIBLibrary.prefix">Prefix</span></dt>
+        <dd>
+            <span>{{vm.lIBLibrary.prefix}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.idxLength">Idx Length</span></dt>
+        <dd>
+            <span>{{vm.lIBLibrary.idxLength}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.shortcut">Shortcut</span></dt>
+        <dd>
+            <span>{{vm.lIBLibrary.shortcut}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.name">Name</span></dt>
+        <dd>
+            <span>{{vm.lIBLibrary.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.counter">Counter</span></dt>
+        <dd>
+            <span>{{vm.lIBLibrary.counter}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.counterType">Counter Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LIBCounterTypeEnum.' + vm.lIBLibrary.counterType}}">{{vm.lIBLibrary.counterType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.libraryType">Library Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LIBObjectTypeEnum.' + vm.lIBLibrary.libraryType}}">{{vm.lIBLibrary.libraryType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.description">Description</span></dt>
+        <dd>
+            <span>{{vm.lIBLibrary.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBLibrary.network">Network</span></dt>
+        <dd>
+            <a ui-sref="c-or-network-detail({id:vm.lIBLibrary.networkId})">{{vm.lIBLibrary.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="l-ib-library-detail.edit({id:vm.lIBLibrary.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,267 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="mySCHBlockLabel" data-translate="protoneApp.sCHBlock.home.createOrEditLabel">Create or edit a SCH Block</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.sCHBlock.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.sCHBlock.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.seq" for="field_seq">Seq</label>
+            <input type="number" class="form-control" name="seq" id="field_seq"
+                    ng-model="vm.sCHBlock.seq"
+                    required />
+            <div ng-show="editForm.seq.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.seq.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.seq.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.sCHBlock.name"
+                    required ng-maxlength="100" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.type" for="field_type">Type</label>
+            <select class="form-control" name="type" ng-model="vm.sCHBlock.type" id="field_type" required>
+                <option value="BT_DAY" data-translate="protoneApp.SCHBlockTypeEnum.BT_DAY">BT_DAY</option>
+                <option value="BT_BAND" data-translate="protoneApp.SCHBlockTypeEnum.BT_BAND">BT_BAND</option>
+                <option value="BT_HOUR" data-translate="protoneApp.SCHBlockTypeEnum.BT_HOUR">BT_HOUR</option>
+                <option value="BT_NEWS" data-translate="protoneApp.SCHBlockTypeEnum.BT_NEWS">BT_NEWS</option>
+                <option value="BT_COMMERCIAL" data-translate="protoneApp.SCHBlockTypeEnum.BT_COMMERCIAL">BT_COMMERCIAL</option>
+                <option value="BT_PROGRAM" data-translate="protoneApp.SCHBlockTypeEnum.BT_PROGRAM">BT_PROGRAM</option>
+                <option value="BT_LIVE" data-translate="protoneApp.SCHBlockTypeEnum.BT_LIVE">BT_LIVE</option>
+                <option value="BT_OTHER" data-translate="protoneApp.SCHBlockTypeEnum.BT_OTHER">BT_OTHER</option>
+            </select>
+            <div ng-show="editForm.type.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.type.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.startTime" for="field_startTime">Start Time</label>
+                <div class="input-group">
+                    <input id="field_startTime" type="text" class="form-control" name="startTime" datetime-picker="{{dateformat}}" ng-model="vm.sCHBlock.startTime" is-open="vm.datePickerOpenStatus.startTime"
+                    required  />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startTime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.startTime.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.startTime.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.startTime.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.startType" for="field_startType">Start Type</label>
+            <select class="form-control" name="startType" ng-model="vm.sCHBlock.startType" id="field_startType" required>
+                <option value="ST_FREE" data-translate="protoneApp.SCHStartTypeEnum.ST_FREE">ST_FREE</option>
+                <option value="ST_RELATIVE" data-translate="protoneApp.SCHStartTypeEnum.ST_RELATIVE">ST_RELATIVE</option>
+                <option value="ST_ABSOLUTE" data-translate="protoneApp.SCHStartTypeEnum.ST_ABSOLUTE">ST_ABSOLUTE</option>
+            </select>
+            <div ng-show="editForm.startType.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.startType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.relativeDelay" for="field_relativeDelay">Relative Delay</label>
+            <input type="number" class="form-control" name="relativeDelay" id="field_relativeDelay"
+                    ng-model="vm.sCHBlock.relativeDelay"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.endTime" for="field_endTime">End Time</label>
+                <div class="input-group">
+                    <input id="field_endTime" type="text" class="form-control" name="endTime" datetime-picker="{{dateformat}}" ng-model="vm.sCHBlock.endTime" is-open="vm.datePickerOpenStatus.endTime"
+                    required  />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endTime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.endTime.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.endTime.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.endTime.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.length" for="field_length">Length</label>
+            <input type="number" class="form-control" name="length" id="field_length"
+                    ng-model="vm.sCHBlock.length"
+                    required />
+            <div ng-show="editForm.length.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.length.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.length.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.dimYear" for="field_dimYear">Dim Year</label>
+            <input type="number" class="form-control" name="dimYear" id="field_dimYear"
+                    ng-model="vm.sCHBlock.dimYear"
+                    required />
+            <div ng-show="editForm.dimYear.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.dimYear.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.dimYear.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.dimMonth" for="field_dimMonth">Dim Month</label>
+            <input type="number" class="form-control" name="dimMonth" id="field_dimMonth"
+                    ng-model="vm.sCHBlock.dimMonth"
+                    required />
+            <div ng-show="editForm.dimMonth.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.dimMonth.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.dimMonth.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.dimDay" for="field_dimDay">Dim Day</label>
+            <input type="number" class="form-control" name="dimDay" id="field_dimDay"
+                    ng-model="vm.sCHBlock.dimDay"
+                    required />
+            <div ng-show="editForm.dimDay.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.dimDay.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.dimDay.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.dimHour" for="field_dimHour">Dim Hour</label>
+            <input type="number" class="form-control" name="dimHour" id="field_dimHour"
+                    ng-model="vm.sCHBlock.dimHour"
+                    required />
+            <div ng-show="editForm.dimHour.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.dimHour.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.dimHour.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.dimMinute" for="field_dimMinute">Dim Minute</label>
+            <input type="number" class="form-control" name="dimMinute" id="field_dimMinute"
+                    ng-model="vm.sCHBlock.dimMinute"
+                    required />
+            <div ng-show="editForm.dimMinute.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.dimMinute.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.dimMinute.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.sCHBlock.dimSecond" for="field_dimSecond">Dim Second</label>
+            <input type="number" class="form-control" name="dimSecond" id="field_dimSecond"
+                    ng-model="vm.sCHBlock.dimSecond"
+                    required />
+            <div ng-show="editForm.dimSecond.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.dimSecond.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.dimSecond.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.sCHBlock.parentBlock" for="field_parentBlock">Parent Block</label>
+            <select class="form-control" id="field_parentBlock" name="parentBlock" ng-model="vm.sCHBlock.parentBlockId" ng-options="sCHBlock.id as sCHBlock.id for sCHBlock in vm.schblocks"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.sCHBlock.channel" for="field_channel">Channel</label>
+            <select class="form-control" id="field_channel" name="channel" ng-model="vm.sCHBlock.channelId" ng-options="cORChannel.id as cORChannel.id for cORChannel in vm.corchannels"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.sCHBlock.template" for="field_template">Template</label>
+            <select class="form-control" id="field_template" name="template" ng-model="vm.sCHBlock.templateId" ng-options="sCHTemplate.id as sCHTemplate.id for sCHTemplate in vm.schtemplates"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

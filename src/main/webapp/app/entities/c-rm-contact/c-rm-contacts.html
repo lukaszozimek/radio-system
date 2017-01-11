@@ -1,0 +1,70 @@
+<div>
+    <h2 data-translate="protoneApp.cRMContact.home.title">CRM Contacts</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="c-rm-contact.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.cRMContact.home.createLabel">
+                        Create new CRM Contact
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.shortName">Short Name</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.externalId1">External Id 1</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.externalId2">External Id 2</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.name">Name</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.paymentDelay">Payment Delay</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.vatNumber">Vat Number</span></th>
+                    <th><span data-translate="protoneApp.cRMContact.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cRMContact in vm.cRMContacts track by cRMContact.id">
+                    <td><a ui-sref="c-rm-contact-detail({id:cRMContact.id})">{{cRMContact.id}}</a></td>
+                    <td>{{cRMContact.shortName}}</td>
+                    <td>{{cRMContact.externalId1}}</td>
+                    <td>{{cRMContact.externalId2}}</td>
+                    <td>{{cRMContact.name}}</td>
+                    <td>{{cRMContact.paymentDelay}}</td>
+                    <td>{{cRMContact.vatNumber}}</td>
+                    <td>
+                        <a ui-sref="c-or-network-detail({id:cRMContact.networkId})">{{cRMContact.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="c-rm-contact-detail({id:cRMContact.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-rm-contact.edit({id:cRMContact.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-rm-contact.delete({id:cRMContact.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

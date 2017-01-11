@@ -1,0 +1,33 @@
+{
+    "protoneApp": {
+        "lIBMediaItem" : {
+            "home": {
+                "title": "LIB Media Items",
+                "createLabel": "Create a new LIB Media Item",
+                "createOrEditLabel": "Create or edit a LIB Media Item",
+                "search": "Search for LIB Media Item"
+            },
+            "created": "A new LIB Media Item is created with identifier {{ param }}",
+            "updated": "A LIB Media Item is updated with identifier {{ param }}",
+            "deleted": "A LIB Media Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete LIB Media Item {{ id }}?"
+            },
+            "detail": {
+                "title": "LIB Media Item"
+            },
+            "idx": "Idx",
+            "name": "Name",
+            "itemType": "Item Type",
+            "length": "Length",
+            "state": "State",
+            "command": "Command",
+            "description": "Description",
+            "library": "Library",
+            "label": "Label",
+            "artist": "Artist",
+            "album": "Album",
+            "track": "Track"
+        }
+    }
+}

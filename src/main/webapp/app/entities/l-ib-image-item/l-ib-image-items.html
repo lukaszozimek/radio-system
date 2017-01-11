@@ -1,0 +1,62 @@
+<div>
+    <h2 data-translate="protoneApp.lIBImageItem.home.title">LIB Image Items</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="l-ib-image-item.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.lIBImageItem.home.createLabel">
+                        Create new LIB Image Item
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.lIBImageItem.idx">Idx</span></th>
+                    <th><span data-translate="protoneApp.lIBImageItem.name">Name</span></th>
+                    <th><span data-translate="protoneApp.lIBImageItem.library">Library</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="lIBImageItem in vm.lIBImageItems track by lIBImageItem.id">
+                    <td><a ui-sref="l-ib-image-item-detail({id:lIBImageItem.id})">{{lIBImageItem.id}}</a></td>
+                    <td>{{lIBImageItem.idx}}</td>
+                    <td>{{lIBImageItem.name}}</td>
+                    <td>
+                        <a ui-sref="l-ib-library-detail({id:lIBImageItem.libraryId})">{{lIBImageItem.libraryId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="l-ib-image-item-detail({id:lIBImageItem.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="l-ib-image-item.edit({id:lIBImageItem.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="l-ib-image-item.delete({id:lIBImageItem.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

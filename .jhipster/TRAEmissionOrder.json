@@ -1,0 +1,16 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "calculatedPrice",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "changelogDate": "20170111193430",
+    "entityTableName": "tra_emission_order",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="protoneApp.lIBLibrary.home.title">LIB Libraries</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="l-ib-library.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.lIBLibrary.home.createLabel">
+                        Create new LIB Library
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.prefix">Prefix</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.idxLength">Idx Length</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.shortcut">Shortcut</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.name">Name</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.counter">Counter</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.counterType">Counter Type</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.libraryType">Library Type</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.description">Description</span></th>
+                    <th><span data-translate="protoneApp.lIBLibrary.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="lIBLibrary in vm.lIBLibraries track by lIBLibrary.id">
+                    <td><a ui-sref="l-ib-library-detail({id:lIBLibrary.id})">{{lIBLibrary.id}}</a></td>
+                    <td>{{lIBLibrary.prefix}}</td>
+                    <td>{{lIBLibrary.idxLength}}</td>
+                    <td>{{lIBLibrary.shortcut}}</td>
+                    <td>{{lIBLibrary.name}}</td>
+                    <td>{{lIBLibrary.counter}}</td>
+                    <td data-translate="{{'protoneApp.LIBCounterTypeEnum.' + lIBLibrary.counterType}}">{{lIBLibrary.counterType}}</td>
+                    <td data-translate="{{'protoneApp.LIBObjectTypeEnum.' + lIBLibrary.libraryType}}">{{lIBLibrary.libraryType}}</td>
+                    <td>{{lIBLibrary.description}}</td>
+                    <td>
+                        <a ui-sref="c-or-network-detail({id:lIBLibrary.networkId})">{{lIBLibrary.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="l-ib-library-detail({id:lIBLibrary.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="l-ib-library.edit({id:lIBLibrary.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="l-ib-library.delete({id:lIBLibrary.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

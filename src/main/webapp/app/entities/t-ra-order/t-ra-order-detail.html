@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="protoneApp.tRAOrder.detail.title">TRA Order</span> {{vm.tRAOrder.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.tRAOrder.name">Name</span></dt>
+        <dd>
+            <span>{{vm.tRAOrder.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAOrder.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{vm.tRAOrder.startDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAOrder.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.tRAOrder.endDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAOrder.calculatedPrize">Calculated Prize</span></dt>
+        <dd>
+            <span>{{vm.tRAOrder.calculatedPrize}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAOrder.campaign">Campaign</span></dt>
+        <dd>
+            <a ui-sref="t-ra-campaign-detail({id:vm.tRAOrder.campaignId})">{{vm.tRAOrder.campaignId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.tRAOrder.customer">Customer</span></dt>
+        <dd>
+            <a ui-sref="t-ra-customer-detail({id:vm.tRAOrder.customerId})">{{vm.tRAOrder.customerId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="t-ra-order-detail.edit({id:vm.tRAOrder.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

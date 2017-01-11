@@ -1,0 +1,10 @@
+{
+    "protoneApp": {
+        "SCHStartTypeEnum" : {
+            "null": "",
+            "ST_FREE": "ST_FREE",
+            "ST_RELATIVE": "ST_RELATIVE",
+            "ST_ABSOLUTE": "ST_ABSOLUTE"
+        }
+    }
+}

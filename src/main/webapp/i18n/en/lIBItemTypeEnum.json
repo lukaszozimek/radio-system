@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "LIBItemTypeEnum" : {
+            "null": "",
+            "IT_AUDIO": "IT_AUDIO",
+            "IT_VIDEO": "IT_VIDEO",
+            "IT_COMMAND": "IT_COMMAND",
+            "IT_OTHER": "IT_OTHER"
+        }
+    }
+}

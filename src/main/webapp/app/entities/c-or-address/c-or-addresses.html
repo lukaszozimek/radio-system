@@ -1,0 +1,68 @@
+<div>
+    <h2 data-translate="protoneApp.cORAddress.home.title">COR Addresses</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="c-or-address.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.cORAddress.home.createLabel">
+                        Create new COR Address
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.cORAddress.street">Street</span></th>
+                    <th><span data-translate="protoneApp.cORAddress.number">Number</span></th>
+                    <th><span data-translate="protoneApp.cORAddress.postalCode">Postal Code</span></th>
+                    <th><span data-translate="protoneApp.cORAddress.city">City</span></th>
+                    <th><span data-translate="protoneApp.cORAddress.country">Country</span></th>
+                    <th><span data-translate="protoneApp.cORAddress.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cORAddress in vm.cORAddresses track by cORAddress.id">
+                    <td><a ui-sref="c-or-address-detail({id:cORAddress.id})">{{cORAddress.id}}</a></td>
+                    <td>{{cORAddress.street}}</td>
+                    <td>{{cORAddress.number}}</td>
+                    <td>{{cORAddress.postalCode}}</td>
+                    <td>{{cORAddress.city}}</td>
+                    <td>{{cORAddress.country}}</td>
+                    <td>
+                        <a ui-sref="c-or-network-detail({id:cORAddress.networkId})">{{cORAddress.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="c-or-address-detail({id:cORAddress.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-or-address.edit({id:cORAddress.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="c-or-address.delete({id:cORAddress.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

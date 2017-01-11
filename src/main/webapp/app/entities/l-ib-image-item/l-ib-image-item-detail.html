@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span data-translate="protoneApp.lIBImageItem.detail.title">LIB Image Item</span> {{vm.lIBImageItem.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.lIBImageItem.idx">Idx</span></dt>
+        <dd>
+            <span>{{vm.lIBImageItem.idx}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBImageItem.name">Name</span></dt>
+        <dd>
+            <span>{{vm.lIBImageItem.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.lIBImageItem.library">Library</span></dt>
+        <dd>
+            <a ui-sref="l-ib-library-detail({id:vm.lIBImageItem.libraryId})">{{vm.lIBImageItem.libraryId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="l-ib-image-item-detail.edit({id:vm.lIBImageItem.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

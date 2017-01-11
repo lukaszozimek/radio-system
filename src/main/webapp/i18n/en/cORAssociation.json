@@ -1,0 +1,27 @@
+{
+    "protoneApp": {
+        "cORAssociation" : {
+            "home": {
+                "title": "COR Associations",
+                "createLabel": "Create a new COR Association",
+                "createOrEditLabel": "Create or edit a COR Association",
+                "search": "Search for COR Association"
+            },
+            "created": "A new COR Association is created with identifier {{ param }}",
+            "updated": "A COR Association is updated with identifier {{ param }}",
+            "deleted": "A COR Association is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete COR Association {{ id }}?"
+            },
+            "detail": {
+                "title": "COR Association"
+            },
+            "name": "Name",
+            "sourceClass": "Source Class",
+            "sourceId": "Source Id",
+            "targetClass": "Target Class",
+            "targetId": "Target Id",
+            "network": "Network"
+        }
+    }
+}

@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="protoneApp.cORChannel.detail.title">COR Channel</span> {{vm.cORChannel.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.cORChannel.shortcut">Shortcut</span></dt>
+        <dd>
+            <span>{{vm.cORChannel.shortcut}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.cORChannel.name">Name</span></dt>
+        <dd>
+            <span>{{vm.cORChannel.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.cORChannel.description">Description</span></dt>
+        <dd>
+            <span>{{vm.cORChannel.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.cORChannel.network">Network</span></dt>
+        <dd>
+            <a ui-sref="c-or-network-detail({id:vm.cORChannel.networkId})">{{vm.cORChannel.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="c-or-channel-detail.edit({id:vm.cORChannel.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,28 @@
+{
+    "protoneApp": {
+        "cRMContact" : {
+            "home": {
+                "title": "CRM Contacts",
+                "createLabel": "Create a new CRM Contact",
+                "createOrEditLabel": "Create or edit a CRM Contact",
+                "search": "Search for CRM Contact"
+            },
+            "created": "A new CRM Contact is created with identifier {{ param }}",
+            "updated": "A CRM Contact is updated with identifier {{ param }}",
+            "deleted": "A CRM Contact is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete CRM Contact {{ id }}?"
+            },
+            "detail": {
+                "title": "CRM Contact"
+            },
+            "shortName": "Short Name",
+            "externalId1": "External Id 1",
+            "externalId2": "External Id 2",
+            "name": "Name",
+            "paymentDelay": "Payment Delay",
+            "vatNumber": "Vat Number",
+            "network": "Network"
+        }
+    }
+}

@@ -1,0 +1,94 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myCORAssociationLabel" data-translate="protoneApp.cORAssociation.home.createOrEditLabel">Create or edit a COR Association</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.cORAssociation.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.cORAssociation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cORAssociation.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.cORAssociation.name"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cORAssociation.sourceClass" for="field_sourceClass">Source Class</label>
+            <input type="text" class="form-control" name="sourceClass" id="field_sourceClass"
+                    ng-model="vm.cORAssociation.sourceClass"
+                    required />
+            <div ng-show="editForm.sourceClass.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.sourceClass.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cORAssociation.sourceId" for="field_sourceId">Source Id</label>
+            <input type="number" class="form-control" name="sourceId" id="field_sourceId"
+                    ng-model="vm.cORAssociation.sourceId"
+                    required />
+            <div ng-show="editForm.sourceId.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.sourceId.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.sourceId.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cORAssociation.targetClass" for="field_targetClass">Target Class</label>
+            <input type="text" class="form-control" name="targetClass" id="field_targetClass"
+                    ng-model="vm.cORAssociation.targetClass"
+                    required />
+            <div ng-show="editForm.targetClass.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.targetClass.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cORAssociation.targetId" for="field_targetId">Target Id</label>
+            <input type="number" class="form-control" name="targetId" id="field_targetId"
+                    ng-model="vm.cORAssociation.targetId"
+                    required />
+            <div ng-show="editForm.targetId.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.targetId.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.targetId.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.cORAssociation.network" for="field_network">Network</label>
+            <select class="form-control" id="field_network" name="network" ng-model="vm.cORAssociation.networkId" ng-options="cORNetwork.id as cORNetwork.id for cORNetwork in vm.cornetworks"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

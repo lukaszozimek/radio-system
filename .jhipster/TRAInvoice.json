@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "order",
+            "otherEntityName": "tRAOrder",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "tRAInvoice"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "paid",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "paymentDay",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "changelogDate": "20170111193436",
+    "entityTableName": "tra_invoice",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

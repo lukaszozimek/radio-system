@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="protoneApp.tRADiscount.detail.title">TRA Discount</span> {{vm.tRADiscount.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="protoneApp.tRADiscount.validFrom">Valid From</span></dt>
+        <dd>
+            <span>{{vm.tRADiscount.validFrom | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRADiscount.validTo">Valid To</span></dt>
+        <dd>
+            <span>{{vm.tRADiscount.validTo | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRADiscount.discount">Discount</span></dt>
+        <dd>
+            <span>{{vm.tRADiscount.discount}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.tRADiscount.customer">Customer</span></dt>
+        <dd>
+            <a ui-sref="t-ra-customer-detail({id:vm.tRADiscount.customerId})">{{vm.tRADiscount.customerId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="t-ra-discount-detail.edit({id:vm.tRADiscount.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

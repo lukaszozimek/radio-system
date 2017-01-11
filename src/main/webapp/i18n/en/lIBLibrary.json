@@ -1,0 +1,30 @@
+{
+    "protoneApp": {
+        "lIBLibrary" : {
+            "home": {
+                "title": "LIB Libraries",
+                "createLabel": "Create a new LIB Library",
+                "createOrEditLabel": "Create or edit a LIB Library",
+                "search": "Search for LIB Library"
+            },
+            "created": "A new LIB Library is created with identifier {{ param }}",
+            "updated": "A LIB Library is updated with identifier {{ param }}",
+            "deleted": "A LIB Library is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete LIB Library {{ id }}?"
+            },
+            "detail": {
+                "title": "LIB Library"
+            },
+            "prefix": "Prefix",
+            "idxLength": "Idx Length",
+            "shortcut": "Shortcut",
+            "name": "Name",
+            "counter": "Counter",
+            "counterType": "Counter Type",
+            "libraryType": "Library Type",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}
