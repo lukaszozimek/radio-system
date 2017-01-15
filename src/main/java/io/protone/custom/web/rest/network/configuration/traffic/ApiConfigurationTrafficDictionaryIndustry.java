@@ -17,76 +17,72 @@ import java.util.List;
 public interface ApiConfigurationTrafficDictionaryIndustry {
 
 
-    @ApiOperation(value = "getIndustry", notes = "", response = ConfIndustryPT.class, tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "getIndustry", notes = "", response = ConfIndustryPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfIndustryPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfIndustryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfIndustryPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry/{industryName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<ConfIndustryPT> getIndustryUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "industryName",required=true ) @PathVariable("industryName") String industryName);
+    ResponseEntity<ConfIndustryPT> getIndustryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                       @ApiParam(value = "industryName", required = true) @PathVariable("industryName") String industryName);
 
 
-    @ApiOperation(value = "updateIndustry", notes = "", response = ConfIndustryPT.class, tags={ "CONFIGURATION", })
+    @ApiOperation(value = "updateIndustry", notes = "", response = ConfIndustryPT.class, tags = {"CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfIndustryPT.class),
         @ApiResponse(code = 201, message = "Created", response = ConfIndustryPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfIndustryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfIndustryPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<ConfIndustryPT> updateIndustryUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "industryDTO" ,required=true ) @RequestBody ConfIndustryPT industryDTO);
+    ResponseEntity<ConfIndustryPT> updateIndustryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "industryDTO", required = true) @RequestBody ConfIndustryPT industryDTO);
 
 
-    @ApiOperation(value = "createIndustry", notes = "", response = ConfIndustryPT.class, tags={ "CONFIGURATION", })
+    @ApiOperation(value = "createIndustry", notes = "", response = ConfIndustryPT.class, tags = {"CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfIndustryPT.class),
         @ApiResponse(code = 201, message = "Created", response = ConfIndustryPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfIndustryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfIndustryPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<ConfIndustryPT> createIndustryUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                           @ApiParam(value = "industryDTO" ,required=true ) @RequestBody ConfIndustryPT industryDTO);
+    ResponseEntity<ConfIndustryPT> createIndustryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                           @ApiParam(value = "industryDTO", required = true) @RequestBody ConfIndustryPT industryDTO);
 
 
-    @ApiOperation(value = "deleteIndustry", notes = "", response = Void.class, tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "deleteIndustry", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry/{industryName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"*/*"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteIndustryUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "industryName",required=true ) @PathVariable("industryName") String industryName);
+    ResponseEntity<Void> deleteIndustryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                   @ApiParam(value = "industryName", required = true) @PathVariable("industryName") String industryName);
 
 
-    @ApiOperation(value = "getAllIndustries", notes = "", response = ConfIndustryPT.class, responseContainer = "List", tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "getAllIndustries", notes = "", response = ConfIndustryPT.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfIndustryPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfIndustryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfIndustryPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfIndustryPT>> getAllIndustriesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
-
+    ResponseEntity<List<ConfIndustryPT>> getAllIndustriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
 }
