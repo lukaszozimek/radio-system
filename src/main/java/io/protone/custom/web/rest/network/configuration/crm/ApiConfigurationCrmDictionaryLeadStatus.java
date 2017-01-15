@@ -25,7 +25,6 @@ public interface ApiConfigurationCrmDictionaryLeadStatus {
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/{id}",
         produces = { "*/*" },
-        consumes = { "application/json" },
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLeadStatusUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
@@ -37,8 +36,7 @@ public interface ApiConfigurationCrmDictionaryLeadStatus {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfLeadStatusPT>> getAllLeadStatusUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -50,8 +48,7 @@ public interface ApiConfigurationCrmDictionaryLeadStatus {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/{id}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfLeadStatusPT> getLeadStatusUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                            @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);

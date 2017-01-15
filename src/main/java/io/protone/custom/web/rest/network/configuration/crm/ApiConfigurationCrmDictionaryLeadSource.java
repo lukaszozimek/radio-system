@@ -1,14 +1,15 @@
 package io.protone.custom.web.rest.network.configuration.crm;
 
 import io.protone.custom.service.dto.ConfLeadSourcePT;
-import io.protone.custom.service.dto.ConfLeadStatusPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@RestController
 @Api(value = "custom", description = "the api API")
 public interface ApiConfigurationCrmDictionaryLeadSource {
 
@@ -21,7 +22,7 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadSourcePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfLeadSourcePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadsource/",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<ConfLeadSourcePT> createLeadsourceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -35,7 +36,6 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadsource/{id}",
         produces = {"*/*"},
-        consumes = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLeadsourceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -47,8 +47,7 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadSourcePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfLeadSourcePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadsource/",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfLeadSourcePT>> getAllLeadsourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -60,8 +59,7 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadSourcePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfLeadSourcePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadsource/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfLeadSourcePT> getLeadSourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id);

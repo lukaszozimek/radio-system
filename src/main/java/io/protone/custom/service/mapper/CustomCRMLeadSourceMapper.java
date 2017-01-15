@@ -12,14 +12,12 @@ import java.util.List;
  * Mapper for the entity CRMLeadSource and its DTO CRMLeadSourceDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CRMLeadSourceMapper {
+public interface CustomCRMLeadSourceMapper {
 
-    @Mapping(source = "network.id", target = "networkId")
     ConfLeadSourcePT cRMLeadSourceToCRMLeadSourceDTO(CRMLeadSource cRMLeadSource);
 
     List<ConfLeadSourcePT> cRMLeadSourcesToCRMLeadSourceDTOs(List<CRMLeadSource> cRMLeadSources);
 
-    @Mapping(source = "networkId", target = "network")
     CRMLeadSource cRMLeadSourceDTOToCRMLeadSource(ConfLeadSourcePT cRMLeadSourceDTO);
 
     List<ConfLeadSourcePT> cRMLeadSourceDTOsToCRMLeadSources(List<ConfLeadSourcePT> cRMLeadSourceDTOs);

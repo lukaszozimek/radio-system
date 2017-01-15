@@ -1,18 +1,13 @@
 package io.protone.custom.service.dto;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * ConfLeadSourcePT
- */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
+import java.io.Serializable;
+import java.util.Objects;
 
-public class ConfLeadSourcePT {
+
+public class ConfLeadSourcePT implements Serializable {
     @JsonProperty("id")
     private Long id = null;
 
@@ -79,10 +74,24 @@ public class ConfLeadSourcePT {
 
     @Override
     public String toString() {
-        return "ConfLeadSourcePT{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("class ConfTagPT {\n");
+
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
     }
 }
 
