@@ -4,15 +4,11 @@ import io.protone.custom.service.dto.ConfLeadSourcePT;
 import io.protone.custom.service.dto.ConfLeadStatusPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
+@RestController
 @Api(value = "custom", description = "the api API")
 public interface ApiConfigurationCrmDictionaryLeadSource {
 
@@ -57,7 +53,6 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
     ResponseEntity<List<ConfLeadSourcePT>> getAllLeadsourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-
     @ApiOperation(value = "getLeadStatus", notes = "", response = ConfLeadSourcePT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfLeadSourcePT.class),
@@ -84,7 +79,6 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
         method = RequestMethod.PUT)
     ResponseEntity<ConfLeadSourcePT> updateLeadSourceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                               @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadSourcePT leadStatus);
-
 
 
 }
