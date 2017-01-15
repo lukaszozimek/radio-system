@@ -1,0 +1,310 @@
+{
+  "groups": [
+    {
+      "name": "jhipster",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties"
+    },
+    {
+      "name": "jhipster.async",
+      "sourceMethod": "getAsync()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Async"
+    },
+    {
+      "name": "jhipster.cache",
+      "sourceMethod": "getCache()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Cache"
+    },
+    {
+      "name": "jhipster.cache.hazelcast",
+      "sourceMethod": "getHazelcast()",
+      "sourceType": "io.protone.config.JHipsterProperties$Cache",
+      "type": "io.protone.config.JHipsterProperties$Cache$Hazelcast"
+    },
+    {
+      "name": "jhipster.http",
+      "sourceMethod": "getHttp()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Http"
+    },
+    {
+      "name": "jhipster.http.cache",
+      "sourceMethod": "getCache()",
+      "sourceType": "io.protone.config.JHipsterProperties$Http",
+      "type": "io.protone.config.JHipsterProperties$Http$Cache"
+    },
+    {
+      "name": "jhipster.logging",
+      "sourceMethod": "getLogging()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Logging"
+    },
+    {
+      "name": "jhipster.logging.logstash",
+      "sourceMethod": "getLogstash()",
+      "sourceType": "io.protone.config.JHipsterProperties$Logging",
+      "type": "io.protone.config.JHipsterProperties$Logging$Logstash"
+    },
+    {
+      "name": "jhipster.mail",
+      "sourceMethod": "getMail()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Mail"
+    },
+    {
+      "name": "jhipster.metrics",
+      "sourceMethod": "getMetrics()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Metrics"
+    },
+    {
+      "name": "jhipster.metrics.graphite",
+      "sourceMethod": "getGraphite()",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics",
+      "type": "io.protone.config.JHipsterProperties$Metrics$Graphite"
+    },
+    {
+      "name": "jhipster.metrics.jmx",
+      "sourceMethod": "getJmx()",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics",
+      "type": "io.protone.config.JHipsterProperties$Metrics$Jmx"
+    },
+    {
+      "name": "jhipster.metrics.logs",
+      "sourceMethod": "getLogs()",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics",
+      "type": "io.protone.config.JHipsterProperties$Metrics$Logs"
+    },
+    {
+      "name": "jhipster.metrics.prometheus",
+      "sourceMethod": "getPrometheus()",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics",
+      "type": "io.protone.config.JHipsterProperties$Metrics$Prometheus"
+    },
+    {
+      "name": "jhipster.ribbon",
+      "sourceMethod": "getRibbon()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Ribbon"
+    },
+    {
+      "name": "jhipster.security",
+      "sourceMethod": "getSecurity()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Security"
+    },
+    {
+      "name": "jhipster.security.authentication",
+      "sourceMethod": "getAuthentication()",
+      "sourceType": "io.protone.config.JHipsterProperties$Security",
+      "type": "io.protone.config.JHipsterProperties$Security$Authentication"
+    },
+    {
+      "name": "jhipster.security.authentication.jwt",
+      "sourceMethod": "getJwt()",
+      "sourceType": "io.protone.config.JHipsterProperties$Security$Authentication",
+      "type": "io.protone.config.JHipsterProperties$Security$Authentication$Jwt"
+    },
+    {
+      "name": "jhipster.swagger",
+      "sourceMethod": "getSwagger()",
+      "sourceType": "io.protone.config.JHipsterProperties",
+      "type": "io.protone.config.JHipsterProperties$Swagger"
+    }
+  ],
+  "hints": [],
+  "properties": [
+    {
+      "defaultValue": 2,
+      "name": "jhipster.async.core-pool-size",
+      "sourceType": "io.protone.config.JHipsterProperties$Async",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": 50,
+      "name": "jhipster.async.max-pool-size",
+      "sourceType": "io.protone.config.JHipsterProperties$Async",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": 10000,
+      "name": "jhipster.async.queue-capacity",
+      "sourceType": "io.protone.config.JHipsterProperties$Async",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": 1,
+      "name": "jhipster.cache.hazelcast.backup-count",
+      "sourceType": "io.protone.config.JHipsterProperties$Cache$Hazelcast",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": 3600,
+      "name": "jhipster.cache.hazelcast.time-to-live-seconds",
+      "sourceType": "io.protone.config.JHipsterProperties$Cache$Hazelcast",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": 1461,
+      "name": "jhipster.http.cache.time-to-live-in-days",
+      "sourceType": "io.protone.config.JHipsterProperties$Http$Cache",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": false,
+      "name": "jhipster.logging.logstash.enabled",
+      "sourceType": "io.protone.config.JHipsterProperties$Logging$Logstash",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "defaultValue": "localhost",
+      "name": "jhipster.logging.logstash.host",
+      "sourceType": "io.protone.config.JHipsterProperties$Logging$Logstash",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": 5000,
+      "name": "jhipster.logging.logstash.port",
+      "sourceType": "io.protone.config.JHipsterProperties$Logging$Logstash",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": 512,
+      "name": "jhipster.logging.logstash.queue-size",
+      "sourceType": "io.protone.config.JHipsterProperties$Logging$Logstash",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": "",
+      "name": "jhipster.mail.base-url",
+      "sourceType": "io.protone.config.JHipsterProperties$Mail",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": "protone@localhost",
+      "name": "jhipster.mail.from",
+      "sourceType": "io.protone.config.JHipsterProperties$Mail",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": false,
+      "name": "jhipster.metrics.graphite.enabled",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Graphite",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "defaultValue": "localhost",
+      "name": "jhipster.metrics.graphite.host",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Graphite",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": 2003,
+      "name": "jhipster.metrics.graphite.port",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Graphite",
+      "type": "java.lang.Integer"
+    },
+    {
+      "defaultValue": "protone",
+      "name": "jhipster.metrics.graphite.prefix",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Graphite",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": true,
+      "name": "jhipster.metrics.jmx.enabled",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Jmx",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "defaultValue": false,
+      "name": "jhipster.metrics.logs.enabled",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Logs",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "defaultValue": false,
+      "name": "jhipster.metrics.prometheus.enabled",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Prometheus",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "defaultValue": "/prometheusMetrics",
+      "name": "jhipster.metrics.prometheus.endpoint",
+      "sourceType": "io.protone.config.JHipsterProperties$Metrics$Prometheus",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jhipster.ribbon.display-on-active-profiles",
+      "sourceType": "io.protone.config.JHipsterProperties$Ribbon",
+      "type": "java.lang.String[]"
+    },
+    {
+      "name": "jhipster.security.authentication.jwt.secret",
+      "sourceType": "io.protone.config.JHipsterProperties$Security$Authentication$Jwt",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": 1800,
+      "name": "jhipster.security.authentication.jwt.token-validity-in-seconds",
+      "sourceType": "io.protone.config.JHipsterProperties$Security$Authentication$Jwt",
+      "type": "java.lang.Long"
+    },
+    {
+      "defaultValue": 2592000,
+      "name": "jhipster.security.authentication.jwt.token-validity-in-seconds-for-remember-me",
+      "sourceType": "io.protone.config.JHipsterProperties$Security$Authentication$Jwt",
+      "type": "java.lang.Long"
+    },
+    {
+      "name": "jhipster.swagger.contact-email",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jhipster.swagger.contact-name",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jhipster.swagger.contact-url",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": "protone API documentation",
+      "name": "jhipster.swagger.description",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jhipster.swagger.license",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jhipster.swagger.license-url",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "jhipster.swagger.terms-of-service-url",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": "protone API",
+      "name": "jhipster.swagger.title",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    },
+    {
+      "defaultValue": "0.0.1",
+      "name": "jhipster.swagger.version",
+      "sourceType": "io.protone.config.JHipsterProperties$Swagger",
+      "type": "java.lang.String"
+    }
+  ]
+}
