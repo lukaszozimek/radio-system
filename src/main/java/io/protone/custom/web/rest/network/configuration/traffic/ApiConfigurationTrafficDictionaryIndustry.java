@@ -23,11 +23,11 @@ public interface ApiConfigurationTrafficDictionaryIndustry {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfIndustryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfIndustryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfIndustryPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry/{industryName}",
+    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfIndustryPT> getIndustryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "industryName", required = true) @PathVariable("industryName") String industryName);
+                                                       @ApiParam(value = "id", required = true) @PathVariable("id") String industryName);
 
 
     @ApiOperation(value = "updateIndustry", notes = "", response = ConfIndustryPT.class, tags = {"CONFIGURATION",})
@@ -66,11 +66,11 @@ public interface ApiConfigurationTrafficDictionaryIndustry {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry/{industryName}",
+    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/industry/{id}",
         produces = {"*/*"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteIndustryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "industryName", required = true) @PathVariable("industryName") String industryName);
+                                                   @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
     @ApiOperation(value = "getAllIndustries", notes = "", response = ConfIndustryPT.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
