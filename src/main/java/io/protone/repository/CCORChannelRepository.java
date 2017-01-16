@@ -10,6 +10,7 @@ import java.util.List;
  * Spring Data JPA repository for the CORChannel entity.
  */
 @SuppressWarnings("unused")
-public interface CORChannelRepository extends JpaRepository<CORChannel,Long> {
-
+public interface CCORChannelRepository extends JpaRepository<CORChannel,Long> {
+    CORChannel findByShortcut(String shortcut);
+    void deleteByShortcut(String shortcut);
 }
