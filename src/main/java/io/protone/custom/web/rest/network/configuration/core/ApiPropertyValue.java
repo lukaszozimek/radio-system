@@ -25,7 +25,7 @@ public interface ApiPropertyValue {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/value",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreValuePT> createPropertyValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -38,8 +38,7 @@ public interface ApiPropertyValue {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/value",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreValuePT>> getAllPropertyValuesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -51,7 +50,7 @@ public interface ApiPropertyValue {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/value",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreValuePT> updatePropertyValueUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

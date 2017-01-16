@@ -25,7 +25,7 @@ public interface ApiDictionaryCountry {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCountryPt.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCountryPt.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/country",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<ConfCountryPt> updateCountryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -40,7 +40,7 @@ public interface ApiDictionaryCountry {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCountryPt.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCountryPt.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/country",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<ConfCountryPt> createCountryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -54,8 +54,7 @@ public interface ApiDictionaryCountry {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/country/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCountryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -68,8 +67,7 @@ public interface ApiDictionaryCountry {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCountryPt.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCountryPt.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/country",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfCountryPt>> getAllCountriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -81,12 +79,10 @@ public interface ApiDictionaryCountry {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCountryPt.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCountryPt.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/country/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfCountryPt> getCountryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
-
 
 
 }

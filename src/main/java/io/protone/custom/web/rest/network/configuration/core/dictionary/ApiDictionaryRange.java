@@ -17,7 +17,6 @@ import java.util.List;
 public interface ApiDictionaryRange {
 
 
-
     @ApiOperation(value = "createRange", notes = "", response = CoreRangePT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CoreRangePT.class),
@@ -26,7 +25,7 @@ public interface ApiDictionaryRange {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreRangePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreRangePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/range",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreRangePT> createRangeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -40,8 +39,7 @@ public interface ApiDictionaryRange {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreRangePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreRangePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/range",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreRangePT>> getAllRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -52,8 +50,7 @@ public interface ApiDictionaryRange {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreRangePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreRangePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/range/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreRangePT> getRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -67,7 +64,7 @@ public interface ApiDictionaryRange {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreRangePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreRangePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/range",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreRangePT> updateRangeUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -81,8 +78,7 @@ public interface ApiDictionaryRange {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/range/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteRangeUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id);

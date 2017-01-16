@@ -22,12 +22,11 @@ public interface ApiPropertyKey {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreKeyPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreKeyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreKeyPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key/{keyName}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}",
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreKeyPT> getPropertyKeyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "keyName", required = true) @PathVariable("keyName") String keyName);
+                                                     @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
     @ApiOperation(value = "deletePropertyKey", notes = "", response = Void.class, tags = {"CONFIGURATION", "DICTIONARY",})
@@ -36,12 +35,11 @@ public interface ApiPropertyKey {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key/{keyName}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key/{id}",
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deletePropertyKeyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                      @ApiParam(value = "keyName", required = true) @PathVariable("keyName") String keyName);
+                                                      @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
     @ApiOperation(value = "getAllPropertyKeys", notes = "", response = CoreKeyPT.class, responseContainer = "List", tags = {"CONFIGURATION", "DICTIONARY",})
@@ -51,8 +49,7 @@ public interface ApiPropertyKey {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreKeyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreKeyPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreKeyPT>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -65,7 +62,7 @@ public interface ApiPropertyKey {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreKeyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreKeyPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreKeyPT> updatePropertyKeyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -80,12 +77,11 @@ public interface ApiPropertyKey {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreKeyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreKeyPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/key",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreKeyPT> createPropertyKeyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                          @ApiParam(value = "propertyKeyDTO", required = true) @RequestBody CoreKeyPT propertyKeyDTO);
-
 
 
 }

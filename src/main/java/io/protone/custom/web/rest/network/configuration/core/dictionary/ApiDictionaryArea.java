@@ -24,8 +24,7 @@ public interface ApiDictionaryArea {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreAreaPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreAreaPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/area/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreAreaPT> getAreaUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -37,8 +36,7 @@ public interface ApiDictionaryArea {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/area/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteAreaUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -51,8 +49,7 @@ public interface ApiDictionaryArea {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreAreaPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreAreaPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/area",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreAreaPT>> getAllAreaUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -65,7 +62,7 @@ public interface ApiDictionaryArea {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreAreaPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreAreaPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/area",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreAreaPT> updateAreaUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -80,12 +77,11 @@ public interface ApiDictionaryArea {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreAreaPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreAreaPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/area",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreAreaPT> createAreaUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                    @ApiParam(value = "personDTO", required = true) @RequestBody CoreAreaPT personDTO);
-
 
 
 }

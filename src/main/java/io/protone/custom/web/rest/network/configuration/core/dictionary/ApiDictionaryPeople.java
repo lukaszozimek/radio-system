@@ -24,12 +24,11 @@ public interface ApiDictionaryPeople {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfPersonPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfPersonPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/people",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<ConfPersonPT> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                       @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO);
-
 
 
     @ApiOperation(value = "createPerson", notes = "", response = ConfPersonPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -40,7 +39,7 @@ public interface ApiDictionaryPeople {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfPersonPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfPersonPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/people",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<ConfPersonPT> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -54,8 +53,7 @@ public interface ApiDictionaryPeople {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/people/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -68,8 +66,7 @@ public interface ApiDictionaryPeople {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfPersonPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfPersonPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/people",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfPersonPT>> getAllPeopleUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -81,8 +78,7 @@ public interface ApiDictionaryPeople {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfPersonPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfPersonPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/people/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfPersonPT> getPersonUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
