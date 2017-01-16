@@ -25,7 +25,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMarkerConfigurationPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker",
-        produces = { "*/*" },
+        produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<ConfMarkerConfigurationPT> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -40,7 +40,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMarkerConfigurationPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker",
-        produces = { "*/*" },
+        produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<ConfMarkerConfigurationPT> createMarkerConfigurationUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -55,10 +55,9 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker/{id}",
         produces = { "application/json" },
-        consumes = { "application/json" },
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "id",required=true ) @PathVariable("id") String markerName);
+                                                              @ApiParam(value = "id",required=true ) @PathVariable("id") String id);
 
 
     @ApiOperation(value = "getAllMarkerConfiguration", notes = "", response = ConfMarkerConfigurationPT.class, responseContainer = "List", tags={ "CONFIGURATION","CORE", })
