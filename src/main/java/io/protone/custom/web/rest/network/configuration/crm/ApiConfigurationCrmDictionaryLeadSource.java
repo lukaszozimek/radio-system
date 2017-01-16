@@ -72,7 +72,7 @@ public interface ApiConfigurationCrmDictionaryLeadSource {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadSourcePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfLeadSourcePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadsource/",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<ConfLeadSourcePT> updateLeadSourceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
