@@ -25,7 +25,7 @@ public interface ApiDictionarySize {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreSizePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreSizePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/size",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreSizePT> createSizeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -39,7 +39,7 @@ public interface ApiDictionarySize {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/size/{id}",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSizeUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -53,8 +53,7 @@ public interface ApiDictionarySize {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreSizePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreSizePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/size",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreSizePT>> getAllSizeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -66,8 +65,7 @@ public interface ApiDictionarySize {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreSizePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreSizePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/size/{id}",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreSizePT> getSizeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
@@ -81,8 +79,7 @@ public interface ApiDictionarySize {
         @ApiResponse(code = 403, message = "Forbidden", response = CoreSizePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreSizePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/size",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreSizePT> updateSizeUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                   @ApiParam(value = "personDTO", required = true) @RequestBody CoreSizePT personDTO);
