@@ -66,7 +66,7 @@ public interface ApiDictionaryArea {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreAreaPT> updateAreaUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "personDTO", required = true) @RequestBody CoreAreaPT personDTO);
+                                                  @ApiParam(value = "coreAreaPT", required = true) @RequestBody CoreAreaPT coreAreaPT);
 
 
     @ApiOperation(value = "createArea", notes = "", response = CoreAreaPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -81,7 +81,7 @@ public interface ApiDictionaryArea {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreAreaPT> createAreaUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "personDTO", required = true) @RequestBody CoreAreaPT personDTO);
+                                                   @ApiParam(value = "coreAreaPT", required = true) @RequestBody CoreAreaPT coreAreaPT);
 
 
 }
