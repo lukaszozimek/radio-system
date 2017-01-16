@@ -29,7 +29,7 @@ public interface ApiDictionarySize {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreSizePT> createSizeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "personDTO", required = true) @RequestBody CoreSizePT personDTO);
+                                                   @ApiParam(value = "coreSizePT", required = true) @RequestBody CoreSizePT coreSizePT);
 
 
     @ApiOperation(value = "deleteSize", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -82,7 +82,7 @@ public interface ApiDictionarySize {
         produces = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreSizePT> updateSizeUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "personDTO", required = true) @RequestBody CoreSizePT personDTO);
+                                                  @ApiParam(value = "coreSizePT", required = true) @RequestBody CoreSizePT coreSizePT);
 
 
 }
