@@ -1,7 +1,6 @@
 package io.protone.custom.service;
 
 import io.protone.domain.CORChannel;
-import io.protone.domain.CORNetwork;
 import io.protone.repository.CCORChannelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +13,9 @@ import java.util.List;
  */
 @Service
 public class ChannelService {
+
     @Inject
     private CCORChannelRepository ccorChannelRepository;
-
 
     public List<CORChannel> findAllChannel() {
         return ccorChannelRepository.findAll();
