@@ -1,11 +1,9 @@
 package io.protone.custom.web.rest.network;
 
-import io.protone.custom.repository.CustomCORNetworkRepository;
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.mapper.CustomCORNetworkMapper;
 import io.protone.domain.CORNetwork;
-import io.protone.service.dto.CORNetworkDTO;
-import io.protone.web.rest.CORNetworkResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -17,24 +15,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class ApiNetworkImpl implements ApiNetwork {
-    private final Logger log = LoggerFactory.getLogger(CORNetworkResource.class);
+    private final Logger log = LoggerFactory.getLogger(ApiNetworkImpl.class);
 
     @Inject
     CustomCORNetworkMapper customCORNetworkMapper;
 
     @Inject
-    CustomCORNetworkRepository customCORNetworkRepository;
+    NetworkService networkService;
 
     @Override
     public ResponseEntity<List<CoreNetworkPT>> getAllNetworksUsingGET() {
         log.debug("REST request to get all CORNetworks");
-        List<CORNetwork> cORNetworks = customCORNetworkRepository.findAll();
+        List<CORNetwork> cORNetworks = networkService.findAllNetworks();
         return ResponseEntity.ok()
             .body(customCORNetworkMapper.cORNetworksToCORNetworkDTOs(cORNetworks));
 
@@ -47,7 +44,7 @@ public class ApiNetworkImpl implements ApiNetwork {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORNetwork", "idexists", "A new cORNetwork cannot already have an ID")).body(null);
         }
         CORNetwork cORNetwork = customCORNetworkMapper.cORNetworkDTOToCORNetwork(network);
-        cORNetwork = customCORNetworkRepository.save(cORNetwork);
+        cORNetwork = networkService.save(cORNetwork);
         CoreNetworkPT result = customCORNetworkMapper.cORNetworkToCORNetworkDTO(cORNetwork);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert("cORNetwork", result.getId().toString()))
@@ -61,7 +58,7 @@ public class ApiNetworkImpl implements ApiNetwork {
             return createNetworkUsingPOST(network);
         }
         CORNetwork cORNetwork = customCORNetworkMapper.cORNetworkDTOToCORNetwork(network);
-        cORNetwork = customCORNetworkRepository.save(cORNetwork);
+        cORNetwork = networkService.save(cORNetwork);
         CoreNetworkPT result = customCORNetworkMapper.cORNetworkToCORNetworkDTO(cORNetwork);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORNetwork", network.getId().toString()))
@@ -71,7 +68,7 @@ public class ApiNetworkImpl implements ApiNetwork {
     @Override
     public ResponseEntity<Void> deleteNetworkUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to delete CORNetwork : {}", networkShortcut);
-        customCORNetworkRepository.deleteByShortcut(networkShortcut);
+        networkService.deleteNetwork(networkShortcut);
         return ResponseEntity.ok().build();
 
     }
@@ -79,7 +76,7 @@ public class ApiNetworkImpl implements ApiNetwork {
     @Override
     public ResponseEntity<CoreNetworkPT> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get CORNetwork : {}", networkShortcut);
-        CORNetwork cORNetwork = customCORNetworkRepository.findByShortcut(networkShortcut);
+        CORNetwork cORNetwork = networkService.findNetwork(networkShortcut);
         CoreNetworkPT cORNetworkDTO = customCORNetworkMapper.cORNetworkToCORNetworkDTO(cORNetwork);
         return Optional.ofNullable(cORNetworkDTO)
             .map(result -> new ResponseEntity<>(
