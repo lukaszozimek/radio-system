@@ -15,6 +15,7 @@ public class ApiPropertyValueImpl implements ApiPropertyValue {
     @Override
     public ResponseEntity<CoreValuePT> createPropertyValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "propertyValueDTO", required = true) @RequestBody CoreValuePT propertyValueDTO) {
         return null;
+
     }
 
     @Override
