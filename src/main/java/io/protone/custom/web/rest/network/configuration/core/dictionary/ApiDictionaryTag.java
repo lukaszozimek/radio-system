@@ -24,7 +24,7 @@ public interface ApiDictionaryTag {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTagPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTagPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/tag",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<ConfTagPT> updateTagUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -37,7 +37,7 @@ public interface ApiDictionaryTag {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTagPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTagPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/tag",
-        produces = {"*/*"},
+        produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<ConfTagPT> createTagUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -51,8 +51,7 @@ public interface ApiDictionaryTag {
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTagPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTagPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/tag",
-        produces = {"*/*"},
-        consumes = {"application/json"},
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfTagPT>> getAllTagsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
