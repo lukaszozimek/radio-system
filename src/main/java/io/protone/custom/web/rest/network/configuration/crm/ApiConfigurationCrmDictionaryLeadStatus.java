@@ -17,69 +17,69 @@ import java.util.List;
 public interface ApiConfigurationCrmDictionaryLeadStatus {
 
 
-    @ApiOperation(value = "deleteLeadstatus", notes = "", response = Void.class, tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "deleteLeadstatus", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/{id}",
-        produces = { "*/*" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLeadStatusUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<Void> deleteLeadStatusUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                     @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "getAllLeadStatus", notes = "", response = ConfLeadStatusPT.class, responseContainer = "List", tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "getAllLeadStatus", notes = "", response = ConfLeadStatusPT.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadStatusPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfLeadStatusPT>> getAllLeadStatusUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfLeadStatusPT>> getAllLeadStatusUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "getLeadStatus", notes = "", response = ConfLeadStatusPT.class, tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "getLeadStatus", notes = "", response = ConfLeadStatusPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadStatusPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<ConfLeadStatusPT> getLeadStatusUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                           @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<ConfLeadStatusPT> getLeadStatusUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "updateLeadStatus", notes = "", response = ConfLeadStatusPT.class, tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "updateLeadStatus", notes = "", response = ConfLeadStatusPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 201, message = "Created", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadStatusPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<ConfLeadStatusPT> updateleadStatusUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "leadStatus" ,required=true ) @RequestBody ConfLeadStatusPT leadStatus);
+    ResponseEntity<ConfLeadStatusPT> updateleadStatusUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                              @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadStatusPT leadStatus);
 
-    @ApiOperation(value = "createLeadStatus", notes = "", response = ConfLeadStatusPT.class, tags={ "DICTIONARY","CONFIGURATION", })
+    @ApiOperation(value = "createLeadStatus", notes = "", response = ConfLeadStatusPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 201, message = "Created", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfLeadStatusPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfLeadStatusPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = ConfLeadStatusPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/crm/dictionary/leadstatus/",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<ConfLeadStatusPT> createLeadStatusUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "leadStatus" ,required=true ) @RequestBody ConfLeadStatusPT leadStatus);
+    ResponseEntity<ConfLeadStatusPT> createLeadStatusUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                               @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadStatusPT leadStatus);
 
 }
