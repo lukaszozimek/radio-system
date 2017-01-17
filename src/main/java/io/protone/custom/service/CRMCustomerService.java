@@ -1,8 +1,10 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmAccountPT;
+import io.protone.repository.*;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -10,6 +12,18 @@ import java.util.List;
  */
 @Service
 public class CRMCustomerService {
+    @Inject
+    private CRMAccountRepository accountRepository;
+    @Inject
+    private CRMTaskRepository taskRepository;
+    @Inject
+    private CORAssociationRepository associationRepository;
+    @Inject
+    private CORRangeRepository rangeRepository;
+    @Inject
+    private CORSizeRepository sizeRepository;
+    @Inject
+    private TRAIndustryRepository industryRepository;
 
 
     public List<CrmAccountPT> getAllCustomer() {
