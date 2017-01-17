@@ -29,7 +29,7 @@ public interface ApiDictionaryRange {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreRangePT> createRangeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "personDTO", required = true) @RequestBody CoreRangePT personDTO);
+                                                     @ApiParam(value = "coreRangePT", required = true) @RequestBody CoreRangePT coreRangePT);
 
 
     @ApiOperation(value = "getAllRange", notes = "", response = CoreRangePT.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
@@ -68,7 +68,7 @@ public interface ApiDictionaryRange {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreRangePT> updateRangeUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                    @ApiParam(value = "personDTO", required = true) @RequestBody CoreRangePT personDTO);
+                                                    @ApiParam(value = "coreRangePT", required = true) @RequestBody CoreRangePT coreRangePT);
 
 
     @ApiOperation(value = "deleteRange", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
