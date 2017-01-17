@@ -13,6 +13,7 @@ import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.inject.Inject;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
@@ -54,7 +56,14 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
 
     @Override
     public ResponseEntity<CoreRangePT> getRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        return null;
+        log.debug("REST request to get CORRange : {}", id);
+        CORRange cORRange = cORRangeRepository.findOne(id);
+        CoreRangePT cORRangeDTO = customCORAreaMapper.cORRangeToCORRangeDTO(cORRange);
+        return Optional.ofNullable(cORRangeDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

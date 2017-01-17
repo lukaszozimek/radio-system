@@ -40,7 +40,6 @@ public interface ApiDictionarySize {
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/size/{id}",
         produces = {"application/json"},
-        consumes = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSizeUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
