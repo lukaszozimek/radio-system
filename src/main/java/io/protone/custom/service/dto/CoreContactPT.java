@@ -4,6 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.CORContactTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -16,41 +17,10 @@ public class CoreContactPT   {
   @JsonProperty("contact")
   private String contact = null;
 
-  /**
-   * Gets or Sets contactType
-   */
-  public enum ContactTypeEnum {
-    EMAIL("CT_EMAIL"),
 
-    PHONE("CT_PHONE"),
-
-    OTHER("CT_OTHER");
-
-    private String value;
-
-    ContactTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static ContactTypeEnum fromValue(String text) {
-      for (ContactTypeEnum b : ContactTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
 
   @JsonProperty("contactType")
-  private ContactTypeEnum contactType = null;
+  private CORContactTypeEnum contactType = null;
 
   @JsonProperty("id")
   private Long id = null;
@@ -76,7 +46,7 @@ public class CoreContactPT   {
     this.contact = contact;
   }
 
-  public CoreContactPT contactType(ContactTypeEnum contactType) {
+  public CoreContactPT contactType(CORContactTypeEnum contactType) {
     this.contactType = contactType;
     return this;
   }
@@ -86,11 +56,11 @@ public class CoreContactPT   {
    * @return contactType
   **/
   @ApiModelProperty(required = true, value = "")
-  public ContactTypeEnum getContactType() {
+  public CORContactTypeEnum getContactType() {
     return contactType;
   }
 
-  public void setContactType(ContactTypeEnum contactType) {
+  public void setContactType(CORContactTypeEnum contactType) {
     this.contactType = contactType;
   }
 

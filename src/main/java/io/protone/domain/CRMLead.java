@@ -24,6 +24,9 @@ public class CRMLead implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "shortcut")
+    private String shortcut;
+
     @Column(name = "description")
     private String description;
 
@@ -103,6 +106,15 @@ public class CRMLead implements Serializable {
             "id=" + id +
             ", name='" + name + "'" +
             ", description='" + description + "'" +
+            ", shortcut='" + shortcut + "'" +
             '}';
+    }
+
+    public String getShortcut() {
+        return shortcut;
+    }
+
+    public void setShortcut(String shortcut) {
+        this.shortcut = shortcut;
     }
 }

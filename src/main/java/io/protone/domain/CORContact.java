@@ -62,12 +62,12 @@ public class CORContact implements Serializable {
         return contactType;
     }
 
-    public CORContact contactType(CORContactTypeEnum contactType) {
+    public CORContact contactType(CORContactTypeEnum  contactType) {
         this.contactType = contactType;
         return this;
     }
 
-    public void setContactType(CORContactTypeEnum contactType) {
+    public void setContactType(CORContactTypeEnum  contactType) {
         this.contactType = contactType;
     }
 

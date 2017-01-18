@@ -19,6 +19,9 @@ public class CrmLeadPT {
     @JsonProperty("name")
     private String name = null;
 
+    @JsonProperty("shortname")
+    private String shortname = null;
+
     @JsonProperty("description")
     private String description = null;
 
@@ -70,6 +73,17 @@ public class CrmLeadPT {
         return this;
     }
 
+    public String getShortname() {
+        return this.shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
+    }
+    public CrmLeadPT shortName(String shortname) {
+        this.shortname = shortname;
+        return this;
+    }
     /**
      * Get name
      *
@@ -285,12 +299,13 @@ public class CrmLeadPT {
             Objects.equals(this.industry, crmLeadPT.industry) &&
             Objects.equals(this.person, crmLeadPT.person) &&
             Objects.equals(this.contact, crmLeadPT.contact) &&
-            Objects.equals(this.tasks, crmLeadPT.tasks);
+            Objects.equals(this.tasks, crmLeadPT.tasks)&&
+            Objects.equals(this.shortname,crmLeadPT.shortname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, source, status, adress, area, industry, person, contact, tasks);
+        return Objects.hash(id, name, description, source, status, adress, area, industry, person, contact, tasks,shortname);
     }
 
     @Override
@@ -309,6 +324,7 @@ public class CrmLeadPT {
         sb.append("    person: ").append(toIndentedString(person)).append("\n");
         sb.append("    contact: ").append(toIndentedString(contact)).append("\n");
         sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
+        sb.append("    shortname: ").append(toIndentedString(shortname)).append("\n");
         sb.append("}");
         return sb.toString();
     }

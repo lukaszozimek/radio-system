@@ -25,7 +25,7 @@ public interface ApiNetworkCrmLead {
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/lead",
-        produces = { "*/*" },
+        produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -39,7 +39,7 @@ public interface ApiNetworkCrmLead {
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/lead",
-        produces = { "*/*" },
+        produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<CrmLeadPT> createLeadUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -52,8 +52,7 @@ public interface ApiNetworkCrmLead {
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/lead",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<CrmLeadPT>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -65,8 +64,7 @@ public interface ApiNetworkCrmLead {
         @ApiResponse(code = 403, message = "Forbidden", response = CrmLeadPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmLeadPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/lead/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<CrmLeadPT> getLeadUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                               @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
@@ -79,8 +77,7 @@ public interface ApiNetworkCrmLead {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/lead/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);

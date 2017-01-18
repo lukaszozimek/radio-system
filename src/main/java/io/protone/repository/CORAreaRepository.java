@@ -10,6 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the CORArea entity.
  */
 @SuppressWarnings("unused")
-public interface CORAreaRepository extends JpaRepository<CORArea,Long> {
-
+public interface CORAreaRepository extends JpaRepository<CORArea, Long> {
+    CORArea findByName(String name);
 }
