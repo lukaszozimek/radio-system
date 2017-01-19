@@ -1,7 +1,9 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmLeadPT;
+import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCRMLeadMapper;
+import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
 import org.springframework.stereotype.Service;
@@ -39,10 +41,11 @@ public class CRMLeadService {
     CORPersonRepository personRepository;
 
     @Inject
-    CORAssociationRepository associationRepository;
+    CRMTaskRepository crmTaskRepository;
 
     @Inject
-    CRMTaskRepository crmTaskRepository;
+    CORAssociationRepository associationRepository;
+
 
     @Inject
     CORAddressRepository corAddressRepository;
@@ -58,6 +61,9 @@ public class CRMLeadService {
 
     @Inject
     CORPersonRepository corPersonRepository;
+
+    @Inject
+    CustomCRMTaskMapper customCRMTaskMapper;
 
     @Transactional
     public List<CrmLeadPT> getAllLeads() {
@@ -110,7 +116,7 @@ public class CRMLeadService {
         CORAddress corAddress = corAddressRepository.save(customCRMLeadMapper.createAdressEntity(lead));
         List<CORContact> contact = corContactRepository.save(customCRMLeadMapper.createContactEntity(lead));
         CORPerson person = corPersonRepository.save(customCRMLeadMapper.createPersonEntity(lead));
-        List<CRMTask> crmTasksList = crmTaskRepository.save(customCRMLeadMapper.createTasksEntity(lead.getTasks()));
+        List<CRMTask> crmTasksList = crmTaskRepository.save(customCRMTaskMapper.createTasksEntity(lead.getTasks()));
 
         associations.add(customCRMLeadMapper.createAddressAssociationEntity(crmLead, corAddress));
         associations.add(customCRMLeadMapper.createLeadAreaAssociationEntity(crmLead, corArea));
@@ -119,7 +125,7 @@ public class CRMLeadService {
         associations.add(customCRMLeadMapper.createLeadIndustryAssociationEntity(crmLead, industry));
         associations.add(customCRMLeadMapper.createLeadPersonAssociationEntity(crmLead, person));
         associations.addAll(customCRMLeadMapper.createLeadContactAssociationEntity(person, contact));
-        associations.addAll(customCRMLeadMapper.createLeadTaskAssociationEntity(crmLead, crmTasksList));
+        associations.addAll(customCRMLeadMapper.createLeadTasksAssociationEntity(crmLead, crmTasksList));
         associationRepository.save(associations);
         return customCRMLeadMapper.createDTOFromEntites(crmLead, crmTasksList, person, corAddress, contact, industry, corArea, leadSource, leadStatus);
     }
@@ -188,9 +194,36 @@ public class CRMLeadService {
         List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
 
         return customCRMLeadMapper.createDTOFromEntites(crmLead,
-            taskList, leadPersonContact, address, corContact, industry, area, source, status);
+            taskList, leadPersonContact, corAddress, corContact, industry, area, source, status);
 
     }
 
+    public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut) {
+        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
+        List<Long> tasksID = leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
+        List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
+        return customCRMTaskMapper.transformTasksFromEntity(taskList);
+    }
 
+    public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId) {
+        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CORAssociation task = associationRepository.findBySourceIdAndTargetIdAndTargetClass(crmLead.getId(), taskId, CRMTask.class.getName());
+        CRMTask crmTask = crmTaskRepository.findOne(task.getId());
+        return customCRMTaskMapper.createCrmTask(crmTask);
+    }
+
+    public void deleteLeadTask(String shortcut, Long taskId) {
+        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CORAssociation task = associationRepository.findBySourceIdAndTargetIdAndTargetClass(crmLead.getId(), taskId, CRMTask.class.getName());
+        crmTaskRepository.delete(task.getId());
+        associationRepository.delete(task);
+    }
+
+    public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT) {
+        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(taskPT));
+        associationRepository.save(customCRMLeadMapper.createLeadTaskAssociationEntity(crmLead, crmTask));
+        return customCRMTaskMapper.createCrmTask(crmTask);
+    }
 }

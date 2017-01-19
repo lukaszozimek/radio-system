@@ -16,6 +16,8 @@ public interface CORAssociationRepository extends JpaRepository<CORAssociation, 
 
     List<CORAssociation> findBySourceIdAndTargetId(Long sourceId, Long targetId);
 
+    CORAssociation findBySourceIdAndTargetIdAndTargetClass(Long sourceId, Long targetId, String targetClass);
+
     List<CORAssociation> findByTargetIdAndSourceClass(Long targetId, String sourceClass);
 
     void deleteBySourceIdAndTargetClass(Long sourceId, String targetClass);

@@ -2,11 +2,9 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.*;
 import io.protone.domain.*;
-import io.protone.domain.enumeration.CORContactTypeEnum;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,32 @@ import java.util.List;
 @Service
 public class CustomCRMLeadMapper {
 
+    @Inject
+    CustomCRMTaskMapper customCRMTaskMapper;
+
+    @Inject
+    CustomCORAddressMapper corAddressMapper;
+
+    @Inject
+    CustomCORPersonMapper corPersonMapper;
+
+    @Inject
+    CustomCORContactMapper corContactMapper;
+
+    @Inject
+    CustomTRAIndustryMapper customTRAIndustryMapper;
+
+    @Inject
+    CustomCRMLeadSourceMapper customCRMLeadSourceMapper;
+
+    @Inject
+    CustomCRMLeadStatusMapper customCRMLeadStatusMapper;
+
+    @Inject
+    CustomCORAreaMapper corAreaMapper;
+
+    @Inject
+    CustomTRAIndustryMapper industryMapper;
 
 
     public CRMLead createLeadEntity(CrmLeadPT leadPT) {
@@ -28,48 +52,15 @@ public class CustomCRMLeadMapper {
     }
 
     public CORAddress createAdressEntity(CrmLeadPT leadPT) {
-        CORAddress corAddress = new CORAddress();
-        corAddress.setId(leadPT.getId());
-        corAddress.setCity(leadPT.getAdress().getCity());
-        corAddress.setCountry(leadPT.getAdress().getCountry());
-        corAddress.setNumber(leadPT.getAdress().getNumber());
-        corAddress.setPostalCode(leadPT.getAdress().getPostalCode());
-        corAddress.setStreet(leadPT.getAdress().getStreet());
-        return corAddress;
+        return corAddressMapper.cORAddressDTOToCORAddress(leadPT.getAdress());
     }
 
     public CORPerson createPersonEntity(CrmLeadPT leadPT) {
-        CORPerson person = new CORPerson();
-        person.setFirstName(leadPT.getPerson().getFirstName());
-        person.setLastName(leadPT.getPerson().getLastName());
-        person.setDescription(leadPT.getPerson().getDescription());
-        return person;
+        return corPersonMapper.cORPersonDTOToCORPerson(leadPT.getPerson());
     }
 
     public List<CORContact> createContactEntity(CrmLeadPT leadPT) {
-        List<CORContact> corContacts = new ArrayList<>();
-        for (CoreContactPT contactPT : leadPT.getContact()) {
-            CORContact contact = new CORContact();
-            contact.contact(contactPT.getContact());
-            contact.contactType(contactPT.getContactType());
-            corContacts.add(contact);
-        }
-        return corContacts;
-    }
-
-    public List<CRMTask> createTasksEntity(List<CrmTaskPT> leadTasks) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        List<CRMTask> taskList = new ArrayList<>();
-        for (CrmTaskPT task : leadTasks) {
-            CRMTask crmTask = new CRMTask();
-            crmTask.setId(task.getId());
-            crmTask.setSubject(task.getSubject());
-            crmTask.setActivityDate(LocalDate.parse(task.getActivityDate(), formatter));
-            crmTask.setActivityLength(task.getActivityLenght());
-            crmTask.setComment(task.getComment());
-            taskList.add(crmTask);
-        }
-        return taskList;
+        return corContactMapper.cORContactDTOsToCORContacts(leadPT.getContact());
     }
 
     public CORAssociation createAddressAssociationEntity(CRMLead lead, CORAddress address) {
@@ -146,18 +137,22 @@ public class CustomCRMLeadMapper {
         return associations;
     }
 
-    public List<CORAssociation> createLeadTaskAssociationEntity(CRMLead lead, List<CRMTask> crmTasks) {
+    public List<CORAssociation> createLeadTasksAssociationEntity(CRMLead lead, List<CRMTask> crmTasks) {
         List<CORAssociation> associations = new ArrayList<>();
         for (CRMTask crmTask : crmTasks) {
-            CORAssociation association = new CORAssociation();
-            association.setName("CRMTask");
-            association.setSourceClass(CRMLead.class.getName());
-            association.setSourceId(lead.getId());
-            association.setTargetClass(CRMTask.class.getName());
-            association.setTargetId(crmTask.getId());
-            associations.add(association);
+            associations.add(createLeadTaskAssociationEntity(lead, crmTask));
         }
         return associations;
+    }
+
+    public CORAssociation createLeadTaskAssociationEntity(CRMLead lead, CRMTask crmTask) {
+        CORAssociation association = new CORAssociation();
+        association.setName("CRMTask");
+        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceId(lead.getId());
+        association.setTargetClass(CRMTask.class.getName());
+        association.setTargetId(crmTask.getId());
+        return association;
     }
 
     public CrmLeadPT createDTOFromEntites(CRMLead lead,
@@ -174,62 +169,17 @@ public class CustomCRMLeadMapper {
         crmLeadPT.setName(lead.getName());
         crmLeadPT.setShortname(lead.getShortcut());
         crmLeadPT.setDescription(lead.getDescription());
-        crmLeadPT.setIndustry(new ConfIndustryPT().id(industry.getId())
-            .name(industry.getName())
-            .networkId(industry.getId()));
-        crmLeadPT.setArea(new CoreAreaPT().id(area
-            .getId())
-            .name(area.getName())
-            .networkId(area.getNetwork().getId()));
-        crmLeadPT.setAdress(new CoreAddressPT()
-            .id(address.getId())
-            .country(address.getCountry())
-            .city(address.getCity())
-            .number(address.getNumber())
-            .postalCode(address.getPostalCode())
-            .street(address.getStreet()))
-        ;
-        crmLeadPT.setSource(new ConfLeadSourcePT()
-            .id(leadSource.getId())
-            .name(leadSource.getName()));
-        crmLeadPT.setStatus(new ConfLeadStatusPT()
-            .id(leadStatus.getId())
-            .name(leadStatus.getName()));
-        crmLeadPT.setTasks(transformTasksFromEntity(tasks));
-        crmLeadPT.setPerson(transformPersonFromEntity(person));
-        crmLeadPT.setContact(transformContactFromEntity(corContacts));
+        crmLeadPT.setIndustry(industryMapper.tRAIndustryToTRAIndustryDTO(industry));
+        crmLeadPT.setArea(corAreaMapper.cORAreaToCORAreaDTO(area));
+        crmLeadPT.setAdress(corAddressMapper.cORAddressToCORAddressDTO(address));
+        crmLeadPT.setSource(customCRMLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(leadSource));
+        crmLeadPT.setStatus(customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(leadStatus));
+        crmLeadPT.setTasks(customCRMTaskMapper.transformTasksFromEntity(tasks));
+        crmLeadPT.setPerson(corPersonMapper.cORPersonToCORPersonDTO(person));
+        crmLeadPT.setContact(corContactMapper.cORContactsToCORContactDTOs(corContacts));
         return crmLeadPT;
     }
-
-    private List<CoreContactPT> transformContactFromEntity(List<CORContact> contacts) {
-        List<CoreContactPT> contactPTList = new ArrayList<>();
-        contacts.stream().forEach(contact -> {
-            contactPTList.add(new CoreContactPT().id(contact.getId())
-                .contact(contact.getContact())
-                .contactType(contact.getContactType()));
-        });
-        return contactPTList;
-    }
-
-    private ConfPersonPT transformPersonFromEntity(CORPerson person) {
-        return new ConfPersonPT().id(person.getId())
-            .firstName(person.getFirstName())
-            .lastName(person.getLastName())
-            .description(person.getDescription());
-    }
-
-    private List<CrmTaskPT> transformTasksFromEntity(List<CRMTask> tasks) {
-        List<CrmTaskPT> crmTaskPTList = new ArrayList<>();
-        tasks.stream().forEach(task -> {
-            crmTaskPTList.add(new CrmTaskPT().id(task.getId())
-                .activityDate(task.getActivityDate().toString())
-                .activityLenght(task.getActivityLength())
-                .assignedTo(new CoreManagedUserPT())
-                .comment(task.getComment())
-                .subject(task.getSubject())
-                .createdBy(new CoreManagedUserPT()));
-        });
-        return crmTaskPTList;
-    }
-
 }
+
+
+
