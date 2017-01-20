@@ -16,7 +16,7 @@ import java.util.List;
 @Api(value = "custom", description = "the api API")
 public interface ApiNetworkLibrary {
 
-    @ApiOperation(value = "updateLibrary", notes = "", response = LibraryPT.class, tags={ "LIBRARY", })
+    @ApiOperation(value = "updateLibrary", notes = "", response = LibraryPT.class, tags={"LIBRARY", "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibraryPT.class),
         @ApiResponse(code = 201, message = "Created", response = LibraryPT.class),
@@ -31,21 +31,20 @@ public interface ApiNetworkLibrary {
                                                     @ApiParam(value = "library" ,required=true ) @RequestBody LibraryPT library);
 
 
-    @ApiOperation(value = "getAllLibraries", notes = "", response = LibraryPT.class, responseContainer = "List", tags={ "LIBRARY", })
+    @ApiOperation(value = "getAllLibraries", notes = "", response = LibraryPT.class, responseContainer = "List", tags={"LIBRARY", "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibraryPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = LibraryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
 
 
 
-    @ApiOperation(value = "createLibrary", notes = "", response = LibraryPT.class, tags={ "LIBRARY", })
+    @ApiOperation(value = "createLibrary", notes = "", response = LibraryPT.class, tags={"LIBRARY", "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibraryPT.class),
         @ApiResponse(code = 201, message = "Created", response = LibraryPT.class),
@@ -60,7 +59,7 @@ public interface ApiNetworkLibrary {
                                                      @ApiParam(value = "library" ,required=true ) @RequestBody LibraryPT library);
 
 
-    @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags={ "LIBRARY", })
+    @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags={"LIBRARY", "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -75,15 +74,14 @@ public interface ApiNetworkLibrary {
 
 
 
-    @ApiOperation(value = "getLibrary", notes = "", response = LibraryPT.class, tags={ "LIBRARY", })
+    @ApiOperation(value = "getLibrary", notes = "", response = LibraryPT.class, tags={"LIBRARY", "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibraryPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = LibraryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<LibraryPT> getLibraryUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                  @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix);
