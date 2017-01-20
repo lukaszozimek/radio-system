@@ -59,11 +59,19 @@ public class CrmContactPT {
     @JsonProperty("persons")
     private List<TraCustomerPersonPT> persons = new ArrayList<TraCustomerPersonPT>();
 
+
     @JsonProperty("tasks")
-    private CrmTaskPT tasks = null;
+    private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
+
 
     public CrmContactPT area(CoreAreaPT area) {
         this.area = area;
+        return this;
+    }
+
+
+    public CrmContactPT addTasksItem(CrmTaskPT tasksItem) {
+        this.tasks.add(tasksItem);
         return this;
     }
 
@@ -128,7 +136,7 @@ public class CrmContactPT {
         this.paymentDelay = paymentDelay;
     }
 
-    public CrmContactPT shortName(Integer paymentDelay) {
+    public CrmContactPT paymentDelay(Integer paymentDelay) {
         this.paymentDelay = paymentDelay;
         return this;
     }
@@ -361,7 +369,7 @@ public class CrmContactPT {
         this.persons = persons;
     }
 
-    public CrmContactPT tasks(CrmTaskPT tasks) {
+    public CrmContactPT tasks(List<CrmTaskPT> tasks) {
         this.tasks = tasks;
         return this;
     }
@@ -372,11 +380,11 @@ public class CrmContactPT {
      * @return tasks
      **/
     @ApiModelProperty(value = "")
-    public CrmTaskPT getTasks() {
+    public List<CrmTaskPT> getTasks() {
         return tasks;
     }
 
-    public void setTasks(CrmTaskPT tasks) {
+    public void setTasks(List<CrmTaskPT> tasks) {
         this.tasks = tasks;
     }
 

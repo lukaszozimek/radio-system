@@ -7,6 +7,7 @@ import io.protone.domain.CORPerson;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,18 @@ public class CustomTRAPersonMapper {
             corPersonListMap.put(createPersonEntity(traCustomerPerson), createContactEntities(traCustomerPerson));
         });
         return corPersonListMap;
+    }
+
+    public List<TraCustomerPersonPT> createDTOObject(Map<CORPerson, List<CORContact>> corPersonListMap) {
+        List<TraCustomerPersonPT> listDto = new ArrayList<>();
+        corPersonListMap.keySet().stream().forEach(person -> {
+            listDto.add(new TraCustomerPersonPT().id(person.getId()).
+                lastName(person.getLastName())
+                .firstName(person.getFirstName())
+                .description(person.getDescription()).contacts(corContactMapper.cORContactsToCORContactDTOs(corPersonListMap.get(person))));
+
+        });
+        return listDto;
     }
 
     public Map<CORPerson, List<CORContact>> createMapPersonToContact(TraCustomerPersonPT traCustomerPersonPT) {

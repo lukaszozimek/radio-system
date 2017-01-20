@@ -15,8 +15,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCORContactMapper {
 
+
     @Mapping(source = "network.id", target = "networkId")
-    CORContactDTO cORContactToCORContactDTO(CORContact cORContact);
+    CoreContactPT cORContactToCORContactDTO(CORContact cORContact);
 
     List<CoreContactPT> cORContactsToCORContactDTOs(List<CORContact> cORContacts);
 

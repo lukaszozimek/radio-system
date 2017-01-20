@@ -13,11 +13,11 @@ import java.time.format.DateTimeFormatter;
 /**
  * Created by lukaszozimek on 18.01.2017.
  */
-@Service
 public class CustomCRMOpportunityMapper {
 
     @Inject
     CustomCRMStageMapper stageMapper;
+
     @Inject
     CustomCRMContactMapper customCRMContactMapper;
 

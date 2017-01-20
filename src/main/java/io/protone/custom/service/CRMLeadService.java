@@ -81,7 +81,7 @@ public class CRMLeadService {
             List<CORAssociation> leadPersonContactAssociation = new ArrayList<CORAssociation>();
 
             leadPersonAssociation.forEach(person -> {
-                List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClass(person.getId(), CORContact.class.getName());
+                List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClass(person.getSourceId(), CORContact.class.getName());
                 leadPersonContactAssociation.addAll(personContactAssociation);
             });
 

@@ -36,8 +36,6 @@ public class CRMOpportunityService {
     @Inject
     private CRMTaskRepository taskRepository;
     @Inject
-    private CustomCRMOpportunityMapper customCRMOpportunityMapper;
-    @Inject
     private CustomCRMTaskMapper customCRMTaskMapper;
 
     public List<CrmOpportunityPT> getAllOpportunity() {
@@ -46,10 +44,10 @@ public class CRMOpportunityService {
     }
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT) {
-        CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT));
+       // CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT));
         List<CRMTask> taskList = taskRepository.save(customCRMTaskMapper.createTasksEntity(opportunityPT.getTasks()));
         CRMStage stage = stageRepository.findByName(opportunityPT.getStage().getName());
-        CRMContact contact = crmContactRepository.findOne(customCRMOpportunityMapper.createContactEntity(opportunityPT).getId());
+        //CRMContact contact = crmContactRepository.findOne(customCRMOpportunityMapper.createContactEntity(opportunityPT).getId());
         //association to user
         return null;
     }
