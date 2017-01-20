@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 18.01.2017.
  */
+@Service
 public class CustomCRMOpportunityMapper {
 
     @Inject
@@ -25,7 +26,6 @@ public class CustomCRMOpportunityMapper {
     @Inject
     CustomCRMTaskMapper customCRMTaskMapper;
 
-    @Inject
     public CRMOpportunity createOpportunity(CrmOpportunityPT opportunityPT) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 

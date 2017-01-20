@@ -3,6 +3,7 @@ package io.protone.custom.service;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.service.dto.CrmOpportunityPT;
+import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCRMContactMapper;
 import io.protone.custom.service.mapper.CustomCRMOpportunityMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
@@ -93,6 +94,35 @@ public class CRMOpportunityService {
         return createDTO(opportunitie);
     }
 
+    public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId) {
+        CRMOpportunity opportunity = opportunityRepository.findByName(shortcut);
+        CORAssociation task = associationRepository.findBySourceIdAndTargetIdAndTargetClass(opportunity.getId(), taskId, CRMTask.class.getName());
+        CRMTask crmTask = taskRepository.findOne(task.getId());
+        return customCRMTaskMapper.createCrmTask(crmTask);
+    }
+
+    public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut) {
+        CRMOpportunity opportunity = opportunityRepository.findByName(shortcut);
+        List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMTask.class.getName());
+        List<Long> tasksID = leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
+        List<CRMTask> taskList = taskRepository.findAll(tasksID);
+        return customCRMTaskMapper.transformTasksFromEntity(taskList);
+    }
+
+    public void deleteLeadTask(String shortcut, Long taskId) {
+        CRMOpportunity opportunity = opportunityRepository.findByName(shortcut);
+        CORAssociation task = associationRepository.findBySourceIdAndTargetIdAndTargetClass(opportunity.getId(), taskId, CRMTask.class.getName());
+        taskRepository.delete(task.getId());
+        associationRepository.delete(task);
+    }
+
+    public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT) {
+        CRMOpportunity opportunity = opportunityRepository.findByName(shortcut);
+        CRMTask crmTask = taskRepository.save(customCRMTaskMapper.createTaskEntity(taskPT));
+        associationRepository.save(customCRMOpportunityMapper.createOpportunityTaskAssociationEntity(opportunity, crmTask));
+        return customCRMTaskMapper.createCrmTask(crmTask);
+    }
+
     private CrmOpportunityPT createDTO(CRMOpportunity opportunity) {
         List<CORAssociation> opportunityStageAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMStage.class.getName());
         List<CORAssociation> opportunityContactAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMContact.class.getName());
@@ -102,4 +132,6 @@ public class CRMOpportunityService {
         List<CRMTask> crmTasks = taskRepository.findAll(opportunityTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList()));
         return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactService.getContact(crmContact.getShortName()), crmTasks);
     }
+
+
 }
