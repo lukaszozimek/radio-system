@@ -10,6 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the CRMLead entity.
  */
 @SuppressWarnings("unused")
-public interface CRMLeadRepository extends JpaRepository<CRMLead,Long> {
-
+public interface CRMLeadRepository extends JpaRepository<CRMLead, Long> {
+    CRMLead findByShortcut(String shortcut);
 }

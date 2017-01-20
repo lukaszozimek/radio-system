@@ -16,80 +16,76 @@ import java.util.List;
 @Api(value = "custom", description = "the api API")
 public interface ApiNetworkCrmContactTask {
 
-    @ApiOperation(value = "getAllContactActivities", notes = "", response = CrmTaskPT.class, responseContainer = "List", tags={ "TRAFFIC","CRM", })
+    @ApiOperation(value = "getAllContactActivities", notes = "", response = CrmTaskPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/contact/{shortName}/task",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmTaskPT>> getAllContactActivitiesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<List<CrmTaskPT>> getAllContactActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
-    @ApiOperation(value = "updateContactActivity", notes = "", response = CrmTaskPT.class, tags={ "TRAFFIC","CRM", })
+    @ApiOperation(value = "updateContactActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
         @ApiResponse(code = 201, message = "Created", response = CrmTaskPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/contact/{shortName}/task",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CrmTaskPT> updateContactActivityUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                            @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName,
-                                                            @ApiParam(value = "crmActivityPT" ,required=true ) @RequestBody CrmTaskPT crmActivityPT);
+    ResponseEntity<CrmTaskPT> updateContactActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                            @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT);
 
 
-    @ApiOperation(value = "createContactActivity", notes = "", response = CrmTaskPT.class, tags={ "TRAFFIC","CRM", })
+    @ApiOperation(value = "createContactActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
         @ApiResponse(code = 201, message = "Created", response = CrmTaskPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/contact/{shortName}/task",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CrmTaskPT> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName,
-                                                             @ApiParam(value = "crmActivityPT" ,required=true ) @RequestBody CrmTaskPT crmActivityPT);
+    ResponseEntity<CrmTaskPT> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                             @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT);
 
 
-    @ApiOperation(value = "deleteContactActivityActivity", notes = "", response = Void.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "deleteContactActivityActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/contact/{shortName}/task/{id}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteContactActivityUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName,
-                                                          @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<Void> deleteContactActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                          @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "getContactActivity", notes = "", response = CrmTaskPT.class, tags={ "TRAFFIC","CRM", })
+    @ApiOperation(value = "getContactActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/crm/contact/{shortName}/task/{id}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CrmTaskPT> getContactActivityUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName,
-                                                         @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
-
+    ResponseEntity<CrmTaskPT> getContactActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }

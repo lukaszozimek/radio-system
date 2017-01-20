@@ -10,6 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the TRAIndustry entity.
  */
 @SuppressWarnings("unused")
-public interface TRAIndustryRepository extends JpaRepository<TRAIndustry,Long> {
-
+public interface TRAIndustryRepository extends JpaRepository<TRAIndustry, Long> {
+    TRAIndustry findByName(String name);
 }
