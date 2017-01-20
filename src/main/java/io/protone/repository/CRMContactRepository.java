@@ -13,6 +13,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CRMContactRepository extends JpaRepository<CRMContact, Long> {
     CRMContact findByShortName(String shortName);
-
-    void deleteByShortcut(String shortcut);
+    void deleteByShortName(String shortName);
 }

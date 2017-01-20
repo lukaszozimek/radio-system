@@ -20,6 +20,7 @@ import static java.util.stream.Collectors.toList;
  */
 
 @Service
+@Transactional
 public class CRMLeadService {
 
     @Inject
@@ -104,7 +105,6 @@ public class CRMLeadService {
         return crmLeadPTList;
     }
 
-    @Transactional
     public CrmLeadPT saveLead(CrmLeadPT lead) {
         List<CORAssociation> associations = new ArrayList<>();
         CRMLeadStatus leadStatus = crmLeadStatusRepository.findByName(lead.getStatus().getName());
@@ -130,7 +130,6 @@ public class CRMLeadService {
         return customCRMLeadMapper.createDTOFromEntites(crmLead, crmTasksList, person, corAddress, contact, industry, corArea, leadSource, leadStatus);
     }
 
-    @Transactional
     public void deleteLead(String shortcut) {
 
         CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);

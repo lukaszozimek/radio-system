@@ -36,8 +36,11 @@ public class CustomCRMContactMapper {
 
     @Inject
     CustomCRMTaskMapper customCRMTaskMapper;
+
     public CRMContact createCrmContactEntity(CrmContactPT crmContactPT) {
-        return new CRMContact()
+        CRMContact crmContact = new CRMContact();
+        crmContact.setId(crmContactPT.getId());
+        return crmContact
             .paymentDelay(crmContactPT.getPaymentDelay())
             .externalId1(crmContactPT.getIdNumber1())
             .externalId2(crmContactPT.getIdNumber2())
@@ -81,7 +84,7 @@ public class CustomCRMContactMapper {
                                                     CORArea corArea,
                                                     List<CRMTask> taskList,
                                                     Map<CORPerson, List<CORContact>> corPersonListMap,
-                                                    TRAIndustry industry,CoreManagedUserPT coreManagedUserPT) {
+                                                    TRAIndustry industry, CoreManagedUserPT coreManagedUserPT) {
         return new CrmContactPT()
             .id(crmContact.getId())
             .name(crmContact.getName())
@@ -104,39 +107,29 @@ public class CustomCRMContactMapper {
     public CORAssociation createAddressAssociationEntity(CRMContact crmContact, CORAddress address) {
         CORAssociation association = new CORAssociation();
         association.setName("ADDRESS");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORAddress.class.getName());
         association.setTargetId(address.getId());
         return association;
     }
 
-    public CORAssociation createContactStatusAssociationEntity(CRMContact crmContact, CORArea area) {
-        CORAssociation association = new CORAssociation();
-        association.setName("AREA");
-        association.setSourceClass(CRMLead.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CRMLeadStatus.class.getName());
-        association.setTargetId(area.getId());
-        return association;
-    }
-
-    public CORAssociation createContactSourceAssociationEntity(CRMContact crmContact, CORRange range) {
+    public CORAssociation createContactRangeAssociationEntity(CRMContact crmContact, CORRange range) {
         CORAssociation association = new CORAssociation();
         association.setName("RANGE");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
-        association.setTargetClass(CRMLeadSource.class.getName());
+        association.setTargetClass(CORRange.class.getName());
         association.setTargetId(range.getId());
         return association;
     }
 
-    public CORAssociation createContactSourceAssociationEntity(CRMContact crmContact, CORSize size) {
+    public CORAssociation createContactSizeAssociationEntity(CRMContact crmContact, CORSize size) {
         CORAssociation association = new CORAssociation();
         association.setName("SIZE");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
-        association.setTargetClass(CRMLeadSource.class.getName());
+        association.setTargetClass(CORSize.class.getName());
         association.setTargetId(size.getId());
         return association;
     }
@@ -144,7 +137,7 @@ public class CustomCRMContactMapper {
     public CORAssociation createContactIndustryAssociationEntity(CRMContact crmContact, TRAIndustry industry) {
         CORAssociation association = new CORAssociation();
         association.setName("TRAIndustry");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(TRAIndustry.class.getName());
         association.setTargetId(industry.getId());
@@ -154,7 +147,7 @@ public class CustomCRMContactMapper {
     public CORAssociation createContactAreaAssociationEntity(CRMContact crmContact, CORArea area) {
         CORAssociation association = new CORAssociation();
         association.setName("CORArea");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORArea.class.getName());
         association.setTargetId(area.getId());
@@ -164,7 +157,7 @@ public class CustomCRMContactMapper {
     public CORAssociation createContactPersonAssociationEntity(CRMContact crmContact, CORPerson corPerson) {
         CORAssociation association = new CORAssociation();
         association.setName("CORPerson");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORPerson.class.getName());
         association.setTargetId(corPerson.getId());
@@ -196,7 +189,7 @@ public class CustomCRMContactMapper {
     public CORAssociation createContactTaskAssociationEntity(CRMContact crmContact, CRMTask crmTask) {
         CORAssociation association = new CORAssociation();
         association.setName("CRMTask");
-        association.setSourceClass(CRMLead.class.getName());
+        association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CRMTask.class.getName());
         association.setTargetId(crmTask.getId());
