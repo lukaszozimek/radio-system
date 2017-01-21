@@ -1,7 +1,7 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.TraCustomerPT;
-import io.protone.domain.TRACustomer;
+import io.protone.domain.CRMAccount;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -15,14 +15,13 @@ public class CustomTRACustomerMapper {
     @Inject
     private CustomTRAIndustryMapper customTRAIndustryMapper;
 
-    public TRACustomer transformDTOtoEntity(TraCustomerPT traCustomerPT) {
-        TRACustomer traCustomer = new TRACustomer();
+    public CRMAccount transformDTOtoEntity(TraCustomerPT traCustomerPT) {
+        CRMAccount traCustomer = new CRMAccount();
         traCustomer.setId(traCustomerPT.getId());
-        return traCustomer.name(traCustomerPT.getName())
-            .industry(customTRAIndustryMapper.tRAIndustryDTOToTRAIndustry(traCustomerPT.getIndustry()));
+        return traCustomer.name(traCustomerPT.getName());
     }
 
-    public TraCustomerPT transformEntityToDTO(TRACustomer traCustomerPT) {
+    public TraCustomerPT transformEntityToDTO(CRMAccount traCustomerPT) {
         return new TraCustomerPT();
     }
 }

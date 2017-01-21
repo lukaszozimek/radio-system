@@ -29,8 +29,6 @@ public class CustomTRAOrderMapper {
         traOrder.setId(traOrder.getId());
         return traOrder.name(traOrder.getName())
             .calculatedPrize(traOrderPT.getCalculatedPrize())
-            .campaign(customTRACampaignMapper.transfromDTOToEntity(traOrderPT.getCampaignId()))
-            .customer(customTRACustomerMapper.transformDTOtoEntity(traOrderPT.getCustomerId()))
             .startDate(traOrder.getStartDate())
             .endDate(traOrder.getEndDate());
     }
@@ -38,8 +36,6 @@ public class CustomTRAOrderMapper {
     public TraOrderPT transfromEntitesToDTO(TRAOrder traOrder, List<SchEmissionPT> schEmissionPTS) {
         return new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
             .calculatedPrize(traOrder.getCalculatedPrize())
-            .campaignId(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign(), schEmissionPTS))
-            .customerId(customTRACustomerMapper.transformEntityToDTO(traOrder.getCustomer()))
             .startDate(traOrder.getStartDate())
             .endDate(traOrder.getEndDate());
     }
