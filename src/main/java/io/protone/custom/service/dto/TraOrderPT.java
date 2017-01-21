@@ -18,11 +18,11 @@ public class TraOrderPT {
     @JsonProperty("calculatedPrize")
     private Long calculatedPrize = null;
 
-    @JsonProperty("campaignId")
-    private TraCampaignPT campaignId = null;
+    @JsonProperty("campaign")
+    private TraCampaignPT traCampaignPT = null;
 
-    @JsonProperty("customerId")
-    private TraCustomerPT customerId = null;
+    @JsonProperty("customer")
+    private TraCustomerPT customerPT = null;
 
     @JsonProperty("endDate")
     private LocalDate endDate = null;
@@ -59,41 +59,41 @@ public class TraOrderPT {
     }
 
     public TraOrderPT campaignId(TraCampaignPT campaignId) {
-        this.campaignId = campaignId;
+        this.traCampaignPT = campaignId;
         return this;
     }
 
     /**
-     * Get campaignId
+     * Get traCampaignPT
      *
-     * @return campaignId
+     * @return traCampaignPT
      **/
     @ApiModelProperty(value = "")
-    public TraCampaignPT getCampaignId() {
-        return campaignId;
+    public TraCampaignPT getTraCampaignPT() {
+        return traCampaignPT;
     }
 
-    public void setCampaignId(TraCampaignPT campaignId) {
-        this.campaignId = campaignId;
+    public void setTraCampaignPT(TraCampaignPT traCampaignPT) {
+        this.traCampaignPT = traCampaignPT;
     }
 
     public TraOrderPT customerId(TraCustomerPT customerId) {
-        this.customerId = customerId;
+        this.customerPT = customerId;
         return this;
     }
 
     /**
-     * Get customerId
+     * Get customerPT
      *
-     * @return customerId
+     * @return customerPT
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPT getCustomerId() {
-        return customerId;
+    public TraCustomerPT getCustomerPT() {
+        return customerPT;
     }
 
-    public void setCustomerId(TraCustomerPT customerId) {
-        this.customerId = customerId;
+    public void setCustomerPT(TraCustomerPT customerPT) {
+        this.customerPT = customerPT;
     }
 
     public TraOrderPT endDate(LocalDate endDate) {
@@ -202,8 +202,8 @@ public class TraOrderPT {
         }
         TraOrderPT traOrderPT = (TraOrderPT) o;
         return Objects.equals(this.calculatedPrize, traOrderPT.calculatedPrize) &&
-            Objects.equals(this.campaignId, traOrderPT.campaignId) &&
-            Objects.equals(this.customerId, traOrderPT.customerId) &&
+            Objects.equals(this.traCampaignPT, traOrderPT.traCampaignPT) &&
+            Objects.equals(this.customerPT, traOrderPT.customerPT) &&
             Objects.equals(this.endDate, traOrderPT.endDate) &&
             Objects.equals(this.id, traOrderPT.id) &&
             Objects.equals(this.name, traOrderPT.name) &&
@@ -213,7 +213,7 @@ public class TraOrderPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, campaignId, customerId, endDate, id, name, startDate, emission);
+        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, emission);
     }
 
     @Override
@@ -222,8 +222,8 @@ public class TraOrderPT {
         sb.append("class TraOrderPT {\n");
 
         sb.append("    calculatedPrize: ").append(toIndentedString(calculatedPrize)).append("\n");
-        sb.append("    campaignId: ").append(toIndentedString(campaignId)).append("\n");
-        sb.append("    customerId: ").append(toIndentedString(customerId)).append("\n");
+        sb.append("    traCampaignPT: ").append(toIndentedString(traCampaignPT)).append("\n");
+        sb.append("    customerPT: ").append(toIndentedString(customerPT)).append("\n");
         sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");

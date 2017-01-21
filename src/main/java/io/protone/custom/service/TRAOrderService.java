@@ -52,8 +52,8 @@ public class TRAOrderService {
         TRAOrder order = customTRAOrderMapper.trasnformDTOtoEntity(orderPT);
         traOrderRepository.save(order);
         List<SCHEmission> emissions = customSCHEmissionMapper.createListEmissionFromListDTO(orderPT.getEmission());
-        TRACampaign campaign = customTRACampaignMapper.transfromDTOToEntity(orderPT.getCampaignId());
-        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(orderPT.getCustomerId());
+        TRACampaign campaign = customTRACampaignMapper.transfromDTOToEntity(orderPT.getTraCampaignPT());
+        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(orderPT.getCustomerPT());
         emissions = schEmissionRepository.save(emissions);
         corAssociationList.add(customTRAOrderMapper.createCrmAccountAssociation(order, crmAccount));
         corAssociationList.addAll(customTRAOrderMapper.createScheduledEmissionAssociationList(order, emissions));
