@@ -10,6 +10,7 @@ import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.SCHEmissionRepository;
 import io.protone.repository.TRAOrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional
 public class TRAOrderService {
 
     @Inject

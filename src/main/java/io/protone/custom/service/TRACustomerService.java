@@ -6,6 +6,7 @@ import io.protone.domain.CRMAccount;
 import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.CRMAccountRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
  */
 
 @Service
+
+@Transactional
 public class TRACustomerService {
 
     @Inject

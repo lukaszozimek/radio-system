@@ -24,47 +24,47 @@ import static java.util.stream.Collectors.toList;
 public class CRMLeadService {
 
     @Inject
-    CustomCRMLeadMapper customCRMLeadMapper;
+    private CustomCRMLeadMapper customCRMLeadMapper;
 
     @Inject
-    CRMLeadRepository crmLeadRepository;
+    private CRMLeadRepository crmLeadRepository;
 
     @Inject
-    CRMLeadStatusRepository crmLeadStatusRepository;
+    private CRMLeadStatusRepository crmLeadStatusRepository;
 
     @Inject
-    CRMLeadSourceRepository crmLeadSourceRepository;
+    private CRMLeadSourceRepository crmLeadSourceRepository;
 
     @Inject
-    TRAIndustryRepository industryRepository;
+    private TRAIndustryRepository industryRepository;
 
     @Inject
-    CORPersonRepository personRepository;
+    private CORPersonRepository personRepository;
 
     @Inject
-    CRMTaskRepository crmTaskRepository;
+    private CRMTaskRepository crmTaskRepository;
 
     @Inject
-    CORAssociationRepository associationRepository;
+    private CORAssociationRepository associationRepository;
 
 
     @Inject
-    CORAddressRepository corAddressRepository;
+    private CORAddressRepository corAddressRepository;
 
     @Inject
-    CORAreaRepository corAreaRepository;
+    private CORAreaRepository corAreaRepository;
 
     @Inject
-    NetworkService networkService;
+    private NetworkService networkService;
 
     @Inject
-    CORContactRepository corContactRepository;
+    private CORContactRepository corContactRepository;
 
     @Inject
-    CORPersonRepository corPersonRepository;
+    private CORPersonRepository corPersonRepository;
 
     @Inject
-    CustomCRMTaskMapper customCRMTaskMapper;
+    private CustomCRMTaskMapper customCRMTaskMapper;
 
     @Transactional
     public List<CrmLeadPT> getAllLeads() {

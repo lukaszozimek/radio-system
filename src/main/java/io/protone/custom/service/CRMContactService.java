@@ -28,8 +28,10 @@ public class CRMContactService {
 
     @Inject
     private CustomCRMContactMapper customCRMContactMapper;
+
     @Inject
     private CustomCRMTaskMapper customCRMTaskMapper;
+
     @Inject
     private CRMContactRepository crmContactRepository;
 
