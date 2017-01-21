@@ -1,8 +1,10 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.*;
-import io.protone.custom.service.mapper.CustomTRACustomerMapper;
+import io.protone.custom.service.mapper.CustomCRMAccountMapper;
+import io.protone.domain.CRMAccount;
 import io.protone.repository.CORAssociationRepository;
+import io.protone.repository.CRMAccountRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -19,7 +21,10 @@ public class TRACustomerService {
     private CORAssociationRepository corAssociationRepository;
 
     @Inject
-    private CustomTRACustomerMapper customTRACustomerMapper;
+    private CRMAccountRepository crmAccountRepository;
+
+    @Inject
+    private CustomCRMAccountMapper customCRMAccountMapper;
 
     public List<TraCustomerPT> getAllCustomers() {
 
@@ -38,8 +43,6 @@ public class TRACustomerService {
     public TraCustomerPT getCustomer(String shortcut) {
         return null;
     }
-
-
 
 
     public TraInvoicePT getCustomerInvoice(String shortcut) {
