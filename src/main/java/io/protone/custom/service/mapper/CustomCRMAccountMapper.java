@@ -61,7 +61,7 @@ public class CustomCRMAccountMapper {
             .vatNumber(traCustomerPT.getVatNumber());
     }
 
-    public TraCustomerPT createCrmAcountEntity(CRMAccount traCustomerPT) {
+    public TraCustomerPT createCustomerTrafficDTO(CRMAccount traCustomerPT) {
         TraCustomerPT crmAccount = new TraCustomerPT();
         crmAccount.setId(traCustomerPT.getId());
         return crmAccount
