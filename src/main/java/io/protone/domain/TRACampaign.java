@@ -37,8 +37,6 @@ public class TRACampaign implements Serializable {
     @Column(name = "prize")
     private Long prize;
 
-    @ManyToOne
-    private TRACustomer customer;
 
     public Long getId() {
         return id;
@@ -52,17 +50,21 @@ public class TRACampaign implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TRACampaign name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public TRACampaign startDate(LocalDate startDate) {
@@ -70,12 +72,12 @@ public class TRACampaign implements Serializable {
         return this;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public TRACampaign endDate(LocalDate endDate) {
@@ -83,12 +85,12 @@ public class TRACampaign implements Serializable {
         return this;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public Long getPrize() {
         return prize;
+    }
+
+    public void setPrize(Long prize) {
+        this.prize = prize;
     }
 
     public TRACampaign prize(Long prize) {
@@ -96,22 +98,6 @@ public class TRACampaign implements Serializable {
         return this;
     }
 
-    public void setPrize(Long prize) {
-        this.prize = prize;
-    }
-
-    public TRACustomer getCustomer() {
-        return customer;
-    }
-
-    public TRACampaign customer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-        return this;
-    }
-
-    public void setCustomer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-    }
 
     @Override
     public boolean equals(Object o) {

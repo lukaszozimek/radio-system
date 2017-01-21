@@ -30,16 +30,6 @@ public class TRAAdvertisement implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LIBMediaItem mediaItem;
-
-    @ManyToOne
-    private TRACustomer customer;
-
-    @ManyToOne
-    private TRAIndustry industry;
-
     public Long getId() {
         return id;
     }
@@ -68,49 +58,6 @@ public class TRAAdvertisement implements Serializable {
     public TRAAdvertisement description(String description) {
         this.description = description;
         return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LIBMediaItem getMediaItem() {
-        return mediaItem;
-    }
-
-    public TRAAdvertisement mediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-        return this;
-    }
-
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-    }
-
-    public TRACustomer getCustomer() {
-        return customer;
-    }
-
-    public TRAAdvertisement customer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-        return this;
-    }
-
-    public void setCustomer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-    }
-
-    public TRAIndustry getIndustry() {
-        return industry;
-    }
-
-    public TRAAdvertisement industry(TRAIndustry tRAIndustry) {
-        this.industry = tRAIndustry;
-        return this;
-    }
-
-    public void setIndustry(TRAIndustry tRAIndustry) {
-        this.industry = tRAIndustry;
     }
 
     @Override
