@@ -5,6 +5,7 @@ import io.protone.domain.CORAssociation;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the CORAssociation entity.
@@ -12,10 +13,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CORAssociationRepository extends JpaRepository<CORAssociation, Long> {
 
-    List<CORAssociation> findBySourceIdAndTargetClass(Long sourceId, String targetClass);
+    List<CORAssociation> findByNameAndSourceIdAndTargetClass(String name, Long sourceId, String targetClass);
 
     List<CORAssociation> findBySourceIdAndTargetId(Long sourceId, Long targetId);
 
     List<CORAssociation> findByTargetIdAndSourceClass(Long targetId, String sourceClass);
-
 }

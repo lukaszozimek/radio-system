@@ -1,9 +1,8 @@
-package io.protone.custom.service.mapper;
+package classes;
 
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.domain.CORNetwork;
 import io.protone.domain.LIBLibrary;
-import io.protone.service.dto.LIBLibraryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
