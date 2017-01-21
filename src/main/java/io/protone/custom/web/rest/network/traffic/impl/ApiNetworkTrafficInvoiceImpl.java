@@ -1,5 +1,6 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
+import io.protone.custom.service.TRAInvoiceService;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficInvoice;
 import io.swagger.annotations.ApiParam;
@@ -8,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import java.util.List;
 
 
 @RestController
-public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice{
-
+public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
+    @Inject
+    private TRAInvoiceService traInvoiceService;
 
     @Override
     public ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {

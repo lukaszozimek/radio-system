@@ -1,5 +1,6 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
+import io.protone.custom.service.TRAOrderService;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficOrder;
 import io.swagger.annotations.ApiParam;
@@ -8,11 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import java.util.List;
 
 
 @RestController
 public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
+    @Inject
+    private TRAOrderService traOrderService;
 
     @Override
     public ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO) {
