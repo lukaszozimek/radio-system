@@ -14,8 +14,8 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class TraCampaignPT {
-    @JsonProperty("customerId")
-    private TraCustomerPT customerId = null;
+    @JsonProperty("customerPT")
+    private TraCustomerPT customerPT = null;
 
     @JsonProperty("endDate")
     private LocalDate endDate = null;
@@ -36,7 +36,7 @@ public class TraCampaignPT {
     private List<SchEmissionPT> emission = new ArrayList<SchEmissionPT>();
 
     public TraCampaignPT customerId(TraCustomerPT customerId) {
-        this.customerId = customerId;
+        this.customerPT = customerId;
         return this;
     }
 
@@ -47,11 +47,11 @@ public class TraCampaignPT {
      **/
     @ApiModelProperty(value = "")
     public TraCustomerPT getCustomerId() {
-        return customerId;
+        return customerPT;
     }
 
     public void setCustomerId(TraCustomerPT customerId) {
-        this.customerId = customerId;
+        this.customerPT = customerId;
     }
 
     public TraCampaignPT endDate(LocalDate endDate) {
@@ -183,7 +183,7 @@ public class TraCampaignPT {
             return false;
         }
         TraCampaignPT traCampaignPT = (TraCampaignPT) o;
-        return Objects.equals(this.customerId, traCampaignPT.customerId) &&
+        return Objects.equals(this.customerPT, traCampaignPT.customerPT) &&
             Objects.equals(this.endDate, traCampaignPT.endDate) &&
             Objects.equals(this.id, traCampaignPT.id) &&
             Objects.equals(this.name, traCampaignPT.name) &&
@@ -194,7 +194,7 @@ public class TraCampaignPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, endDate, id, name, prize, startDate, emission);
+        return Objects.hash(customerPT, endDate, id, name, prize, startDate, emission);
     }
 
     @Override
@@ -202,7 +202,7 @@ public class TraCampaignPT {
         StringBuilder sb = new StringBuilder();
         sb.append("class TraCampaignPT {\n");
 
-        sb.append("    customerId: ").append(toIndentedString(customerId)).append("\n");
+        sb.append("    customerId: ").append(toIndentedString(customerPT)).append("\n");
         sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
