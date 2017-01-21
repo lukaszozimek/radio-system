@@ -1,8 +1,12 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.custom.service.mapper.CustomTRACampaignMapper;
+import io.protone.repository.CORAssociationRepository;
+import io.protone.repository.TRACampaignRepository;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -11,6 +15,17 @@ import java.util.List;
 
 @Service
 public class TRACampaignService {
+
+    @Inject
+    private CustomTRACampaignMapper customTRACampaignMapper;
+
+    @Inject
+    private CORAssociationRepository corAssociationRepositor;
+
+    @Inject
+    private TRACampaignRepository traCampaignRepository;
+
+
     public List<TraCampaignPT> getAllCampaign() {
 
         return null;
