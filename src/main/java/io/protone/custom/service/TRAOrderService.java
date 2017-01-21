@@ -3,7 +3,9 @@ package io.protone.custom.service;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.service.mapper.CustomSCHEmissionMapper;
 import io.protone.custom.service.mapper.CustomTRAOrderMapper;
+import io.protone.domain.TRAOrder;
 import io.protone.repository.CORAssociationRepository;
+import io.protone.repository.SCHEmissionRepository;
 import io.protone.repository.TRAOrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,21 +31,31 @@ public class TRAOrderService {
     @Inject
     private CustomSCHEmissionMapper customSCHEmissionMapper;
 
+    @Inject
+    private SCHEmissionRepository schEmissionRepository;
+
     public List<TraOrderPT> getAllOrder() {
 
         return null;
     }
 
-    public TraOrderPT saveOrder() {
+    public TraOrderPT saveOrder(TraOrderPT orderPT) {
+        TRAOrder order = customTRAOrderMapper.trasnformDTOtoEntity(orderPT);
+        traOrderRepository.save(order);
 
         return null;
     }
 
-    public void deleteOrder() {
+    public void deleteOrder(Long id) {
 
     }
 
-    public TraOrderPT getOrder(String shortcut) {
+    public TraOrderPT getOrder(Long id) {
         return null;
     }
+
+    public List<TraOrderPT> getCustomerOrders(String shortcut) {
+        return null;
+    }
+
 }

@@ -19,7 +19,7 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
 
     @Override
     public ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        return null;
+        return ResponseEntity.ok().body(campaignService.getAllCampaign());
     }
 
     @Override
@@ -29,16 +29,18 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
 
     @Override
     public ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO) {
-        return null;
+        return ResponseEntity.ok().body(campaignService.saveCampaign(campaignDTO));
+
     }
 
     @Override
     public ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        return null;
+        campaignService.deleteCampaign(shortName);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<TraCampaignPT> getCampaignUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        return null;
+        return ResponseEntity.ok().body(campaignService.getCampaign(shortName));
     }
 }

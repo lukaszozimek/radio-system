@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,13 +19,13 @@ public class TraOrderPT {
     private Long calculatedPrize = null;
 
     @JsonProperty("campaignId")
-    private Long campaignId = null;
+    private TraCampaignPT campaignId = null;
 
     @JsonProperty("customerId")
-    private Long customerId = null;
+    private TraCustomerPT customerId = null;
 
     @JsonProperty("endDate")
-    private String endDate = null;
+    private LocalDate endDate = null;
 
     @JsonProperty("id")
     private Long id = null;
@@ -33,7 +34,7 @@ public class TraOrderPT {
     private String name = null;
 
     @JsonProperty("startDate")
-    private String startDate = null;
+    private LocalDate startDate = null;
 
     @JsonProperty("emission")
     private List<SchEmissionPT> emission = new ArrayList<>();
@@ -57,7 +58,7 @@ public class TraOrderPT {
         this.calculatedPrize = calculatedPrize;
     }
 
-    public TraOrderPT campaignId(Long campaignId) {
+    public TraOrderPT campaignId(TraCampaignPT campaignId) {
         this.campaignId = campaignId;
         return this;
     }
@@ -68,15 +69,15 @@ public class TraOrderPT {
      * @return campaignId
      **/
     @ApiModelProperty(value = "")
-    public Long getCampaignId() {
+    public TraCampaignPT getCampaignId() {
         return campaignId;
     }
 
-    public void setCampaignId(Long campaignId) {
+    public void setCampaignId(TraCampaignPT campaignId) {
         this.campaignId = campaignId;
     }
 
-    public TraOrderPT customerId(Long customerId) {
+    public TraOrderPT customerId(TraCustomerPT customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -87,15 +88,15 @@ public class TraOrderPT {
      * @return customerId
      **/
     @ApiModelProperty(value = "")
-    public Long getCustomerId() {
+    public TraCustomerPT getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(TraCustomerPT customerId) {
         this.customerId = customerId;
     }
 
-    public TraOrderPT endDate(String endDate) {
+    public TraOrderPT endDate(LocalDate endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -106,11 +107,11 @@ public class TraOrderPT {
      * @return endDate
      **/
     @ApiModelProperty(value = "")
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -152,7 +153,7 @@ public class TraOrderPT {
         this.name = name;
     }
 
-    public TraOrderPT startDate(String startDate) {
+    public TraOrderPT startDate(LocalDate startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -163,11 +164,11 @@ public class TraOrderPT {
      * @return startDate
      **/
     @ApiModelProperty(value = "")
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 

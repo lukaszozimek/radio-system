@@ -30,6 +30,17 @@ public class CustomSCHEmissionMapper {
             .id(emission.getId());
     }
 
+    public SCHEmission createEmissionFromDTO(SchEmissionPT schEmissionPT) {
+        SCHEmission schEmission = new SCHEmission();
+        schEmission.setId(schEmissionPT.getId());
+        return schEmission
+            .finished(schEmissionPT.getFinished())
+            .seq(schEmissionPT.getSeq())
+            .relativeDelay(schEmissionPT.getRelativeDelay())
+            .startType(schEmissionPT.getStartType())
+            .length(schEmissionPT.getLength());
+    }
+
     public List<SchEmissionPT> createDTOFromListEntites(Map<SCHEmission, LibItemPT> schEmissionLibItemPTMap) {
         List<SchEmissionPT> schEmissionPTList = new ArrayList<>();
         schEmissionLibItemPTMap.keySet().stream().forEach(schEmission -> {

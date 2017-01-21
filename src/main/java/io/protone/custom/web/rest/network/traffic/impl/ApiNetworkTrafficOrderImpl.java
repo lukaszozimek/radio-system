@@ -25,22 +25,23 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
 
     @Override
     public ResponseEntity<TraOrderPT> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO) {
-        return null;
+        return ResponseEntity.ok().body(traOrderService.saveOrder(anOrderDTO));
     }
 
     @Override
     public ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        return null;
+        return ResponseEntity.ok().body(traOrderService.getAllOrder());
     }
 
     @Override
     public ResponseEntity<TraOrderPT> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        return null;
+        return ResponseEntity.ok().body(traOrderService.getOrder(id));
     }
 
     @Override
     public ResponseEntity<Void> deleteAnOrderUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        return null;
+        traOrderService.getOrder(id);
+        return ResponseEntity.ok().build();
     }
 
     @Override

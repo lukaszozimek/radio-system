@@ -24,17 +24,18 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
 
     @Override
     public ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO) {
-        return null;
+        return ResponseEntity.ok().body(traAdvertismentService.saveAdvertisement(advertisementDTO));
     }
 
     @Override
     public ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        return null;
+        return ResponseEntity.ok().body(traAdvertismentService.getAllAdvertisement());
     }
 
     @Override
     public ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx) {
-        return null;
+        traAdvertismentService.deleteAdvertisement(idx);
+        return ResponseEntity.ok().build();
     }
 
     @Override

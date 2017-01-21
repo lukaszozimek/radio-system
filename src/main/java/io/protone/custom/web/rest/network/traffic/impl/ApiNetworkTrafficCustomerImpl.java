@@ -25,21 +25,22 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
 
     @Override
     public ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerVM", required = true) @RequestBody TraCustomerPT customer) {
-        return null;
+        return ResponseEntity.ok().body(customerService.saveCustomers(customer));
     }
 
     @Override
     public ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        return null;
+        return ResponseEntity.ok().body(customerService.getAllCustomers());
     }
 
     @Override
     public ResponseEntity<TraCustomerPT> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
-        return null;
+        return ResponseEntity.ok().body(customerService.getCustomer(customerShortcut));
     }
 
     @Override
     public ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
-        return null;
+        customerService.deleteCustomer(customerShortcut);
+        return ResponseEntity.ok().build();
     }
 }

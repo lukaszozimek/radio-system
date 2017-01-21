@@ -1,6 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.TRAAdvertisementRepository;
@@ -30,16 +31,21 @@ public class TRAAdvertismentService {
         return null;
     }
 
-    public TraAdvertisementPT saveAdvertisement() {
+    public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT) {
 
         return null;
     }
 
-    public void deleteAdvertisement() {
+    public void deleteAdvertisement(Long idx) {
 
     }
 
     public TraAdvertisementPT getAdvertisement(String shortcut) {
         return null;
     }
+
+    public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut) {
+        return null;
+    }
+
 }
