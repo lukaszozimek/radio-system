@@ -27,16 +27,16 @@ public class TRAInvoiceService {
         return null;
     }
 
-    public TraInvoicePT saveInvoice() {
+    public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT) {
 
         return null;
     }
 
-    public void deleteInvoice() {
+    public void deleteInvoice(Long id) {
 
     }
 
-    public TraInvoicePT getInvoice(String shortcut) {
+    public TraInvoicePT getInvoice(Long id) {
         return null;
     }
 

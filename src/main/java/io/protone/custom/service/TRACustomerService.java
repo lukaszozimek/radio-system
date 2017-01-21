@@ -26,12 +26,12 @@ public class TRACustomerService {
         return null;
     }
 
-    public TraCustomerPT saveCustomers() {
+    public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT) {
 
         return null;
     }
 
-    public void deleteCustomer() {
+    public void deleteCustomer(String shortcut) {
 
     }
 
@@ -39,17 +39,8 @@ public class TRACustomerService {
         return null;
     }
 
-    public TraCustomerAdvertismentsPT getCustomerAdvertisments(String shortcut) {
-        return null;
-    }
 
-    public TraCampaignPT getCustomerCampaing(String shortcut) {
-        return null;
-    }
 
-    public TraOrderPT getCustomerOrders(String shortcut) {
-        return null;
-    }
 
     public TraInvoicePT getCustomerInvoice(String shortcut) {
         return null;

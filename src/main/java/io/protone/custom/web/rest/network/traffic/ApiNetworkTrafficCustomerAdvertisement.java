@@ -1,5 +1,6 @@
 package io.protone.custom.web.rest.network.traffic;
 
+import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.custom.service.dto.TraCustomerPT;
 import io.swagger.annotations.*;
@@ -26,8 +27,8 @@ public interface ApiNetworkTrafficCustomerAdvertisement {
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/advertisement",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraCustomerAdvertismentsPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
+    ResponseEntity<List<TraAdvertisementPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                  @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
 }

@@ -20,7 +20,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
 
     @Override
     public ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        return null;
+        return ResponseEntity.ok().body(traInvoiceService.getAllInvoice());
     }
 
     @Override
@@ -30,17 +30,18 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
 
     @Override
     public ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "invoiceDTO", required = true) @RequestBody TraInvoicePT invoiceDTO) {
-        return null;
+        return ResponseEntity.ok().body(traInvoiceService.saveInvoice(invoiceDTO));
     }
 
     @Override
     public ResponseEntity<Void> deleteInvoiceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        return null;
+        traInvoiceService.deleteInvoice(id);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<TraInvoicePT> getInvoiceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        return null;
+        return ResponseEntity.ok().body(traInvoiceService.getInvoice(id));
     }
 
     @Override

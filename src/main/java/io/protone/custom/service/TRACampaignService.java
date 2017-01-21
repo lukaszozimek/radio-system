@@ -31,16 +31,21 @@ public class TRACampaignService {
         return null;
     }
 
-    public TraCampaignPT saveCampaign() {
+    public TraCampaignPT saveCampaign(TraCampaignPT campaignPT) {
 
         return null;
     }
 
-    public void deleteCampaign() {
+    public void deleteCampaign(String shortcut) {
 
     }
 
     public TraCampaignPT getCampaign(String shortcut) {
         return null;
     }
+
+    public List<TraCampaignPT> getCustomerCampaing(String shortcut) {
+        return null;
+    }
+
 }
