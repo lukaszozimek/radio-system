@@ -30,6 +30,14 @@ public class CustomSCHEmissionMapper {
             .id(emission.getId());
     }
 
+    public List<SCHEmission> createListEmissionFromListDTO(List<SchEmissionPT> schEmissionPT) {
+        List<SCHEmission> listEmission = new ArrayList<>();
+        schEmissionPT.stream().forEach(emissionPT -> {
+            listEmission.add(createEmissionFromDTO(emissionPT));
+        });
+        return listEmission;
+    }
+
     public SCHEmission createEmissionFromDTO(SchEmissionPT schEmissionPT) {
         SCHEmission schEmission = new SCHEmission();
         schEmission.setId(schEmissionPT.getId());

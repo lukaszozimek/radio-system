@@ -13,8 +13,6 @@ import java.util.List;
  */
 @Service
 public class CustomTRACampaignMapper {
-    @Inject
-    private CustomTRACustomerMapper customTRACustomerMapper;
 
 
     public TRACampaign transfromDTOToEntity(TraCampaignPT traCampaignPT) {
