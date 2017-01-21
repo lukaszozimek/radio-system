@@ -17,76 +17,72 @@ import java.util.List;
 public interface ApiNetworkTrafficCustomer {
 
 
-    @ApiOperation(value = "updateTrafficCustomerUsingPUT", notes = "", response = TraCustomerPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "updateTrafficCustomerUsingPUT", notes = "", response = TraCustomerPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCustomerPT.class),
         @ApiResponse(code = 201, message = "Created", response = TraCustomerPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "CustomerVM" ,required=true ) @RequestBody TraCustomerPT customer);
+    ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "CustomerVM", required = true) @RequestBody TraCustomerPT customer);
 
 
-    @ApiOperation(value = "createTrafficCustomerUsingPOST", notes = "", response = TraCustomerPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "createTrafficCustomerUsingPOST", notes = "", response = TraCustomerPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCustomerPT.class),
         @ApiResponse(code = 201, message = "Created", response = TraCustomerPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                 @ApiParam(value = "customerVM" ,required=true ) @RequestBody TraCustomerPT customer);
+    ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                 @ApiParam(value = "customerVM", required = true) @RequestBody TraCustomerPT customer);
 
 
-    @ApiOperation(value = "getAllTrafficCustomersUsingGET", notes = "", response = TraCustomerPT.class, responseContainer = "List", tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAllTrafficCustomersUsingGET", notes = "", response = TraCustomerPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCustomerPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "getTrafficCustomerUsingGET", notes = "", response = TraCustomerPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "getTrafficCustomerUsingGET", notes = "", response = TraCustomerPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCustomerPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraCustomerPT> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "customerShortcut",required=true ) @PathVariable("customerShortcut") String customerShortcut);
+    ResponseEntity<TraCustomerPT> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                             @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
-    @ApiOperation(value = "deleteTrafficCustomerUsingDELETE", notes = "", response = Void.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "deleteTrafficCustomerUsingDELETE", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "customerShortcut",required=true ) @PathVariable("customerShortcut") String customerShortcut);
-
+    ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
 }

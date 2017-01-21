@@ -17,20 +17,17 @@ import java.util.List;
 public interface ApiNetworkTrafficCustomerAdvertisement {
 
 
-
-    @ApiOperation(value = "getAllCustomersAdvertismentsUsingGET", notes = "", response = TraCustomerAdvertismentsPT.class, responseContainer = "List", tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAllCustomersAdvertismentsUsingGET", notes = "", response = TraCustomerAdvertismentsPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCustomerAdvertismentsPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerAdvertismentsPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerAdvertismentsPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerAdvertismentsPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerAdvertismentsPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/advertisement",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraCustomerAdvertismentsPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                          @ApiParam(value = "customerShortcut",required=true ) @PathVariable("customerShortcut") String customerShortcut);
-
+    ResponseEntity<List<TraCustomerAdvertismentsPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
 }

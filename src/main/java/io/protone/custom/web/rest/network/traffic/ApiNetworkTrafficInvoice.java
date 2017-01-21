@@ -17,90 +17,85 @@ import java.util.List;
 public interface ApiNetworkTrafficInvoice {
 
 
-    @ApiOperation(value = "getAllInvoices", notes = "", response = TraInvoicePT.class, responseContainer = "List", tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAllInvoices", notes = "", response = TraInvoicePT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraInvoicePT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraInvoicePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraInvoicePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/invoice",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "updateInvoice", notes = "", response = TraInvoicePT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "updateInvoice", notes = "", response = TraInvoicePT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraInvoicePT.class),
         @ApiResponse(code = 201, message = "Created", response = TraInvoicePT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraInvoicePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraInvoicePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/invoice",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraInvoicePT> updateInvoiceUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "invoiceDTO" ,required=true ) @RequestBody TraInvoicePT invoiceDTO);
+    ResponseEntity<TraInvoicePT> updateInvoiceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                       @ApiParam(value = "invoiceDTO", required = true) @RequestBody TraInvoicePT invoiceDTO);
 
 
-    @ApiOperation(value = "createInvoice", notes = "", response = TraInvoicePT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "createInvoice", notes = "", response = TraInvoicePT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraInvoicePT.class),
         @ApiResponse(code = 201, message = "Created", response = TraInvoicePT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraInvoicePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraInvoicePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/invoice",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "invoiceDTO" ,required=true ) @RequestBody TraInvoicePT invoiceDTO);
+    ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                        @ApiParam(value = "invoiceDTO", required = true) @RequestBody TraInvoicePT invoiceDTO);
 
 
-    @ApiOperation(value = "deleteInvoice", notes = "", response = Void.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "deleteInvoice", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/invoice/{id}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteInvoiceUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<Void> deleteInvoiceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "getInvoice", notes = "", response = TraInvoicePT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "getInvoice", notes = "", response = TraInvoicePT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraInvoicePT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraInvoicePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraInvoicePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/invoice/{id}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraInvoicePT> getInvoiceUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                    @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<TraInvoicePT> getInvoiceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-
-    @ApiOperation(value = "notifyAboutUnpaidInvoice", notes = "", response = Void.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "notifyAboutUnpaidInvoice", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-        @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/invoice/{id}/notify",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<Void> notifyAboutUnpaidInvoiceUsingGET(@ApiParam(value = "cutomerId",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<Void> notifyAboutUnpaidInvoiceUsingGET(@ApiParam(value = "cutomerId", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }
