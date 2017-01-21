@@ -6,6 +6,7 @@ import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.TRAAdvertisementRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 
 @Service
+@Transactional
 public class TRAAdvertismentService {
 
     @Inject

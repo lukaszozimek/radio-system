@@ -14,14 +14,19 @@ import java.util.List;
 public class CRMCustomerService {
     @Inject
     private CRMAccountRepository accountRepository;
+
     @Inject
     private CRMTaskRepository taskRepository;
+
     @Inject
     private CORAssociationRepository associationRepository;
+
     @Inject
     private CORRangeRepository rangeRepository;
+
     @Inject
     private CORSizeRepository sizeRepository;
+
     @Inject
     private TRAIndustryRepository industryRepository;
 
