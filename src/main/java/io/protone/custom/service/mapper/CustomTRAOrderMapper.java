@@ -39,7 +39,7 @@ public class CustomTRAOrderMapper {
             .startDate(traOrder.getStartDate())
             .endDate(traOrder.getEndDate())
             .emission(schEmissionMapper.createDTOFromListEntites(new HashMap<>()))
-            .customerId(customCRMAccountMapper.createCrmAcountEntity(crmAccount))
+            .customerId(customCRMAccountMapper.createCustomerTrafficDTO(crmAccount))
             .campaignId(customTRACampaignMapper.transfromEntitytoDTO(campaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>())));
     }
 

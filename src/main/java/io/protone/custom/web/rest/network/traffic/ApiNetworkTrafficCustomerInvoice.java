@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.traffic;
 
 import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.custom.service.dto.TraCustomerOrdersPT;
+import io.protone.custom.service.dto.TraInvoicePT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +26,8 @@ public interface ApiNetworkTrafficCustomerInvoice {
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/invoice",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraCustomerOrdersPT>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                  @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
+    ResponseEntity<List<TraInvoicePT>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
     @ApiOperation(value = "notifyAboutUnpaidInvoiceCustomer", notes = "", response = Void.class, tags = {"TRAFFIC",})
