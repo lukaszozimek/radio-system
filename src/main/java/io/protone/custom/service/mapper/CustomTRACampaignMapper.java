@@ -24,8 +24,7 @@ public class CustomTRACampaignMapper {
             .startDate(traCampaign.getStartDate())
             .endDate(traCampaign.getEndDate())
             .name(traCampaign.getName())
-            .prize(traCampaign.getPrize())
-            .customer(customTRACustomerMapper.transformDTOtoEntity(traCampaignPT.getCustomerId()));
+            .prize(traCampaign.getPrize());
 
     }
 
@@ -35,7 +34,6 @@ public class CustomTRACampaignMapper {
             .prize(traCampaign.getPrize())
             .startDate(traCampaign.getStartDate())
             .endDate(traCampaign.getEndDate())
-            .customerId(customTRACustomerMapper.transformEntityToDTO(traCampaign.getCustomer()))
             .emission(emissionPTList);
     }
 

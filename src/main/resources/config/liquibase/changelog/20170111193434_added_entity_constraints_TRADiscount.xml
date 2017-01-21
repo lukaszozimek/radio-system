@@ -7,12 +7,7 @@
         Added the constraints for entity TRADiscount.
     -->
     <changeSet id="20170111193434-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="customer_id"
-                                 baseTableName="tra_discount"
-                                 constraintName="fk_tradiscount_customer_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_customer"/>
+
 
     </changeSet>
 </databaseChangeLog>

@@ -38,7 +38,6 @@
     <include file="classpath:config/liquibase/changelog/20170111193430_added_entity_TRAEmissionOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193431_added_entity_TRABlockPrice.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193432_added_entity_TRAAdvertisement.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170111193433_added_entity_TRACustomer.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193434_added_entity_TRADiscount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193435_added_entity_TRAIndustry.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193436_added_entity_TRAInvoice.xml" relativeToChangelogFile="false"/>
@@ -84,13 +83,8 @@
     <include file="classpath:config/liquibase/changelog/20170111193427_added_entity_constraints_SCHBlock.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193428_added_entity_constraints_SCHTemplate.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193429_added_entity_constraints_SCHEmission.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170111193432_added_entity_constraints_TRAAdvertisement.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170111193433_added_entity_constraints_TRACustomer.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193434_added_entity_constraints_TRADiscount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193435_added_entity_constraints_TRAIndustry.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170111193436_added_entity_constraints_TRAInvoice.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170111193437_added_entity_constraints_TRACampaign.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170111193438_added_entity_constraints_TRAOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193439_added_entity_constraints_TRAPrice.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193451_added_entity_constraints_CRMAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170111193452_added_entity_constraints_CRMContact.xml" relativeToChangelogFile="false"/>
