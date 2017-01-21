@@ -1,11 +1,8 @@
 package io.protone.custom.service;
 
-import io.protone.domain.CORChannel;
 import io.protone.domain.CORNetwork;
 import io.protone.domain.LIBLibrary;
-import io.protone.repository.CCORChannelRepository;
 import io.protone.repository.CCORNetworkRepository;
-import io.protone.repository.LIBLibraryRepository;
 import io.protone.repository.LIBLibraryRepositoryEx;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +29,17 @@ public class LibraryService {
     }
 
     public LIBLibrary findByNetworkShortcutAndLibraryShortcut(String networkShortcut, String libraryShortcut) {
+        LIBLibrary result = null;
         CORNetwork network = networkRepository.findByShortcut(networkShortcut);
         if (network != null)
-            return libraryRepository.findOneByNetworkAndShortcut(network, libraryShortcut).get();
-        return null;
+            result = libraryRepository.findOneByNetworkAndShortcut(network, libraryShortcut).get();
+        return result;
+    }
+
+    @Transactional
+    public void deleteLibraryByNetworkShortcutAndLibraryShortcut(String networkShortcut, String libraryShortcut) {
+        LIBLibrary libraryToDelete = findByNetworkShortcutAndLibraryShortcut(networkShortcut, libraryShortcut);
+        if (libraryToDelete != null)
+            libraryRepository.delete(libraryToDelete);
     }
 }
