@@ -26,15 +26,12 @@ public class TRAInvoice implements Serializable {
     @Column(name = "paid")
     private Boolean paid;
 
-    @Column(name = "price", precision=10, scale=2)
+    @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
 
     @Column(name = "payment_day")
     private LocalDate paymentDay;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private TRAOrder order;
 
     public Long getId() {
         return id;
@@ -61,17 +58,21 @@ public class TRAInvoice implements Serializable {
         return price;
     }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public TRAInvoice price(BigDecimal price) {
         this.price = price;
         return this;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public LocalDate getPaymentDay() {
         return paymentDay;
+    }
+
+    public void setPaymentDay(LocalDate paymentDay) {
+        this.paymentDay = paymentDay;
     }
 
     public TRAInvoice paymentDay(LocalDate paymentDay) {
@@ -79,22 +80,6 @@ public class TRAInvoice implements Serializable {
         return this;
     }
 
-    public void setPaymentDay(LocalDate paymentDay) {
-        this.paymentDay = paymentDay;
-    }
-
-    public TRAOrder getOrder() {
-        return order;
-    }
-
-    public TRAInvoice order(TRAOrder tRAOrder) {
-        this.order = tRAOrder;
-        return this;
-    }
-
-    public void setOrder(TRAOrder tRAOrder) {
-        this.order = tRAOrder;
-    }
 
     @Override
     public boolean equals(Object o) {

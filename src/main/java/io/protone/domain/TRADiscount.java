@@ -31,8 +31,6 @@ public class TRADiscount implements Serializable {
     @Column(name = "discount")
     private Long discount;
 
-    @ManyToOne
-    private TRACustomer customer;
 
     public Long getId() {
         return id;
@@ -81,18 +79,6 @@ public class TRADiscount implements Serializable {
         this.discount = discount;
     }
 
-    public TRACustomer getCustomer() {
-        return customer;
-    }
-
-    public TRADiscount customer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-        return this;
-    }
-
-    public void setCustomer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-    }
 
     @Override
     public boolean equals(Object o) {
