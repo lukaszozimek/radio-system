@@ -89,7 +89,7 @@ public class TRAInvoiceService {
         List<Long> ordersID = corAssociationOrderList.stream().map(CORAssociation::getTargetId).collect(toList());
         List<TRAOrder> orders = traOrderRepository.findAll(ordersID);
         CRMAccount crmAccount = crmAccountRepository.findOne(corAssociationCRMAccountList.get(0).getTargetId());
-        return customTRAInvoiceMapper.createDTOFromEnity(traInvoice, traOrderService.getOrdersByEntity(orders), customCRMAccountMapper.createCustomerTrafficDTO(crmAccount));
+        return customTRAInvoiceMapper.createDTOFromEnity(traInvoice, traOrderService.getOrdersByEntitie(orders), customCRMAccountMapper.createCustomerTrafficDTO(crmAccount));
     }
 
 }
