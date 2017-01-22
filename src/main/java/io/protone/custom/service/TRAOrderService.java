@@ -41,6 +41,7 @@ public class TRAOrderService {
 
     @Inject
     private SCHEmissionRepository schEmissionRepository;
+
     @Inject
     private CustomCRMAccountMapper customCRMAccountMapper;
 
@@ -50,18 +51,7 @@ public class TRAOrderService {
     }
 
     public TraOrderPT saveOrder(TraOrderPT orderPT) {
-        List<CORAssociation> corAssociationList = new ArrayList<>();
-        TRAOrder order = customTRAOrderMapper.trasnformDTOtoEntity(orderPT);
-        traOrderRepository.save(order);
-        List<SCHEmission> emissions = customSCHEmissionMapper.createListEmissionFromListDTO(orderPT.getEmission());
-        TRACampaign campaign = customTRACampaignMapper.transfromDTOToEntity(orderPT.getTraCampaignPT());
-        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(orderPT.getCustomerPT());
-        emissions = schEmissionRepository.save(emissions);
-        corAssociationList.add(customTRAOrderMapper.createCrmAccountAssociation(order, crmAccount));
-        corAssociationList.addAll(customTRAOrderMapper.createScheduledEmissionAssociationList(order, emissions));
-        corAssociationList.add(customTRAOrderMapper.createTraCampaignAssociation(order, campaign));
-
-        return customTRAOrderMapper.transfromEntitesToDTO(order,emissions,campaign,crmAccount);
+        return null;
     }
 
     public void deleteOrder(Long id) {
@@ -71,6 +61,15 @@ public class TRAOrderService {
 
     public TraOrderPT getOrder(Long id) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
+        return null;
+    }
+
+    public List<TraOrderPT> getOrdersById(List<Long> id) {
+        List<CORAssociation> corAssociationList = new ArrayList<>();
+        return null;
+    }
+
+    public List<TraOrderPT> getOrdersByEntity(List<TRAOrder> traOrders) {
         return null;
     }
 

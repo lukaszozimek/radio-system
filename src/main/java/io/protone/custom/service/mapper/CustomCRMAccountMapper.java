@@ -17,25 +17,25 @@ import java.util.Map;
 @Service
 public class CustomCRMAccountMapper {
     @Inject
-    CustomTRAPersonMapper customTRAPersonMapper;
+    private CustomTRAPersonMapper customTRAPersonMapper;
 
     @Inject
-    CustomCORAddressMapper corAddressMapper;
+    private CustomCORAddressMapper corAddressMapper;
 
     @Inject
-    CustomTRAIndustryMapper industryMapper;
+    private CustomTRAIndustryMapper industryMapper;
 
     @Inject
-    CustomCORRangeMapper customCORRangeMapper;
+    private CustomCORRangeMapper customCORRangeMapper;
 
     @Inject
-    CustomCORAreaMapper customCORAreaMapper;
+    private CustomCORAreaMapper customCORAreaMapper;
 
     @Inject
-    CustomCORSizeMapper customCORSizeMapper;
+    private CustomCORSizeMapper customCORSizeMapper;
 
     @Inject
-    CustomCRMTaskMapper customCRMTaskMapper;
+    private CustomCRMTaskMapper customCRMTaskMapper;
 
     public CRMAccount createCrmAcountEntity(CrmAccountPT crmAccountPT) {
         CRMAccount crmAccount = new CRMAccount();

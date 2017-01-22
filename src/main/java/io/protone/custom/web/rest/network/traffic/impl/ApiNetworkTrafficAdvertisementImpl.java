@@ -40,6 +40,6 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
 
     @Override
     public ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx) {
-        return null;
+        return ResponseEntity.ok().body(traAdvertismentService.getAdvertisement(idx));
     }
 }

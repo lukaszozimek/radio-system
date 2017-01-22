@@ -15,7 +15,7 @@ import java.util.List;
 public class NetworkService {
 
     @Inject
-    CCORNetworkRepository ccorNetworkRepository;
+    private CCORNetworkRepository ccorNetworkRepository;
 
     public List<CORNetwork> findAllNetworks() {
         return ccorNetworkRepository.findAll();

@@ -25,7 +25,7 @@ public class CustomTRAInvoiceMapper {
         return traInvoice.paid(traInvoice.isPaid()).paymentDay(traInvoice.getPaymentDay());
     }
 
-    public TraInvoicePT createEntityFromDTO(TRAInvoice traInvoicePT, List<TraOrderPT> traOrderPTList, TraCustomerPT customerPT) {
+    public TraInvoicePT createDTOFromEnity(TRAInvoice traInvoicePT, List<TraOrderPT> traOrderPTList, TraCustomerPT customerPT) {
         return new TraInvoicePT().id(traInvoicePT.getId())
             .order(traOrderPTList)
             .paid(traInvoicePT.isPaid())
