@@ -35,6 +35,8 @@ public class TRACustomerService {
     }
 
     public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT) {
+        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traCustomerPT);
+        crmAccountRepository.save(crmAccount);
 
         return null;
     }

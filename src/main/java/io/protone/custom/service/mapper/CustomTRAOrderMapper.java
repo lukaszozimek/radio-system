@@ -24,6 +24,14 @@ public class CustomTRAOrderMapper {
     @Inject
     private CustomSCHEmissionMapper customSCHEmissionMapper;
 
+    public List<TRAOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT) {
+        List<TRAOrder> traOrdersList = new ArrayList<>();
+        traOrderPT.stream().forEach(traOrderPT1 -> {
+            traOrdersList.add(trasnformDTOtoEntity(traOrderPT1));
+        });
+        return traOrdersList;
+    }
+
     public TRAOrder trasnformDTOtoEntity(TraOrderPT traOrderPT) {
         TRAOrder traOrder = new TRAOrder();
         traOrder.setId(traOrder.getId());

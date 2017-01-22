@@ -10,6 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the TRAAdvertisement entity.
  */
 @SuppressWarnings("unused")
-public interface TRAAdvertisementRepository extends JpaRepository<TRAAdvertisement,Long> {
-
+public interface TRAAdvertisementRepository extends JpaRepository<TRAAdvertisement, Long> {
+    TRAAdvertisement findByName(String name);
 }

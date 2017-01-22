@@ -39,15 +39,15 @@ public class CustomTRAAdvertismentMapper {
 
     }
 
-    public CORAssociation createCrmAccountAssociation(TRAAdvertisement traAdvertisement, TRAIndustry traIndustry) {
+    public CORAssociation createAdvertismentIndustryAssociation(TRAAdvertisement traAdvertisement, TRAIndustry traIndustry) {
         return new CORAssociation().name("Advertisment industry")
             .sourceId(traAdvertisement.getId())
             .sourceClass(TRAAdvertisement.class.getName())
             .targetId(traIndustry.getId())
-            .targetClass(CRMAccount.class.getName());
+            .targetClass(TRAIndustry.class.getName());
     }
 
-    public CORAssociation createCrmAccountAssociation(TRAAdvertisement traAdvertisement, CRMAccount crmAccount) {
+    public CORAssociation createAdvertismentCrmAccountAssociation(TRAAdvertisement traAdvertisement, CRMAccount crmAccount) {
         return new CORAssociation().name("Advertisment customer")
             .sourceId(traAdvertisement.getId())
             .sourceClass(TRAAdvertisement.class.getName())
@@ -55,12 +55,13 @@ public class CustomTRAAdvertismentMapper {
             .targetClass(CRMAccount.class.getName());
     }
 
-    public CORAssociation createTraCampaignAssociation(TRAAdvertisement traAdvertisement, TRACampaign campaign) {
+    public CORAssociation createAdvertismentMediaItemAssociation(TRAAdvertisement traAdvertisement, LIBMediaItem libMediaItem) {
         return new CORAssociation().name("Advertisment media item")
             .sourceId(traAdvertisement.getId())
-            .sourceClass(TRAOrder.class.getName())
-            .targetId(campaign.getId())
-            .targetClass(TRACampaign.class.getName());
+            .sourceClass(TRAAdvertisement.class.getName())
+            .targetId(libMediaItem.getId())
+            .targetClass(LIBMediaItem.class.getName());
     }
+
 
 }
