@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
+
     @Inject
     private CRMContactService contactService;
 

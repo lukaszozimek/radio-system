@@ -10,6 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the CRMAccount entity.
  */
 @SuppressWarnings("unused")
-public interface CRMAccountRepository extends JpaRepository<CRMAccount,Long> {
-
+public interface CRMAccountRepository extends JpaRepository<CRMAccount, Long> {
+    CRMAccount findByShortName(String shortName);
 }

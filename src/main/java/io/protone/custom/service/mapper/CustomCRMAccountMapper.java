@@ -61,16 +61,29 @@ public class CustomCRMAccountMapper {
             .vatNumber(traCustomerPT.getVatNumber());
     }
 
-    public TraCustomerPT createCustomerTrafficDTO(CRMAccount traCustomerPT) {
+    public TraCustomerPT createCustomerTrafficDTO(CRMAccount traCustomerPT, CORAddress address,
+                                                  CORSize corSize,
+                                                  CORRange range,
+                                                  CORArea corArea,
+                                                  Map<CORPerson, List<CORContact>> corPersonListMap,
+                                                  TRAIndustry industry, CoreManagedUserPT coreManagedUserPT) {
         TraCustomerPT crmAccount = new TraCustomerPT();
         crmAccount.setId(traCustomerPT.getId());
-        return crmAccount
-            .paymentDelay(traCustomerPT.getPaymentDelay())
+        return crmAccount.
+            id(traCustomerPT.getId())
+            .name(traCustomerPT.getName())
             .idNumber1(traCustomerPT.getExternalId1())
             .idNumber2(traCustomerPT.getExternalId2())
-            .name(traCustomerPT.getName())
             .shortName(traCustomerPT.getShortName())
-            .vatNumber(traCustomerPT.getVatNumber());
+            .vatNumber(traCustomerPT.getVatNumber())
+            .paymentDelay(traCustomerPT.getPaymentDelay())
+            .industry(industryMapper.tRAIndustryToTRAIndustryDTO(industry))
+            .account(coreManagedUserPT)
+            .size(customCORSizeMapper.cORSizeToCORSizeDTO(corSize))
+            .range(customCORRangeMapper.cORRangeToCORRangeDTO(range))
+            .adress(corAddressMapper.cORAddressToCORAddressDTO(address))
+            .persons(customTRAPersonMapper.createDTOObject(corPersonListMap))
+            .area(customCORAreaMapper.cORAreaToCORAreaDTO(corArea));
     }
 
 
@@ -97,6 +110,32 @@ public class CustomCRMAccountMapper {
     public Map<CORPerson, List<CORContact>> createMapPersonContact(CrmAccountPT crmContactPT) {
         return customTRAPersonMapper.createMapPersonToContact(crmContactPT.getPersons());
     }
+
+
+    public CORAddress createAdressEntity(TraCustomerPT traCustomerPT) {
+        return corAddressMapper.cORAddressDTOToCORAddress(traCustomerPT.getAdress());
+    }
+
+    public TRAIndustry createIndustryEntity(TraCustomerPT traCustomerPT) {
+        return industryMapper.tRAIndustryDTOToTRAIndustry(traCustomerPT.getIndustry());
+    }
+
+    public CORArea createCorAreaEntity(TraCustomerPT traCustomerPT) {
+        return customCORAreaMapper.cORAreaDTOToCORArea(traCustomerPT.getArea());
+    }
+
+    public CORSize createCorSizeEntity(TraCustomerPT traCustomerPT) {
+        return customCORSizeMapper.cORSizeDTOToCORSize(traCustomerPT.getSize());
+    }
+
+    public CORRange createRangeEntity(TraCustomerPT crmContactPT) {
+        return customCORRangeMapper.cORRangeDTOToCORRange(crmContactPT.getRange());
+    }
+
+    public Map<CORPerson, List<CORContact>> createMapPersonContact(TraCustomerPT crmContactPT) {
+        return customTRAPersonMapper.createMapPersonToContact(crmContactPT.getPersons());
+    }
+
 
     public List<CRMTask> createTaskEntities(CrmAccountPT crmContactPT) {
         return customCRMTaskMapper.createTasksEntity(crmContactPT.getTasks());
@@ -199,7 +238,7 @@ public class CustomCRMAccountMapper {
         return association;
     }
 
-    public CORAssociation createContactAccountAssociationEntity(CRMAccount crmContact, CORPerson corPerson) {
+    public CORAssociation createAccountPersonAssociationEntity(CRMAccount crmContact, CORPerson corPerson) {
         CORAssociation association = new CORAssociation();
         association.setName("CORPerson");
         association.setSourceClass(CRMAccount.class.getName());

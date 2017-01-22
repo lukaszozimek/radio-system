@@ -1,5 +1,6 @@
 package io.protone.custom.service.mapper;
 
+import io.protone.custom.service.TRACustomerService;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.domain.*;
@@ -19,6 +20,8 @@ public class CustomTRAAdvertismentMapper {
     @Inject
     private CustomCRMAccountMapper customCRMAccountMapper;
 
+    @Inject
+    private TRACustomerService customerService;
 
     public TRAAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT) {
         TRAAdvertisement advertisement = new TRAAdvertisement();
@@ -35,7 +38,7 @@ public class CustomTRAAdvertismentMapper {
             .description(traAdvertisement.getDescription())
             .industryId(customTRAIndustryMapper.tRAIndustryToTRAIndustryDTO(traIndustry))
             .mediaItemId(libItemPT)
-            .customerId(customCRMAccountMapper.createCustomerTrafficDTO(crmAccount));
+            .customerId(customerService.getCustomer(crmAccount));
 
     }
 
