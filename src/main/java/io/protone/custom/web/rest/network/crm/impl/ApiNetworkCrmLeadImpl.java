@@ -14,8 +14,9 @@ import java.util.List;
 
 @RestController
 public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
+
     @Inject
-    CRMLeadService crmLeadService;
+    private CRMLeadService crmLeadService;
 
     @Override
     public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {

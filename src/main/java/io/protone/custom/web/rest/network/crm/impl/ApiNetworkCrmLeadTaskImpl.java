@@ -17,7 +17,7 @@ import java.util.List;
 public class ApiNetworkCrmLeadTaskImpl implements ApiNetworkCrmLeadTask {
 
     @Inject
-    CRMLeadService crmLeadService;
+    private CRMLeadService crmLeadService;
 
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {

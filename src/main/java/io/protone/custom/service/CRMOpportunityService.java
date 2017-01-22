@@ -26,7 +26,6 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class CRMOpportunityService {
 
-
     @Inject
     private CRMStageRepository stageRepository;
 
@@ -72,6 +71,7 @@ public class CRMOpportunityService {
         associationRepository.save(customCRMOpportunityMapper.createOpportunityContactAssociationEntity(opportunity, contact));
         associationRepository.save(customCRMOpportunityMapper.createOpportunityStageAssociationEntity(opportunity, stage));
         associationRepository.save(customCRMOpportunityMapper.createOpportunityTasksAssociationEntity(opportunity, taskList));
+
         CrmContactPT crmContactPT = crmContactService.getContact(contact.getShortName());
         return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactPT, taskList);
     }

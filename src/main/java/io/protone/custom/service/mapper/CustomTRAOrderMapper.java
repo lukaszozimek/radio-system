@@ -1,5 +1,6 @@
 package io.protone.custom.service.mapper;
 
+import io.protone.custom.service.TRACustomerService;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.*;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class CustomTRAOrderMapper {
     private CustomTRACampaignMapper customTRACampaignMapper;
     @Inject
     private CustomSCHEmissionMapper customSCHEmissionMapper;
+    @Inject
+    private TRACustomerService customerService;
 
     public List<TRAOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT) {
         List<TRAOrder> traOrdersList = new ArrayList<>();
@@ -47,8 +50,8 @@ public class CustomTRAOrderMapper {
             .startDate(traOrder.getStartDate())
             .endDate(traOrder.getEndDate())
             .emission(schEmissionMapper.createDTOFromListEntites(new HashMap<>()))
-            .customerId(customCRMAccountMapper.createCustomerTrafficDTO(crmAccount))
-            .campaignId(customTRACampaignMapper.transfromEntitytoDTO(campaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), customCRMAccountMapper.createCustomerTrafficDTO(crmAccount)));
+            .customerId(customerService.getCustomer(crmAccount))
+            .campaignId(customTRACampaignMapper.transfromEntitytoDTO(campaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), customerService.getCustomer(crmAccount)));
     }
 
 

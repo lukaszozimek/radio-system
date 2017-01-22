@@ -75,7 +75,11 @@ public class TRAOrderService {
 
     public void deleteOrder(Long id) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
-
+        TRAOrder traOrder = traOrderRepository.findOne(id);
+        corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), CRMAccount.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), SCHEmission.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), TRACampaign.class.getName());
+        traOrderRepository.delete(traOrder);
     }
 
     public TraOrderPT getOrder(Long id) {
@@ -97,7 +101,7 @@ public class TRAOrderService {
         List<CORAssociation> schEmissionOrderAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), SCHEmission.class.getName());
         List<CORAssociation> orderCampaignAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), TRACampaign.class.getName());
         CRMAccount crmAccount = crmAccountRepository.findOne(orderAccountAssociation.get(0).getTargetId());
-        List<Long> schEmissionIds = schEmissionOrderAssociation.stream().map(SCHEmission::getId).collect(toList());
+        List<Long> schEmissionIds = schEmissionOrderAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
         List<SCHEmission> schEmissionList = schEmissionRepository.findAll(schEmissionIds);
         TRACampaign traCampaign = campaignRepository.findOne(orderCampaignAssociation.get(0).getTargetId());
         return customTRAOrderMapper.transfromEntitesToDTO(traOrders, schEmissionList, traCampaign, crmAccount);

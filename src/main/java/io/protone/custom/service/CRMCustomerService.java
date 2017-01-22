@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Service
 public class CRMCustomerService {
+
     @Inject
     private CRMAccountRepository accountRepository;
 
@@ -29,7 +30,6 @@ public class CRMCustomerService {
 
     @Inject
     private TRAIndustryRepository industryRepository;
-
 
     public List<CrmAccountPT> getAllCustomer() {
 

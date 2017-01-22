@@ -7,6 +7,7 @@ import io.protone.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,14 @@ public class CustomTRACampaignMapper {
             .emission(emissionPTList)
             .customerId(traCustomerPT);
     }
+
+    public List<CORAssociation> createListSCHEmissionAssociation(TRACampaign campaign, List<SCHEmission> emissions) {
+        List<CORAssociation> corAssociationList = new ArrayList<>();
+        emissions.stream().forEach(emission -> corAssociationList.add(createSCHEmissionAssociation(campaign
+            , emission)));
+        return corAssociationList;
+    }
+
     public CORAssociation createSCHEmissionAssociation(TRACampaign campaign, SCHEmission emission) {
         return new CORAssociation().name("ORDER SCHEDULED EMISSION")
             .sourceId(campaign.getId())

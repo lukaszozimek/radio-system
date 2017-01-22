@@ -74,17 +74,26 @@ public class SCHEmission implements Serializable {
         return seq;
     }
 
+    public void setSeq(Integer seq) {
+        this.seq = seq;
+    }
+
+    public SCHEmission id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public SCHEmission seq(Integer seq) {
         this.seq = seq;
         return this;
     }
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
-
     public ZonedDateTime getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public SCHEmission startTime(ZonedDateTime startTime) {
@@ -92,12 +101,12 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-    }
-
     public SCHStartTypeEnum getStartType() {
         return startType;
+    }
+
+    public void setStartType(SCHStartTypeEnum startType) {
+        this.startType = startType;
     }
 
     public SCHEmission startType(SCHStartTypeEnum startType) {
@@ -105,12 +114,12 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public void setStartType(SCHStartTypeEnum startType) {
-        this.startType = startType;
-    }
-
     public Long getRelativeDelay() {
         return relativeDelay;
+    }
+
+    public void setRelativeDelay(Long relativeDelay) {
+        this.relativeDelay = relativeDelay;
     }
 
     public SCHEmission relativeDelay(Long relativeDelay) {
@@ -118,12 +127,12 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public void setRelativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
-    }
-
     public ZonedDateTime getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public SCHEmission endTime(ZonedDateTime endTime) {
@@ -131,21 +140,17 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public SCHEmission length(Long length) {
         this.length = length;
         return this;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
     }
 
     public Boolean isFinished() {
@@ -165,17 +170,21 @@ public class SCHEmission implements Serializable {
         return block;
     }
 
+    public void setBlock(SCHBlock sCHBlock) {
+        this.block = sCHBlock;
+    }
+
     public SCHEmission block(SCHBlock sCHBlock) {
         this.block = sCHBlock;
         return this;
     }
 
-    public void setBlock(SCHBlock sCHBlock) {
-        this.block = sCHBlock;
-    }
-
     public LIBMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LIBMediaItem lIBMediaItem) {
+        this.mediaItem = lIBMediaItem;
     }
 
     public SCHEmission mediaItem(LIBMediaItem lIBMediaItem) {
@@ -183,21 +192,17 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-    }
-
     public SCHTemplate getTemplate() {
         return template;
+    }
+
+    public void setTemplate(SCHTemplate sCHTemplate) {
+        this.template = sCHTemplate;
     }
 
     public SCHEmission template(SCHTemplate sCHTemplate) {
         this.template = sCHTemplate;
         return this;
-    }
-
-    public void setTemplate(SCHTemplate sCHTemplate) {
-        this.template = sCHTemplate;
     }
 
     @Override
