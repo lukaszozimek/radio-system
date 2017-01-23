@@ -85,6 +85,22 @@ public class TRACustomerService {
     }
 
     public void deleteCustomer(String shortcut) {
+        CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
+        corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CORAddress.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CORArea.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CORSize.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CORRange.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), TRAIndustry.class.getName());
+        List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORPerson.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CRMTask.class.getName());
+        List<CORAssociation> contactPersonContactAssociation = new ArrayList<CORAssociation>();
+        Map<CORPerson, List<CORContact>> fetchedEntites = new HashMap<>();
+        contactPersonAssociation.stream().forEach(person -> {
+            CORPerson corPerson = corPersonRepository.findOne(person.getTargetId());
+            List<Long> corContacts = contactPersonContactAssociation.stream().filter(association -> corPerson.getId().equals(association.getSourceId())).map(CORAssociation::getTargetId).collect(toList());
+            corContacts.stream().forEach(corContactID -> corContactRepository.delete(corContactID));
+            corPersonRepository.delete(corPerson);
+        });
 
     }
 
@@ -92,7 +108,9 @@ public class TRACustomerService {
         CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
         return getCustomer(crmAccount);
     }
-
+    public TraCustomerPT update(TraCustomerPT campaignPT) {
+        return null;
+    }
     public TraCustomerPT getCustomer(CRMAccount crmAccount) {
 
         List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORAddress.class.getName());
@@ -101,7 +119,6 @@ public class TRACustomerService {
         List<CORAssociation> contactRangeAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORRange.class.getName());
         List<CORAssociation> contactIndustryAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), TRAIndustry.class.getName());
         List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORPerson.class.getName());
-        List<CORAssociation> contactTaskAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CRMTask.class.getName());
         List<CORAssociation> contactPersonContactAssociation = new ArrayList<CORAssociation>();
         Map<CORPerson, List<CORContact>> fetchedEntites = new HashMap<>();
         contactPersonAssociation.stream().forEach(person -> {

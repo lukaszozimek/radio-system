@@ -1,5 +1,6 @@
 package io.protone.custom.service;
 
+import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.service.mapper.CustomCRMAccountMapper;
 import io.protone.custom.service.mapper.CustomSCHEmissionMapper;
@@ -92,6 +93,10 @@ public class TRAOrderService {
         return getOrdersByEntitie(traOrderList);
     }
 
+    public TraOrderPT update(TraOrderPT campaignPT) {
+        return null;
+    }
+
     public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders) {
         return traOrders.stream().map(this::getOrdersByEntitie).collect(toList());
     }
@@ -108,8 +113,9 @@ public class TRAOrderService {
     }
 
     public List<TraOrderPT> getCustomerOrders(String shortcut) {
-        List<CORAssociation> corAssociationList = new ArrayList<>();
-        return null;
+        CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
+        List<CORAssociation> associations = corAssociationRepository.findByTargetIdAndSourceClass(crmAccount.getId(), TRAOrder.class.getName());
+        return getOrdersById(associations.stream().map(CORAssociation::getSourceId).collect(toList()));
     }
 
 }

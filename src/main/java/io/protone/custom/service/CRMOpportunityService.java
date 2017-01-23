@@ -1,9 +1,6 @@
 package io.protone.custom.service;
 
-import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.custom.service.dto.CrmContactPT;
-import io.protone.custom.service.dto.CrmOpportunityPT;
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.*;
 import io.protone.custom.service.mapper.CustomCRMContactMapper;
 import io.protone.custom.service.mapper.CustomCRMOpportunityMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
@@ -107,6 +104,10 @@ public class CRMOpportunityService {
         List<Long> tasksID = leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
         List<CRMTask> taskList = taskRepository.findAll(tasksID);
         return customCRMTaskMapper.transformTasksFromEntity(taskList);
+    }
+
+    public CrmOpportunityPT update(CrmOpportunityPT opportunityPT) {
+        return null;
     }
 
     public void deleteLeadTask(String shortcut, Long taskId) {

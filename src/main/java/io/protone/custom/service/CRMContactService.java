@@ -3,6 +3,7 @@ package io.protone.custom.service;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.custom.service.mapper.CustomCRMContactMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
@@ -135,7 +136,9 @@ public class CRMContactService {
         List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
         return customCRMContactMapper.buildContactDTOFromEntities(crmContact, address, size, range, area, taskList, fetchedEntites, industry, new CoreManagedUserPT());
     }
-
+    public CrmContactPT update(CrmContactPT crmContactPT) {
+        return null;
+    }
     private void deleteContact(CRMContact crmContact) {
         List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmContact.getId(), CORAddress.class.getName());
         List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmContact.getId(), CORArea.class.getName());

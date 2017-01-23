@@ -2,6 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.custom.service.mapper.CustomCRMLeadMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
@@ -197,6 +198,9 @@ public class CRMLeadService {
 
     }
 
+    public TraCampaignPT update(TraCampaignPT campaignPT) {
+
+    }
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut) {
         CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
         List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
