@@ -20,7 +20,10 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
 
     @Override
     public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {
-        return null;
+        if (crmLeadPT.getId() == null) {
+            return createLeadUsingPOST(networkShortcut, crmLeadPT);
+        }
+        return ResponseEntity.ok().body(crmLeadService.update(crmLeadPT));
     }
 
     @Override

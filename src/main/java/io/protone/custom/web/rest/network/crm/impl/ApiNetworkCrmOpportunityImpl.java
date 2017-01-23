@@ -20,7 +20,10 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
 
     @Override
     public ResponseEntity<CrmOpportunityPT> updateOpportunityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmOpportunityPT", required = true) @RequestBody CrmOpportunityPT crmOpportunityPT) {
-        return null;
+        if (crmOpportunityPT.getId() == null) {
+            return createOpportunityUsingPOST(networkShortcut, crmOpportunityPT);
+        }
+        return ResponseEntity.ok().body(opportunityService.update(crmOpportunityPT));
     }
 
     @Override

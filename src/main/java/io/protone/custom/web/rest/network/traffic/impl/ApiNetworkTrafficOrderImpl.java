@@ -20,7 +20,11 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
 
     @Override
     public ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO) {
-        return null;
+        if (anOrderDTO.getId() == null) {
+            return createAnOrderUsingPOST(networkShortcut, anOrderDTO);
+        }
+        return ResponseEntity.ok().body(traOrderService.update(anOrderDTO));
+
     }
 
     @Override

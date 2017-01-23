@@ -20,7 +20,10 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
 
     @Override
     public ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "CustomerVM", required = true) @RequestBody TraCustomerPT customer) {
-        return null;
+        if(customer.getId()==null){
+            return createTrafficCustomerUsingPOST(networkShortcut, customer);
+        }
+        return ResponseEntity.ok().body(customerService.update(customer));
     }
 
     @Override

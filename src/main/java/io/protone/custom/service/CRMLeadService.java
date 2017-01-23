@@ -198,9 +198,10 @@ public class CRMLeadService {
 
     }
 
-    public TraCampaignPT update(TraCampaignPT campaignPT) {
-
+    public CrmLeadPT update(CrmLeadPT campaignPT) {
+        return null;
     }
+
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut) {
         CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
         List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());

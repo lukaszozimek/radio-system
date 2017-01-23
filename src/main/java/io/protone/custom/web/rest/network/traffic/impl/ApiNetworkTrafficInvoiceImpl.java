@@ -25,7 +25,11 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
 
     @Override
     public ResponseEntity<TraInvoicePT> updateInvoiceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "invoiceDTO", required = true) @RequestBody TraInvoicePT invoiceDTO) {
-        return null;
+        if (invoiceDTO.getId() == null) {
+            return createInvoiceUsingPOST(networkShortcut, invoiceDTO);
+        }
+        return ResponseEntity.ok().body(traInvoiceService.update(invoiceDTO));
+
     }
 
     @Override

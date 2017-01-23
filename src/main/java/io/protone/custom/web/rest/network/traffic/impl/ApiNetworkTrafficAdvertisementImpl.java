@@ -19,7 +19,10 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
 
     @Override
     public ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO) {
-        return null;
+        if(advertisementDTO.getId()==null){
+            return createAdvertisementUsingPOST(networkShortcut,advertisementDTO);
+        }
+        return ResponseEntity.ok().body(traAdvertismentService.update(advertisementDTO));
     }
 
     @Override
