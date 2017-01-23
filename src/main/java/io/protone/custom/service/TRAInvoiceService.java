@@ -1,5 +1,6 @@
 package io.protone.custom.service;
 
+import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.mapper.CustomCRMAccountMapper;
 import io.protone.custom.service.mapper.CustomTRAInvoiceMapper;
@@ -76,10 +77,14 @@ public class TRAInvoiceService {
         corAssociationRepository.save(customTRAInvoiceMapper.createListOrderAssociation(invoice, traOrders));
         return customTRAInvoiceMapper.createDTOFromEnity(invoice, traOrderService.getOrdersById(traOrdersId), customerService.getCustomer(crmAccount));
     }
-
+    public TraInvoicePT update(TraInvoicePT campaignPT) {
+        return null;
+    }
     public void deleteInvoice(Long id) {
-        List<CORAssociation> corAssociationList = new ArrayList<>();
-
+        TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
+        corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), CRMAccount.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), TRAOrder.class.getName());
+        traInvoiceRepository.delete(id);
     }
 
     public TraInvoicePT getInvoice(Long id) {

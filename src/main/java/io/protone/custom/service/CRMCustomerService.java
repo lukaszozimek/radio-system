@@ -1,6 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmAccountPT;
+import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,9 @@ public class CRMCustomerService {
 
         return null;
     }
-
+    public CrmAccountPT update(CrmAccountPT crmAccountPT) {
+        return null;
+    }
     public void deleteCustomer() {
 
     }

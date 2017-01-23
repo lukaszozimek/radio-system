@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by lukaszozimek on 17.01.2017.
  */
@@ -80,8 +82,16 @@ public class TRAAdvertismentService {
         return getTraAdvertisment(traAdvertisement);
     }
 
+    public List<TraAdvertisementPT> getAdverismentWithoutSelection(List<Long> listID) {
+        List<TRAAdvertisement> traAdvertisement = traAdvertisementRepository.findAll(listID);
+        return traAdvertisement.stream().map(this::getTraAdvertisment).collect(toList());
+    }
+
     public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut) {
-        return null;
+        CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
+        List<CORAssociation> associations = corAssociationRepository.findByTargetIdAndSourceClass(crmAccount.getId(), TRAAdvertisement.class.getName());
+        return getAdverismentWithoutSelection(associations.stream().map(CORAssociation::getSourceId).collect(toList()));
+
     }
 
     public TraAdvertisementPT getTraAdvertisment(TRAAdvertisement traAdvertisement) {
