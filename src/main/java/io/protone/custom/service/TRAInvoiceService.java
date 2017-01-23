@@ -77,9 +77,11 @@ public class TRAInvoiceService {
         corAssociationRepository.save(customTRAInvoiceMapper.createListOrderAssociation(invoice, traOrders));
         return customTRAInvoiceMapper.createDTOFromEnity(invoice, traOrderService.getOrdersById(traOrdersId), customerService.getCustomer(crmAccount));
     }
+
     public TraInvoicePT update(TraInvoicePT campaignPT) {
         return null;
     }
+
     public void deleteInvoice(Long id) {
         TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
         corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), CRMAccount.class.getName());
@@ -99,6 +101,10 @@ public class TRAInvoiceService {
         List<TRAOrder> orders = traOrderRepository.findAll(ordersID);
         CRMAccount crmAccount = crmAccountRepository.findOne(corAssociationCRMAccountList.get(0).getTargetId());
         return customTRAInvoiceMapper.createDTOFromEnity(traInvoice, traOrderService.getOrdersByEntitie(orders), customerService.getCustomer(crmAccount));
+    }
+
+    public List<TraInvoicePT> getCustomerInvoice(String customerShortcut) {
+        return null;
     }
 
 }

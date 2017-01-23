@@ -19,7 +19,7 @@ public class ApiNetworkTrafficCustomerInvoiceImpl implements ApiNetworkTrafficCu
 
     @Override
     public ResponseEntity<List<TraInvoicePT>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
-        return null;
+        return ResponseEntity.ok().body(traInvoiceService.getCustomerInvoice(customerShortcut));
     }
 
     @Override
