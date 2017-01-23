@@ -20,22 +20,25 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
 
     @Override
     public ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customeryPT) {
-        return null;
+        if (customeryPT.getId() == null) {
+            return createContactUsingPOST(networkShortcut, customeryPT);
+        }
+        return ResponseEntity.ok().body(contactService.update(customeryPT));
     }
 
     @Override
     public ResponseEntity<CrmContactPT> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customerPT) {
-        return ResponseEntity.ok(contactService.saveContact(customerPT));
+        return ResponseEntity.ok().body(contactService.saveContact(customerPT));
     }
 
     @Override
     public ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        return ResponseEntity.ok(contactService.getAllContact());
+        return ResponseEntity.ok().body(contactService.getAllContact());
     }
 
     @Override
     public ResponseEntity<CrmContactPT> getContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        return ResponseEntity.ok(contactService.getContact(shortName));
+        return ResponseEntity.ok().body(contactService.getContact(shortName));
     }
 
     @Override

@@ -82,6 +82,10 @@ public class TRAAdvertismentService {
         return getTraAdvertisment(traAdvertisement);
     }
 
+    public TraAdvertisementPT update(TraAdvertisementPT traAdvertisementPT) {
+        return null;
+    }
+
     public List<TraAdvertisementPT> getAdverismentWithoutSelection(List<Long> listID) {
         List<TRAAdvertisement> traAdvertisement = traAdvertisementRepository.findAll(listID);
         return traAdvertisement.stream().map(this::getTraAdvertisment).collect(toList());

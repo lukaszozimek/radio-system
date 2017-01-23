@@ -24,7 +24,10 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
 
     @Override
     public ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO) {
-        return null;
+        if (campaignDTO.getId() == null) {
+            return createCampaignUsingPOST(networkShortcut, campaignDTO);
+        }
+        return ResponseEntity.ok().body(campaignService.update(campaignDTO));
     }
 
     @Override
