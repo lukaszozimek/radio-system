@@ -24,7 +24,8 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
 
     @Override
     public ResponseEntity<CrmTaskPT> updateOpportunityActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
-        return null;
+        return ResponseEntity.ok().body(crmOpportunityService.updateLeadTask(shortName,crmActivityPT));
+
     }
 
     @Override
