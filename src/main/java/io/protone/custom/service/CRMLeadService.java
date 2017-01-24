@@ -198,8 +198,9 @@ public class CRMLeadService {
 
     }
 
-    public CrmLeadPT update(CrmLeadPT campaignPT) {
-        return null;
+    public CrmLeadPT update(CrmLeadPT leadPT) {
+        deleteLead(leadPT.getShortname());
+        return saveLead(leadPT);
     }
 
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut) {

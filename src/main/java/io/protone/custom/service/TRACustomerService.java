@@ -108,8 +108,9 @@ public class TRACustomerService {
         CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
         return getCustomer(crmAccount);
     }
-    public TraCustomerPT update(TraCustomerPT campaignPT) {
-        return null;
+    public TraCustomerPT update(TraCustomerPT traCustomerPT) {
+        deleteCustomer(traCustomerPT.getShortName());
+        return saveCustomers(traCustomerPT);
     }
     public TraCustomerPT getCustomer(CRMAccount crmAccount) {
 
