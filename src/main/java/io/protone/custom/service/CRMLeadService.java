@@ -231,4 +231,11 @@ public class CRMLeadService {
         associationRepository.save(customCRMLeadMapper.createLeadTaskAssociationEntity(crmLead, crmTask));
         return customCRMTaskMapper.createCrmTask(crmTask);
     }
+
+    public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask) {
+        CRMLead crmAccount = crmLeadRepository.findByShortcut(shortcut);
+        CORAssociation task = associationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), crmTask.getId(), CRMTask.class.getName());
+        CRMTask crmTask1 = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));
+        return customCRMTaskMapper.createCrmTask(crmTask1);
+    }
 }

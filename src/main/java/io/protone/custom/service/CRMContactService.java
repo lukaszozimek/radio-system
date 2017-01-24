@@ -90,6 +90,8 @@ public class CRMContactService {
         corAssociationRepository.save(customCRMContactMapper.createContactSizeAssociationEntity(crmContact, corSize));
         corAssociationRepository.save(customCRMContactMapper.createContactRangeAssociationEntity(crmContact, corRange));
         corAssociationRepository.save(customCRMContactMapper.createAddressAssociationEntity(crmContact, addres));
+        corAssociationRepository.save(customCRMContactMapper.createContactTasksAssociationEntity(crmContact, crmTask));
+
         Map<CORPerson, List<CORContact>> savedEntities = new HashMap<>();
         personCORContactMap.keySet().stream().forEach(person -> {
             CORPerson personSaved = corPersonRepository.save(person);
@@ -202,5 +204,12 @@ public class CRMContactService {
         CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(taskPT));
         corAssociationRepository.save(customCRMContactMapper.createContactTaskAssociationEntity(crmLead, crmTask));
         return customCRMTaskMapper.createCrmTask(crmTask);
+    }
+    public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask) {
+        CRMContact crmAccount = crmContactRepository.findByShortName(shortcut);
+        CORAssociation task = corAssociationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), crmTask.getId(), CRMTask.class.getName());
+        CRMTask task1= crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));
+        return customCRMTaskMapper.createCrmTask(task1);
+
     }
 }

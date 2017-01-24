@@ -141,7 +141,7 @@ public class CustomCRMAccountMapper {
         return customCRMTaskMapper.createTasksEntity(crmContactPT.getTasks());
     }
 
-    public CrmAccountPT buildContactDTOFromEntities(CrmAccountPT crmContact,
+    public CrmAccountPT buildContactDTOFromEntities(CRMAccount crmAccount,
                                                     CORAddress address,
                                                     CORSize corSize,
                                                     CORRange range,
@@ -150,13 +150,13 @@ public class CustomCRMAccountMapper {
                                                     Map<CORPerson, List<CORContact>> corPersonListMap,
                                                     TRAIndustry industry, CoreManagedUserPT coreManagedUserPT) {
         return new CrmAccountPT()
-            .id(crmContact.getId())
-            .name(crmContact.getName())
-            .idNumber1(crmContact.getIdNumber1())
-            .idNumber2(crmContact.getIdNumber2())
-            .shortName(crmContact.getShortName())
-            .vatNumber(crmContact.getVatNumber())
-            .paymentDelay(crmContact.getPaymentDelay())
+            .id(crmAccount.getId())
+            .name(crmAccount.getName())
+            .idNumber1(crmAccount.getExternalId1())
+            .idNumber2(crmAccount.getExternalId2())
+            .shortName(crmAccount.getShortName())
+            .vatNumber(crmAccount.getVatNumber())
+            .paymentDelay(crmAccount.getPaymentDelay())
             .industry(industryMapper.tRAIndustryToTRAIndustryDTO(industry))
             .account(coreManagedUserPT)
             .size(customCORSizeMapper.cORSizeToCORSizeDTO(corSize))
