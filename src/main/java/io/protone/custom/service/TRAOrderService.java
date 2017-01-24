@@ -93,8 +93,9 @@ public class TRAOrderService {
         return getOrdersByEntitie(traOrderList);
     }
 
-    public TraOrderPT update(TraOrderPT campaignPT) {
-        return null;
+    public TraOrderPT update(TraOrderPT traOrderPT) {
+        deleteOrder(traOrderPT.getId());
+        return saveOrder(traOrderPT);
     }
 
     public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders) {

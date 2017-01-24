@@ -136,9 +136,14 @@ public class CRMContactService {
         List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
         return customCRMContactMapper.buildContactDTOFromEntities(crmContact, address, size, range, area, taskList, fetchedEntites, industry, new CoreManagedUserPT());
     }
+
     public CrmContactPT update(CrmContactPT crmContactPT) {
-        return null;
+
+        deleteContact(crmContactPT.getShortName());
+        return saveContact(crmContactPT);
+
     }
+
     private void deleteContact(CRMContact crmContact) {
         List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmContact.getId(), CORAddress.class.getName());
         List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmContact.getId(), CORArea.class.getName());

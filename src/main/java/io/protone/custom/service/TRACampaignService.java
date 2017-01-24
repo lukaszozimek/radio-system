@@ -66,7 +66,8 @@ public class TRACampaignService {
     }
 
     public TraCampaignPT update(TraCampaignPT campaignPT) {
-        return null;
+        deleteCampaign(campaignPT.getName());
+        return saveCampaign(campaignPT);
     }
 
     public void deleteCampaign(String shortcut) {

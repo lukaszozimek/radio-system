@@ -83,7 +83,8 @@ public class TRAAdvertismentService {
     }
 
     public TraAdvertisementPT update(TraAdvertisementPT traAdvertisementPT) {
-        return null;
+        deleteAdvertisement(traAdvertisementPT.getId());
+        return saveAdvertisement(traAdvertisementPT);
     }
 
     public List<TraAdvertisementPT> getAdverismentWithoutSelection(List<Long> listID) {

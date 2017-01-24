@@ -107,7 +107,8 @@ public class CRMOpportunityService {
     }
 
     public CrmOpportunityPT update(CrmOpportunityPT opportunityPT) {
-        return null;
+        deleteOpportunity(opportunityPT.getName());
+        return saveOpportunity(opportunityPT);
     }
 
     public void deleteLeadTask(String shortcut, Long taskId) {

@@ -78,8 +78,9 @@ public class TRAInvoiceService {
         return customTRAInvoiceMapper.createDTOFromEnity(invoice, traOrderService.getOrdersById(traOrdersId), customerService.getCustomer(crmAccount));
     }
 
-    public TraInvoicePT update(TraInvoicePT campaignPT) {
-        return null;
+    public TraInvoicePT update(TraInvoicePT traInvoicePT) {
+        deleteInvoice(traInvoicePT.getId());
+        return saveInvoice(traInvoicePT);
     }
 
     public void deleteInvoice(Long id) {
