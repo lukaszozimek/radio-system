@@ -5,6 +5,7 @@ import io.protone.custom.service.mapper.CustomCRMAccountMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
+import io.protone.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -62,7 +63,8 @@ public class CRMCustomerService {
     private CRMTaskRepository crmTaskRepository;
     @Inject
     private CustomCRMTaskMapper customCRMTaskMapper;
-
+    @Inject
+    private UserService userService;
     public List<CrmAccountPT> getAllCustomer() {
         List<CRMAccount> crmAccount = accountRepository.findAll();
         return crmAccount.stream().map(this::fetchCustomer).collect(toList());

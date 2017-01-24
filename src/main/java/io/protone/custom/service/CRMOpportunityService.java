@@ -6,6 +6,7 @@ import io.protone.custom.service.mapper.CustomCRMOpportunityMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
+import io.protone.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,8 @@ public class CRMOpportunityService {
 
     @Inject
     private CustomCRMContactMapper customCRMContactMapper;
+    @Inject
+    private UserService userService;
 
     public List<CrmOpportunityPT> getAllOpportunity() {
         List<CrmOpportunityPT> crmOpportunityPTList = new ArrayList<>();
@@ -134,11 +137,12 @@ public class CRMOpportunityService {
         List<CRMTask> crmTasks = taskRepository.findAll(opportunityTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList()));
         return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactService.getContact(crmContact.getShortName()), crmTasks);
     }
+
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask) {
         CRMOpportunity crmAccount = opportunityRepository.findByName(shortcut);
         CORAssociation task = associationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), crmTask.getId(), CRMTask.class.getName());
-       CRMTask task1= taskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));
-    return customCRMTaskMapper.createCrmTask(task1);
+        CRMTask task1 = taskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));
+        return customCRMTaskMapper.createCrmTask(task1);
     }
 
 }

@@ -8,6 +8,7 @@ import io.protone.custom.service.mapper.CustomCRMContactMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
+import io.protone.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,9 @@ public class CRMContactService {
 
     @Inject
     private CORSizeRepository corSizeRepository;
+
+    @Inject
+    private UserService userService;
 
     public List<CrmContactPT> getAllContact() {
         List<CrmContactPT> crmContactPTS = new ArrayList<>();
@@ -205,10 +209,11 @@ public class CRMContactService {
         corAssociationRepository.save(customCRMContactMapper.createContactTaskAssociationEntity(crmLead, crmTask));
         return customCRMTaskMapper.createCrmTask(crmTask);
     }
+
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask) {
         CRMContact crmAccount = crmContactRepository.findByShortName(shortcut);
         CORAssociation task = corAssociationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), crmTask.getId(), CRMTask.class.getName());
-        CRMTask task1= crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));
+        CRMTask task1 = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));
         return customCRMTaskMapper.createCrmTask(task1);
 
     }

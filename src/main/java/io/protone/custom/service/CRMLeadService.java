@@ -7,6 +7,7 @@ import io.protone.custom.service.mapper.CustomCRMLeadMapper;
 import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
+import io.protone.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,8 @@ public class CRMLeadService {
 
     @Inject
     private CustomCRMTaskMapper customCRMTaskMapper;
-
+    @Inject
+    private UserService userService;
     @Transactional
     public List<CrmLeadPT> getAllLeads() {
         List<CrmLeadPT> crmLeadPTList = new ArrayList<>();
