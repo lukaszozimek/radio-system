@@ -21,36 +21,38 @@ public class ApiNetworkCrmLeadTaskImpl implements ApiNetworkCrmLeadTask {
 
     @Inject
     private CRMLeadService crmLeadService;
+
     @Inject
     private NetworkService networkService;
+
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.getTasksAssociatedWithLead(shortName,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.getTasksAssociatedWithLead(shortName, corNetwork));
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> updateLeadActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.updateLeadTask(shortName,crmActivityPT,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.updateLeadTask(shortName, crmActivityPT, corNetwork));
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> createLeadActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.createTasksAssociatedWithLead(shortName, crmActivityPT,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.createTasksAssociatedWithLead(shortName, crmActivityPT, corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteLeadActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmLeadService.deleteLeadTask(shortName, id,corNetwork);
+        crmLeadService.deleteLeadTask(shortName, id, corNetwork);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> getLeadActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.getTaskAssociatedWithLead(shortName, id,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.getTaskAssociatedWithLead(shortName, id, corNetwork));
     }
 }
