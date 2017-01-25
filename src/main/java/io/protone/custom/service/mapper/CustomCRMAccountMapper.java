@@ -2,6 +2,7 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmAccountPT;
+import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.domain.*;
 import org.springframework.stereotype.Service;
@@ -146,7 +147,7 @@ public class CustomCRMAccountMapper {
                                                     CORSize corSize,
                                                     CORRange range,
                                                     CORArea corArea,
-                                                    List<CRMTask> taskList,
+                                                    List<CrmTaskPT> taskList,
                                                     Map<CORPerson, List<CORContact>> corPersonListMap,
                                                     TRAIndustry industry, CoreManagedUserPT coreManagedUserPT) {
         return new CrmAccountPT()
@@ -164,7 +165,7 @@ public class CustomCRMAccountMapper {
             .adress(corAddressMapper.cORAddressToCORAddressDTO(address))
             .persons(customTRAPersonMapper.createDTOObject(corPersonListMap))
             .area(customCORAreaMapper.cORAreaToCORAreaDTO(corArea))
-            .tasks(customCRMTaskMapper.transformTasksFromEntity(taskList));
+            .tasks(taskList);
 
     }
 

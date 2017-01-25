@@ -104,9 +104,7 @@ public class CRMLeadService {
 
             List<CORContact> corContact = corContactRepository.findAll(corContactID);
 
-            List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
-            List<Long> tasksID = leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
-            List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
+            List<CrmTaskPT> taskList = crmTaskService.getLeadTasks(crmLead, corNetwork);
 
             crmLeadPTList.add(customCRMLeadMapper.createDTOFromEntites(crmLead,
                 taskList, leadPersonContact, address, corContact, industry, area, source, status));
@@ -126,9 +124,6 @@ public class CRMLeadService {
         List<CORContact> contact = corContactRepository.save(customCRMLeadMapper.createContactEntity(lead));
         CORPerson person = corPersonRepository.save(customCRMLeadMapper.createPersonEntity(lead));
 
-        List<CRMTask> crmTasksList = crmTaskRepository.save(customCRMTaskMapper.createTasksEntity(lead.getTasks()));
-        associations.addAll(customCRMTaskMapper.createLeadTasksAssociationEntity(crmLead, crmTasksList));
-
         associations.add(customCRMLeadMapper.createAddressAssociationEntity(crmLead, corAddress));
         associations.add(customCRMLeadMapper.createLeadAreaAssociationEntity(crmLead, corArea));
         associations.add(customCRMLeadMapper.createLeadStatusAssociationEntity(crmLead, leadStatus));
@@ -137,7 +132,8 @@ public class CRMLeadService {
         associations.add(customCRMLeadMapper.createLeadPersonAssociationEntity(crmLead, person));
         associations.addAll(customCRMLeadMapper.createLeadContactAssociationEntity(person, contact));
         associationRepository.save(associations);
-        return customCRMLeadMapper.createDTOFromEntites(crmLead, crmTasksList, person, corAddress, contact, industry, corArea, leadSource, leadStatus);
+        List<CrmTaskPT> crmTaskPTS = crmTaskService.saveLeadTasks(lead, crmLead, corNetwork);
+        return customCRMLeadMapper.createDTOFromEntites(crmLead, crmTaskPTS, person, corAddress, contact, industry, corArea, leadSource, leadStatus);
     }
 
     public void deleteLead(String shortcut, CORNetwork corNetwork) {
@@ -145,7 +141,6 @@ public class CRMLeadService {
         CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
         List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORAddress.class.getName());
         List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
-        List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
         List<CORAssociation> leadPersonContactAssociation = new ArrayList<CORAssociation>();
 
         leadPersonAssociation.forEach(person -> {
@@ -157,16 +152,13 @@ public class CRMLeadService {
         leadPersonContactAssociation.stream().map(CORAssociation::getTargetId).collect(toList()).forEach(id -> {
             corContactRepository.delete(id);
         });
-        leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList()).forEach(id -> {
-            crmTaskRepository.delete(id);
-        });
+        crmTaskService.deleteLeadTask(crmLead, corNetwork);
         associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CORAddress.class.getName());
         associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CORArea.class.getName());
         associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CRMLeadStatus.class.getName());
         associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CRMLeadSource.class.getName());
         associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), TRAIndustry.class.getName());
         associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
         crmLeadRepository.delete(crmLead);
 
     }
@@ -181,7 +173,6 @@ public class CRMLeadService {
         List<CORAssociation> leadSourceAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMLeadSource.class.getName());
         List<CORAssociation> leadIndustryAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), TRAIndustry.class.getName());
         List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
-        List<CORAssociation> leadTaskAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
         List<CORAssociation> leadPersonContactAssociation = new ArrayList<CORAssociation>();
 
         leadPersonAssociation.forEach(person -> {
@@ -197,11 +188,9 @@ public class CRMLeadService {
         TRAIndustry industry = industryRepository.findOne(leadIndustryAssociation.get(0).getTargetId());
         CORPerson leadPersonContact = personRepository.findOne(leadPersonAssociation.get(0).getTargetId());
         List<Long> corContactID = leadPersonContactAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
-
         List<CORContact> corContact = corContactRepository.findAll(corContactID);
-        List<Long> tasksID = leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
-        List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
 
+        List<CrmTaskPT> taskList = crmTaskService.getLeadTasks(crmLead, corNetwork);
         return customCRMLeadMapper.createDTOFromEntites(crmLead,
             taskList, leadPersonContact, corAddress, corContact, industry, area, source, status);
 
