@@ -5,10 +5,7 @@ import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.mapper.CustomCRMAccountMapper;
 import io.protone.custom.service.mapper.CustomTRAInvoiceMapper;
 import io.protone.custom.service.mapper.CustomTRAOrderMapper;
-import io.protone.domain.CORAssociation;
-import io.protone.domain.CRMAccount;
-import io.protone.domain.TRAInvoice;
-import io.protone.domain.TRAOrder;
+import io.protone.domain.*;
 import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.CRMAccountRepository;
 import io.protone.repository.TRAInvoiceRepository;
@@ -58,16 +55,16 @@ public class TRAInvoiceService {
     @Inject
     private TRACustomerService customerService;
 
-    public List<TraInvoicePT> getAllInvoice() {
+    public List<TraInvoicePT> getAllInvoice(CORNetwork corNetwork) {
         List<TraInvoicePT> traInvoicePTS = new ArrayList<>();
         List<TRAInvoice> traInvoices = traInvoiceRepository.findAll();
         traInvoices.stream().forEach(traInvoice -> {
-            traInvoicePTS.add(getInvoice(traInvoice));
+            traInvoicePTS.add(getInvoice(traInvoice,corNetwork));
         });
         return traInvoicePTS;
     }
 
-    public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT) {
+    public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT,CORNetwork corNetwork) {
         TRAInvoice invoice = customTRAInvoiceMapper.createEntityFromDTO(traInvoicePT);
         CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT());
         List<TRAOrder> traOrders = customTRAOrderMapper.trasnformDTOtoEntity(traInvoicePT.getOrder());
@@ -75,36 +72,36 @@ public class TRAInvoiceService {
         invoice = traInvoiceRepository.save(invoice);
         corAssociationRepository.save(customTRAInvoiceMapper.createCrmAccountAssociation(invoice, crmAccount));
         corAssociationRepository.save(customTRAInvoiceMapper.createListOrderAssociation(invoice, traOrders));
-        return customTRAInvoiceMapper.createDTOFromEnity(invoice, traOrderService.getOrdersById(traOrdersId), customerService.getCustomer(crmAccount));
+        return customTRAInvoiceMapper.createDTOFromEnity(invoice, traOrderService.getOrdersById(traOrdersId), customerService.getCustomer(crmAccount,corNetwork));
     }
 
-    public TraInvoicePT update(TraInvoicePT traInvoicePT) {
-        deleteInvoice(traInvoicePT.getId());
-        return saveInvoice(traInvoicePT);
+    public TraInvoicePT update(TraInvoicePT traInvoicePT,CORNetwork corNetwork) {
+        deleteInvoice(traInvoicePT.getId(),corNetwork);
+        return saveInvoice(traInvoicePT,corNetwork);
     }
 
-    public void deleteInvoice(Long id) {
+    public void deleteInvoice(Long id,CORNetwork corNetwork) {
         TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
         corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), CRMAccount.class.getName());
         corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), TRAOrder.class.getName());
         traInvoiceRepository.delete(id);
     }
 
-    public TraInvoicePT getInvoice(Long id) {
+    public TraInvoicePT getInvoice(Long id,CORNetwork corNetwork) {
         TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
-        return getInvoice(traInvoice);
+        return getInvoice(traInvoice,corNetwork);
     }
 
-    public TraInvoicePT getInvoice(TRAInvoice traInvoice) {
+    public TraInvoicePT getInvoice(TRAInvoice traInvoice,CORNetwork corNetwork) {
         List<CORAssociation> corAssociationCRMAccountList = corAssociationRepository.findBySourceIdAndTargetClass(traInvoice.getId(), CRMAccount.class.getName());
         List<CORAssociation> corAssociationOrderList = corAssociationRepository.findBySourceIdAndTargetClass(traInvoice.getId(), TRAOrder.class.getName());
         List<Long> ordersID = corAssociationOrderList.stream().map(CORAssociation::getTargetId).collect(toList());
         List<TRAOrder> orders = traOrderRepository.findAll(ordersID);
         CRMAccount crmAccount = crmAccountRepository.findOne(corAssociationCRMAccountList.get(0).getTargetId());
-        return customTRAInvoiceMapper.createDTOFromEnity(traInvoice, traOrderService.getOrdersByEntitie(orders), customerService.getCustomer(crmAccount));
+        return customTRAInvoiceMapper.createDTOFromEnity(traInvoice, traOrderService.getOrdersByEntitie(orders), customerService.getCustomer(crmAccount,corNetwork));
     }
 
-    public List<TraInvoicePT> getCustomerInvoice(String customerShortcut) {
+    public List<TraInvoicePT> getCustomerInvoice(String customerShortcut,CORNetwork corNetwork) {
         return null;
     }
 

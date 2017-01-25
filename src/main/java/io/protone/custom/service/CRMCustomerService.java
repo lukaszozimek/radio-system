@@ -65,12 +65,12 @@ public class CRMCustomerService {
     private CustomCRMTaskMapper customCRMTaskMapper;
     @Inject
     private UserService userService;
-    public List<CrmAccountPT> getAllCustomer() {
+    public List<CrmAccountPT> getAllCustomer(CORNetwork corNetwork) {
         List<CRMAccount> crmAccount = accountRepository.findAll();
-        return crmAccount.stream().map(this::fetchCustomer).collect(toList());
+        return crmAccount.stream().map(crmAccount1->fetchCustomer(crmAccount1,corNetwork)).collect(toList());
     }
 
-    public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT) {
+    public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT,CORNetwork corNetwork) {
         CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(crmAccountPT);
         accountRepository.save(crmAccount);
         Map<CORPerson, List<CORContact>> personCORContactMap = customCRMAccountMapper.createMapPersonContact(crmAccountPT);
@@ -100,17 +100,17 @@ public class CRMCustomerService {
 
     }
 
-    public CrmAccountPT update(CrmAccountPT crmAccountPT) {
-        deleteCustomer(crmAccountPT.getShortName());
-        return saveCustomer(crmAccountPT);
+    public CrmAccountPT update(CrmAccountPT crmAccountPT,CORNetwork corNetwork) {
+        deleteCustomer(crmAccountPT.getShortName(),corNetwork);
+        return saveCustomer(crmAccountPT,corNetwork);
     }
 
-    public void deleteCustomer(String shorName) {
+    public void deleteCustomer(String shorName,CORNetwork corNetwork) {
         CRMAccount crmContact = accountRepository.findByShortName(shorName);
-        deleteCustomer(crmContact);
+        deleteCustomer(crmContact,corNetwork);
     }
 
-    private void deleteCustomer(CRMAccount crmAccount) {
+    private void deleteCustomer(CRMAccount crmAccount,CORNetwork corNetwork) {
         List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORAddress.class.getName());
         List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORArea.class.getName());
         List<CORAssociation> contactSizeAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORSize.class.getName());
@@ -142,7 +142,7 @@ public class CRMCustomerService {
 
     }
 
-    private CrmAccountPT fetchCustomer(CRMAccount crmAccount) {
+    private CrmAccountPT fetchCustomer(CRMAccount crmAccount,CORNetwork corNetwork) {
         List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORAddress.class.getName());
         List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORArea.class.getName());
         List<CORAssociation> contactSizeAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORSize.class.getName());
@@ -168,19 +168,19 @@ public class CRMCustomerService {
         return customCRMAccountMapper.buildContactDTOFromEntities(crmAccount, address, size, range, area, taskList, fetchedEntites, industry, new CoreManagedUserPT());
     }
 
-    public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT) {
+    public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT,CORNetwork corNetwork) {
         CRMAccount crmAccount = accountRepository.findByShortName(shortcut);
         CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(taskPT));
         corAssociationRepository.save(customCRMAccountMapper.createAccountTaskAssociationEntity(crmAccount, crmTask));
         return customCRMTaskMapper.createCrmTask(crmTask);
     }
 
-    public CrmAccountPT getCustomer(String shortcut) {
+    public CrmAccountPT getCustomer(String shortcut,CORNetwork corNetwork) {
         CRMAccount crmAccount = accountRepository.findByShortName(shortcut);
-        return fetchCustomer(crmAccount);
+        return fetchCustomer(crmAccount,corNetwork);
     }
 
-    public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut) {
+    public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut,CORNetwork corNetwork) {
         CRMAccount crmLead = accountRepository.findByShortName(shortcut);
         List<CORAssociation> leadTaskAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMTask.class.getName());
         List<Long> tasksID = leadTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
@@ -188,21 +188,21 @@ public class CRMCustomerService {
         return customCRMTaskMapper.transformTasksFromEntity(taskList);
     }
 
-    public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId) {
+    public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId,CORNetwork corNetwork) {
         CRMAccount crmAccount = accountRepository.findByShortName(shortcut);
         CORAssociation task = corAssociationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), taskId, CRMTask.class.getName());
         CRMTask crmTask = crmTaskRepository.findOne(task.getTargetId());
         return customCRMTaskMapper.createCrmTask(crmTask);
     }
 
-    public void deleteLeadTask(String shortcut, Long taskId) {
+    public void deleteLeadTask(String shortcut, Long taskId,CORNetwork corNetwork) {
         CRMAccount crmAccount = accountRepository.findByShortName(shortcut);
         CORAssociation task = corAssociationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), taskId, CRMTask.class.getName());
         crmTaskRepository.delete(task.getTargetId());
         corAssociationRepository.delete(task);
     }
 
-    public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask) {
+    public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask,CORNetwork corNetwork) {
         CRMAccount crmAccount = accountRepository.findByShortName(shortcut);
         CORAssociation task = corAssociationRepository.findBySourceIdAndTargetIdAndTargetClass(crmAccount.getId(), crmTask.getId(), CRMTask.class.getName());
         CRMTask task1= taskRepository.save(customCRMTaskMapper.createTaskEntity(crmTask));

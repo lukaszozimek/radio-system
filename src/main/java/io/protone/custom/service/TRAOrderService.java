@@ -55,14 +55,14 @@ public class TRAOrderService {
     @Inject
     private TRACampaignRepository campaignRepository;
 
-    public List<TraOrderPT> getAllOrder() {
+    public List<TraOrderPT> getAllOrder(CORNetwork corNetwork) {
         List<TraOrderPT> traOrderPTS = new ArrayList<>();
         List<TRAOrder> traOrderList = traOrderRepository.findAll();
-        traOrderList.stream().forEach(traOrder -> traOrderPTS.add(getOrdersByEntitie(traOrder)));
+        traOrderList.stream().forEach(traOrder -> traOrderPTS.add(getOrdersByEntitie(traOrder,corNetwork)));
         return traOrderPTS;
     }
 
-    public TraOrderPT saveOrder(TraOrderPT orderPT) {
+    public TraOrderPT saveOrder(TraOrderPT orderPT, CORNetwork corNetwork) {
         TRAOrder traOrder = customTRAOrderMapper.trasnformDTOtoEntity(orderPT);
         traOrderRepository.save(traOrder);
         List<SCHEmission> schEmissionList = customSCHEmissionMapper.createListEmissionFromListDTO(orderPT.getEmission());
@@ -74,7 +74,7 @@ public class TRAOrderService {
         return customTRAOrderMapper.transfromEntitesToDTO(traOrder, schEmissionList, traCampaigns, crmAccount);
     }
 
-    public void deleteOrder(Long id) {
+    public void deleteOrder(Long id, CORNetwork corNetwork) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
         TRAOrder traOrder = traOrderRepository.findOne(id);
         corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), CRMAccount.class.getName());
@@ -83,26 +83,26 @@ public class TRAOrderService {
         traOrderRepository.delete(traOrder);
     }
 
-    public TraOrderPT getOrder(Long id) {
+    public TraOrderPT getOrder(Long id, CORNetwork corNetwork) {
         TRAOrder traOrder = traOrderRepository.findOne(id);
-        return getOrdersByEntitie(traOrder);
+        return getOrdersByEntitie(traOrder,corNetwork);
     }
 
-    public List<TraOrderPT> getOrdersById(List<Long> id) {
+    public List<TraOrderPT> getOrdersById(List<Long> id, CORNetwork corNetwork) {
         List<TRAOrder> traOrderList = traOrderRepository.findAll(id);
-        return getOrdersByEntitie(traOrderList);
+        return getOrdersByEntitie(traOrderList,corNetwork);
     }
 
-    public TraOrderPT update(TraOrderPT traOrderPT) {
-        deleteOrder(traOrderPT.getId());
-        return saveOrder(traOrderPT);
+    public TraOrderPT update(TraOrderPT traOrderPT, CORNetwork corNetwork) {
+        deleteOrder(traOrderPT.getId(), corNetwork);
+        return saveOrder(traOrderPT, corNetwork);
     }
 
-    public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders) {
-        return traOrders.stream().map(this::getOrdersByEntitie).collect(toList());
+    public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders, CORNetwork corNetwork) {
+        return traOrders.stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());
     }
 
-    public TraOrderPT getOrdersByEntitie(TRAOrder traOrders) {
+    public TraOrderPT getOrdersByEntitie(TRAOrder traOrders, CORNetwork corNetwork) {
         List<CORAssociation> orderAccountAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), CRMAccount.class.getName());
         List<CORAssociation> schEmissionOrderAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), SCHEmission.class.getName());
         List<CORAssociation> orderCampaignAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), TRACampaign.class.getName());
@@ -113,10 +113,10 @@ public class TRAOrderService {
         return customTRAOrderMapper.transfromEntitesToDTO(traOrders, schEmissionList, traCampaign, crmAccount);
     }
 
-    public List<TraOrderPT> getCustomerOrders(String shortcut) {
+    public List<TraOrderPT> getCustomerOrders(String shortcut, CORNetwork corNetwork) {
         CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
         List<CORAssociation> associations = corAssociationRepository.findByTargetIdAndSourceClass(crmAccount.getId(), TRAOrder.class.getName());
-        return getOrdersById(associations.stream().map(CORAssociation::getSourceId).collect(toList()));
+        return getOrdersById(associations.stream().map(CORAssociation::getSourceId).collect(toList()), corNetwork);
     }
 
 }

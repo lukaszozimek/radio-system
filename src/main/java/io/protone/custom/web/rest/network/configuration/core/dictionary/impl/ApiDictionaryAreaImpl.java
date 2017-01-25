@@ -1,9 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreAreaPT;
 import io.protone.custom.service.mapper.CustomCORAreaMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryArea;
 import io.protone.domain.CORArea;
+import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORAreaRepository;
 import io.protone.service.dto.CORAreaDTO;
 import io.protone.service.mapper.CORAreaMapper;
@@ -30,6 +32,8 @@ public class ApiDictionaryAreaImpl implements ApiDictionaryArea {
 
     @Inject
     private CORAreaRepository cORAreaRepository;
+    @Inject
+    private NetworkService networkService;
 
     @Inject
     private CustomCORAreaMapper customCORAreaMapper;
