@@ -3,6 +3,7 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.service.dto.CrmOpportunityPT;
+import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +37,13 @@ public class CustomCRMOpportunityMapper {
             .lastTry(LocalDate.parse(opportunityPT.getLastTry(), formatter));
     }
 
-    public CrmOpportunityPT buildDTOFromEntites(CRMOpportunity opportunity, CRMStage stage, CoreManagedUserPT userPT, CrmContactPT contatPT, List<CRMTask> crmTaskList) {
+    public CrmOpportunityPT buildDTOFromEntites(CRMOpportunity opportunity, CRMStage stage, CoreManagedUserPT userPT, CrmContactPT contatPT, List<CrmTaskPT> crmTaskList) {
         CrmOpportunityPT crmOpportunityPT = new CrmOpportunityPT();
         opportunity.setId(opportunity.getId());
         return crmOpportunityPT.lastTry(opportunity.getLastTry().toString())
             .name(opportunity.getName())
             .closeDate(opportunity.getCloseDate().toString())
-            .tasks(customCRMTaskMapper.transformTasksFromEntity(crmTaskList))
+            .tasks(crmTaskList)
             .contact(contatPT)
             .opportunityOwner(userPT)
             .stage(stageMapper.cRMStageToCRMStageDTO(stage));

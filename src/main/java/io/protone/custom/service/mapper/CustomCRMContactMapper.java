@@ -2,6 +2,7 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmContactPT;
+import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.domain.*;
 import org.springframework.stereotype.Service;
@@ -73,16 +74,14 @@ public class CustomCRMContactMapper {
         return customTRAPersonMapper.createMapPersonToContact(crmContactPT.getPersons());
     }
 
-    public List<CRMTask> createTaskEntities(CrmContactPT crmContactPT) {
-        return customCRMTaskMapper.createTasksEntity(crmContactPT.getTasks());
-    }
+
 
     public CrmContactPT buildContactDTOFromEntities(CRMContact crmContact,
                                                     CORAddress address,
                                                     CORSize corSize,
                                                     CORRange range,
                                                     CORArea corArea,
-                                                    List<CRMTask> taskList,
+                                                    List<CrmTaskPT> taskList,
                                                     Map<CORPerson, List<CORContact>> corPersonListMap,
                                                     TRAIndustry industry, CoreManagedUserPT coreManagedUserPT) {
         return new CrmContactPT()
@@ -100,7 +99,7 @@ public class CustomCRMContactMapper {
             .adress(corAddressMapper.cORAddressToCORAddressDTO(address))
             .persons(customTRAPersonMapper.createDTOObject(corPersonListMap))
             .area(customCORAreaMapper.cORAreaToCORAreaDTO(corArea))
-            .tasks(customCRMTaskMapper.transformTasksFromEntity(taskList));
+            .tasks(taskList);
 
     }
 

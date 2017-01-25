@@ -138,9 +138,8 @@ public class CustomCRMLeadMapper {
     }
 
 
-
     public CrmLeadPT createDTOFromEntites(CRMLead lead,
-                                          List<CRMTask> tasks,
+                                          List<CrmTaskPT> tasks,
                                           CORPerson person,
                                           CORAddress address,
                                           List<CORContact> corContacts,
@@ -158,7 +157,7 @@ public class CustomCRMLeadMapper {
         crmLeadPT.setAdress(corAddressMapper.cORAddressToCORAddressDTO(address));
         crmLeadPT.setSource(customCRMLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(leadSource));
         crmLeadPT.setStatus(customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(leadStatus));
-        crmLeadPT.setTasks(customCRMTaskMapper.transformTasksFromEntity(tasks));
+        crmLeadPT.setTasks(tasks);
         crmLeadPT.setPerson(corPersonMapper.cORPersonToCORPersonDTO(person));
         crmLeadPT.setContact(corContactMapper.cORContactsToCORContactDTOs(corContacts));
         return crmLeadPT;

@@ -53,6 +53,7 @@ public class CRMOpportunityService {
     private CustomCRMContactMapper customCRMContactMapper;
     @Inject
     private UserService userService;
+
     @Inject
     private CRMTaskService taskService;
 
@@ -65,15 +66,11 @@ public class CRMOpportunityService {
         CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT));
         CRMStage stage = stageRepository.findByName(opportunityPT.getStage().getName());
         CRMContact contact = crmContactRepository.findOne(customCRMContactMapper.createCrmContactEntity(opportunityPT.getContact()).getId());
-
         associationRepository.save(customCRMOpportunityMapper.createOpportunityContactAssociationEntity(opportunity, contact));
         associationRepository.save(customCRMOpportunityMapper.createOpportunityStageAssociationEntity(opportunity, stage));
-
-        List<CRMTask> taskList = taskRepository.save(customCRMTaskMapper.createTasksEntity(opportunityPT.getTasks()));
-        associationRepository.save(customCRMTaskMapper.createOpportunityTasksAssociationEntity(opportunity, taskList));
-
+        List<CrmTaskPT> crmTaskPTS = taskService.saveOpportunity(opportunity, opportunityPT, corNetwork);
         CrmContactPT crmContactPT = crmContactService.getContact(contact.getShortName(), corNetwork);
-        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactPT, taskList);
+        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactPT, crmTaskPTS);
     }
 
     public void deleteOpportunity(String shortcut, CORNetwork corNetwork) {
@@ -82,12 +79,7 @@ public class CRMOpportunityService {
         List<CORAssociation> opportunityContactAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMContact.class.getName());
         associationRepository.delete(opportunityContactAssociation);
 
-        List<CORAssociation> opportunityTaskAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMTask.class.getName());
-
-        List<CRMTask> crmTasks = taskRepository.findAll(opportunityTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList()));
-        associationRepository.delete(opportunityTaskAssociation);
-        taskRepository.delete(crmTasks);
-
+        taskService.deleteOpportunityTask(opportunity, corNetwork);
         associationRepository.delete(opportunityStageAssociation);
         opportunityRepository.delete(opportunity);
     }
@@ -132,11 +124,10 @@ public class CRMOpportunityService {
     private CrmOpportunityPT createDTO(CRMOpportunity opportunity, CORNetwork corNetwork) {
         List<CORAssociation> opportunityStageAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMStage.class.getName());
         List<CORAssociation> opportunityContactAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMContact.class.getName());
-        List<CORAssociation> opportunityTaskAssociation = associationRepository.findBySourceIdAndTargetClass(opportunity.getId(), CRMTask.class.getName());
         CRMStage stage = stageRepository.findOne(opportunityStageAssociation.get(0).getTargetId());
         CRMContact crmContact = crmContactRepository.findOne(opportunityContactAssociation.get(0).getTargetId());
-        List<CRMTask> crmTasks = taskRepository.findAll(opportunityTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList()));
-        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactService.getContact(crmContact.getShortName(), corNetwork), crmTasks);
+        List<CrmTaskPT> taskPTS = taskService.getOpportunityTask(opportunity, corNetwork);
+        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactService.getContact(crmContact.getShortName(), corNetwork), taskPTS);
     }
 
 

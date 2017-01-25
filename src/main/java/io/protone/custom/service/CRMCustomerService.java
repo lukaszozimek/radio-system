@@ -82,7 +82,7 @@ public class CRMCustomerService {
         TRAIndustry industry = customCRMAccountMapper.createIndustryEntity(crmAccountPT);
         CORSize corSize = customCRMAccountMapper.createCorSizeEntity(crmAccountPT);
         CORRange corRange = customCRMAccountMapper.createRangeEntity(crmAccountPT);
-
+        List<CrmTaskPT> crmTask = crmTaskService.saveCustomerTasks(crmAccountPT, crmAccount, corNetwork);
 
         corAssociationRepository.save(customCRMAccountMapper.createAccountIndustryAssociationEntity(crmAccount, industry));
         corAssociationRepository.save(customCRMAccountMapper.createAccountAreaAssociationEntity(crmAccount, area));
@@ -90,8 +90,6 @@ public class CRMCustomerService {
         corAssociationRepository.save(customCRMAccountMapper.createAccountRangeAssociationEntity(crmAccount, corRange));
         corAssociationRepository.save(customCRMAccountMapper.createAddressAssociationEntity(crmAccount, addres));
 
-        List<CRMTask> crmTask = crmTaskRepository.save(customCRMAccountMapper.createTaskEntities(crmAccountPT));
-        corAssociationRepository.save(customCRMTaskMapper.createAccountTasksAssociationEntity(crmAccount, crmTask));
 
         Map<CORPerson, List<CORContact>> savedEntities = new HashMap<>();
         personCORContactMap.keySet().stream().forEach(person -> {
@@ -122,7 +120,6 @@ public class CRMCustomerService {
         List<CORAssociation> contactRangeAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORRange.class.getName());
         List<CORAssociation> contactIndustryAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), TRAIndustry.class.getName());
         List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORPerson.class.getName());
-        List<CORAssociation> contactTaskAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CRMTask.class.getName());
         List<CORAssociation> contactPersonContactAssociation = new ArrayList<CORAssociation>();
         contactPersonAssociation.stream().forEach(person -> {
             CORPerson corPerson = corPersonRepository.findOne(person.getTargetId());
@@ -132,12 +129,9 @@ public class CRMCustomerService {
                 });
 
         });
-
         corAddressRepository.delete(contactAddressAssociation.get(0).getTargetId());
-        contactTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList()).forEach(taskId -> {
-            crmTaskRepository.delete(taskId);
-        });
 
+        crmTaskService.deleteCustomerTasks(crmAccount, corNetwork);
         corAssociationRepository.delete(contactPersonContactAssociation);
         corAssociationRepository.delete(contactPersonAssociation);
         corAssociationRepository.delete(contactIndustryAssociation);
@@ -170,10 +164,7 @@ public class CRMCustomerService {
         CORRange range = corRangeRepository.findOne(contactRangeAssociation.get(0).getTargetId());
         CORSize size = corSizeRepository.findOne(contactSizeAssociation.get(0).getTargetId());
 
-        List<CORAssociation> contactTaskAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CRMTask.class.getName());
-        List<Long> tasksID = contactTaskAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
-        List<CRMTask> taskList = crmTaskRepository.findAll(tasksID);
-
+        List<CrmTaskPT> taskList = crmTaskService.fetchCustomerTasks(crmAccount, corNetwork);
 
         return customCRMAccountMapper.buildContactDTOFromEntities(crmAccount, address, size, range, area, taskList, fetchedEntites, industry, new CoreManagedUserPT());
     }
