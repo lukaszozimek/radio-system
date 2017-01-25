@@ -137,23 +137,7 @@ public class CustomCRMLeadMapper {
         return associations;
     }
 
-    public List<CORAssociation> createLeadTasksAssociationEntity(CRMLead lead, List<CRMTask> crmTasks) {
-        List<CORAssociation> associations = new ArrayList<>();
-        for (CRMTask crmTask : crmTasks) {
-            associations.add(createLeadTaskAssociationEntity(lead, crmTask));
-        }
-        return associations;
-    }
 
-    public CORAssociation createLeadTaskAssociationEntity(CRMLead lead, CRMTask crmTask) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CRMTask");
-        association.setSourceClass(CRMLead.class.getName());
-        association.setSourceId(lead.getId());
-        association.setTargetClass(CRMTask.class.getName());
-        association.setTargetId(crmTask.getId());
-        return association;
-    }
 
     public CrmLeadPT createDTOFromEntites(CRMLead lead,
                                           List<CRMTask> tasks,

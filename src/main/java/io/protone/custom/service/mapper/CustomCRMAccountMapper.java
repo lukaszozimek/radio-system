@@ -262,21 +262,5 @@ public class CustomCRMAccountMapper {
         return associations;
     }
 
-    public List<CORAssociation> createAccountTasksAssociationEntity(CRMAccount crmContact, List<CRMTask> crmTasks) {
-        List<CORAssociation> associations = new ArrayList<>();
-        for (CRMTask crmTask : crmTasks) {
-            associations.add(createAccountTaskAssociationEntity(crmContact, crmTask));
-        }
-        return associations;
-    }
 
-    public CORAssociation createAccountTaskAssociationEntity(CRMAccount crmContact, CRMTask crmTask) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CRMTask");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CRMTask.class.getName());
-        association.setTargetId(crmTask.getId());
-        return association;
-    }
 }
