@@ -178,21 +178,5 @@ public class CustomCRMContactMapper {
         return associations;
     }
 
-    public List<CORAssociation> createContactTasksAssociationEntity(CRMContact crmContact, List<CRMTask> crmTasks) {
-        List<CORAssociation> associations = new ArrayList<>();
-        for (CRMTask crmTask : crmTasks) {
-            associations.add(createContactTaskAssociationEntity(crmContact, crmTask));
-        }
-        return associations;
-    }
 
-    public CORAssociation createContactTaskAssociationEntity(CRMContact crmContact, CRMTask crmTask) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CRMTask");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CRMTask.class.getName());
-        association.setTargetId(crmTask.getId());
-        return association;
-    }
 }

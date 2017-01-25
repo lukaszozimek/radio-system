@@ -68,21 +68,5 @@ public class CustomCRMOpportunityMapper {
         return association;
     }
 
-    public List<CORAssociation> createOpportunityTasksAssociationEntity(CRMOpportunity crmContact, List<CRMTask> crmTasks) {
-        List<CORAssociation> associations = new ArrayList<>();
-        for (CRMTask crmTask : crmTasks) {
-            associations.add(createOpportunityTaskAssociationEntity(crmContact, crmTask));
-        }
-        return associations;
-    }
 
-    public CORAssociation createOpportunityTaskAssociationEntity(CRMOpportunity opportunity, CRMTask crmTask) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CRMTask");
-        association.setSourceClass(CRMOpportunity.class.getName());
-        association.setSourceId(opportunity.getId());
-        association.setTargetClass(CRMTask.class.getName());
-        association.setTargetId(crmTask.getId());
-        return association;
-    }
 }
