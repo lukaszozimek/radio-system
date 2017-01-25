@@ -1,7 +1,9 @@
 package io.protone.repository;
 
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMAccount;
 
+import io.protone.domain.CRMContact;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -11,5 +13,10 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMAccountRepository extends JpaRepository<CRMAccount, Long> {
-    CRMAccount findByShortName(String shortName);
+
+    CRMAccount findOneByShortNameAndNetwork(String shortName, CORNetwork network);
+
+    List<CRMAccount> findByShortNameAndNetwork(String shortName, CORNetwork network);
+
+    void deleteByShortNameAndNetwork(String shortName, CORNetwork network);
 }

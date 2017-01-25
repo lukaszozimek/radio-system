@@ -1,5 +1,6 @@
 package io.protone.repository;
 
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMLeadStatus;
 import io.protone.domain.CRMOpportunity;
 
@@ -12,5 +13,6 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMOpportunityRepository extends JpaRepository<CRMOpportunity,Long> {
-    CRMOpportunity findByName(String name);
+    List<CRMOpportunity> findByNetwork(CORNetwork network);
+    CRMOpportunity findByNameAndNetwork(String name,CORNetwork network);
 }

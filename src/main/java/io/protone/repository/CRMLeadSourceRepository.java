@@ -1,5 +1,7 @@
 package io.protone.repository;
 
+import io.protone.domain.CORNetwork;
+import io.protone.domain.CRMLead;
 import io.protone.domain.CRMLeadSource;
 
 import io.protone.domain.CRMLeadStatus;
@@ -12,5 +14,6 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMLeadSourceRepository extends JpaRepository<CRMLeadSource, Long> {
-    CRMLeadSource findByName(String name);
+    List<CRMLeadSource> findByNetwork(CORNetwork network);
+    CRMLeadSource findByNameAndNetwork(String name,CORNetwork corNetwork);
 }

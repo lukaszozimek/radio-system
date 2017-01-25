@@ -82,8 +82,8 @@ public class TRAInvoiceService {
 
     public void deleteInvoice(Long id, CORNetwork corNetwork) {
         TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
-        corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), CRMAccount.class.getName());
-        corAssociationRepository.deleteBySourceIdAndTargetClass(traInvoice.getId(), TRAOrder.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traInvoice.getId(), CRMAccount.class.getName(),corNetwork);
+        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traInvoice.getId(), TRAOrder.class.getName(),corNetwork);
         traInvoiceRepository.delete(id);
     }
 
@@ -93,8 +93,8 @@ public class TRAInvoiceService {
     }
 
     public TraInvoicePT getInvoice(TRAInvoice traInvoice, CORNetwork corNetwork) {
-        List<CORAssociation> corAssociationCRMAccountList = corAssociationRepository.findBySourceIdAndTargetClass(traInvoice.getId(), CRMAccount.class.getName());
-        List<CORAssociation> corAssociationOrderList = corAssociationRepository.findBySourceIdAndTargetClass(traInvoice.getId(), TRAOrder.class.getName());
+        List<CORAssociation> corAssociationCRMAccountList = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traInvoice.getId(), CRMAccount.class.getName(),corNetwork);
+        List<CORAssociation> corAssociationOrderList = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traInvoice.getId(), TRAOrder.class.getName(),corNetwork);
         List<Long> ordersID = corAssociationOrderList.stream().map(CORAssociation::getTargetId).collect(toList());
         List<TRAOrder> orders = traOrderRepository.findAll(ordersID);
         CRMAccount crmAccount = crmAccountRepository.findOne(corAssociationCRMAccountList.get(0).getTargetId());
