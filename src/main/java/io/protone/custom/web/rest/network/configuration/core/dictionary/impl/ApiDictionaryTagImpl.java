@@ -1,9 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfTagPT;
 import io.protone.custom.service.mapper.CustomCORTagMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryTag;
 import io.protone.domain.CORTag;
+import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORTagRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -23,7 +25,8 @@ public class ApiDictionaryTagImpl implements ApiDictionaryTag {
 
     @Inject
     private CORTagRepository cORTagRepository;
-
+    @Inject
+    private NetworkService networkService;
     @Inject
     private CustomCORTagMapper cORTagMapper;
 

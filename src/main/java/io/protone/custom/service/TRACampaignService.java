@@ -51,11 +51,11 @@ public class TRACampaignService {
     @Inject
     private TRACustomerService traCustomerService;
 
-    public List<TraCampaignPT> getAllCampaign() {
-        return traCampaignRepository.findAll().stream().map(this::getCampaign).collect(toList());
+    public List<TraCampaignPT> getAllCampaign(CORNetwork corNetwork) {
+        return traCampaignRepository.findAll().stream().map(campaign -> getCampaign(campaign, corNetwork)).collect(toList());
     }
 
-    public TraCampaignPT saveCampaign(TraCampaignPT campaignPT) {
+    public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CORNetwork corNetwork) {
         TRACampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT);
         traCampaign = traCampaignRepository.save(traCampaign);
         List<SCHEmission> schEmissionList = customSCHEmissionMapper.createListEmissionFromListDTO(campaignPT.getEmission());
@@ -65,12 +65,12 @@ public class TRACampaignService {
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount));
     }
 
-    public TraCampaignPT update(TraCampaignPT campaignPT) {
-        deleteCampaign(campaignPT.getName());
-        return saveCampaign(campaignPT);
+    public TraCampaignPT update(TraCampaignPT campaignPT, CORNetwork corNetwork) {
+        deleteCampaign(campaignPT.getName(), corNetwork);
+        return saveCampaign(campaignPT, corNetwork);
     }
 
-    public void deleteCampaign(String shortcut) {
+    public void deleteCampaign(String shortcut, CORNetwork corNetwork) {
         TRACampaign traCampaign = traCampaignRepository.findByName(shortcut);
         List<CORAssociation> corCRMAssociationList = corAssociationRepositor.findBySourceIdAndTargetClass(traCampaign.getId(), CRMAccount.class.getName());
         List<CORAssociation> corSCHEmissionAssociationList = corAssociationRepositor.findBySourceIdAndTargetClass(traCampaign.getId(), SCHEmission.class.getName());
@@ -83,7 +83,7 @@ public class TRACampaignService {
 
     }
 
-    public TraCampaignPT getCampaign(TRACampaign traCampaign) {
+    public TraCampaignPT getCampaign(TRACampaign traCampaign, CORNetwork corNetwork) {
         List<CORAssociation> corCRMAssociationList = corAssociationRepositor.findBySourceIdAndTargetClass(traCampaign.getId(), CRMAccount.class.getName());
         List<CORAssociation> corSCHEmissionAssociationList = corAssociationRepositor.findBySourceIdAndTargetClass(traCampaign.getId(), SCHEmission.class.getName());
         CRMAccount crmAccount = crmAccountRepository.findOne(corCRMAssociationList.get(0).getTargetId());
@@ -91,18 +91,18 @@ public class TRACampaignService {
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount));
     }
 
-    public TraCampaignPT getCampaign(String shortcut) {
-        return getCampaign(traCampaignRepository.findByName(shortcut));
+    public TraCampaignPT getCampaign(String shortcut, CORNetwork corNetwork) {
+        return getCampaign(traCampaignRepository.findByName(shortcut), corNetwork);
     }
 
-    public List<TraCampaignPT> getCampaign(List<Long> idx) {
-        return traCampaignRepository.findAll(idx).stream().map(this::getCampaign).collect(toList());
+    public List<TraCampaignPT> getCampaign(List<Long> idx, CORNetwork corNetwork) {
+        return traCampaignRepository.findAll(idx).stream().map(campaign -> getCampaign(campaign, corNetwork)).collect(toList());
     }
 
-    public List<TraCampaignPT> getCustomerCampaing(String shortcut) {
+    public List<TraCampaignPT> getCustomerCampaing(String shortcut, CORNetwork corNetwork) {
         CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
         List<CORAssociation> associations = corAssociationRepositor.findByTargetIdAndSourceClass(crmAccount.getId(), TRACampaign.class.getName());
-        return getCampaign(associations.stream().map(CORAssociation::getSourceId).collect(toList()));
+        return getCampaign(associations.stream().map(CORAssociation::getSourceId).collect(toList()), corNetwork);
     }
 
 }

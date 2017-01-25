@@ -3,8 +3,11 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.domain.CRMTask;
+import io.protone.repository.UserRepository;
+import io.protone.service.UserService;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.List;
  */
 @Service
 public class CustomCRMTaskMapper {
+
     public List<CrmTaskPT> transformTasksFromEntity(List<CRMTask> tasks) {
         List<CrmTaskPT> crmTaskPTList = new ArrayList<>();
         tasks.stream().forEach(task -> {
@@ -33,22 +37,22 @@ public class CustomCRMTaskMapper {
             .createdBy(new CoreManagedUserPT());
     }
 
-    public List<CRMTask> createTasksEntity(List<CrmTaskPT> leadTasks) {
+    public List<CRMTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
         List<CRMTask> taskList = new ArrayList<>();
-        for (CrmTaskPT task : leadTasks) {
+        for (CrmTaskPT task : crmTaskPTS) {
             taskList.add(createTaskEntity(task));
         }
         return taskList;
     }
 
-    public CRMTask createTaskEntity(CrmTaskPT leadTask) {
+    public CRMTask createTaskEntity(CrmTaskPT taskPT) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CRMTask crmTask = new CRMTask();
-        crmTask.setId(leadTask.getId());
-        crmTask.setSubject(leadTask.getSubject());
-        crmTask.setActivityDate(LocalDate.parse(leadTask.getActivityDate(), formatter));
-        crmTask.setActivityLength(leadTask.getActivityLenght());
-        crmTask.setComment(leadTask.getComment());
+        crmTask.setId(taskPT.getId());
+        crmTask.setSubject(taskPT.getSubject());
+        crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate(), formatter));
+        crmTask.setActivityLength(taskPT.getActivityLenght());
+        crmTask.setComment(taskPT.getComment());
         return crmTask;
     }
 

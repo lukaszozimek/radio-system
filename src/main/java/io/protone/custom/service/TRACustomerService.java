@@ -54,12 +54,12 @@ public class TRACustomerService {
     @Inject
     private CORSizeRepository corSizeRepository;
 
-    public List<TraCustomerPT> getAllCustomers() {
+    public List<TraCustomerPT> getAllCustomers(CORNetwork corNetwork) {
 
-        return crmAccountRepository.findAll().stream().map(this::getCustomer).collect(toList());
+        return crmAccountRepository.findAll().stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
     }
 
-    public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT) {
+    public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CORNetwork corNetwork) {
         CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traCustomerPT);
         crmAccountRepository.save(crmAccount);
         Map<CORPerson, List<CORContact>> personCORContactMap = customCRMAccountMapper.createMapPersonContact(traCustomerPT);
@@ -84,7 +84,7 @@ public class TRACustomerService {
         return customCRMAccountMapper.createCustomerTrafficDTO(crmAccount, addres, corSize, corRange, area, savedEntities, industry, new CoreManagedUserPT());
     }
 
-    public void deleteCustomer(String shortcut) {
+    public void deleteCustomer(String shortcut, CORNetwork corNetwork) {
         CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
         corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CORAddress.class.getName());
         corAssociationRepository.deleteBySourceIdAndTargetClass(crmAccount.getId(), CORArea.class.getName());
@@ -104,15 +104,17 @@ public class TRACustomerService {
 
     }
 
-    public TraCustomerPT getCustomer(String shortcut) {
+    public TraCustomerPT getCustomer(String shortcut, CORNetwork corNetwork) {
         CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
-        return getCustomer(crmAccount);
+        return getCustomer(crmAccount, corNetwork);
     }
-    public TraCustomerPT update(TraCustomerPT traCustomerPT) {
-        deleteCustomer(traCustomerPT.getShortName());
-        return saveCustomers(traCustomerPT);
+
+    public TraCustomerPT update(TraCustomerPT traCustomerPT, CORNetwork corNetwork) {
+        deleteCustomer(traCustomerPT.getShortName(), corNetwork);
+        return saveCustomers(traCustomerPT, corNetwork);
     }
-    public TraCustomerPT getCustomer(CRMAccount crmAccount) {
+
+    public TraCustomerPT getCustomer(CRMAccount crmAccount, CORNetwork corNetwork) {
 
         List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORAddress.class.getName());
         List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClass(crmAccount.getId(), CORArea.class.getName());

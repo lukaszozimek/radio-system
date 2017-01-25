@@ -1,10 +1,12 @@
 package io.protone.custom.web.rest.network.configuration.crm.impl;
 
 
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfLeadStatusPT;
 import io.protone.custom.service.mapper.CustomCRMLeadStatusMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadStatus;
 import io.protone.domain.CRMLeadStatus;
+import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CRMLeadStatusRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -27,7 +29,8 @@ public class ApiConfigurationCrmDictionaryLeadStatusImpl implements ApiConfigura
 
     @Inject
     private CRMLeadStatusRepository cRMLeadStatusRepository;
-
+    @Inject
+    private NetworkService networkService;
     @Inject
     private CustomCRMLeadStatusMapper customCRMLeadStatusMapper;
 

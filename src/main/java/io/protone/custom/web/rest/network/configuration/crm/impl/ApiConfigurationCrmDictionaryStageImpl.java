@@ -1,9 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.crm.impl;
 
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfCrmStagePT;
 import io.protone.custom.service.mapper.CustomCRMStageMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryStage;
 import io.protone.domain.CRMStage;
+import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CRMStageRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -26,7 +28,8 @@ public class ApiConfigurationCrmDictionaryStageImpl implements ApiConfigurationC
 
     @Inject
     private CRMStageRepository cRMStageRepository;
-
+    @Inject
+    private NetworkService networkService;
     @Inject
     private CustomCRMStageMapper customCRMStageMapper;
 
