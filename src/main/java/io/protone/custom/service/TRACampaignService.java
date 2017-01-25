@@ -62,7 +62,7 @@ public class TRACampaignService {
         CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(campaignPT.getCustomerId());
         corAssociationRepositor.save(customTRACampaignMapper.createCrmAccountAssociation(traCampaign, crmAccount));
         corAssociationRepositor.save(customTRACampaignMapper.createListSCHEmissionAssociation(traCampaign, schEmissionList));
-        return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount));
+        return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount, corNetwork));
     }
 
     public TraCampaignPT update(TraCampaignPT campaignPT, CORNetwork corNetwork) {
@@ -88,7 +88,7 @@ public class TRACampaignService {
         List<CORAssociation> corSCHEmissionAssociationList = corAssociationRepositor.findBySourceIdAndTargetClass(traCampaign.getId(), SCHEmission.class.getName());
         CRMAccount crmAccount = crmAccountRepository.findOne(corCRMAssociationList.get(0).getTargetId());
         List<SCHEmission> schEmissionList = schEmissionRepository.findAll(corSCHEmissionAssociationList.stream().map(CORAssociation::getTargetId).collect(toList()));
-        return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount));
+        return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount, corNetwork));
     }
 
     public TraCampaignPT getCampaign(String shortcut, CORNetwork corNetwork) {

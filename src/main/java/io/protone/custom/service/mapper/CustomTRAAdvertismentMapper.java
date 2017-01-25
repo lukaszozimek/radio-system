@@ -38,7 +38,7 @@ public class CustomTRAAdvertismentMapper {
             .description(traAdvertisement.getDescription())
             .industryId(customTRAIndustryMapper.tRAIndustryToTRAIndustryDTO(traIndustry))
             .mediaItemId(libItemPT)
-            .customerId(customerService.getCustomer(crmAccount));
+            .customerId(customerService.getCustomer(crmAccount, traIndustry.getNetwork()));
 
     }
 
