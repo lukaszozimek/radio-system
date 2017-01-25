@@ -80,16 +80,16 @@ public class CRMLeadService {
         List<CRMLead> crmLeadList = crmLeadRepository.findAll();
         crmLeadList.stream().forEach(crmLead -> {
 
-            List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORAddress.class.getName());
-            List<CORAssociation> leadAreaAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORArea.class.getName());
-            List<CORAssociation> leadStatusAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMLeadStatus.class.getName());
-            List<CORAssociation> leadSourceAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMLeadSource.class.getName());
-            List<CORAssociation> leadIndustryAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), TRAIndustry.class.getName());
-            List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
+            List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORAddress.class.getName(),corNetwork);
+            List<CORAssociation> leadAreaAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORArea.class.getName(),corNetwork);
+            List<CORAssociation> leadStatusAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CRMLeadStatus.class.getName(),corNetwork);
+            List<CORAssociation> leadSourceAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CRMLeadSource.class.getName(),corNetwork);
+            List<CORAssociation> leadIndustryAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), TRAIndustry.class.getName(),corNetwork);
+            List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORPerson.class.getName(),corNetwork);
             List<CORAssociation> leadPersonContactAssociation = new ArrayList<CORAssociation>();
 
             leadPersonAssociation.forEach(person -> {
-                List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClass(person.getSourceId(), CORContact.class.getName());
+                List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(person.getSourceId(), CORContact.class.getName(),corNetwork);
                 leadPersonContactAssociation.addAll(personContactAssociation);
             });
 
@@ -114,8 +114,8 @@ public class CRMLeadService {
 
     public CrmLeadPT saveLead(CrmLeadPT lead, CORNetwork corNetwork) {
         List<CORAssociation> associations = new ArrayList<>();
-        CRMLeadStatus leadStatus = crmLeadStatusRepository.findByName(lead.getStatus().getName());
-        CRMLeadSource leadSource = crmLeadSourceRepository.findByName(lead.getSource().getName());
+        CRMLeadStatus leadStatus = crmLeadStatusRepository.findByNameAndNetwork(lead.getStatus().getName(),corNetwork);
+        CRMLeadSource leadSource = crmLeadSourceRepository.findByNameAndNetwork(lead.getSource().getName(),corNetwork);
         CORArea corArea = corAreaRepository.findByName(lead.getArea().getName());
         TRAIndustry industry = industryRepository.findByName(lead.getIndustry().getName());
 
@@ -138,13 +138,13 @@ public class CRMLeadService {
 
     public void deleteLead(String shortcut, CORNetwork corNetwork) {
 
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
-        List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORAddress.class.getName());
-        List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
+        List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORAddress.class.getName(),corNetwork);
+        List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORPerson.class.getName(),corNetwork);
         List<CORAssociation> leadPersonContactAssociation = new ArrayList<CORAssociation>();
 
         leadPersonAssociation.forEach(person -> {
-            List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClass(person.getId(), CORContact.class.getName());
+            List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(person.getId(), CORContact.class.getName(),corNetwork);
             leadPersonContactAssociation.addAll(personContactAssociation);
         });
         corAddressRepository.delete(leadAddressAssociation.get(0).getTargetId());
@@ -153,12 +153,12 @@ public class CRMLeadService {
             corContactRepository.delete(id);
         });
         crmTaskService.deleteLeadTask(crmLead, corNetwork);
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CORAddress.class.getName());
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CORArea.class.getName());
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CRMLeadStatus.class.getName());
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CRMLeadSource.class.getName());
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), TRAIndustry.class.getName());
-        associationRepository.deleteBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
+        associationRepository.deleteBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORAddress.class.getName(),corNetwork);
+        associationRepository.deleteBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORArea.class.getName(),corNetwork);
+        associationRepository.deleteBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CRMLeadStatus.class.getName(),corNetwork);
+        associationRepository.deleteBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CRMLeadSource.class.getName(),corNetwork);
+        associationRepository.deleteBySourceIdAndTargetClassAndNetwork(crmLead.getId(), TRAIndustry.class.getName(),corNetwork);
+        associationRepository.deleteBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORPerson.class.getName(),corNetwork);
         crmLeadRepository.delete(crmLead);
 
     }
@@ -166,17 +166,17 @@ public class CRMLeadService {
     @Transactional
     public CrmLeadPT getLead(String shortcut, CORNetwork corNetwork) {
 
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
-        List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORAddress.class.getName());
-        List<CORAssociation> leadAreaAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORArea.class.getName());
-        List<CORAssociation> leadStatusAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMLeadStatus.class.getName());
-        List<CORAssociation> leadSourceAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CRMLeadSource.class.getName());
-        List<CORAssociation> leadIndustryAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), TRAIndustry.class.getName());
-        List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClass(crmLead.getId(), CORPerson.class.getName());
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
+        List<CORAssociation> leadAddressAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORAddress.class.getName(),corNetwork);
+        List<CORAssociation> leadAreaAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORArea.class.getName(),corNetwork);
+        List<CORAssociation> leadStatusAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CRMLeadStatus.class.getName(),corNetwork);
+        List<CORAssociation> leadSourceAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CRMLeadSource.class.getName(),corNetwork);
+        List<CORAssociation> leadIndustryAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), TRAIndustry.class.getName(),corNetwork);
+        List<CORAssociation> leadPersonAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(crmLead.getId(), CORPerson.class.getName(),corNetwork);
         List<CORAssociation> leadPersonContactAssociation = new ArrayList<CORAssociation>();
 
         leadPersonAssociation.forEach(person -> {
-            List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClass(person.getId(), CORContact.class.getName());
+            List<CORAssociation> personContactAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(person.getId(), CORContact.class.getName(),corNetwork);
             leadPersonContactAssociation.addAll(personContactAssociation);
         });
 
@@ -202,27 +202,27 @@ public class CRMLeadService {
     }
 
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut, CORNetwork corNetwork) {
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
         return crmTaskService.getTasksAssociatedWithLead(crmLead, corNetwork);
     }
 
     public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId, CORNetwork corNetwork) {
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
         return crmTaskService.getTaskAssociatedWithLead(crmLead, taskId, corNetwork);
     }
 
     public void deleteLeadTask(String shortcut, Long taskId, CORNetwork corNetwork) {
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
         crmTaskService.deleteLeadTask(crmLead, taskId, corNetwork);
     }
 
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CORNetwork corNetwork) {
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
         return crmTaskService.createTasksAssociatedWithLead(crmLead, taskPT, corNetwork);
     }
 
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask, CORNetwork corNetwork) {
-        CRMLead crmLead = crmLeadRepository.findByShortcut(shortcut);
+        CRMLead crmLead = crmLeadRepository.findByShortcutAndNetwork(shortcut,corNetwork);
         return crmTaskService.updateLeadTask(crmLead, crmTask, corNetwork);
     }
 }

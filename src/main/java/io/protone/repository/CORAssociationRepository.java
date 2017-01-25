@@ -2,6 +2,7 @@ package io.protone.repository;
 
 import io.protone.domain.CORAssociation;
 
+import io.protone.domain.CORNetwork;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -12,18 +13,18 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CORAssociationRepository extends JpaRepository<CORAssociation, Long> {
 
-    List<CORAssociation> findBySourceIdAndTargetClass(Long sourceId, String targetClass);
+    List<CORAssociation> findBySourceIdAndTargetClassAndNetwork(Long sourceId, String targetClass, CORNetwork network);
 
-    List<CORAssociation> findBySourceIdAndTargetId(Long sourceId, Long targetId);
+    List<CORAssociation> findBySourceIdAndTargetIdAndNetwork(Long sourceId, Long targetId, CORNetwork network);
 
-    CORAssociation findBySourceIdAndTargetIdAndTargetClass(Long sourceId, Long targetId, String targetClass);
+    CORAssociation findBySourceIdAndTargetIdAndTargetClassAndNetwork(Long sourceId, Long targetId, String targetClass, CORNetwork network);
 
-    List<CORAssociation> findByTargetIdAndSourceClass(Long targetId, String sourceClass);
+    List<CORAssociation> findByTargetIdAndSourceClassAndNetwork(Long targetId, String sourceClass, CORNetwork network);
 
-    void deleteBySourceIdAndTargetClass(Long sourceId, String targetClass);
+    void deleteBySourceIdAndTargetClassAndNetwork(Long sourceId, String targetClass, CORNetwork network);
 
-    void deleteBySourceIdAndTargetId(Long sourceId, Long targetId);
+    void deleteBySourceIdAndTargetIdAndNetwork(Long sourceId, Long targetId, CORNetwork network);
 
-    void deleteByTargetIdAndSourceClass(Long targetId, String sourceClass);
+    void deleteByTargetIdAndSourceClassAndNetwork(Long targetId, String sourceClass, CORNetwork network);
 
 }

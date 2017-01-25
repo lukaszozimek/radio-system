@@ -77,9 +77,9 @@ public class TRAOrderService {
     public void deleteOrder(Long id, CORNetwork corNetwork) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
         TRAOrder traOrder = traOrderRepository.findOne(id);
-        corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), CRMAccount.class.getName());
-        corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), SCHEmission.class.getName());
-        corAssociationRepository.deleteBySourceIdAndTargetClass(traOrder.getId(), TRACampaign.class.getName());
+        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traOrder.getId(), CRMAccount.class.getName(),corNetwork);
+        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traOrder.getId(), SCHEmission.class.getName(),corNetwork);
+        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traOrder.getId(), TRACampaign.class.getName(),corNetwork);
         traOrderRepository.delete(traOrder);
     }
 
@@ -103,9 +103,9 @@ public class TRAOrderService {
     }
 
     public TraOrderPT getOrdersByEntitie(TRAOrder traOrders, CORNetwork corNetwork) {
-        List<CORAssociation> orderAccountAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), CRMAccount.class.getName());
-        List<CORAssociation> schEmissionOrderAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), SCHEmission.class.getName());
-        List<CORAssociation> orderCampaignAssociation = corAssociationRepository.findBySourceIdAndTargetClass(traOrders.getId(), TRACampaign.class.getName());
+        List<CORAssociation> orderAccountAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traOrders.getId(), CRMAccount.class.getName(),corNetwork);
+        List<CORAssociation> schEmissionOrderAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traOrders.getId(), SCHEmission.class.getName(),corNetwork);
+        List<CORAssociation> orderCampaignAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traOrders.getId(), TRACampaign.class.getName(),corNetwork);
         CRMAccount crmAccount = crmAccountRepository.findOne(orderAccountAssociation.get(0).getTargetId());
         List<Long> schEmissionIds = schEmissionOrderAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
         List<SCHEmission> schEmissionList = schEmissionRepository.findAll(schEmissionIds);
@@ -114,8 +114,8 @@ public class TRAOrderService {
     }
 
     public List<TraOrderPT> getCustomerOrders(String shortcut, CORNetwork corNetwork) {
-        CRMAccount crmAccount = crmAccountRepository.findByShortName(shortcut);
-        List<CORAssociation> associations = corAssociationRepository.findByTargetIdAndSourceClass(crmAccount.getId(), TRAOrder.class.getName());
+        CRMAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        List<CORAssociation> associations = corAssociationRepository.findByTargetIdAndSourceClassAndNetwork(crmAccount.getId(), TRAOrder.class.getName(),corNetwork);
         return getOrdersById(associations.stream().map(CORAssociation::getSourceId).collect(toList()), corNetwork);
     }
 
