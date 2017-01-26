@@ -70,7 +70,7 @@ public class CRMCustomerService {
     private CRMTaskService crmTaskService;
 
     public List<CrmAccountPT> getAllCustomer(CORNetwork corNetwork) {
-        List<CRMAccount> crmAccount = accountRepository.findAll();
+        List<CRMAccount> crmAccount = accountRepository.findByNetwork(corNetwork);
         return crmAccount.stream().map(crmAccount1 -> fetchCustomer(crmAccount1, corNetwork)).collect(toList());
     }
 

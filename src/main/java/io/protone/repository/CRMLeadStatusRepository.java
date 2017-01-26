@@ -1,5 +1,6 @@
 package io.protone.repository;
 
+import io.protone.domain.CORArea;
 import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMLeadSource;
 import io.protone.domain.CRMLeadStatus;

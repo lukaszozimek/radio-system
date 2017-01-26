@@ -2,6 +2,7 @@ package io.protone.repository;
 
 import io.protone.domain.CORArea;
 
+import io.protone.domain.CORNetwork;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -11,5 +12,6 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CORAreaRepository extends JpaRepository<CORArea, Long> {
-    CORArea findByName(String name);
+    CORArea findOneByName(String name);
+    List<CORArea> findByNetwork(CORNetwork network);
 }

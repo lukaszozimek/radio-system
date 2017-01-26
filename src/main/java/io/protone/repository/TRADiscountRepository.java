@@ -1,5 +1,7 @@
 package io.protone.repository;
 
+import io.protone.domain.CORNetwork;
+import io.protone.domain.CRMTask;
 import io.protone.domain.TRADiscount;
 
 import org.springframework.data.jpa.repository.*;
@@ -12,4 +14,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface TRADiscountRepository extends JpaRepository<TRADiscount,Long> {
 
+    List<CRMTask> findByNetwork(CORNetwork network);
 }
