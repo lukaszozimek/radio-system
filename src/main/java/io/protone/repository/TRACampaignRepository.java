@@ -1,6 +1,7 @@
 package io.protone.repository;
 
 import io.protone.domain.CORArea;
+import io.protone.domain.CORNetwork;
 import io.protone.domain.TRACampaign;
 
 import org.springframework.data.jpa.repository.*;
@@ -12,5 +13,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TRACampaignRepository extends JpaRepository<TRACampaign, Long> {
-    TRACampaign findByName(String name);
+
+    List<TRACampaign> findByNetwork(CORNetwork network);
+
+    TRACampaign findByNameAndNetwork(String name, CORNetwork network);
 }

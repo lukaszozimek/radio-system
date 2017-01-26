@@ -70,7 +70,7 @@ public class CRMContactService {
 
     public List<CrmContactPT> getAllContact(CORNetwork corNetwork) {
         List<CrmContactPT> crmContactPTS = new ArrayList<>();
-        List<CRMContact> crmContactList = crmContactRepository.findAll();
+        List<CRMContact> crmContactList = crmContactRepository.findByNetwork(corNetwork);
         crmContactList.stream().forEach(crmContact -> {
             crmContactPTS.add(fetchContact(crmContact, corNetwork));
         });

@@ -1,7 +1,7 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.domain.User;
+import io.protone.domain.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomCORUserMapper {
 
-    CoreManagedUserPT transformUserEnity(User user) {
+    public static final String ASSIGNED_TO = "ASSIGNEDTOTASK";
+    public static final String CREATED_BY = "CREATEDBY";
+
+    public CoreManagedUserPT transformUserEnity(User user) {
         return new CoreManagedUserPT()
             .authorities(user.getAuthorities())
             .activated(user.getActivated())
@@ -26,12 +29,28 @@ public class CustomCORUserMapper {
             .createdDate(user.getCreatedDate());
     }
 
-    User tranformUserDTO(CoreManagedUserPT coreManagedUserPT) {
+    public User tranformUserDTO(CoreManagedUserPT coreManagedUserPT) {
         User user = new User();
         user.setId(coreManagedUserPT.getId());
-
         return user;
 
     }
 
+    public CORAssociation createCRMAssignetToTaskAssociation(CRMTask crmTask, User user, CORNetwork corNetwork) {
+        return new CORAssociation().name(ASSIGNED_TO)
+            .sourceId(crmTask.getId())
+            .sourceClass(CRMTask.class.getName())
+            .targetId(user.getId())
+            .targetClass(User.class.getName())
+            .network(corNetwork);
+    }
+
+    public CORAssociation createCRMCreatedByTaskAssociation(CRMTask crmTask, User user, CORNetwork corNetwork) {
+        return new CORAssociation().name(CREATED_BY)
+            .sourceId(crmTask.getId())
+            .sourceClass(CRMTask.class.getName())
+            .targetId(user.getId())
+            .targetClass(User.class.getName())
+            .network(corNetwork);
+    }
 }

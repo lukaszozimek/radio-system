@@ -15,5 +15,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CRMLeadSourceRepository extends JpaRepository<CRMLeadSource, Long> {
     List<CRMLeadSource> findByNetwork(CORNetwork network);
-    CRMLeadSource findByNameAndNetwork(String name,CORNetwork corNetwork);
+    CRMLeadSource findOneByNameAndNetwork(String name, CORNetwork corNetwork);
 }

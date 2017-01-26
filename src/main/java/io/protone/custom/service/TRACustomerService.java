@@ -56,7 +56,7 @@ public class TRACustomerService {
 
     public List<TraCustomerPT> getAllCustomers(CORNetwork corNetwork) {
 
-        return crmAccountRepository.findAll().stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
+        return crmAccountRepository.findByNetwork(corNetwork).stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
     }
 
     public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CORNetwork corNetwork) {

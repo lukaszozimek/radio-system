@@ -1,7 +1,9 @@
 package io.protone.repository;
 
+import io.protone.domain.CORArea;
 import io.protone.domain.CORContact;
 
+import io.protone.domain.CORNetwork;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -12,4 +14,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CORContactRepository extends JpaRepository<CORContact,Long> {
 
+    List<CORContact> findByNetwork(CORNetwork network);
 }

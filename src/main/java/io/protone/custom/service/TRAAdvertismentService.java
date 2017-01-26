@@ -50,7 +50,7 @@ public class TRAAdvertismentService {
 
     public List<TraAdvertisementPT> getAllAdvertisement(CORNetwork corNetwork) {
         List<TraAdvertisementPT> traAdvertisementPTList = new ArrayList<>();
-        List<TRAAdvertisement> traAdvertisementList = traAdvertisementRepository.findAll();
+        List<TRAAdvertisement> traAdvertisementList = traAdvertisementRepository.findByNetwork(corNetwork);
         traAdvertisementList.stream().forEach(traAdvertisement -> traAdvertisementPTList.add(getTraAdvertisment(traAdvertisement, corNetwork)));
         return traAdvertisementPTList;
     }

@@ -14,5 +14,5 @@ import java.util.List;
 public interface CRMLeadRepository extends JpaRepository<CRMLead, Long> {
     List<CRMLead> findByNetwork(CORNetwork network);
 
-    CRMLead findByShortcutAndNetwork(String shortcut,CORNetwork network);
+    CRMLead findOneByShortcutAndNetwork(String shortcut, CORNetwork network);
 }

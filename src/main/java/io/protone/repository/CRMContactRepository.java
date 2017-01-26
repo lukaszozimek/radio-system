@@ -1,5 +1,6 @@
 package io.protone.repository;
 
+import io.protone.domain.CORArea;
 import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMContact;
 
@@ -13,6 +14,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMContactRepository extends JpaRepository<CRMContact, Long> {
+
+    List<CRMContact> findByNetwork(CORNetwork network);
     CRMContact findOneByShortNameAndNetwork(String shortName,CORNetwork network);
     void deleteByShortNameAndNetwork(String shortName,CORNetwork network);
 }

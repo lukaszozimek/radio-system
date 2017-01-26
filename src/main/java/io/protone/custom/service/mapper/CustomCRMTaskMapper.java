@@ -20,18 +20,15 @@ import java.util.stream.Collectors;
 @Service
 public class CustomCRMTaskMapper {
 
-    public List<CrmTaskPT> transformTasksFromEntity(List<CRMTask> tasks) {
-        return tasks.stream().map(this::createCrmTask).collect(Collectors.toList());
-    }
 
-    public CrmTaskPT createCrmTask(CRMTask crmTask) {
+    public CrmTaskPT createCrmTask(CRMTask crmTask, CoreManagedUserPT assignedUser, CoreManagedUserPT createdBy) {
         return new CrmTaskPT().id(crmTask.getId())
             .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
-            .assignedTo(new CoreManagedUserPT())
+            .assignedTo(assignedUser)
             .comment(crmTask.getComment())
             .subject(crmTask.getSubject())
-            .createdBy(new CoreManagedUserPT());
+            .createdBy(createdBy);
     }
 
     public List<CRMTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {

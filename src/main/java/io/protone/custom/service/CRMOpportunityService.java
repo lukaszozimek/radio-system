@@ -58,7 +58,7 @@ public class CRMOpportunityService {
     private CRMTaskService taskService;
 
     public List<CrmOpportunityPT> getAllOpportunity(CORNetwork corNetwork) {
-        List<CRMOpportunity> opportunities = opportunityRepository.findAll();
+        List<CRMOpportunity> opportunities = opportunityRepository.findByNetwork(corNetwork);
         return opportunities.stream().map(opportunity -> createDTO(opportunity, corNetwork)).collect(toList());
     }
 
