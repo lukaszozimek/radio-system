@@ -24,7 +24,7 @@ public interface ApiNetworkLibrary {
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<LibraryPT> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -52,7 +52,7 @@ public interface ApiNetworkLibrary {
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<LibraryPT> createLibraryUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -66,8 +66,7 @@ public interface ApiNetworkLibrary {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLibraryUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                   @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix);
