@@ -3,8 +3,9 @@ package io.protone.custom.service.mapper.ext;
 import io.protone.custom.consts.GKAssociationConstants;
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.custom.service.mapper.CustomCORChannelMapper;
-import io.protone.custom.service.mapper.CustomCORUserMapper;
 import io.protone.domain.*;
+import io.protone.domain.enumeration.LIBCounterTypeEnum;
+import io.protone.domain.enumeration.LIBObjectTypeEnum;
 import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.CORChannelRepositoryEx;
 import io.protone.repository.UserRepository;
@@ -24,7 +25,7 @@ public class CustomLIBLibraryMapperExt {
     UserRepository userRepository;
 
     @Inject
-    CustomCORUserMapper userMapper;
+    CustomCORUserMapperExt userMapper;
 
     @Inject
     CORChannelRepositoryEx channelRepository;
@@ -32,29 +33,35 @@ public class CustomLIBLibraryMapperExt {
     @Inject
     CustomCORChannelMapper channelMapper;
 
-    public LibraryPT libLibrary2LibraryPT(LIBLibrary library) {
+    public LibraryPT libLibrary2LibraryPT(LIBLibrary libraryDB) {
 
-        if ( library == null )
+        if ( libraryDB == null )
             return null;
 
-        LibraryPT libraryPT = new LibraryPT();
-        libraryPT.setNetworkId( library.getNetwork().getId());
-        libraryPT.setId( library.getId() );
-        libraryPT.setPrefix( library.getPrefix() );
-        libraryPT.setName( library.getName() );
-        libraryPT.setDescription( library.getDescription() );
+        LibraryPT libraryDAO = new LibraryPT();
+        libraryDAO.setNetworkId( libraryDB.getNetwork().getId());
+        libraryDAO.setId( libraryDB.getId() );
+        libraryDAO.setPrefix( libraryDB.getPrefix() );
+        libraryDAO.setName( libraryDB.getName() );
+        libraryDAO.setDescription( libraryDB.getDescription() );
+        libraryDAO.setShortcut(libraryDB.getShortcut());
+        libraryDAO.setPrefix(libraryDB.getPrefix());
+        libraryDAO.setCounter(libraryDB.getCounter());
+        libraryDAO.setCounterType(libraryDB.getCounterType().toString());
+        libraryDAO.setLibraryType(libraryDB.getLibraryType().toString());
+        libraryDB.setIdxLength(libraryDB.getIdxLength());
 
         //fill association between library & users
-        List<CORAssociation> userAssociations = associationRepository.findByNameAndSourceIdAndTargetClass(GKAssociationConstants.GK_LIBRARY_HAS_USER, library.getId(), User.class.getSimpleName());
+        List<CORAssociation> userAssociations = associationRepository.findByNameAndSourceIdAndTargetClass(GKAssociationConstants.GK_LIBRARY_HAS_USER, libraryDB.getId(), User.class.getSimpleName());
         for (CORAssociation a: userAssociations)
-            libraryPT.addUsersItem(userMapper.userToCoreUserPT(userRepository.findOne(a.getTargetId())));
+            libraryDAO.addUsersItem(userMapper.userToCoreUserPT(userRepository.findOne(a.getTargetId())));
 
         //fill association between library & channel
-        List<CORAssociation> channelAssociations = associationRepository.findByNameAndSourceIdAndTargetClass(GKAssociationConstants.GK_LIBRARY_HAS_CHANNEL, library.getId(), CORChannel.class.getSimpleName());
+        List<CORAssociation> channelAssociations = associationRepository.findByNameAndSourceIdAndTargetClass(GKAssociationConstants.GK_LIBRARY_HAS_CHANNEL, libraryDB.getId(), CORChannel.class.getSimpleName());
         for (CORAssociation a: channelAssociations)
-            libraryPT.addChannelsItem(channelMapper.cORChannelToCORChannelDTO(channelRepository.findOne(a.getTargetId())));
+            libraryDAO.addChannelsItem(channelMapper.cORChannelToCORChannelDTO(channelRepository.findOne(a.getTargetId())));
 
-        return libraryPT;
+        return libraryDAO;
     }
 
     public List<LibraryPT> libLibraries2LibraryPTs(List<LIBLibrary> libraries) {
@@ -69,21 +76,27 @@ public class CustomLIBLibraryMapperExt {
         return list;
     }
 
-    public LIBLibrary libLibraryPTToLIBLibrary(LibraryPT library) {
+    public LIBLibrary libLibraryPTToLIBLibrary(LibraryPT libraryDAO) {
 
-        if ( library == null ) {
+        if ( libraryDAO == null ) {
 
             return null;
         }
 
-        LIBLibrary lIBLibrary = new LIBLibrary();
-        lIBLibrary.setNetwork( networkFromId(library.getNetworkId()));
-        lIBLibrary.setId( library.getId() );
-        lIBLibrary.setPrefix( library.getPrefix() );
-        lIBLibrary.setName( library.getName() );
-        lIBLibrary.setDescription( library.getDescription() );
+        LIBLibrary libraryDB = new LIBLibrary();
+        libraryDB.setNetwork( networkFromId(libraryDAO.getNetworkId()));
+        libraryDB.setId( libraryDAO.getId() );
+        libraryDB.setPrefix( libraryDAO.getPrefix() );
+        libraryDB.setName( libraryDAO.getName() );
+        libraryDB.setDescription( libraryDAO.getDescription() );
+        libraryDB.setShortcut(libraryDAO.getShortcut());
+        libraryDB.setPrefix(libraryDAO.getPrefix());
+        libraryDB.setCounter(libraryDAO.getCounter());
+        libraryDB.setCounterType(LIBCounterTypeEnum.valueOf(libraryDAO.getCounterType()));
+        libraryDB.setLibraryType(LIBObjectTypeEnum.valueOf(libraryDAO.getLibraryType()));
+        libraryDB.setIdxLength(libraryDAO.getIndexLength());
 
-        return lIBLibrary;
+        return libraryDB;
     }
 
     public List<LIBLibrary> libLibraryPTsToLibraries(List<LibraryPT> libraries) {
