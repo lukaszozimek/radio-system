@@ -1,11 +1,13 @@
 package io.protone.custom.service;
 
-import io.protone.domain.CORChannel;
-import io.protone.domain.CORNetwork;
-import io.protone.domain.LIBLibrary;
-import io.protone.repository.CCORChannelRepository;
+import io.protone.custom.consts.GKAssociationConstants;
+import io.protone.custom.service.dto.LibraryPT;
+import io.protone.custom.service.mapper.CustomCORChannelMapper;
+import io.protone.custom.service.mapper.ext.CustomCORUserMapperExt;
+import io.protone.custom.service.mapper.ext.CustomLIBLibraryMapperExt;
+import io.protone.domain.*;
 import io.protone.repository.CCORNetworkRepository;
-import io.protone.repository.LIBLibraryRepository;
+import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.LIBLibraryRepositoryEx;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +25,99 @@ public class LibraryService {
     @Inject
     private LIBLibraryRepositoryEx libraryRepository;
 
-    public List<LIBLibrary> findByNetworkShortcut(String networkShortcut) {
+    @Inject
+    CustomLIBLibraryMapperExt customLIBLibraryMapper;
+
+    @Inject
+    CustomCORChannelMapper customCORChannelMapper;
+
+    @Inject
+    CustomCORUserMapperExt userMapper;
+
+    @Inject
+    CORAssociationRepository associationRepository;
+
+    public List<LIBLibrary> findLibrary(String networkShortcut) {
         List<LIBLibrary> results = new ArrayList<>();
-        CORNetwork network = networkRepository.findByShortcut(networkShortcut);
+        CORNetwork network = getNetworkByShortcut(networkShortcut);
         if (network != null)
             results = libraryRepository.findByNetwork(network);
         return results;
     }
 
-    public LIBLibrary findByNetworkShortcutAndLibraryShortcut(String networkShortcut, String libraryShortcut) {
-        CORNetwork network = networkRepository.findByShortcut(networkShortcut);
+    public LIBLibrary findLibrary(String networkShortcut, String libraryShortcut) {
+        LIBLibrary result = null;
+        CORNetwork network = getNetworkByShortcut(networkShortcut);
         if (network != null)
-            return libraryRepository.findOneByNetworkAndShortcut(network, libraryShortcut).get();
-        return null;
+            result = libraryRepository.findOneByNetworkAndShortcut(network, libraryShortcut).get();
+        return result;
     }
+
+    @Transactional
+    public void deleteLibrary(String networkShortcut, String libraryShortcut) {
+        LIBLibrary libraryToDelete = findLibrary(networkShortcut, libraryShortcut);
+        if (libraryToDelete != null) {
+            deleteAssociations(libraryToDelete);
+            libraryRepository.delete(libraryToDelete);
+            libraryRepository.flush();
+        }
+    }
+
+    @Transactional
+    public LIBLibrary createOrUpdateLibrary(String networkShortcut, LibraryPT library) {
+
+        CORNetwork network = getNetworkByShortcut(networkShortcut);
+        LIBLibrary result = customLIBLibraryMapper.libLibraryPTToLIBLibrary(library);
+        result.setNetwork(network);
+        result = libraryRepository.saveAndFlush(result);
+
+        deleteAndCreateAssociations(library, result);
+
+        return result;
+    }
+
+    private CORNetwork getNetworkByShortcut(String networkShortcut) {
+        return networkRepository.findByShortcut(networkShortcut);
+    }
+
+    @Transactional
+    private void deleteAndCreateAssociations(LibraryPT libraryDAO, LIBLibrary libraryDB) {
+
+        deleteAssociations(libraryDB);
+
+        List<CORChannel> channelsDB = customCORChannelMapper.cORChannelDTOsToCORChannels(libraryDAO.getChannels());
+        for (CORChannel channel: channelsDB) {
+            CORAssociation association = new CORAssociation()
+                .name(GKAssociationConstants.GK_LIBRARY_HAS_CHANNEL)
+                .network(libraryDB.getNetwork())
+                .sourceClass(LIBLibrary.class.getSimpleName())
+                .sourceId(libraryDB.getId())
+                .targetClass(CORChannel.class.getSimpleName())
+                .targetId(channel.getId());
+            associationRepository.saveAndFlush(association);
+        }
+
+        List<User> usersDB = userMapper.coreUserPTsToUsers(libraryDAO.getUsers());
+        for (User user: usersDB) {
+            CORAssociation association = new CORAssociation()
+                .name(GKAssociationConstants.GK_LIBRARY_HAS_USER)
+                .network(libraryDB.getNetwork())
+                .sourceClass(LIBLibrary.class.getSimpleName())
+                .sourceId(libraryDB.getId())
+                .targetClass(User.class.getSimpleName())
+                .targetId(user.getId());
+            associationRepository.saveAndFlush(association);
+        }
+
+        associationRepository.flush();
+    }
+
+    @Transactional
+    private void deleteAssociations(LIBLibrary libraryDB) {
+        List<CORAssociation> associations = associationRepository.findBySourceClassAndSourceId(LIBLibrary.class.getSimpleName(), libraryDB.getId());
+        associationRepository.delete(associations);
+        associationRepository.flush();
+    }
+
+
 }

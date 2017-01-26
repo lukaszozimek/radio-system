@@ -14,6 +14,10 @@ import java.util.List;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class CoreUserPT   {
+
+  @JsonProperty("id")
+  private Long id = null;
+
   @JsonProperty("activated")
   private Boolean activated = null;
 
@@ -167,54 +171,63 @@ public class CoreUserPT   {
   }
 
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public Long getId() {
+        return id;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    CoreUserPT coreUserPT = (CoreUserPT) o;
-    return Objects.equals(this.activated, coreUserPT.activated) &&
-        Objects.equals(this.authorities, coreUserPT.authorities) &&
-        Objects.equals(this.email, coreUserPT.email) &&
-        Objects.equals(this.firstName, coreUserPT.firstName) &&
-        Objects.equals(this.langKey, coreUserPT.langKey) &&
-        Objects.equals(this.lastName, coreUserPT.lastName) &&
-        Objects.equals(this.login, coreUserPT.login);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(activated, authorities, email, firstName, langKey, lastName, login);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CoreUserPT)) return false;
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class CoreUserPT {\n");
+        CoreUserPT that = (CoreUserPT) o;
 
-    sb.append("    activated: ").append(toIndentedString(activated)).append("\n");
-    sb.append("    authorities: ").append(toIndentedString(authorities)).append("\n");
-    sb.append("    email: ").append(toIndentedString(email)).append("\n");
-    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    langKey: ").append(toIndentedString(langKey)).append("\n");
-    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-    sb.append("    login: ").append(toIndentedString(login)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getActivated() != null ? !getActivated().equals(that.getActivated()) : that.getActivated() != null)
+            return false;
+        if (getAuthorities() != null ? !getAuthorities().equals(that.getAuthorities()) : that.getAuthorities() != null)
+            return false;
+        if (getEmail() != null ? !getEmail().equals(that.getEmail()) : that.getEmail() != null) return false;
+        if (getFirstName() != null ? !getFirstName().equals(that.getFirstName()) : that.getFirstName() != null)
+            return false;
+        if (getLangKey() != null ? !getLangKey().equals(that.getLangKey()) : that.getLangKey() != null) return false;
+        if (getLastName() != null ? !getLastName().equals(that.getLastName()) : that.getLastName() != null)
+            return false;
+        if (getLogin() != null ? !getLogin().equals(that.getLogin()) : that.getLogin() != null) return false;
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
+        return true;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getActivated() != null ? getActivated().hashCode() : 0);
+        result = 31 * result + (getAuthorities() != null ? getAuthorities().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
+        result = 31 * result + (getLangKey() != null ? getLangKey().hashCode() : 0);
+        result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
+        result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("CoreUserPT{");
+        sb.append("id=").append(id);
+        sb.append(", activated=").append(activated);
+        sb.append(", authorities=").append(authorities);
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", langKey='").append(langKey).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", login='").append(login).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
 
