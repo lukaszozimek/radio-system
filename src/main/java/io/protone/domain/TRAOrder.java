@@ -36,8 +36,21 @@ public class TRAOrder implements Serializable {
 
     @Column(name = "calculated_prize")
     private Long calculatedPrize;
+    @ManyToOne
+    private CORNetwork network;
 
+    public TRAOrder network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
 
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
     public Long getId() {
         return id;
     }

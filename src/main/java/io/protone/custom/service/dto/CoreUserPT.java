@@ -17,7 +17,7 @@ public class CoreUserPT   {
   @JsonProperty("activated")
   private Boolean activated = null;
 
-  @JsonProperty("authorities")
+  @JsonProperty("authoritiesf")
   private List<String> authorities = new ArrayList<String>();
 
   @JsonProperty("email")
@@ -64,8 +64,8 @@ public class CoreUserPT   {
   }
 
    /**
-   * Get authorities
-   * @return authorities
+   * Get authoritiesf
+   * @return authoritiesf
   **/
   @ApiModelProperty(value = "")
   public List<String> getAuthorities() {
@@ -196,7 +196,7 @@ public class CoreUserPT   {
     sb.append("class CoreUserPT {\n");
 
     sb.append("    activated: ").append(toIndentedString(activated)).append("\n");
-    sb.append("    authorities: ").append(toIndentedString(authorities)).append("\n");
+    sb.append("    authoritiesf: ").append(toIndentedString(authorities)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    langKey: ").append(toIndentedString(langKey)).append("\n");

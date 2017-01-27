@@ -124,7 +124,7 @@ public class AccountResourceIntTest {
                 .andExpect(jsonPath("$.firstName").value("john"))
                 .andExpect(jsonPath("$.lastName").value("doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
-                .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
+                .andExpect(jsonPath("$.authoritiesf").value(AuthoritiesConstants.ADMIN));
     }
 
     @Test

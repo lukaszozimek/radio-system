@@ -15,7 +15,7 @@ public class CustomCORUserMapper {
 
     public CoreManagedUserPT transformUserEnity(User user) {
         return new CoreManagedUserPT()
-            .authorities(user.getAuthorities())
+            .authoritiesf(user.getAuthorities())
             .activated(user.getActivated())
             .createdBy(user.getCreatedBy())
             .email(user.getEmail())

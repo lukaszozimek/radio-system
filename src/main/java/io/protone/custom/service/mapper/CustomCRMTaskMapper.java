@@ -46,59 +46,63 @@ public class CustomCRMTaskMapper {
         return crmTask;
     }
 
-    public List<CORAssociation> createAccountTasksAssociationEntity(CRMAccount crmContact, List<CRMTask> crmTasks) {
-        return crmTasks.stream().map(crmTask -> createAccountTaskAssociationEntity(crmContact, crmTask)).collect(Collectors.toList());
+    public List<CORAssociation> createAccountTasksAssociationEntity(CRMAccount crmContact, List<CRMTask> crmTasks, CORNetwork corNetwork) {
+        return crmTasks.stream().map(crmTask -> createAccountTaskAssociationEntity(crmContact, crmTask, corNetwork)).collect(Collectors.toList());
     }
 
-    public CORAssociation createAccountTaskAssociationEntity(CRMAccount crmContact, CRMTask crmTask) {
+    public CORAssociation createAccountTaskAssociationEntity(CRMAccount crmContact, CRMTask crmTask, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CRMTask");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CRMTask.class.getName());
         association.setTargetId(crmTask.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public List<CORAssociation> createLeadTasksAssociationEntity(CRMLead lead, List<CRMTask> crmTasks) {
-        return crmTasks.stream().map(crmTask -> createLeadTaskAssociationEntity(lead, crmTask)).collect(Collectors.toList());
+    public List<CORAssociation> createLeadTasksAssociationEntity(CRMLead lead, List<CRMTask> crmTasks, CORNetwork corNetwork) {
+        return crmTasks.stream().map(crmTask -> createLeadTaskAssociationEntity(lead, crmTask, corNetwork)).collect(Collectors.toList());
     }
 
-    public CORAssociation createLeadTaskAssociationEntity(CRMLead lead, CRMTask crmTask) {
+    public CORAssociation createLeadTaskAssociationEntity(CRMLead lead, CRMTask crmTask, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CRMTask");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(CRMTask.class.getName());
         association.setTargetId(crmTask.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public List<CORAssociation> createOpportunityTasksAssociationEntity(CRMOpportunity crmContact, List<CRMTask> crmTasks) {
-        return crmTasks.stream().map(crmTask -> createOpportunityTaskAssociationEntity(crmContact, crmTask)).collect(Collectors.toList());
+    public List<CORAssociation> createOpportunityTasksAssociationEntity(CRMOpportunity crmContact, List<CRMTask> crmTasks, CORNetwork corNetwork) {
+        return crmTasks.stream().map(crmTask -> createOpportunityTaskAssociationEntity(crmContact, crmTask, corNetwork)).collect(Collectors.toList());
     }
 
-    public CORAssociation createOpportunityTaskAssociationEntity(CRMOpportunity opportunity, CRMTask crmTask) {
+    public CORAssociation createOpportunityTaskAssociationEntity(CRMOpportunity opportunity, CRMTask crmTask, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CRMTask");
         association.setSourceClass(CRMOpportunity.class.getName());
         association.setSourceId(opportunity.getId());
         association.setTargetClass(CRMTask.class.getName());
         association.setTargetId(crmTask.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public List<CORAssociation> createContactTasksAssociationEntity(CRMContact crmContact, List<CRMTask> crmTasks) {
-        return crmTasks.stream().map(crmTask -> createContactTaskAssociationEntity(crmContact, crmTask)).collect(Collectors.toList());
+    public List<CORAssociation> createContactTasksAssociationEntity(CRMContact crmContact, List<CRMTask> crmTasks, CORNetwork corNetwork) {
+        return crmTasks.stream().map(crmTask -> createContactTaskAssociationEntity(crmContact, crmTask, corNetwork)).collect(Collectors.toList());
     }
 
-    public CORAssociation createContactTaskAssociationEntity(CRMContact crmContact, CRMTask crmTask) {
+    public CORAssociation createContactTaskAssociationEntity(CRMContact crmContact, CRMTask crmTask, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CRMTask");
         association.setSourceClass(CRMContact.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CRMTask.class.getName());
         association.setTargetId(crmTask.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 }

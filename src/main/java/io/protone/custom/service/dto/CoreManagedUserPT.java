@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.Authority;
 import io.swagger.annotations.ApiModelProperty;
 
-
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * CoreManagedUserPT
@@ -17,7 +20,7 @@ public class CoreManagedUserPT {
     @JsonProperty("activated")
     private Boolean activated = null;
 
-    @JsonProperty("authorities")
+    @JsonProperty("authoritiesf")
     private Set<Authority> authorities = new HashSet<>();
 
     @JsonProperty("createdBy")
@@ -72,7 +75,7 @@ public class CoreManagedUserPT {
         this.activated = activated;
     }
 
-    public CoreManagedUserPT authorities(Set<Authority> authorities) {
+    public CoreManagedUserPT authoritiesf(Set<Authority> authorities) {
         this.authorities = authorities;
         return this;
     }
@@ -82,10 +85,28 @@ public class CoreManagedUserPT {
         return this;
     }
 
+    public CoreManagedUserPT authorities(Set<String> authoritiey) {
+        this.authorities = authoritiey.stream().map(
+            authoritie -> {
+                Authority auth = new Authority();
+                auth.setName(authoritie);
+                return auth;
+            }
+        ).collect(toSet());
+        return this;
+    }
+
+    public CoreManagedUserPT addAuthoritiesItem(String authoritiesItem) {
+        Authority authority = new Authority();
+        authority.setName(authoritiesItem);
+        this.authorities.add(authority);
+        return this;
+    }
+
     /**
-     * Get authorities
+     * Get authoritiesf
      *
-     * @return authorities
+     * @return authoritiesf
      **/
     @ApiModelProperty(value = "")
     public Set<Authority> getAuthorities() {
@@ -341,7 +362,7 @@ public class CoreManagedUserPT {
         sb.append("class CoreManagedUserPT {\n");
 
         sb.append("    activated: ").append(toIndentedString(activated)).append("\n");
-        sb.append("    authorities: ").append(toIndentedString(authorities)).append("\n");
+        sb.append("    authoritiesf: ").append(toIndentedString(authorities)).append("\n");
         sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
         sb.append("    createdDate: ").append(toIndentedString(createdDate)).append("\n");
         sb.append("    email: ").append(toIndentedString(email)).append("\n");

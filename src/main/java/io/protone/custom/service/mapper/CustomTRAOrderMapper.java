@@ -55,36 +55,39 @@ public class CustomTRAOrderMapper {
     }
 
 
-    public List<CORAssociation> createScheduledEmissionAssociationList(TRAOrder order, List<SCHEmission> schEmissionsList) {
+    public List<CORAssociation> createScheduledEmissionAssociationList(TRAOrder order, List<SCHEmission> schEmissionsList,CORNetwork corNetwork) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
         schEmissionsList.stream().forEach(schEmission -> {
-            corAssociationList.add(createScheduledEmissionAssociation(order, schEmission));
+            corAssociationList.add(createScheduledEmissionAssociation(order, schEmission,corNetwork));
         });
         return corAssociationList;
     }
 
-    public CORAssociation createScheduledEmissionAssociation(TRAOrder traOrder, SCHEmission schEmission) {
+    public CORAssociation createScheduledEmissionAssociation(TRAOrder traOrder, SCHEmission schEmission,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER SCHEDULED EMISSION")
             .sourceId(traOrder.getId())
             .sourceClass(TRAOrder.class.getName())
             .targetId(schEmission.getId())
-            .targetClass(SCHEmission.class.getName());
+            .targetClass(SCHEmission.class.getName())
+            .network(corNetwork);
     }
 
-    public CORAssociation createCrmAccountAssociation(TRAOrder traOrder, CRMAccount crmAccount) {
+    public CORAssociation createCrmAccountAssociation(TRAOrder traOrder, CRMAccount crmAccount,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER customer")
             .sourceId(traOrder.getId())
             .sourceClass(TRAOrder.class.getName())
             .targetId(crmAccount.getId())
-            .targetClass(CRMAccount.class.getName());
+            .targetClass(CRMAccount.class.getName())
+            .network(corNetwork);
     }
 
-    public CORAssociation createTraCampaignAssociation(TRAOrder traOrder, TRACampaign campaign) {
+    public CORAssociation createTraCampaignAssociation(TRAOrder traOrder, TRACampaign campaign,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER CAMPAIGN")
             .sourceId(traOrder.getId())
             .sourceClass(TRAOrder.class.getName())
             .targetId(campaign.getId())
-            .targetClass(TRACampaign.class.getName());
+            .targetClass(TRACampaign.class.getName())
+            .network(corNetwork);
     }
 
 }

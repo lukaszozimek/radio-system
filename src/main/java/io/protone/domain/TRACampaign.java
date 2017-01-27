@@ -36,7 +36,8 @@ public class TRACampaign implements Serializable {
 
     @Column(name = "prize")
     private Long prize;
-
+    @ManyToOne
+    private CORNetwork network;
 
     public Long getId() {
         return id;
@@ -128,5 +129,18 @@ public class TRACampaign implements Serializable {
             ", endDate='" + endDate + "'" +
             ", prize='" + prize + "'" +
             '}';
+    }
+
+    public TRACampaign network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
     }
 }

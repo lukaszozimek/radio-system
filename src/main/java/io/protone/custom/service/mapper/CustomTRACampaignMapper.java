@@ -38,27 +38,29 @@ public class CustomTRACampaignMapper {
             .customerId(traCustomerPT);
     }
 
-    public List<CORAssociation> createListSCHEmissionAssociation(TRACampaign campaign, List<SCHEmission> emissions) {
+    public List<CORAssociation> createListSCHEmissionAssociation(TRACampaign campaign, List<SCHEmission> emissions,CORNetwork corNetwork) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
         emissions.stream().forEach(emission -> corAssociationList.add(createSCHEmissionAssociation(campaign
-            , emission)));
+            , emission,corNetwork)));
         return corAssociationList;
     }
 
-    public CORAssociation createSCHEmissionAssociation(TRACampaign campaign, SCHEmission emission) {
+    public CORAssociation createSCHEmissionAssociation(TRACampaign campaign, SCHEmission emission,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER SCHEDULED EMISSION")
             .sourceId(campaign.getId())
             .sourceClass(TRACampaign.class.getName())
             .targetId(emission.getId())
-            .targetClass(SCHEmission.class.getName());
+            .targetClass(SCHEmission.class.getName())
+            .network(corNetwork);
     }
 
-    public CORAssociation createCrmAccountAssociation(TRACampaign campaign, CRMAccount crmAccount) {
+    public CORAssociation createCrmAccountAssociation(TRACampaign campaign, CRMAccount crmAccount,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER customer")
             .sourceId(campaign.getId())
             .sourceClass(TRAInvoice.class.getName())
             .targetId(crmAccount.getId())
-            .targetClass(CRMAccount.class.getName());
+            .targetClass(CRMAccount.class.getName())
+            .network(corNetwork);
     }
 
 }
