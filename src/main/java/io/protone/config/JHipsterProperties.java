@@ -13,6 +13,8 @@ import org.springframework.web.cors.CorsConfiguration;
 @ConfigurationProperties(prefix = "jhipster", ignoreUnknownFields = false)
 public class JHipsterProperties {
 
+    private final S3 s3 = new S3();
+
     private final Async async = new Async();
 
     private final Http http = new Http();
@@ -30,6 +32,8 @@ public class JHipsterProperties {
     private final CorsConfiguration cors = new CorsConfiguration();
 
     private final Ribbon ribbon = new Ribbon();
+
+    public S3 getS3() { return s3; }
 
     public Async getAsync() {
         return async;
@@ -65,6 +69,49 @@ public class JHipsterProperties {
 
     public Ribbon getRibbon() {
         return ribbon;
+    }
+
+    public static class S3 {
+
+        private String url = "the_url";
+
+        private String username = "the_username";
+
+        private String password = "the_password";
+
+        private String bucket = "the_bucket";
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getBucket() {
+            return bucket;
+        }
+
+        public void setBucket(String bucket) {
+            this.bucket = bucket;
+        }
     }
 
     public static class Async {
