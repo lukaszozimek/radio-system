@@ -32,6 +32,21 @@ public class TRAInvoice implements Serializable {
     @Column(name = "payment_day")
     private LocalDate paymentDay;
 
+    @ManyToOne
+    private CORNetwork network;
+
+    public TRAInvoice network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
 
     public Long getId() {
         return id;

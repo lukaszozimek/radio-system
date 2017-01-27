@@ -68,17 +68,17 @@ public class TRACustomerService {
         TRAIndustry industry = customCRMAccountMapper.createIndustryEntity(traCustomerPT);
         CORSize corSize = customCRMAccountMapper.createCorSizeEntity(traCustomerPT);
         CORRange corRange = customCRMAccountMapper.createRangeEntity(traCustomerPT);
-        corAssociationRepository.save(customCRMAccountMapper.createAccountIndustryAssociationEntity(crmAccount, industry));
-        corAssociationRepository.save(customCRMAccountMapper.createAccountAreaAssociationEntity(crmAccount, area));
-        corAssociationRepository.save(customCRMAccountMapper.createAccountSizeAssociationEntity(crmAccount, corSize));
-        corAssociationRepository.save(customCRMAccountMapper.createAccountRangeAssociationEntity(crmAccount, corRange));
-        corAssociationRepository.save(customCRMAccountMapper.createAddressAssociationEntity(crmAccount, addres));
+        corAssociationRepository.save(customCRMAccountMapper.createAccountIndustryAssociationEntity(crmAccount, industry,corNetwork));
+        corAssociationRepository.save(customCRMAccountMapper.createAccountAreaAssociationEntity(crmAccount, area,corNetwork));
+        corAssociationRepository.save(customCRMAccountMapper.createAccountSizeAssociationEntity(crmAccount, corSize,corNetwork));
+        corAssociationRepository.save(customCRMAccountMapper.createAccountRangeAssociationEntity(crmAccount, corRange,corNetwork));
+        corAssociationRepository.save(customCRMAccountMapper.createAddressAssociationEntity(crmAccount, addres,corNetwork));
         Map<CORPerson, List<CORContact>> savedEntities = new HashMap<>();
         personCORContactMap.keySet().stream().forEach(person -> {
             CORPerson personSaved = corPersonRepository.save(person);
             List<CORContact> personContactList = corContactRepository.save(personCORContactMap.get(person));
-            corAssociationRepository.save(customCRMAccountMapper.createAccountPersonAssociationEntity(crmAccount, personSaved));
-            corAssociationRepository.save(customCRMAccountMapper.createPersonAccountAssociationEntity(person, personContactList));
+            corAssociationRepository.save(customCRMAccountMapper.createAccountPersonAssociationEntity(crmAccount, personSaved,corNetwork));
+            corAssociationRepository.save(customCRMAccountMapper.createPersonAccountAssociationEntity(person, personContactList,corNetwork));
             savedEntities.put(personSaved, personContactList);
         });
         return customCRMAccountMapper.createCustomerTrafficDTO(crmAccount, addres, corSize, corRange, area, savedEntities, industry, new CoreManagedUserPT());

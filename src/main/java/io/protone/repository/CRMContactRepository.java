@@ -16,6 +16,8 @@ import java.util.List;
 public interface CRMContactRepository extends JpaRepository<CRMContact, Long> {
 
     List<CRMContact> findByNetwork(CORNetwork network);
+
+    CRMContact findOneByIdAndNetwork(Long id,CORNetwork network);
     CRMContact findOneByShortNameAndNetwork(String shortName,CORNetwork network);
     void deleteByShortNameAndNetwork(String shortName,CORNetwork network);
 }

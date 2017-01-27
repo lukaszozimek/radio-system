@@ -78,7 +78,7 @@ public class CRMContactService {
     }
 
     public CrmContactPT saveContact(CrmContactPT crmContactPT, CORNetwork corNetwork) {
-        CRMContact crmContact = customCRMContactMapper.createCrmContactEntity(crmContactPT);
+        CRMContact crmContact = customCRMContactMapper.createCrmContactEntity(crmContactPT, corNetwork);
         Map<CORPerson, List<CORContact>> personCORContactMap = customCRMContactMapper.createMapPersonContact(crmContactPT);
         CORAddress addres = customCRMContactMapper.createAdressEntity(crmContactPT);
         CORArea area = customCRMContactMapper.createCorAreaEntity(crmContactPT);
@@ -88,47 +88,54 @@ public class CRMContactService {
         crmContact = crmContactRepository.save(crmContact);
         addres = corAddressRepository.save(addres);
         CRMContact finalCrmContact = crmContact;
-        corAssociationRepository.save(customCRMContactMapper.createContactIndustryAssociationEntity(crmContact, industry));
-        corAssociationRepository.save(customCRMContactMapper.createContactAreaAssociationEntity(crmContact, area));
-        corAssociationRepository.save(customCRMContactMapper.createContactSizeAssociationEntity(crmContact, corSize));
-        corAssociationRepository.save(customCRMContactMapper.createContactRangeAssociationEntity(crmContact, corRange));
-        corAssociationRepository.save(customCRMContactMapper.createAddressAssociationEntity(crmContact, addres));
+        corAssociationRepository.save(customCRMContactMapper.createContactIndustryAssociationEntity(crmContact, industry, corNetwork));
+        corAssociationRepository.save(customCRMContactMapper.createContactAreaAssociationEntity(crmContact, area, corNetwork));
+        corAssociationRepository.save(customCRMContactMapper.createContactSizeAssociationEntity(crmContact, corSize, corNetwork));
+        corAssociationRepository.save(customCRMContactMapper.createContactRangeAssociationEntity(crmContact, corRange, corNetwork));
+        corAssociationRepository.save(customCRMContactMapper.createAddressAssociationEntity(crmContact, addres, corNetwork));
         List<CrmTaskPT> crmTask = crmTaskService.saveContactTask(crmContact, crmContactPT, corNetwork);
 
         Map<CORPerson, List<CORContact>> savedEntities = new HashMap<>();
         personCORContactMap.keySet().stream().forEach(person -> {
             CORPerson personSaved = corPersonRepository.save(person);
             List<CORContact> personContactList = corContactRepository.save(personCORContactMap.get(person));
-            corAssociationRepository.save(customCRMContactMapper.createContactPersonAssociationEntity(finalCrmContact, personSaved));
-            corAssociationRepository.save(customCRMContactMapper.createPersonContactAssociationEntity(person, personContactList));
+            corAssociationRepository.save(customCRMContactMapper.createContactPersonAssociationEntity(finalCrmContact, personSaved, corNetwork));
+            corAssociationRepository.save(customCRMContactMapper.createPersonContactAssociationEntity(personSaved, personContactList, corNetwork));
             savedEntities.put(personSaved, personContactList);
         });
-        return customCRMContactMapper.buildContactDTOFromEntities(crmContact, addres, corSize, corRange, area, crmTask, savedEntities, industry, new CoreManagedUserPT());
+        return customCRMContactMapper.buildContactDTOFromEntities(crmContact, addres, corSize, corRange, area, crmTask, savedEntities, industry, new CoreManagedUserPT(),corNetwork);
     }
 
     public void deleteContact(String shortcut, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        deleteContact(crmContact, corNetwork);
+    }
+
+    public void deleteContact(Long id, CORNetwork corNetwork) {
+        CRMContact crmContact = crmContactRepository.findOneByIdAndNetwork(id, corNetwork);
         deleteContact(crmContact, corNetwork);
     }
 
     public CrmContactPT getContact(String shortcut, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         return fetchContact(crmContact, corNetwork);
     }
 
     private CrmContactPT fetchContact(CRMContact crmContact, CORNetwork corNetwork) {
-        List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORAddress.class.getName(),corNetwork);
-        List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORArea.class.getName(),corNetwork);
-        List<CORAssociation> contactSizeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORSize.class.getName(),corNetwork);
-        List<CORAssociation> contactRangeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORRange.class.getName(),corNetwork);
-        List<CORAssociation> contactIndustryAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), TRAIndustry.class.getName(),corNetwork);
-        List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORPerson.class.getName(),corNetwork);
+        List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORAddress.class.getName(), corNetwork);
+        List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORArea.class.getName(), corNetwork);
+        List<CORAssociation> contactSizeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORSize.class.getName(), corNetwork);
+        List<CORAssociation> contactRangeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORRange.class.getName(), corNetwork);
+        List<CORAssociation> contactIndustryAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), TRAIndustry.class.getName(), corNetwork);
+        List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORPerson.class.getName(), corNetwork);
 
-        List<CORAssociation> contactPersonContactAssociation = new ArrayList<CORAssociation>();
+
         Map<CORPerson, List<CORContact>> fetchedEntites = new HashMap<>();
         contactPersonAssociation.stream().forEach(person -> {
+            List<CORAssociation> contactPersonContactAssociation = new ArrayList<CORAssociation>();
             CORPerson corPerson = corPersonRepository.findOne(person.getTargetId());
-            List<Long> corContacts = contactPersonContactAssociation.stream().filter(association -> corPerson.getId().equals(association.getId())).map(CORAssociation::getTargetId).collect(toList());
+            contactPersonContactAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(corPerson.getId(), CORContact.class.getName(), corNetwork);
+            List<Long> corContacts = contactPersonContactAssociation.stream().map(CORAssociation::getTargetId).collect(toList());
             List<CORContact> contacts = corContactRepository.findAll(corContacts);
             fetchedEntites.put(corPerson, contacts);
         });
@@ -140,23 +147,23 @@ public class CRMContactService {
 
 
         List<CrmTaskPT> crmTaskPTS = crmTaskService.getCrmContactTask(crmContact, corNetwork);
-        return customCRMContactMapper.buildContactDTOFromEntities(crmContact, address, size, range, area, crmTaskPTS, fetchedEntites, industry, new CoreManagedUserPT());
+        return customCRMContactMapper.buildContactDTOFromEntities(crmContact, address, size, range, area, crmTaskPTS, fetchedEntites, industry, new CoreManagedUserPT(), corNetwork);
     }
 
     public CrmContactPT update(CrmContactPT crmContactPT, CORNetwork corNetwork) {
 
-        deleteContact(crmContactPT.getShortName(), corNetwork);
+        deleteContact(crmContactPT.getId(), corNetwork);
         return saveContact(crmContactPT, corNetwork);
 
     }
 
     private void deleteContact(CRMContact crmContact, CORNetwork corNetwork) {
-        List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORAddress.class.getName(),corNetwork);
-        List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORArea.class.getName(),corNetwork);
-        List<CORAssociation> contactSizeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORSize.class.getName(),corNetwork);
-        List<CORAssociation> contactRangeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORRange.class.getName(),corNetwork);
-        List<CORAssociation> contactIndustryAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), TRAIndustry.class.getName(),corNetwork);
-        List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORPerson.class.getName(),corNetwork);
+        List<CORAssociation> contactAddressAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORAddress.class.getName(), corNetwork);
+        List<CORAssociation> contactAreaAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORArea.class.getName(), corNetwork);
+        List<CORAssociation> contactSizeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORSize.class.getName(), corNetwork);
+        List<CORAssociation> contactRangeAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORRange.class.getName(), corNetwork);
+        List<CORAssociation> contactIndustryAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), TRAIndustry.class.getName(), corNetwork);
+        List<CORAssociation> contactPersonAssociation = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(crmContact.getId(), CORPerson.class.getName(), corNetwork);
         List<CORAssociation> contactPersonContactAssociation = new ArrayList<CORAssociation>();
         contactPersonAssociation.stream().forEach(person -> {
             CORPerson corPerson = corPersonRepository.findOne(person.getTargetId());
@@ -179,27 +186,27 @@ public class CRMContactService {
     }
 
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         return crmTaskService.getTasksAssociatedWithContact(crmContact, corNetwork);
     }
 
     public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         return crmTaskService.getTaskAssociatedWithContact(crmContact, taskId, corNetwork);
     }
 
     public void deleteLeadTask(String shortcut, Long taskId, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         crmTaskService.deleteContactTask(crmContact, taskId, corNetwork);
     }
 
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         return crmTaskService.createTasksAssociatedWithContact(crmContact, taskPT, corNetwork);
     }
 
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask, CORNetwork corNetwork) {
-        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
+        CRMContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         return crmTaskService.updateTaskContact(crmContact, crmTask, corNetwork);
 
 

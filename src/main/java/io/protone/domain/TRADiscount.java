@@ -30,7 +30,21 @@ public class TRADiscount implements Serializable {
 
     @Column(name = "discount")
     private Long discount;
+    @ManyToOne
+    private CORNetwork network;
 
+    public TRADiscount network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
 
     public Long getId() {
         return id;

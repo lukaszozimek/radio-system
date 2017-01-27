@@ -21,7 +21,7 @@ public class CoreUserPT   {
   @JsonProperty("activated")
   private Boolean activated = null;
 
-  @JsonProperty("authorities")
+  @JsonProperty("authoritiesf")
   private List<String> authorities = new ArrayList<String>();
 
   @JsonProperty("email")
@@ -68,8 +68,8 @@ public class CoreUserPT   {
   }
 
    /**
-   * Get authorities
-   * @return authorities
+   * Get authoritiesf
+   * @return authoritiesf
   **/
   @ApiModelProperty(value = "")
   public List<String> getAuthorities() {
@@ -179,6 +179,7 @@ public class CoreUserPT   {
         this.id = id;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -228,6 +229,7 @@ public class CoreUserPT   {
         sb.append(", login='").append(login).append('\'');
         sb.append('}');
         return sb.toString();
+
     }
 }
 

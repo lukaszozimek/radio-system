@@ -29,6 +29,8 @@ public class TRAAdvertisement implements Serializable {
 
     @Column(name = "description")
     private String description;
+    @ManyToOne
+    private CORNetwork network;
 
     public Long getId() {
         return id;
@@ -42,13 +44,13 @@ public class TRAAdvertisement implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TRAAdvertisement name(String name) {
         this.name = name;
         return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -87,5 +89,18 @@ public class TRAAdvertisement implements Serializable {
             ", name='" + name + "'" +
             ", description='" + description + "'" +
             '}';
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
+
+    public TRAAdvertisement network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
     }
 }

@@ -63,11 +63,11 @@ public class CRMOpportunityService {
     }
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT, CORNetwork corNetwork) {
-        CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT));
+        CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT, corNetwork));
         CRMStage stage = stageRepository.findByNameAndNetwork(opportunityPT.getStage().getName(), corNetwork);
-        CRMContact contact = crmContactRepository.findOne(customCRMContactMapper.createCrmContactEntity(opportunityPT.getContact()).getId());
-        associationRepository.save(customCRMOpportunityMapper.createOpportunityContactAssociationEntity(opportunity, contact));
-        associationRepository.save(customCRMOpportunityMapper.createOpportunityStageAssociationEntity(opportunity, stage));
+        CRMContact contact = crmContactRepository.findOne(customCRMContactMapper.createCrmContactEntity(opportunityPT.getContact(), corNetwork).getId());
+        associationRepository.save(customCRMOpportunityMapper.createOpportunityContactAssociationEntity(opportunity, contact, corNetwork));
+        associationRepository.save(customCRMOpportunityMapper.createOpportunityStageAssociationEntity(opportunity, stage, corNetwork));
         List<CrmTaskPT> crmTaskPTS = taskService.saveOpportunity(opportunity, opportunityPT, corNetwork);
         CrmContactPT crmContactPT = crmContactService.getContact(contact.getShortName(), corNetwork);
         return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, new CoreManagedUserPT(), crmContactPT, crmTaskPTS);

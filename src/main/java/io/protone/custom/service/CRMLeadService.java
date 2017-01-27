@@ -122,13 +122,13 @@ public class CRMLeadService {
         List<CORContact> contact = corContactRepository.save(customCRMLeadMapper.createContactEntity(lead));
         CORPerson person = corPersonRepository.save(customCRMLeadMapper.createPersonEntity(lead));
 
-        associations.add(customCRMLeadMapper.createAddressAssociationEntity(crmLead, corAddress));
-        associations.add(customCRMLeadMapper.createLeadAreaAssociationEntity(crmLead, corArea));
-        associations.add(customCRMLeadMapper.createLeadStatusAssociationEntity(crmLead, leadStatus));
-        associations.add(customCRMLeadMapper.createLeadSourceAssociationEntity(crmLead, leadSource));
-        associations.add(customCRMLeadMapper.createLeadIndustryAssociationEntity(crmLead, industry));
-        associations.add(customCRMLeadMapper.createLeadPersonAssociationEntity(crmLead, person));
-        associations.addAll(customCRMLeadMapper.createLeadContactAssociationEntity(person, contact));
+        associations.add(customCRMLeadMapper.createAddressAssociationEntity(crmLead, corAddress, corNetwork));
+        associations.add(customCRMLeadMapper.createLeadAreaAssociationEntity(crmLead, corArea, corNetwork));
+        associations.add(customCRMLeadMapper.createLeadStatusAssociationEntity(crmLead, leadStatus, corNetwork));
+        associations.add(customCRMLeadMapper.createLeadSourceAssociationEntity(crmLead, leadSource, corNetwork));
+        associations.add(customCRMLeadMapper.createLeadIndustryAssociationEntity(crmLead, industry, corNetwork));
+        associations.add(customCRMLeadMapper.createLeadPersonAssociationEntity(crmLead, person, corNetwork));
+        associations.addAll(customCRMLeadMapper.createLeadContactAssociationEntity(person, contact, corNetwork));
         associationRepository.save(associations);
         List<CrmTaskPT> crmTaskPTS = crmTaskService.saveLeadTasks(lead, crmLead, corNetwork);
         return customCRMLeadMapper.createDTOFromEntites(crmLead, crmTaskPTS, person, corAddress, contact, industry, corArea, leadSource, leadStatus);

@@ -98,7 +98,7 @@ public class CRMTaskService {
         crmContactPT.getTasks().stream().forEach(crmTaskPT -> {
 
             CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmTaskPT));
-            corAssociationRepository.save(customCRMTaskMapper.createContactTaskAssociationEntity(crmContact, crmTask));
+            corAssociationRepository.save(customCRMTaskMapper.createContactTaskAssociationEntity(crmContact, crmTask, corNetwork));
             corAssociationRepository.save(customCORUserMapper.createCRMAssignetToTaskAssociation(crmTask, customCORUserMapper.tranformUserDTO(crmTaskPT.getAssignedTo()), corNetwork));
             corAssociationRepository.save(customCORUserMapper.createCRMCreatedByTaskAssociation(crmTask, customCORUserMapper.tranformUserDTO(crmTaskPT.getCreatedBy()), corNetwork));
 
@@ -237,7 +237,7 @@ public class CRMTaskService {
 
     public CrmTaskPT getTaskAssociatedWithContact(CRMContact crmContact, Long taskId, CORNetwork corNetwork) {
         CORAssociation task = corAssociationRepository.findBySourceIdAndTargetIdAndTargetClassAndNetwork(crmContact.getId(), taskId, CRMTask.class.getName(), corNetwork);
-        CRMTask crmTask = crmTaskRepository.findOne(task.getId());
+        CRMTask crmTask = crmTaskRepository.findOne(task.getTargetId());
         return createTaskById(crmTask.getId(), corNetwork);
     }
 
@@ -251,7 +251,7 @@ public class CRMTaskService {
         corNetwork) {
 
         CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(taskPT));
-        corAssociationRepository.save(customCRMTaskMapper.createContactTaskAssociationEntity(crmContact, crmTask));
+        corAssociationRepository.save(customCRMTaskMapper.createContactTaskAssociationEntity(crmContact, crmTask,corNetwork));
         corAssociationRepository.save(customCORUserMapper.createCRMAssignetToTaskAssociation(crmTask, customCORUserMapper.tranformUserDTO(taskPT.getAssignedTo()), corNetwork));
         corAssociationRepository.save(customCORUserMapper.createCRMCreatedByTaskAssociation(crmTask, customCORUserMapper.tranformUserDTO(taskPT.getCreatedBy()), corNetwork));
 

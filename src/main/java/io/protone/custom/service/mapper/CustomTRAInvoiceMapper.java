@@ -33,26 +33,28 @@ public class CustomTRAInvoiceMapper {
             .customerId(customerPT);
     }
 
-    public List<CORAssociation> createListOrderAssociation(TRAInvoice traInvoice, List<TRAOrder> traOrderList) {
+    public List<CORAssociation> createListOrderAssociation(TRAInvoice traInvoice, List<TRAOrder> traOrderList,CORNetwork corNetwork) {
         List<CORAssociation> corAssociationList = new ArrayList<>();
-        traOrderList.stream().forEach(traOrder -> corAssociationList.add(createOrderAssociation(traInvoice, traOrder)));
+        traOrderList.stream().forEach(traOrder -> corAssociationList.add(createOrderAssociation(traInvoice, traOrder,corNetwork)));
         return corAssociationList;
     }
 
-    public CORAssociation createOrderAssociation(TRAInvoice traInvoice, TRAOrder traOrder) {
+    public CORAssociation createOrderAssociation(TRAInvoice traInvoice, TRAOrder traOrder,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER SCHEDULED EMISSION")
             .sourceId(traInvoice.getId())
             .sourceClass(TRAInvoice.class.getName())
             .targetId(traOrder.getId())
-            .targetClass(TRAOrder.class.getName());
+            .targetClass(TRAOrder.class.getName())
+            .network(corNetwork);
     }
 
-    public CORAssociation createCrmAccountAssociation(TRAInvoice traInvoice, CRMAccount crmAccount) {
+    public CORAssociation createCrmAccountAssociation(TRAInvoice traInvoice, CRMAccount crmAccount,CORNetwork corNetwork) {
         return new CORAssociation().name("ORDER customer")
             .sourceId(traInvoice.getId())
             .sourceClass(TRAInvoice.class.getName())
             .targetId(crmAccount.getId())
-            .targetClass(CRMAccount.class.getName());
+            .targetClass(CRMAccount.class.getName())
+            .network(corNetwork);
     }
 
 }

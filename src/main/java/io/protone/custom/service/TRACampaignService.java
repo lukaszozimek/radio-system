@@ -60,8 +60,8 @@ public class TRACampaignService {
         traCampaign = traCampaignRepository.save(traCampaign);
         List<SCHEmission> schEmissionList = customSCHEmissionMapper.createListEmissionFromListDTO(campaignPT.getEmission());
         CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(campaignPT.getCustomerId());
-        corAssociationRepositor.save(customTRACampaignMapper.createCrmAccountAssociation(traCampaign, crmAccount));
-        corAssociationRepositor.save(customTRACampaignMapper.createListSCHEmissionAssociation(traCampaign, schEmissionList));
+        corAssociationRepositor.save(customTRACampaignMapper.createCrmAccountAssociation(traCampaign, crmAccount,corNetwork));
+        corAssociationRepositor.save(customTRACampaignMapper.createListSCHEmissionAssociation(traCampaign, schEmissionList,corNetwork));
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign, customSCHEmissionMapper.createDTOFromListEntites(new HashMap<>()), traCustomerService.getCustomer(crmAccount, corNetwork));
     }
 

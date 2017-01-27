@@ -66,8 +66,8 @@ public class TRAInvoiceService {
         List<TRAOrder> traOrders = customTRAOrderMapper.trasnformDTOtoEntity(traInvoicePT.getOrder());
         List<Long> traOrdersId = traOrders.stream().map(TRAOrder::getId).collect(toList());
         invoice = traInvoiceRepository.save(invoice);
-        corAssociationRepository.save(customTRAInvoiceMapper.createCrmAccountAssociation(invoice, crmAccount));
-        corAssociationRepository.save(customTRAInvoiceMapper.createListOrderAssociation(invoice, traOrders));
+        corAssociationRepository.save(customTRAInvoiceMapper.createCrmAccountAssociation(invoice, crmAccount,corNetwork));
+        corAssociationRepository.save(customTRAInvoiceMapper.createListOrderAssociation(invoice, traOrders,corNetwork));
         return customTRAInvoiceMapper.createDTOFromEnity(invoice, traOrderService.getOrdersById(traOrdersId, corNetwork), customerService.getCustomer(crmAccount, corNetwork));
     }
 

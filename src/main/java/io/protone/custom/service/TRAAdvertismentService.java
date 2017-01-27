@@ -61,9 +61,9 @@ public class TRAAdvertismentService {
         TRAIndustry industry = customTRAIndustryMapper.tRAIndustryDTOToTRAIndustry(traAdvertisementPT.getIndustryId());
         CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId());
         LIBMediaItem libMediaItem = libMediaItemRepository.findOne(1L);
-        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentCrmAccountAssociation(traAdvertisement, crmAccount));
-        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentIndustryAssociation(traAdvertisement, industry));
-        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentMediaItemAssociation(traAdvertisement, libMediaItem));
+        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentCrmAccountAssociation(traAdvertisement, crmAccount,corNetwork));
+        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentIndustryAssociation(traAdvertisement, industry,corNetwork));
+        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentMediaItemAssociation(traAdvertisement, libMediaItem,corNetwork));
         return traAdvertismentMapper.transformEntityToDTO(traAdvertisement, industry, crmAccount, new LibItemPT());
     }
 

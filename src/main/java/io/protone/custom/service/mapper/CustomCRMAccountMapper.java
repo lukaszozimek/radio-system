@@ -169,87 +169,95 @@ public class CustomCRMAccountMapper {
 
     }
 
-    public CORAssociation createAddressAssociationEntity(CRMAccount crmContact, CORAddress address) {
+    public CORAssociation createAddressAssociationEntity(CRMAccount crmContact, CORAddress address,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("ADDRESS");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORAddress.class.getName());
         association.setTargetId(address.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountRangeAssociationEntity(CRMAccount crmContact, CORRange range) {
+    public CORAssociation createAccountRangeAssociationEntity(CRMAccount crmContact, CORRange range,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("RANGE");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORRange.class.getName());
         association.setTargetId(range.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountSizeAssociationEntity(CRMAccount crmContact, CORSize size) {
+    public CORAssociation createAccountSizeAssociationEntity(CRMAccount crmContact, CORSize size,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("SIZE");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORSize.class.getName());
         association.setTargetId(size.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountIndustryAssociationEntity(CRMAccount crmContact, TRAIndustry industry) {
+    public CORAssociation createAccountIndustryAssociationEntity(CRMAccount crmContact, TRAIndustry industry,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("TRAIndustry");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(TRAIndustry.class.getName());
         association.setTargetId(industry.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountAreaAssociationEntity(CRMAccount crmAccount, CORArea area) {
+    public CORAssociation createAccountAreaAssociationEntity(CRMAccount crmAccount, CORArea area,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CORArea");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmAccount.getId());
         association.setTargetClass(CORArea.class.getName());
         association.setTargetId(area.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountOrderAssociationEntity(CRMAccount crmAccount, TRAOrder order) {
+    public CORAssociation createAccountOrderAssociationEntity(CRMAccount crmAccount, TRAOrder order,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CORArea");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmAccount.getId());
         association.setTargetClass(TRAOrder.class.getName());
         association.setTargetId(order.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountCampaingAssociationEntity(CRMAccount crmAccount, TRACampaign campaign) {
+    public CORAssociation createAccountCampaingAssociationEntity(CRMAccount crmAccount, TRACampaign campaign,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CORArea");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmAccount.getId());
         association.setTargetClass(TRACampaign.class.getName());
         association.setTargetId(campaign.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createAccountPersonAssociationEntity(CRMAccount crmContact, CORPerson corPerson) {
+    public CORAssociation createAccountPersonAssociationEntity(CRMAccount crmContact, CORPerson corPerson,CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CORPerson");
         association.setSourceClass(CRMAccount.class.getName());
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CORPerson.class.getName());
         association.setTargetId(corPerson.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public List<CORAssociation> createPersonAccountAssociationEntity(CORPerson person, List<CORContact> corContacts) {
+    public List<CORAssociation> createPersonAccountAssociationEntity(CORPerson person, List<CORContact> corContacts,CORNetwork corNetwork) {
         List<CORAssociation> associations = new ArrayList<>();
         for (CORContact corContact : corContacts) {
             CORAssociation association = new CORAssociation();
@@ -258,6 +266,7 @@ public class CustomCRMAccountMapper {
             association.setSourceId(person.getId());
             association.setTargetClass(CORContact.class.getName());
             association.setTargetId(corContact.getId());
+            association.setNetwork(corNetwork);
             associations.add(association);
         }
         return associations;
