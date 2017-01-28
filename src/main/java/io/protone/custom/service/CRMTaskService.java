@@ -6,6 +6,7 @@ import io.protone.custom.service.mapper.CustomCRMTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.CORAssociationRepository;
 import io.protone.repository.CRMTaskRepository;
+import io.protone.repository.CRMTaskStatusRepository;
 import io.protone.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static io.protone.custom.service.mapper.CustomCORUserMapper.ASSIGNED_TO;
 import static io.protone.custom.service.mapper.CustomCORUserMapper.CREATED_BY;
+import static io.protone.custom.service.mapper.CustomCRMTaskMapper.CRM_TASK_STATUS;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -37,12 +39,17 @@ public class CRMTaskService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private CRMTaskStatusRepository crmTaskStatusRepository;
+
     public List<CrmTaskPT> saveCustomerTasks(CrmAccountPT crmAccountPT, CRMAccount crmAccount, CORNetwork corNetwork) {
         crmAccountPT.getTasks().stream().forEach(crmTaskPT -> {
             CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmTaskPT));
             corAssociationRepository.save(customCRMTaskMapper.createAccountTaskAssociationEntity(crmAccount, crmTask, corNetwork));
             corAssociationRepository.save(customCORUserMapper.createCRMAssignetToTaskAssociation(crmTask, customCORUserMapper.tranformUserDTO(crmTaskPT.getAssignedTo()), corNetwork));
             corAssociationRepository.save(customCORUserMapper.createCRMCreatedByTaskAssociation(crmTask, customCORUserMapper.tranformUserDTO(crmTaskPT.getCreatedBy()), corNetwork));
+            corAssociationRepository.save(customCRMTaskMapper.createTaskStatusAssociationEntity(crmTask, crmTaskPT.getCrmTaskStatus(), corNetwork));
+
         });
         return getTasksAssociatedWithCustomer(crmAccount, corNetwork);
     }
@@ -276,11 +283,13 @@ public class CRMTaskService {
 
     private CrmTaskPT createTaskById(Long id, CORNetwork corNetwork) {
         CRMTask crmTask = crmTaskRepository.findOne(id);
-        CORAssociation assignedTo = corAssociationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(id, User.class.getName(), corNetwork, ASSIGNED_TO);
-        CORAssociation createdBy = corAssociationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(id, User.class.getName(), corNetwork, CREATED_BY);
-        User assignedToUser = userRepository.findOne(assignedTo.getTargetId());
-        User createdByUser = userRepository.findOne(createdBy.getTargetId());
-        return customCRMTaskMapper.createCrmTask(crmTask, customCORUserMapper.transformUserEnity(assignedToUser), customCORUserMapper.transformUserEnity(createdByUser));
+        CORAssociation assignedToAssociation = corAssociationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(id, User.class.getName(), corNetwork, ASSIGNED_TO);
+        CORAssociation createdByAssocition = corAssociationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(id, User.class.getName(), corNetwork, CREATED_BY);
+        CORAssociation statusAssocition = corAssociationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(id, CRMTaskStatus.class.getName(), corNetwork, CRM_TASK_STATUS);
+        User assignedToUser = userRepository.findOne(assignedToAssociation.getTargetId());
+        User createdByUser = userRepository.findOne(createdByAssocition.getTargetId());
+        CRMTaskStatus crmTaskStatus = crmTaskStatusRepository.findOne(statusAssocition.getTargetId());
+        return customCRMTaskMapper.createCrmTask(crmTask, crmTaskStatus, customCORUserMapper.transformUserEnity(assignedToUser), customCORUserMapper.transformUserEnity(createdByUser));
 
     }
 
@@ -288,6 +297,7 @@ public class CRMTaskService {
         CRMTask crmTask = crmTaskRepository.findOne(id);
         corAssociationRepository.deleteBySourceIdAndTargetClassAndNetworkAndName(id, User.class.getName(), corNetwork, ASSIGNED_TO);
         corAssociationRepository.deleteBySourceIdAndTargetClassAndNetworkAndName(id, User.class.getName(), corNetwork, CREATED_BY);
+        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetworkAndName(id, CRMTaskStatus.class.getName(), corNetwork, CRM_TASK_STATUS);
         crmTaskRepository.delete(crmTask);
     }
 
