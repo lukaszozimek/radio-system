@@ -20,11 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class CustomCRMTaskMapper {
 
+    public static final String CRM_TASK_STATUS="CRMTaskStatus";
 
-    public CrmTaskPT createCrmTask(CRMTask crmTask, CoreManagedUserPT assignedUser, CoreManagedUserPT createdBy) {
+    public CrmTaskPT createCrmTask(CRMTask crmTask, CRMTaskStatus crmTaskStatus, CoreManagedUserPT assignedUser, CoreManagedUserPT createdBy) {
         return new CrmTaskPT().id(crmTask.getId())
             .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
+            .crmTaskStatus(crmTaskStatus)
             .assignedTo(assignedUser)
             .comment(crmTask.getComment())
             .subject(crmTask.getSubject())
@@ -102,6 +104,16 @@ public class CustomCRMTaskMapper {
         association.setSourceId(crmContact.getId());
         association.setTargetClass(CRMTask.class.getName());
         association.setTargetId(crmTask.getId());
+        association.setNetwork(corNetwork);
+        return association;
+    }
+    public CORAssociation createTaskStatusAssociationEntity(CRMTask task, CRMTaskStatus crmTaskStatus, CORNetwork corNetwork) {
+        CORAssociation association = new CORAssociation();
+        association.setName(CRM_TASK_STATUS);
+        association.setSourceClass(CRMTask.class.getName());
+        association.setSourceId(task.getId());
+        association.setTargetClass(CRMTaskStatus.class.getName());
+        association.setTargetId(crmTaskStatus.getId());
         association.setNetwork(corNetwork);
         return association;
     }
