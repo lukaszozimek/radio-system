@@ -8,6 +8,11 @@
     -->
     <changeSet id="20170111193434-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_discount"
+                                 constraintName="fk_tradiscount_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
 
     </changeSet>
 </databaseChangeLog>

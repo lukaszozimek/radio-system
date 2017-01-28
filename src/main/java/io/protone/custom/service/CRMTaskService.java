@@ -34,8 +34,10 @@ public class CRMTaskService {
 
     @Inject
     private CustomCRMTaskMapper customCRMTaskMapper;
+
     @Inject
     private CustomCORUserMapper customCORUserMapper;
+
     @Inject
     private UserRepository userRepository;
 
