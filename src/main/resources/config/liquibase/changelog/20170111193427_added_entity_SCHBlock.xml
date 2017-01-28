@@ -27,59 +27,59 @@
             <column name="seq" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="name" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="start_time" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="start_type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="relative_delay" type="bigint">
                 <constraints nullable="true" />
             </column>
-            
+
             <column name="end_time" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="length" type="bigint">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="dim_year" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="dim_month" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="dim_day" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="dim_hour" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="dim_minute" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="dim_second" type="integer">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="parent_block_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -91,11 +91,14 @@
             <column name="template_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="network_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="sch_block" columnName="start_time" columnDataType="datetime"/>
         <dropDefaultValue tableName="sch_block" columnName="end_time" columnDataType="datetime"/>
-        
+
     </changeSet>
 </databaseChangeLog>

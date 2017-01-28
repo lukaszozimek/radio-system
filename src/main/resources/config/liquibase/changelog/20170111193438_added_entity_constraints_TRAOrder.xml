@@ -9,6 +9,11 @@
     <changeSet id="20170111193438-2" author="jhipster">
 
 
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_traorder_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
 
     </changeSet>
 </databaseChangeLog>

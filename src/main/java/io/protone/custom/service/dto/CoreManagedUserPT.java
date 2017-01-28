@@ -20,7 +20,7 @@ public class CoreManagedUserPT {
     @JsonProperty("activated")
     private Boolean activated = null;
 
-    @JsonProperty("authoritiesf")
+    @JsonProperty("authorities")
     private Set<Authority> authorities = new HashSet<>();
 
     @JsonProperty("createdBy")

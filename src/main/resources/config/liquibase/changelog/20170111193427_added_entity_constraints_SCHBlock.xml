@@ -7,7 +7,7 @@
         Added the constraints for entity SCHBlock.
     -->
     <changeSet id="20170111193427-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="parent_block_id"
                                  baseTableName="sch_block"
                                  constraintName="fk_schblock_parent_block_id"
@@ -26,5 +26,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="sch_template"/>
 
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_schblock_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
     </changeSet>
 </databaseChangeLog>
