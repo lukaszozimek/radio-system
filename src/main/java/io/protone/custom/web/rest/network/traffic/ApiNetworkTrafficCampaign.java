@@ -17,75 +17,71 @@ import java.util.List;
 public interface ApiNetworkTrafficCampaign {
 
 
-    @ApiOperation(value = "getAllCampaigns", notes = "", response = TraCampaignPT.class, responseContainer = "List", tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAllCampaigns", notes = "", response = TraCampaignPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCampaignPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "updateCampaign", notes = "", response = TraCampaignPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "updateCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCampaignPT.class),
         @ApiResponse(code = 201, message = "Created", response = TraCampaignPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "campaignDTO" ,required=true ) @RequestBody TraCampaignPT campaignDTO);
+    ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                         @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO);
 
-    @ApiOperation(value = "createCampaign", notes = "", response = TraCampaignPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "createCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCampaignPT.class),
         @ApiResponse(code = 201, message = "Created", response = TraCampaignPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "campaignDTO" ,required=true ) @RequestBody TraCampaignPT campaignDTO);
+    ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO);
 
 
-    @ApiOperation(value = "deleteCampaign", notes = "", response = Void.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "deleteCampaign", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
-    @ApiOperation(value = "getCampaign", notes = "", response = TraCampaignPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "getCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraCampaignPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraCampaignPT> getCampaignUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                      @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
-
+    ResponseEntity<TraCampaignPT> getCampaignUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
 }

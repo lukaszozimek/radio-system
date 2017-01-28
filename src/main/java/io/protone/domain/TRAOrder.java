@@ -36,13 +36,21 @@ public class TRAOrder implements Serializable {
 
     @Column(name = "calculated_prize")
     private Long calculatedPrize;
-
     @ManyToOne
-    private TRACampaign campaign;
+    private CORNetwork network;
 
-    @ManyToOne
-    private TRACustomer customer;
+    public TRAOrder network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
 
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
     public Long getId() {
         return id;
     }
@@ -55,17 +63,21 @@ public class TRAOrder implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TRAOrder name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public TRAOrder startDate(LocalDate startDate) {
@@ -73,12 +85,12 @@ public class TRAOrder implements Serializable {
         return this;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public TRAOrder endDate(LocalDate endDate) {
@@ -86,12 +98,12 @@ public class TRAOrder implements Serializable {
         return this;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public Long getCalculatedPrize() {
         return calculatedPrize;
+    }
+
+    public void setCalculatedPrize(Long calculatedPrize) {
+        this.calculatedPrize = calculatedPrize;
     }
 
     public TRAOrder calculatedPrize(Long calculatedPrize) {
@@ -99,35 +111,6 @@ public class TRAOrder implements Serializable {
         return this;
     }
 
-    public void setCalculatedPrize(Long calculatedPrize) {
-        this.calculatedPrize = calculatedPrize;
-    }
-
-    public TRACampaign getCampaign() {
-        return campaign;
-    }
-
-    public TRAOrder campaign(TRACampaign tRACampaign) {
-        this.campaign = tRACampaign;
-        return this;
-    }
-
-    public void setCampaign(TRACampaign tRACampaign) {
-        this.campaign = tRACampaign;
-    }
-
-    public TRACustomer getCustomer() {
-        return customer;
-    }
-
-    public TRAOrder customer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-        return this;
-    }
-
-    public void setCustomer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-    }
 
     @Override
     public boolean equals(Object o) {

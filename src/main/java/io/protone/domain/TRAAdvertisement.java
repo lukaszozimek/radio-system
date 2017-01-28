@@ -29,16 +29,8 @@ public class TRAAdvertisement implements Serializable {
 
     @Column(name = "description")
     private String description;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LIBMediaItem mediaItem;
-
     @ManyToOne
-    private TRACustomer customer;
-
-    @ManyToOne
-    private TRAIndustry industry;
+    private CORNetwork network;
 
     public Long getId() {
         return id;
@@ -52,13 +44,13 @@ public class TRAAdvertisement implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TRAAdvertisement name(String name) {
         this.name = name;
         return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -68,49 +60,6 @@ public class TRAAdvertisement implements Serializable {
     public TRAAdvertisement description(String description) {
         this.description = description;
         return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LIBMediaItem getMediaItem() {
-        return mediaItem;
-    }
-
-    public TRAAdvertisement mediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-        return this;
-    }
-
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-    }
-
-    public TRACustomer getCustomer() {
-        return customer;
-    }
-
-    public TRAAdvertisement customer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-        return this;
-    }
-
-    public void setCustomer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-    }
-
-    public TRAIndustry getIndustry() {
-        return industry;
-    }
-
-    public TRAAdvertisement industry(TRAIndustry tRAIndustry) {
-        this.industry = tRAIndustry;
-        return this;
-    }
-
-    public void setIndustry(TRAIndustry tRAIndustry) {
-        this.industry = tRAIndustry;
     }
 
     @Override
@@ -140,5 +89,18 @@ public class TRAAdvertisement implements Serializable {
             ", name='" + name + "'" +
             ", description='" + description + "'" +
             '}';
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
+
+    public TRAAdvertisement network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
     }
 }

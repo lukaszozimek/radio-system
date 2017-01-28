@@ -7,24 +7,11 @@
         Added the constraints for entity TRAAdvertisement.
     -->
     <changeSet id="20170111193432-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="media_item_id"
+        <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="tra_advertisement"
-                                 constraintName="fk_traadvertisement_media_item_id"
+                                 constraintName="fk_traadvertisement_network_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="lib_media_item"/>
-
-        <addForeignKeyConstraint baseColumnNames="customer_id"
-                                 baseTableName="tra_advertisement"
-                                 constraintName="fk_traadvertisement_customer_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_customer"/>
-
-        <addForeignKeyConstraint baseColumnNames="industry_id"
-                                 baseTableName="tra_advertisement"
-                                 constraintName="fk_traadvertisement_industry_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_industry"/>
+                                 referencedTableName="cor_network"/>
 
     </changeSet>
 </databaseChangeLog>

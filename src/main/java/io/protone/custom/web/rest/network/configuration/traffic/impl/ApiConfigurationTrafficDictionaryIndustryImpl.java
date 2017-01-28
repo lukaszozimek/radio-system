@@ -1,9 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfIndustryPT;
 import io.protone.custom.service.mapper.CustomTRAIndustryMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryIndustry;
 import io.protone.domain.TRAIndustry;
+import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.TRAIndustryRepository;
 import io.protone.service.dto.TRAIndustryDTO;
 import io.protone.service.mapper.TRAIndustryMapper;
@@ -30,7 +32,8 @@ public class ApiConfigurationTrafficDictionaryIndustryImpl implements ApiConfigu
 
     @Inject
     private TRAIndustryRepository tRAIndustryRepository;
-
+    @Inject
+    private NetworkService networkService;
     @Inject
     private CustomTRAIndustryMapper tRAIndustryMapper;
 

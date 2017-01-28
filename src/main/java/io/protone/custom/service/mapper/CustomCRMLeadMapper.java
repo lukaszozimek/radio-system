@@ -63,67 +63,73 @@ public class CustomCRMLeadMapper {
         return corContactMapper.cORContactDTOsToCORContacts(leadPT.getContact());
     }
 
-    public CORAssociation createAddressAssociationEntity(CRMLead lead, CORAddress address) {
+    public CORAssociation createAddressAssociationEntity(CRMLead lead, CORAddress address, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("ADDRESS");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(CORAddress.class.getName());
         association.setTargetId(address.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createLeadStatusAssociationEntity(CRMLead lead, CRMLeadStatus address) {
+    public CORAssociation createLeadStatusAssociationEntity(CRMLead lead, CRMLeadStatus address, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("STATUS");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(CRMLeadStatus.class.getName());
         association.setTargetId(address.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createLeadSourceAssociationEntity(CRMLead lead, CRMLeadSource leadSource) {
+    public CORAssociation createLeadSourceAssociationEntity(CRMLead lead, CRMLeadSource leadSource, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("STATUS");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(CRMLeadSource.class.getName());
         association.setTargetId(leadSource.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createLeadIndustryAssociationEntity(CRMLead lead, TRAIndustry industry) {
+    public CORAssociation createLeadIndustryAssociationEntity(CRMLead lead, TRAIndustry industry, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("TRAIndustry");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(TRAIndustry.class.getName());
         association.setTargetId(industry.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createLeadAreaAssociationEntity(CRMLead lead, CORArea area) {
+    public CORAssociation createLeadAreaAssociationEntity(CRMLead lead, CORArea area, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CORArea");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(CORArea.class.getName());
         association.setTargetId(area.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public CORAssociation createLeadPersonAssociationEntity(CRMLead lead, CORPerson corPerson) {
+    public CORAssociation createLeadPersonAssociationEntity(CRMLead lead, CORPerson corPerson, CORNetwork corNetwork) {
         CORAssociation association = new CORAssociation();
         association.setName("CORPerson");
         association.setSourceClass(CRMLead.class.getName());
         association.setSourceId(lead.getId());
         association.setTargetClass(CORPerson.class.getName());
         association.setTargetId(corPerson.getId());
+        association.setNetwork(corNetwork);
         return association;
     }
 
-    public List<CORAssociation> createLeadContactAssociationEntity(CORPerson person, List<CORContact> corContacts) {
+    public List<CORAssociation> createLeadContactAssociationEntity(CORPerson person, List<CORContact> corContacts, CORNetwork corNetwork) {
         List<CORAssociation> associations = new ArrayList<>();
         for (CORContact corContact : corContacts) {
             CORAssociation association = new CORAssociation();
@@ -132,31 +138,15 @@ public class CustomCRMLeadMapper {
             association.setSourceId(person.getId());
             association.setTargetClass(CORContact.class.getName());
             association.setTargetId(corContact.getId());
+            association.setNetwork(corNetwork);
             associations.add(association);
         }
         return associations;
     }
 
-    public List<CORAssociation> createLeadTasksAssociationEntity(CRMLead lead, List<CRMTask> crmTasks) {
-        List<CORAssociation> associations = new ArrayList<>();
-        for (CRMTask crmTask : crmTasks) {
-            associations.add(createLeadTaskAssociationEntity(lead, crmTask));
-        }
-        return associations;
-    }
-
-    public CORAssociation createLeadTaskAssociationEntity(CRMLead lead, CRMTask crmTask) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CRMTask");
-        association.setSourceClass(CRMLead.class.getName());
-        association.setSourceId(lead.getId());
-        association.setTargetClass(CRMTask.class.getName());
-        association.setTargetId(crmTask.getId());
-        return association;
-    }
 
     public CrmLeadPT createDTOFromEntites(CRMLead lead,
-                                          List<CRMTask> tasks,
+                                          List<CrmTaskPT> tasks,
                                           CORPerson person,
                                           CORAddress address,
                                           List<CORContact> corContacts,
@@ -174,7 +164,7 @@ public class CustomCRMLeadMapper {
         crmLeadPT.setAdress(corAddressMapper.cORAddressToCORAddressDTO(address));
         crmLeadPT.setSource(customCRMLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(leadSource));
         crmLeadPT.setStatus(customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(leadStatus));
-        crmLeadPT.setTasks(customCRMTaskMapper.transformTasksFromEntity(tasks));
+        crmLeadPT.setTasks(tasks);
         crmLeadPT.setPerson(corPersonMapper.cORPersonToCORPersonDTO(person));
         crmLeadPT.setContact(corContactMapper.cORContactsToCORContactDTOs(corContacts));
         return crmLeadPT;

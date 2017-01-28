@@ -7,18 +7,13 @@
         Added the constraints for entity TRAOrder.
     -->
     <changeSet id="20170111193438-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="campaign_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_traorder_campaign_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_campaign"/>
 
-        <addForeignKeyConstraint baseColumnNames="customer_id"
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="tra_order"
-                                 constraintName="fk_traorder_customer_id"
+                                 constraintName="fk_traorder_network_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="tra_customer"/>
+                                 referencedTableName="cor_network"/>
 
     </changeSet>
 </databaseChangeLog>

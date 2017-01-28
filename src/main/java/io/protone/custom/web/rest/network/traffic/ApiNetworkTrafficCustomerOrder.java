@@ -15,18 +15,17 @@ import java.util.List;
 public interface ApiNetworkTrafficCustomerOrder {
 
 
-    @ApiOperation(value = "getAllCustomerOrders", notes = "", response = TraOrderPT.class, responseContainer = "List", tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAllCustomerOrders", notes = "", response = TraOrderPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraOrderPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/order",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraOrderPT>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                  @ApiParam(value = "customerShortcut",required=true ) @PathVariable("customerShortcut") String customerShortcut);
+    ResponseEntity<List<TraOrderPT>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                  @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut);
 
 
 }

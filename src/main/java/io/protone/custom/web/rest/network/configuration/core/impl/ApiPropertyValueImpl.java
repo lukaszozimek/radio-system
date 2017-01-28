@@ -1,9 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.core.impl;
 
+import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreValuePT;
 import io.protone.custom.service.mapper.CustomCORPropertyValueMapper;
 import io.protone.custom.web.rest.network.configuration.core.ApiPropertyValue;
 import io.protone.domain.CORPropertyValue;
+import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORPropertyValueRepository;
 import io.protone.service.dto.CORPropertyValueDTO;
 import io.protone.service.mapper.CORPropertyValueMapper;
@@ -27,7 +29,8 @@ public class ApiPropertyValueImpl implements ApiPropertyValue {
 
     @Inject
     private CORPropertyValueRepository cORPropertyValueRepository;
-
+    @Inject
+    private NetworkService networkService;
     @Inject
     private CustomCORPropertyValueMapper cORPropertyValueMapper;
 

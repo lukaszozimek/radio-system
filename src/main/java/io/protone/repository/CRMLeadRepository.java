@@ -1,5 +1,6 @@
 package io.protone.repository;
 
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMLead;
 
 import org.springframework.data.jpa.repository.*;
@@ -11,5 +12,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMLeadRepository extends JpaRepository<CRMLead, Long> {
-    CRMLead findByShortcut(String shortcut);
+    List<CRMLead> findByNetwork(CORNetwork network);
+
+    CRMLead findOneByShortcutAndNetwork(String shortcut, CORNetwork network);
 }

@@ -20,7 +20,7 @@ import java.util.List;
 public class LibraryService {
 
     @Inject
-    CCORNetworkRepository networkRepository;
+    private CCORNetworkRepository networkRepository;
 
     @Inject
     private LIBLibraryRepositoryEx libraryRepository;

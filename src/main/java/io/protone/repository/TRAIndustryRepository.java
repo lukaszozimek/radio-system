@@ -1,5 +1,6 @@
 package io.protone.repository;
 
+import io.protone.domain.CORNetwork;
 import io.protone.domain.TRAIndustry;
 
 import org.springframework.data.jpa.repository.*;
@@ -11,5 +12,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface TRAIndustryRepository extends JpaRepository<TRAIndustry, Long> {
-    TRAIndustry findByName(String name);
+    TRAIndustry findByNameAndNetwork(String name, CORNetwork network);
 }

@@ -17,78 +17,72 @@ import java.util.List;
 public interface ApiNetworkTrafficAdvertisement {
 
 
-    @ApiOperation(value = "updateAdvertisement", notes = "", response = TraAdvertisementPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "updateAdvertisement", notes = "", response = TraAdvertisementPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraAdvertisementPT.class),
         @ApiResponse(code = 201, message = "Created", response = TraAdvertisementPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "advertisementDTO" ,required=true ) @RequestBody TraAdvertisementPT advertisementDTO);
+    ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                   @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO);
 
 
-
-    @ApiOperation(value = "createAdvertisement", notes = "", response = TraAdvertisementPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "createAdvertisement", notes = "", response = TraAdvertisementPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraAdvertisementPT.class),
         @ApiResponse(code = 201, message = "Created", response = TraAdvertisementPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
+        consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "advertisementDTO" ,required=true ) @RequestBody TraAdvertisementPT advertisementDTO);
+    ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO);
 
 
-    @ApiOperation(value = "getAllAdvertisements", notes = "", response = TraAdvertisementPT.class, responseContainer = "List", tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAllAdvertisements", notes = "", response = TraAdvertisementPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraAdvertisementPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "deleteAdvertisement", notes = "", response = Void.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "deleteAdvertisement", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement/{idx}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "idx",required=true ) @PathVariable("idx") Long idx);
+    ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                        @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx);
 
 
-
-    @ApiOperation(value = "getAdvertisement", notes = "", response = TraAdvertisementPT.class, tags={ "TRAFFIC", })
+    @ApiOperation(value = "getAdvertisement", notes = "", response = TraAdvertisementPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraAdvertisementPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class) })
+        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement/{idx}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "idx",required=true ) @PathVariable("idx") Long idx);
-
+    ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx);
 
 
 }

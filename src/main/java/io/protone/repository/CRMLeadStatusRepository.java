@@ -1,6 +1,8 @@
 package io.protone.repository;
 
+import io.protone.domain.CORArea;
 import io.protone.domain.CORNetwork;
+import io.protone.domain.CRMLeadSource;
 import io.protone.domain.CRMLeadStatus;
 
 import org.springframework.data.jpa.repository.*;
@@ -12,5 +14,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMLeadStatusRepository extends JpaRepository<CRMLeadStatus, Long> {
-    CRMLeadStatus findByName(String name);
+    List<CRMLeadStatus> findByNetwork(CORNetwork network);
+
+    CRMLeadStatus findByNameAndNetwork(String name, CORNetwork network);
 }

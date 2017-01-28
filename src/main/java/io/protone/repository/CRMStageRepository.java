@@ -1,5 +1,8 @@
 package io.protone.repository;
 
+import io.protone.domain.CORArea;
+import io.protone.domain.CORNetwork;
+import io.protone.domain.CRMOpportunity;
 import io.protone.domain.CRMStage;
 
 import org.springframework.data.jpa.repository.*;
@@ -11,5 +14,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMStageRepository extends JpaRepository<CRMStage, Long> {
-    CRMStage findByName(String name);
+
+    List<CRMStage> findByNetwork(CORNetwork network);
+
+    CRMStage findByNameAndNetwork(String name, CORNetwork network);
 }

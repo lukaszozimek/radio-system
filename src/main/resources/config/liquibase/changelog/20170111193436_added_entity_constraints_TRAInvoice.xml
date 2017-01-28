@@ -7,12 +7,13 @@
         Added the constraints for entity TRAInvoice.
     -->
     <changeSet id="20170111193436-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="order_id"
+
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="tra_invoice"
-                                 constraintName="fk_trainvoice_order_id"
+                                 constraintName="fk_trainvoice_network_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="tra_order"/>
+                                 referencedTableName="cor_network"/>
 
     </changeSet>
 </databaseChangeLog>

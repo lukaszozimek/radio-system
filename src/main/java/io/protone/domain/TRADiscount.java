@@ -30,9 +30,21 @@ public class TRADiscount implements Serializable {
 
     @Column(name = "discount")
     private Long discount;
-
     @ManyToOne
-    private TRACustomer customer;
+    private CORNetwork network;
+
+    public TRADiscount network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork network) {
+        this.network = network;
+    }
 
     public Long getId() {
         return id;
@@ -81,18 +93,6 @@ public class TRADiscount implements Serializable {
         this.discount = discount;
     }
 
-    public TRACustomer getCustomer() {
-        return customer;
-    }
-
-    public TRADiscount customer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-        return this;
-    }
-
-    public void setCustomer(TRACustomer tRACustomer) {
-        this.customer = tRACustomer;
-    }
 
     @Override
     public boolean equals(Object o) {
