@@ -88,6 +88,7 @@ public class CRMOpportunityService {
         taskService.deleteOpportunityTask(opportunity, corNetwork);
         associationRepository.delete(opportunityStageAssociation);
         associationRepository.delete(opportunityContactAssociation);
+        associationRepository.delete(opportunityOwnerAssociation);
         opportunityRepository.delete(opportunity);
     }
 
