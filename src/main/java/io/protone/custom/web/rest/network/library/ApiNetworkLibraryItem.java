@@ -26,7 +26,7 @@ public interface ApiNetworkLibraryItem {
         @ApiResponse(code = 403, message = "Forbidden", response = LibItemPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibItemPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}/item",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<LibItemPT> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
@@ -41,8 +41,7 @@ public interface ApiNetworkLibraryItem {
         @ApiResponse(code = 403, message = "Forbidden", response = LibItemPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibItemPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}/item",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                                                         @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix);
@@ -57,8 +56,7 @@ public interface ApiNetworkLibraryItem {
         @ApiResponse(code = 403, message = "Forbidden", response = LibItemPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibItemPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<LibItemPT> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                                        @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix,
