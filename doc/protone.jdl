@@ -1,6 +1,8 @@
 
 entity CRMLead {
  	name String
+    shortname String,
+    description String
 }
 entity CRMLeadSource{
 	name String
@@ -42,10 +44,7 @@ entity CRMStage{
 	name String,
     description String
 }
-entity CRMTaskStatus{
-    name String,
-    description String
-}
+
 entity CRMTaskComment{
 	comment String,
 }
@@ -81,7 +80,26 @@ entity CORChannel {
 	name String required maxlength(100)
     description String
 }
+entity CORNotification{
+	description String
+}
 
+entity CORSubscription{
+	name String,
+    price Long
+    subscription CORCSubscriptionTypeEnum
+
+}
+enum CORCSubscriptionTypeEnum {
+	ST_CRM,
+    ST_TRAFFIC,
+    ST_PLAYOUT,
+    ST_LIBRARY
+}
+entity CORSubscriptionOwner{
+name String
+
+}
 entity LibLibrary {
 	prefix String required maxlength(1)
 	idxLength Integer required
@@ -103,7 +121,7 @@ entity CORCountry{
   name String
   shortName String
   }
-  entity CORCurrency{
+entity CORCurrency{
     networkId Long
    	name String
  	symbol String
@@ -417,16 +435,6 @@ entity TRAAdvertisement {
     description String
 }
 
-entity TRACustomer {
-	name String required maxlength(100)
-	size  Long
-	range Long
-	area String
-	vatNumber String
-    idNumber1 String
-    idNumber2 String
-	paymentDate Integer
-}
 
 entity TRADiscount {
 	validFrom LocalDate
@@ -465,6 +473,11 @@ entity TRAPrice {
     baseLength Integer
     priceAlternative BigDecimal required
   }
+entity TRAAdvertismentType {
+  name String,
+  description String
+}
+
 
 
 relationship OneToOne {
@@ -480,11 +493,16 @@ relationship OneToOne {
     CRMLeadSource {network} to CORNetwork,
     CRMStage{network} to CORNetwork,
     User {network} to CORNetwork,
+    LIBMarker{network} to CORNetwork,
+    CORPropertyKey{network} to CORNetwork ,
+    CORPropertyValue{network} to CORNetwork ,
+    CFGTaskStatus {network} to CORNetwork ,
 
     TRAAdvertisement{libitem} to LIBMediaItem,
  	TRAAdvertisement{customer} to CRMAccount,
  	TRAAdvertisement{industry} to TRAIndustry,
  	TRAAdvertisement{network} to CORNetwork,
+    TRAAdvertisement {type} to TRAAdvertismentType,
 
     TRACampaign{customer} to CRMAccount,
  	TRACampaign{price} to TRAPrice,
@@ -492,6 +510,11 @@ relationship OneToOne {
 
     TRAInvoice {customer} to CRMAccount,
 	TRAInvoice{network} to CORNetwork,
+
+    TRAOrder{customer} to CRMAccount,
+    TRAOrder{campaign} to TRACampaign,
+    TRAOrder{price} to TRAPrice,
+	TRAOrder{network} to CORNetwork,
 
     CRMContact{addres} to CORAddress,
     CRMContact{range} to CORRange,
@@ -531,48 +554,60 @@ relationship OneToOne {
 
     CRMTask{createdBy} to User,
     CRMTask{assignedTo} to User,
-    CRMTask{status} to CRMTaskStatus,
+    CRMTask{status} to CFGTaskStatus,
     CRMTask{network} to CORNetwork,
 
     LIBMediaItem{album} to LIBAlbum,
     LIBMediaItem{artist} to LIBArtist,
 	LIBMediaItem{composer} to LIBLabel,
-	LIBMediaItem {network} to CORNetwork
+	LIBMediaItem {network} to CORNetwork,
+    LIBMediaItem {item} to LibLibrary ,
+
+    SCHEmission{mediaItem} to  LIBMediaItem,
+    SCHEmission{channel} to CORChannel,
+    SCHEmission {network} to CORNetwork,
+    SCHBlock {network} to CORNetwork,
+    LibLibrary {network} to CORNetwork,
+
+    CORSubscriptionOwner {network} to CORNetwork,
+    CORSubscriptionOwner {network} to User
+
 }
 
 relationship OneToMany {
 
-	TRACampaign {emissions} to SCHEmission,
-    TRACampaign {orders} to TRAOrder,
-
+    TRACampaign {emissions} to SCHEmission,
 	TRAInvoice {orders} to TRAOrder,
-    TRAInvoice {campaign} to TRACampaign,
-
-    CORPerson{personContacts} to CORContact,
 
     CRMContact{tasks} to CRMTask,
-
     CRMAccount{opportunity} to CRMOpportunity,
     CRMAccount{network} to CRMTask,
-
     CRMLead{network} to CRMTask,
-
     CRMTask{tasks} to CRMTask,
     CRMTask{comment} to CRMTaskComment,
 
-    CORNetwork {users} to User,
-    CORNetwork{channel} to CORChannel,
-
-    CORChannel {users} to User,
-    User {channel} to CORChannel,
+    CORSubscriptionOwner {subscriptions} to  CORSubscription,
 
     LIBMediaItem{author} to CORPerson,
 	LIBMediaItem{composer} to CORPerson,
 	LIBMediaItem{markers} to LIBMarker,
 	LIBMediaItem{property} to CORPropertyKey,
 	LIBMediaItem{tags} to CORTag,
+ 	LibLibrary {channel} to CORChannel,
+	LibLibrary {user} to User,
+    LibLibrary {item} to LIBMediaItem,
 
-	CORPropertyKey{values} to CORPropertyValue
+    CORPerson{personContacts} to CORContact,
+    CORNetwork {users} to User,
+    CORNetwork{channel} to CORChannel,
+    CORChannel {users} to User,
+    CORPropertyKey{values} to CORPropertyValue,
+    User {channel} to CORChannel,
+    User {notifications} to CORNotification,
+
+    SCHBlock {emission} to SCHEmission,
+    SCHBlock {block} to SCHBlock
+
 
 
 }
@@ -585,6 +620,5 @@ relationship ManyToOne{
   CORNetwork {network} to User
 
 }
-
-dto * with mapstruct except LIBCloudObject
+paginate * with infinite-scroll
 microservice * with protone
