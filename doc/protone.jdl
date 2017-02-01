@@ -227,7 +227,7 @@ entity LIBTrack {
 
 entity LIBCloudObject {
 	uuid String required maxlength(100)
-    objectType ObjectTypeEnum
+    objectType LIBObjectTypeEnum
     originalName String required maxlength(100)
     contentType String required maxlength(100)
 	size Long required
@@ -474,8 +474,12 @@ entity TRAPrice {
     priceAlternative BigDecimal required
   }
 entity TRAAdvertismentType {
-  name String,
+  name String
   description String
+}
+
+entity CORUser {
+  name String
 }
 
 
@@ -492,7 +496,7 @@ relationship OneToOne {
     CRMLeadStatus {network} to CORNetwork,
     CRMLeadSource {network} to CORNetwork,
     CFGStage{network} to CORNetwork,
-    User {network} to CORNetwork,
+    CORUser {network} to CORNetwork,
     LIBMarker{network} to CORNetwork,
     CORPropertyKey{network} to CORNetwork ,
     CORPropertyValue{network} to CORNetwork ,
@@ -502,7 +506,7 @@ relationship OneToOne {
 
     CORCountry{tax} to CORTax,
 	CORCountry{network} to CORNetwork,
-	CORCountry{currnecy} to CORCurrenc,
+	CORCountry{currnecy} to CORCurrency,
 
     TRAPrice {currency} to CORCurrency,
     TRAPrice {network} to CORNetwork,
@@ -538,8 +542,7 @@ relationship OneToOne {
    	CRMContact{industry} to  TRAIndustry,
     CRMContact{area} to CORArea,
     CRMContact{person} to CORPerson,
-    CRMContact {opiekun} to User,
-    CRMContact{network} to CORNetwork,
+    CRMContact {opiekun} to CORUser,
     CRMContact{status} to CRMContactStatus,
 
     CRMAccount{addres} to CORAddress,
@@ -549,28 +552,29 @@ relationship OneToOne {
    	CRMAccount{industry} to  TRAIndustry,
     CRMAccount{area} to CORArea,
     CRMAccount{person} to CORPerson,
-    CRMAccount {opiekun} to User,
+    CRMAccount {opiekun} to CORUser,
     CRMAccount{discount} to TRADiscount,
     CRMAccount{network} to CORNetwork,
+
 
     CRMLead{leadStatus} to CRMLeadStatus,
     CRMLead{leadSource} to CRMLeadSource,
     CRMLead{addres} to CORAddress,
-    CRMLead {keeper} to User,
+    CRMLead {keeper} to CORUser,
     CRMLead{industry} to TRAIndustry,
     CRMLead{area} to CORArea,
     CRMLead{person} to CORPerson,
     CRMLead{network} to CORNetwork,
 
     CRMOpportunity {stage} to CRMStage,
-    CRMOpportunity {keeper} to User,
+    CRMOpportunity {keeper} to CORUser,
     CRMOpportunity {contact} to CRMContact,
     CRMOpportunity {account} to CRMAccount,
     CRMOpportunity {lead} to CRMLead,
     CRMOpportunity {network} to CORNetwork,
 
-    CRMTask{createdBy} to User,
-    CRMTask{assignedTo} to User,
+    CRMTask{createdBy} to CORUser,
+    CRMTask{assignedTo} to CORUser,
     CRMTask{status} to CFGTaskStatus,
     CRMTask{network} to CORNetwork,
 
@@ -587,7 +591,7 @@ relationship OneToOne {
     LibLibrary {network} to CORNetwork,
 
     CORSubscriptionOwner {network} to CORNetwork,
-    CORSubscriptionOwner {network} to User
+    CORSubscriptionOwner {network} to CORUser
 
 }
 
@@ -599,6 +603,10 @@ relationship OneToMany {
     CRMContact{tasks} to CRMTask,
     CRMAccount{opportunity} to CRMOpportunity,
     CRMAccount{network} to CRMTask,
+        CRMAccount{orders} to TRAOrder,
+        CRMAccount{campaigns} to TRACampaign,
+        CRMAccount{invoices} to TRAInvoice,
+        CRMAccount{invoices} to TRAAdvertisement,
     CRMLead{network} to CRMTask,
     CRMTask{tasks} to CRMTask,
     CRMTask{comment} to CRMTaskComment,
@@ -611,16 +619,16 @@ relationship OneToMany {
 	LIBMediaItem{property} to CORPropertyKey,
 	LIBMediaItem{tags} to CORTag,
  	LibLibrary {channel} to CORChannel,
-	LibLibrary {user} to User,
+	LibLibrary {user} to CORUser,
     LibLibrary {item} to LIBMediaItem,
 
     CORPerson{personContacts} to CORContact,
-    CORNetwork {users} to User,
+    CORNetwork {users} to CORUser,
     CORNetwork{channel} to CORChannel,
-    CORChannel {users} to User,
+    CORChannel {users} to CORUser,
     CORPropertyKey{values} to CORPropertyValue,
-    User {channel} to CORChannel,
-    User {notifications} to CORNotification,
+    CORUser {channel} to CORChannel,
+    CORUser {notifications} to CORNotification,
 
     SCHBlock {emission} to SCHEmission,
     SCHBlock {block} to SCHBlock
@@ -629,12 +637,9 @@ relationship OneToMany {
 
 }
 relationship ManyToOne{
-  CRMAccount{orders} to TRAOrder,
-  CRMAccount{campaigns} to TRACampaign,
-  CRMAccount{invoices} to TRAInvoice,
-  CRMAccount{invoices} to TRAAdvertisement,
-  CORChannel {user} to User,
-  CORNetwork {network} to User
+
+  CORChannel {user} to CORUser,
+  CORNetwork {network} to CORUser
 
 }
 paginate * with infinite-scroll
