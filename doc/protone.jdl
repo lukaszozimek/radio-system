@@ -483,20 +483,29 @@ entity TRAAdvertismentType {
 relationship OneToOne {
 	CORAddress {network} to CORNetwork,
     TRAIndustry{network} to CORNetwork,
-    TRAPrice {network} to CORNetwork,
     CORRange {network} to CORNetwork,
     CORSize {network} to CORNetwork,
     CORPerson {network} to CORNetwork,
     CORArea {network} to CORNetwork,
+    CORCurrency {network} to CORNetwork,
     CRMContactStatus {network} to CORNetwork,
     CRMLeadStatus {network} to CORNetwork,
     CRMLeadSource {network} to CORNetwork,
-    CRMStage{network} to CORNetwork,
+    CFGStage{network} to CORNetwork,
     User {network} to CORNetwork,
     LIBMarker{network} to CORNetwork,
     CORPropertyKey{network} to CORNetwork ,
     CORPropertyValue{network} to CORNetwork ,
-    CFGTaskStatus {network} to CORNetwork ,
+    CFGTaskStatus {network} to CORNetwork,
+    CORTax{network} to CORNetwork,
+    TRAStatus{network} to CORNetwork,
+
+    CORCountry{tax} to CORTax,
+	CORCountry{network} to CORNetwork,
+	CORCountry{currnecy} to CORCurrenc,
+
+    TRAPrice {currency} to CORCurrency,
+    TRAPrice {network} to CORNetwork,
 
     TRAAdvertisement{libitem} to LIBMediaItem,
  	TRAAdvertisement{customer} to CRMAccount,
@@ -507,16 +516,23 @@ relationship OneToOne {
     TRACampaign{customer} to CRMAccount,
  	TRACampaign{price} to TRAPrice,
  	TRACampaign{network} to CORNetwork,
+    TRACampaign{status} to TRAStatus,
+
 
     TRAInvoice {customer} to CRMAccount,
 	TRAInvoice{network} to CORNetwork,
+	TRAInvoice{status} to TRAStatus,
 
     TRAOrder{customer} to CRMAccount,
     TRAOrder{campaign} to TRACampaign,
     TRAOrder{price} to TRAPrice,
 	TRAOrder{network} to CORNetwork,
+	TRAOrder{status} to TRAStatus,
+
+
 
     CRMContact{addres} to CORAddress,
+    CRMContact{country} to CORCountry,
     CRMContact{range} to CORRange,
     CRMContact{size} to CORSize,
    	CRMContact{industry} to  TRAIndustry,
@@ -527,6 +543,7 @@ relationship OneToOne {
     CRMContact{status} to CRMContactStatus,
 
     CRMAccount{addres} to CORAddress,
+    CRMAccount{country} to CORCountry,
     CRMAccount{range} to CORRange,
     CRMAccount{size} to CORSize,
    	CRMAccount{industry} to  TRAIndustry,
@@ -539,14 +556,14 @@ relationship OneToOne {
     CRMLead{leadStatus} to CRMLeadStatus,
     CRMLead{leadSource} to CRMLeadSource,
     CRMLead{addres} to CORAddress,
-    CRMLead {opiekun} to User,
+    CRMLead {keeper} to User,
     CRMLead{industry} to TRAIndustry,
     CRMLead{area} to CORArea,
     CRMLead{person} to CORPerson,
     CRMLead{network} to CORNetwork,
 
     CRMOpportunity {stage} to CRMStage,
-    CRMOpportunity {opiekun} to User,
+    CRMOpportunity {keeper} to User,
     CRMOpportunity {contact} to CRMContact,
     CRMOpportunity {account} to CRMAccount,
     CRMOpportunity {lead} to CRMLead,
@@ -622,3 +639,4 @@ relationship ManyToOne{
 }
 paginate * with infinite-scroll
 microservice * with protone
+
