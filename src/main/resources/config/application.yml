@@ -56,10 +56,10 @@ server:
 
 jhipster:
     s3:
-        url: set-url
-        username: minio-dev
-        password: minio-dev
-        bucket: set-bucket
+        url: http://localhost:9000
+        username: protone-dev
+        password: protone-dev
+        bucket: protone-dev
     async:
         corePoolSize: 2
         maxPoolSize: 50
