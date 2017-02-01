@@ -36,10 +36,38 @@ public interface CustomLIBMarkerMapperExt {
     }
 
     default LibMarkerPT.MarkerTypeEnum mapLibMarkerPT_MarkerTypeEnum(LIBMarkerTypeEnum value) {
-        return LibMarkerPT.MarkerTypeEnum.valueOf(value.toString());
+
+        if (value.compareTo(LIBMarkerTypeEnum.MT_BASIC) == 0)
+            return LibMarkerPT.MarkerTypeEnum.BASIC;
+        else if (value.compareTo(LIBMarkerTypeEnum.MT_CUSTOM) == 0)
+            return LibMarkerPT.MarkerTypeEnum.CUSTOM;
+        else if (value.compareTo(LIBMarkerTypeEnum.MT_FADE) == 0)
+            return LibMarkerPT.MarkerTypeEnum.FADE;
+        else if (value.compareTo(LIBMarkerTypeEnum.MT_HOOK) == 0)
+            return LibMarkerPT.MarkerTypeEnum.HOOK;
+        else if (value.compareTo(LIBMarkerTypeEnum.MT_INTRO) == 0)
+            return LibMarkerPT.MarkerTypeEnum.INTRO;
+        else if (value.compareTo(LIBMarkerTypeEnum.MT_LOOP) == 0)
+            return LibMarkerPT.MarkerTypeEnum.LOOP;
+        else
+            return LibMarkerPT.MarkerTypeEnum.CUSTOM;
     }
 
     default LIBMarkerTypeEnum mapLIBMarkerTypeEnum(LibMarkerPT.MarkerTypeEnum value) {
-        return LIBMarkerTypeEnum.valueOf(value.toString());
+
+        if (value.compareTo(LibMarkerPT.MarkerTypeEnum.BASIC) == 0)
+            return LIBMarkerTypeEnum.MT_BASIC;
+        else if (value.compareTo(LibMarkerPT.MarkerTypeEnum.CUSTOM) == 0)
+            return LIBMarkerTypeEnum.MT_CUSTOM;
+        else if (value.compareTo(LibMarkerPT.MarkerTypeEnum.FADE) == 0)
+            return LIBMarkerTypeEnum.MT_FADE;
+        else if (value.compareTo(LibMarkerPT.MarkerTypeEnum.HOOK) == 0)
+            return LIBMarkerTypeEnum.MT_HOOK;
+        else if (value.compareTo(LibMarkerPT.MarkerTypeEnum.INTRO) == 0)
+            return LIBMarkerTypeEnum.MT_INTRO;
+        else if (value.compareTo(LibMarkerPT.MarkerTypeEnum.LOOP) == 0)
+            return LIBMarkerTypeEnum.MT_LOOP;
+        else
+            return LIBMarkerTypeEnum.MT_CUSTOM;
     }
 }

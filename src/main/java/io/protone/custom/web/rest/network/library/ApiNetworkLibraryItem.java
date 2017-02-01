@@ -70,8 +70,7 @@ public interface ApiNetworkLibraryItem {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix,

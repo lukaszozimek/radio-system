@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Optional;
 /**
  * Created by grzesiek on 27.01.2017.
  */
+@RestController
 public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
 
     private final Logger log = LoggerFactory.getLogger(ApiNetworkLibraryItemImpl.class);

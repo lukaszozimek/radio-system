@@ -37,11 +37,27 @@ public interface CustomLIBArtistMapper {
     }
 
     default LibArtistPT.TypeEnum mapLibArtistPT_TypeEnum(LIBArtistTypeEnum value) {
-        return LibArtistPT.TypeEnum.valueOf(value.toString());
+
+        if (value.compareTo(LIBArtistTypeEnum.AT_BAND) == 0)
+            return LibArtistPT.TypeEnum.BAND;
+        else if (value.compareTo(LIBArtistTypeEnum.AT_CHOIR) == 0)
+            return LibArtistPT.TypeEnum.CHOIR;
+        else if (value.compareTo(LIBArtistTypeEnum.AT_PERSON) == 0)
+            return LibArtistPT.TypeEnum.PERSON;
+        else
+            return LibArtistPT.TypeEnum.OTHER;
     }
 
     default LIBArtistTypeEnum mapLIBArtistTypeEnum(LibArtistPT.TypeEnum value) {
-        return LIBArtistTypeEnum.valueOf(value.toString());
+
+        if (value.compareTo(LibArtistPT.TypeEnum.BAND) == 0)
+            return LIBArtistTypeEnum.AT_BAND;
+        else if (value.compareTo(LibArtistPT.TypeEnum.CHOIR) == 0)
+            return LIBArtistTypeEnum.AT_CHOIR;
+        else if (value.compareTo(LibArtistPT.TypeEnum.PERSON) == 0)
+            return LIBArtistTypeEnum.AT_PERSON;
+        else
+            return LIBArtistTypeEnum.AT_OTHER;
     }
 
 }

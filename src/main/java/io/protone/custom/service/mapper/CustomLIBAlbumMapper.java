@@ -67,10 +67,26 @@ public interface CustomLIBAlbumMapper {
     }
 
     default LibAlbumPT.AlbumTypeEnum mapAlbumTypeEnum(LIBAlbumTypeEnum value) {
-        return LibAlbumPT.AlbumTypeEnum.valueOf(value.toString());
+
+        if (value.compareTo(LIBAlbumTypeEnum.AT_ALBUM) == 0)
+            return LibAlbumPT.AlbumTypeEnum.ALBUM;
+        else if (value.compareTo(LIBAlbumTypeEnum.AT_COMPILATION) == 0)
+            return LibAlbumPT.AlbumTypeEnum.COMPILATION;
+        else if (value.compareTo(LIBAlbumTypeEnum.AT_SINGLE) == 0)
+            return LibAlbumPT.AlbumTypeEnum.SINGLE;
+        else
+            return LibAlbumPT.AlbumTypeEnum.OTHER;
     }
 
     default LIBAlbumTypeEnum mapLIBAlbumTypeEnum(LibAlbumPT.AlbumTypeEnum value) {
-        return LIBAlbumTypeEnum.valueOf(value.toString());
+
+        if (value.compareTo(LibAlbumPT.AlbumTypeEnum.ALBUM) == 0)
+            return LIBAlbumTypeEnum.AT_ALBUM;
+        else if (value.compareTo(LibAlbumPT.AlbumTypeEnum.COMPILATION) == 0)
+            return LIBAlbumTypeEnum.AT_COMPILATION;
+        else if (value.compareTo(LibAlbumPT.AlbumTypeEnum.SINGLE) == 0)
+            return LIBAlbumTypeEnum.AT_SINGLE;
+        else
+            return LIBAlbumTypeEnum.AT_OTHER;
     }
 }

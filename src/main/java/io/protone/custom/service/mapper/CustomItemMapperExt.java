@@ -3,7 +3,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.domain.LIBMediaItem;
 import io.protone.domain.enumeration.LIBItemStateEnum;
-import io.protone.domain.enumeration.LIBItemTypeEnum;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -43,7 +42,7 @@ public class CustomItemMapperExt {
             .idx(db.getIdx())
             .length(db.getLength().intValue())
             .name(db.getName())
-            .resourceType(LibItemPT.ResourceTypeEnum.valueOf(db.getItemType().toString()))
+            //.resourceType(LibItemPT.ResourceTypeEnum.valueOf(db.getItemType().toString()))
             .state(LibItemPT.StateEnum.fromValue(db.getState().toString()))
             .label(labelMapper.DB2DTO(db.getLabel()))
             .album(albumMapper.DB2DTO(db.getAlbum()))
@@ -79,7 +78,7 @@ public class CustomItemMapperExt {
             .idx(dto.getIdx())
             .length(dto.getLength().longValue())
             .name(dto.getName())
-            .itemType(LIBItemTypeEnum.valueOf(dto.getResourceType().toString()))
+            //.itemType(LIBItemTypeEnum.valueOf(dto.getResourceType().toString()))
             .state(LIBItemStateEnum.valueOf(dto.getState().toString()))
             .label(labelMapper.DTO2DB(dto.getLabel()))
             .album(albumMapper.DTO2DB(dto.getAlbum()))
