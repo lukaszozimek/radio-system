@@ -1,13 +1,8 @@
 package io.protone.custom.service;
 
 import io.protone.config.s3.S3Client;
-import io.protone.custom.consts.GKAssociationConstants;
 import io.protone.custom.service.dto.LibItemPT;
-import io.protone.custom.service.dto.LibraryPT;
-import io.protone.custom.service.mapper.CustomCORChannelMapper;
-import io.protone.custom.service.mapper.ext.CustomCORUserMapperExt;
-import io.protone.custom.service.mapper.ext.CustomItemMapperExt;
-import io.protone.custom.service.mapper.ext.CustomLIBLibraryMapperExt;
+import io.protone.custom.service.mapper.CustomItemMapperExt;
 import io.protone.domain.*;
 import io.protone.repository.*;
 import org.springframework.stereotype.Service;

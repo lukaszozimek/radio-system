@@ -3,8 +3,8 @@ package io.protone.custom.service;
 import io.protone.custom.consts.GKAssociationConstants;
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.custom.service.mapper.CustomCORChannelMapper;
-import io.protone.custom.service.mapper.ext.CustomCORUserMapperExt;
-import io.protone.custom.service.mapper.ext.CustomLIBLibraryMapperExt;
+import io.protone.custom.service.mapper.CustomCORUserMapperExt;
+import io.protone.custom.service.mapper.CustomLIBLibraryMapperExt;
 import io.protone.domain.*;
 import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORAssociationRepository;
@@ -67,7 +67,7 @@ public class LibraryService {
     public LIBLibrary createOrUpdateLibrary(String networkShortcut, LibraryPT library) {
 
         CORNetwork network = getNetworkByShortcut(networkShortcut);
-        LIBLibrary result = customLIBLibraryMapper.libLibraryPTToLIBLibrary(library);
+        LIBLibrary result = customLIBLibraryMapper.DTO2DB(library);
         result.setNetwork(network);
         result = libraryRepository.saveAndFlush(result);
 

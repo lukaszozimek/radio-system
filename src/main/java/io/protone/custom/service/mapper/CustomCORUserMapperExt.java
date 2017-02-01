@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper.ext;
+package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreUserPT;
 

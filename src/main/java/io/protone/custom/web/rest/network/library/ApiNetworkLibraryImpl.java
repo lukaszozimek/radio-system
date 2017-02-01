@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.library;
 
 import io.protone.custom.service.LibraryService;
 import io.protone.custom.service.dto.LibraryPT;
-import io.protone.custom.service.mapper.ext.CustomLIBLibraryMapperExt;
+import io.protone.custom.service.mapper.CustomLIBLibraryMapperExt;
 import io.protone.domain.LIBLibrary;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -35,9 +35,9 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
         if (library.getId() == null)
             return createLibraryUsingPOST(networkShortcut, library);
 
-        customLIBLibraryMapper.libLibraryPTToLIBLibrary(library);
+        customLIBLibraryMapper.DTO2DB(library);
         LIBLibrary resultDB = libraryService.createOrUpdateLibrary(networkShortcut, library);
-        LibraryPT libraryDAO = customLIBLibraryMapper.libLibrary2LibraryPT(resultDB);
+        LibraryPT libraryDAO = customLIBLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
     }
@@ -47,14 +47,14 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
         log.debug("REST request to get all LibraryPT");
         List<LIBLibrary> libraries = libraryService.findLibrary(networkShortcut);
         return ResponseEntity.ok()
-            .body(customLIBLibraryMapper.libLibraries2LibraryPTs(libraries));
+            .body(customLIBLibraryMapper.DBs2DTOs(libraries));
     }
 
     @Override
     public ResponseEntity<LibraryPT> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @RequestBody LibraryPT library) {
         log.debug("REST request to create library: {}", library);
         LIBLibrary resultDB = libraryService.createOrUpdateLibrary(networkShortcut, library);
-        LibraryPT libraryDAO = customLIBLibraryMapper.libLibrary2LibraryPT(resultDB);
+        LibraryPT libraryDAO = customLIBLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
     }
@@ -70,7 +70,7 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     public ResponseEntity<LibraryPT> getLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
         log.debug("REST request to get library: {}", libraryPrefix);
         LIBLibrary library = libraryService.findLibrary(networkShortcut, libraryPrefix);
-        LibraryPT dto = customLIBLibraryMapper.libLibrary2LibraryPT(library);
+        LibraryPT dto = customLIBLibraryMapper.DB2DTO(library);
         return Optional.ofNullable(dto)
             .map(result -> new ResponseEntity<>(
                 result,

@@ -1,8 +1,7 @@
-package io.protone.custom.service.mapper.ext;
+package io.protone.custom.service.mapper;
 
 import io.protone.custom.consts.GKAssociationConstants;
 import io.protone.custom.service.dto.LibraryPT;
-import io.protone.custom.service.mapper.CustomCORChannelMapper;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LIBCounterTypeEnum;
 import io.protone.domain.enumeration.LIBObjectTypeEnum;
@@ -33,7 +32,7 @@ public class CustomLIBLibraryMapperExt {
     @Inject
     CustomCORChannelMapper channelMapper;
 
-    public LibraryPT libLibrary2LibraryPT(LIBLibrary libraryDB) {
+    public LibraryPT DB2DTO(LIBLibrary libraryDB) {
 
         if ( libraryDB == null )
             return null;
@@ -64,19 +63,19 @@ public class CustomLIBLibraryMapperExt {
         return libraryDAO;
     }
 
-    public List<LibraryPT> libLibraries2LibraryPTs(List<LIBLibrary> libraries) {
+    public List<LibraryPT> DBs2DTOs(List<LIBLibrary> libraries) {
 
         if ( libraries == null )
             return null;
 
         List<LibraryPT> list = new ArrayList<LibraryPT>();
         for ( LIBLibrary lIBLibrary : libraries )
-            list.add( libLibrary2LibraryPT( lIBLibrary ) );
+            list.add( DB2DTO( lIBLibrary ) );
 
         return list;
     }
 
-    public LIBLibrary libLibraryPTToLIBLibrary(LibraryPT libraryDAO) {
+    public LIBLibrary DTO2DB(LibraryPT libraryDAO) {
 
         if ( libraryDAO == null ) {
 
@@ -84,7 +83,7 @@ public class CustomLIBLibraryMapperExt {
         }
 
         LIBLibrary libraryDB = new LIBLibrary();
-        libraryDB.setNetwork( networkFromId(libraryDAO.getNetworkId()));
+        libraryDB.setNetwork( mapCORNetwork(libraryDAO.getNetworkId()));
         libraryDB.setId( libraryDAO.getId() );
         libraryDB.setPrefix( libraryDAO.getPrefix() );
         libraryDB.setName( libraryDAO.getName() );
@@ -99,19 +98,19 @@ public class CustomLIBLibraryMapperExt {
         return libraryDB;
     }
 
-    public List<LIBLibrary> libLibraryPTsToLibraries(List<LibraryPT> libraries) {
+    public List<LIBLibrary> DTOs2DBs(List<LibraryPT> libraries) {
 
         if ( libraries == null )
             return null;
 
         List<LIBLibrary> list = new ArrayList<LIBLibrary>();
         for ( LibraryPT libraryPT : libraries )
-            list.add( libLibraryPTToLIBLibrary( libraryPT ) );
+            list.add( DTO2DB( libraryPT ) );
 
         return list;
     }
 
-    private CORNetwork networkFromId(Long id) {
+    private CORNetwork mapCORNetwork(Long id) {
 
         if (id == null)
             return null;
