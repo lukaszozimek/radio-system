@@ -1,5 +1,6 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import io.protone.domain.enumeration.SCHBlockTypeEnum;
@@ -85,14 +88,22 @@ public class SCHBlock implements Serializable {
     @Column(name = "dim_second", nullable = false)
     private Integer dimSecond;
 
-    @ManyToOne
-    private SCHBlock parentBlock;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
+
+    @OneToMany(mappedBy = "sCHBlock")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SCHEmission> emissions = new HashSet<>();
 
     @ManyToOne
-    private CORChannel channel;
+    private SCHBlock sCHBlock;
 
-    @ManyToOne
-    private SCHTemplate template;
+    @OneToMany(mappedBy = "sCHBlock")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SCHBlock> blocks = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -284,43 +295,80 @@ public class SCHBlock implements Serializable {
         this.dimSecond = dimSecond;
     }
 
-    public SCHBlock getParentBlock() {
-        return parentBlock;
+    public CORNetwork getNetwork() {
+        return network;
     }
 
-    public SCHBlock parentBlock(SCHBlock sCHBlock) {
-        this.parentBlock = sCHBlock;
+    public SCHBlock network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
         return this;
     }
 
-    public void setParentBlock(SCHBlock sCHBlock) {
-        this.parentBlock = sCHBlock;
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
-    public CORChannel getChannel() {
-        return channel;
+    public Set<SCHEmission> getEmissions() {
+        return emissions;
     }
 
-    public SCHBlock channel(CORChannel cORChannel) {
-        this.channel = cORChannel;
+    public SCHBlock emissions(Set<SCHEmission> sCHEmissions) {
+        this.emissions = sCHEmissions;
         return this;
     }
 
-    public void setChannel(CORChannel cORChannel) {
-        this.channel = cORChannel;
-    }
-
-    public SCHTemplate getTemplate() {
-        return template;
-    }
-
-    public SCHBlock template(SCHTemplate sCHTemplate) {
-        this.template = sCHTemplate;
+    public SCHBlock addEmission(SCHEmission sCHEmission) {
+        emissions.add(sCHEmission);
+        sCHEmission.setSCHBlock(this);
         return this;
     }
 
-    public void setTemplate(SCHTemplate sCHTemplate) {
-        this.template = sCHTemplate;
+    public SCHBlock removeEmission(SCHEmission sCHEmission) {
+        emissions.remove(sCHEmission);
+        sCHEmission.setSCHBlock(null);
+        return this;
+    }
+
+    public void setEmissions(Set<SCHEmission> sCHEmissions) {
+        this.emissions = sCHEmissions;
+    }
+
+    public SCHBlock getSCHBlock() {
+        return sCHBlock;
+    }
+
+    public SCHBlock sCHBlock(SCHBlock sCHBlock) {
+        this.sCHBlock = sCHBlock;
+        return this;
+    }
+
+    public void setSCHBlock(SCHBlock sCHBlock) {
+        this.sCHBlock = sCHBlock;
+    }
+
+    public Set<SCHBlock> getBlocks() {
+        return blocks;
+    }
+
+    public SCHBlock blocks(Set<SCHBlock> sCHBlocks) {
+        this.blocks = sCHBlocks;
+        return this;
+    }
+
+    public SCHBlock addBlock(SCHBlock sCHBlock) {
+        blocks.add(sCHBlock);
+        sCHBlock.setSCHBlock(this);
+        return this;
+    }
+
+    public SCHBlock removeBlock(SCHBlock sCHBlock) {
+        blocks.remove(sCHBlock);
+        sCHBlock.setSCHBlock(null);
+        return this;
+    }
+
+    public void setBlocks(Set<SCHBlock> sCHBlocks) {
+        this.blocks = sCHBlocks;
     }
 
     @Override

@@ -5,11 +5,7 @@ import io.protone.custom.service.dto.CoreAreaPT;
 import io.protone.custom.service.mapper.CustomCORAreaMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryArea;
 import io.protone.domain.CORArea;
-import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORAreaRepository;
-import io.protone.service.dto.CORAreaDTO;
-import io.protone.service.mapper.CORAreaMapper;
-import io.protone.web.rest.CORAreaResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,5 +1,6 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -36,8 +39,30 @@ public class TRACampaign implements Serializable {
 
     @Column(name = "prize")
     private Long prize;
+
     @ManyToOne
+    private CRMAccount cRMAccount;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CRMAccount customer;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAPrice price;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAStatus status;
+
+    @OneToMany(mappedBy = "tRACampaign")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SCHEmission> emissions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -51,21 +76,17 @@ public class TRACampaign implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public TRACampaign name(String name) {
         this.name = name;
         return this;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
     public TRACampaign startDate(LocalDate startDate) {
@@ -73,12 +94,12 @@ public class TRACampaign implements Serializable {
         return this;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public TRACampaign endDate(LocalDate endDate) {
@@ -86,12 +107,12 @@ public class TRACampaign implements Serializable {
         return this;
     }
 
-    public Long getPrize() {
-        return prize;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public void setPrize(Long prize) {
-        this.prize = prize;
+    public Long getPrize() {
+        return prize;
     }
 
     public TRACampaign prize(Long prize) {
@@ -99,6 +120,99 @@ public class TRACampaign implements Serializable {
         return this;
     }
 
+    public void setPrize(Long prize) {
+        this.prize = prize;
+    }
+
+    public CRMAccount getCRMAccount() {
+        return cRMAccount;
+    }
+
+    public TRACampaign cRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+        return this;
+    }
+
+    public void setCRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+    }
+
+    public CRMAccount getCustomer() {
+        return customer;
+    }
+
+    public TRACampaign customer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+        return this;
+    }
+
+    public void setCustomer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+    }
+
+    public TRAPrice getPrice() {
+        return price;
+    }
+
+    public TRACampaign price(TRAPrice tRAPrice) {
+        this.price = tRAPrice;
+        return this;
+    }
+
+    public void setPrice(TRAPrice tRAPrice) {
+        this.price = tRAPrice;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public TRACampaign network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public TRAStatus getStatus() {
+        return status;
+    }
+
+    public TRACampaign status(TRAStatus tRAStatus) {
+        this.status = tRAStatus;
+        return this;
+    }
+
+    public void setStatus(TRAStatus tRAStatus) {
+        this.status = tRAStatus;
+    }
+
+    public Set<SCHEmission> getEmissions() {
+        return emissions;
+    }
+
+    public TRACampaign emissions(Set<SCHEmission> sCHEmissions) {
+        this.emissions = sCHEmissions;
+        return this;
+    }
+
+    public TRACampaign addEmissions(SCHEmission sCHEmission) {
+        emissions.add(sCHEmission);
+        sCHEmission.setTRACampaign(this);
+        return this;
+    }
+
+    public TRACampaign removeEmissions(SCHEmission sCHEmission) {
+        emissions.remove(sCHEmission);
+        sCHEmission.setTRACampaign(null);
+        return this;
+    }
+
+    public void setEmissions(Set<SCHEmission> sCHEmissions) {
+        this.emissions = sCHEmissions;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -129,18 +243,5 @@ public class TRACampaign implements Serializable {
             ", endDate='" + endDate + "'" +
             ", prize='" + prize + "'" +
             '}';
-    }
-
-    public TRACampaign network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CORNetwork network) {
-        this.network = network;
     }
 }

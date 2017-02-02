@@ -28,15 +28,14 @@ public class CustomTRAPersonMapper {
         return corPersonListMap;
     }
 
-    public List<TraCustomerPersonPT> createDTOObject(Map<CORPerson, List<CORContact>> corPersonListMap) {
+    public List<TraCustomerPersonPT> createDTOObject(CORPerson person) {
         List<TraCustomerPersonPT> listDto = new ArrayList<>();
-        corPersonListMap.keySet().stream().forEach(person -> {
-            listDto.add(new TraCustomerPersonPT().id(person.getId()).
-                lastName(person.getLastName())
-                .firstName(person.getFirstName())
-                .description(person.getDescription()).contacts(corContactMapper.cORContactsToCORContactDTOs(corPersonListMap.get(person))));
 
-        });
+        listDto.add(new TraCustomerPersonPT().id(person.getId()).
+            lastName(person.getLastName())
+            .firstName(person.getFirstName())
+            .description(person.getDescription())
+            .contacts(corContactMapper.cORContactsToCORContactDTOs(person.getPersonContacts())));
         return listDto;
     }
 

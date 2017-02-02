@@ -59,12 +59,6 @@ public class LIBCloudObject implements Serializable {
     @Column(name = "create_date")
     private ZonedDateTime createDate;
 
-    @ManyToOne
-    private CORNetwork network;
-
-    @ManyToOne
-    private User createdBy;
-
     public Long getId() {
         return id;
     }
@@ -175,32 +169,6 @@ public class LIBCloudObject implements Serializable {
 
     public void setCreateDate(ZonedDateTime createDate) {
         this.createDate = createDate;
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public LIBCloudObject network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
-
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public LIBCloudObject createdBy(User user) {
-        this.createdBy = user;
-        return this;
-    }
-
-    public void setCreatedBy(User user) {
-        this.createdBy = user;
     }
 
     @Override

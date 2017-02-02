@@ -1,11 +1,14 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -34,6 +37,19 @@ public class CORNetwork implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "cORNetwork")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORUser> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "cORNetwork")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORChannel> channels = new HashSet<>();
+
+    @ManyToOne
+    private CORUser network;
 
     public Long getId() {
         return id;
@@ -80,6 +96,69 @@ public class CORNetwork implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<CORUser> getUsers() {
+        return users;
+    }
+
+    public CORNetwork users(Set<CORUser> cORUsers) {
+        this.users = cORUsers;
+        return this;
+    }
+
+    public CORNetwork addUsers(CORUser cORUser) {
+        users.add(cORUser);
+        cORUser.setCORNetwork(this);
+        return this;
+    }
+
+    public CORNetwork removeUsers(CORUser cORUser) {
+        users.remove(cORUser);
+        cORUser.setCORNetwork(null);
+        return this;
+    }
+
+    public void setUsers(Set<CORUser> cORUsers) {
+        this.users = cORUsers;
+    }
+
+    public Set<CORChannel> getChannels() {
+        return channels;
+    }
+
+    public CORNetwork channels(Set<CORChannel> cORChannels) {
+        this.channels = cORChannels;
+        return this;
+    }
+
+    public CORNetwork addChannel(CORChannel cORChannel) {
+        channels.add(cORChannel);
+        cORChannel.setCORNetwork(this);
+        return this;
+    }
+
+    public CORNetwork removeChannel(CORChannel cORChannel) {
+        channels.remove(cORChannel);
+        cORChannel.setCORNetwork(null);
+        return this;
+    }
+
+    public void setChannels(Set<CORChannel> cORChannels) {
+        this.channels = cORChannels;
+    }
+
+    public CORUser getNetwork() {
+        return network;
+    }
+
+    public CORNetwork network(CORUser cORUser) {
+        this.network = cORUser;
+        return this;
+    }
+
+    public void setNetwork(CORUser cORUser) {
+        this.network = cORUser;
     }
 
     @Override

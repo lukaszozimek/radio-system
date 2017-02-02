@@ -47,7 +47,8 @@ public class CORAddress implements Serializable {
     @Column(name = "country", length = 100, nullable = false)
     private String country;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
     public Long getId() {

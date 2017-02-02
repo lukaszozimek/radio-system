@@ -29,8 +29,29 @@ public class TRAAdvertisement implements Serializable {
 
     @Column(name = "description")
     private String description;
+
     @ManyToOne
+    private CRMAccount cRMAccount;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private LIBMediaItem libitem;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CRMAccount customer;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAIndustry industry;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAAdvertismentType type;
 
     public Long getId() {
         return id;
@@ -44,13 +65,13 @@ public class TRAAdvertisement implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public TRAAdvertisement name(String name) {
         this.name = name;
         return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -60,6 +81,88 @@ public class TRAAdvertisement implements Serializable {
     public TRAAdvertisement description(String description) {
         this.description = description;
         return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public CRMAccount getCRMAccount() {
+        return cRMAccount;
+    }
+
+    public TRAAdvertisement cRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+        return this;
+    }
+
+    public void setCRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+    }
+
+    public LIBMediaItem getLibitem() {
+        return libitem;
+    }
+
+    public TRAAdvertisement libitem(LIBMediaItem lIBMediaItem) {
+        this.libitem = lIBMediaItem;
+        return this;
+    }
+
+    public void setLibitem(LIBMediaItem lIBMediaItem) {
+        this.libitem = lIBMediaItem;
+    }
+
+    public CRMAccount getCustomer() {
+        return customer;
+    }
+
+    public TRAAdvertisement customer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+        return this;
+    }
+
+    public void setCustomer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+    }
+
+    public TRAIndustry getIndustry() {
+        return industry;
+    }
+
+    public TRAAdvertisement industry(TRAIndustry tRAIndustry) {
+        this.industry = tRAIndustry;
+        return this;
+    }
+
+    public void setIndustry(TRAIndustry tRAIndustry) {
+        this.industry = tRAIndustry;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public TRAAdvertisement network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public TRAAdvertismentType getType() {
+        return type;
+    }
+
+    public TRAAdvertisement type(TRAAdvertismentType tRAAdvertismentType) {
+        this.type = tRAAdvertismentType;
+        return this;
+    }
+
+    public void setType(TRAAdvertismentType tRAAdvertismentType) {
+        this.type = tRAAdvertismentType;
     }
 
     @Override
@@ -89,18 +192,5 @@ public class TRAAdvertisement implements Serializable {
             ", name='" + name + "'" +
             ", description='" + description + "'" +
             '}';
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CORNetwork network) {
-        this.network = network;
-    }
-
-    public TRAAdvertisement network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
     }
 }

@@ -55,13 +55,6 @@ public class LIBVideoObject implements Serializable {
     @Column(name = "aspect_ratio")
     private LIBAspectRatioEnum aspectRatio;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LIBCloudObject cloudObject;
-
-    @ManyToOne
-    private LIBMediaItem mediaItem;
-
     public Long getId() {
         return id;
     }
@@ -159,32 +152,6 @@ public class LIBVideoObject implements Serializable {
 
     public void setAspectRatio(LIBAspectRatioEnum aspectRatio) {
         this.aspectRatio = aspectRatio;
-    }
-
-    public LIBCloudObject getCloudObject() {
-        return cloudObject;
-    }
-
-    public LIBVideoObject cloudObject(LIBCloudObject lIBCloudObject) {
-        this.cloudObject = lIBCloudObject;
-        return this;
-    }
-
-    public void setCloudObject(LIBCloudObject lIBCloudObject) {
-        this.cloudObject = lIBCloudObject;
-    }
-
-    public LIBMediaItem getMediaItem() {
-        return mediaItem;
-    }
-
-    public LIBVideoObject mediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-        return this;
-    }
-
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
     }
 
     @Override

@@ -6,7 +6,6 @@ import io.protone.custom.web.rest.network.configuration.library.ApiConfiguration
 import io.protone.domain.CFGMarkerConfiguration;
 import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CFGMarkerConfigurationRepository;
-import io.protone.web.rest.CFGMarkerConfigurationResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

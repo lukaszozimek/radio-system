@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Mapper for the entity CORContact and its DTO CORContactDTO.
@@ -19,7 +20,7 @@ public interface CustomCORContactMapper {
     @Mapping(source = "network.id", target = "networkId")
     CoreContactPT cORContactToCORContactDTO(CORContact cORContact);
 
-    List<CoreContactPT> cORContactsToCORContactDTOs(List<CORContact> cORContacts);
+    List<CoreContactPT> cORContactsToCORContactDTOs(Set<CORContact> cORContacts);
 
     @Mapping(source = "networkId", target = "network")
     CORContact cORContactDTOToCORContact(CoreContactPT cORContactDTO);

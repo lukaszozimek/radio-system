@@ -49,9 +49,6 @@ public class CFGMarkerConfiguration implements Serializable {
     @Column(name = "type", nullable = false)
     private LIBMarkerTypeEnum type;
 
-    @ManyToOne
-    private CORNetwork network;
-
     public Long getId() {
         return id;
     }
@@ -123,19 +120,6 @@ public class CFGMarkerConfiguration implements Serializable {
 
     public void setType(LIBMarkerTypeEnum type) {
         this.type = type;
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public CFGMarkerConfiguration network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
-
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
     }
 
     @Override

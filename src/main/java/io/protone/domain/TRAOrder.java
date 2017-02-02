@@ -36,21 +36,33 @@ public class TRAOrder implements Serializable {
 
     @Column(name = "calculated_prize")
     private Long calculatedPrize;
+
     @ManyToOne
+    private CRMAccount cRMAccount;
+
+    @ManyToOne
+    private TRAInvoice tRAInvoice;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CRMAccount customer;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRACampaign campaign;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAPrice price;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
-    public TRAOrder network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAStatus status;
 
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CORNetwork network) {
-        this.network = network;
-    }
     public Long getId() {
         return id;
     }
@@ -63,21 +75,17 @@ public class TRAOrder implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public TRAOrder name(String name) {
         this.name = name;
         return this;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
     public TRAOrder startDate(LocalDate startDate) {
@@ -85,12 +93,12 @@ public class TRAOrder implements Serializable {
         return this;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public TRAOrder endDate(LocalDate endDate) {
@@ -98,12 +106,12 @@ public class TRAOrder implements Serializable {
         return this;
     }
 
-    public Long getCalculatedPrize() {
-        return calculatedPrize;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public void setCalculatedPrize(Long calculatedPrize) {
-        this.calculatedPrize = calculatedPrize;
+    public Long getCalculatedPrize() {
+        return calculatedPrize;
     }
 
     public TRAOrder calculatedPrize(Long calculatedPrize) {
@@ -111,6 +119,100 @@ public class TRAOrder implements Serializable {
         return this;
     }
 
+    public void setCalculatedPrize(Long calculatedPrize) {
+        this.calculatedPrize = calculatedPrize;
+    }
+
+    public CRMAccount getCRMAccount() {
+        return cRMAccount;
+    }
+
+    public TRAOrder cRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+        return this;
+    }
+
+    public void setCRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+    }
+
+    public TRAInvoice getTRAInvoice() {
+        return tRAInvoice;
+    }
+
+    public TRAOrder tRAInvoice(TRAInvoice tRAInvoice) {
+        this.tRAInvoice = tRAInvoice;
+        return this;
+    }
+
+    public void setTRAInvoice(TRAInvoice tRAInvoice) {
+        this.tRAInvoice = tRAInvoice;
+    }
+
+    public CRMAccount getCustomer() {
+        return customer;
+    }
+
+    public TRAOrder customer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+        return this;
+    }
+
+    public void setCustomer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+    }
+
+    public TRACampaign getCampaign() {
+        return campaign;
+    }
+
+    public TRAOrder campaign(TRACampaign tRACampaign) {
+        this.campaign = tRACampaign;
+        return this;
+    }
+
+    public void setCampaign(TRACampaign tRACampaign) {
+        this.campaign = tRACampaign;
+    }
+
+    public TRAPrice getPrice() {
+        return price;
+    }
+
+    public TRAOrder price(TRAPrice tRAPrice) {
+        this.price = tRAPrice;
+        return this;
+    }
+
+    public void setPrice(TRAPrice tRAPrice) {
+        this.price = tRAPrice;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public TRAOrder network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public TRAStatus getStatus() {
+        return status;
+    }
+
+    public TRAOrder status(TRAStatus tRAStatus) {
+        this.status = tRAStatus;
+        return this;
+    }
+
+    public void setStatus(TRAStatus tRAStatus) {
+        this.status = tRAStatus;
+    }
 
     @Override
     public boolean equals(Object o) {

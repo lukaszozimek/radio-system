@@ -38,12 +38,6 @@ public class LIBFileItem implements Serializable {
     @Column(name = "type")
     private LIBFileTypeEnum type;
 
-    @ManyToOne
-    private LIBLibrary library;
-
-    @ManyToOne
-    private LIBFileItem parentFile;
-
     public Long getId() {
         return id;
     }
@@ -89,32 +83,6 @@ public class LIBFileItem implements Serializable {
 
     public void setType(LIBFileTypeEnum type) {
         this.type = type;
-    }
-
-    public LIBLibrary getLibrary() {
-        return library;
-    }
-
-    public LIBFileItem library(LIBLibrary lIBLibrary) {
-        this.library = lIBLibrary;
-        return this;
-    }
-
-    public void setLibrary(LIBLibrary lIBLibrary) {
-        this.library = lIBLibrary;
-    }
-
-    public LIBFileItem getParentFile() {
-        return parentFile;
-    }
-
-    public LIBFileItem parentFile(LIBFileItem lIBFileItem) {
-        this.parentFile = lIBFileItem;
-        return this;
-    }
-
-    public void setParentFile(LIBFileItem lIBFileItem) {
-        this.parentFile = lIBFileItem;
     }
 
     @Override

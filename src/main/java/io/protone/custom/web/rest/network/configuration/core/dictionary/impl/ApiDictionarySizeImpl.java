@@ -5,11 +5,7 @@ import io.protone.custom.service.dto.CoreSizePT;
 import io.protone.custom.service.mapper.CustomCORSizeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionarySize;
 import io.protone.domain.CORSize;
-import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORSizeRepository;
-import io.protone.service.dto.CORSizeDTO;
-import io.protone.service.mapper.CORSizeMapper;
-import io.protone.web.rest.CORSizeResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 @RestController

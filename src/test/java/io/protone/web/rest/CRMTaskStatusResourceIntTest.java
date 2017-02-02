@@ -5,7 +5,6 @@ import io.protone.ProtoneApp;
 import io.protone.domain.CRMTaskStatus;
 import io.protone.repository.CRMTaskStatusRepository;
 import io.protone.service.dto.CRMTaskStatusDTO;
-import io.protone.service.mapper.CRMTaskStatusMapper;
 
 import org.junit.Before;
 import org.junit.Test;

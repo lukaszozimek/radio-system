@@ -46,7 +46,12 @@ public class TRAPrice implements Serializable {
     @Column(name = "price_alternative", precision=10, scale=2, nullable = false)
     private BigDecimal priceAlternative;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORCurrency currency;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
     public Long getId() {
@@ -133,6 +138,19 @@ public class TRAPrice implements Serializable {
 
     public void setPriceAlternative(BigDecimal priceAlternative) {
         this.priceAlternative = priceAlternative;
+    }
+
+    public CORCurrency getCurrency() {
+        return currency;
+    }
+
+    public TRAPrice currency(CORCurrency cORCurrency) {
+        this.currency = cORCurrency;
+        return this;
+    }
+
+    public void setCurrency(CORCurrency cORCurrency) {
+        this.currency = cORCurrency;
     }
 
     public CORNetwork getNetwork() {

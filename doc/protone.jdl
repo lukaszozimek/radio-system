@@ -3,6 +3,7 @@ entity CRMLead {
  	name String
     shortname String,
     description String
+
 }
 entity CRMLeadSource{
 	name String
@@ -21,7 +22,9 @@ entity CRMContact{
     idNumber2 String
     name String
     paymentDate LocalDate
+    paymentDelay Long
     vatNumber String
+    shortName String
   }
 entity CRMContactStatus{
 	name String,
@@ -37,8 +40,9 @@ entity CRMAccount {
     idNumber2 String
     name String
     paymentDate LocalDate
-    size Integer
     vatNumber String
+    paymentDelay Long
+    getShortName String
 }
 entity CRMStage{
 	name String,
@@ -117,12 +121,11 @@ enum CORCounterTypeEnum {
     CT_SHORTCUT_COUNTER
 }
 entity CORCountry{
- networkId Long
+
   name String
   shortName String
   }
 entity CORCurrency{
-    networkId Long
    	name String
  	symbol String
   	delimiter String
@@ -272,6 +275,18 @@ enum LIBAudioQualityEnum {
     AQ_OTHER
 }
 
+entity LIBCloudObject {
+	uuid String required maxlength(100)
+    objectType LIBObjectTypeEnum
+    originalName String required maxlength(100)
+    contentType String required maxlength(100)
+	size Long required
+    original Boolean
+    hash String required maxlength(100)
+    createDate ZonedDateTime
+}
+
+
 entity LIBVideoObject {
 	width Integer required
     height Integer required
@@ -364,13 +379,6 @@ enum LIBMarkerTypeEnum {
 	MT_CUSTOM
 }
 
-entity SCHBlockPrice {
-	calculatedPrice BigDecimal
-}
-
-entity SCHEmissionOrder {
-	calculatedPrice BigDecimal
-}
 
 entity SCHBlock {
 	seq Integer required
@@ -481,7 +489,9 @@ entity TRAAdvertismentType {
 entity CORUser {
   name String
 }
+entity LIBFileItem{
 
+}
 
 
 relationship OneToOne {
@@ -503,6 +513,11 @@ relationship OneToOne {
     CFGTaskStatus {network} to CORNetwork,
     CORTax{network} to CORNetwork,
     TRAStatus{network} to CORNetwork,
+    CRMStage{network} to CORNetwork,
+    CORTag{network} to CORNetwork,
+    CFGMarkerConfiguration {network} to CORNetwork,
+	LIBCloudObject {network} to CORNetwork,
+
 
     CORCountry{tax} to CORTax,
 	CORCountry{network} to CORNetwork,
@@ -510,8 +525,7 @@ relationship OneToOne {
 
     TRAPrice {currency} to CORCurrency,
     TRAPrice {network} to CORNetwork,
-
-    TRAAdvertisement{libitem} to LIBMediaItem,
+	TRAAdvertisement{libitem} to LIBMediaItem,
  	TRAAdvertisement{customer} to CRMAccount,
  	TRAAdvertisement{industry} to TRAIndustry,
  	TRAAdvertisement{network} to CORNetwork,
@@ -542,8 +556,9 @@ relationship OneToOne {
    	CRMContact{industry} to  TRAIndustry,
     CRMContact{area} to CORArea,
     CRMContact{person} to CORPerson,
-    CRMContact {opiekun} to CORUser,
+    CRMContact {keeper} to CORUser,
     CRMContact{status} to CRMContactStatus,
+    CRMContact{network} to CORNetwork,
 
     CRMAccount{addres} to CORAddress,
     CRMAccount{country} to CORCountry,
@@ -552,7 +567,7 @@ relationship OneToOne {
    	CRMAccount{industry} to  TRAIndustry,
     CRMAccount{area} to CORArea,
     CRMAccount{person} to CORPerson,
-    CRMAccount {opiekun} to CORUser,
+    CRMAccount {keeper} to CORUser,
     CRMAccount{discount} to TRADiscount,
     CRMAccount{network} to CORNetwork,
 
@@ -588,33 +603,48 @@ relationship OneToOne {
     SCHEmission{channel} to CORChannel,
     SCHEmission {network} to CORNetwork,
     SCHBlock {network} to CORNetwork,
+    SCHBlock {price} to TRAPrice,
+
     LibLibrary {network} to CORNetwork,
 
     CORSubscriptionOwner {network} to CORNetwork,
-    CORSubscriptionOwner {network} to CORUser
+    CORSubscriptionOwner {user} to CORUser,
 
+    LIBImageObject{cloudObject} to LIBCloudObject,
+    LIBImageObject {network} to CORNetwork,
+
+    LIBAudioObject{cloudObject} to LIBCloudObject,
+    LIBAudioObject {network} to CORNetwork,
+
+    LIBVideoObject{cloudObject} to LIBCloudObject,
+    LIBVideoObject {network} to CORNetwork,
+
+    LIBFileObject{cloudObject} to LIBCloudObject,
+    LIBFileObject {network} to CORNetwork,
+    LIBFileItem {network} to CORNetwork
 }
 
 relationship OneToMany {
 
     TRACampaign {emissions} to SCHEmission,
 	TRAInvoice {orders} to TRAOrder,
-
+    CRMOpportunity{tasks} to CRMTask,
     CRMContact{tasks} to CRMTask,
     CRMAccount{opportunity} to CRMOpportunity,
     CRMAccount{network} to CRMTask,
-        CRMAccount{orders} to TRAOrder,
-        CRMAccount{campaigns} to TRACampaign,
-        CRMAccount{invoices} to TRAInvoice,
-        CRMAccount{invoices} to TRAAdvertisement,
-    CRMLead{network} to CRMTask,
+    CRMAccount{orders} to TRAOrder,
+    CRMAccount{campaigns} to TRACampaign,
+    CRMAccount{invoices} to TRAInvoice,
+    CRMAccount{advertisments} to TRAAdvertisement,
+
+    CRMLead{tasks} to CRMTask,
     CRMTask{tasks} to CRMTask,
     CRMTask{comment} to CRMTaskComment,
 
     CORSubscriptionOwner {subscriptions} to  CORSubscription,
 
-    LIBMediaItem{author} to CORPerson,
-	LIBMediaItem{composer} to CORPerson,
+    LIBMediaItem {author} to CORPerson  ,
+    LIBMediaItem {composer} to CORPerson  ,
 	LIBMediaItem{markers} to LIBMarker,
 	LIBMediaItem{property} to CORPropertyKey,
 	LIBMediaItem{tags} to CORTag,
@@ -632,16 +662,19 @@ relationship OneToMany {
 
     SCHBlock {emission} to SCHEmission,
     SCHBlock {block} to SCHBlock
-
-
-
 }
 relationship ManyToOne{
 
+  LIBFileObject{fileItem} to LIBFileItem,
+  LIBFileItem{parentFile} to LIBFileItem,
   CORChannel {user} to CORUser,
-  CORNetwork {network} to CORUser
+  CORNetwork {network} to CORUser,
+  LIBCloudObject{network} to CORNetwork,
+  LIBCloudObject{createdBy} to CORUser
 
 }
 paginate * with infinite-scroll
 microservice * with protone
+
+
 

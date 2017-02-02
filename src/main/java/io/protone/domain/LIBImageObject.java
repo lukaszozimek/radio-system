@@ -37,13 +37,6 @@ public class LIBImageObject implements Serializable {
     @Column(name = "image_size", nullable = false)
     private LIBImageSizeEnum imageSize;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LIBCloudObject cloudObject;
-
-    @ManyToOne
-    private LIBImageItem imageItem;
-
     public Long getId() {
         return id;
     }
@@ -89,32 +82,6 @@ public class LIBImageObject implements Serializable {
 
     public void setImageSize(LIBImageSizeEnum imageSize) {
         this.imageSize = imageSize;
-    }
-
-    public LIBCloudObject getCloudObject() {
-        return cloudObject;
-    }
-
-    public LIBImageObject cloudObject(LIBCloudObject lIBCloudObject) {
-        this.cloudObject = lIBCloudObject;
-        return this;
-    }
-
-    public void setCloudObject(LIBCloudObject lIBCloudObject) {
-        this.cloudObject = lIBCloudObject;
-    }
-
-    public LIBImageItem getImageItem() {
-        return imageItem;
-    }
-
-    public LIBImageObject imageItem(LIBImageItem lIBImageItem) {
-        this.imageItem = lIBImageItem;
-        return this;
-    }
-
-    public void setImageItem(LIBImageItem lIBImageItem) {
-        this.imageItem = lIBImageItem;
     }
 
     @Override

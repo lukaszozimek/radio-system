@@ -24,8 +24,8 @@ public class CRMStage implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    private CORNetwork network;
+    @Column(name = "description")
+    private String description;
 
     public Long getId() {
         return id;
@@ -48,17 +48,17 @@ public class CRMStage implements Serializable {
         this.name = name;
     }
 
-    public CORNetwork getNetwork() {
-        return network;
+    public String getDescription() {
+        return description;
     }
 
-    public CRMStage network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public CRMStage description(String description) {
+        this.description = description;
         return this;
     }
 
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -86,6 +86,7 @@ public class CRMStage implements Serializable {
         return "CRMStage{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", description='" + description + "'" +
             '}';
     }
 }

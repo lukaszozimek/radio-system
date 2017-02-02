@@ -5,11 +5,7 @@ import io.protone.custom.service.dto.ConfIndustryPT;
 import io.protone.custom.service.mapper.CustomTRAIndustryMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryIndustry;
 import io.protone.domain.TRAIndustry;
-import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.TRAIndustryRepository;
-import io.protone.service.dto.TRAIndustryDTO;
-import io.protone.service.mapper.TRAIndustryMapper;
-import io.protone.web.rest.TRAIndustryResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 

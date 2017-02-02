@@ -5,7 +5,6 @@ import io.protone.ProtoneApp;
 import io.protone.domain.LIBMarker;
 import io.protone.repository.LIBMarkerRepository;
 import io.protone.service.dto.LIBMarkerDTO;
-import io.protone.service.mapper.LIBMarkerMapper;
 
 import org.junit.Before;
 import org.junit.Test;

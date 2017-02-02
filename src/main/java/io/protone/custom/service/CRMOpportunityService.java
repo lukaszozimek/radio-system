@@ -28,39 +28,11 @@ import static java.util.stream.Collectors.toList;
 public class CRMOpportunityService {
 
     @Inject
-    private CRMStageRepository stageRepository;
-
-    @Inject
-    private CRMContactRepository crmContactRepository;
-
-    @Inject
-    private CORAssociationRepository associationRepository;
-
-    @Inject
     private CRMOpportunityRepository opportunityRepository;
-
-    @Inject
-    private CRMTaskRepository taskRepository;
-
-    @Inject
-    private CustomCRMTaskMapper customCRMTaskMapper;
-
-    @Inject
-    private CRMContactService crmContactService;
 
     @Inject
     private CustomCRMOpportunityMapper customCRMOpportunityMapper;
 
-    @Inject
-    private CustomCRMContactMapper customCRMContactMapper;
-
-    @Inject
-    private CustomCORUserMapper customCORUserMapper;
-
-    @Inject
-    private CRMTaskService taskService;
-    @Inject
-    private UserRepository userRepository;
 
     public List<CrmOpportunityPT> getAllOpportunity(CORNetwork corNetwork) {
         List<CRMOpportunity> opportunities = opportunityRepository.findByNetwork(corNetwork);
@@ -69,76 +41,37 @@ public class CRMOpportunityService {
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT, CORNetwork corNetwork) {
         CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT, corNetwork));
-        CRMStage stage = stageRepository.findByNameAndNetwork(opportunityPT.getStage().getName(), corNetwork);
-        CRMContact contact = crmContactRepository.findOne(customCRMContactMapper.createCrmContactEntity(opportunityPT.getContact(), corNetwork).getId());
-        associationRepository.save(customCRMOpportunityMapper.createOpportunityContactAssociationEntity(opportunity, contact, corNetwork));
-        associationRepository.save(customCRMOpportunityMapper.createOpportunityStageAssociationEntity(opportunity, stage, corNetwork));
-        associationRepository.save(customCORUserMapper.createCRMOpportunitnyUserAssociation(opportunity, customCORUserMapper.tranformUserDTO(opportunityPT.getOpportunityOwner()), corNetwork));
-        List<CrmTaskPT> crmTaskPTS = taskService.saveOpportunity(opportunity, opportunityPT, corNetwork);
-        CrmContactPT crmContactPT = crmContactService.getContact(contact.getShortName(), corNetwork);
-        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, opportunityPT.getOpportunityOwner(), crmContactPT, crmTaskPTS);
+         return customCRMOpportunityMapper.buildDTOFromEntites(opportunity );
     }
 
     public void deleteOpportunity(String shortcut, CORNetwork corNetwork) {
-        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        List<CORAssociation> opportunityStageAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(opportunity.getId(), CRMStage.class.getName(), corNetwork);
-        List<CORAssociation> opportunityContactAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(opportunity.getId(), CRMContact.class.getName(), corNetwork);
-        CORAssociation opportunityOwnerAssociation = associationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(opportunity.getId(), User.class.getName(), corNetwork, OPPORTUNITY_OWNER);
-        associationRepository.delete(opportunityContactAssociation);
-        taskService.deleteOpportunityTask(opportunity, corNetwork);
-        associationRepository.delete(opportunityStageAssociation);
-        associationRepository.delete(opportunityContactAssociation);
-        associationRepository.delete(opportunityOwnerAssociation);
-        opportunityRepository.delete(opportunity);
-    }
+         }
 
     public CrmOpportunityPT getOpportunity(String shortcut, CORNetwork corNetwork) {
-        CRMOpportunity opportunitie = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        return createDTO(opportunitie, corNetwork);
-    }
+        return null; }
 
 
     public CrmOpportunityPT update(CrmOpportunityPT opportunityPT, CORNetwork corNetwork) {
-        deleteOpportunity(opportunityPT.getName(), corNetwork);
-        return saveOpportunity(opportunityPT, corNetwork);
-    }
+        return null; }
 
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut, CORNetwork corNetwork) {
-        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        return taskService.getTasksAssociatedWithOpportunity(opportunity, corNetwork);
-    }
+        return null; }
 
     public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId, CORNetwork corNetwork) {
-        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        return taskService.getTaskAssociatedWithOpportunity(opportunity, taskId, corNetwork);
-    }
+        return null;}
 
     public void deleteLeadTask(String shortcut, Long taskId, CORNetwork corNetwork) {
-        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        taskService.deleteOpportunityTask(opportunity, taskId, corNetwork);
-    }
+     }
 
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CORNetwork corNetwork) {
-        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        return taskService.createTasksAssociatedWithOpportunity(opportunity, taskPT, corNetwork);
-    }
+        return null;}
 
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask, CORNetwork corNetwork) {
-        CRMOpportunity crmOpportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
-        return taskService.updateOportunityTask(crmOpportunity, crmTask, corNetwork);
-
+        return null;
     }
 
     private CrmOpportunityPT createDTO(CRMOpportunity opportunity, CORNetwork corNetwork) {
-        List<CORAssociation> opportunityStageAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(opportunity.getId(), CRMStage.class.getName(), corNetwork);
-        List<CORAssociation> opportunityContactAssociation = associationRepository.findBySourceIdAndTargetClassAndNetwork(opportunity.getId(), CRMContact.class.getName(), corNetwork);
-        CORAssociation opportunityOwnerAssociation = associationRepository.findOneBySourceIdAndTargetClassAndNetworkAndName(opportunity.getId(), User.class.getName(), corNetwork, OPPORTUNITY_OWNER);
-        CRMStage stage = stageRepository.findOne(opportunityStageAssociation.get(0).getTargetId());
-        CRMContact crmContact = crmContactRepository.findOne(opportunityContactAssociation.get(0).getTargetId());
-        List<CrmTaskPT> taskPTS = taskService.getOpportunityTask(opportunity, corNetwork);
-        User opportunityOwner = userRepository.findOne(opportunityOwnerAssociation.getTargetId());
-        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity, stage, customCORUserMapper.transformUserEnity(opportunityOwner), crmContactService.getContact(crmContact.getShortName(), corNetwork), taskPTS);
-    }
+        return null; }
 
 
 }

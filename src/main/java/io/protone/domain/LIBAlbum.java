@@ -41,19 +41,6 @@ public class LIBAlbum implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LIBImageItem cover;
-
-    @ManyToOne
-    private LIBLabel label;
-
-    @ManyToOne
-    private LIBArtist artist;
-
-    @ManyToOne
-    private CORNetwork network;
-
     public Long getId() {
         return id;
     }
@@ -112,58 +99,6 @@ public class LIBAlbum implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LIBImageItem getCover() {
-        return cover;
-    }
-
-    public LIBAlbum cover(LIBImageItem lIBImageItem) {
-        this.cover = lIBImageItem;
-        return this;
-    }
-
-    public void setCover(LIBImageItem lIBImageItem) {
-        this.cover = lIBImageItem;
-    }
-
-    public LIBLabel getLabel() {
-        return label;
-    }
-
-    public LIBAlbum label(LIBLabel lIBLabel) {
-        this.label = lIBLabel;
-        return this;
-    }
-
-    public void setLabel(LIBLabel lIBLabel) {
-        this.label = lIBLabel;
-    }
-
-    public LIBArtist getArtist() {
-        return artist;
-    }
-
-    public LIBAlbum artist(LIBArtist lIBArtist) {
-        this.artist = lIBArtist;
-        return this;
-    }
-
-    public void setArtist(LIBArtist lIBArtist) {
-        this.artist = lIBArtist;
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public LIBAlbum network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
-
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
     }
 
     @Override

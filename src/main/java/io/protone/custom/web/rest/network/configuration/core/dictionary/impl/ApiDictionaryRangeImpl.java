@@ -2,15 +2,10 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreRangePT;
-import io.protone.custom.service.mapper.CustomCORAreaMapper;
 import io.protone.custom.service.mapper.CustomCORRangeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryRange;
 import io.protone.domain.CORRange;
-import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORRangeRepository;
-import io.protone.service.dto.CORRangeDTO;
-import io.protone.service.mapper.CORRangeMapper;
-import io.protone.web.rest.CORRangeResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -22,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 

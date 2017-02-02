@@ -38,39 +38,4 @@ public class CustomCORUserMapper {
 
     }
 
-    public CORAssociation createCRMAssignetToTaskAssociation(CRMTask crmTask, User user, CORNetwork corNetwork) {
-        return new CORAssociation().name(ASSIGNED_TO)
-            .sourceId(crmTask.getId())
-            .sourceClass(CRMTask.class.getName())
-            .targetId(user.getId())
-            .targetClass(User.class.getName())
-            .network(corNetwork);
-    }
-
-    public CORAssociation createCRMCreatedByTaskAssociation(CRMTask crmTask, User user, CORNetwork corNetwork) {
-        return new CORAssociation().name(CREATED_BY)
-            .sourceId(crmTask.getId())
-            .sourceClass(CRMTask.class.getName())
-            .targetId(user.getId())
-            .targetClass(User.class.getName())
-            .network(corNetwork);
-    }
-
-    public CORAssociation createCRMOpportunitnyUserAssociation(CRMOpportunity crmOpportunity, User user, CORNetwork corNetwork) {
-        return new CORAssociation().name(OPPORTUNITY_OWNER)
-            .sourceId(crmOpportunity.getId())
-            .sourceClass(CRMOpportunity.class.getName())
-            .targetId(user.getId())
-            .targetClass(User.class.getName())
-            .network(corNetwork);
-    }
-
-    public CORAssociation createCRMAccountUserAssociation(CRMAccount crmAccount, User user, CORNetwork corNetwork) {
-        return new CORAssociation().name(ACCOUNT_OWNER)
-            .sourceId(crmAccount.getId())
-            .sourceClass(CRMAccount.class.getName())
-            .targetId(user.getId())
-            .targetClass(User.class.getName())
-            .network(corNetwork);
-    }
 }

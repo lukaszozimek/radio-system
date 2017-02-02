@@ -24,7 +24,8 @@ public class CRMLeadSource implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
     public Long getId() {

@@ -57,23 +57,10 @@ public class TRAAdvertismentService {
 
     public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT, CORNetwork corNetwork) {
         TRAAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT);
-        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
-        TRAIndustry industry = customTRAIndustryMapper.tRAIndustryDTOToTRAIndustry(traAdvertisementPT.getIndustryId());
-        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId());
-        LIBMediaItem libMediaItem = libMediaItemRepository.findOne(1L);
-        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentCrmAccountAssociation(traAdvertisement, crmAccount,corNetwork));
-        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentIndustryAssociation(traAdvertisement, industry,corNetwork));
-        corAssociationRepository.save(traAdvertismentMapper.createAdvertismentMediaItemAssociation(traAdvertisement, libMediaItem,corNetwork));
-        return traAdvertismentMapper.transformEntityToDTO(traAdvertisement, industry, crmAccount, new LibItemPT());
+           return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }
 
     public void deleteAdvertisement(Long idx, CORNetwork corNetwork) {
-        TRAAdvertisement traAdvertisement = traAdvertisementRepository.findOne(idx);
-        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traAdvertisement.getId(), TRAIndustry.class.getName(),corNetwork);
-        corAssociationRepository.deleteBySourceIdAndTargetClassAndNetwork(traAdvertisement.getId(), CRMAccount.class.getName(),corNetwork);
-        List<CORAssociation> advertismentLibItemList = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traAdvertisement.getId(), LIBMediaItem.class.getName(),corNetwork);
-        libMediaItemRepository.delete(advertismentLibItemList.get(0).getId());
-        corAssociationRepository.delete(advertismentLibItemList);
 
     }
 
@@ -93,20 +80,10 @@ public class TRAAdvertismentService {
     }
 
     public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CORNetwork corNetwork) {
-        CRMAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut,corNetwork);
-        List<CORAssociation> associations = corAssociationRepository.findByTargetIdAndSourceClassAndNetwork(crmAccount.getId(), TRAAdvertisement.class.getName(),corNetwork);
-        return getAdverismentWithoutSelection(associations.stream().map(CORAssociation::getSourceId).collect(toList()), corNetwork);
-
+     return null;
     }
 
     public TraAdvertisementPT getTraAdvertisment(TRAAdvertisement traAdvertisement, CORNetwork corNetwork) {
-
-        List<CORAssociation> advertismentIndustryList = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traAdvertisement.getId(), TRAIndustry.class.getName(),corNetwork);
-        List<CORAssociation> advertismentCustomerList = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traAdvertisement.getId(), CRMAccount.class.getName(),corNetwork);
-        List<CORAssociation> advertismentLibItemList = corAssociationRepository.findBySourceIdAndTargetClassAndNetwork(traAdvertisement.getId(), LIBMediaItem.class.getName(),corNetwork);
-        TRAIndustry industry = traIndustryRepository.findOne(advertismentIndustryList.get(0).getTargetId());
-        CRMAccount crmAccount = crmAccountRepository.findOne(advertismentCustomerList.get(0).getTargetId());
-        LIBMediaItem libMediaItem = libMediaItemRepository.findOne(advertismentLibItemList.get(0).getId());
-        return traAdvertismentMapper.transformEntityToDTO(traAdvertisement, industry, crmAccount, new LibItemPT());
+    return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }
 }

@@ -1,11 +1,14 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -24,8 +27,8 @@ public class CORChannel implements Serializable {
 
     @NotNull
     @Size(max = 3)
-    @Column(name = "shortcut", length = 3, nullable = false)
-    private String shortcut;
+    @Column(name = "prefix", length = 3, nullable = false)
+    private String prefix;
 
     @NotNull
     @Size(max = 100)
@@ -36,7 +39,21 @@ public class CORChannel implements Serializable {
     private String description;
 
     @ManyToOne
-    private CORNetwork network;
+    private CORNetwork cORNetwork;
+
+    @OneToMany(mappedBy = "cORChannel")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORUser> users = new HashSet<>();
+
+    @ManyToOne
+    private CORUser user;
+
+    @ManyToOne
+    private LibLibrary libLibrary;
+
+    @ManyToOne
+    private CORUser cORUser;
 
     public Long getId() {
         return id;
@@ -46,17 +63,17 @@ public class CORChannel implements Serializable {
         this.id = id;
     }
 
-    public String getShortcut() {
-        return shortcut;
+    public String getPrefix() {
+        return prefix;
     }
 
-    public CORChannel shortcut(String shortcut) {
-        this.shortcut = shortcut;
+    public CORChannel prefix(String prefix) {
+        this.prefix = prefix;
         return this;
     }
 
-    public void setShortcut(String shortcut) {
-        this.shortcut = shortcut;
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public String getName() {
@@ -85,17 +102,81 @@ public class CORChannel implements Serializable {
         this.description = description;
     }
 
-    public CORNetwork getNetwork() {
-        return network;
+    public CORNetwork getCORNetwork() {
+        return cORNetwork;
     }
 
-    public CORChannel network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public CORChannel cORNetwork(CORNetwork cORNetwork) {
+        this.cORNetwork = cORNetwork;
         return this;
     }
 
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public void setCORNetwork(CORNetwork cORNetwork) {
+        this.cORNetwork = cORNetwork;
+    }
+
+    public Set<CORUser> getUsers() {
+        return users;
+    }
+
+    public CORChannel users(Set<CORUser> cORUsers) {
+        this.users = cORUsers;
+        return this;
+    }
+
+    public CORChannel addUsers(CORUser cORUser) {
+        users.add(cORUser);
+        cORUser.setCORChannel(this);
+        return this;
+    }
+
+    public CORChannel removeUsers(CORUser cORUser) {
+        users.remove(cORUser);
+        cORUser.setCORChannel(null);
+        return this;
+    }
+
+    public void setUsers(Set<CORUser> cORUsers) {
+        this.users = cORUsers;
+    }
+
+    public CORUser getUser() {
+        return user;
+    }
+
+    public CORChannel user(CORUser cORUser) {
+        this.user = cORUser;
+        return this;
+    }
+
+    public void setUser(CORUser cORUser) {
+        this.user = cORUser;
+    }
+
+    public LibLibrary getLibLibrary() {
+        return libLibrary;
+    }
+
+    public CORChannel libLibrary(LibLibrary libLibrary) {
+        this.libLibrary = libLibrary;
+        return this;
+    }
+
+    public void setLibLibrary(LibLibrary libLibrary) {
+        this.libLibrary = libLibrary;
+    }
+
+    public CORUser getCORUser() {
+        return cORUser;
+    }
+
+    public CORChannel cORUser(CORUser cORUser) {
+        this.cORUser = cORUser;
+        return this;
+    }
+
+    public void setCORUser(CORUser cORUser) {
+        this.cORUser = cORUser;
     }
 
     @Override
@@ -122,7 +203,7 @@ public class CORChannel implements Serializable {
     public String toString() {
         return "CORChannel{" +
             "id=" + id +
-            ", shortcut='" + shortcut + "'" +
+            ", prefix='" + prefix + "'" +
             ", name='" + name + "'" +
             ", description='" + description + "'" +
             '}';

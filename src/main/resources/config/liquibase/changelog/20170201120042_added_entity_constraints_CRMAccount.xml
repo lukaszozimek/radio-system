@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity CRMAccount.
+    -->
+    <changeSet id="20170201120042-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="addres_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_addres_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_address"/>
+
+        <addForeignKeyConstraint baseColumnNames="country_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_country_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_country"/>
+
+        <addForeignKeyConstraint baseColumnNames="range_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_range_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_range"/>
+
+        <addForeignKeyConstraint baseColumnNames="size_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_size_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_size"/>
+
+        <addForeignKeyConstraint baseColumnNames="industry_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_industry_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_industry"/>
+
+        <addForeignKeyConstraint baseColumnNames="area_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_area_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_area"/>
+
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_person"/>
+
+        <addForeignKeyConstraint baseColumnNames="keeper_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_keeper_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="discount_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_discount_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_discount"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crmaccount_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+    </changeSet>
+</databaseChangeLog>

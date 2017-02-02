@@ -42,9 +42,9 @@ public class CustomCRMContactMapper {
         CRMContact crmContact = new CRMContact();
         crmContact.setId(crmContactPT.getId());
         return crmContact
-            .paymentDelay(crmContactPT.getPaymentDelay())
-            .externalId1(crmContactPT.getIdNumber1())
-            .externalId2(crmContactPT.getIdNumber2())
+            .paymentDelay(Long.parseLong(crmContactPT.getPaymentDelay().toString()))
+            .idNumber1(crmContactPT.getIdNumber1())
+            .idNumber2(crmContactPT.getIdNumber2())
             .name(crmContactPT.getName())
             .shortName(crmContactPT.getShortName())
             .vatNumber(crmContactPT.getVatNumber())
@@ -76,116 +76,25 @@ public class CustomCRMContactMapper {
     }
 
 
-    public CrmContactPT buildContactDTOFromEntities(CRMContact crmContact,
-                                                    CORAddress address,
-                                                    CORSize corSize,
-                                                    CORRange range,
-                                                    CORArea corArea,
-                                                    List<CrmTaskPT> taskList,
-                                                    Map<CORPerson, List<CORContact>> corPersonListMap,
-                                                    TRAIndustry industry, CoreManagedUserPT coreManagedUserPT, CORNetwork corNetwork) {
+    public CrmContactPT buildContactDTOFromEntities(CRMContact crmContact) {
         return new CrmContactPT()
             .id(crmContact.getId())
             .name(crmContact.getName())
-            .idNumber1(crmContact.getExternalId1())
-            .idNumber2(crmContact.getExternalId2())
+            .idNumber1(crmContact.getIdNumber1())
+            .idNumber2(crmContact.getIdNumber2())
             .shortName(crmContact.getShortName())
             .vatNumber(crmContact.getVatNumber())
             .paymentDelay(crmContact.getPaymentDelay())
-            .industry(industryMapper.tRAIndustryToTRAIndustryDTO(industry))
-            .account(coreManagedUserPT)
-            .size(customCORSizeMapper.cORSizeToCORSizeDTO(corSize))
-            .range(customCORRangeMapper.cORRangeToCORRangeDTO(range))
-            .adress(corAddressMapper.cORAddressToCORAddressDTO(address))
-            .persons(customTRAPersonMapper.createDTOObject(corPersonListMap))
-            .area(customCORAreaMapper.cORAreaToCORAreaDTO(corArea))
-            .tasks(taskList)
-            .networkId(corNetwork.getId());
+            .industry(industryMapper.tRAIndustryToTRAIndustryDTO(crmContact.getIndustry()))
+            .account(crmContact.getKeeper())
+            .size(customCORSizeMapper.cORSizeToCORSizeDTO(crmContact.getSize()))
+            .range(customCORRangeMapper.cORRangeToCORRangeDTO(crmContact.getRange()))
+            .adress(corAddressMapper.cORAddressToCORAddressDTO(crmContact.getAddres()))
+            .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
+            .area(customCORAreaMapper.cORAreaToCORAreaDTO(crmContact.getArea()))
+            .tasks(crmContact.getTasks())
+            .networkId(crmContact.getId());
 
     }
-
-    public CORAssociation createAddressAssociationEntity(CRMContact crmContact, CORAddress address, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("ADDRESS");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CORAddress.class.getName());
-        association.setTargetId(address.getId());
-        association.setNetwork(corNetwork);
-        return association;
-    }
-
-    public CORAssociation createContactRangeAssociationEntity(CRMContact crmContact, CORRange range, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("RANGE");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CORRange.class.getName());
-        association.setTargetId(range.getId());
-        association.setNetwork(corNetwork);
-        return association;
-    }
-
-    public CORAssociation createContactSizeAssociationEntity(CRMContact crmContact, CORSize size, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("SIZE");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CORSize.class.getName());
-        association.setTargetId(size.getId());
-        association.setNetwork(corNetwork);
-        return association;
-    }
-
-    public CORAssociation createContactIndustryAssociationEntity(CRMContact crmContact, TRAIndustry industry, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("TRAIndustry");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(TRAIndustry.class.getName());
-        association.setTargetId(industry.getId());
-
-        association.setNetwork(corNetwork);
-        return association;
-    }
-
-    public CORAssociation createContactAreaAssociationEntity(CRMContact crmContact, CORArea area, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CORArea");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CORArea.class.getName());
-        association.setTargetId(area.getId());
-        association.setNetwork(corNetwork);
-
-        return association;
-    }
-
-    public CORAssociation createContactPersonAssociationEntity(CRMContact crmContact, CORPerson corPerson, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CORPerson");
-        association.setSourceClass(CRMContact.class.getName());
-        association.setSourceId(crmContact.getId());
-        association.setTargetClass(CORPerson.class.getName());
-        association.setTargetId(corPerson.getId());
-        association.setNetwork(corNetwork);
-        return association;
-    }
-
-    public List<CORAssociation> createPersonContactAssociationEntity(CORPerson person, List<CORContact> corContacts, CORNetwork corNetwork) {
-        List<CORAssociation> associations = new ArrayList<>();
-        for (CORContact corContact : corContacts) {
-            CORAssociation association = new CORAssociation();
-            association.setName("CORPerson");
-            association.setSourceClass(CORPerson.class.getName());
-            association.setSourceId(person.getId());
-            association.setTargetClass(CORContact.class.getName());
-            association.setTargetId(corContact.getId());
-            association.setNetwork(corNetwork);
-            associations.add(association);
-        }
-        return associations;
-    }
-
 
 }

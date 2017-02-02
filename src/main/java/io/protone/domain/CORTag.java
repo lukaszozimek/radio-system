@@ -28,7 +28,7 @@ public class CORTag implements Serializable {
     private String tag;
 
     @ManyToOne
-    private CORNetwork network;
+    private LIBMediaItem lIBMediaItem;
 
     public Long getId() {
         return id;
@@ -51,17 +51,17 @@ public class CORTag implements Serializable {
         this.tag = tag;
     }
 
-    public CORNetwork getNetwork() {
-        return network;
+    public LIBMediaItem getLIBMediaItem() {
+        return lIBMediaItem;
     }
 
-    public CORTag network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public CORTag lIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.lIBMediaItem = lIBMediaItem;
         return this;
     }
 
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public void setLIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.lIBMediaItem = lIBMediaItem;
     }
 
     @Override

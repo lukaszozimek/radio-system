@@ -41,13 +41,6 @@ public class LIBAudioObject implements Serializable {
     @Column(name = "quality")
     private LIBAudioQualityEnum quality;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LIBCloudObject cloudObject;
-
-    @ManyToOne
-    private LIBMediaItem mediaItem;
-
     public Long getId() {
         return id;
     }
@@ -106,32 +99,6 @@ public class LIBAudioObject implements Serializable {
 
     public void setQuality(LIBAudioQualityEnum quality) {
         this.quality = quality;
-    }
-
-    public LIBCloudObject getCloudObject() {
-        return cloudObject;
-    }
-
-    public LIBAudioObject cloudObject(LIBCloudObject lIBCloudObject) {
-        this.cloudObject = lIBCloudObject;
-        return this;
-    }
-
-    public void setCloudObject(LIBCloudObject lIBCloudObject) {
-        this.cloudObject = lIBCloudObject;
-    }
-
-    public LIBMediaItem getMediaItem() {
-        return mediaItem;
-    }
-
-    public LIBAudioObject mediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-        return this;
-    }
-
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
     }
 
     @Override

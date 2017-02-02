@@ -36,9 +36,6 @@ public class LIBArtist implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    private CORNetwork network;
-
     public Long getId() {
         return id;
     }
@@ -84,19 +81,6 @@ public class LIBArtist implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public LIBArtist network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
-
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
     }
 
     @Override

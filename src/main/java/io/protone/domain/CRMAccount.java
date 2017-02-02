@@ -1,11 +1,15 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A CRMAccount.
@@ -21,26 +25,96 @@ public class CRMAccount implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "short_name")
-    private String shortName;
+    @Column(name = "id_number_1")
+    private String idNumber1;
 
-    @Column(name = "external_id_1")
-    private String externalId1;
-
-    @Column(name = "external_id_2")
-    private String externalId2;
+    @Column(name = "id_number_2")
+    private String idNumber2;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "payment_delay")
-    private Integer paymentDelay;
+    @Column(name = "payment_date")
+    private LocalDate paymentDate;
 
     @Column(name = "vat_number")
     private String vatNumber;
 
-    @ManyToOne
+    @Column(name = "payment_delay")
+    private Long paymentDelay;
+
+    @Column(name = "get_short_name")
+    private String getShortName;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORAddress addres;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORCountry country;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORRange range;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORSize size;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAIndustry industry;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORArea area;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORPerson person;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORUser keeper;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRADiscount discount;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
+
+    @OneToMany(mappedBy = "cRMAccount")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CRMOpportunity> opportunities = new HashSet<>();
+
+    @OneToMany(mappedBy = "cRMAccount")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CRMTask> tasks = new HashSet<>();
+
+    @OneToMany(mappedBy = "cRMAccount")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TRAOrder> orders = new HashSet<>();
+
+    @OneToMany(mappedBy = "cRMAccount")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TRACampaign> campaigns = new HashSet<>();
+
+    @OneToMany(mappedBy = "cRMAccount")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TRAInvoice> invoices = new HashSet<>();
+
+    @OneToMany(mappedBy = "cRMAccount")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TRAAdvertisement> advertisments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -50,43 +124,30 @@ public class CRMAccount implements Serializable {
         this.id = id;
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getIdNumber1() {
+        return idNumber1;
     }
 
-    public CRMAccount shortName(String shortName) {
-        this.shortName = shortName;
+    public CRMAccount idNumber1(String idNumber1) {
+        this.idNumber1 = idNumber1;
         return this;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setIdNumber1(String idNumber1) {
+        this.idNumber1 = idNumber1;
     }
 
-    public String getExternalId1() {
-        return externalId1;
+    public String getIdNumber2() {
+        return idNumber2;
     }
 
-    public CRMAccount externalId1(String externalId1) {
-        this.externalId1 = externalId1;
+    public CRMAccount idNumber2(String idNumber2) {
+        this.idNumber2 = idNumber2;
         return this;
     }
 
-    public void setExternalId1(String externalId1) {
-        this.externalId1 = externalId1;
-    }
-
-    public String getExternalId2() {
-        return externalId2;
-    }
-
-    public CRMAccount externalId2(String externalId2) {
-        this.externalId2 = externalId2;
-        return this;
-    }
-
-    public void setExternalId2(String externalId2) {
-        this.externalId2 = externalId2;
+    public void setIdNumber2(String idNumber2) {
+        this.idNumber2 = idNumber2;
     }
 
     public String getName() {
@@ -102,17 +163,17 @@ public class CRMAccount implements Serializable {
         this.name = name;
     }
 
-    public Integer getPaymentDelay() {
-        return paymentDelay;
+    public LocalDate getPaymentDate() {
+        return paymentDate;
     }
 
-    public CRMAccount paymentDelay(Integer paymentDelay) {
-        this.paymentDelay = paymentDelay;
+    public CRMAccount paymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
         return this;
     }
 
-    public void setPaymentDelay(Integer paymentDelay) {
-        this.paymentDelay = paymentDelay;
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     public String getVatNumber() {
@@ -128,6 +189,149 @@ public class CRMAccount implements Serializable {
         this.vatNumber = vatNumber;
     }
 
+    public Long getPaymentDelay() {
+        return paymentDelay;
+    }
+
+    public CRMAccount paymentDelay(Long paymentDelay) {
+        this.paymentDelay = paymentDelay;
+        return this;
+    }
+
+    public void setPaymentDelay(Long paymentDelay) {
+        this.paymentDelay = paymentDelay;
+    }
+
+    public String getGetShortName() {
+        return getShortName;
+    }
+
+    public CRMAccount getShortName(String getShortName) {
+        this.getShortName = getShortName;
+        return this;
+    }
+
+    public void setGetShortName(String getShortName) {
+        this.getShortName = getShortName;
+    }
+
+    public CORAddress getAddres() {
+        return addres;
+    }
+
+    public CRMAccount addres(CORAddress cORAddress) {
+        this.addres = cORAddress;
+        return this;
+    }
+
+    public void setAddres(CORAddress cORAddress) {
+        this.addres = cORAddress;
+    }
+
+    public CORCountry getCountry() {
+        return country;
+    }
+
+    public CRMAccount country(CORCountry cORCountry) {
+        this.country = cORCountry;
+        return this;
+    }
+
+    public void setCountry(CORCountry cORCountry) {
+        this.country = cORCountry;
+    }
+
+    public CORRange getRange() {
+        return range;
+    }
+
+    public CRMAccount range(CORRange cORRange) {
+        this.range = cORRange;
+        return this;
+    }
+
+    public void setRange(CORRange cORRange) {
+        this.range = cORRange;
+    }
+
+    public CORSize getSize() {
+        return size;
+    }
+
+    public CRMAccount size(CORSize cORSize) {
+        this.size = cORSize;
+        return this;
+    }
+
+    public void setSize(CORSize cORSize) {
+        this.size = cORSize;
+    }
+
+    public TRAIndustry getIndustry() {
+        return industry;
+    }
+
+    public CRMAccount industry(TRAIndustry tRAIndustry) {
+        this.industry = tRAIndustry;
+        return this;
+    }
+
+    public void setIndustry(TRAIndustry tRAIndustry) {
+        this.industry = tRAIndustry;
+    }
+
+    public CORArea getArea() {
+        return area;
+    }
+
+    public CRMAccount area(CORArea cORArea) {
+        this.area = cORArea;
+        return this;
+    }
+
+    public void setArea(CORArea cORArea) {
+        this.area = cORArea;
+    }
+
+    public CORPerson getPerson() {
+        return person;
+    }
+
+    public CRMAccount person(CORPerson cORPerson) {
+        this.person = cORPerson;
+        return this;
+    }
+
+    public void setPerson(CORPerson cORPerson) {
+        this.person = cORPerson;
+    }
+
+    public CORUser getKeeper() {
+        return keeper;
+    }
+
+    public CRMAccount keeper(CORUser cORUser) {
+        this.keeper = cORUser;
+        return this;
+    }
+
+    public void setKeeper(CORUser cORUser) {
+        this.keeper = cORUser;
+    }
+
+    public TRADiscount getDiscount() {
+        return discount;
+    }
+
+    public CRMAccount discount(TRADiscount tRADiscount) {
+        this.discount = tRADiscount;
+        return this;
+    }
+
+    public void setDiscount(TRADiscount tRADiscount) {
+        this.discount = tRADiscount;
+    }
+
     public CORNetwork getNetwork() {
         return network;
     }
@@ -139,6 +343,156 @@ public class CRMAccount implements Serializable {
 
     public void setNetwork(CORNetwork cORNetwork) {
         this.network = cORNetwork;
+    }
+
+    public Set<CRMOpportunity> getOpportunities() {
+        return opportunities;
+    }
+
+    public CRMAccount opportunities(Set<CRMOpportunity> cRMOpportunities) {
+        this.opportunities = cRMOpportunities;
+        return this;
+    }
+
+    public CRMAccount addOpportunity(CRMOpportunity cRMOpportunity) {
+        opportunities.add(cRMOpportunity);
+        cRMOpportunity.setCRMAccount(this);
+        return this;
+    }
+
+    public CRMAccount removeOpportunity(CRMOpportunity cRMOpportunity) {
+        opportunities.remove(cRMOpportunity);
+        cRMOpportunity.setCRMAccount(null);
+        return this;
+    }
+
+    public void setOpportunities(Set<CRMOpportunity> cRMOpportunities) {
+        this.opportunities = cRMOpportunities;
+    }
+
+    public Set<CRMTask> getTasks() {
+        return tasks;
+    }
+
+    public CRMAccount tasks(Set<CRMTask> cRMTasks) {
+        this.tasks = cRMTasks;
+        return this;
+    }
+
+    public CRMAccount addTask(CRMTask cRMTask) {
+        tasks.add(cRMTask);
+        cRMTask.setCRMAccount(this);
+        return this;
+    }
+
+    public CRMAccount removeTask(CRMTask cRMTask) {
+        tasks.remove(cRMTask);
+        cRMTask.setCRMAccount(null);
+        return this;
+    }
+
+    public void setTasks(Set<CRMTask> cRMTasks) {
+        this.tasks = cRMTasks;
+    }
+
+    public Set<TRAOrder> getOrders() {
+        return orders;
+    }
+
+    public CRMAccount orders(Set<TRAOrder> tRAOrders) {
+        this.orders = tRAOrders;
+        return this;
+    }
+
+    public CRMAccount addOrders(TRAOrder tRAOrder) {
+        orders.add(tRAOrder);
+        tRAOrder.setCRMAccount(this);
+        return this;
+    }
+
+    public CRMAccount removeOrders(TRAOrder tRAOrder) {
+        orders.remove(tRAOrder);
+        tRAOrder.setCRMAccount(null);
+        return this;
+    }
+
+    public void setOrders(Set<TRAOrder> tRAOrders) {
+        this.orders = tRAOrders;
+    }
+
+    public Set<TRACampaign> getCampaigns() {
+        return campaigns;
+    }
+
+    public CRMAccount campaigns(Set<TRACampaign> tRACampaigns) {
+        this.campaigns = tRACampaigns;
+        return this;
+    }
+
+    public CRMAccount addCampaigns(TRACampaign tRACampaign) {
+        campaigns.add(tRACampaign);
+        tRACampaign.setCRMAccount(this);
+        return this;
+    }
+
+    public CRMAccount removeCampaigns(TRACampaign tRACampaign) {
+        campaigns.remove(tRACampaign);
+        tRACampaign.setCRMAccount(null);
+        return this;
+    }
+
+    public void setCampaigns(Set<TRACampaign> tRACampaigns) {
+        this.campaigns = tRACampaigns;
+    }
+
+    public Set<TRAInvoice> getInvoices() {
+        return invoices;
+    }
+
+    public CRMAccount invoices(Set<TRAInvoice> tRAInvoices) {
+        this.invoices = tRAInvoices;
+        return this;
+    }
+
+    public CRMAccount addInvoices(TRAInvoice tRAInvoice) {
+        invoices.add(tRAInvoice);
+        tRAInvoice.setCRMAccount(this);
+        return this;
+    }
+
+    public CRMAccount removeInvoices(TRAInvoice tRAInvoice) {
+        invoices.remove(tRAInvoice);
+        tRAInvoice.setCRMAccount(null);
+        return this;
+    }
+
+    public void setInvoices(Set<TRAInvoice> tRAInvoices) {
+        this.invoices = tRAInvoices;
+    }
+
+    public Set<TRAAdvertisement> getAdvertisments() {
+        return advertisments;
+    }
+
+    public CRMAccount advertisments(Set<TRAAdvertisement> tRAAdvertisements) {
+        this.advertisments = tRAAdvertisements;
+        return this;
+    }
+
+    public CRMAccount addAdvertisments(TRAAdvertisement tRAAdvertisement) {
+        advertisments.add(tRAAdvertisement);
+        tRAAdvertisement.setCRMAccount(this);
+        return this;
+    }
+
+    public CRMAccount removeAdvertisments(TRAAdvertisement tRAAdvertisement) {
+        advertisments.remove(tRAAdvertisement);
+        tRAAdvertisement.setCRMAccount(null);
+        return this;
+    }
+
+    public void setAdvertisments(Set<TRAAdvertisement> tRAAdvertisements) {
+        this.advertisments = tRAAdvertisements;
     }
 
     @Override
@@ -165,12 +519,13 @@ public class CRMAccount implements Serializable {
     public String toString() {
         return "CRMAccount{" +
             "id=" + id +
-            ", shortName='" + shortName + "'" +
-            ", externalId1='" + externalId1 + "'" +
-            ", externalId2='" + externalId2 + "'" +
+            ", idNumber1='" + idNumber1 + "'" +
+            ", idNumber2='" + idNumber2 + "'" +
             ", name='" + name + "'" +
-            ", paymentDelay='" + paymentDelay + "'" +
+            ", paymentDate='" + paymentDate + "'" +
             ", vatNumber='" + vatNumber + "'" +
+            ", paymentDelay='" + paymentDelay + "'" +
+            ", getShortName='" + getShortName + "'" +
             '}';
     }
 }

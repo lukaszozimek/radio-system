@@ -54,13 +54,22 @@ public class SCHEmission implements Serializable {
     private Boolean finished;
 
     @ManyToOne
-    private SCHBlock block;
+    private SCHBlock sCHBlock;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private LIBMediaItem mediaItem;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORChannel channel;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
+
     @ManyToOne
-    private SCHTemplate template;
+    private TRACampaign tRACampaign;
 
     public Long getId() {
         return id;
@@ -74,26 +83,17 @@ public class SCHEmission implements Serializable {
         return seq;
     }
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
-
-    public SCHEmission id(Long id) {
-        this.id = id;
-        return this;
-    }
-
     public SCHEmission seq(Integer seq) {
         this.seq = seq;
         return this;
     }
 
-    public ZonedDateTime getStartTime() {
-        return startTime;
+    public void setSeq(Integer seq) {
+        this.seq = seq;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
+    public ZonedDateTime getStartTime() {
+        return startTime;
     }
 
     public SCHEmission startTime(ZonedDateTime startTime) {
@@ -101,12 +101,12 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public SCHStartTypeEnum getStartType() {
-        return startType;
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public void setStartType(SCHStartTypeEnum startType) {
-        this.startType = startType;
+    public SCHStartTypeEnum getStartType() {
+        return startType;
     }
 
     public SCHEmission startType(SCHStartTypeEnum startType) {
@@ -114,12 +114,12 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public Long getRelativeDelay() {
-        return relativeDelay;
+    public void setStartType(SCHStartTypeEnum startType) {
+        this.startType = startType;
     }
 
-    public void setRelativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
+    public Long getRelativeDelay() {
+        return relativeDelay;
     }
 
     public SCHEmission relativeDelay(Long relativeDelay) {
@@ -127,12 +127,12 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public ZonedDateTime getEndTime() {
-        return endTime;
+    public void setRelativeDelay(Long relativeDelay) {
+        this.relativeDelay = relativeDelay;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
+    public ZonedDateTime getEndTime() {
+        return endTime;
     }
 
     public SCHEmission endTime(ZonedDateTime endTime) {
@@ -140,17 +140,21 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public Long getLength() {
-        return length;
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
+    public Long getLength() {
+        return length;
     }
 
     public SCHEmission length(Long length) {
         this.length = length;
         return this;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public Boolean isFinished() {
@@ -166,25 +170,21 @@ public class SCHEmission implements Serializable {
         this.finished = finished;
     }
 
-    public SCHBlock getBlock() {
-        return block;
+    public SCHBlock getSCHBlock() {
+        return sCHBlock;
     }
 
-    public void setBlock(SCHBlock sCHBlock) {
-        this.block = sCHBlock;
-    }
-
-    public SCHEmission block(SCHBlock sCHBlock) {
-        this.block = sCHBlock;
+    public SCHEmission sCHBlock(SCHBlock sCHBlock) {
+        this.sCHBlock = sCHBlock;
         return this;
+    }
+
+    public void setSCHBlock(SCHBlock sCHBlock) {
+        this.sCHBlock = sCHBlock;
     }
 
     public LIBMediaItem getMediaItem() {
         return mediaItem;
-    }
-
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
     }
 
     public SCHEmission mediaItem(LIBMediaItem lIBMediaItem) {
@@ -192,17 +192,47 @@ public class SCHEmission implements Serializable {
         return this;
     }
 
-    public SCHTemplate getTemplate() {
-        return template;
+    public void setMediaItem(LIBMediaItem lIBMediaItem) {
+        this.mediaItem = lIBMediaItem;
     }
 
-    public void setTemplate(SCHTemplate sCHTemplate) {
-        this.template = sCHTemplate;
+    public CORChannel getChannel() {
+        return channel;
     }
 
-    public SCHEmission template(SCHTemplate sCHTemplate) {
-        this.template = sCHTemplate;
+    public SCHEmission channel(CORChannel cORChannel) {
+        this.channel = cORChannel;
         return this;
+    }
+
+    public void setChannel(CORChannel cORChannel) {
+        this.channel = cORChannel;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public SCHEmission network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public TRACampaign getTRACampaign() {
+        return tRACampaign;
+    }
+
+    public SCHEmission tRACampaign(TRACampaign tRACampaign) {
+        this.tRACampaign = tRACampaign;
+        return this;
+    }
+
+    public void setTRACampaign(TRACampaign tRACampaign) {
+        this.tRACampaign = tRACampaign;
     }
 
     @Override

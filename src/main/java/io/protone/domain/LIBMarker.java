@@ -39,7 +39,11 @@ public class LIBMarker implements Serializable {
     private Integer startTime;
 
     @ManyToOne
-    private LIBMediaItem mediaItem;
+    private LIBMediaItem lIBMediaItem;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
 
     public Long getId() {
         return id;
@@ -88,17 +92,30 @@ public class LIBMarker implements Serializable {
         this.startTime = startTime;
     }
 
-    public LIBMediaItem getMediaItem() {
-        return mediaItem;
+    public LIBMediaItem getLIBMediaItem() {
+        return lIBMediaItem;
     }
 
-    public LIBMarker mediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
+    public LIBMarker lIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.lIBMediaItem = lIBMediaItem;
         return this;
     }
 
-    public void setMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
+    public void setLIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.lIBMediaItem = lIBMediaItem;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public LIBMarker network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
     @Override

@@ -1,11 +1,14 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -35,8 +38,20 @@ public class CORPerson implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
+
+    @OneToMany(mappedBy = "cORPerson")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORContact> personContacts = new HashSet<>();
+
+    @ManyToOne
+    private LIBMediaItem mediaItem;
+
+    @ManyToOne
+    private LIBMediaItem lIBMediaItem;
 
     public Long getId() {
         return id;
@@ -96,6 +111,57 @@ public class CORPerson implements Serializable {
 
     public void setNetwork(CORNetwork cORNetwork) {
         this.network = cORNetwork;
+    }
+
+    public Set<CORContact> getPersonContacts() {
+        return personContacts;
+    }
+
+    public CORPerson personContacts(Set<CORContact> cORContacts) {
+        this.personContacts = cORContacts;
+        return this;
+    }
+
+    public CORPerson addPersonContacts(CORContact cORContact) {
+        personContacts.add(cORContact);
+        cORContact.setCORPerson(this);
+        return this;
+    }
+
+    public CORPerson removePersonContacts(CORContact cORContact) {
+        personContacts.remove(cORContact);
+        cORContact.setCORPerson(null);
+        return this;
+    }
+
+    public void setPersonContacts(Set<CORContact> cORContacts) {
+        this.personContacts = cORContacts;
+    }
+
+    public LIBMediaItem getmediaItem() {
+        return mediaItem;
+    }
+
+    public CORPerson mediaItem(LIBMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
+        return this;
+    }
+
+    public void setMediaItem(LIBMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
+    }
+
+    public LIBMediaItem getLIBMediaItem() {
+        return mediaItem;
+    }
+
+    public CORPerson lIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.mediaItem = lIBMediaItem;
+        return this;
+    }
+
+    public void setLIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.mediaItem = lIBMediaItem;
     }
 
     @Override

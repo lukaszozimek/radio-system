@@ -28,7 +28,11 @@ public class CORPropertyValue implements Serializable {
     private String value;
 
     @ManyToOne
-    private CORPropertyKey propertyKey;
+    private CORPropertyKey cORPropertyKey;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
 
     public Long getId() {
         return id;
@@ -51,17 +55,30 @@ public class CORPropertyValue implements Serializable {
         this.value = value;
     }
 
-    public CORPropertyKey getPropertyKey() {
-        return propertyKey;
+    public CORPropertyKey getCORPropertyKey() {
+        return cORPropertyKey;
     }
 
-    public CORPropertyValue propertyKey(CORPropertyKey cORPropertyKey) {
-        this.propertyKey = cORPropertyKey;
+    public CORPropertyValue cORPropertyKey(CORPropertyKey cORPropertyKey) {
+        this.cORPropertyKey = cORPropertyKey;
         return this;
     }
 
-    public void setPropertyKey(CORPropertyKey cORPropertyKey) {
-        this.propertyKey = cORPropertyKey;
+    public void setCORPropertyKey(CORPropertyKey cORPropertyKey) {
+        this.cORPropertyKey = cORPropertyKey;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public CORPropertyValue network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
     @Override

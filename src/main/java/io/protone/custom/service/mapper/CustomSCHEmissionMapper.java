@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
@@ -15,7 +17,7 @@ import java.util.Map;
 @Service
 public class CustomSCHEmissionMapper {
 
-    public SchEmissionPT creteDTOFromEntities(SCHEmission emission, LibItemPT libItemPT) {
+    public SchEmissionPT creteDTOFromEntities(SCHEmission emission) {
         return new SchEmissionPT()
             .blockId(emission.getBlock().getId())
             .endTime(emission.getEndTime().toString())
@@ -23,7 +25,7 @@ public class CustomSCHEmissionMapper {
             .finished(emission.isFinished())
             .seq(emission.getSeq())
             .relativeDelay(emission.getRelativeDelay())
-            .mediaItemId(libItemPT)
+            .mediaItemId(emission.getMediaItem())
             .startType(emission.getStartType())
             .length(emission.getLength())
             .templateId(emission.getTemplate().getId())
@@ -49,13 +51,9 @@ public class CustomSCHEmissionMapper {
             .length(schEmissionPT.getLength());
     }
 
-    public List<SchEmissionPT> createDTOFromListEntites(Map<SCHEmission, LibItemPT> schEmissionLibItemPTMap) {
-        List<SchEmissionPT> schEmissionPTList = new ArrayList<>();
-        schEmissionLibItemPTMap.keySet().stream().forEach(schEmission -> {
-                schEmissionPTList.add(creteDTOFromEntities(schEmission, schEmissionLibItemPTMap.get(schEmission)));
-            }
-        );
-        return schEmissionPTList;
+    public List<SchEmissionPT> createDTOFromListEntites(Set<SCHEmission> schEmissionLibItemPTMap) {
+
+        return schEmissionLibItemPTMap.stream().map(this::creteDTOFromEntities).collect(Collectors.toList());
     }
 
 }

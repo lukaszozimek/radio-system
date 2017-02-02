@@ -456,7 +456,7 @@ entity TRAPrice {
 
 relationship OneToOne {
     TRAAdvertisement{mediaItem} to LIBMediaItem,
-    
+
     TRAInvoice{order} to TRAOrder,
 
     LIBImageObject{cloudObject} to LIBCloudObject,
@@ -475,6 +475,10 @@ relationship ManyToOne {
 
     SCHBlock{channel} to CORChannel,
     SCHTemplate{channel} to CORChannel,
+    SCHBlock{template} to SCHTemplate,
+    SCHTemplate{parentTemplate} to SCHTemplate,
+    SCHEmission{template} to SCHTemplate,
+    SCHEmission{mediaItem} to LIBMediaItem,
 
     TRAOrder{customer} to TRACustomer,
     TRAAdvertisement{customer} to TRACustomer,
@@ -486,7 +490,6 @@ relationship ManyToOne {
 
     LIBMediaItem{library} to LIBLibrary,
 
-    SCHEmission{mediaItem} to LIBMediaItem,
 
     LIBLibrary{network} to CORNetwork,
  	CORChannel{network} to CORNetwork,
@@ -494,9 +497,6 @@ relationship ManyToOne {
     TRACustomer{network} to CORNetwork,
 	TRAIndustry{network} to CORNetwork,
 
-    SCHBlock{template} to SCHTemplate,
-    SCHTemplate{parentTemplate} to SCHTemplate,
-    SCHEmission{template} to SCHTemplate,
 
     LIBMediaItem{label} to LIBLabel,
     LIBMediaItem{artist} to LIBArtist,
@@ -541,14 +541,14 @@ relationship ManyToOne {
     LIBCloudObject{createdBy} to User,
 
     TRACustomer{account} to User,
-    
+
     CORArea{network} to CORNetwork,
     CORSize{network} to CORNetwork,
     CORRange{network} to CORNetwork,
-    
+
     CRMTaskStatus{network} to CORNetwork,
     CRMStage{network} to CORNetwork,
-    
+
     CRMLead{network} to CORNetwork,
     CRMLeadSource{network} to CORNetwork,
     CRMLeadStatus{network} to CORNetwork,

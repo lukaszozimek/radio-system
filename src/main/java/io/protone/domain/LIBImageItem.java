@@ -32,9 +32,6 @@ public class LIBImageItem implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @ManyToOne
-    private LIBLibrary library;
-
     public Long getId() {
         return id;
     }
@@ -67,19 +64,6 @@ public class LIBImageItem implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LIBLibrary getLibrary() {
-        return library;
-    }
-
-    public LIBImageItem library(LIBLibrary lIBLibrary) {
-        this.library = lIBLibrary;
-        return this;
-    }
-
-    public void setLibrary(LIBLibrary lIBLibrary) {
-        this.library = lIBLibrary;
     }
 
     @Override

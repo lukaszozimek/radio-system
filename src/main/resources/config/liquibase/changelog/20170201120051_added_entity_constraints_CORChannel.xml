@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity CORChannel.
+    -->
+    <changeSet id="20170201120051-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="cornetwork_id"
+                                 baseTableName="cor_channel"
+                                 constraintName="fk_corchannel_cornetwork_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="cor_channel"
+                                 constraintName="fk_corchannel_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="lib_library_id"
+                                 baseTableName="cor_channel"
+                                 constraintName="fk_corchannel_lib_library_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_library"/>
+
+        <addForeignKeyConstraint baseColumnNames="coruser_id"
+                                 baseTableName="cor_channel"
+                                 constraintName="fk_corchannel_coruser_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+    </changeSet>
+</databaseChangeLog>

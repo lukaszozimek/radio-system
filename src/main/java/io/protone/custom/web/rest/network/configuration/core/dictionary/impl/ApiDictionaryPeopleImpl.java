@@ -5,11 +5,7 @@ import io.protone.custom.service.dto.ConfPersonPT;
 import io.protone.custom.service.mapper.CustomCORPersonMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryPeople;
 import io.protone.domain.CORPerson;
-import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CORPersonRepository;
-import io.protone.service.dto.CORPersonDTO;
-import io.protone.service.mapper.CORPersonMapper;
-import io.protone.web.rest.CORPersonResource;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 

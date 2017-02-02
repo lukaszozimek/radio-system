@@ -1,12 +1,14 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -26,27 +28,28 @@ public class TRAInvoice implements Serializable {
     @Column(name = "paid")
     private Boolean paid;
 
-    @Column(name = "price", precision = 10, scale = 2)
-    private BigDecimal price;
-
     @Column(name = "payment_day")
     private LocalDate paymentDay;
 
     @ManyToOne
+    private CRMAccount cRMAccount;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CRMAccount customer;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
-    public TRAInvoice network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
+    @OneToOne
+    @JoinColumn(unique = true)
+    private TRAStatus status;
 
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CORNetwork network) {
-        this.network = network;
-    }
+    @OneToMany(mappedBy = "tRAInvoice")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TRAOrder> orders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -69,25 +72,8 @@ public class TRAInvoice implements Serializable {
         this.paid = paid;
     }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public TRAInvoice price(BigDecimal price) {
-        this.price = price;
-        return this;
-    }
-
     public LocalDate getPaymentDay() {
         return paymentDay;
-    }
-
-    public void setPaymentDay(LocalDate paymentDay) {
-        this.paymentDay = paymentDay;
     }
 
     public TRAInvoice paymentDay(LocalDate paymentDay) {
@@ -95,6 +81,86 @@ public class TRAInvoice implements Serializable {
         return this;
     }
 
+    public void setPaymentDay(LocalDate paymentDay) {
+        this.paymentDay = paymentDay;
+    }
+
+    public CRMAccount getCRMAccount() {
+        return cRMAccount;
+    }
+
+    public TRAInvoice cRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+        return this;
+    }
+
+    public void setCRMAccount(CRMAccount cRMAccount) {
+        this.cRMAccount = cRMAccount;
+    }
+
+    public CRMAccount getCustomer() {
+        return customer;
+    }
+
+    public TRAInvoice customer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+        return this;
+    }
+
+    public void setCustomer(CRMAccount cRMAccount) {
+        this.customer = cRMAccount;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public TRAInvoice network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public TRAStatus getStatus() {
+        return status;
+    }
+
+    public TRAInvoice status(TRAStatus tRAStatus) {
+        this.status = tRAStatus;
+        return this;
+    }
+
+    public void setStatus(TRAStatus tRAStatus) {
+        this.status = tRAStatus;
+    }
+
+    public Set<TRAOrder> getOrders() {
+        return orders;
+    }
+
+    public TRAInvoice orders(Set<TRAOrder> tRAOrders) {
+        this.orders = tRAOrders;
+        return this;
+    }
+
+    public TRAInvoice addOrders(TRAOrder tRAOrder) {
+        orders.add(tRAOrder);
+        tRAOrder.setTRAInvoice(this);
+        return this;
+    }
+
+    public TRAInvoice removeOrders(TRAOrder tRAOrder) {
+        orders.remove(tRAOrder);
+        tRAOrder.setTRAInvoice(null);
+        return this;
+    }
+
+    public void setOrders(Set<TRAOrder> tRAOrders) {
+        this.orders = tRAOrders;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -121,7 +187,6 @@ public class TRAInvoice implements Serializable {
         return "TRAInvoice{" +
             "id=" + id +
             ", paid='" + paid + "'" +
-            ", price='" + price + "'" +
             ", paymentDay='" + paymentDay + "'" +
             '}';
     }

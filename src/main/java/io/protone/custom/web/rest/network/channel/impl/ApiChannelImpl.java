@@ -2,7 +2,6 @@ package io.protone.custom.web.rest.network.channel.impl;
 
 import io.protone.custom.service.ChannelService;
 import io.protone.custom.service.dto.CoreChannelPT;
-import io.protone.custom.service.mapper.CustomCORChannelMapper;
 import io.protone.custom.web.rest.network.channel.ApiChannel;
 import io.protone.domain.CORChannel;
 import io.protone.web.rest.util.HeaderUtil;

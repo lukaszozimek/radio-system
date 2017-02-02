@@ -1,14 +1,14 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.CORContactTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.CORContactTypeEnum;
 
 /**
  * A CORContact.
@@ -35,7 +35,7 @@ public class CORContact implements Serializable {
     private CORContactTypeEnum contactType;
 
     @ManyToOne
-    private CORNetwork network;
+    private CORPerson cORPerson;
 
     public Long getId() {
         return id;
@@ -62,26 +62,26 @@ public class CORContact implements Serializable {
         return contactType;
     }
 
-    public CORContact contactType(CORContactTypeEnum  contactType) {
+    public CORContact contactType(CORContactTypeEnum contactType) {
         this.contactType = contactType;
         return this;
     }
 
-    public void setContactType(CORContactTypeEnum  contactType) {
+    public void setContactType(CORContactTypeEnum contactType) {
         this.contactType = contactType;
     }
 
-    public CORNetwork getNetwork() {
-        return network;
+    public CORPerson getCORPerson() {
+        return cORPerson;
     }
 
-    public CORContact network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public CORContact cORPerson(CORPerson cORPerson) {
+        this.cORPerson = cORPerson;
         return this;
     }
 
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public void setCORPerson(CORPerson cORPerson) {
+        this.cORPerson = cORPerson;
     }
 
     @Override

@@ -33,43 +33,21 @@ public class CustomCRMOpportunityMapper {
         return new CRMOpportunity()
             .name(opportunityPT.getName())
             .closeDate(LocalDate.parse(opportunityPT.getCloseDate(), formatter))
-            .probability(opportunityPT.getPropability())
+            .propability(opportunityPT.getPropability())
             .lastTry(LocalDate.parse(opportunityPT.getLastTry(), formatter))
             .network(corNetwork);
     }
 
-    public CrmOpportunityPT buildDTOFromEntites(CRMOpportunity opportunity, CRMStage stage, CoreManagedUserPT userPT, CrmContactPT contatPT, List<CrmTaskPT> crmTaskList) {
+    public CrmOpportunityPT buildDTOFromEntites(CRMOpportunity opportunity) {
         CrmOpportunityPT crmOpportunityPT = new CrmOpportunityPT();
         opportunity.setId(opportunity.getId());
         return crmOpportunityPT.lastTry(opportunity.getLastTry().toString())
             .name(opportunity.getName())
             .closeDate(opportunity.getCloseDate().toString())
-            .tasks(crmTaskList)
-            .contact(contatPT)
-            .opportunityOwner(userPT)
-            .stage(stageMapper.cRMStageToCRMStageDTO(stage));
-    }
-
-    public CORAssociation createOpportunityContactAssociationEntity(CRMOpportunity opportunity, CRMContact crmContact,  CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("CONTACT");
-        association.setSourceClass(CRMOpportunity.class.getName());
-        association.setSourceId(opportunity.getId());
-        association.setTargetClass(CRMContact.class.getName());
-        association.setTargetId(crmContact.getId());
-        association.setNetwork(corNetwork);
-        return association;
-    }
-
-    public CORAssociation createOpportunityStageAssociationEntity(CRMOpportunity opportunity, CRMStage crmStage, CORNetwork corNetwork) {
-        CORAssociation association = new CORAssociation();
-        association.setName("STAGE");
-        association.setSourceClass(CRMOpportunity.class.getName());
-        association.setSourceId(opportunity.getId());
-        association.setTargetClass(CRMStage.class.getName());
-        association.setTargetId(crmStage.getId());
-        association.setNetwork(corNetwork);
-        return association;
+            .tasks(customCRMTaskMapper.createCrmTasks(opportunity.getTasks()))
+            .contact(customCRMContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
+            .opportunityOwner(opportunity.getKeeper())
+            .stage(stageMapper.cRMStageToCRMStageDTO(opportunity.getStage()));
     }
 
 

@@ -42,15 +42,6 @@ public class LIBTrack implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    private LIBAlbum album;
-
-    @ManyToOne
-    private LIBArtist artist;
-
-    @ManyToOne
-    private CORNetwork network;
-
     public Long getId() {
         return id;
     }
@@ -122,45 +113,6 @@ public class LIBTrack implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public LIBAlbum getAlbum() {
-        return album;
-    }
-
-    public LIBTrack album(LIBAlbum lIBAlbum) {
-        this.album = lIBAlbum;
-        return this;
-    }
-
-    public void setAlbum(LIBAlbum lIBAlbum) {
-        this.album = lIBAlbum;
-    }
-
-    public LIBArtist getArtist() {
-        return artist;
-    }
-
-    public LIBTrack artist(LIBArtist lIBArtist) {
-        this.artist = lIBArtist;
-        return this;
-    }
-
-    public void setArtist(LIBArtist lIBArtist) {
-        this.artist = lIBArtist;
-    }
-
-    public CORNetwork getNetwork() {
-        return network;
-    }
-
-    public LIBTrack network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-        return this;
-    }
-
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
     }
 
     @Override

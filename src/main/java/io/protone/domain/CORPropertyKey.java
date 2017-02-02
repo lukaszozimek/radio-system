@@ -1,11 +1,14 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -27,8 +30,17 @@ public class CORPropertyKey implements Serializable {
     @Column(name = "key", length = 100, nullable = false)
     private String key;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
+
+    @OneToMany(mappedBy = "cORPropertyKey")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORPropertyValue> values = new HashSet<>();
+
+    @ManyToOne
+    private LIBMediaItem lIBMediaItem;
 
     public Long getId() {
         return id;
@@ -62,6 +74,44 @@ public class CORPropertyKey implements Serializable {
 
     public void setNetwork(CORNetwork cORNetwork) {
         this.network = cORNetwork;
+    }
+
+    public Set<CORPropertyValue> getValues() {
+        return values;
+    }
+
+    public CORPropertyKey values(Set<CORPropertyValue> cORPropertyValues) {
+        this.values = cORPropertyValues;
+        return this;
+    }
+
+    public CORPropertyKey addValues(CORPropertyValue cORPropertyValue) {
+        values.add(cORPropertyValue);
+        cORPropertyValue.setCORPropertyKey(this);
+        return this;
+    }
+
+    public CORPropertyKey removeValues(CORPropertyValue cORPropertyValue) {
+        values.remove(cORPropertyValue);
+        cORPropertyValue.setCORPropertyKey(null);
+        return this;
+    }
+
+    public void setValues(Set<CORPropertyValue> cORPropertyValues) {
+        this.values = cORPropertyValues;
+    }
+
+    public LIBMediaItem getLIBMediaItem() {
+        return lIBMediaItem;
+    }
+
+    public CORPropertyKey lIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.lIBMediaItem = lIBMediaItem;
+        return this;
+    }
+
+    public void setLIBMediaItem(LIBMediaItem lIBMediaItem) {
+        this.lIBMediaItem = lIBMediaItem;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.library;
 
-import io.protone.custom.service.LibraryService;
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.custom.service.mapper.ext.CustomLIBLibraryMapperExt;
 import io.protone.domain.LIBLibrary;

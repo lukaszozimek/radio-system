@@ -61,36 +61,6 @@ public class SCHTemplate implements Serializable {
     @Column(name = "length", nullable = false)
     private Long length;
 
-    @NotNull
-    @Column(name = "dim_year", nullable = false)
-    private Integer dimYear;
-
-    @NotNull
-    @Column(name = "dim_month", nullable = false)
-    private Integer dimMonth;
-
-    @NotNull
-    @Column(name = "dim_day", nullable = false)
-    private Integer dimDay;
-
-    @NotNull
-    @Column(name = "dim_hour", nullable = false)
-    private Integer dimHour;
-
-    @NotNull
-    @Column(name = "dim_minute", nullable = false)
-    private Integer dimMinute;
-
-    @NotNull
-    @Column(name = "dim_second", nullable = false)
-    private Integer dimSecond;
-
-    @ManyToOne
-    private CORChannel channel;
-
-    @ManyToOne
-    private SCHTemplate parentTemplate;
-
     public Long getId() {
         return id;
     }
@@ -203,110 +173,6 @@ public class SCHTemplate implements Serializable {
         this.length = length;
     }
 
-    public Integer getDimYear() {
-        return dimYear;
-    }
-
-    public SCHTemplate dimYear(Integer dimYear) {
-        this.dimYear = dimYear;
-        return this;
-    }
-
-    public void setDimYear(Integer dimYear) {
-        this.dimYear = dimYear;
-    }
-
-    public Integer getDimMonth() {
-        return dimMonth;
-    }
-
-    public SCHTemplate dimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
-        return this;
-    }
-
-    public void setDimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
-    }
-
-    public Integer getDimDay() {
-        return dimDay;
-    }
-
-    public SCHTemplate dimDay(Integer dimDay) {
-        this.dimDay = dimDay;
-        return this;
-    }
-
-    public void setDimDay(Integer dimDay) {
-        this.dimDay = dimDay;
-    }
-
-    public Integer getDimHour() {
-        return dimHour;
-    }
-
-    public SCHTemplate dimHour(Integer dimHour) {
-        this.dimHour = dimHour;
-        return this;
-    }
-
-    public void setDimHour(Integer dimHour) {
-        this.dimHour = dimHour;
-    }
-
-    public Integer getDimMinute() {
-        return dimMinute;
-    }
-
-    public SCHTemplate dimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
-        return this;
-    }
-
-    public void setDimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
-    }
-
-    public Integer getDimSecond() {
-        return dimSecond;
-    }
-
-    public SCHTemplate dimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
-        return this;
-    }
-
-    public void setDimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
-    }
-
-    public CORChannel getChannel() {
-        return channel;
-    }
-
-    public SCHTemplate channel(CORChannel cORChannel) {
-        this.channel = cORChannel;
-        return this;
-    }
-
-    public void setChannel(CORChannel cORChannel) {
-        this.channel = cORChannel;
-    }
-
-    public SCHTemplate getParentTemplate() {
-        return parentTemplate;
-    }
-
-    public SCHTemplate parentTemplate(SCHTemplate sCHTemplate) {
-        this.parentTemplate = sCHTemplate;
-        return this;
-    }
-
-    public void setParentTemplate(SCHTemplate sCHTemplate) {
-        this.parentTemplate = sCHTemplate;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -339,12 +205,6 @@ public class SCHTemplate implements Serializable {
             ", relativeDelay='" + relativeDelay + "'" +
             ", endTime='" + endTime + "'" +
             ", length='" + length + "'" +
-            ", dimYear='" + dimYear + "'" +
-            ", dimMonth='" + dimMonth + "'" +
-            ", dimDay='" + dimDay + "'" +
-            ", dimHour='" + dimHour + "'" +
-            ", dimMinute='" + dimMinute + "'" +
-            ", dimSecond='" + dimSecond + "'" +
             '}';
     }
 }

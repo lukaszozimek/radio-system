@@ -1,11 +1,14 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import io.protone.domain.enumeration.LIBItemTypeEnum;
@@ -57,19 +60,52 @@ public class LIBMediaItem implements Serializable {
     private String description;
 
     @ManyToOne
-    private LIBLibrary library;
+    private LibLibrary libLibrary;
 
-    @ManyToOne
-    private LIBLabel label;
-
-    @ManyToOne
-    private LIBArtist artist;
-
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private LIBAlbum album;
 
-    @ManyToOne
-    private LIBTrack track;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private LIBArtist artist;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private LIBLabel composer;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private LibLibrary item;
+
+    @OneToMany(mappedBy = "lIBMediaItem")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORPerson> authors = new HashSet<>();
+
+    @OneToMany(mappedBy = "lIBMediaItem")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORPerson> composers = new HashSet<>();
+
+    @OneToMany(mappedBy = "lIBMediaItem")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<LIBMarker> markers = new HashSet<>();
+
+    @OneToMany(mappedBy = "lIBMediaItem")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORPropertyKey> properties = new HashSet<>();
+
+    @OneToMany(mappedBy = "lIBMediaItem")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CORTag> tags = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -170,43 +206,17 @@ public class LIBMediaItem implements Serializable {
         this.description = description;
     }
 
-    public LIBLibrary getLibrary() {
-        return library;
+    public LibLibrary getLibLibrary() {
+        return libLibrary;
     }
 
-    public LIBMediaItem library(LIBLibrary lIBLibrary) {
-        this.library = lIBLibrary;
+    public LIBMediaItem libLibrary(LibLibrary libLibrary) {
+        this.libLibrary = libLibrary;
         return this;
     }
 
-    public void setLibrary(LIBLibrary lIBLibrary) {
-        this.library = lIBLibrary;
-    }
-
-    public LIBLabel getLabel() {
-        return label;
-    }
-
-    public LIBMediaItem label(LIBLabel lIBLabel) {
-        this.label = lIBLabel;
-        return this;
-    }
-
-    public void setLabel(LIBLabel lIBLabel) {
-        this.label = lIBLabel;
-    }
-
-    public LIBArtist getArtist() {
-        return artist;
-    }
-
-    public LIBMediaItem artist(LIBArtist lIBArtist) {
-        this.artist = lIBArtist;
-        return this;
-    }
-
-    public void setArtist(LIBArtist lIBArtist) {
-        this.artist = lIBArtist;
+    public void setLibLibrary(LibLibrary libLibrary) {
+        this.libLibrary = libLibrary;
     }
 
     public LIBAlbum getAlbum() {
@@ -222,17 +232,181 @@ public class LIBMediaItem implements Serializable {
         this.album = lIBAlbum;
     }
 
-    public LIBTrack getTrack() {
-        return track;
+    public LIBArtist getArtist() {
+        return artist;
     }
 
-    public LIBMediaItem track(LIBTrack lIBTrack) {
-        this.track = lIBTrack;
+    public LIBMediaItem artist(LIBArtist lIBArtist) {
+        this.artist = lIBArtist;
         return this;
     }
 
-    public void setTrack(LIBTrack lIBTrack) {
-        this.track = lIBTrack;
+    public void setArtist(LIBArtist lIBArtist) {
+        this.artist = lIBArtist;
+    }
+
+    public LIBLabel getComposer() {
+        return composer;
+    }
+
+    public LIBMediaItem composer(LIBLabel lIBLabel) {
+        this.composer = lIBLabel;
+        return this;
+    }
+
+    public void setComposer(LIBLabel lIBLabel) {
+        this.composer = lIBLabel;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public LIBMediaItem network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public LibLibrary getItem() {
+        return item;
+    }
+
+    public LIBMediaItem item(LibLibrary libLibrary) {
+        this.item = libLibrary;
+        return this;
+    }
+
+    public void setItem(LibLibrary libLibrary) {
+        this.item = libLibrary;
+    }
+
+    public Set<CORPerson> getAuthors() {
+        return authors;
+    }
+
+    public LIBMediaItem authors(Set<CORPerson> cORPeople) {
+        this.authors = cORPeople;
+        return this;
+    }
+
+    public LIBMediaItem addAuthor(CORPerson cORPerson) {
+        authors.add(cORPerson);
+        cORPerson.setLIBMediaItem(this);
+        return this;
+    }
+
+    public LIBMediaItem removeAuthor(CORPerson cORPerson) {
+        authors.remove(cORPerson);
+        cORPerson.setLIBMediaItem(null);
+        return this;
+    }
+
+    public void setAuthors(Set<CORPerson> cORPeople) {
+        this.authors = cORPeople;
+    }
+
+    public Set<CORPerson> getComposers() {
+        return composers;
+    }
+
+    public LIBMediaItem composers(Set<CORPerson> cORPeople) {
+        this.composers = cORPeople;
+        return this;
+    }
+
+    public LIBMediaItem addComposer(CORPerson cORPerson) {
+        composers.add(cORPerson);
+        cORPerson.setLIBMediaItem(this);
+        return this;
+    }
+
+    public LIBMediaItem removeComposer(CORPerson cORPerson) {
+        composers.remove(cORPerson);
+        cORPerson.setLIBMediaItem(null);
+        return this;
+    }
+
+    public void setComposers(Set<CORPerson> cORPeople) {
+        this.composers = cORPeople;
+    }
+
+    public Set<LIBMarker> getMarkers() {
+        return markers;
+    }
+
+    public LIBMediaItem markers(Set<LIBMarker> lIBMarkers) {
+        this.markers = lIBMarkers;
+        return this;
+    }
+
+    public LIBMediaItem addMarkers(LIBMarker lIBMarker) {
+        markers.add(lIBMarker);
+        lIBMarker.setLIBMediaItem(this);
+        return this;
+    }
+
+    public LIBMediaItem removeMarkers(LIBMarker lIBMarker) {
+        markers.remove(lIBMarker);
+        lIBMarker.setLIBMediaItem(null);
+        return this;
+    }
+
+    public void setMarkers(Set<LIBMarker> lIBMarkers) {
+        this.markers = lIBMarkers;
+    }
+
+    public Set<CORPropertyKey> getProperties() {
+        return properties;
+    }
+
+    public LIBMediaItem properties(Set<CORPropertyKey> cORPropertyKeys) {
+        this.properties = cORPropertyKeys;
+        return this;
+    }
+
+    public LIBMediaItem addProperty(CORPropertyKey cORPropertyKey) {
+        properties.add(cORPropertyKey);
+        cORPropertyKey.setLIBMediaItem(this);
+        return this;
+    }
+
+    public LIBMediaItem removeProperty(CORPropertyKey cORPropertyKey) {
+        properties.remove(cORPropertyKey);
+        cORPropertyKey.setLIBMediaItem(null);
+        return this;
+    }
+
+    public void setProperties(Set<CORPropertyKey> cORPropertyKeys) {
+        this.properties = cORPropertyKeys;
+    }
+
+    public Set<CORTag> getTags() {
+        return tags;
+    }
+
+    public LIBMediaItem tags(Set<CORTag> cORTags) {
+        this.tags = cORTags;
+        return this;
+    }
+
+    public LIBMediaItem addTags(CORTag cORTag) {
+        tags.add(cORTag);
+        cORTag.setLIBMediaItem(this);
+        return this;
+    }
+
+    public LIBMediaItem removeTags(CORTag cORTag) {
+        tags.remove(cORTag);
+        cORTag.setLIBMediaItem(null);
+        return this;
+    }
+
+    public void setTags(Set<CORTag> cORTags) {
+        this.tags = cORTags;
     }
 
     @Override

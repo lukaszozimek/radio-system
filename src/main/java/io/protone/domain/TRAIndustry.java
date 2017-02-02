@@ -27,7 +27,8 @@ public class TRAIndustry implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
     public Long getId() {

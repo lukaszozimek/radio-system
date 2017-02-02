@@ -24,7 +24,11 @@ public class CORSize implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
+    @Column(name = "description")
+    private String description;
+
+    @OneToOne
+    @JoinColumn(unique = true)
     private CORNetwork network;
 
     public Long getId() {
@@ -46,6 +50,19 @@ public class CORSize implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public CORSize description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public CORNetwork getNetwork() {
@@ -86,6 +103,7 @@ public class CORSize implements Serializable {
         return "CORSize{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", description='" + description + "'" +
             '}';
     }
 }
