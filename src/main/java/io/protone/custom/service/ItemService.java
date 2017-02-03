@@ -1,10 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.config.s3.S3Client;
-import io.protone.config.s3.exceptions.DownloadException;
-import io.protone.config.s3.exceptions.MediaResourceException;
-import io.protone.config.s3.exceptions.S3Exception;
-import io.protone.config.s3.exceptions.UploadException;
+import io.protone.config.s3.exceptions.*;
 import io.protone.custom.consts.ServiceConstants;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.mapper.CustomItemMapperExt;
@@ -28,6 +25,7 @@ import java.io.InputStream;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -66,8 +64,8 @@ public class ItemService {
         if (libraryDB == null)
             return result;
 
-        LIBMediaItem itemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx).get();
-        result = itemMapper.DB2DTO(itemDB);
+        Optional<LIBMediaItem> optionalItemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx);
+        result = itemMapper.DB2DTO(optionalItemDB.orElse(null));
         return result;
     }
 
@@ -83,12 +81,31 @@ public class ItemService {
     }
 
     @Transactional
-    public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-        LIBMediaItem itemToDelete = mediaUtils.getItemFromDB(networkShortcut, libraryShortcut, idx);
+    public void deleteItem(String networkShortcut, String libraryShortcut, String idx) throws MediaResourceException {
+
+        LIBMediaItem itemToDelete = getItemFromDB(networkShortcut, libraryShortcut, idx);
         if (itemToDelete != null) {
+
+            List<LIBAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemToDelete);
+            if (audioObjects != null || audioObjects.size() > 0) {
+                for (LIBAudioObject audioObject: audioObjects) {
+                    LIBCloudObject cloudObject = audioObject.getCloudObject();
+                    try {
+                        s3Client.delete(cloudObject.getUuid());
+                        audioObjectRepository.delete(audioObject);
+                        audioObjectRepository.flush();
+                        cloudObjectRepository.delete(cloudObject);
+                        cloudObjectRepository.flush();
+                    } catch (DeleteException e) {
+                        throw new MediaResourceException(e.getMessage());
+                    } catch (S3Exception e) {
+                        throw new MediaResourceException(e.getMessage());
+                    }
+                }
+            }
             itemRepository.delete(itemToDelete);
-            itemRepository.flush();
         }
+
     }
 
     public List<LibItemPT> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, MediaResourceException {
@@ -172,7 +189,7 @@ public class ItemService {
 
         byte[] result = null;
 
-        LIBMediaItem itemDB = mediaUtils.getItemFromDB(networkShortcut, libraryShortcut, idx);
+        LIBMediaItem itemDB = getItemFromDB(networkShortcut, libraryShortcut, idx);
 
         if (itemDB == null)
             return result;
@@ -206,5 +223,16 @@ public class ItemService {
             stream.close();
         }
         return result;
+    }
+
+    public LIBMediaItem getItemFromDB(String networkShortcut, String libraryShortcut, String idx) {
+        LIBMediaItem result = null;
+        LIBLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        if (libraryDB == null)
+            return result;
+
+        Optional<LIBMediaItem> optItemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx);
+
+        return optItemDB.orElse(null);
     }
 }

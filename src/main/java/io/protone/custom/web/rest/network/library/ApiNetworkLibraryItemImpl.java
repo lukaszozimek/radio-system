@@ -77,7 +77,7 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
     }
 
     @Override
-    public ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx) {
+    public ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx) throws MediaResourceException {
         log.debug("REST request to delete item : {}", idx);
         itemService.deleteItem(networkShortcut, libraryPrefix, idx);
         return ResponseEntity.ok().build();

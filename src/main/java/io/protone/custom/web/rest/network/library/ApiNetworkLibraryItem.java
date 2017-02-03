@@ -89,7 +89,7 @@ public interface ApiNetworkLibraryItem {
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                        @ApiParam(value = "idx",required=true ) @PathVariable("idx") String idx);
+                                                                        @ApiParam(value = "idx",required=true ) @PathVariable("idx") String idx) throws MediaResourceException;
 
 
     @ApiOperation(value = "getItemStreamByNetworShortcutAndLibrar", notes = "", response = LibResponseEntity.class, tags={ "LIBRARY", })
