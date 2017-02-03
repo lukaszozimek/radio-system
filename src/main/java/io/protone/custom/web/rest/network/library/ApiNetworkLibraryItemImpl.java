@@ -1,8 +1,8 @@
 package io.protone.custom.web.rest.network.library;
 
+import io.protone.config.s3.exceptions.MediaResourceException;
 import io.protone.custom.service.ItemService;
 import io.protone.custom.service.dto.LibItemPT;
-import io.protone.custom.service.dto.LibResponseEntity;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +44,27 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
     }
 
     @Override
+    public ResponseEntity<List<LibItemPT>> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws MediaResourceException, IOException {
+
+        List<LibItemPT> newItems = itemService.upload(networkShortcut, libraryPrefix, files);
+        return Optional.ofNullable(newItems)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
+        byte[] data = itemService.download(networkShortcut, libraryPrefix, idx);
+        return Optional.ofNullable(data)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<LibItemPT> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
         log.debug("REST request to get item: {}", idx);
         LibItemPT item = itemService.getItem(networkShortcut, libraryPrefix, idx);
@@ -56,10 +80,5 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
         log.debug("REST request to delete item : {}", idx);
         itemService.deleteItem(networkShortcut, libraryPrefix, idx);
         return ResponseEntity.ok().build();
-    }
-
-    @Override
-    public ResponseEntity<LibResponseEntity> getItemStreamByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
-        return null;
     }
 }
