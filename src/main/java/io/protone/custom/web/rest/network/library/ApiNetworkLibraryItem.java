@@ -1,9 +1,9 @@
 package io.protone.custom.web.rest.network.library;
 
+import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.MediaResourceException;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.LibResponseEntity;
-import io.protone.custom.service.dto.LibraryPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -99,11 +99,9 @@ public interface ApiNetworkLibraryItem {
         @ApiResponse(code = 403, message = "Forbidden", response = LibResponseEntity.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibResponseEntity.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}/stream",
-        produces = { "*/*" },
-        consumes = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
                                                                                      @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                     @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("idx") String idx);
+                                                                                     @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("idx") String idx) throws IOException, MediaResourceException, DownloadException;
 
 }

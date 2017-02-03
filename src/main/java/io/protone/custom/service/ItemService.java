@@ -84,14 +84,12 @@ public class ItemService {
 
     @Transactional
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-        LibItemPT dto = getItem(networkShortcut, libraryShortcut, idx);
-        LIBMediaItem itemToDelete = itemMapper.DTO2DB(dto);
+        LIBMediaItem itemToDelete = mediaUtils.getItemFromDB(networkShortcut, libraryShortcut, idx);
         if (itemToDelete != null) {
             itemRepository.delete(itemToDelete);
             itemRepository.flush();
         }
     }
-
 
     public List<LibItemPT> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, MediaResourceException {
 
@@ -136,7 +134,7 @@ public class ItemService {
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
 
-                cloudObjectRepository.saveAndFlush(cloudObject);
+                cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
 
                 LIBMediaItem mediaItem = new LIBMediaItem();
                 mediaItem.setItemType(LIBItemTypeEnum.IT_AUDIO);
@@ -174,11 +172,12 @@ public class ItemService {
 
         byte[] result = null;
 
-        LibItemPT item = getItem(networkShortcut, libraryShortcut, idx);
-        if (item == null)
+        LIBMediaItem itemDB = mediaUtils.getItemFromDB(networkShortcut, libraryShortcut, idx);
+
+        if (itemDB == null)
             return result;
 
-        List<LIBAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemMapper.DTO2DB(item));
+        List<LIBAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemDB);
 
         if (audioObjects == null || audioObjects.size() == 0)
             return result;

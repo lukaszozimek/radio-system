@@ -1,5 +1,6 @@
 package io.protone.custom.web.rest.network.library;
 
+import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.MediaResourceException;
 import io.protone.custom.service.ItemService;
 import io.protone.custom.service.dto.LibItemPT;
@@ -55,7 +56,7 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
     }
 
     @Override
-    public ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) {
+    public ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx) throws IOException, MediaResourceException, DownloadException {
         byte[] data = itemService.download(networkShortcut, libraryPrefix, idx);
         return Optional.ofNullable(data)
             .map(result -> new ResponseEntity<>(

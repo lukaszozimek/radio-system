@@ -19,6 +19,10 @@ management:
 spring:
     application:
         name: protone
+    http:
+        multipart:
+            max-file-size: 1024Mb
+            max-request-size: 1024Mb
     profiles:
         # The commented value for `active` can be replaced with valid Spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
