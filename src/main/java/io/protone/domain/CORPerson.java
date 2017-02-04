@@ -47,11 +47,7 @@ public class CORPerson implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CORContact> personContacts = new HashSet<>();
 
-    @ManyToOne
-    private LIBMediaItem mediaItem;
 
-    @ManyToOne
-    private LIBMediaItem lIBMediaItem;
 
     public Long getId() {
         return id;
@@ -138,31 +134,6 @@ public class CORPerson implements Serializable {
         this.personContacts = cORContacts;
     }
 
-    public LIBMediaItem getmediaItem() {
-        return mediaItem;
-    }
-
-    public CORPerson mediaItem(LIBMediaItem mediaItem) {
-        this.mediaItem = mediaItem;
-        return this;
-    }
-
-    public void setMediaItem(LIBMediaItem mediaItem) {
-        this.mediaItem = mediaItem;
-    }
-
-    public LIBMediaItem getLIBMediaItem() {
-        return mediaItem;
-    }
-
-    public CORPerson lIBMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-        return this;
-    }
-
-    public void setLIBMediaItem(LIBMediaItem lIBMediaItem) {
-        this.mediaItem = lIBMediaItem;
-    }
 
     @Override
     public boolean equals(Object o) {

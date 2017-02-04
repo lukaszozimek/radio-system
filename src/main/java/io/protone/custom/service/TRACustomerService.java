@@ -37,7 +37,7 @@ public class TRACustomerService {
     }
 
     public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CORNetwork corNetwork) {
-        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traCustomerPT);
+        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traCustomerPT,corNetwork);
         crmAccountRepository.save(crmAccount);
 
         return customCRMAccountMapper.createCustomerTrafficDTO(crmAccount);

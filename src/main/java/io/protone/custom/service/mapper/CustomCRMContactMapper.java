@@ -12,68 +12,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Mapper for the entity CRMContact and its DTO CRMContactDTO.
  */
 @Service
 public class CustomCRMContactMapper {
     @Inject
-    CustomTRAPersonMapper customTRAPersonMapper;
+    private CustomTRAPersonMapper customTRAPersonMapper;
 
     @Inject
-    CustomCORAddressMapper corAddressMapper;
+    private CustomCORAddressMapper corAddressMapper;
 
     @Inject
-    CustomTRAIndustryMapper industryMapper;
+    private CustomTRAIndustryMapper industryMapper;
 
     @Inject
-    CustomCORRangeMapper customCORRangeMapper;
+    private CustomCORRangeMapper customCORRangeMapper;
 
     @Inject
-    CustomCORAreaMapper customCORAreaMapper;
+    private CustomCORAreaMapper customCORAreaMapper;
 
     @Inject
-    CustomCORSizeMapper customCORSizeMapper;
+    private CustomCORSizeMapper customCORSizeMapper;
 
     @Inject
-    CustomCRMTaskMapper customCRMTaskMapper;
+    private CustomCRMTaskMapper customCRMTaskMapper;
+
+    @Inject
+    private CustomCORUserMapper corUserMapper;
 
     public CRMContact createCrmContactEntity(CrmContactPT crmContactPT, CORNetwork corNetwork) {
         CRMContact crmContact = new CRMContact();
         crmContact.setId(crmContactPT.getId());
         return crmContact
-            .paymentDelay(Long.parseLong(crmContactPT.getPaymentDelay().toString()))
+            .name(crmContact.getName())
             .idNumber1(crmContactPT.getIdNumber1())
             .idNumber2(crmContactPT.getIdNumber2())
-            .name(crmContactPT.getName())
             .shortName(crmContactPT.getShortName())
             .vatNumber(crmContactPT.getVatNumber())
+            .paymentDelay(Long.valueOf(crmContactPT.getPaymentDelay()))
+            .industry(industryMapper.tRAIndustryDTOToTRAIndustry(crmContactPT.getIndustry()))
+            .keeper(corUserMapper.tranformUserDTO(crmContactPT.getAccount()))
+            .size(customCORSizeMapper.cORSizeDTOToCORSize(crmContactPT.getSize()))
+            .range(customCORRangeMapper.cORRangeDTOToCORRange(crmContactPT.getRange()))
+            .addres(corAddressMapper.cORAddressDTOToCORAddress(crmContactPT.getAdress()))
+            .area(customCORAreaMapper.cORAreaDTOToCORArea(crmContactPT.getArea()))
+            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons()))
             .network(corNetwork);
     }
 
-    public CORAddress createAdressEntity(CrmContactPT crmContactPT) {
-        return corAddressMapper.cORAddressDTOToCORAddress(crmContactPT.getAdress());
-    }
 
-    public TRAIndustry createIndustryEntity(CrmContactPT crmContactPT) {
-        return industryMapper.tRAIndustryDTOToTRAIndustry(crmContactPT.getIndustry());
-    }
 
-    public CORArea createCorAreaEntity(CrmContactPT crmContactPT) {
-        return customCORAreaMapper.cORAreaDTOToCORArea(crmContactPT.getArea());
-    }
-
-    public CORSize createCorSizeEntity(CrmContactPT crmContactPT) {
-        return customCORSizeMapper.cORSizeDTOToCORSize(crmContactPT.getSize());
-    }
-
-    public CORRange createRangeEntity(CrmContactPT crmContactPT) {
-        return customCORRangeMapper.cORRangeDTOToCORRange(crmContactPT.getRange());
-    }
-
-    public Map<CORPerson, List<CORContact>> createMapPersonContact(CrmContactPT crmContactPT) {
-        return customTRAPersonMapper.createMapPersonToContact(crmContactPT.getPersons());
-    }
 
 
     public CrmContactPT buildContactDTOFromEntities(CRMContact crmContact) {
@@ -84,15 +75,15 @@ public class CustomCRMContactMapper {
             .idNumber2(crmContact.getIdNumber2())
             .shortName(crmContact.getShortName())
             .vatNumber(crmContact.getVatNumber())
-            .paymentDelay(crmContact.getPaymentDelay())
+            .paymentDelay(Math.toIntExact(crmContact.getPaymentDelay()))
             .industry(industryMapper.tRAIndustryToTRAIndustryDTO(crmContact.getIndustry()))
-            .account(crmContact.getKeeper())
+            .account(corUserMapper.corUserMapper(crmContact.getKeeper()))
             .size(customCORSizeMapper.cORSizeToCORSizeDTO(crmContact.getSize()))
             .range(customCORRangeMapper.cORRangeToCORRangeDTO(crmContact.getRange()))
             .adress(corAddressMapper.cORAddressToCORAddressDTO(crmContact.getAddres()))
             .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
             .area(customCORAreaMapper.cORAreaToCORAreaDTO(crmContact.getArea()))
-            .tasks(crmContact.getTasks())
+            .tasks(crmContact.getTasks().stream().map(crmTask -> customCRMTaskMapper.createCrmTask(crmTask)).collect(toList()))
             .networkId(crmContact.getId());
 
     }

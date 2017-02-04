@@ -4,7 +4,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -26,6 +27,10 @@ public class CORTag implements Serializable {
     @Size(max = 100)
     @Column(name = "tag", length = 100, nullable = false)
     private String tag;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
 
     @ManyToOne
     private LIBMediaItem lIBMediaItem;
@@ -49,6 +54,19 @@ public class CORTag implements Serializable {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public CORTag network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
     public LIBMediaItem getLIBMediaItem() {

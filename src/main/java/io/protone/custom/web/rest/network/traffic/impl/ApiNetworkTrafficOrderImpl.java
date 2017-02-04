@@ -28,7 +28,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
         if (anOrderDTO.getId() == null) {
             return createAnOrderUsingPOST(networkShortcut, anOrderDTO);
         }
-        return ResponseEntity.ok().body(traOrderService.update(anOrderDTO, corNetwork));
+        return ResponseEntity.ok().body(traOrderService.saveOrder(anOrderDTO, corNetwork));
 
     }
 

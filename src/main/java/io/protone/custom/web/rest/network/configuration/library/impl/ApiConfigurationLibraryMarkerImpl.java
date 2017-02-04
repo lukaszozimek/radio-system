@@ -23,8 +23,6 @@ import java.util.Optional;
 @RestController
 public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibraryMarker {
 
-    private final Logger log = LoggerFactory.getLogger(CFGMarkerConfigurationResource.class);
-
     @Inject
     private CFGMarkerConfigurationRepository cFGMarkerConfigurationRepository;
     @Inject
@@ -34,7 +32,6 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<ConfMarkerConfigurationPT> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerConfigurationDTO", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationDTO) {
-        log.debug("REST request to save CFGMarkerConfiguration : {}", markerConfigurationDTO);
         if (markerConfigurationDTO.getId() == null) {
             return createMarkerConfigurationUsingPOST(networkShortcut, markerConfigurationDTO);
         }
@@ -48,7 +45,6 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<ConfMarkerConfigurationPT> createMarkerConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerConfigurationPT", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationPT) {
-        log.debug("REST request to update CFGMarkerConfiguration : {}", markerConfigurationPT);
         if (markerConfigurationPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cFGMarkerConfiguration", "idexists", "A new cFGMarkerConfiguration cannot already have an ID")).body(null);
         }
@@ -62,7 +58,6 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerName", required = true) @PathVariable("id") String id) {
-        log.debug("REST request to delete CFGMarkerConfiguration : {}", id);
         cFGMarkerConfigurationRepository.delete(Long.parseLong(id));
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cFGMarkerConfiguration", id.toString())).build();
 
@@ -70,7 +65,6 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all CFGMarkerConfigurations");
         List<CFGMarkerConfiguration> cFGMarkerConfigurations = cFGMarkerConfigurationRepository.findAll();
         return ResponseEntity.ok().body(cFGMarkerConfigurationMapper.cFGMarkerConfigurationsToCFGMarkerConfigurationDTOs(cFGMarkerConfigurations));
 
@@ -78,7 +72,6 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<ConfMarkerConfigurationPT> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerName", required = true) @PathVariable("id") String id) {
-        log.debug("REST request to get CFGMarkerConfiguration : {}", id);
         CFGMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationRepository.findOne(Long.parseLong(id));
         ConfMarkerConfigurationPT cFGMarkerConfigurationDTO = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCFGMarkerConfigurationDTO(cFGMarkerConfiguration);
         return Optional.ofNullable(cFGMarkerConfigurationDTO)

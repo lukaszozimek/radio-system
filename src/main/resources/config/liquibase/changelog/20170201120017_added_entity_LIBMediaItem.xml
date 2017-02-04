@@ -59,7 +59,7 @@
                 <constraints unique="true" nullable="true" />
             </column>            <column name="artist_id" type="bigint">
                 <constraints unique="true" nullable="true" />
-            </column>            <column name="composer_id" type="bigint">
+            </column>            <column name="label_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>            <column name="network_id" type="bigint">
                 <constraints unique="true" nullable="true" />

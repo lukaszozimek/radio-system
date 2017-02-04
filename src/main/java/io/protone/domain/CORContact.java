@@ -37,6 +37,10 @@ public class CORContact implements Serializable {
     @ManyToOne
     private CORPerson cORPerson;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
+
     public Long getId() {
         return id;
     }
@@ -82,6 +86,19 @@ public class CORContact implements Serializable {
 
     public void setCORPerson(CORPerson cORPerson) {
         this.cORPerson = cORPerson;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public CORContact network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
     @Override

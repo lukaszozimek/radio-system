@@ -81,6 +81,10 @@
             </column>
                         <column name="network_id" type="bigint">
                 <constraints unique="true" nullable="true" />
+            </column>            <column name="channel_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>            <column name="price_id" type="bigint">
+                <constraints unique="true" nullable="true" />
             </column>
             <column name="schblock_id" type="bigint">
                 <constraints nullable="true" />

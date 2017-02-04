@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 19.01.2017.
@@ -28,29 +29,23 @@ public class CustomTRAPersonMapper {
         return corPersonListMap;
     }
 
-    public List<TraCustomerPersonPT> createDTOObject(CORPerson person) {
-        List<TraCustomerPersonPT> listDto = new ArrayList<>();
+    public TraCustomerPersonPT createDTOObject(CORPerson person) {
 
-        listDto.add(new TraCustomerPersonPT().id(person.getId()).
+        return new TraCustomerPersonPT().id(person.getId()).
             lastName(person.getLastName())
             .firstName(person.getFirstName())
             .description(person.getDescription())
-            .contacts(corContactMapper.cORContactsToCORContactDTOs(person.getPersonContacts())));
-        return listDto;
+            .contacts(corContactMapper.cORContactsToCORContactDTOs(person.getPersonContacts()));
     }
 
-    public Map<CORPerson, List<CORContact>> createMapPersonToContact(TraCustomerPersonPT traCustomerPersonPT) {
-        Map<CORPerson, List<CORContact>> corPersonListMap = new HashMap<>();
-        corPersonListMap.put(createPersonEntity(traCustomerPersonPT), createContactEntities(traCustomerPersonPT));
-        return corPersonListMap;
-    }
 
-    private CORPerson createPersonEntity(TraCustomerPersonPT personPT) {
+    public CORPerson createPersonEntity(TraCustomerPersonPT personPT) {
         CORPerson corPerson = new CORPerson();
         corPerson.setId(personPT.getId());
         return corPerson.lastName(personPT.getLastName())
             .firstName(personPT.getFirstName())
-            .description(personPT.getDescription());
+            .description(personPT.getDescription())
+            .personContacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCORContact(coreContactPT)).collect(Collectors.toSet()));
     }
 
     private List<CORContact> createContactEntities(TraCustomerPersonPT personPT) {

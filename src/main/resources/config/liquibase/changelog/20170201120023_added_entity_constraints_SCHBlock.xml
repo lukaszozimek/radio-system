@@ -14,6 +14,18 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_schblock_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="price_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_schblock_price_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_price"/>
+
         <addForeignKeyConstraint baseColumnNames="schblock_id"
                                  baseTableName="sch_block"
                                  constraintName="fk_schblock_schblock_id"

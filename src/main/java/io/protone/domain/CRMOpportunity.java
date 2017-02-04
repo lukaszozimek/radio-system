@@ -33,14 +33,15 @@ public class CRMOpportunity implements Serializable {
 
     @Column(name = "close_date")
     private LocalDate closeDate;
-
+    @Column(name = "propability")
+    private Integer propability;
     @OneToOne
     @JoinColumn(unique = true)
     private CRMStage stage;
 
     @OneToOne
     @JoinColumn(unique = true)
-    private CORUser keeper;
+    private User keeper;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -126,16 +127,16 @@ public class CRMOpportunity implements Serializable {
         this.stage = cRMStage;
     }
 
-    public CORUser getKeeper() {
+    public User getKeeper() {
         return keeper;
     }
 
-    public CRMOpportunity keeper(CORUser cORUser) {
+    public CRMOpportunity keeper(User cORUser) {
         this.keeper = cORUser;
         return this;
     }
 
-    public void setKeeper(CORUser cORUser) {
+    public void setKeeper(User cORUser) {
         this.keeper = cORUser;
     }
 
@@ -257,5 +258,17 @@ public class CRMOpportunity implements Serializable {
             ", lastTry='" + lastTry + "'" +
             ", closeDate='" + closeDate + "'" +
             '}';
+    }
+    public CRMOpportunity propability(Integer propability) {
+       this.propability=propability;
+       return this;
+    }
+
+    public Integer getPropability() {
+        return propability;
+    }
+
+    public void setPropability(Integer propability) {
+        this.propability = propability;
     }
 }

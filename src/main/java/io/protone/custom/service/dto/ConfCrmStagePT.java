@@ -18,6 +18,9 @@ public class ConfCrmStagePT   {
   @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("description")
+  private String description = null;
+
   public ConfCrmStagePT id(Long id) {
     this.id = id;
     return this;
@@ -46,13 +49,25 @@ public class ConfCrmStagePT   {
    * @return name
   **/
   @ApiModelProperty(value = "")
-  public String getName() {
-    return name;
+  public String getDescription() {
+    return description;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setDescription(String description) {
+    this.description = description;
   }
+    public ConfCrmStagePT description(String description) {
+        this.description = description;
+        return this;
+    }
+    @ApiModelProperty(value = "")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
   @Override
@@ -65,7 +80,8 @@ public class ConfCrmStagePT   {
     }
     ConfCrmStagePT confCrmStagePT = (ConfCrmStagePT) o;
     return Objects.equals(this.id, confCrmStagePT.id) &&
-        Objects.equals(this.name, confCrmStagePT.name);
+        Objects.equals(this.name, confCrmStagePT.name) &&
+        Objects.equals(this.description, confCrmStagePT.description);
   }
 
   @Override
@@ -80,6 +96,7 @@ public class ConfCrmStagePT   {
 
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+      sb.append("    description: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }

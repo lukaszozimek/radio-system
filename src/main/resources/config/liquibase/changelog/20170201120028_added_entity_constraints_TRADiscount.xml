@@ -4,15 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
-        Added the constraints for entity CORPerson.
+        Added the constraints for entity TRADiscount.
     -->
-    <changeSet id="20170201120058-2" author="jhipster">
-
+    <changeSet id="20170201120028-2" author="jhipster">
+        
         <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="cor_person"
-                                 constraintName="fk_corperson_network_id"
+                                 baseTableName="tra_discount"
+                                 constraintName="fk_tradiscount_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
-     </changeSet>
+    </changeSet>
 </databaseChangeLog>

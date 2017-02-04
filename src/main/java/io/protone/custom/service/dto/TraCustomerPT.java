@@ -59,7 +59,7 @@ public class TraCustomerPT {
     private CoreManagedUserPT account = null;
 
     @JsonProperty("persons")
-    private List<TraCustomerPersonPT> persons = new ArrayList<TraCustomerPersonPT>();
+    private TraCustomerPersonPT persons = null;
 
     public TraCustomerPT id(Long id) {
         this.id = id;
@@ -341,15 +341,11 @@ public class TraCustomerPT {
         this.account = account;
     }
 
-    public TraCustomerPT persons(List<TraCustomerPersonPT> persons) {
+    public TraCustomerPT persons(TraCustomerPersonPT persons) {
         this.persons = persons;
         return this;
     }
 
-    public TraCustomerPT addPersonsItem(TraCustomerPersonPT personsItem) {
-        this.persons.add(personsItem);
-        return this;
-    }
 
     /**
      * Get persons
@@ -357,11 +353,11 @@ public class TraCustomerPT {
      * @return persons
      **/
     @ApiModelProperty(value = "")
-    public List<TraCustomerPersonPT> getPersons() {
+    public TraCustomerPersonPT getPersons() {
         return persons;
     }
 
-    public void setPersons(List<TraCustomerPersonPT> persons) {
+    public void setPersons(TraCustomerPersonPT persons) {
         this.persons = persons;
     }
 

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.TRAStatus;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -27,6 +28,8 @@ public class TraInvoicePT {
 
     @JsonProperty("customer")
     private TraCustomerPT customerPT = null;
+    @JsonProperty("status")
+    private TRAStatus traStatus = null;
 
     public TraInvoicePT id(Long id) {
         this.id = id;
@@ -103,6 +106,27 @@ public class TraInvoicePT {
     public void setPaymentDay(LocalDate paymentDay) {
         this.paymentDay = paymentDay;
     }
+
+
+    public TraInvoicePT traStatus(TRAStatus traStatus) {
+        this.traStatus = traStatus;
+        return this;
+    }
+
+    /**
+     * Get paymentDay
+     *
+     * @return paymentDay
+     **/
+    @ApiModelProperty(value = "")
+    public TRAStatus getTraStatus() {
+        return traStatus;
+    }
+
+    public void setTraStatus(TRAStatus traStatus) {
+        this.traStatus = traStatus;
+    }
+
 
     public TraInvoicePT customerId(TraCustomerPT customerId) {
         this.customerPT = customerId;

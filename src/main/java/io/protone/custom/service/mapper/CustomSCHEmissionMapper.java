@@ -19,16 +19,16 @@ public class CustomSCHEmissionMapper {
 
     public SchEmissionPT creteDTOFromEntities(SCHEmission emission) {
         return new SchEmissionPT()
-            .blockId(emission.getBlock().getId())
+            .blockId(2L)
             .endTime(emission.getEndTime().toString())
             .startTime(emission.getStartTime().toString())
             .finished(emission.isFinished())
             .seq(emission.getSeq())
             .relativeDelay(emission.getRelativeDelay())
-            .mediaItemId(emission.getMediaItem())
+            .mediaItemId(new LibItemPT())
             .startType(emission.getStartType())
             .length(emission.getLength())
-            .templateId(emission.getTemplate().getId())
+            .templateId(2L)
             .id(emission.getId());
     }
 

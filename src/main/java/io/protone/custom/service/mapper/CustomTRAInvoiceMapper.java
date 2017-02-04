@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
+import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -18,10 +20,18 @@ public class CustomTRAInvoiceMapper {
     private CustomTRAOrderMapper customTRAOrderMapper;
     @Inject
     private CustomCRMAccountMapper crmAccountMapper;
-    public TRAInvoice createEntityFromDTO(TraInvoicePT traInvoicePT) {
+    @Inject
+    private CustomTRAOrderMapper traOrderMapper;
+
+    public TRAInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CORNetwork corNetwork) {
         TRAInvoice traInvoice = new TRAInvoice();
         traInvoice.setId(traInvoice.getId());
-        return traInvoice.paid(traInvoice.isPaid()).paymentDay(traInvoice.getPaymentDay());
+        return traInvoice.paid(traInvoice.isPaid())
+            .paymentDay(traInvoice.getPaymentDay())
+            .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
+            .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
+            .network(corNetwork)
+            .status(traInvoicePT.getTraStatus());
     }
 
     public TraInvoicePT createDTOFromEnity(TRAInvoice traInvoicePT) {
@@ -29,9 +39,9 @@ public class CustomTRAInvoiceMapper {
             .order(customTRAOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrders()))
             .paid(traInvoicePT.isPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
-            .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCRMAccount()));
+            .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCRMAccount()))
+            .traStatus(traInvoicePT.getStatus());
     }
-
 
 
 }

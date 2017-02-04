@@ -1,14 +1,14 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.LIBMarkerTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.LIBMarkerTypeEnum;
 
 /**
  * A CFGMarkerConfiguration.
@@ -48,6 +48,10 @@ public class CFGMarkerConfiguration implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private LIBMarkerTypeEnum type;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
 
     public Long getId() {
         return id;
@@ -120,6 +124,19 @@ public class CFGMarkerConfiguration implements Serializable {
 
     public void setType(LIBMarkerTypeEnum type) {
         this.type = type;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public CFGMarkerConfiguration network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
     @Override

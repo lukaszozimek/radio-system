@@ -26,6 +26,8 @@ public class CustomCRMOpportunityMapper {
     CustomCRMContactMapper customCRMContactMapper;
     @Inject
     CustomCRMTaskMapper customCRMTaskMapper;
+    @Inject
+    CustomCORUserMapper corUserMapper;
 
     public CRMOpportunity createOpportunity(CrmOpportunityPT opportunityPT, CORNetwork corNetwork) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -46,7 +48,7 @@ public class CustomCRMOpportunityMapper {
             .closeDate(opportunity.getCloseDate().toString())
             .tasks(customCRMTaskMapper.createCrmTasks(opportunity.getTasks()))
             .contact(customCRMContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
-            .opportunityOwner(opportunity.getKeeper())
+            .opportunityOwner(corUserMapper.corUserMapper(opportunity.getKeeper()))
             .stage(stageMapper.cRMStageToCRMStageDTO(opportunity.getStage()));
     }
 

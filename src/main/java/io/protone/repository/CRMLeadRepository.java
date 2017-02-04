@@ -12,7 +12,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CRMLeadRepository extends JpaRepository<CRMLead, Long> {
+
     List<CRMLead> findByNetwork(CORNetwork network);
 
-    CRMLead findOneByShortcutAndNetwork(String shortcut, CORNetwork network);
+    CRMLead findOneByShortnameAndNetwork(String shortcut, CORNetwork network);
+
+    void deleteByShortnameAndNetwork(String shortcut, CORNetwork corNetwork);
+
 }

@@ -4,19 +4,19 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
-        Added the constraints for entity CORContact.
+        Added the constraints for entity LIBImageObject.
     -->
-    <changeSet id="20170201120000-2" author="jhipster">
+    <changeSet id="20170201120013-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="corperson_id"
-                                 baseTableName="cor_contact"
-                                 constraintName="fk_corcontact_corperson_id"
+        <addForeignKeyConstraint baseColumnNames="cloud_object_id"
+                                 baseTableName="lib_image_object"
+                                 constraintName="fk_libimage_object_cloud_object_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_person"/>
+                                 referencedTableName="lib_cloud_object"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="cor_contact"
-                                 constraintName="fk_corcontact_network_id"
+                                 baseTableName="lib_image_object"
+                                 constraintName="fk_libimage_object_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 

@@ -28,9 +28,6 @@ public class TRACampaignService {
     private CustomTRACampaignMapper customTRACampaignMapper;
 
     @Inject
-    private CORAssociationRepository corAssociationRepositor;
-
-    @Inject
     private TRACampaignRepository traCampaignRepository;
 
     @Inject
@@ -53,13 +50,8 @@ public class TRACampaignService {
     }
 
     public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CORNetwork corNetwork) {
-        TRACampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT);
+        TRACampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT,corNetwork);
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
-    }
-
-    public TraCampaignPT update(TraCampaignPT campaignPT, CORNetwork corNetwork) {
-        deleteCampaign(campaignPT.getName(), corNetwork);
-        return saveCampaign(campaignPT, corNetwork);
     }
 
     public void deleteCampaign(String shortcut, CORNetwork corNetwork) {

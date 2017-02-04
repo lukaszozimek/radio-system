@@ -22,6 +22,7 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
     private CRMLeadService crmLeadService;
     @Inject
     private NetworkService networkService;
+
     @Override
     public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
@@ -29,14 +30,14 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
         if (crmLeadPT.getId() == null) {
             return createLeadUsingPOST(networkShortcut, crmLeadPT);
         }
-        return ResponseEntity.ok().body(crmLeadService.update(crmLeadPT,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.saveLead(crmLeadPT, corNetwork));
     }
 
     @Override
     public ResponseEntity<CrmLeadPT> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
-        return ResponseEntity.ok().body(crmLeadService.saveLead(crmLeadPT,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.saveLead(crmLeadPT, corNetwork));
     }
 
     @Override
@@ -48,13 +49,13 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
     @Override
     public ResponseEntity<CrmLeadPT> getLeadUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.getLead(shortName,corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.getLead(shortName, corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmLeadService.deleteLead(shortName,corNetwork);
+        crmLeadService.deleteLead(shortName, corNetwork);
         return ResponseEntity.ok().build();
     }
 }

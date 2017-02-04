@@ -48,8 +48,7 @@ public class CORNetwork implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CORChannel> channels = new HashSet<>();
 
-    @ManyToOne
-    private CORUser network;
+
 
     public Long getId() {
         return id;
@@ -148,18 +147,6 @@ public class CORNetwork implements Serializable {
         this.channels = cORChannels;
     }
 
-    public CORUser getNetwork() {
-        return network;
-    }
-
-    public CORNetwork network(CORUser cORUser) {
-        this.network = cORUser;
-        return this;
-    }
-
-    public void setNetwork(CORUser cORUser) {
-        this.network = cORUser;
-    }
 
     @Override
     public boolean equals(Object o) {

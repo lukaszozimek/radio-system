@@ -7,7 +7,7 @@
         Added the constraints for entity CRMOpportunity.
     -->
     <changeSet id="20170201120041-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="stage_id"
                                  baseTableName="crm_opportunity"
                                  constraintName="fk_crmopportunity_stage_id"
@@ -18,7 +18,7 @@
                                  baseTableName="crm_opportunity"
                                  constraintName="fk_crmopportunity_keeper_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
+                                 referencedTableName="jhi_user"/>
 
         <addForeignKeyConstraint baseColumnNames="contact_id"
                                  baseTableName="crm_opportunity"

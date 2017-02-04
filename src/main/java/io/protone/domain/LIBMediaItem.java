@@ -70,9 +70,10 @@ public class LIBMediaItem implements Serializable {
     @JoinColumn(unique = true)
     private LIBArtist artist;
 
+
     @OneToOne
     @JoinColumn(unique = true)
-    private LIBLabel composer;
+    private LIBLabel label;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -82,15 +83,6 @@ public class LIBMediaItem implements Serializable {
     @JoinColumn(unique = true)
     private LibLibrary item;
 
-    @OneToMany(mappedBy = "lIBMediaItem")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CORPerson> authors = new HashSet<>();
-
-    @OneToMany(mappedBy = "lIBMediaItem")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CORPerson> composers = new HashSet<>();
 
     @OneToMany(mappedBy = "lIBMediaItem")
     @JsonIgnore
@@ -246,16 +238,16 @@ public class LIBMediaItem implements Serializable {
     }
 
     public LIBLabel getComposer() {
-        return composer;
+        return label;
     }
 
     public LIBMediaItem composer(LIBLabel lIBLabel) {
-        this.composer = lIBLabel;
+        this.label = lIBLabel;
         return this;
     }
 
     public void setComposer(LIBLabel lIBLabel) {
-        this.composer = lIBLabel;
+        this.label = lIBLabel;
     }
 
     public CORNetwork getNetwork() {
@@ -284,55 +276,6 @@ public class LIBMediaItem implements Serializable {
         this.item = libLibrary;
     }
 
-    public Set<CORPerson> getAuthors() {
-        return authors;
-    }
-
-    public LIBMediaItem authors(Set<CORPerson> cORPeople) {
-        this.authors = cORPeople;
-        return this;
-    }
-
-    public LIBMediaItem addAuthor(CORPerson cORPerson) {
-        authors.add(cORPerson);
-        cORPerson.setLIBMediaItem(this);
-        return this;
-    }
-
-    public LIBMediaItem removeAuthor(CORPerson cORPerson) {
-        authors.remove(cORPerson);
-        cORPerson.setLIBMediaItem(null);
-        return this;
-    }
-
-    public void setAuthors(Set<CORPerson> cORPeople) {
-        this.authors = cORPeople;
-    }
-
-    public Set<CORPerson> getComposers() {
-        return composers;
-    }
-
-    public LIBMediaItem composers(Set<CORPerson> cORPeople) {
-        this.composers = cORPeople;
-        return this;
-    }
-
-    public LIBMediaItem addComposer(CORPerson cORPerson) {
-        composers.add(cORPerson);
-        cORPerson.setLIBMediaItem(this);
-        return this;
-    }
-
-    public LIBMediaItem removeComposer(CORPerson cORPerson) {
-        composers.remove(cORPerson);
-        cORPerson.setLIBMediaItem(null);
-        return this;
-    }
-
-    public void setComposers(Set<CORPerson> cORPeople) {
-        this.composers = cORPeople;
-    }
 
     public Set<LIBMarker> getMarkers() {
         return markers;

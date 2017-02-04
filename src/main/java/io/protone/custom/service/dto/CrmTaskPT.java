@@ -2,7 +2,6 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CFGTaskStatus;
-import io.protone.domain.CRMTaskStatus;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;

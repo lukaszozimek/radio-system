@@ -43,8 +43,8 @@ public class CRMAccount implements Serializable {
     @Column(name = "payment_delay")
     private Long paymentDelay;
 
-    @Column(name = "get_short_name")
-    private String getShortName;
+    @Column(name = "short_name")
+    private String shortName;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -76,7 +76,7 @@ public class CRMAccount implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private CORUser keeper;
+    private User keeper;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -202,17 +202,17 @@ public class CRMAccount implements Serializable {
         this.paymentDelay = paymentDelay;
     }
 
-    public String getGetShortName() {
-        return getShortName;
+    public String getShortName() {
+        return shortName;
     }
 
     public CRMAccount getShortName(String getShortName) {
-        this.getShortName = getShortName;
+        this.shortName = getShortName;
         return this;
     }
 
-    public void setGetShortName(String getShortName) {
-        this.getShortName = getShortName;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public CORAddress getAddres() {
@@ -306,16 +306,16 @@ public class CRMAccount implements Serializable {
         this.person = cORPerson;
     }
 
-    public CORUser getKeeper() {
+    public User getKeeper() {
         return keeper;
     }
 
-    public CRMAccount keeper(CORUser cORUser) {
+    public CRMAccount keeper(User cORUser) {
         this.keeper = cORUser;
         return this;
     }
 
-    public void setKeeper(CORUser cORUser) {
+    public void setKeeper(User cORUser) {
         this.keeper = cORUser;
     }
 
@@ -525,7 +525,7 @@ public class CRMAccount implements Serializable {
             ", paymentDate='" + paymentDate + "'" +
             ", vatNumber='" + vatNumber + "'" +
             ", paymentDelay='" + paymentDelay + "'" +
-            ", getShortName='" + getShortName + "'" +
+            ", shortName='" + shortName + "'" +
             '}';
     }
 }

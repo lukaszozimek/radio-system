@@ -1,15 +1,15 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.LIBObjectTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.LIBObjectTypeEnum;
 
 /**
  * A LIBCloudObject.
@@ -59,6 +59,13 @@ public class LIBCloudObject implements Serializable {
     @Column(name = "create_date")
     private ZonedDateTime createDate;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
+
+    @ManyToOne
+    private User createdBy;
+
     public Long getId() {
         return id;
     }
@@ -71,17 +78,21 @@ public class LIBCloudObject implements Serializable {
         return uuid;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public LIBCloudObject uuid(String uuid) {
         this.uuid = uuid;
         return this;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public LIBObjectTypeEnum getObjectType() {
         return objectType;
+    }
+
+    public void setObjectType(LIBObjectTypeEnum objectType) {
+        this.objectType = objectType;
     }
 
     public LIBCloudObject objectType(LIBObjectTypeEnum objectType) {
@@ -89,12 +100,12 @@ public class LIBCloudObject implements Serializable {
         return this;
     }
 
-    public void setObjectType(LIBObjectTypeEnum objectType) {
-        this.objectType = objectType;
-    }
-
     public String getOriginalName() {
         return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 
     public LIBCloudObject originalName(String originalName) {
@@ -102,12 +113,12 @@ public class LIBCloudObject implements Serializable {
         return this;
     }
 
-    public void setOriginalName(String originalName) {
-        this.originalName = originalName;
-    }
-
     public String getContentType() {
         return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public LIBCloudObject contentType(String contentType) {
@@ -115,21 +126,17 @@ public class LIBCloudObject implements Serializable {
         return this;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
     public Long getSize() {
         return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     public LIBCloudObject size(Long size) {
         this.size = size;
         return this;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
     }
 
     public Boolean isOriginal() {
@@ -149,17 +156,21 @@ public class LIBCloudObject implements Serializable {
         return hash;
     }
 
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
     public LIBCloudObject hash(String hash) {
         this.hash = hash;
         return this;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
     public ZonedDateTime getCreateDate() {
         return createDate;
+    }
+
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate;
     }
 
     public LIBCloudObject createDate(ZonedDateTime createDate) {
@@ -167,8 +178,30 @@ public class LIBCloudObject implements Serializable {
         return this;
     }
 
-    public void setCreateDate(ZonedDateTime createDate) {
-        this.createDate = createDate;
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+    }
+
+    public LIBCloudObject network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User cORUser) {
+        this.createdBy = cORUser;
+    }
+
+    public LIBCloudObject createdBy(User cORUser) {
+        this.createdBy = cORUser;
+        return this;
     }
 
     @Override

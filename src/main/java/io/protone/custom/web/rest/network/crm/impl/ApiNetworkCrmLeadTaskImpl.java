@@ -34,7 +34,7 @@ public class ApiNetworkCrmLeadTaskImpl implements ApiNetworkCrmLeadTask {
     @Override
     public ResponseEntity<CrmTaskPT> updateLeadActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.updateLeadTask(shortName, crmActivityPT, corNetwork));
+        return ResponseEntity.ok().body(crmLeadService.createTasksAssociatedWithLead(shortName,crmActivityPT, corNetwork));
     }
 
     @Override

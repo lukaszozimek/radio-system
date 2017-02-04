@@ -24,16 +24,16 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     @Override
     public ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        if(advertisementDTO.getId()==null){
-            return createAdvertisementUsingPOST(networkShortcut,advertisementDTO);
+        if (advertisementDTO.getId() == null) {
+            return createAdvertisementUsingPOST(networkShortcut, advertisementDTO);
         }
-        return ResponseEntity.ok().body(traAdvertismentService.update(advertisementDTO,corNetwork));
+        return ResponseEntity.ok().body(traAdvertismentService.saveAdvertisement(advertisementDTO, corNetwork));
     }
 
     @Override
     public ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(traAdvertismentService.saveAdvertisement(advertisementDTO,corNetwork));
+        return ResponseEntity.ok().body(traAdvertismentService.saveAdvertisement(advertisementDTO, corNetwork));
     }
 
     @Override
@@ -45,13 +45,13 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     @Override
     public ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        traAdvertismentService.deleteAdvertisement(idx,corNetwork);
+        traAdvertismentService.deleteAdvertisement(idx, corNetwork);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(traAdvertismentService.getAdvertisement(idx,corNetwork));
+        return ResponseEntity.ok().body(traAdvertismentService.getAdvertisement(idx, corNetwork));
     }
 }

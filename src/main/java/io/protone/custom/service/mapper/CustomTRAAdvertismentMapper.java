@@ -23,11 +23,14 @@ public class CustomTRAAdvertismentMapper {
     @Inject
     private TRACustomerService customerService;
 
-    public TRAAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT) {
+    public TRAAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CORNetwork corNetwork) {
         TRAAdvertisement advertisement = new TRAAdvertisement();
         advertisement.setId(traAdvertisementPT.getId());
         return advertisement.name(traAdvertisementPT.getName())
-            .description(traAdvertisementPT.getDescription());
+            .description(traAdvertisementPT.getDescription())
+            .industry(customTRAIndustryMapper.tRAIndustryDTOToTRAIndustry(traAdvertisementPT.getIndustryId()))
+            .libitem((new LIBMediaItem()))
+            .cRMAccount(customCRMAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
 
     }
 
@@ -37,12 +40,10 @@ public class CustomTRAAdvertismentMapper {
             .name(traAdvertisement.getName())
             .description(traAdvertisement.getDescription())
             .industryId(customTRAIndustryMapper.tRAIndustryToTRAIndustryDTO(traAdvertisement.getIndustry()))
-            .mediaItemId(traAdvertisement.getLibitem())
+            .mediaItemId(new LibItemPT())
             .customerId(customCRMAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCRMAccount()));
 
     }
-
-
 
 
 }

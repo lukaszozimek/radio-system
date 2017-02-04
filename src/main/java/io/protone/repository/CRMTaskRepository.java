@@ -1,9 +1,6 @@
 package io.protone.repository;
 
-import io.protone.domain.CORArea;
-import io.protone.domain.CORNetwork;
-import io.protone.domain.CRMStage;
-import io.protone.domain.CRMTask;
+import io.protone.domain.*;
 
 import org.springframework.data.jpa.repository.*;
 
@@ -16,4 +13,7 @@ import java.util.List;
 public interface CRMTaskRepository extends JpaRepository<CRMTask,Long> {
 
     List<CRMTask> findByNetwork(CORNetwork network);
+    List<CRMTask> findByCRMContactAndNetwork(CRMContact crmContact,CORNetwork network);
+    CRMTask findOneByCRMContactAndIdAndNetwork(CRMContact crmContact,Long id,CORNetwork network);
+    void deleteByCRMContactAndIdAndNetwork(CRMContact crmContact,Long id,CORNetwork network);
 }

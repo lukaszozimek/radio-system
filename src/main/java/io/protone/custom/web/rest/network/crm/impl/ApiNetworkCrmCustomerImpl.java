@@ -19,6 +19,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     private CRMCustomerService crmCustomerService;
     @Inject
     private NetworkService networkService;
+
     @Override
     public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmAccountPT customeryPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
@@ -26,14 +27,14 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
         if (customeryPT.getId() == null) {
             return createCustomerUsingPOST(networkShortcut, customeryPT);
         }
-        return ResponseEntity.ok().body(crmCustomerService.update(customeryPT,corNetwork));
+        return ResponseEntity.ok().body(crmCustomerService.saveCustomer(customeryPT, corNetwork));
     }
 
     @Override
     public ResponseEntity<CrmAccountPT> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmAccountPT customerPT) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
-        return ResponseEntity.ok().body(crmCustomerService.saveCustomer(customerPT,corNetwork));
+        return ResponseEntity.ok().body(crmCustomerService.saveCustomer(customerPT, corNetwork));
     }
 
     @Override
@@ -45,13 +46,13 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     @Override
     public ResponseEntity<CrmAccountPT> getCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.getCustomer(shortName,corNetwork));
+        return ResponseEntity.ok().body(crmCustomerService.getCustomer(shortName, corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmCustomerService.deleteCustomer(shortName,corNetwork);
+        crmCustomerService.deleteCustomer(shortName, corNetwork);
         return ResponseEntity.ok().build();
     }
 }

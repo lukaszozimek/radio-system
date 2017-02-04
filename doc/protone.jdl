@@ -42,7 +42,7 @@ entity CRMAccount {
     paymentDate LocalDate
     vatNumber String
     paymentDelay Long
-    getShortName String
+    shortName String
 }
 entity CRMStage{
 	name String,

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.TRAPrice;
 import io.swagger.annotations.ApiModelProperty;
 
 
@@ -35,6 +36,9 @@ public class TraOrderPT {
 
     @JsonProperty("startDate")
     private LocalDate startDate = null;
+
+    @JsonProperty("price")
+    private TRAPrice traPrice = null;
 
     @JsonProperty("emission")
     private List<SchEmissionPT> emission = new ArrayList<>();
@@ -75,6 +79,25 @@ public class TraOrderPT {
 
     public void setTraCampaignPT(TraCampaignPT traCampaignPT) {
         this.traCampaignPT = traCampaignPT;
+    }
+
+    public TraOrderPT campaignId(TRAPrice price) {
+        this.traPrice = price;
+        return this;
+    }
+
+    /**
+     * Get traCampaignPT
+     *
+     * @return traCampaignPT
+     **/
+    @ApiModelProperty(value = "")
+    public TRAPrice getTraPrice() {
+        return traPrice;
+    }
+
+    public void setTraPrice(TRAPrice traPrice) {
+        this.traPrice = traPrice;
     }
 
     public TraOrderPT customerId(TraCustomerPT customerId) {
@@ -208,12 +231,13 @@ public class TraOrderPT {
             Objects.equals(this.id, traOrderPT.id) &&
             Objects.equals(this.name, traOrderPT.name) &&
             Objects.equals(this.startDate, traOrderPT.startDate) &&
+            Objects.equals(this.traPrice, traOrderPT.traPrice) &&
             Objects.equals(this.emission, traOrderPT.emission);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, emission);
+        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, emission, traPrice);
     }
 
     @Override
@@ -229,6 +253,7 @@ public class TraOrderPT {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
         sb.append("    emission: ").append(toIndentedString(emission)).append("\n");
+        sb.append("    price: ").append(toIndentedString(traPrice)).append("\n");
         sb.append("}");
         return sb.toString();
     }

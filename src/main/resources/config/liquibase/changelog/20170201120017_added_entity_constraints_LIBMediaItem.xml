@@ -26,9 +26,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_artist"/>
 
-        <addForeignKeyConstraint baseColumnNames="composer_id"
+        <addForeignKeyConstraint baseColumnNames="label_id"
                                  baseTableName="lib_media_item"
-                                 constraintName="fk_libmedia_item_composer_id"
+                                 constraintName="fk_libmedia_item_label_id"
                                  referencedColumnNames="id"
                                  referencedTableName="lib_label"/>
 

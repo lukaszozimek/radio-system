@@ -29,7 +29,7 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
         if (customeryPT.getId() == null) {
             return createContactUsingPOST(networkShortcut, customeryPT);
         }
-        return ResponseEntity.ok().body(contactService.update(customeryPT,corNetwork));
+        return ResponseEntity.ok().body(contactService.saveContact(customeryPT,corNetwork));
     }
 
     @Override

@@ -22,12 +22,12 @@ public class ChannelService {
     }
 
     public CORChannel findChannel(String shortcut) {
-        return ccorChannelRepository.findByShortcut(shortcut);
+        return ccorChannelRepository.findByPrefix(shortcut);
     }
 
     @Transactional
     public void deleteChannel(String shortcut) {
-        ccorChannelRepository.deleteByShortcut(shortcut);
+        ccorChannelRepository.deleteByPrefix(shortcut);
     }
 
     public CORChannel save(CORChannel network) {

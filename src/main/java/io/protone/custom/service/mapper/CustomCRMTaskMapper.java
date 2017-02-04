@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 19.01.2017.
@@ -23,23 +24,31 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class CustomCRMTaskMapper {
 
-    public static final String CRM_TASK_STATUS="CRMTaskStatus";
+    public static final String CRM_TASK_STATUS = "CRMTaskStatus";
+    @Inject
+    private CustomCORUserMapper corUserMapper;
+
     public List<CrmTaskPT> createCrmTasks(Set<CRMTask> crmTask) {
         return crmTask.stream().map(this::createCrmTask).collect(toList());
     }
+
+    public List<CrmTaskPT> createCrmTasks(List<CRMTask> crmTask) {
+        return crmTask.stream().map(this::createCrmTask).collect(toList());
+    }
+
     public CrmTaskPT createCrmTask(CRMTask crmTask) {
         return new CrmTaskPT().id(crmTask.getId())
             .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
             .crmTaskStatus(crmTask.getStatus())
-            .assignedTo(crmTask.getAssignedTo())
+            .assignedTo(corUserMapper.corUserMapper(crmTask.getAssignedTo()))
             .comment(crmTask.getComment())
             .subject(crmTask.getSubject())
-            .createdBy(crmTask.getCreatedBy());
+            .createdBy(corUserMapper.corUserMapper(crmTask.getCreatedBy()));
     }
 
-    public List<CRMTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
-        return crmTaskPTS.stream().map(this::createTaskEntity).collect(toList());
+    public Set<CRMTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
+        return crmTaskPTS.stream().map(this::createTaskEntity).collect(toSet());
     }
 
     public CRMTask createTaskEntity(CrmTaskPT taskPT) {

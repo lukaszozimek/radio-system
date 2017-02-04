@@ -42,11 +42,11 @@ public class CRMTask implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private CORUser createdBy;
+    private User createdBy;
 
     @OneToOne
     @JoinColumn(unique = true)
-    private CORUser assignedTo;
+    private User assignedTo;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -74,8 +74,9 @@ public class CRMTask implements Serializable {
 
     @ManyToOne
     private CRMAccount cRMAccount;
+
     @ManyToOne
-    private CRMOpportunity crmOpportunity;
+    private CRMOpportunity cRMOpportunity;
 
     public Long getId() {
         return id;
@@ -150,29 +151,29 @@ public class CRMTask implements Serializable {
         this.cRMLead = cRMLead;
     }
 
-    public CORUser getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public CRMTask createdBy(CORUser cORUser) {
+    public CRMTask createdBy(User cORUser) {
         this.createdBy = cORUser;
         return this;
     }
 
-    public void setCreatedBy(CORUser cORUser) {
+    public void setCreatedBy(User cORUser) {
         this.createdBy = cORUser;
     }
 
-    public CORUser getAssignedTo() {
+    public User getAssignedTo() {
         return assignedTo;
     }
 
-    public CRMTask assignedTo(CORUser cORUser) {
+    public CRMTask assignedTo(User cORUser) {
         this.assignedTo = cORUser;
         return this;
     }
 
-    public void setAssignedTo(CORUser cORUser) {
+    public void setAssignedTo(User cORUser) {
         this.assignedTo = cORUser;
     }
 
@@ -291,16 +292,16 @@ public class CRMTask implements Serializable {
         this.cRMAccount = cRMAccount;
     }
     public CRMOpportunity getCRMOpportunity() {
-        return crmOpportunity;
+        return cRMOpportunity;
     }
 
     public CRMTask cRMOpportunity(CRMOpportunity crmOpportunity) {
-        this.crmOpportunity = crmOpportunity;
+        this.cRMOpportunity = crmOpportunity;
         return this;
     }
 
     public void setCRMOpportunity(CRMOpportunity crmOpportunity) {
-        this.crmOpportunity = crmOpportunity;
+        this.cRMOpportunity = crmOpportunity;
     }
 
     @Override

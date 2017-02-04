@@ -15,9 +15,8 @@ public class CustomCORUserMapper {
     public static final String OPPORTUNITY_OWNER = "OPPORTUNINTY_OWNER";
     public static final String ACCOUNT_OWNER = "ACCOUNT_OWNER";
 
-    public CoreManagedUserPT transformUserEnity(User user) {
+    public CoreManagedUserPT corUserMapper(User user) {
         return new CoreManagedUserPT()
-            .authoritiesf(user.getAuthorities())
             .activated(user.getActivated())
             .createdBy(user.getCreatedBy())
             .email(user.getEmail())

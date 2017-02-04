@@ -31,7 +31,7 @@ public class TRAOrderService {
     }
 
     public TraOrderPT saveOrder(TraOrderPT orderPT, CORNetwork corNetwork) {
-        TRAOrder traOrder = customTRAOrderMapper.trasnformDTOtoEntity(orderPT);
+        TRAOrder traOrder = customTRAOrderMapper.trasnformDTOtoEntity(orderPT, corNetwork);
         traOrderRepository.save(traOrder);
         return customTRAOrderMapper.transfromEntiteToDTO(traOrder);
     }
@@ -46,16 +46,6 @@ public class TRAOrderService {
         return getOrdersByEntitie(traOrder, corNetwork);
     }
 
-    public List<TraOrderPT> getOrdersById(List<Long> id, CORNetwork corNetwork) {
-        List<TRAOrder> traOrderList = traOrderRepository.findAll(id);
-        return getOrdersByEntitie(traOrderList, corNetwork);
-    }
-
-    public TraOrderPT update(TraOrderPT traOrderPT, CORNetwork corNetwork) {
-        deleteOrder(traOrderPT.getId(), corNetwork);
-        return saveOrder(traOrderPT, corNetwork);
-    }
-
     public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders, CORNetwork corNetwork) {
         return traOrders.stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());
     }
@@ -65,7 +55,7 @@ public class TRAOrderService {
     }
 
     public List<TraOrderPT> getCustomerOrders(String shortcut, CORNetwork corNetwork) {
-    return null;
+        return null;
     }
 
 }

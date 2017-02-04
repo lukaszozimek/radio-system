@@ -20,9 +20,6 @@ public class CoreManagedUserPT {
     @JsonProperty("activated")
     private Boolean activated = null;
 
-    @JsonProperty("authorities")
-    private Set<Authority> authorities = new HashSet<>();
-
     @JsonProperty("createdBy")
     private String createdBy = null;
 
@@ -75,47 +72,6 @@ public class CoreManagedUserPT {
         this.activated = activated;
     }
 
-    public CoreManagedUserPT authoritiesf(Set<Authority> authorities) {
-        this.authorities = authorities;
-        return this;
-    }
-
-    public CoreManagedUserPT addAuthoritiesItem(Authority authoritiesItem) {
-        this.authorities.add(authoritiesItem);
-        return this;
-    }
-
-    public CoreManagedUserPT authorities(Set<String> authoritiey) {
-        this.authorities = authoritiey.stream().map(
-            authoritie -> {
-                Authority auth = new Authority();
-                auth.setName(authoritie);
-                return auth;
-            }
-        ).collect(toSet());
-        return this;
-    }
-
-    public CoreManagedUserPT addAuthoritiesItem(String authoritiesItem) {
-        Authority authority = new Authority();
-        authority.setName(authoritiesItem);
-        this.authorities.add(authority);
-        return this;
-    }
-
-    /**
-     * Get authoritiesf
-     *
-     * @return authoritiesf
-     **/
-    @ApiModelProperty(value = "")
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
 
     public CoreManagedUserPT createdBy(String createdBy) {
         this.createdBy = createdBy;
@@ -337,7 +293,6 @@ public class CoreManagedUserPT {
         }
         CoreManagedUserPT coreManagedUserPT = (CoreManagedUserPT) o;
         return Objects.equals(this.activated, coreManagedUserPT.activated) &&
-            Objects.equals(this.authorities, coreManagedUserPT.authorities) &&
             Objects.equals(this.createdBy, coreManagedUserPT.createdBy) &&
             Objects.equals(this.createdDate, coreManagedUserPT.createdDate) &&
             Objects.equals(this.email, coreManagedUserPT.email) &&
@@ -353,7 +308,7 @@ public class CoreManagedUserPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(activated, authorities, createdBy, createdDate, email, firstName, id, langKey, lastModifiedBy, lastModifiedDate, lastName, login, password);
+        return Objects.hash(activated, createdBy, createdDate, email, firstName, id, langKey, lastModifiedBy, lastModifiedDate, lastName, login, password);
     }
 
     @Override
@@ -362,7 +317,6 @@ public class CoreManagedUserPT {
         sb.append("class CoreManagedUserPT {\n");
 
         sb.append("    activated: ").append(toIndentedString(activated)).append("\n");
-        sb.append("    authoritiesf: ").append(toIndentedString(authorities)).append("\n");
         sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
         sb.append("    createdDate: ").append(toIndentedString(createdDate)).append("\n");
         sb.append("    email: ").append(toIndentedString(email)).append("\n");

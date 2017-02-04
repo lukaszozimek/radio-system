@@ -76,7 +76,7 @@ public class CRMContact implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private CORUser keeper;
+    private User keeper;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -281,16 +281,16 @@ public class CRMContact implements Serializable {
         this.person = cORPerson;
     }
 
-    public CORUser getKeeper() {
+    public User getKeeper() {
         return keeper;
     }
 
-    public CRMContact keeper(CORUser cORUser) {
+    public CRMContact keeper(User cORUser) {
         this.keeper = cORUser;
         return this;
     }
 
-    public void setKeeper(CORUser cORUser) {
+    public void setKeeper(User cORUser) {
         this.keeper = cORUser;
     }
 

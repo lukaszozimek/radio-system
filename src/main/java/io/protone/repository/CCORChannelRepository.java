@@ -14,9 +14,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CCORChannelRepository extends JpaRepository<CORChannel, Long> {
 
-    List<CORChannel> findByNetwork(CORNetwork network);
+    List<CORChannel> findByCORNetwork(CORNetwork network);
 
-    CORChannel findByShortcut(String shortcut);
+    CORChannel findByPrefix(String shortcut);
 
-    void deleteByShortcut(String shortcut);
+    void deleteByPrefix(String shortcut);
 }

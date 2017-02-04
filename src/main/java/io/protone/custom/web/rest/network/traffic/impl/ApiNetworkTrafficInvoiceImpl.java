@@ -34,27 +34,27 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
         if (invoiceDTO.getId() == null) {
             return createInvoiceUsingPOST(networkShortcut, invoiceDTO);
         }
-        return ResponseEntity.ok().body(traInvoiceService.update(invoiceDTO,corNetwork));
+        return ResponseEntity.ok().body(traInvoiceService.saveInvoice(invoiceDTO, corNetwork));
 
     }
 
     @Override
     public ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "invoiceDTO", required = true) @RequestBody TraInvoicePT invoiceDTO) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(traInvoiceService.saveInvoice(invoiceDTO,corNetwork));
+        return ResponseEntity.ok().body(traInvoiceService.saveInvoice(invoiceDTO, corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteInvoiceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        traInvoiceService.deleteInvoice(id,corNetwork);
+        traInvoiceService.deleteInvoice(id, corNetwork);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<TraInvoicePT> getInvoiceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(traInvoiceService.getInvoice(id,corNetwork));
+        return ResponseEntity.ok().body(traInvoiceService.getInvoice(id, corNetwork));
     }
 
     @Override

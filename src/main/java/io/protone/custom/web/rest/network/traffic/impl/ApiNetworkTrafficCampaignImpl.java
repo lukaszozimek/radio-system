@@ -33,26 +33,26 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
         if (campaignDTO.getId() == null) {
             return createCampaignUsingPOST(networkShortcut, campaignDTO);
         }
-        return ResponseEntity.ok().body(campaignService.update(campaignDTO,corNetwork));
+        return ResponseEntity.ok().body(campaignService.saveCampaign(campaignDTO, corNetwork));
     }
 
     @Override
     public ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(campaignService.saveCampaign(campaignDTO,corNetwork));
+        return ResponseEntity.ok().body(campaignService.saveCampaign(campaignDTO, corNetwork));
 
     }
 
     @Override
     public ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        campaignService.deleteCampaign(shortName,corNetwork);
+        campaignService.deleteCampaign(shortName, corNetwork);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<TraCampaignPT> getCampaignUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(campaignService.getCampaign(shortName,corNetwork));
+        return ResponseEntity.ok().body(campaignService.getCampaign(shortName, corNetwork));
     }
 }

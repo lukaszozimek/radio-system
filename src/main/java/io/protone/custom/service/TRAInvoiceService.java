@@ -28,20 +28,14 @@ public class TRAInvoiceService {
     private CustomTRAInvoiceMapper customTRAInvoiceMapper;
 
 
-
     public List<TraInvoicePT> getAllInvoice(CORNetwork corNetwork) {
-        return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> getInvoice(traInvoicePTS, corNetwork)).collect(toList());
+        return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> customTRAInvoiceMapper.createDTOFromEnity(traInvoicePTS)).collect(toList());
     }
 
     public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT, CORNetwork corNetwork) {
-        TRAInvoice invoice = customTRAInvoiceMapper.createEntityFromDTO(traInvoicePT);
+        TRAInvoice invoice = customTRAInvoiceMapper.createEntityFromDTO(traInvoicePT, corNetwork);
         invoice = traInvoiceRepository.save(invoice);
         return customTRAInvoiceMapper.createDTOFromEnity(invoice);
-    }
-
-    public TraInvoicePT update(TraInvoicePT traInvoicePT, CORNetwork corNetwork) {
-        deleteInvoice(traInvoicePT.getId(), corNetwork);
-        return saveInvoice(traInvoicePT, corNetwork);
     }
 
     public void deleteInvoice(Long id, CORNetwork corNetwork) {
@@ -50,13 +44,9 @@ public class TRAInvoiceService {
 
     public TraInvoicePT getInvoice(Long id, CORNetwork corNetwork) {
         TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
-        return getInvoice(traInvoice, corNetwork);
+        return customTRAInvoiceMapper.createDTOFromEnity(traInvoice);
     }
 
-    public TraInvoicePT getInvoice(TRAInvoice traInvoice, CORNetwork corNetwork) {
-
-        return null;
-    }
 
     public List<TraInvoicePT> getCustomerInvoice(String customerShortcut, CORNetwork corNetwork) {
         return null;

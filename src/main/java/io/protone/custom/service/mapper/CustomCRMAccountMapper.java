@@ -1,19 +1,13 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -45,32 +39,46 @@ public class CustomCRMAccountMapper {
     private CustomTRAOrderMapper traOrderMapper;
     @Inject
     private CustomTRACampaignMapper customTRACampaignMapper;
+    @Inject
+    private CustomCORUserMapper corUserMapper;
 
-    public CRMAccount createCrmAcountEntity(CrmAccountPT crmAccountPT,CORNetwork corNetwork) {
+    public CRMAccount createCrmAcountEntity(CrmAccountPT crmAccountPT, CORNetwork corNetwork) {
         CRMAccount crmAccount = new CRMAccount();
         crmAccount.setId(crmAccountPT.getId());
         return crmAccount
-            .paymentDelay(Long.valueOf(crmAccountPT.getPaymentDelay()))
+            .name(crmAccountPT.getName())
             .idNumber1(crmAccountPT.getIdNumber1())
             .idNumber2(crmAccountPT.getIdNumber2())
-            .name(crmAccountPT.getName())
             .getShortName(crmAccountPT.getShortName())
             .vatNumber(crmAccountPT.getVatNumber())
-            .campaigns(new HashSet<>())
-            .orders(crmAccountPT.getOrders().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT)).collect(toSet()))
-            .tasks(crmAccountPT.getTasks().stream().map(crmTaskPT -> customCRMTaskMapper.createTaskEntity(crmTaskPT)).collect(toSet()));
+            .paymentDelay(Long.valueOf(crmAccountPT.getPaymentDelay()))
+            .industry(industryMapper.tRAIndustryDTOToTRAIndustry(crmAccountPT.getIndustry()))
+            .keeper(corUserMapper.tranformUserDTO(crmAccountPT.getAccount()))
+            .size(customCORSizeMapper.cORSizeDTOToCORSize(crmAccountPT.getSize()))
+            .range(customCORRangeMapper.cORRangeDTOToCORRange(crmAccountPT.getRange()))
+            .addres(corAddressMapper.cORAddressDTOToCORAddress(crmAccountPT.getAdress()))
+            .person(customTRAPersonMapper.createPersonEntity(crmAccountPT.getPersons()))
+            .area(customCORAreaMapper.cORAreaDTOToCORArea(crmAccountPT.getArea()))
+            .network(corNetwork);
     }
 
     public CRMAccount createCrmAcountEntity(TraCustomerPT traCustomerPT, CORNetwork network) {
         CRMAccount crmAccount = new CRMAccount();
         crmAccount.setId(traCustomerPT.getId());
         return crmAccount
-            .paymentDelay(Long.valueOf(traCustomerPT.getPaymentDelay()))
+            .name(traCustomerPT.getName())
             .idNumber1(traCustomerPT.getIdNumber1())
             .idNumber2(traCustomerPT.getIdNumber2())
-            .name(traCustomerPT.getName())
             .getShortName(traCustomerPT.getShortName())
             .vatNumber(traCustomerPT.getVatNumber())
+            .paymentDelay(Long.valueOf(traCustomerPT.getPaymentDelay()))
+            .industry(industryMapper.tRAIndustryDTOToTRAIndustry(traCustomerPT.getIndustry()))
+            .keeper(corUserMapper.tranformUserDTO(traCustomerPT.getAccount()))
+            .size(customCORSizeMapper.cORSizeDTOToCORSize(traCustomerPT.getSize()))
+            .range(customCORRangeMapper.cORRangeDTOToCORRange(traCustomerPT.getRange()))
+            .addres(corAddressMapper.cORAddressDTOToCORAddress(traCustomerPT.getAdress()))
+            .person(customTRAPersonMapper.createPersonEntity(traCustomerPT.getPersons()))
+            .area(customCORAreaMapper.cORAreaDTOToCORArea(traCustomerPT.getArea()))
             .network(network);
     }
 
@@ -82,11 +90,11 @@ public class CustomCRMAccountMapper {
             .name(traCustomerPT.getName())
             .idNumber1(traCustomerPT.getIdNumber1())
             .idNumber2(traCustomerPT.getIdNumber2())
-            .shortName(traCustomerPT.getGetShortName())
+            .shortName(traCustomerPT.getShortName())
             .vatNumber(traCustomerPT.getVatNumber())
             .paymentDelay(Math.toIntExact(traCustomerPT.getPaymentDelay()))
             .industry(industryMapper.tRAIndustryToTRAIndustryDTO(traCustomerPT.getIndustry()))
-            .account(traCustomerPT.getKeeper())
+            .account(corUserMapper.corUserMapper(traCustomerPT.getKeeper()))
             .size(customCORSizeMapper.cORSizeToCORSizeDTO(traCustomerPT.getSize()))
             .range(customCORRangeMapper.cORRangeToCORRangeDTO(traCustomerPT.getRange()))
             .adress(corAddressMapper.cORAddressToCORAddressDTO(traCustomerPT.getAddres()))
@@ -100,17 +108,17 @@ public class CustomCRMAccountMapper {
             .name(crmAccount.getName())
             .idNumber1(crmAccount.getIdNumber1())
             .idNumber2(crmAccount.getIdNumber2())
-            .shortName(crmAccount.getGetShortName())
+            .shortName(crmAccount.getShortName())
             .vatNumber(crmAccount.getVatNumber())
             .paymentDelay(Math.toIntExact(crmAccount.getPaymentDelay()))
             .industry(industryMapper.tRAIndustryToTRAIndustryDTO(crmAccount.getIndustry()))
-            .account(crmAccount.getKeeper())
+            .account(corUserMapper.corUserMapper(crmAccount.getKeeper()))
             .size(customCORSizeMapper.cORSizeToCORSizeDTO(crmAccount.getSize()))
             .range(customCORRangeMapper.cORRangeToCORRangeDTO(crmAccount.getRange()))
             .adress(corAddressMapper.cORAddressToCORAddressDTO(crmAccount.getAddres()))
             .persons(customTRAPersonMapper.createDTOObject(crmAccount.getPerson()))
             .area(customCORAreaMapper.cORAreaToCORAreaDTO(crmAccount.getArea()))
-            .tasks(crmAccount.getTasks());
+            .tasks(crmAccount.getTasks().stream().map(crmTask -> customCRMTaskMapper.createCrmTask(crmTask)).collect(toList()));
 
     }
 

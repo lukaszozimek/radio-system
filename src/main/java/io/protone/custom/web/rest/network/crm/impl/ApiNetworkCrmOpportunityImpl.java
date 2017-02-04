@@ -28,7 +28,7 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
         if (crmOpportunityPT.getId() == null) {
             return createOpportunityUsingPOST(networkShortcut, crmOpportunityPT);
         }
-        return ResponseEntity.ok().body(opportunityService.update(crmOpportunityPT,corNetwork));
+        return ResponseEntity.ok().body(opportunityService.saveOpportunity(crmOpportunityPT,corNetwork));
     }
 
     @Override

@@ -31,9 +31,6 @@ public class TRAAdvertismentService {
     private TRAAdvertisementRepository traAdvertisementRepository;
 
     @Inject
-    private CORAssociationRepository corAssociationRepository;
-
-    @Inject
     private CustomTRAIndustryMapper customTRAIndustryMapper;
 
     @Inject
@@ -49,41 +46,30 @@ public class TRAAdvertismentService {
     private CRMAccountRepository crmAccountRepository;
 
     public List<TraAdvertisementPT> getAllAdvertisement(CORNetwork corNetwork) {
-        List<TraAdvertisementPT> traAdvertisementPTList = new ArrayList<>();
-        List<TRAAdvertisement> traAdvertisementList = traAdvertisementRepository.findByNetwork(corNetwork);
-        traAdvertisementList.stream().forEach(traAdvertisement -> traAdvertisementPTList.add(getTraAdvertisment(traAdvertisement, corNetwork)));
-        return traAdvertisementPTList;
+        return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.transformEntityToDTO(traAdvertisement)).collect(toList());
     }
 
     public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT, CORNetwork corNetwork) {
-        TRAAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT);
-           return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
+        TRAAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT, corNetwork);
+        traAdvertisementRepository.save(traAdvertisement);
+        return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }
 
     public void deleteAdvertisement(Long idx, CORNetwork corNetwork) {
-
+        TRAAdvertisement traAdvertisement = traAdvertisementRepository.findOne(idx);
+        libMediaItemRepository.delete(traAdvertisement.getLibitem());
+        traAdvertisementRepository.delete(traAdvertisement);
     }
 
     public TraAdvertisementPT getAdvertisement(Long id, CORNetwork corNetwork) {
         TRAAdvertisement traAdvertisement = traAdvertisementRepository.findOne(id);
-        return getTraAdvertisment(traAdvertisement, corNetwork);
+        return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }
 
-    public TraAdvertisementPT update(TraAdvertisementPT traAdvertisementPT, CORNetwork corNetwork) {
-        deleteAdvertisement(traAdvertisementPT.getId(), corNetwork);
-        return saveAdvertisement(traAdvertisementPT, corNetwork);
-    }
-
-    public List<TraAdvertisementPT> getAdverismentWithoutSelection(List<Long> listID, CORNetwork corNetwork) {
-        List<TRAAdvertisement> traAdvertisement = traAdvertisementRepository.findAll(listID);
-        return traAdvertisement.stream().map(traAdvertisement1 -> getTraAdvertisment(traAdvertisement1, corNetwork)).collect(toList());
-    }
 
     public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CORNetwork corNetwork) {
-     return null;
+        return null;
     }
 
-    public TraAdvertisementPT getTraAdvertisment(TRAAdvertisement traAdvertisement, CORNetwork corNetwork) {
-    return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
-    }
+
 }

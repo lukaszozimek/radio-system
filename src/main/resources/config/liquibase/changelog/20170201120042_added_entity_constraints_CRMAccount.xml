@@ -7,7 +7,7 @@
         Added the constraints for entity CRMAccount.
     -->
     <changeSet id="20170201120042-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="addres_id"
                                  baseTableName="crm_account"
                                  constraintName="fk_crmaccount_addres_id"
@@ -54,7 +54,7 @@
                                  baseTableName="crm_account"
                                  constraintName="fk_crmaccount_keeper_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
+                                 referencedTableName="jhi_user"/>
 
         <addForeignKeyConstraint baseColumnNames="discount_id"
                                  baseTableName="crm_account"

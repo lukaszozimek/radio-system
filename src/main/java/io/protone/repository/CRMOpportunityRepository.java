@@ -18,4 +18,6 @@ public interface CRMOpportunityRepository extends JpaRepository<CRMOpportunity, 
     List<CRMOpportunity> findByNetwork(CORNetwork network);
 
     CRMOpportunity findByNameAndNetwork(String name, CORNetwork network);
+
+    void deleteByNameAndNetwork(String name, CORNetwork network);
 }

@@ -35,6 +35,10 @@
             <column name="close_date" type="date">
                 <constraints nullable="true" />
             </column>
+            
+            <column name="propability" type="integer">
+                <constraints nullable="true" />
+            </column>
                         <column name="stage_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>            <column name="keeper_id" type="bigint">

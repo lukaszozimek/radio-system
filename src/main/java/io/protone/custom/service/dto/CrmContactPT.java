@@ -56,8 +56,8 @@ public class CrmContactPT {
     @JsonProperty("account")
     private CoreManagedUserPT account = null;
 
-    @JsonProperty("persons")
-    private List<TraCustomerPersonPT> persons = new ArrayList<TraCustomerPersonPT>();
+    @JsonProperty("person")
+    private TraCustomerPersonPT persons;
 
 
     @JsonProperty("tasks")
@@ -345,15 +345,11 @@ public class CrmContactPT {
         this.account = account;
     }
 
-    public CrmContactPT persons(List<TraCustomerPersonPT> persons) {
+    public CrmContactPT persons(TraCustomerPersonPT persons) {
         this.persons = persons;
         return this;
     }
 
-    public CrmContactPT addPersonsItem(TraCustomerPersonPT personsItem) {
-        this.persons.add(personsItem);
-        return this;
-    }
 
     /**
      * Get persons
@@ -361,11 +357,11 @@ public class CrmContactPT {
      * @return persons
      **/
     @ApiModelProperty(value = "")
-    public List<TraCustomerPersonPT> getPersons() {
+    public TraCustomerPersonPT getPersons() {
         return persons;
     }
 
-    public void setPersons(List<TraCustomerPersonPT> persons) {
+    public void setPersons(TraCustomerPersonPT persons) {
         this.persons = persons;
     }
 

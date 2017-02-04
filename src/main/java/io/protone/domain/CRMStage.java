@@ -27,6 +27,10 @@ public class CRMStage implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private CORNetwork network;
+
     public Long getId() {
         return id;
     }
@@ -59,6 +63,19 @@ public class CRMStage implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public CORNetwork getNetwork() {
+        return network;
+    }
+
+    public CRMStage network(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
+        return this;
+    }
+
+    public void setNetwork(CORNetwork cORNetwork) {
+        this.network = cORNetwork;
     }
 
     @Override

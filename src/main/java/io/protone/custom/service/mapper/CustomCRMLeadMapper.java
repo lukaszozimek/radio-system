@@ -43,27 +43,21 @@ public class CustomCRMLeadMapper {
     CustomTRAIndustryMapper industryMapper;
 
 
-    public CRMLead createLeadEntity(CrmLeadPT leadPT) {
+    public CRMLead createLeadEntity(CrmLeadPT leadPT,CORNetwork corNetwork) {
         CRMLead crmLead = new CRMLead();
         crmLead.setId(leadPT.getId());
         crmLead.setName(leadPT.getName());
         crmLead.setDescription(leadPT.getDescription());
         crmLead.setShortname(leadPT.getShortname());
+        crmLead.setIndustry(industryMapper.tRAIndustryDTOToTRAIndustry(leadPT.getIndustry()));
+        crmLead.setArea(corAreaMapper.cORAreaDTOToCORArea(leadPT.getArea()));
+        crmLead.setAddres(corAddressMapper.cORAddressDTOToCORAddress(leadPT.getAdress()));
+        crmLead.setLeadSource(customCRMLeadSourceMapper.cRMLeadSourceDTOToCRMLeadSource(leadPT.getSource()));
+        crmLead.setLeadStatus(customCRMLeadStatusMapper.cRMLeadStatusDTOToCRMLeadStatus(leadPT.getStatus()));
+        crmLead.setPerson(corPersonMapper.cORPersonDTOToCORPerson(leadPT.getPerson()));
+        crmLead.setNetwork(corNetwork);
         return crmLead;
     }
-
-    public CORAddress createAdressEntity(CrmLeadPT leadPT) {
-        return corAddressMapper.cORAddressDTOToCORAddress(leadPT.getAdress());
-    }
-
-    public CORPerson createPersonEntity(CrmLeadPT leadPT) {
-        return corPersonMapper.cORPersonDTOToCORPerson(leadPT.getPerson());
-    }
-
-    public List<CORContact> createContactEntity(CrmLeadPT leadPT) {
-        return corContactMapper.cORContactDTOsToCORContacts(leadPT.getContact());
-    }
-
 
     public CrmLeadPT createDTOFromEntites(CRMLead lead) {
         CrmLeadPT crmLeadPT = new CrmLeadPT();

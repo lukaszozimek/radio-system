@@ -33,45 +33,57 @@ public class CRMOpportunityService {
     @Inject
     private CustomCRMOpportunityMapper customCRMOpportunityMapper;
 
+    @Inject
+    private CustomCRMTaskMapper customCRMTaskMapper;
+
+    @Inject
+    private CRMTaskRepository crmTaskRepository;
+
 
     public List<CrmOpportunityPT> getAllOpportunity(CORNetwork corNetwork) {
-        List<CRMOpportunity> opportunities = opportunityRepository.findByNetwork(corNetwork);
-        return opportunities.stream().map(opportunity -> createDTO(opportunity, corNetwork)).collect(toList());
+        return opportunityRepository.findByNetwork(corNetwork).stream().map(opportunity -> customCRMOpportunityMapper.buildDTOFromEntites(opportunity)).collect(toList());
     }
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT, CORNetwork corNetwork) {
         CRMOpportunity opportunity = opportunityRepository.save(customCRMOpportunityMapper.createOpportunity(opportunityPT, corNetwork));
-         return customCRMOpportunityMapper.buildDTOFromEntites(opportunity );
+        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity);
     }
 
     public void deleteOpportunity(String shortcut, CORNetwork corNetwork) {
-         }
-
-    public CrmOpportunityPT getOpportunity(String shortcut, CORNetwork corNetwork) {
-        return null; }
-
-
-    public CrmOpportunityPT update(CrmOpportunityPT opportunityPT, CORNetwork corNetwork) {
-        return null; }
-
-    public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut, CORNetwork corNetwork) {
-        return null; }
-
-    public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId, CORNetwork corNetwork) {
-        return null;}
-
-    public void deleteLeadTask(String shortcut, Long taskId, CORNetwork corNetwork) {
-     }
-
-    public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CORNetwork corNetwork) {
-        return null;}
-
-    public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask, CORNetwork corNetwork) {
-        return null;
+        opportunityRepository.deleteByNameAndNetwork(shortcut, corNetwork);
     }
 
-    private CrmOpportunityPT createDTO(CRMOpportunity opportunity, CORNetwork corNetwork) {
-        return null; }
+    public CrmOpportunityPT getOpportunity(String shortcut, CORNetwork corNetwork) {
+        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
+        return customCRMOpportunityMapper.buildDTOFromEntites(opportunity);
+    }
 
 
+    public List<CrmTaskPT> getTasksAssociatedWithOpportunity(String shortcut, CORNetwork corNetwork) {
+        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
+        return customCRMTaskMapper.createCrmTasks(opportunity.getTasks());
+    }
+
+    public CrmTaskPT getTaskAssociatedWithOpportunity(String shortcut, Long taskId, CORNetwork corNetwork) {
+        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
+        return customCRMTaskMapper.createCrmTask(opportunity.getTasks().stream().filter(crmTask -> crmTask.getId().equals(taskId)).findFirst().get());
+    }
+
+
+    public void deleteOpportunityTask(String shortcut, Long taskId, CORNetwork corNetwork) {
+        CRMOpportunity opportunity = opportunityRepository.findByNameAndNetwork(shortcut, corNetwork);
+        CRMTask crmTask = crmTaskRepository.findOne(taskId);
+        opportunity.removeTasks(crmTask);
+        opportunityRepository.save(opportunity);
+        crmTaskRepository.delete(crmTask);
+    }
+
+
+    public CrmTaskPT saveTasksAssociatedWithOpportunity(String shortName, CrmTaskPT crmActivityPT, CORNetwork corNetwork) {
+        CRMOpportunity crmOpportunity = opportunityRepository.findByNameAndNetwork(shortName, corNetwork);
+        CRMTask crmTask = crmTaskRepository.save(customCRMTaskMapper.createTaskEntity(crmActivityPT));
+        crmOpportunity.addTasks(crmTask);
+        opportunityRepository.save(crmOpportunity);
+        return customCRMTaskMapper.createCrmTask(crmTask);
+    }
 }
