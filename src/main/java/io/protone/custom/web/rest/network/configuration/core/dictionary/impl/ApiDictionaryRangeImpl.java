@@ -4,6 +4,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreRangePT;
 import io.protone.custom.service.mapper.CustomCORRangeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryRange;
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CORRange;
 import io.protone.repository.CORRangeRepository;
 import io.protone.web.rest.util.HeaderUtil;
@@ -38,7 +39,9 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
         if (coreRangePT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORRange", "idexists", "A new cORRange cannot already have an ID")).body(null);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CORRange cORRange = customCORAreaMapper.cORRangeDTOToCORRange(coreRangePT);
+        cORRange.setNetwork(corNetwork);
         cORRange = cORRangeRepository.save(cORRange);
         CoreRangePT result = customCORAreaMapper.cORRangeToCORRangeDTO(cORRange);
         return ResponseEntity.ok().body(result);
@@ -69,7 +72,9 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
         if (coreRangePT.getId() == null) {
             return createRangeUsingPOST(networkShortcut, coreRangePT);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CORRange cORRange = customCORAreaMapper.cORRangeDTOToCORRange(coreRangePT);
+        cORRange.setNetwork(corNetwork);
         cORRange = cORRangeRepository.save(cORRange);
         CoreRangePT result = customCORAreaMapper.cORRangeToCORRangeDTO(cORRange);
         return ResponseEntity.ok()

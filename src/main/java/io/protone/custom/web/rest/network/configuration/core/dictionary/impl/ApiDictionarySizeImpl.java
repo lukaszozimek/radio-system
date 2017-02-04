@@ -4,6 +4,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreSizePT;
 import io.protone.custom.service.mapper.CustomCORSizeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionarySize;
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CORSize;
 import io.protone.repository.CORSizeRepository;
 import io.protone.web.rest.util.HeaderUtil;
@@ -37,7 +38,10 @@ public class ApiDictionarySizeImpl implements ApiDictionarySize {
         if (coreSizePT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORSize", "idexists", "A new cORSize cannot already have an ID")).body(null);
         }
+
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CORSize cORSize = customCORSizeMapper.cORSizeDTOToCORSize(coreSizePT);
+        cORSize.setNetwork(corNetwork);
         cORSize = cORSizeRepository.save(cORSize);
         CoreSizePT result = customCORSizeMapper.cORSizeToCORSizeDTO(cORSize);
         return ResponseEntity.ok().body(result);
@@ -75,7 +79,9 @@ public class ApiDictionarySizeImpl implements ApiDictionarySize {
         if (coreSizePT.getId() == null) {
             return createSizeUsingPOST(networkShortcut, coreSizePT);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CORSize cORSize = customCORSizeMapper.cORSizeDTOToCORSize(coreSizePT);
+        cORSize.setNetwork(corNetwork);
         cORSize = cORSizeRepository.save(cORSize);
         CoreSizePT result = customCORSizeMapper.cORSizeToCORSizeDTO(cORSize);
         return ResponseEntity.ok()

@@ -4,6 +4,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfLeadSourcePT;
 import io.protone.custom.service.mapper.CustomCRMLeadSourceMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadSource;
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMLeadSource;
 import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CRMLeadSourceRepository;
@@ -37,8 +38,9 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
     @Override
     public ResponseEntity<ConfLeadSourcePT> createLeadsourceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadSourcePT leadSourcePt) {
         log.debug("REST request to save CRMLead : {}", leadSourcePt);
-
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CRMLeadSource cRMLead = crmLeadSourceMapper.cRMLeadSourceDTOToCRMLeadSource(leadSourcePt);
+        cRMLead.setNetwork(corNetwork);
         cRMLead = leadSourceRepository.save(cRMLead);
         ConfLeadSourcePT result = crmLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(cRMLead);
         return ResponseEntity.ok()
@@ -56,8 +58,7 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
     }
 
     @Override
-    public
-    ResponseEntity<List<ConfLeadSourcePT>> getAllLeadsourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<ConfLeadSourcePT>> getAllLeadsourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get all CRMLeadSources");
         List<CRMLeadSource> cRMLeadSources = leadSourceRepository.findAll();
 
@@ -84,7 +85,9 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
         if (leadSourcePT.getId() == null) {
             return createLeadsourceUsingPOST(networkShortcut, leadSourcePT);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CRMLeadSource cRMLeadSource = crmLeadSourceMapper.cRMLeadSourceDTOToCRMLeadSource(leadSourcePT);
+        cRMLeadSource.setNetwork(corNetwork);
         cRMLeadSource = leadSourceRepository.save(cRMLeadSource);
         ConfLeadSourcePT result = crmLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(cRMLeadSource);
         return ResponseEntity.ok()

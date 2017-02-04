@@ -5,6 +5,7 @@ import io.protone.custom.service.dto.CoreAreaPT;
 import io.protone.custom.service.mapper.CustomCORAreaMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryArea;
 import io.protone.domain.CORArea;
+import io.protone.domain.CORNetwork;
 import io.protone.repository.CORAreaRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -27,6 +28,7 @@ public class ApiDictionaryAreaImpl implements ApiDictionaryArea {
 
     @Inject
     private CORAreaRepository cORAreaRepository;
+
     @Inject
     private NetworkService networkService;
 
@@ -67,7 +69,9 @@ public class ApiDictionaryAreaImpl implements ApiDictionaryArea {
         if (coreAreaPT.getId() == null) {
             return createAreaUsingPOST(networkShortcut, coreAreaPT);
         }
+        CORNetwork corNetwork =networkService.findNetwork(networkShortcut);
         CORArea cORArea = customCORAreaMapper.cORAreaDTOToCORArea(coreAreaPT);
+        cORArea.setNetwork(corNetwork);
         cORArea = cORAreaRepository.save(cORArea);
         CoreAreaPT result = customCORAreaMapper.cORAreaToCORAreaDTO(cORArea);
         return ResponseEntity.ok()
@@ -81,7 +85,9 @@ public class ApiDictionaryAreaImpl implements ApiDictionaryArea {
         if (coreAreaPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORArea", "idexists", "A new cORArea cannot already have an ID")).body(null);
         }
+        CORNetwork corNetwork =networkService.findNetwork(networkShortcut);
         CORArea cORArea = customCORAreaMapper.cORAreaDTOToCORArea(coreAreaPT);
+        cORArea.setNetwork(corNetwork);
         cORArea = cORAreaRepository.save(cORArea);
         CoreAreaPT result = customCORAreaMapper.cORAreaToCORAreaDTO(cORArea);
         return ResponseEntity.ok().body(result);

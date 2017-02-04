@@ -4,6 +4,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfCrmStagePT;
 import io.protone.custom.service.mapper.CustomCRMStageMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryStage;
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMStage;
 import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CRMStageRepository;
@@ -58,7 +59,9 @@ public class ApiConfigurationCrmDictionaryStageImpl implements ApiConfigurationC
         if (crmStage.getId() == null) {
             return createCrmStageUsingPOST(networkShortcut, crmStage);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CRMStage cRMStage = customCRMStageMapper.cRMStageDTOToCRMStage(crmStage);
+        cRMStage.setNetwork(corNetwork);
         cRMStage = cRMStageRepository.save(cRMStage);
         ConfCrmStagePT result = customCRMStageMapper.cRMStageToCRMStageDTO(cRMStage);
         return ResponseEntity.ok()
@@ -72,7 +75,9 @@ public class ApiConfigurationCrmDictionaryStageImpl implements ApiConfigurationC
         if (crmStage.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cRMStage", "idexists", "A new cRMStage cannot already have an ID")).body(null);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CRMStage cRMStage = customCRMStageMapper.cRMStageDTOToCRMStage(crmStage);
+        cRMStage.setNetwork(corNetwork);
         cRMStage = cRMStageRepository.save(cRMStage);
         ConfCrmStagePT result = customCRMStageMapper.cRMStageToCRMStageDTO(cRMStage);
         return ResponseEntity.ok().body(result);

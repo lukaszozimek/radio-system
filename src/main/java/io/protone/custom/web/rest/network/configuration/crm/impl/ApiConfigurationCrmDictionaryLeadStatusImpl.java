@@ -5,6 +5,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfLeadStatusPT;
 import io.protone.custom.service.mapper.CustomCRMLeadStatusMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadStatus;
+import io.protone.domain.CORNetwork;
 import io.protone.domain.CRMLeadStatus;
 import io.protone.repository.CCORNetworkRepository;
 import io.protone.repository.CRMLeadStatusRepository;
@@ -67,7 +68,9 @@ public class ApiConfigurationCrmDictionaryLeadStatusImpl implements ApiConfigura
         if (leadStatus.getId() == null) {
             return createLeadStatusUsingPOST(networkShortcut, leadStatus);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CRMLeadStatus cRMLeadStatus = customCRMLeadStatusMapper.cRMLeadStatusDTOToCRMLeadStatus(leadStatus);
+        cRMLeadStatus.setNetwork(corNetwork);
         cRMLeadStatus = cRMLeadStatusRepository.save(cRMLeadStatus);
         ConfLeadStatusPT result = customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(cRMLeadStatus);
         return ResponseEntity.ok().body(result);
@@ -79,7 +82,9 @@ public class ApiConfigurationCrmDictionaryLeadStatusImpl implements ApiConfigura
         if (leadStatus.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cRMLeadStatus", "idexists", "A new cRMLeadStatus cannot already have an ID")).body(null);
         }
+        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CRMLeadStatus cRMLeadStatus = customCRMLeadStatusMapper.cRMLeadStatusDTOToCRMLeadStatus(leadStatus);
+        cRMLeadStatus.setNetwork(corNetwork);
         cRMLeadStatus = cRMLeadStatusRepository.save(cRMLeadStatus);
         ConfLeadStatusPT result = customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(cRMLeadStatus);
         return ResponseEntity.ok()
