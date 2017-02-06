@@ -1,143 +1,71 @@
 
-entity CRMLead {
- 	name String
-    shortname String,
+entity CrmContactStatus{
+	name String,
     description String
+}
+
+entity CrmAccount {
+ 	shortName String
+    externalId1 String
+    externalId2 String
+    name String
+    paymentDelay Integer
+    vatNumber String
 
 }
-entity CRMLeadSource{
+
+entity CrmContact{
+ 	shortName String
+    externalId1 String
+    externalId2 String
+    paymentDate LocalDate
+    name String
+    paymentDelay Integer
+    vatNumber String
+}
+
+entity CrmLead {
+ 	name String
+    shortname String
+    description String
+   }
+
+entity CrmLeadSource{
 	name String
 }
-entity CRMLeadStatus{
+
+entity CrmLeadStatus{
 	name String
 }
-entity CRMTask{
+
+entity CrmOpportunity{
+    name String
+  	lastTry LocalDate
+    closeDate LocalDate
+    probability Integer
+}
+
+entity CrmTask{
     subject String
     activityDate LocalDate
     activityLength Long
   	comment String
 }
-entity CRMContact{
-    idNumber1 String
-    idNumber2 String
-    name String
-    paymentDate LocalDate
-    paymentDelay Long
-    vatNumber String
-    shortName String
-  }
-entity CRMContactStatus{
-	name String,
-    description String
+
+entity CrmTaskStatus{
+	name String
 }
-entity CRMOpportunity{
-    name String
-  	lastTry LocalDate
-    closeDate LocalDate
-  }
-entity CRMAccount {
- 	 idNumber1 String
-    idNumber2 String
-    name String
-    paymentDate LocalDate
-    vatNumber String
-    paymentDelay Long
-    shortName String
-}
-entity CRMStage{
-	name String,
+
+entity CrmStage{
+	name String
     description String
 }
 
-entity CRMTaskComment{
+entity CrmTaskComment{
 	comment String,
 }
-entity CORArea{
-	name String
-    description String
-}
-entity CORStatus{
-	name String
-    description String
-}
-entity CORSize {
-	name String
-    description String
-}
-entity CORRange{
-	name String
-    description String
-}
-entity CORTax{
-	name String,
-    value String,
-    active Boolean
-}
-entity CORNetwork {
-	shortcut String required maxlength(100)
-	name String required maxlength(100)
-    description String
-}
 
-entity CORChannel {
-	prefix String required maxlength(3)
-	name String required maxlength(100)
-    description String
-}
-entity CORNotification{
-	description String
-}
-
-entity CORSubscription{
-	name String,
-    price Long
-    subscription CORCSubscriptionTypeEnum
-
-}
-enum CORCSubscriptionTypeEnum {
-	ST_CRM,
-    ST_TRAFFIC,
-    ST_PLAYOUT,
-    ST_LIBRARY
-}
-entity CORSubscriptionOwner{
-name String
-
-}
-entity LibLibrary {
-	prefix String required maxlength(1)
-	idxLength Integer required
-    shortcut String required maxlength(3)
-    name String required maxlength(100)
-    counter Long required
-    counterType CORCounterTypeEnum
-    libraryType LIBObjectTypeEnum required
-    description String
-}
-
-enum CORCounterTypeEnum {
-	CT_COUNTER,
-    CT_PREFIX_COUNTER,
-    CT_SHORTCUT_COUNTER
-}
-entity CORCountry{
-
-  name String
-  shortName String
-  }
-entity CORCurrency{
-   	name String
- 	symbol String
-  	delimiter String
-	shortName String
-  }
-entity CORPerson {
-	firstName String required maxlength(100)
-	lastName String required maxlength(100)
-	description String
-}
-
-entity CORAddress {
+entity CorAddress {
 	street String required maxlength(100)
 	number String required maxlength(100)
 	postalCode String required maxlength(100)
@@ -145,197 +73,159 @@ entity CORAddress {
 	country String required maxlength(100)
 }
 
-entity CORContact {
-	contact String required maxlength(100)
-    contactType CORContactTypeEnum required
+entity CorArea{
+	name String
+    description String
+}
+entity CorStatus{
+	name String
+    description String
 }
 
-enum CORContactTypeEnum {
+
+entity CorChannel {
+	shortcut String required maxlength(3)
+	name String required maxlength(100)
+    description String
+}
+
+entity CorContact {
+	contact String required maxlength(100)
+    contactType CorContactTypeEnum required
+}
+
+enum CorContactTypeEnum {
 	CT_EMAIL,
     CT_PHONE,
     CT_OTHER
 }
 
-entity CORPropertyKey {
+
+entity CorPropertyKey {
 	key String required maxlength(100)
 }
 
-entity CORPropertyValue {
+entity CorPropertyValue {
 	value String required maxlength(100)
 }
 
-entity CORTag {
+entity CorNetwork {
+	shortcut String required maxlength(100)
+	name String required maxlength(100)
+    description String
+}
+
+entity CorRange{
+	name String
+    description String
+
+}
+
+entity CorSize {
+	name String
+    description String
+}
+
+
+entity CorPerson {
+	firstName String required maxlength(100)
+	lastName String required maxlength(100)
+	description String
+}
+
+entity CorTag {
 	tag String required maxlength(100)
 }
 
 
-entity CFGMarkerConfiguration {
+entity CorTax{
+	name String,
+    value String,
+    validFrom LocalDate
+    validTo LocalDate
+    active Boolean
+}
+
+entity CorNotification{
+	description String
+}
+
+entity CorSubscription{
+	name String
+    price Long
+    subscription CorSubscriptionTypeEnum
+
+}
+enum CorSubscriptionTypeEnum {
+	ST_CRM,
+    ST_TRAFFIC,
+    ST_PLAYOUT,
+    ST_LIBRARY
+}
+entity CorCountry{
+   		name String
+  		shortName String
+  }
+entity CorCurrency{
+   	name String
+ 	symbol String
+  	delimiter String
+	shortName String
+  }
+
+entity CfgMarkerConfiguration {
 	name String required maxlength(100)
 	displayName String required maxlength(100)
 	color String required maxlength(100)
 	keyboardShortcut String required maxlength(100)
-	type LIBMarkerTypeEnum required
+	type LibMarkerTypeEnum required
 }
 
-entity CFGTaskStatus{
-	name String
-}
-
-entity CFGTaskRelation{
-	name String
-}
-entity CFGStage{
-	name String
-}
-
-entity LIBArtist {
-	name String required maxlength(100)
-    type LIBArtistTypeEnum
-    description String
-}
-
-enum LIBArtistTypeEnum {
-	AT_PERSON,
-    AT_BAND,
-    AT_CHOIR,
-    AT_OTHER
-}
-
-entity LIBLabel {
-	name String required maxlength(100)
-    description String
-}
-
-entity LIBAlbum {
-	albumType LIBAlbumTypeEnum required
+entity LibAlbum {
+	albumType LibAlbumTypeEnum required
     name String required maxlength(100)
     releaseDate LocalDate
     description String
 }
 
-enum LIBAlbumTypeEnum {
+enum LibAlbumTypeEnum {
 	AT_ALBUM,
     AT_SINGLE,
     AT_COMPILATION,
     AT_OTHER
 }
 
-entity LIBTrack {
-    discNo Integer required
-    trackNo Integer required
+entity LibArtist {
 	name String required maxlength(100)
-    length Long required
+    type LibArtistTypeEnum
     description String
 }
 
-entity LIBCloudObject {
-	uuid String required maxlength(100)
-    objectType LIBObjectTypeEnum
-    originalName String required maxlength(100)
-    contentType String required maxlength(100)
-	size Long required
-    original Boolean
-    hash String required maxlength(100)
-    createDate ZonedDateTime
+enum LibArtistTypeEnum {
+	AT_PERSON,
+    AT_BAND,
+    AT_CHOIR,
+    AT_OTHER
 }
 
-enum LIBObjectTypeEnum {
-	OT_IMAGE,
-    OT_AUDIO,
-    OT_VIDEO,
-    OT_FILE
-}
-
-entity LIBImageObject {
-	width Integer required
-    height Integer required
-    imageSize LIBImageSizeEnum required
-}
-
-enum LIBImageSizeEnum {
-	IS_ORIGINAL,
-    IS_LARGE,
-    IS_NORMAL,
-    IS_SMALL
-}
-
-entity LIBAudioObject {
-	length Long required
-    bitrate Integer required
-    codec String required maxlength(100)
-    quality LIBAudioQualityEnum
-}
-
-enum LIBAudioQualityEnum {
-	AQ_ORIGINAL,
-    AQ_LOSSLESS,
-    AQ_HIGH,
-    AQ_NORMAL,
-    AQ_LOW,
-    AQ_OTHER
-}
-
-entity LIBCloudObject {
-	uuid String required maxlength(100)
-    objectType LIBObjectTypeEnum
-    originalName String required maxlength(100)
-    contentType String required maxlength(100)
-	size Long required
-    original Boolean
-    hash String required maxlength(100)
-    createDate ZonedDateTime
-}
-
-
-entity LIBVideoObject {
-	width Integer required
-    height Integer required
-	length Long required
-    bitrate Integer required
-    codec String required maxlength(100)
-    quality LIBVideoQualityEnum
-    aspectRatio LIBAspectRatioEnum
-}
-
-enum LIBVideoQualityEnum {
-    VQ_2160P,
-    VQ_1440P,
-    VQ_1080P,
-    VQ_720P,
-    VQ_480P,
-    VQ_360P,
-    VQ_240P,
-    VQ_144P,
-    VQ_OTHER
-}
-
-enum LIBAspectRatioEnum {
-	AR_4BY3,
-    AR_16BY9,
-    AR_OTHER
-}
-
-entity LIBFileObject {
-}
-
-entity LIBMediaItem {
+entity LibMediaItem {
 	idx String required maxlength(15)
     name String required maxlength(100)
-    itemType LIBItemTypeEnum required
+    itemType LibItemTypeEnum required
     length Long required
-    state LIBItemStateEnum required
+    state LibItemStateEnum required
     command String
     description String
 }
 
-enum LIBItemTypeEnum {
+enum LibItemTypeEnum {
 	IT_AUDIO,
     IT_VIDEO,
     IT_COMMAND,
     IT_OTHER
 }
 
-enum LIBItemStateEnum
+enum LibItemStateEnum
 {
 	IS_NEW,
     IS_POSTPROCESS,
@@ -347,30 +237,18 @@ enum LIBItemStateEnum
     IS_OTHER
 }
 
-entity LIBImageItem {
-	idx String required maxlength(15)
-    name String required maxlength(100)
+entity LibLabel {
+	name String required maxlength(100)
+    description String
 }
 
-entity LIBFileItem {
-	idx String required maxlength(15)
-    name String required maxlength(100)
-    type LIBFileTypeEnum
-}
-
-enum LIBFileTypeEnum {
-	FT_ROOT,
-	FT_DIRECTORY,
-    FT_FILE
-}
-
-entity LIBMarker {
-	markerType LIBMarkerTypeEnum required
+entity LibMarker {
+	markerType LibMarkerTypeEnum required
 	name String  required maxlength(100)
 	startTime Integer required
 }
 
-enum LIBMarkerTypeEnum {
+enum LibMarkerTypeEnum {
 	MT_BASIC,
 	MT_INTRO,
 	MT_FADE,
@@ -379,13 +257,130 @@ enum LIBMarkerTypeEnum {
 	MT_CUSTOM
 }
 
+entity LibLibrary {
+	prefix String required maxlength(1)
+	idxLength Integer required
+    shortcut String required maxlength(3)
+    name String required maxlength(100)
+    counter Long required
+    counterType LibCounterTypeEnum
+    LibraryType LibObjectTypeEnum required
+    description String
+}
 
-entity SCHBlock {
+enum LibCounterTypeEnum {
+	CT_COUNTER,
+    CT_PREFIX_COUNTER,
+    CT_SHORTCUT_COUNTER
+}
+
+entity LibTrack {
+    discNo Integer required
+    TrackNo Integer required
+	name String required maxlength(100)
+    length Long required
+    description String
+}
+
+entity LibCloudObject {
+	uuid String required maxlength(100)
+    objectType LibObjectTypeEnum
+    originalName String required maxlength(100)
+    contentType String required maxlength(100)
+	size Long required
+    original Boolean
+    hash String required maxlength(100)
+    createDate ZonedDateTime
+}
+
+enum LibObjectTypeEnum {
+	OT_IMAGE,
+    OT_AUDIO,
+    OT_VIDEO,
+    OT_FILE
+}
+
+entity LibImageObject {
+	width Integer required
+    height Integer required
+    imageSize LibImageSizeEnum required
+}
+
+enum LibImageSizeEnum {
+	IS_ORIGINAL,
+    IS_LARGE,
+    IS_NORMAL,
+    IS_SMALL
+}
+
+entity LibAudioObject {
+	length Long required
+    biTrate Integer required
+    codec String required maxlength(100)
+    quality LibAudioQualityEnum
+}
+
+enum LibAudioQualityEnum {
+	AQ_ORIGINAL,
+    AQ_LOSSLESS,
+    AQ_HIGH,
+    AQ_NORMAL,
+    AQ_LOW,
+    AQ_OTHER
+}
+
+entity LibVideoObject {
+	width Integer required
+    height Integer required
+	length Long required
+    biTrate Integer required
+    codec String required maxlength(100)
+    quality LibVideoQualityEnum
+    aspecTratio LibAspecTratioEnum
+}
+
+enum LibVideoQualityEnum {
+    VQ_2160P,
+    VQ_1440P,
+    VQ_1080P,
+    VQ_720P,
+    VQ_480P,
+    VQ_360P,
+    VQ_240P,
+    VQ_144P,
+    VQ_OTHER
+}
+
+enum LibAspecTratioEnum {
+	AR_4BY3,
+    AR_16BY9,
+    AR_ULTRAWIDE,
+    AR_OTHER
+}
+
+entity LibImageItem {
+	idx String required maxlength(15)
+    name String required maxlength(100)
+}
+
+entity LibFileItem {
+	idx String required maxlength(15)
+    name String required maxlength(100)
+    type LibFileTypeEnum
+}
+
+enum LibFileTypeEnum {
+	FT_ROOT,
+	FT_DIRECTORY,
+    FT_FILE
+}
+
+entity SchBlock {
 	seq Integer required
 	name String required maxlength(100)
-    type SCHBlockTypeEnum required
+    type SchBlockTypeEnum required
     startTime ZonedDateTime required
-    startType SCHStartTypeEnum required
+    startType SchStartTypeEnum required
     relativeDelay Long
     endTime ZonedDateTime required
     length Long required
@@ -397,35 +392,15 @@ entity SCHBlock {
     dimSecond Integer required
 }
 
-entity SCHTemplate {
-	seq Integer required
-	name String required maxlength(100)
-    type SCHBlockTypeEnum  required
-    startTime ZonedDateTime required
-    startType SCHStartTypeEnum required
-    relativeDelay Long
-    endTime ZonedDateTime required
-    length Long required
-}
-
-entity SCHEmission {
-	seq Integer required
-	startTime ZonedDateTime required
-    startType SCHStartTypeEnum required
-    relativeDelay Long
-    endTime ZonedDateTime required
-    length Long required
-    finished Boolean required
-}
-
-enum SCHStartTypeEnum {
+enum SchStartTypeEnum {
 	ST_FREE,
     ST_RELATIVE,
     ST_ABSOLUTE
 }
 
-enum SCHBlockTypeEnum {
-	BT_BAND,
+enum SchBlockTypeEnum {
+	BT_DAY,
+    BT_BAND,
     BT_HOUR,
     BT_NEWS,
     BT_COMMERCIAL,
@@ -434,247 +409,299 @@ enum SCHBlockTypeEnum {
     BT_OTHER
 }
 
-entity TRAStatus{
-	name String
-    description String
+entity SchTemplate {
+	seq Integer required
+	name String required maxlength(100)
+    type SchBlockTypeEnum  required
+    startTime ZonedDateTime required
+    startType SchStartTypeEnum required
+    relativeDelay Long
+    endTime ZonedDateTime required
+    length Long required
+    dimYear Integer required
+    dimMonth Integer required
+    dimDay Integer required
+    dimHour Integer required
+    dimMinute Integer required
+    dimSecond Integer required
 }
-entity TRAAdvertisement {
+
+entity SchPlaylist {
+	seq Integer required
+	name String required maxlength(100)
+    type SchBlockTypeEnum  required
+    startTime ZonedDateTime required
+    startType SchStartTypeEnum required
+    relativeDelay Long
+    endTime ZonedDateTime required
+    length Long required
+    dimYear Integer required
+    dimMonth Integer required
+    dimDay Integer required
+    dimHour Integer required
+    dimMinute Integer required
+    dimSecond Integer required
+}
+
+entity SchEmission {
+	seq Integer required
+	startTime ZonedDateTime required
+    startType SchStartTypeEnum required
+    relativeDelay Long
+    endTime ZonedDateTime required
+    length Long required
+    finished Boolean required
+}
+
+
+
+entity TraAdvertisement {
     name String required maxlength(100)
     description String
 }
 
 
-entity TRADiscount {
+entity TraDiscount {
 	validFrom LocalDate
     validTo LocalDate
 	discount Long
 }
 
-entity TRAIndustry {
+entity TraIndustry {
 	name String required maxlength(100)
+    description String
 }
 
-entity TRAInvoice {
+entity TraInvoice {
     paid Boolean
+    price BigDecimal
     paymentDay LocalDate
 }
 
-entity TRACampaign {
+entity TraCampaign {
 	name String required maxlength(100)
 	startDate LocalDate
 	endDate LocalDate
 	prize Long
 }
 
-entity TRAOrder{
+entity TraOrder{
 	name String required maxlength(100)
  	startDate LocalDate
  	endDate LocalDate
 	calculatedPrize Long
 }
 
-entity TRAPrice {
+entity TraPrice {
     name String required maxlength(100)
     validFrom LocalDate
     validTo LocalDate
     price BigDecimal required
     baseLength Integer
     priceAlternative BigDecimal required
-  }
-entity TRAAdvertismentType {
+}
+
+entity TraAdvertismentType {
   name String
   description String
 }
-
-entity CORUser {
-  name String
+entity TraCampaingStatus{
+	name String
+    description String
 }
-entity LIBFileItem{
-
+entity TraInvoiceStatus{
+	name String
+    description String
 }
-
-
+entity TraOrderStatus{
+    name String
+    description String
+}
+entity CorUser{
+    name String
+}
 relationship OneToOne {
-	CORAddress {network} to CORNetwork,
-    TRAIndustry{network} to CORNetwork,
-    CORRange {network} to CORNetwork,
-    CORSize {network} to CORNetwork,
-    CORPerson {network} to CORNetwork,
-    CORArea {network} to CORNetwork,
-    CORCurrency {network} to CORNetwork,
-    CRMContactStatus {network} to CORNetwork,
-    CRMLeadStatus {network} to CORNetwork,
-    CRMLeadSource {network} to CORNetwork,
-    CFGStage{network} to CORNetwork,
-    CORUser {network} to CORNetwork,
-    LIBMarker{network} to CORNetwork,
-    CORPropertyKey{network} to CORNetwork ,
-    CORPropertyValue{network} to CORNetwork ,
-    CFGTaskStatus {network} to CORNetwork,
-    CORTax{network} to CORNetwork,
-    TRAStatus{network} to CORNetwork,
-    CRMStage{network} to CORNetwork,
-    CORTag{network} to CORNetwork,
-    CFGMarkerConfiguration {network} to CORNetwork,
-	LIBCloudObject {network} to CORNetwork,
+    TraAdvertisement{mediaItem} to LibMediaItem,
+
+    TraInvoice{order} to TraOrder,
+
+    LibImageObject{cloudObject} to LibCloudObject,
+    LibAudioObject{cloudObject} to LibCloudObject,
+    LibVideoObject{cloudObject} to LibCloudObject,
+
+    LibAlbum{cover} to LibImageItem,
+
+    CorCountry{tax} to CorTax,
+    CorCountry{currnecy} to CorCurrency,
 
 
-    CORCountry{tax} to CORTax,
-	CORCountry{network} to CORNetwork,
-	CORCountry{currnecy} to CORCurrency,
+    CrmContact{addres} to CorAddress,
+    CrmContact{country} to CorCountry,
+    CrmContact{person} to CorPerson,
+    TraPrice {currency} to CorCurrency,
 
-    TRAPrice {currency} to CORCurrency,
-    TRAPrice {network} to CORNetwork,
-	TRAAdvertisement{libitem} to LIBMediaItem,
- 	TRAAdvertisement{customer} to CRMAccount,
- 	TRAAdvertisement{industry} to TRAIndustry,
- 	TRAAdvertisement{network} to CORNetwork,
-    TRAAdvertisement {type} to TRAAdvertismentType,
+    TraAdvertisement{Libitem} to LibMediaItem,
 
-    TRACampaign{customer} to CRMAccount,
- 	TRACampaign{price} to TRAPrice,
- 	TRACampaign{network} to CORNetwork,
-    TRACampaign{status} to TRAStatus,
-
-
-    TRAInvoice {customer} to CRMAccount,
-	TRAInvoice{network} to CORNetwork,
-	TRAInvoice{status} to TRAStatus,
-
-    TRAOrder{customer} to CRMAccount,
-    TRAOrder{campaign} to TRACampaign,
-    TRAOrder{price} to TRAPrice,
-	TRAOrder{network} to CORNetwork,
-	TRAOrder{status} to TRAStatus,
-
-
-
-    CRMContact{addres} to CORAddress,
-    CRMContact{country} to CORCountry,
-    CRMContact{range} to CORRange,
-    CRMContact{size} to CORSize,
-   	CRMContact{industry} to  TRAIndustry,
-    CRMContact{area} to CORArea,
-    CRMContact{person} to CORPerson,
-    CRMContact {keeper} to CORUser,
-    CRMContact{status} to CRMContactStatus,
-    CRMContact{network} to CORNetwork,
-
-    CRMAccount{addres} to CORAddress,
-    CRMAccount{country} to CORCountry,
-    CRMAccount{range} to CORRange,
-    CRMAccount{size} to CORSize,
-   	CRMAccount{industry} to  TRAIndustry,
-    CRMAccount{area} to CORArea,
-    CRMAccount{person} to CORPerson,
-    CRMAccount {keeper} to CORUser,
-    CRMAccount{discount} to TRADiscount,
-    CRMAccount{network} to CORNetwork,
-
-
-    CRMLead{leadStatus} to CRMLeadStatus,
-    CRMLead{leadSource} to CRMLeadSource,
-    CRMLead{addres} to CORAddress,
-    CRMLead {keeper} to CORUser,
-    CRMLead{industry} to TRAIndustry,
-    CRMLead{area} to CORArea,
-    CRMLead{person} to CORPerson,
-    CRMLead{network} to CORNetwork,
-
-    CRMOpportunity {stage} to CRMStage,
-    CRMOpportunity {keeper} to CORUser,
-    CRMOpportunity {contact} to CRMContact,
-    CRMOpportunity {account} to CRMAccount,
-    CRMOpportunity {lead} to CRMLead,
-    CRMOpportunity {network} to CORNetwork,
-
-    CRMTask{createdBy} to CORUser,
-    CRMTask{assignedTo} to CORUser,
-    CRMTask{status} to CFGTaskStatus,
-    CRMTask{network} to CORNetwork,
-
-    LIBMediaItem{album} to LIBAlbum,
-    LIBMediaItem{artist} to LIBArtist,
-	LIBMediaItem{composer} to LIBLabel,
-	LIBMediaItem {network} to CORNetwork,
-    LIBMediaItem {item} to LibLibrary ,
-
-    SCHEmission{mediaItem} to  LIBMediaItem,
-    SCHEmission{channel} to CORChannel,
-    SCHEmission {network} to CORNetwork,
-    SCHBlock {network} to CORNetwork,
-    SCHBlock {price} to TRAPrice,
-
-    LibLibrary {network} to CORNetwork,
-
-    CORSubscriptionOwner {network} to CORNetwork,
-    CORSubscriptionOwner {user} to CORUser,
-
-    LIBImageObject{cloudObject} to LIBCloudObject,
-    LIBImageObject {network} to CORNetwork,
-
-    LIBAudioObject{cloudObject} to LIBCloudObject,
-    LIBAudioObject {network} to CORNetwork,
-
-    LIBVideoObject{cloudObject} to LIBCloudObject,
-    LIBVideoObject {network} to CORNetwork,
-
-    LIBFileObject{cloudObject} to LIBCloudObject,
-    LIBFileObject {network} to CORNetwork,
-    LIBFileItem {network} to CORNetwork
+    TraAdvertisement{industry} to TraIndustry,
+    TraAdvertisement {type} to TraAdvertismentType,
+    CrmAccount{person} to CorPerson,
+    CrmAccount{addres} to CorAddress,
+    CrmLead{person} to CorPerson,
+    CrmLead{addres} to CorAddress
 }
 
-relationship OneToMany {
+relationship ManyToOne {
 
-    TRACampaign {emissions} to SCHEmission,
-	TRAInvoice {orders} to TRAOrder,
-    CRMOpportunity{tasks} to CRMTask,
-    CRMContact{tasks} to CRMTask,
-    CRMAccount{opportunity} to CRMOpportunity,
-    CRMAccount{network} to CRMTask,
-    CRMAccount{orders} to TRAOrder,
-    CRMAccount{campaigns} to TRACampaign,
-    CRMAccount{invoices} to TRAInvoice,
-    CRMAccount{advertisments} to TRAAdvertisement,
+    SchTemplate{channel} to CorChannel,
+    SchPlaylist{channel} to CorChannel,
 
-    CRMLead{tasks} to CRMTask,
-    CRMTask{tasks} to CRMTask,
-    CRMTask{comment} to CRMTaskComment,
+    LibMediaItem{Library} to LibLibrary,
 
-    CORSubscriptionOwner {subscriptions} to  CORSubscription,
+    SchEmission{mediaItem} to LibMediaItem,
 
-    LIBMediaItem {author} to CORPerson  ,
-    LIBMediaItem {composer} to CORPerson  ,
-	LIBMediaItem{markers} to LIBMarker,
-	LIBMediaItem{property} to CORPropertyKey,
-	LIBMediaItem{tags} to CORTag,
- 	LibLibrary {channel} to CORChannel,
-	LibLibrary {user} to CORUser,
-    LibLibrary {item} to LIBMediaItem,
+    LibLibrary{network} to CorNetwork,
+ 	CorChannel{network} to CorNetwork,
 
-    CORPerson{personContacts} to CORContact,
-    CORNetwork {users} to CORUser,
-    CORNetwork{channel} to CORChannel,
-    CORChannel {users} to CORUser,
-    CORPropertyKey{values} to CORPropertyValue,
-    CORUser {channel} to CORChannel,
-    CORUser {notifications} to CORNotification,
+    SchBlock{template} to SchTemplate,
+    SchBlock{parentBlock} to SchBlock,
+    SchEmission{block} to SchBlock,
 
-    SCHBlock {emission} to SCHEmission,
-    SCHBlock {block} to SCHBlock
+    SchBlock{playlist} to SchPlaylist,
+
+    LibMediaItem{label} to LibLabel,
+    LibMediaItem{artist} to LibArtist,
+    LibMediaItem{album} to LibAlbum,
+    LibMediaItem{Track} to LibTrack,
+
+    LibAlbum{label} to LibLabel,
+    LibTrack{album} to LibAlbum,
+    LibTrack{artist} to LibArtist,
+    LibAlbum{artist} to LibArtist,
+
+    LibLabel{network} to CorNetwork,
+    LibArtist{network} to CorNetwork,
+    LibAlbum{network} to CorNetwork,
+    LibTrack{network} to CorNetwork,
+
+    CorPropertyKey{network} to CorNetwork,
+    CorPropertyValue{propertyKey} to CorPropertyKey,
+
+    CorTag{network} to CorNetwork,
+    CorContact{network} to CorNetwork,
+    CorContact {person} to CorPerson,
+    CorPerson{network} to CorNetwork,
+    CorAddress{network} to CorNetwork,
+
+    LibMediaItem{Library} to LibLibrary,
+    LibImageItem{Library} to LibLibrary,
+    LibFileItem{Library} to LibLibrary,
+
+    LibMarker{mediaItem} to LibMediaItem,
+	CorTag{tags} to LibMediaItem,
+    CorPropertyValue{value} to LibMediaItem,
+
+    LibAudioObject{mediaItem} to LibMediaItem,
+    LibVideoObject{mediaItem} to LibMediaItem,
+    LibImageObject{imageItem} to LibImageItem,
+    LibFileItem{parentFile} to LibFileItem,
+
+    CfgMarkerConfiguration{network} to CorNetwork,
+
+    LibCloudObject{network} to CorNetwork,
+    LibCloudObject{createdBy} to CorUser,
+
+
+    CorArea{network} to CorNetwork,
+    CorSize{network} to CorNetwork,
+    CorRange{network} to CorNetwork,
+    CorCurrency {network} to CorNetwork,
+
+    CrmContact {network} to CorNetwork,
+    CrmContactStatus {network} to CorNetwork,
+
+    CorCountry{network} to CorNetwork,
+    CrmLeadStatus {network} to CorNetwork,
+    CrmLeadSource {network} to CorNetwork,
+    TraIndustry{network} to CorNetwork,
+    CrmStage{network} to CorNetwork,
+    CrmTaskStatus{network} to CorNetwork,
+    CorTax{network} to CorNetwork,
+
+
+    CrmContact{range} to CorRange,
+    CrmContact{size} to CorSize,
+    CrmContact{industry} to  TraIndustry,
+    CrmContact{area} to CorArea,
+
+    CrmContact {keeper} to CorUser,
+    CrmContact{status} to CrmContactStatus,
+
+
+    TraDiscount {network} to CorNetwork,
+    TraPrice {network} to CorNetwork,
+     TraAdvertisement{network} to CrmAccount,
+    TraAdvertisement{network} to CorNetwork,
+
+    TraAdvertisement{customer} to CrmAccount,
+    TraCampaign{customer} to CrmAccount,
+    TraCampaign{network} to CorNetwork,
+    TraCampaign{status} to TraCampaingStatus,
+    TraCampaign{price} to TraPrice,
+
+    TraInvoice {customer} to CrmAccount,
+    TraInvoice{network} to CorNetwork,
+    TraInvoice{status} to TraInvoiceStatus,
+
+    TraOrder{customer} to CrmAccount,
+    TraOrder{campaign} to TraCampaign,
+    TraOrder{price} to TraPrice,
+    TraOrder{network} to CorNetwork,
+    TraOrder{status} to TraOrderStatus,
+
+    CrmAccount{network} to CorNetwork,
+    CrmAccount{discount} to TraDiscount,
+    CrmAccount {keeper} to CorUser,
+    CrmAccount{country} to CorCountry,
+    CrmAccount{range} to CorRange,
+    CrmAccount{size} to CorSize,
+    CrmAccount{industry} to  TraIndustry,
+    CrmAccount{area} to CorArea,
+
+    CrmLead{leadStatus} to CrmLeadStatus,
+    CrmLead{leadSource} to CrmLeadSource,
+    CrmLead {keeper} to CorUser,
+    CrmLead{industry} to TraIndustry,
+    CrmLead{area} to CorArea,
+    CrmLead{network} to CorNetwork,
+
+    CrmOpportunity {stage} to CrmStage,
+    CrmOpportunity {keeper} to CorUser,
+    CrmOpportunity {contact} to CrmContact,
+    CrmOpportunity {account} to CrmAccount,
+    CrmOpportunity {lead} to CrmLead,
+    CrmOpportunity {network} to CorNetwork,
+
+    CrmTask{createdBy} to CorUser,
+    CrmTask{assignedTo} to CorUser,
+    CrmTask{status} to CrmTaskStatus,
+    CrmTask{network} to CorNetwork,
+
+    SchEmission {campaings} to TraCampaign,
+    TraCampaign {orders} to TraOrder,
+    TraOrder {orders} to TraInvoice,
+
+
+    CrmTask{tasks} to CrmOpportunity,
+    CrmTask{tasks} to CrmContact,
+    CrmTask{tasks} to CrmAccount,
+    CrmTask{tasks} to CrmLead,
+    CrmTask{tasks} to CrmTask,
+    CrmTaskComment{comment} to CrmTask,
+    CorChannel{network} to CorNetwork,
+    CorNotification{user} to CorUser,
+    CorUser {network} to CorNetwork,
+    CorUser{channel} to CorChannel
 }
-relationship ManyToOne{
-
-  LIBFileObject{fileItem} to LIBFileItem,
-  LIBFileItem{parentFile} to LIBFileItem,
-  CORChannel {user} to CORUser,
-  CORNetwork {network} to CORUser,
-  LIBCloudObject{network} to CORNetwork,
-  LIBCloudObject{createdBy} to CORUser
-
-}
-paginate * with infinite-scroll
-microservice * with protone
-
-
+dto * with mapstruct except LibCloudObject
+microservice * with protones
 
