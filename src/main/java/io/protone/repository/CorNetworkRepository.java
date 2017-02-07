@@ -11,4 +11,5 @@ public interface CorNetworkRepository extends JpaRepository<CorNetwork, Long> {
     CorNetwork findOneByShortcut(String shortcut);
 
     void deleteByShortcut(String shortcut);
+
 }
