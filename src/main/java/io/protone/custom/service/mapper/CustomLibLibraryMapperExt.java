@@ -41,7 +41,7 @@ public class CustomLibLibraryMapperExt {
         libraryDAO.setId( libraryDB.getId() );
         libraryDAO.setPrefix( libraryDB.getPrefix() );
         libraryDAO.setName( libraryDB.getName() );
-        libraryDAO.setDescription( libraryDB.getDescription() );
+        libraryDAO.setDescription( libraryDB.getDescription());
         libraryDAO.setShortcut(libraryDB.getShortcut());
         libraryDAO.setPrefix(libraryDB.getPrefix());
         libraryDAO.setCounter(libraryDB.getCounter());
