@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraOrder.
+    -->
+    <changeSet id="20170207220312-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_customer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_account"/>
+
+        <addForeignKeyConstraint baseColumnNames="campaign_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_campaign_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_campaign"/>
+
+        <addForeignKeyConstraint baseColumnNames="price_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_price_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_price"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_order_status"/>
+
+        <addForeignKeyConstraint baseColumnNames="invoice_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_invoice_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_invoice"/>
+
+    </changeSet>
+</databaseChangeLog>
