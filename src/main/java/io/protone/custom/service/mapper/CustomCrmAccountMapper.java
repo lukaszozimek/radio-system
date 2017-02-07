@@ -37,7 +37,7 @@ public class CustomCrmAccountMapper {
     private CustomCrmTaskMapper customCrmTaskMapper;
 
     @Inject
-    private CustomTRAOrderMapper traOrderMapper;
+    private CustomTraOrderMapper traOrderMapper;
 
     @Inject
     private CustomTRACampaignMapper customTRACampaignMapper;

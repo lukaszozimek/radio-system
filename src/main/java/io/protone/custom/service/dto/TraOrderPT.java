@@ -1,9 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.TRAPrice;
+import io.protone.domain.TraPrice;
 import io.swagger.annotations.ApiModelProperty;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class TraOrderPT {
     private LocalDate startDate = null;
 
     @JsonProperty("price")
-    private TRAPrice traPrice = null;
+    private TraPrice traPrice = null;
 
     @JsonProperty("emission")
     private List<SchEmissionPT> emission = new ArrayList<>();
@@ -81,7 +80,7 @@ public class TraOrderPT {
         this.traCampaignPT = traCampaignPT;
     }
 
-    public TraOrderPT campaignId(TRAPrice price) {
+    public TraOrderPT campaignId(TraPrice price) {
         this.traPrice = price;
         return this;
     }
@@ -92,11 +91,11 @@ public class TraOrderPT {
      * @return traCampaignPT
      **/
     @ApiModelProperty(value = "")
-    public TRAPrice getTraPrice() {
+    public TraPrice getTraPrice() {
         return traPrice;
     }
 
-    public void setTraPrice(TRAPrice traPrice) {
+    public void setTraPrice(TraPrice traPrice) {
         this.traPrice = traPrice;
     }
 

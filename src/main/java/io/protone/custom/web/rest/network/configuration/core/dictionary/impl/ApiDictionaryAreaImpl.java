@@ -6,6 +6,7 @@ import io.protone.custom.service.mapper.CustomCorAreaMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryArea;
 import io.protone.domain.CorArea;
 import io.protone.domain.CorNetwork;
+import io.protone.repository.CorAreaRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

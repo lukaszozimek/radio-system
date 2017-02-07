@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
 import io.protone.custom.service.NetworkService;
-import io.protone.custom.service.TRAOrderService;
+import io.protone.custom.service.TraOrderService;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerOrder;
 import io.protone.domain.CorNetwork;
@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 public class ApiNetworkTrafficCustomerOrderImpl implements ApiNetworkTrafficCustomerOrder {
     @Inject
-    private TRAOrderService orderService;
+    private TraOrderService orderService;
     @Inject
     private NetworkService networkService;
 

@@ -1,8 +1,9 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.custom.service.mapper.CustomTRAInvoiceMapper;
+import io.protone.custom.service.mapper.CustomTraInvoiceMapper;
 import io.protone.domain.*;
+import io.protone.repository.TraInvoiceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,23 +19,23 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
-public class TRAInvoiceService {
+public class TraInvoiceService {
 
     @Inject
-    private TRAInvoiceRepository traInvoiceRepository;
+    private TraInvoiceRepository traInvoiceRepository;
 
     @Inject
-    private CustomTRAInvoiceMapper customTRAInvoiceMapper;
+    private CustomTraInvoiceMapper customTraInvoiceMapper;
 
 
     public List<TraInvoicePT> getAllInvoice(CorNetwork corNetwork) {
-        return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> customTRAInvoiceMapper.createDTOFromEnity(traInvoicePTS)).collect(toList());
+        return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> customTraInvoiceMapper.createDTOFromEnity(traInvoicePTS)).collect(toList());
     }
 
     public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
-        TRAInvoice invoice = customTRAInvoiceMapper.createEntityFromDTO(traInvoicePT, corNetwork);
+        TraInvoice invoice = customTraInvoiceMapper.createEntityFromDTO(traInvoicePT, corNetwork);
         invoice = traInvoiceRepository.save(invoice);
-        return customTRAInvoiceMapper.createDTOFromEnity(invoice);
+        return customTraInvoiceMapper.createDTOFromEnity(invoice);
     }
 
     public void deleteInvoice(Long id, CorNetwork corNetwork) {
@@ -42,8 +43,8 @@ public class TRAInvoiceService {
     }
 
     public TraInvoicePT getInvoice(Long id, CorNetwork corNetwork) {
-        TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
-        return customTRAInvoiceMapper.createDTOFromEnity(traInvoice);
+        TraInvoice traInvoice = traInvoiceRepository.findOne(id);
+        return customTraInvoiceMapper.createDTOFromEnity(traInvoice);
     }
 
 

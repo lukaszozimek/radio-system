@@ -5,7 +5,6 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLeadTask;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.CCorNetworkRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController

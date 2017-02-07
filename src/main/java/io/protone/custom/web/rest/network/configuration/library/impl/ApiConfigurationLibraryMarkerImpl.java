@@ -1,10 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.library.impl;
 
 import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
-import io.protone.custom.service.mapper.CustomCFGMarkerConfigurationMapper;
+import io.protone.custom.service.mapper.CustomCfgMarkerConfigurationMapper;
 import io.protone.custom.web.rest.network.configuration.library.ApiConfigurationLibraryMarker;
-import io.protone.domain.CFGMarkerConfiguration;
-import io.protone.repository.CCorNetworkRepository;
+import io.protone.domain.CfgMarkerConfiguration;
+import io.protone.repository.CfgMarkerConfigurationRepository;
+import io.protone.repository.CorNetworkRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,11 @@ import java.util.Optional;
 public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibraryMarker {
 
     @Inject
-    private CFGMarkerConfigurationRepository cFGMarkerConfigurationRepository;
+    private CfgMarkerConfigurationRepository cFGMarkerConfigurationRepository;
     @Inject
-    private CCorNetworkRepository networkRepository;
+    private CorNetworkRepository networkRepository;
     @Inject
-    private CustomCFGMarkerConfigurationMapper cFGMarkerConfigurationMapper;
+    private CustomCfgMarkerConfigurationMapper cFGMarkerConfigurationMapper;
 
     @Override
     public ResponseEntity<ConfMarkerConfigurationPT> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerConfigurationDTO", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationDTO) {
@@ -33,9 +34,9 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
             return createMarkerConfigurationUsingPOST(networkShortcut, markerConfigurationDTO);
         }
 
-        CFGMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.cFGMarkerConfigurationDTOToCFGMarkerConfiguration(markerConfigurationDTO);
+        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.cFGMarkerConfigurationDTOToCfgMarkerConfiguration(markerConfigurationDTO);
         cFGMarkerConfiguration = cFGMarkerConfigurationRepository.save(cFGMarkerConfiguration);
-        ConfMarkerConfigurationPT result = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCFGMarkerConfigurationDTO(cFGMarkerConfiguration);
+        ConfMarkerConfigurationPT result = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCfgMarkerConfigurationDTO(cFGMarkerConfiguration);
         return ResponseEntity.ok()
             .body(result);
     }
@@ -45,9 +46,9 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
         if (markerConfigurationPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cFGMarkerConfiguration", "idexists", "A new cFGMarkerConfiguration cannot already have an ID")).body(null);
         }
-        CFGMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.cFGMarkerConfigurationDTOToCFGMarkerConfiguration(markerConfigurationPT);
+        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.cFGMarkerConfigurationDTOToCfgMarkerConfiguration(markerConfigurationPT);
         cFGMarkerConfiguration = cFGMarkerConfigurationRepository.save(cFGMarkerConfiguration);
-        ConfMarkerConfigurationPT result = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCFGMarkerConfigurationDTO(cFGMarkerConfiguration);
+        ConfMarkerConfigurationPT result = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCfgMarkerConfigurationDTO(cFGMarkerConfiguration);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cFGMarkerConfiguration", result.getId().toString()))
             .body(result);
@@ -62,15 +63,15 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        List<CFGMarkerConfiguration> cFGMarkerConfigurations = cFGMarkerConfigurationRepository.findAll();
-        return ResponseEntity.ok().body(cFGMarkerConfigurationMapper.cFGMarkerConfigurationsToCFGMarkerConfigurationDTOs(cFGMarkerConfigurations));
+        List<CfgMarkerConfiguration> cFGMarkerConfigurations = cFGMarkerConfigurationRepository.findAll();
+        return ResponseEntity.ok().body(cFGMarkerConfigurationMapper.cFGMarkerConfigurationsToCfgMarkerConfigurationDTOs(cFGMarkerConfigurations));
 
     }
 
     @Override
     public ResponseEntity<ConfMarkerConfigurationPT> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerName", required = true) @PathVariable("id") String id) {
-        CFGMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationRepository.findOne(Long.parseLong(id));
-        ConfMarkerConfigurationPT cFGMarkerConfigurationDTO = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCFGMarkerConfigurationDTO(cFGMarkerConfiguration);
+        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationRepository.findOne(Long.parseLong(id));
+        ConfMarkerConfigurationPT cFGMarkerConfigurationDTO = cFGMarkerConfigurationMapper.cFGMarkerConfigurationToCfgMarkerConfigurationDTO(cFGMarkerConfiguration);
         return Optional.ofNullable(cFGMarkerConfigurationDTO)
             .map(result -> new ResponseEntity<>(
                 result,

@@ -3,9 +3,7 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.ConfCrmStagePT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmStage;
-import io.protone.service.dto.CrmStageDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

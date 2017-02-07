@@ -5,6 +5,7 @@ import io.protone.custom.service.dto.ConfPersonPT;
 import io.protone.custom.service.mapper.CustomCorPersonMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryPeople;
 import io.protone.domain.CorPerson;
+import io.protone.repository.CorPersonRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

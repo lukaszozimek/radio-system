@@ -3,7 +3,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.CoreKeyPT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPropertyKey;
-import io.protone.service.dto.CorPropertyKeyDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

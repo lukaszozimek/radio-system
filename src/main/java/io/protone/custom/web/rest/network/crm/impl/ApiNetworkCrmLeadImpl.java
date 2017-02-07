@@ -5,7 +5,6 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLead;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.CCorNetworkRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -3,7 +3,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.CoreSizePT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorSize;
-import io.protone.service.dto.CorSizeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

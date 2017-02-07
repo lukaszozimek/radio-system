@@ -6,7 +6,6 @@ import io.protone.custom.service.mapper.CustomCrmStageMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryStage;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmStage;
-import io.protone.repository.CCorNetworkRepository;
 import io.protone.repository.CrmStageRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;

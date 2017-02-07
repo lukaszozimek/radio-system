@@ -14,32 +14,32 @@ import static java.util.stream.Collectors.toList;
  * Created by lukaszozimek on 21.01.2017.
  */
 @Service
-public class CustomTRAInvoiceMapper {
+public class CustomTraInvoiceMapper {
 
     @Inject
-    private CustomTRAOrderMapper customTRAOrderMapper;
+    private CustomTraOrderMapper customTraOrderMapper;
     @Inject
     private CustomCrmAccountMapper crmAccountMapper;
     @Inject
-    private CustomTRAOrderMapper traOrderMapper;
+    private CustomTraOrderMapper traOrderMapper;
 
-    public TRAInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
-        TRAInvoice traInvoice = new TRAInvoice();
+    public TraInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
+        TraInvoice traInvoice = new TraInvoice();
         traInvoice.setId(traInvoice.getId());
         return traInvoice.paid(traInvoice.isPaid())
             .paymentDay(traInvoice.getPaymentDay())
             .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
-            .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
+            .order(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
             .network(corNetwork)
             .status(traInvoicePT.getTraStatus());
     }
 
-    public TraInvoicePT createDTOFromEnity(TRAInvoice traInvoicePT) {
+    public TraInvoicePT createDTOFromEnity(TraInvoice traInvoicePT) {
         return new TraInvoicePT().id(traInvoicePT.getId())
-            .order(customTRAOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrders()))
+            .order(customTraOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrder()))
             .paid(traInvoicePT.isPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
-            .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCrmAccount()))
+            .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCustomer()))
             .traStatus(traInvoicePT.getStatus());
     }
 

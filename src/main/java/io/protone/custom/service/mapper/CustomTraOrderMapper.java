@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
  * Created by lukaszozimek on 21.01.2017.
  */
 @Service
-public class CustomTRAOrderMapper {
+public class CustomTraOrderMapper {
 
     @Inject
     private CustomSchEmissionMapper schEmissionMapper;
@@ -33,16 +33,16 @@ public class CustomTRAOrderMapper {
     @Inject
     private TRACustomerService customerService;
 
-    public List<TRAOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, CorNetwork corNetwork) {
-        List<TRAOrder> traOrdersList = new ArrayList<>();
+    public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, CorNetwork corNetwork) {
+        List<TraOrder> traOrdersList = new ArrayList<>();
         traOrderPT.stream().forEach(traOrderPT1 -> {
             traOrdersList.add(trasnformDTOtoEntity(traOrderPT1, corNetwork));
         });
         return traOrdersList;
     }
 
-    public TRAOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, CorNetwork corNetwork) {
-        TRAOrder traOrder = new TRAOrder();
+    public TraOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, CorNetwork corNetwork) {
+        TraOrder traOrder = new TraOrder();
         traOrder.setId(traOrder.getId());
         return traOrder.name(traOrder.getName())
             .calculatedPrize(traOrderPT.getCalculatedPrize())
@@ -50,20 +50,20 @@ public class CustomTRAOrderMapper {
             .endDate(traOrder.getEndDate())
             .campaign(customTRACampaignMapper.transfromDTOToEntity(traOrderPT.getTraCampaignPT(), corNetwork))
             .customer(customCrmAccountMapper.createCrmAcountEntity(traOrderPT.getCustomerPT(), corNetwork))
-            .price(new TRAPrice());
+            .price(new TraPrice());
     }
 
-    public List<TraOrderPT> transfromEntitesToDTO(Set<TRAOrder> traOrder) {
+    public List<TraOrderPT> transfromEntitesToDTO(Set<TraOrder> traOrder) {
         return traOrder.stream().map(this::transfromEntiteToDTO).collect(toList());
     }
 
-    public TraOrderPT transfromEntiteToDTO(TRAOrder traOrder) {
+    public TraOrderPT transfromEntiteToDTO(TraOrder traOrder) {
         return new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
             .calculatedPrize(traOrder.getCalculatedPrize())
             .startDate(traOrder.getStartDate())
             .endDate(traOrder.getEndDate())
             .campaignId(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()))
-            .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCrmAccount()));
+            .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()));
 
     }
 

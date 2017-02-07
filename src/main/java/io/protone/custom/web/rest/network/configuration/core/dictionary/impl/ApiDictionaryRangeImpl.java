@@ -6,6 +6,7 @@ import io.protone.custom.service.mapper.CustomCorRangeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryRange;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorRange;
+import io.protone.repository.CorRangeRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

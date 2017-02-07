@@ -35,7 +35,7 @@ public class CustomTRAPersonMapper {
             lastName(person.getLastName())
             .firstName(person.getFirstName())
             .description(person.getDescription())
-            .contacts(corContactMapper.cORContactsToCorContactDTOs(person.getPersonContacts()));
+            .contacts(corContactMapper.cORContactsToCorContactDTOs(person.getContacts()));
     }
 
 
@@ -45,7 +45,7 @@ public class CustomTRAPersonMapper {
         return corPerson.lastName(personPT.getLastName())
             .firstName(personPT.getFirstName())
             .description(personPT.getDescription())
-            .personContacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCorContact(coreContactPT)).collect(Collectors.toSet()));
+            .contacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCorContact(coreContactPT)).collect(Collectors.toSet()));
     }
 
     private List<CorContact> createContactEntities(TraCustomerPersonPT personPT) {

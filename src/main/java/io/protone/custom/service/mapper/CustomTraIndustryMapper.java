@@ -3,8 +3,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.ConfIndustryPT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraIndustry;
-import io.protone.domain.TraIndustry;
-import io.protone.service.dto.TraIndustryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

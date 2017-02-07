@@ -1,13 +1,11 @@
 package io.protone.custom.service.dto;
 
-import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.protone.domain.enumeration.LIBMarkerTypeEnum;
-import io.swagger.annotations.ApiModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.enumeration.LibMarkerTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Objects;
 
 /**
  * ConfMarkerConfigurationPT
@@ -33,7 +31,7 @@ public class ConfMarkerConfigurationPT {
     @JsonProperty("networkId")
     private Long networkId = null;
     @JsonProperty("type")
-    private LIBMarkerTypeEnum type = null;
+    private LibMarkerTypeEnum type = null;
 
     /**
      * Gets or Sets type
@@ -41,8 +39,8 @@ public class ConfMarkerConfigurationPT {
 
 
     @JsonCreator
-    public static LIBMarkerTypeEnum fromValue(String text) {
-        for (LIBMarkerTypeEnum b : LIBMarkerTypeEnum.values()) {
+    public static LibMarkerTypeEnum fromValue(String text) {
+        for (LibMarkerTypeEnum b : LibMarkerTypeEnum.values()) {
             if (String.valueOf(b).equals(text)) {
                 return b;
             }
@@ -164,7 +162,7 @@ public class ConfMarkerConfigurationPT {
         this.networkId = networkId;
     }
 
-    public ConfMarkerConfigurationPT type(LIBMarkerTypeEnum type) {
+    public ConfMarkerConfigurationPT type(LibMarkerTypeEnum type) {
         this.type = type;
         return this;
     }
@@ -175,11 +173,11 @@ public class ConfMarkerConfigurationPT {
      * @return type
      **/
     @ApiModelProperty(required = true, value = "")
-    public LIBMarkerTypeEnum getType() {
+    public LibMarkerTypeEnum getType() {
         return type;
     }
 
-    public void setType(LIBMarkerTypeEnum type) {
+    public void setType(LibMarkerTypeEnum type) {
         this.type = type;
     }
 

@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
 import io.protone.custom.service.NetworkService;
-import io.protone.custom.service.TRAInvoiceService;
+import io.protone.custom.service.TraInvoiceService;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficInvoice;
 import io.protone.domain.CorNetwork;
@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
     @Inject
-    private TRAInvoiceService traInvoiceService;
+    private TraInvoiceService traInvoiceService;
     @Inject
     private NetworkService networkService;
 

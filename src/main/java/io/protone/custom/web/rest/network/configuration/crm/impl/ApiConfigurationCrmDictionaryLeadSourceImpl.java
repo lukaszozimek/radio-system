@@ -6,7 +6,7 @@ import io.protone.custom.service.mapper.CustomCrmLeadSourceMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadSource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLeadSource;
-import io.protone.repository.CCorNetworkRepository;
+import io.protone.repository.CrmLeadSourceRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

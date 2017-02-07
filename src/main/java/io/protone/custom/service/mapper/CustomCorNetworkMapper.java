@@ -2,7 +2,6 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.domain.CorNetwork;
-import io.protone.service.dto.CorNetworkDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;

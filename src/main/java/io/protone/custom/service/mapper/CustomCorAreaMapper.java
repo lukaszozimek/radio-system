@@ -4,7 +4,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.CoreAreaPT;
 import io.protone.domain.CorArea;
 import io.protone.domain.CorNetwork;
-import io.protone.service.dto.CorAreaDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

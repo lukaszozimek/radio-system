@@ -7,7 +7,6 @@ import io.protone.custom.service.mapper.CustomCrmLeadStatusMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadStatus;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLeadStatus;
-import io.protone.repository.CCorNetworkRepository;
 import io.protone.repository.CrmLeadStatusRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
