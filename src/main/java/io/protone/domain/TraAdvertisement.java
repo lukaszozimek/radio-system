@@ -48,13 +48,10 @@ public class TraAdvertisement implements Serializable {
     private TraAdvertismentType type;
 
     @ManyToOne
-    private CrmAccount network;
+    private CrmAccount customer;
 
     @ManyToOne
     private CorNetwork network;
-
-    @ManyToOne
-    private CrmAccount customer;
 
     public Long getId() {
         return id;
@@ -142,17 +139,17 @@ public class TraAdvertisement implements Serializable {
         this.type = traAdvertismentType;
     }
 
-    public CrmAccount getNetwork() {
-        return network;
+    public CrmAccount getCustomer() {
+        return customer;
     }
 
-    public TraAdvertisement network(CrmAccount crmAccount) {
-        this.network = crmAccount;
+    public TraAdvertisement customer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
         return this;
     }
 
-    public void setNetwork(CrmAccount crmAccount) {
-        this.network = crmAccount;
+    public void setCustomer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
     }
 
     public CorNetwork getNetwork() {
@@ -166,19 +163,6 @@ public class TraAdvertisement implements Serializable {
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
-    }
-
-    public CrmAccount getCustomer() {
-        return customer;
-    }
-
-    public TraAdvertisement customer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
-        return this;
-    }
-
-    public void setCustomer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
     }
 
     @Override

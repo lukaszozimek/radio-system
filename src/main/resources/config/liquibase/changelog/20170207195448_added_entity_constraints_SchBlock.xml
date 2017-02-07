@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity SchBlock.
+    -->
+    <changeSet id="20170207195448-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="template_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_sch_block_template_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_template"/>
+
+        <addForeignKeyConstraint baseColumnNames="parent_block_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_sch_block_parent_block_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_block"/>
+
+        <addForeignKeyConstraint baseColumnNames="playlist_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_sch_block_playlist_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_playlist"/>
+
+    </changeSet>
+</databaseChangeLog>

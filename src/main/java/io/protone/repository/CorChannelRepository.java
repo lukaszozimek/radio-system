@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 @SuppressWarnings("unused")
 public interface CorChannelRepository extends JpaRepository<CorChannel, Long> {
-    CorChannel findOneByPrefix(String prefix);
+    CorChannel findOneByShortcut(String shortcut);
 
-    void deleteByPrefix(String prefix);
+    void deleteByShortcut(String shortcut);
 }

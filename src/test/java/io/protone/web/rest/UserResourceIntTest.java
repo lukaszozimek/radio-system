@@ -2,6 +2,7 @@ package io.protone.web.rest;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.User;
+import io.protone.repository.UserRepository;
 import io.protone.service.UserService;
 
 import org.apache.commons.lang3.RandomStringUtils;

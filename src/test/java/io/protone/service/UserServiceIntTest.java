@@ -4,6 +4,8 @@ import io.protone.ProtoneApp;
 import io.protone.domain.User;
 
 import java.time.ZonedDateTime;
+
+import io.protone.repository.UserRepository;
 import io.protone.service.util.RandomUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

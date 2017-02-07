@@ -54,7 +54,7 @@ public class TraOrder implements Serializable {
     private TraOrderStatus status;
 
     @ManyToOne
-    private TraInvoice orders;
+    private TraInvoice invoice;
 
     public Long getId() {
         return id;
@@ -181,17 +181,17 @@ public class TraOrder implements Serializable {
         this.status = traOrderStatus;
     }
 
-    public TraInvoice getOrders() {
-        return orders;
+    public TraInvoice getInvoice() {
+        return invoice;
     }
 
-    public TraOrder orders(TraInvoice traInvoice) {
-        this.orders = traInvoice;
+    public TraOrder invoice(TraInvoice traInvoice) {
+        this.invoice = traInvoice;
         return this;
     }
 
-    public void setOrders(TraInvoice traInvoice) {
-        this.orders = traInvoice;
+    public void setInvoice(TraInvoice traInvoice) {
+        this.invoice = traInvoice;
     }
 
     @Override

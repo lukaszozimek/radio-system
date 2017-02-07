@@ -25,7 +25,10 @@ public class CrmTaskComment implements Serializable {
     private String comment;
 
     @ManyToOne
-    private CrmTask comment;
+    private CrmTask taskComment;
+
+    @ManyToOne
+    private CorUser createdBy;
 
     public Long getId() {
         return id;
@@ -48,17 +51,30 @@ public class CrmTaskComment implements Serializable {
         this.comment = comment;
     }
 
-    public CrmTask getComment() {
-        return comment;
+    public CrmTask getTaskComment() {
+        return taskComment;
     }
 
-    public CrmTaskComment comment(CrmTask crmTask) {
-        this.comment = crmTask;
+    public CrmTaskComment taskComment(CrmTask crmTask) {
+        this.taskComment = crmTask;
         return this;
     }
 
-    public void setComment(CrmTask crmTask) {
-        this.comment = crmTask;
+    public void setTaskComment(CrmTask crmTask) {
+        this.taskComment = crmTask;
+    }
+
+    public CorUser getCreatedBy() {
+        return createdBy;
+    }
+
+    public CrmTaskComment createdBy(CorUser corUser) {
+        this.createdBy = corUser;
+        return this;
+    }
+
+    public void setCreatedBy(CorUser corUser) {
+        this.createdBy = corUser;
     }
 
     @Override

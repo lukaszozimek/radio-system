@@ -1,5 +1,6 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,7 +8,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A TraInvoice.
@@ -32,10 +35,6 @@ public class TraInvoice implements Serializable {
     @Column(name = "payment_day")
     private LocalDate paymentDay;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private TraOrder order;
-
     @ManyToOne
     private CrmAccount customer;
 
@@ -44,6 +43,11 @@ public class TraInvoice implements Serializable {
 
     @ManyToOne
     private TraInvoiceStatus status;
+
+    @OneToMany(mappedBy = "invoice")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TraOrder> orders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -92,19 +96,6 @@ public class TraInvoice implements Serializable {
         this.paymentDay = paymentDay;
     }
 
-    public TraOrder getOrder() {
-        return order;
-    }
-
-    public TraInvoice order(TraOrder traOrder) {
-        this.order = traOrder;
-        return this;
-    }
-
-    public void setOrder(TraOrder traOrder) {
-        this.order = traOrder;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
     }
@@ -142,6 +133,31 @@ public class TraInvoice implements Serializable {
 
     public void setStatus(TraInvoiceStatus traInvoiceStatus) {
         this.status = traInvoiceStatus;
+    }
+
+    public Set<TraOrder> getOrders() {
+        return orders;
+    }
+
+    public TraInvoice orders(Set<TraOrder> traOrders) {
+        this.orders = traOrders;
+        return this;
+    }
+
+    public TraInvoice addOrders(TraOrder traOrder) {
+        orders.add(traOrder);
+        traOrder.setInvoice(this);
+        return this;
+    }
+
+    public TraInvoice removeOrders(TraOrder traOrder) {
+        orders.remove(traOrder);
+        traOrder.setInvoice(null);
+        return this;
+    }
+
+    public void setOrders(Set<TraOrder> traOrders) {
+        this.orders = traOrders;
     }
 
     @Override

@@ -523,7 +523,6 @@ entity CorUser{
 relationship OneToOne {
     TraAdvertisement{mediaItem} to LibMediaItem,
 
-    TraInvoice{order} to TraOrder,
 
     LibImageObject{cloudObject} to LibCloudObject,
     LibAudioObject{cloudObject} to LibCloudObject,
@@ -537,7 +536,7 @@ relationship OneToOne {
 
     CrmContact{addres} to CorAddress,
     CrmContact{country} to CorCountry,
-    CrmContact{person} to CorPerson,
+    CrmContact{person} to CorPerson ,
     TraPrice {currency} to CorCurrency,
 
     TraAdvertisement{Libitem} to LibMediaItem,
@@ -588,7 +587,7 @@ relationship ManyToOne {
 
     CorTag{network} to CorNetwork,
     CorContact{network} to CorNetwork,
-    CorContact {person} to CorPerson,
+    CorContact {person} to CorPerson{contacts},
     CorPerson{network} to CorNetwork,
     CorAddress{network} to CorNetwork,
 
@@ -598,7 +597,7 @@ relationship ManyToOne {
 
     LibMarker{mediaItem} to LibMediaItem,
 	CorTag{tags} to LibMediaItem,
-    CorPropertyValue{value} to LibMediaItem,
+    CorPropertyValue{libItemPropertyValue} to LibMediaItem,
 
     LibAudioObject{mediaItem} to LibMediaItem,
     LibVideoObject{mediaItem} to LibMediaItem,
@@ -639,7 +638,7 @@ relationship ManyToOne {
 
     TraDiscount {network} to CorNetwork,
     TraPrice {network} to CorNetwork,
-     TraAdvertisement{network} to CrmAccount,
+    TraAdvertisement{customer} to CrmAccount,
     TraAdvertisement{network} to CorNetwork,
 
     TraAdvertisement{customer} to CrmAccount,
@@ -686,17 +685,18 @@ relationship ManyToOne {
     CrmTask{status} to CrmTaskStatus,
     CrmTask{network} to CorNetwork,
 
-    SchEmission {campaings} to TraCampaign,
+    SchEmission {campaings} to TraCampaign {emissions},
     TraCampaign {orders} to TraOrder,
-    TraOrder {orders} to TraInvoice,
+    TraOrder {invoice} to TraInvoice {orders},
 
 
-    CrmTask{tasks} to CrmOpportunity,
-    CrmTask{tasks} to CrmContact,
-    CrmTask{tasks} to CrmAccount,
-    CrmTask{tasks} to CrmLead,
-    CrmTask{tasks} to CrmTask,
-    CrmTaskComment{comment} to CrmTask,
+    CrmTask {opportunity} to CrmOpportunity{tasks},
+    CrmTask {contact} to CrmContact {tasks},
+    CrmTask {account} to CrmAccount {tasks},
+    CrmTask {lead} to CrmLead {tasks},
+    CrmTask {tasks} to CrmTask,
+    CrmTaskComment{taskComment} to CrmTask,
+      CrmTaskComment{createdBy} to CorUser,
     CorChannel{network} to CorNetwork,
     CorNotification{user} to CorUser,
     CorUser {network} to CorNetwork,

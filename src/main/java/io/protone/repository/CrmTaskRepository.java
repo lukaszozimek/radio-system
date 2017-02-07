@@ -12,9 +12,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
-    CrmTask findOneByCrmContactAndIdAndNetwork(CrmContact contact, Long id, CorNetwork network);
+    CrmTask findOneByIdAndNetwork( Long id, CorNetwork network);
 
-    List<CrmTask> findByCrmContactAndNetwork(CrmContact contact, CorNetwork network);
+    List<CrmTask> findByNetwork(CorNetwork network);
 
-    void deleteByCrmContactAndIdAndNetwork(CrmContact contact, Long id, CorNetwork network);
+    void deleteByIdAndNetwork(Long id, CorNetwork network);
 }

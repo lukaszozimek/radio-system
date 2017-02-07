@@ -29,14 +29,14 @@ public class CustomTraInvoiceMapper {
         return traInvoice.paid(traInvoice.isPaid())
             .paymentDay(traInvoice.getPaymentDay())
             .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
-            .order(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
+            .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
             .network(corNetwork)
             .status(traInvoicePT.getTraStatus());
     }
 
     public TraInvoicePT createDTOFromEnity(TraInvoice traInvoicePT) {
         return new TraInvoicePT().id(traInvoicePT.getId())
-            .order(customTraOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrder()))
+            .order(customTraOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrders()))
             .paid(traInvoicePT.isPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
             .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCustomer()))

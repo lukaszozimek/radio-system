@@ -71,18 +71,19 @@ public class CrmContactService {
 
     public List<CrmTaskPT> getTasksAssociatedWithContact(String shortcut, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTasks(crmTaskRepository.findByCrmContactAndNetwork(crmContact, corNetwork));
+        return customCrmTaskMapper.createCrmTasks(crmContact.getTasks());
     }
 
     public CrmTaskPT getTaskAssociatedWithContact(String shortcut, Long taskId, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTask(crmTaskRepository.findOneByCrmContactAndIdAndNetwork(crmContact, taskId, corNetwork));
+
+        return customCrmTaskMapper.createCrmTask(crmTaskRepository.findOneByIdAndNetwork(taskId, corNetwork));
     }
 
 
     public void deleteContactTask(String shortcut, Long taskId, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        crmTaskRepository.deleteByCrmContactAndIdAndNetwork(crmContact, taskId, corNetwork);
+        crmTaskRepository.deleteByIdAndNetwork(taskId, corNetwork);
     }
 
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask, CorNetwork corNetwork) {

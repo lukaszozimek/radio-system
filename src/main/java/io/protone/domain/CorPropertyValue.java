@@ -32,7 +32,7 @@ public class CorPropertyValue implements Serializable {
     private CorPropertyKey propertyKey;
 
     @ManyToOne
-    private LibMediaItem value;
+    private LibMediaItem libItemPropertyValue;
 
     public Long getId() {
         return id;
@@ -68,17 +68,17 @@ public class CorPropertyValue implements Serializable {
         this.propertyKey = corPropertyKey;
     }
 
-    public LibMediaItem getValue() {
-        return value;
+    public LibMediaItem getLibItemPropertyValue() {
+        return libItemPropertyValue;
     }
 
-    public CorPropertyValue value(LibMediaItem libMediaItem) {
-        this.value = libMediaItem;
+    public CorPropertyValue libItemPropertyValue(LibMediaItem libMediaItem) {
+        this.libItemPropertyValue = libMediaItem;
         return this;
     }
 
-    public void setValue(LibMediaItem libMediaItem) {
-        this.value = libMediaItem;
+    public void setLibItemPropertyValue(LibMediaItem libMediaItem) {
+        this.libItemPropertyValue = libMediaItem;
     }
 
     @Override
