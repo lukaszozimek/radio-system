@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the LIBImageItem entity.
+ * A DTO for the LibImageItem entity.
  */
-public class LIBImageItemDTO implements Serializable {
+public class LibImageItemDTO implements Serializable {
 
     private Long id;
 
@@ -24,7 +24,7 @@ public class LIBImageItemDTO implements Serializable {
 
 
     private Long libraryId;
-    
+
     public Long getId() {
         return id;
     }
@@ -64,7 +64,7 @@ public class LIBImageItemDTO implements Serializable {
             return false;
         }
 
-        LIBImageItemDTO lIBImageItemDTO = (LIBImageItemDTO) o;
+        LibImageItemDTO lIBImageItemDTO = (LibImageItemDTO) o;
 
         if ( ! Objects.equals(id, lIBImageItemDTO.id)) return false;
 
@@ -78,7 +78,7 @@ public class LIBImageItemDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "LIBImageItemDTO{" +
+        return "LibImageItemDTO{" +
             "id=" + id +
             ", idx='" + idx + "'" +
             ", name='" + name + "'" +

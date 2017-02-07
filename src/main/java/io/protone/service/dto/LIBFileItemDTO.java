@@ -9,9 +9,9 @@ import java.util.Objects;
 import io.protone.domain.enumeration.LIBFileTypeEnum;
 
 /**
- * A DTO for the LIBFileItem entity.
+ * A DTO for the LibFileItem entity.
  */
-public class LIBFileItemDTO implements Serializable {
+public class LibFileItemDTO implements Serializable {
 
     private Long id;
 
@@ -27,9 +27,9 @@ public class LIBFileItemDTO implements Serializable {
 
 
     private Long libraryId;
-    
+
     private Long parentFileId;
-    
+
     public Long getId() {
         return id;
     }
@@ -84,7 +84,7 @@ public class LIBFileItemDTO implements Serializable {
             return false;
         }
 
-        LIBFileItemDTO lIBFileItemDTO = (LIBFileItemDTO) o;
+        LibFileItemDTO lIBFileItemDTO = (LibFileItemDTO) o;
 
         if ( ! Objects.equals(id, lIBFileItemDTO.id)) return false;
 
@@ -98,7 +98,7 @@ public class LIBFileItemDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "LIBFileItemDTO{" +
+        return "LibFileItemDTO{" +
             "id=" + id +
             ", idx='" + idx + "'" +
             ", name='" + name + "'" +

@@ -2,10 +2,9 @@ package io.protone.service;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.User;
-import io.protone.repository.UserRepository;
+
 import java.time.ZonedDateTime;
 import io.protone.service.util.RandomUtil;
-import java.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -3,7 +3,6 @@ package io.protone.custom.service;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.mapper.CustomTRAInvoiceMapper;
 import io.protone.domain.*;
-import io.protone.repository.TRAInvoiceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,27 +27,27 @@ public class TRAInvoiceService {
     private CustomTRAInvoiceMapper customTRAInvoiceMapper;
 
 
-    public List<TraInvoicePT> getAllInvoice(CORNetwork corNetwork) {
+    public List<TraInvoicePT> getAllInvoice(CorNetwork corNetwork) {
         return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> customTRAInvoiceMapper.createDTOFromEnity(traInvoicePTS)).collect(toList());
     }
 
-    public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT, CORNetwork corNetwork) {
+    public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
         TRAInvoice invoice = customTRAInvoiceMapper.createEntityFromDTO(traInvoicePT, corNetwork);
         invoice = traInvoiceRepository.save(invoice);
         return customTRAInvoiceMapper.createDTOFromEnity(invoice);
     }
 
-    public void deleteInvoice(Long id, CORNetwork corNetwork) {
+    public void deleteInvoice(Long id, CorNetwork corNetwork) {
         traInvoiceRepository.delete(id);
     }
 
-    public TraInvoicePT getInvoice(Long id, CORNetwork corNetwork) {
+    public TraInvoicePT getInvoice(Long id, CorNetwork corNetwork) {
         TRAInvoice traInvoice = traInvoiceRepository.findOne(id);
         return customTRAInvoiceMapper.createDTOFromEnity(traInvoice);
     }
 
 
-    public List<TraInvoicePT> getCustomerInvoice(String customerShortcut, CORNetwork corNetwork) {
+    public List<TraInvoicePT> getCustomerInvoice(String customerShortcut, CorNetwork corNetwork) {
         return null;
     }
 

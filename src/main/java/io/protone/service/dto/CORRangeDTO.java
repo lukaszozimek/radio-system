@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORRange entity.
+ * A DTO for the CorRange entity.
  */
-public class CORRangeDTO implements Serializable {
+public class CorRangeDTO implements Serializable {
 
     private Long id;
 
@@ -17,7 +17,7 @@ public class CORRangeDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class CORRangeDTO implements Serializable {
             return false;
         }
 
-        CORRangeDTO cORRangeDTO = (CORRangeDTO) o;
+        CorRangeDTO cORRangeDTO = (CorRangeDTO) o;
 
         if ( ! Objects.equals(id, cORRangeDTO.id)) return false;
 
@@ -64,7 +64,7 @@ public class CORRangeDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORRangeDTO{" +
+        return "CorRangeDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

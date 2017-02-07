@@ -1,13 +1,13 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.custom.service.mapper.CustomCRMAccountMapper;
-import io.protone.custom.service.mapper.CustomSCHEmissionMapper;
+import io.protone.custom.service.mapper.CustomCrmAccountMapper;
+import io.protone.custom.service.mapper.CustomSchEmissionMapper;
 import io.protone.custom.service.mapper.CustomTRACampaignMapper;
 import io.protone.domain.*;
-import io.protone.repository.CRMAccountRepository;
-import io.protone.repository.SCHEmissionRepository;
-import io.protone.repository.TRACampaignRepository;
+import io.protone.repository.CrmAccountRepository;
+import io.protone.repository.SchEmissionRepository;
+import io.protone.repository.TraCampaignRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,50 +28,50 @@ public class TRACampaignService {
     private CustomTRACampaignMapper customTRACampaignMapper;
 
     @Inject
-    private TRACampaignRepository traCampaignRepository;
+    private TraCampaignRepository traCampaignRepository;
 
     @Inject
-    private CustomSCHEmissionMapper customSCHEmissionMapper;
+    private CustomSchEmissionMapper customSchEmissionMapper;
 
     @Inject
-    private CustomCRMAccountMapper customCRMAccountMapper;
+    private CustomCrmAccountMapper customCrmAccountMapper;
 
     @Inject
-    private CRMAccountRepository crmAccountRepository;
+    private CrmAccountRepository crmAccountRepository;
 
     @Inject
-    private SCHEmissionRepository schEmissionRepository;
+    private SchEmissionRepository schEmissionRepository;
 
     @Inject
     private TRACustomerService traCustomerService;
 
-    public List<TraCampaignPT> getAllCampaign(CORNetwork corNetwork) {
+    public List<TraCampaignPT> getAllCampaign(CorNetwork corNetwork) {
         return traCampaignRepository.findByNetwork(corNetwork).stream().map(campaign -> getCampaign(campaign, corNetwork)).collect(toList());
     }
 
-    public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CORNetwork corNetwork) {
-        TRACampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT,corNetwork);
+    public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CorNetwork corNetwork) {
+        TraCampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT,corNetwork);
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
     }
 
-    public void deleteCampaign(String shortcut, CORNetwork corNetwork) {
+    public void deleteCampaign(String shortcut, CorNetwork corNetwork) {
 
 
     }
 
-    public TraCampaignPT getCampaign(TRACampaign traCampaign, CORNetwork corNetwork) {
+    public TraCampaignPT getCampaign(TraCampaign traCampaign, CorNetwork corNetwork) {
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
     }
 
-    public TraCampaignPT getCampaign(String shortcut, CORNetwork corNetwork) {
+    public TraCampaignPT getCampaign(String shortcut, CorNetwork corNetwork) {
         return getCampaign(traCampaignRepository.findByNameAndNetwork(shortcut, corNetwork), corNetwork);
     }
 
-    public List<TraCampaignPT> getCampaign(List<Long> idx, CORNetwork corNetwork) {
+    public List<TraCampaignPT> getCampaign(List<Long> idx, CorNetwork corNetwork) {
         return traCampaignRepository.findAll(idx).stream().map(campaign -> getCampaign(campaign, corNetwork)).collect(toList());
     }
 
-    public List<TraCampaignPT> getCustomerCampaing(String shortcut, CORNetwork corNetwork) {
+    public List<TraCampaignPT> getCustomerCampaing(String shortcut, CorNetwork corNetwork) {
     return null;
     }
 

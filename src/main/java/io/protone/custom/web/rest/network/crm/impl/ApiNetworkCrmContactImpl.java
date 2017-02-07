@@ -1,11 +1,11 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CRMContactService;
+import io.protone.custom.service.CrmContactService;
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmContact;
-import io.protone.domain.CORNetwork;
-import io.protone.repository.CCORNetworkRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.repository.CCorNetworkRepository;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +19,13 @@ import java.util.List;
 public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
 
     @Inject
-    private CRMContactService contactService;
+    private CrmContactService contactService;
     @Inject
     private NetworkService networkService;
 
     @Override
     public ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customeryPT) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         if (customeryPT.getId() == null) {
             return createContactUsingPOST(networkShortcut, customeryPT);
         }
@@ -34,28 +34,28 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
 
     @Override
     public ResponseEntity<CrmContactPT> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customerPT) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(contactService.saveContact(customerPT,corNetwork));
     }
 
     @Override
     public ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(contactService.getAllContact(corNetwork));
     }
 
     @Override
     public ResponseEntity<CrmContactPT> getContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(contactService.getContact(shortName,corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         contactService.deleteContact(shortName,corNetwork);
         return ResponseEntity.ok().build();

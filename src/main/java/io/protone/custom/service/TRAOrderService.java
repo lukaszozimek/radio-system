@@ -26,35 +26,35 @@ public class TRAOrderService {
     @Inject
     private TRAOrderRepository traOrderRepository;
 
-    public List<TraOrderPT> getAllOrder(CORNetwork corNetwork) {
+    public List<TraOrderPT> getAllOrder(CorNetwork corNetwork) {
         return traOrderRepository.findByNetwork(corNetwork).stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());
     }
 
-    public TraOrderPT saveOrder(TraOrderPT orderPT, CORNetwork corNetwork) {
+    public TraOrderPT saveOrder(TraOrderPT orderPT, CorNetwork corNetwork) {
         TRAOrder traOrder = customTRAOrderMapper.trasnformDTOtoEntity(orderPT, corNetwork);
         traOrderRepository.save(traOrder);
         return customTRAOrderMapper.transfromEntiteToDTO(traOrder);
     }
 
-    public void deleteOrder(Long id, CORNetwork corNetwork) {
+    public void deleteOrder(Long id, CorNetwork corNetwork) {
         TRAOrder traOrder = traOrderRepository.findOne(id);
         traOrderRepository.delete(traOrder);
     }
 
-    public TraOrderPT getOrder(Long id, CORNetwork corNetwork) {
+    public TraOrderPT getOrder(Long id, CorNetwork corNetwork) {
         TRAOrder traOrder = traOrderRepository.findOne(id);
         return getOrdersByEntitie(traOrder, corNetwork);
     }
 
-    public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders, CORNetwork corNetwork) {
+    public List<TraOrderPT> getOrdersByEntitie(List<TRAOrder> traOrders, CorNetwork corNetwork) {
         return traOrders.stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());
     }
 
-    public TraOrderPT getOrdersByEntitie(TRAOrder traOrders, CORNetwork corNetwork) {
+    public TraOrderPT getOrdersByEntitie(TRAOrder traOrders, CorNetwork corNetwork) {
         return customTRAOrderMapper.transfromEntiteToDTO(traOrders);
     }
 
-    public List<TraOrderPT> getCustomerOrders(String shortcut, CORNetwork corNetwork) {
+    public List<TraOrderPT> getCustomerOrders(String shortcut, CorNetwork corNetwork) {
         return null;
     }
 

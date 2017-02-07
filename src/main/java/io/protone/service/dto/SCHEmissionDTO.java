@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-import io.protone.domain.enumeration.SCHStartTypeEnum;
+import io.protone.domain.enumeration.SchStartTypeEnum;
 
 /**
- * A DTO for the SCHEmission entity.
+ * A DTO for the SchEmission entity.
  */
-public class SCHEmissionDTO implements Serializable {
+public class SchEmissionDTO implements Serializable {
 
     private Long id;
 
@@ -23,7 +23,7 @@ public class SCHEmissionDTO implements Serializable {
     private ZonedDateTime startTime;
 
     @NotNull
-    private SCHStartTypeEnum startType;
+    private SchStartTypeEnum startType;
 
     private Long relativeDelay;
 
@@ -38,11 +38,11 @@ public class SCHEmissionDTO implements Serializable {
 
 
     private Long blockId;
-    
+
     private Long mediaItemId;
-    
+
     private Long templateId;
-    
+
     public Long getId() {
         return id;
     }
@@ -64,11 +64,11 @@ public class SCHEmissionDTO implements Serializable {
     public void setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
     }
-    public SCHStartTypeEnum getStartType() {
+    public SchStartTypeEnum getStartType() {
         return startType;
     }
 
-    public void setStartType(SCHStartTypeEnum startType) {
+    public void setStartType(SchStartTypeEnum startType) {
         this.startType = startType;
     }
     public Long getRelativeDelay() {
@@ -133,7 +133,7 @@ public class SCHEmissionDTO implements Serializable {
             return false;
         }
 
-        SCHEmissionDTO sCHEmissionDTO = (SCHEmissionDTO) o;
+        SchEmissionDTO sCHEmissionDTO = (SchEmissionDTO) o;
 
         if ( ! Objects.equals(id, sCHEmissionDTO.id)) return false;
 
@@ -147,7 +147,7 @@ public class SCHEmissionDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "SCHEmissionDTO{" +
+        return "SchEmissionDTO{" +
             "id=" + id +
             ", seq='" + seq + "'" +
             ", startTime='" + startTime + "'" +

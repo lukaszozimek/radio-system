@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMLeadSource entity.
+ * A DTO for the CrmLeadSource entity.
  */
-public class CRMLeadSourceDTO implements Serializable {
+public class CrmLeadSourceDTO implements Serializable {
 
     private Long id;
 
@@ -17,7 +17,7 @@ public class CRMLeadSourceDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class CRMLeadSourceDTO implements Serializable {
             return false;
         }
 
-        CRMLeadSourceDTO cRMLeadSourceDTO = (CRMLeadSourceDTO) o;
+        CrmLeadSourceDTO cRMLeadSourceDTO = (CrmLeadSourceDTO) o;
 
         if ( ! Objects.equals(id, cRMLeadSourceDTO.id)) return false;
 
@@ -64,7 +64,7 @@ public class CRMLeadSourceDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMLeadSourceDTO{" +
+        return "CrmLeadSourceDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

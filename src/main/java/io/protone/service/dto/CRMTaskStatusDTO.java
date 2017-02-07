@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMTaskStatus entity.
+ * A DTO for the CrmTaskStatus entity.
  */
-public class CRMTaskStatusDTO implements Serializable {
+public class CrmTaskStatusDTO implements Serializable {
 
     private Long id;
 
@@ -17,7 +17,7 @@ public class CRMTaskStatusDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class CRMTaskStatusDTO implements Serializable {
             return false;
         }
 
-        CRMTaskStatusDTO cRMTaskStatusDTO = (CRMTaskStatusDTO) o;
+        CrmTaskStatusDTO cRMTaskStatusDTO = (CrmTaskStatusDTO) o;
 
         if ( ! Objects.equals(id, cRMTaskStatusDTO.id)) return false;
 
@@ -64,7 +64,7 @@ public class CRMTaskStatusDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMTaskStatusDTO{" +
+        return "CrmTaskStatusDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

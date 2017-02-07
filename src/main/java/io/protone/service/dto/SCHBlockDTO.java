@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.Objects;
 
 import io.protone.domain.enumeration.SCHBlockTypeEnum;
-import io.protone.domain.enumeration.SCHStartTypeEnum;
+import io.protone.domain.enumeration.SchStartTypeEnum;
 
 /**
  * A DTO for the SCHBlock entity.
@@ -31,7 +31,7 @@ public class SCHBlockDTO implements Serializable {
     private ZonedDateTime startTime;
 
     @NotNull
-    private SCHStartTypeEnum startType;
+    private SchStartTypeEnum startType;
 
     private Long relativeDelay;
 
@@ -61,11 +61,11 @@ public class SCHBlockDTO implements Serializable {
 
 
     private Long parentBlockId;
-    
+
     private Long channelId;
-    
+
     private Long templateId;
-    
+
     public Long getId() {
         return id;
     }
@@ -101,11 +101,11 @@ public class SCHBlockDTO implements Serializable {
     public void setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
     }
-    public SCHStartTypeEnum getStartType() {
+    public SchStartTypeEnum getStartType() {
         return startType;
     }
 
-    public void setStartType(SCHStartTypeEnum startType) {
+    public void setStartType(SchStartTypeEnum startType) {
         this.startType = startType;
     }
     public Long getRelativeDelay() {

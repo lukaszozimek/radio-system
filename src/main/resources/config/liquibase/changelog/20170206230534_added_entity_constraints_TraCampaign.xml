@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraCampaign.
+    -->
+    <changeSet id="20170206230534-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_customer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_account"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_campaing_status"/>
+
+        <addForeignKeyConstraint baseColumnNames="price_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_price_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_price"/>
+
+        <addForeignKeyConstraint baseColumnNames="orders_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_orders_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_order"/>
+
+    </changeSet>
+</databaseChangeLog>

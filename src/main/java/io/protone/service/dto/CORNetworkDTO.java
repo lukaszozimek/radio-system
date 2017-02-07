@@ -6,9 +6,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORNetwork entity.
+ * A DTO for the CorNetwork entity.
  */
-public class CORNetworkDTO implements Serializable {
+public class CorNetworkDTO implements Serializable {
 
     private Long id;
 
@@ -61,7 +61,7 @@ public class CORNetworkDTO implements Serializable {
             return false;
         }
 
-        CORNetworkDTO cORNetworkDTO = (CORNetworkDTO) o;
+        CorNetworkDTO cORNetworkDTO = (CorNetworkDTO) o;
 
         if ( ! Objects.equals(id, cORNetworkDTO.id)) return false;
 
@@ -75,7 +75,7 @@ public class CORNetworkDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORNetworkDTO{" +
+        return "CorNetworkDTO{" +
             "id=" + id +
             ", shortcut='" + shortcut + "'" +
             ", name='" + name + "'" +

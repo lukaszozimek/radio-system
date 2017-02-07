@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORPerson entity.
+ * A DTO for the CorPerson entity.
  */
-public class CORPersonDTO implements Serializable {
+public class CorPersonDTO implements Serializable {
 
     private Long id;
 
@@ -26,7 +26,7 @@ public class CORPersonDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -73,7 +73,7 @@ public class CORPersonDTO implements Serializable {
             return false;
         }
 
-        CORPersonDTO cORPersonDTO = (CORPersonDTO) o;
+        CorPersonDTO cORPersonDTO = (CorPersonDTO) o;
 
         if ( ! Objects.equals(id, cORPersonDTO.id)) return false;
 
@@ -87,7 +87,7 @@ public class CORPersonDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORPersonDTO{" +
+        return "CorPersonDTO{" +
             "id=" + id +
             ", firstName='" + firstName + "'" +
             ", lastName='" + lastName + "'" +

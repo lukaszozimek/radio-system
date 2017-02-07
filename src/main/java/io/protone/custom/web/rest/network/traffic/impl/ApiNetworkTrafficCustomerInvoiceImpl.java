@@ -5,7 +5,7 @@ import io.protone.custom.service.TRAInvoiceService;
 import io.protone.custom.service.dto.TraCustomerOrdersPT;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerInvoice;
-import io.protone.domain.CORNetwork;
+import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +23,7 @@ public class ApiNetworkTrafficCustomerInvoiceImpl implements ApiNetworkTrafficCu
 
     @Override
     public ResponseEntity<List<TraInvoicePT>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traInvoiceService.getCustomerInvoice(customerShortcut,corNetwork));
     }
 

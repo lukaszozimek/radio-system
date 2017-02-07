@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORSize entity.
+ * A DTO for the CorSize entity.
  */
-public class CORSizeDTO implements Serializable {
+public class CorSizeDTO implements Serializable {
 
     private Long id;
 
@@ -17,7 +17,7 @@ public class CORSizeDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class CORSizeDTO implements Serializable {
             return false;
         }
 
-        CORSizeDTO cORSizeDTO = (CORSizeDTO) o;
+        CorSizeDTO cORSizeDTO = (CorSizeDTO) o;
 
         if ( ! Objects.equals(id, cORSizeDTO.id)) return false;
 
@@ -64,7 +64,7 @@ public class CORSizeDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORSizeDTO{" +
+        return "CorSizeDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

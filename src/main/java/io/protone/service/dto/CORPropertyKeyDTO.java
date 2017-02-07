@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORPropertyKey entity.
+ * A DTO for the CorPropertyKey entity.
  */
-public class CORPropertyKeyDTO implements Serializable {
+public class CorPropertyKeyDTO implements Serializable {
 
     private Long id;
 
@@ -20,7 +20,7 @@ public class CORPropertyKeyDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -53,7 +53,7 @@ public class CORPropertyKeyDTO implements Serializable {
             return false;
         }
 
-        CORPropertyKeyDTO cORPropertyKeyDTO = (CORPropertyKeyDTO) o;
+        CorPropertyKeyDTO cORPropertyKeyDTO = (CorPropertyKeyDTO) o;
 
         if ( ! Objects.equals(id, cORPropertyKeyDTO.id)) return false;
 
@@ -67,7 +67,7 @@ public class CORPropertyKeyDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORPropertyKeyDTO{" +
+        return "CorPropertyKeyDTO{" +
             "id=" + id +
             ", key='" + key + "'" +
             '}';

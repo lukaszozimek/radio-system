@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.CFGTaskStatus;
+import io.protone.domain.CrmTaskStatus;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class CrmTaskPT {
     private Long id = null;
 
     @JsonProperty("status")
-    private CFGTaskStatus crmTaskStatus = null;
+    private CrmTaskStatus crmTaskStatus = null;
 
     @JsonProperty("createdBy")
     private CoreManagedUserPT createdBy = null;
@@ -104,15 +104,15 @@ public class CrmTaskPT {
     }
 
     @ApiModelProperty(value = "")
-    public CFGTaskStatus getCrmTaskStatus() {
+    public CrmTaskStatus getCrmTaskStatus() {
         return crmTaskStatus;
     }
 
-    public void setCrmTaskStatus(CFGTaskStatus crmTaskStatus) {
+    public void setCrmTaskStatus(CrmTaskStatus crmTaskStatus) {
         this.crmTaskStatus = crmTaskStatus;
     }
 
-    public CrmTaskPT crmTaskStatus(CFGTaskStatus crmTaskStatus) {
+    public CrmTaskPT crmTaskStatus(CrmTaskStatus crmTaskStatus) {
         this.crmTaskStatus = crmTaskStatus;
         return this;
     }

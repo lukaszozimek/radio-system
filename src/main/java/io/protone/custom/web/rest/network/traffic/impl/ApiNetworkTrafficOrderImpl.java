@@ -4,7 +4,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.TRAOrderService;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficOrder;
-import io.protone.domain.CORNetwork;
+import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
 
     @Override
     public ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         if (anOrderDTO.getId() == null) {
             return createAnOrderUsingPOST(networkShortcut, anOrderDTO);
         }
@@ -34,25 +34,25 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
 
     @Override
     public ResponseEntity<TraOrderPT> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traOrderService.saveOrder(anOrderDTO, corNetwork));
     }
 
     @Override
     public ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traOrderService.getAllOrder(corNetwork));
     }
 
     @Override
     public ResponseEntity<TraOrderPT> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traOrderService.getOrder(id, corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteAnOrderUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         traOrderService.getOrder(id, corNetwork);
         return ResponseEntity.ok().build();
     }

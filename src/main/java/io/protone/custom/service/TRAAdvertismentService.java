@@ -2,9 +2,9 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.service.mapper.CustomCRMAccountMapper;
+import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
-import io.protone.custom.service.mapper.CustomTRAIndustryMapper;
+import io.protone.custom.service.mapper.CustomTraIndustryMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
 import org.springframework.stereotype.Service;
@@ -28,46 +28,46 @@ public class TRAAdvertismentService {
     private CustomTRAAdvertismentMapper traAdvertismentMapper;
 
     @Inject
-    private TRAAdvertisementRepository traAdvertisementRepository;
+    private TraAdvertisementRepository traAdvertisementRepository;
 
     @Inject
-    private CustomTRAIndustryMapper customTRAIndustryMapper;
+    private CustomTraIndustryMapper customTraIndustryMapper;
 
     @Inject
-    private CustomCRMAccountMapper customCRMAccountMapper;
+    private CustomCrmAccountMapper customCrmAccountMapper;
 
     @Inject
-    private LIBMediaItemRepository libMediaItemRepository;
+    private LibMediaItemRepository libMediaItemRepository;
 
     @Inject
-    private TRAIndustryRepository traIndustryRepository;
+    private TraIndustryRepository traIndustryRepository;
 
     @Inject
-    private CRMAccountRepository crmAccountRepository;
+    private CrmAccountRepository crmAccountRepository;
 
-    public List<TraAdvertisementPT> getAllAdvertisement(CORNetwork corNetwork) {
+    public List<TraAdvertisementPT> getAllAdvertisement(CorNetwork corNetwork) {
         return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.transformEntityToDTO(traAdvertisement)).collect(toList());
     }
 
-    public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT, CORNetwork corNetwork) {
-        TRAAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT, corNetwork);
+    public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
+        TraAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT, corNetwork);
         traAdvertisementRepository.save(traAdvertisement);
         return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }
 
-    public void deleteAdvertisement(Long idx, CORNetwork corNetwork) {
-        TRAAdvertisement traAdvertisement = traAdvertisementRepository.findOne(idx);
+    public void deleteAdvertisement(Long idx, CorNetwork corNetwork) {
+        TraAdvertisement traAdvertisement = traAdvertisementRepository.findOne(idx);
         libMediaItemRepository.delete(traAdvertisement.getLibitem());
         traAdvertisementRepository.delete(traAdvertisement);
     }
 
-    public TraAdvertisementPT getAdvertisement(Long id, CORNetwork corNetwork) {
-        TRAAdvertisement traAdvertisement = traAdvertisementRepository.findOne(id);
+    public TraAdvertisementPT getAdvertisement(Long id, CorNetwork corNetwork) {
+        TraAdvertisement traAdvertisement = traAdvertisementRepository.findOne(id);
         return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }
 
 
-    public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CORNetwork corNetwork) {
+    public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CorNetwork corNetwork) {
         return null;
     }
 

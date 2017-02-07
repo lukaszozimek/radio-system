@@ -1,7 +1,7 @@
 package io.protone.custom.service;
 
-import io.protone.domain.CORNetwork;
-import io.protone.repository.CCORNetworkRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.repository.CorNetworkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +15,14 @@ import java.util.List;
 public class NetworkService {
 
     @Inject
-    private CCORNetworkRepository ccorNetworkRepository;
+    private CorNetworkRepository ccorNetworkRepository;
 
-    public List<CORNetwork> findAllNetworks() {
+    public List<CorNetwork> findAllNetworks() {
         return ccorNetworkRepository.findAll();
     }
 
-    public CORNetwork findNetwork(String shortcut) {
-        return ccorNetworkRepository.findByShortcut(shortcut);
+    public CorNetwork findNetwork(String shortcut) {
+        return ccorNetworkRepository.findOneByShortcut(shortcut);
     }
 
     @Transactional
@@ -30,7 +30,7 @@ public class NetworkService {
         ccorNetworkRepository.deleteByShortcut(shortcut);
     }
 
-    public CORNetwork save(CORNetwork network) {
+    public CorNetwork save(CorNetwork network) {
         return ccorNetworkRepository.save(network);
     }
 

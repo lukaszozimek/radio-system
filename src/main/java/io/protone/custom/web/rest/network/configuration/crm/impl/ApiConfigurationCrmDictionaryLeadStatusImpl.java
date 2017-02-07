@@ -3,12 +3,12 @@ package io.protone.custom.web.rest.network.configuration.crm.impl;
 
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfLeadStatusPT;
-import io.protone.custom.service.mapper.CustomCRMLeadStatusMapper;
+import io.protone.custom.service.mapper.CustomCrmLeadStatusMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadStatus;
-import io.protone.domain.CORNetwork;
-import io.protone.domain.CRMLeadStatus;
-import io.protone.repository.CCORNetworkRepository;
-import io.protone.repository.CRMLeadStatusRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmLeadStatus;
+import io.protone.repository.CCorNetworkRepository;
+import io.protone.repository.CrmLeadStatusRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -29,15 +29,15 @@ public class ApiConfigurationCrmDictionaryLeadStatusImpl implements ApiConfigura
     private final Logger log = LoggerFactory.getLogger(ApiConfigurationCrmDictionaryLeadStatusImpl.class);
 
     @Inject
-    private CRMLeadStatusRepository cRMLeadStatusRepository;
+    private CrmLeadStatusRepository cRMLeadStatusRepository;
     @Inject
     private NetworkService networkService;
     @Inject
-    private CustomCRMLeadStatusMapper customCRMLeadStatusMapper;
+    private CustomCrmLeadStatusMapper customCrmLeadStatusMapper;
 
     @Override
     public ResponseEntity<Void> deleteLeadStatusUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete CRMLeadStatus : {}", id);
+        log.debug("REST request to delete CrmLeadStatus : {}", id);
         cRMLeadStatusRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cRMLeadStatus", id.toString())).build();
 
@@ -45,16 +45,16 @@ public class ApiConfigurationCrmDictionaryLeadStatusImpl implements ApiConfigura
 
     @Override
     public ResponseEntity<List<ConfLeadStatusPT>> getAllLeadStatusUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all CRMLeadStatuses");
-        List<CRMLeadStatus> cRMLeadStatuses = cRMLeadStatusRepository.findAll();
-        return ResponseEntity.ok().body(customCRMLeadStatusMapper.cRMLeadStatusesToCRMLeadStatusDTOs(cRMLeadStatuses));
+        log.debug("REST request to get all CrmLeadStatuses");
+        List<CrmLeadStatus> cRMLeadStatuses = cRMLeadStatusRepository.findAll();
+        return ResponseEntity.ok().body(customCrmLeadStatusMapper.cRMLeadStatusesToCrmLeadStatusDTOs(cRMLeadStatuses));
     }
 
     @Override
     public ResponseEntity<ConfLeadStatusPT> getLeadStatusUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CRMLeadStatus : {}", id);
-        CRMLeadStatus cRMLeadStatus = cRMLeadStatusRepository.findOne(id);
-        ConfLeadStatusPT cRMLeadStatusDTO = customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(cRMLeadStatus);
+        log.debug("REST request to get CrmLeadStatus : {}", id);
+        CrmLeadStatus cRMLeadStatus = cRMLeadStatusRepository.findOne(id);
+        ConfLeadStatusPT cRMLeadStatusDTO = customCrmLeadStatusMapper.cRMLeadStatusToCrmLeadStatusDTO(cRMLeadStatus);
         return Optional.ofNullable(cRMLeadStatusDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -64,29 +64,29 @@ public class ApiConfigurationCrmDictionaryLeadStatusImpl implements ApiConfigura
 
     @Override
     public ResponseEntity<ConfLeadStatusPT> updateleadStatusUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadStatusPT leadStatus) {
-        log.debug("REST request to update CRMLeadStatus : {}", leadStatus);
+        log.debug("REST request to update CrmLeadStatus : {}", leadStatus);
         if (leadStatus.getId() == null) {
             return createLeadStatusUsingPOST(networkShortcut, leadStatus);
         }
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CRMLeadStatus cRMLeadStatus = customCRMLeadStatusMapper.cRMLeadStatusDTOToCRMLeadStatus(leadStatus);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CrmLeadStatus cRMLeadStatus = customCrmLeadStatusMapper.cRMLeadStatusDTOToCrmLeadStatus(leadStatus);
         cRMLeadStatus.setNetwork(corNetwork);
         cRMLeadStatus = cRMLeadStatusRepository.save(cRMLeadStatus);
-        ConfLeadStatusPT result = customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(cRMLeadStatus);
+        ConfLeadStatusPT result = customCrmLeadStatusMapper.cRMLeadStatusToCrmLeadStatusDTO(cRMLeadStatus);
         return ResponseEntity.ok().body(result);
     }
 
     @Override
     public ResponseEntity<ConfLeadStatusPT> createLeadStatusUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadStatusPT leadStatus) {
-        log.debug("REST request to save CRMLeadStatus : {}", leadStatus);
+        log.debug("REST request to save CrmLeadStatus : {}", leadStatus);
         if (leadStatus.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cRMLeadStatus", "idexists", "A new cRMLeadStatus cannot already have an ID")).body(null);
         }
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CRMLeadStatus cRMLeadStatus = customCRMLeadStatusMapper.cRMLeadStatusDTOToCRMLeadStatus(leadStatus);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CrmLeadStatus cRMLeadStatus = customCrmLeadStatusMapper.cRMLeadStatusDTOToCrmLeadStatus(leadStatus);
         cRMLeadStatus.setNetwork(corNetwork);
         cRMLeadStatus = cRMLeadStatusRepository.save(cRMLeadStatus);
-        ConfLeadStatusPT result = customCRMLeadStatusMapper.cRMLeadStatusToCRMLeadStatusDTO(cRMLeadStatus);
+        ConfLeadStatusPT result = customCrmLeadStatusMapper.cRMLeadStatusToCrmLeadStatusDTO(cRMLeadStatus);
         return ResponseEntity.ok()
             .body(result);
     }

@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMOpportunity entity.
+ * A DTO for the CrmOpportunity entity.
  */
-public class CRMOpportunityDTO implements Serializable {
+public class CrmOpportunityDTO implements Serializable {
 
     private Long id;
 
@@ -24,7 +24,7 @@ public class CRMOpportunityDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -78,7 +78,7 @@ public class CRMOpportunityDTO implements Serializable {
             return false;
         }
 
-        CRMOpportunityDTO cRMOpportunityDTO = (CRMOpportunityDTO) o;
+        CrmOpportunityDTO cRMOpportunityDTO = (CrmOpportunityDTO) o;
 
         if ( ! Objects.equals(id, cRMOpportunityDTO.id)) return false;
 
@@ -92,7 +92,7 @@ public class CRMOpportunityDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMOpportunityDTO{" +
+        return "CrmOpportunityDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             ", lastTry='" + lastTry + "'" +

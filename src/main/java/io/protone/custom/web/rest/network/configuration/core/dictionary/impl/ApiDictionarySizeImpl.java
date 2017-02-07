@@ -2,11 +2,10 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreSizePT;
-import io.protone.custom.service.mapper.CustomCORSizeMapper;
+import io.protone.custom.service.mapper.CustomCorSizeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionarySize;
-import io.protone.domain.CORNetwork;
-import io.protone.domain.CORSize;
-import io.protone.repository.CORSizeRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CorSize;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -26,46 +25,46 @@ public class ApiDictionarySizeImpl implements ApiDictionarySize {
     private final Logger log = LoggerFactory.getLogger(ApiDictionarySizeImpl.class);
 
     @Inject
-    private CORSizeRepository cORSizeRepository;
+    private CorSizeRepository cORSizeRepository;
     @Inject
     private NetworkService networkService;
     @Inject
-    private CustomCORSizeMapper customCORSizeMapper;
+    private CustomCorSizeMapper customCorSizeMapper;
 
     @Override
     public ResponseEntity<CoreSizePT> createSizeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "coreSizePT", required = true) @RequestBody CoreSizePT coreSizePT) {
-        log.debug("REST request to save CORSize : {}", coreSizePT);
+        log.debug("REST request to save CorSize : {}", coreSizePT);
         if (coreSizePT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORSize", "idexists", "A new cORSize cannot already have an ID")).body(null);
         }
 
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CORSize cORSize = customCORSizeMapper.cORSizeDTOToCORSize(coreSizePT);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorSize cORSize = customCorSizeMapper.cORSizeDTOToCorSize(coreSizePT);
         cORSize.setNetwork(corNetwork);
         cORSize = cORSizeRepository.save(cORSize);
-        CoreSizePT result = customCORSizeMapper.cORSizeToCORSizeDTO(cORSize);
+        CoreSizePT result = customCorSizeMapper.cORSizeToCorSizeDTO(cORSize);
         return ResponseEntity.ok().body(result);
     }
 
     @Override
     public ResponseEntity<Void> deleteSizeUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete CORSize : {}", id);
+        log.debug("REST request to delete CorSize : {}", id);
         cORSizeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORSize", id.toString())).build();
     }
 
     @Override
     public ResponseEntity<List<CoreSizePT>> getAllSizeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all CORSizes");
-        List<CORSize> cORSizes = cORSizeRepository.findAll();
-        return ResponseEntity.ok().body(customCORSizeMapper.cORSizesToCORSizeDTOs(cORSizes));
+        log.debug("REST request to get all CorSizes");
+        List<CorSize> cORSizes = cORSizeRepository.findAll();
+        return ResponseEntity.ok().body(customCorSizeMapper.cORSizesToCorSizeDTOs(cORSizes));
     }
 
     @Override
     public ResponseEntity<CoreSizePT> getSizeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CORSize : {}", id);
-        CORSize cORSize = cORSizeRepository.findOne(id);
-        CoreSizePT cORSizeDTO = customCORSizeMapper.cORSizeToCORSizeDTO(cORSize);
+        log.debug("REST request to get CorSize : {}", id);
+        CorSize cORSize = cORSizeRepository.findOne(id);
+        CoreSizePT cORSizeDTO = customCorSizeMapper.cORSizeToCorSizeDTO(cORSize);
         return Optional.ofNullable(cORSizeDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -75,15 +74,15 @@ public class ApiDictionarySizeImpl implements ApiDictionarySize {
 
     @Override
     public ResponseEntity<CoreSizePT> updateSizeUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "coreSizePT", required = true) @RequestBody CoreSizePT coreSizePT) {
-        log.debug("REST request to update CORSize : {}", coreSizePT);
+        log.debug("REST request to update CorSize : {}", coreSizePT);
         if (coreSizePT.getId() == null) {
             return createSizeUsingPOST(networkShortcut, coreSizePT);
         }
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CORSize cORSize = customCORSizeMapper.cORSizeDTOToCORSize(coreSizePT);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorSize cORSize = customCorSizeMapper.cORSizeDTOToCorSize(coreSizePT);
         cORSize.setNetwork(corNetwork);
         cORSize = cORSizeRepository.save(cORSize);
-        CoreSizePT result = customCORSizeMapper.cORSizeToCORSizeDTO(cORSize);
+        CoreSizePT result = customCorSizeMapper.cORSizeToCorSizeDTO(cORSize);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORSize", coreSizePT.getId().toString()))
             .body(result);

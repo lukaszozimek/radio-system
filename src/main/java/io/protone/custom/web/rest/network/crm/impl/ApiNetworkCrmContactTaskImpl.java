@@ -1,9 +1,9 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CRMContactService;
+import io.protone.custom.service.CrmContactService;
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.domain.CORNetwork;
+import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,32 +17,32 @@ import java.util.List;
 public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmContactTask {
 
     @Inject
-    private CRMContactService crmContactService;
+    private CrmContactService crmContactService;
     @Inject
     private NetworkService networkService;
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllContactActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(crmContactService.getTasksAssociatedWithContact(shortName,corNetwork));
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> updateContactActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmContactService.updateLeadTask(shortName,crmActivityPT,corNetwork));
 
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmContactService.updateLeadTask(shortName, crmActivityPT,corNetwork));
     }
 
     @Override
     public ResponseEntity<Void> deleteContactActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         crmContactService.deleteContactTask(shortName, id,corNetwork);
         return ResponseEntity.ok().build();
 
@@ -50,7 +50,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
 
     @Override
     public ResponseEntity<CrmTaskPT> getContactActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmContactService.getTaskAssociatedWithContact(shortName, id,corNetwork));
     }
 }

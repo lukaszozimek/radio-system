@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMAccount entity.
+ * A DTO for the CrmAccount entity.
  */
-public class CRMAccountDTO implements Serializable {
+public class CrmAccountDTO implements Serializable {
 
     private Long id;
 
@@ -27,7 +27,7 @@ public class CRMAccountDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -95,7 +95,7 @@ public class CRMAccountDTO implements Serializable {
             return false;
         }
 
-        CRMAccountDTO cRMAccountDTO = (CRMAccountDTO) o;
+        CrmAccountDTO cRMAccountDTO = (CrmAccountDTO) o;
 
         if ( ! Objects.equals(id, cRMAccountDTO.id)) return false;
 
@@ -109,7 +109,7 @@ public class CRMAccountDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMAccountDTO{" +
+        return "CrmAccountDTO{" +
             "id=" + id +
             ", shortName='" + shortName + "'" +
             ", externalId1='" + externalId1 + "'" +

@@ -1,9 +1,7 @@
 package io.protone.custom.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.protone.domain.enumeration.SCHStartTypeEnum;
+import io.protone.domain.enumeration.SchStartTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -41,7 +39,7 @@ public class SchEmissionPT {
     @JsonProperty("startTime")
     private String startTime = null;
     @JsonProperty("startType")
-    private SCHStartTypeEnum startType = null;
+    private SchStartTypeEnum startType = null;
     @JsonProperty("templateId")
     private Long templateId = null;
 
@@ -216,7 +214,7 @@ public class SchEmissionPT {
         this.startTime = startTime;
     }
 
-    public SchEmissionPT startType(SCHStartTypeEnum startType) {
+    public SchEmissionPT startType(SchStartTypeEnum startType) {
         this.startType = startType;
         return this;
     }
@@ -227,11 +225,11 @@ public class SchEmissionPT {
      * @return startType
      **/
     @ApiModelProperty(required = true, value = "")
-    public SCHStartTypeEnum getStartType() {
+    public SchStartTypeEnum getStartType() {
         return startType;
     }
 
-    public void setStartType(SCHStartTypeEnum startType) {
+    public void setStartType(SchStartTypeEnum startType) {
         this.startType = startType;
     }
 

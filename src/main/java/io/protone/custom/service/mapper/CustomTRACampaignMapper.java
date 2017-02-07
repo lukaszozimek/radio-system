@@ -20,24 +20,24 @@ import static java.util.stream.Collectors.toSet;
 public class CustomTRACampaignMapper {
 
     @Inject
-    private CustomSCHEmissionMapper emissionMapper;
+    private CustomSchEmissionMapper emissionMapper;
     @Inject
-    private CustomCRMAccountMapper crmAccountMapper;
+    private CustomCrmAccountMapper crmAccountMapper;
 
-    public TRACampaign transfromDTOToEntity(TraCampaignPT traCampaignPT,CORNetwork corNetwork) {
-        TRACampaign traCampaign = new TRACampaign();
+    public TraCampaign transfromDTOToEntity(TraCampaignPT traCampaignPT,CorNetwork corNetwork) {
+        TraCampaign traCampaign = new TraCampaign();
         traCampaign.setId(traCampaign.getId());
         return traCampaign
             .startDate(traCampaign.getStartDate())
             .endDate(traCampaign.getEndDate())
             .name(traCampaign.getName())
             .prize(traCampaign.getPrize())
-            .cRMAccount(crmAccountMapper.createCrmAcountEntity(traCampaignPT.getCustomerId(),corNetwork))
+            .customer(crmAccountMapper.createCrmAcountEntity(traCampaignPT.getCustomerId(),corNetwork))
             .emissions(traCampaignPT.getEmission().stream().map(schEmissionPT -> emissionMapper.createEmissionFromDTO(schEmissionPT)).collect(toSet()))
             .network(corNetwork);
     }
 
-    public TraCampaignPT transfromEntitytoDTO(TRACampaign traCampaign) {
+    public TraCampaignPT transfromEntitytoDTO(TraCampaign traCampaign) {
         return new TraCampaignPT()
             .name(traCampaign.getName())
             .prize(traCampaign.getPrize())

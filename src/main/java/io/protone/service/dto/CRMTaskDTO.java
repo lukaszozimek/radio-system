@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMTask entity.
+ * A DTO for the CrmTask entity.
  */
-public class CRMTaskDTO implements Serializable {
+public class CrmTaskDTO implements Serializable {
 
     private Long id;
 
@@ -24,7 +24,7 @@ public class CRMTaskDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -78,7 +78,7 @@ public class CRMTaskDTO implements Serializable {
             return false;
         }
 
-        CRMTaskDTO cRMTaskDTO = (CRMTaskDTO) o;
+        CrmTaskDTO cRMTaskDTO = (CrmTaskDTO) o;
 
         if ( ! Objects.equals(id, cRMTaskDTO.id)) return false;
 
@@ -92,7 +92,7 @@ public class CRMTaskDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMTaskDTO{" +
+        return "CrmTaskDTO{" +
             "id=" + id +
             ", subject='" + subject + "'" +
             ", activityDate='" + activityDate + "'" +

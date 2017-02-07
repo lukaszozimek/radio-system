@@ -1,19 +1,15 @@
 package io.protone.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.domain.enumeration.LibCounterTypeEnum;
+import io.protone.domain.enumeration.LibObjectTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.CORCounterTypeEnum;
-
-import io.protone.domain.enumeration.LIBObjectTypeEnum;
 
 /**
  * A LibLibrary.
@@ -54,34 +50,18 @@ public class LibLibrary implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "counter_type")
-    private CORCounterTypeEnum counterType;
+    private LibCounterTypeEnum counterType;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "library_type", nullable = false)
-    private LIBObjectTypeEnum libraryType;
+    private LibObjectTypeEnum libraryType;
 
     @Column(name = "description")
     private String description;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private CORNetwork network;
-
-    @OneToMany(mappedBy = "libLibrary")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CORChannel> channels = new HashSet<>();
-
-    @OneToMany(mappedBy = "libLibrary")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CORUser> users = new HashSet<>();
-
-    @OneToMany(mappedBy = "libLibrary")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<LIBMediaItem> items = new HashSet<>();
+    @ManyToOne
+    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -156,29 +136,29 @@ public class LibLibrary implements Serializable {
         this.counter = counter;
     }
 
-    public CORCounterTypeEnum getCounterType() {
+    public LibCounterTypeEnum getCounterType() {
         return counterType;
     }
 
-    public LibLibrary counterType(CORCounterTypeEnum counterType) {
+    public LibLibrary counterType(LibCounterTypeEnum counterType) {
         this.counterType = counterType;
         return this;
     }
 
-    public void setCounterType(CORCounterTypeEnum counterType) {
+    public void setCounterType(LibCounterTypeEnum counterType) {
         this.counterType = counterType;
     }
 
-    public LIBObjectTypeEnum getLibraryType() {
+    public LibObjectTypeEnum getLibraryType() {
         return libraryType;
     }
 
-    public LibLibrary libraryType(LIBObjectTypeEnum libraryType) {
+    public LibLibrary libraryType(LibObjectTypeEnum libraryType) {
         this.libraryType = libraryType;
         return this;
     }
 
-    public void setLibraryType(LIBObjectTypeEnum libraryType) {
+    public void setLibraryType(LibObjectTypeEnum libraryType) {
         this.libraryType = libraryType;
     }
 
@@ -195,92 +175,17 @@ public class LibLibrary implements Serializable {
         this.description = description;
     }
 
-    public CORNetwork getNetwork() {
+    public CorNetwork getNetwork() {
         return network;
     }
 
-    public LibLibrary network(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
+    public LibLibrary network(CorNetwork corNetwork) {
+        this.network = corNetwork;
         return this;
     }
 
-    public void setNetwork(CORNetwork cORNetwork) {
-        this.network = cORNetwork;
-    }
-
-    public Set<CORChannel> getChannels() {
-        return channels;
-    }
-
-    public LibLibrary channels(Set<CORChannel> cORChannels) {
-        this.channels = cORChannels;
-        return this;
-    }
-
-    public LibLibrary addChannel(CORChannel cORChannel) {
-        channels.add(cORChannel);
-        cORChannel.setLibLibrary(this);
-        return this;
-    }
-
-    public LibLibrary removeChannel(CORChannel cORChannel) {
-        channels.remove(cORChannel);
-        cORChannel.setLibLibrary(null);
-        return this;
-    }
-
-    public void setChannels(Set<CORChannel> cORChannels) {
-        this.channels = cORChannels;
-    }
-
-    public Set<CORUser> getUsers() {
-        return users;
-    }
-
-    public LibLibrary users(Set<CORUser> cORUsers) {
-        this.users = cORUsers;
-        return this;
-    }
-
-    public LibLibrary addUser(CORUser cORUser) {
-        users.add(cORUser);
-        cORUser.setLibLibrary(this);
-        return this;
-    }
-
-    public LibLibrary removeUser(CORUser cORUser) {
-        users.remove(cORUser);
-        cORUser.setLibLibrary(null);
-        return this;
-    }
-
-    public void setUsers(Set<CORUser> cORUsers) {
-        this.users = cORUsers;
-    }
-
-    public Set<LIBMediaItem> getItems() {
-        return items;
-    }
-
-    public LibLibrary items(Set<LIBMediaItem> lIBMediaItems) {
-        this.items = lIBMediaItems;
-        return this;
-    }
-
-    public LibLibrary addItem(LIBMediaItem lIBMediaItem) {
-        items.add(lIBMediaItem);
-        lIBMediaItem.setLibLibrary(this);
-        return this;
-    }
-
-    public LibLibrary removeItem(LIBMediaItem lIBMediaItem) {
-        items.remove(lIBMediaItem);
-        lIBMediaItem.setLibLibrary(null);
-        return this;
-    }
-
-    public void setItems(Set<LIBMediaItem> lIBMediaItems) {
-        this.items = lIBMediaItems;
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     @Override

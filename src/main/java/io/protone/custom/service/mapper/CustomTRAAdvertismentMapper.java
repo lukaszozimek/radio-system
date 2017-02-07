@@ -15,33 +15,33 @@ import javax.inject.Inject;
 public class CustomTRAAdvertismentMapper {
 
     @Inject
-    private CustomTRAIndustryMapper customTRAIndustryMapper;
+    private CustomTraIndustryMapper customTraIndustryMapper;
 
     @Inject
-    private CustomCRMAccountMapper customCRMAccountMapper;
+    private CustomCrmAccountMapper customCrmAccountMapper;
 
     @Inject
     private TRACustomerService customerService;
 
-    public TRAAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CORNetwork corNetwork) {
-        TRAAdvertisement advertisement = new TRAAdvertisement();
+    public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
+        TraAdvertisement advertisement = new TraAdvertisement();
         advertisement.setId(traAdvertisementPT.getId());
         return advertisement.name(traAdvertisementPT.getName())
             .description(traAdvertisementPT.getDescription())
-            .industry(customTRAIndustryMapper.tRAIndustryDTOToTRAIndustry(traAdvertisementPT.getIndustryId()))
-            .libitem((new LIBMediaItem()))
-            .cRMAccount(customCRMAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
+            .industry(customTraIndustryMapper.tRAIndustryDTOToTraIndustry(traAdvertisementPT.getIndustryId()))
+            .libitem((new LibMediaItem()))
+            .customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
 
     }
 
-    public TraAdvertisementPT transformEntityToDTO(TRAAdvertisement traAdvertisement) {
+    public TraAdvertisementPT transformEntityToDTO(TraAdvertisement traAdvertisement) {
         return new TraAdvertisementPT()
             .id(traAdvertisement.getId())
             .name(traAdvertisement.getName())
             .description(traAdvertisement.getDescription())
-            .industryId(customTRAIndustryMapper.tRAIndustryToTRAIndustryDTO(traAdvertisement.getIndustry()))
+            .industryId(customTraIndustryMapper.tRAIndustryToTraIndustryDTO(traAdvertisement.getIndustry()))
             .mediaItemId(new LibItemPT())
-            .customerId(customCRMAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCRMAccount()));
+            .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCustomer()));
 
     }
 

@@ -1,7 +1,7 @@
 package io.protone.custom.service;
 
-import io.protone.domain.CORChannel;
-import io.protone.repository.CCORChannelRepository;
+import io.protone.domain.CorChannel;
+import io.protone.repository.CorChannelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +15,14 @@ import java.util.List;
 public class ChannelService {
 
     @Inject
-    private CCORChannelRepository ccorChannelRepository;
+    private CorChannelRepository ccorChannelRepository;
 
-    public List<CORChannel> findAllChannel() {
+    public List<CorChannel> findAllChannel() {
         return ccorChannelRepository.findAll();
     }
 
-    public CORChannel findChannel(String shortcut) {
-        return ccorChannelRepository.findByPrefix(shortcut);
+    public CorChannel findChannel(String shortcut) {
+        return ccorChannelRepository.findOneByPrefix(shortcut);
     }
 
     @Transactional
@@ -30,7 +30,7 @@ public class ChannelService {
         ccorChannelRepository.deleteByPrefix(shortcut);
     }
 
-    public CORChannel save(CORChannel network) {
+    public CorChannel save(CorChannel network) {
         return ccorChannelRepository.save(network);
     }
 }

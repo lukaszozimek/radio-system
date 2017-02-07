@@ -1,7 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.*;
-import io.protone.custom.service.mapper.CustomCRMAccountMapper;
+import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
 import org.springframework.stereotype.Service;
@@ -25,42 +25,42 @@ import static java.util.stream.Collectors.toList;
 public class TRACustomerService {
 
     @Inject
-    private CRMAccountRepository crmAccountRepository;
+    private CrmAccountRepository crmAccountRepository;
 
     @Inject
-    private CustomCRMAccountMapper customCRMAccountMapper;
+    private CustomCrmAccountMapper customCrmAccountMapper;
 
 
-    public List<TraCustomerPT> getAllCustomers(CORNetwork corNetwork) {
+    public List<TraCustomerPT> getAllCustomers(CorNetwork corNetwork) {
 
         return crmAccountRepository.findByNetwork(corNetwork).stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
     }
 
-    public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CORNetwork corNetwork) {
-        CRMAccount crmAccount = customCRMAccountMapper.createCrmAcountEntity(traCustomerPT,corNetwork);
+    public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CorNetwork corNetwork) {
+        CrmAccount crmAccount = customCrmAccountMapper.createCrmAcountEntity(traCustomerPT,corNetwork);
         crmAccountRepository.save(crmAccount);
 
-        return customCRMAccountMapper.createCustomerTrafficDTO(crmAccount);
+        return customCrmAccountMapper.createCustomerTrafficDTO(crmAccount);
     }
 
-    public void deleteCustomer(String shortcut, CORNetwork corNetwork) {
+    public void deleteCustomer(String shortcut, CorNetwork corNetwork) {
 
 
     }
 
-    public TraCustomerPT getCustomer(String shortcut, CORNetwork corNetwork) {
-        CRMAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+    public TraCustomerPT getCustomer(String shortcut, CorNetwork corNetwork) {
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         return getCustomer(crmAccount, corNetwork);
     }
 
-    public TraCustomerPT update(TraCustomerPT traCustomerPT, CORNetwork corNetwork) {
+    public TraCustomerPT update(TraCustomerPT traCustomerPT, CorNetwork corNetwork) {
         deleteCustomer(traCustomerPT.getShortName(), corNetwork);
         return saveCustomers(traCustomerPT, corNetwork);
     }
 
-    public TraCustomerPT getCustomer(CRMAccount crmAccount, CORNetwork corNetwork) {
+    public TraCustomerPT getCustomer(CrmAccount crmAccount, CorNetwork corNetwork) {
 
-        return customCRMAccountMapper.createCustomerTrafficDTO(crmAccount);
+        return customCrmAccountMapper.createCustomerTrafficDTO(crmAccount);
     }
 
 

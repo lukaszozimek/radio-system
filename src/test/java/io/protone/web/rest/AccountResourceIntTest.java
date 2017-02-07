@@ -4,7 +4,6 @@ import io.protone.ProtoneApp;
 import io.protone.domain.Authority;
 import io.protone.domain.User;
 import io.protone.repository.AuthorityRepository;
-import io.protone.repository.UserRepository;
 import io.protone.security.AuthoritiesConstants;
 import io.protone.service.MailService;
 import io.protone.service.UserService;

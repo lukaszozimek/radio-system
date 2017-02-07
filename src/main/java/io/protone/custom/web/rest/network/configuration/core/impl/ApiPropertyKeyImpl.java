@@ -2,11 +2,11 @@ package io.protone.custom.web.rest.network.configuration.core.impl;
 
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreKeyPT;
-import io.protone.custom.service.mapper.CustomCORPropertyKeyMapper;
+import io.protone.custom.service.mapper.CustomCorPropertyKeyMapper;
 import io.protone.custom.web.rest.network.configuration.core.ApiPropertyKey;
-import io.protone.domain.CORPropertyKey;
-import io.protone.repository.CCORNetworkRepository;
-import io.protone.repository.CORPropertyKeyRepository;
+import io.protone.domain.CorPropertyKey;
+import io.protone.repository.CCorNetworkRepository;
+import io.protone.repository.CorPropertyKeyRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -27,17 +27,17 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
     private final Logger log = LoggerFactory.getLogger(ApiPropertyKeyImpl.class);
 
     @Inject
-    private CORPropertyKeyRepository cORPropertyKeyRepository;
+    private CorPropertyKeyRepository cORPropertyKeyRepository;
     @Inject
     private NetworkService networkService;
     @Inject
-    private CustomCORPropertyKeyMapper corPropertyKeyMapper;
+    private CustomCorPropertyKeyMapper corPropertyKeyMapper;
 
     @Override
     public ResponseEntity<CoreKeyPT> getPropertyKeyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
-        log.debug("REST request to get CORPropertyKey : {}", id);
-        CORPropertyKey cORPropertyKey = cORPropertyKeyRepository.findOne(Long.parseLong(id));
-        CoreKeyPT cORPropertyKeyDTO = corPropertyKeyMapper.cORPropertyKeyToCORPropertyKeyDTO(cORPropertyKey);
+        log.debug("REST request to get CorPropertyKey : {}", id);
+        CorPropertyKey cORPropertyKey = cORPropertyKeyRepository.findOne(Long.parseLong(id));
+        CoreKeyPT cORPropertyKeyDTO = corPropertyKeyMapper.cORPropertyKeyToCorPropertyKeyDTO(cORPropertyKey);
         return Optional.ofNullable(cORPropertyKeyDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -47,7 +47,7 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
 
     @Override
     public ResponseEntity<Void> deletePropertyKeyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
-        log.debug("REST request to delete CORPropertyKey : {}", id);
+        log.debug("REST request to delete CorPropertyKey : {}", id);
         cORPropertyKeyRepository.delete(Long.parseLong(id));
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORPropertyKey", id.toString())).build();
 
@@ -55,20 +55,20 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
 
     @Override
     public ResponseEntity<List<CoreKeyPT>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all CORPropertyKeys");
-        List<CORPropertyKey> cORPropertyKeys = cORPropertyKeyRepository.findAll();
-        return ResponseEntity.ok().body(corPropertyKeyMapper.cORPropertyKeysToCORPropertyKeyDTOs(cORPropertyKeys));
+        log.debug("REST request to get all CorPropertyKeys");
+        List<CorPropertyKey> cORPropertyKeys = cORPropertyKeyRepository.findAll();
+        return ResponseEntity.ok().body(corPropertyKeyMapper.cORPropertyKeysToCorPropertyKeyDTOs(cORPropertyKeys));
     }
 
     @Override
     public ResponseEntity<CoreKeyPT> updatePropertyKeyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @RequestBody CoreKeyPT propertyKeyDTO) {
-        log.debug("REST request to update CORPropertyKey : {}", propertyKeyDTO);
+        log.debug("REST request to update CorPropertyKey : {}", propertyKeyDTO);
         if (propertyKeyDTO.getId() == null) {
             return createPropertyKeyUsingPOST(networkShortcut, propertyKeyDTO);
         }
-        CORPropertyKey cORPropertyKey = corPropertyKeyMapper.cORPropertyKeyDTOToCORPropertyKey(propertyKeyDTO);
+        CorPropertyKey cORPropertyKey = corPropertyKeyMapper.cORPropertyKeyDTOToCorPropertyKey(propertyKeyDTO);
         cORPropertyKey = cORPropertyKeyRepository.save(cORPropertyKey);
-        CoreKeyPT result = corPropertyKeyMapper.cORPropertyKeyToCORPropertyKeyDTO(cORPropertyKey);
+        CoreKeyPT result = corPropertyKeyMapper.cORPropertyKeyToCorPropertyKeyDTO(cORPropertyKey);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORPropertyKey", propertyKeyDTO.getId().toString()))
             .body(result);
@@ -76,13 +76,13 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
 
     @Override
     public ResponseEntity<CoreKeyPT> createPropertyKeyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @RequestBody CoreKeyPT propertyKeyDTO) {
-        log.debug("REST request to save CORPropertyKey : {}", propertyKeyDTO);
+        log.debug("REST request to save CorPropertyKey : {}", propertyKeyDTO);
         if (propertyKeyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPropertyKey", "idexists", "A new cORPropertyKey cannot already have an ID")).body(null);
         }
-        CORPropertyKey cORPropertyKey = corPropertyKeyMapper.cORPropertyKeyDTOToCORPropertyKey(propertyKeyDTO);
+        CorPropertyKey cORPropertyKey = corPropertyKeyMapper.cORPropertyKeyDTOToCorPropertyKey(propertyKeyDTO);
         cORPropertyKey = cORPropertyKeyRepository.save(cORPropertyKey);
-        CoreKeyPT result = corPropertyKeyMapper.cORPropertyKeyToCORPropertyKeyDTO(cORPropertyKey);
+        CoreKeyPT result = corPropertyKeyMapper.cORPropertyKeyToCorPropertyKeyDTO(cORPropertyKey);
         return ResponseEntity.ok().body(result);
     }
 }

@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMStage entity.
+ * A DTO for the CrmStage entity.
  */
-public class CRMStageDTO implements Serializable {
+public class CrmStageDTO implements Serializable {
 
     private Long id;
 
@@ -17,7 +17,7 @@ public class CRMStageDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class CRMStageDTO implements Serializable {
             return false;
         }
 
-        CRMStageDTO cRMStageDTO = (CRMStageDTO) o;
+        CrmStageDTO cRMStageDTO = (CrmStageDTO) o;
 
         if ( ! Objects.equals(id, cRMStageDTO.id)) return false;
 
@@ -64,7 +64,7 @@ public class CRMStageDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMStageDTO{" +
+        return "CrmStageDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

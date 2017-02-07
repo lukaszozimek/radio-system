@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORChannel entity.
+ * A DTO for the CorChannel entity.
  */
-public class CORChannelDTO implements Serializable {
+public class CorChannelDTO implements Serializable {
 
     private Long id;
 
@@ -26,7 +26,7 @@ public class CORChannelDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -73,7 +73,7 @@ public class CORChannelDTO implements Serializable {
             return false;
         }
 
-        CORChannelDTO cORChannelDTO = (CORChannelDTO) o;
+        CorChannelDTO cORChannelDTO = (CorChannelDTO) o;
 
         if ( ! Objects.equals(id, cORChannelDTO.id)) return false;
 
@@ -87,7 +87,7 @@ public class CORChannelDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORChannelDTO{" +
+        return "CorChannelDTO{" +
             "id=" + id +
             ", shortcut='" + shortcut + "'" +
             ", name='" + name + "'" +

@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-import io.protone.domain.enumeration.CORContactTypeEnum;
+import io.protone.domain.enumeration.CorContactTypeEnum;
 
 /**
- * A DTO for the CORContact entity.
+ * A DTO for the CorContact entity.
  */
-public class CORContactDTO implements Serializable {
+public class CorContactDTO implements Serializable {
 
     private Long id;
 
@@ -20,11 +20,11 @@ public class CORContactDTO implements Serializable {
     private String contact;
 
     @NotNull
-    private CORContactTypeEnum contactType;
+    private CorContactTypeEnum contactType;
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -39,11 +39,11 @@ public class CORContactDTO implements Serializable {
     public void setContact(String contact) {
         this.contact = contact;
     }
-    public CORContactTypeEnum getContactType() {
+    public CorContactTypeEnum getContactType() {
         return contactType;
     }
 
-    public void setContactType(CORContactTypeEnum contactType) {
+    public void setContactType(CorContactTypeEnum contactType) {
         this.contactType = contactType;
     }
 
@@ -64,7 +64,7 @@ public class CORContactDTO implements Serializable {
             return false;
         }
 
-        CORContactDTO cORContactDTO = (CORContactDTO) o;
+        CorContactDTO cORContactDTO = (CorContactDTO) o;
 
         if ( ! Objects.equals(id, cORContactDTO.id)) return false;
 
@@ -78,7 +78,7 @@ public class CORContactDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORContactDTO{" +
+        return "CorContactDTO{" +
             "id=" + id +
             ", contact='" + contact + "'" +
             ", contactType='" + contactType + "'" +

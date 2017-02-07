@@ -2,12 +2,11 @@ package io.protone.custom.web.rest.network.configuration.crm.impl;
 
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.ConfLeadSourcePT;
-import io.protone.custom.service.mapper.CustomCRMLeadSourceMapper;
+import io.protone.custom.service.mapper.CustomCrmLeadSourceMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadSource;
-import io.protone.domain.CORNetwork;
-import io.protone.domain.CRMLeadSource;
-import io.protone.repository.CCORNetworkRepository;
-import io.protone.repository.CRMLeadSourceRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmLeadSource;
+import io.protone.repository.CCorNetworkRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -29,20 +27,20 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
     private final Logger log = LoggerFactory.getLogger(ApiConfigurationCrmDictionaryLeadSourceImpl.class);
 
     @Inject
-    private CRMLeadSourceRepository leadSourceRepository;
+    private CrmLeadSourceRepository leadSourceRepository;
     @Inject
     private NetworkService networkService;
     @Inject
-    private CustomCRMLeadSourceMapper crmLeadSourceMapper;
+    private CustomCrmLeadSourceMapper crmLeadSourceMapper;
 
     @Override
     public ResponseEntity<ConfLeadSourcePT> createLeadsourceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadSourcePT leadSourcePt) {
-        log.debug("REST request to save CRMLead : {}", leadSourcePt);
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CRMLeadSource cRMLead = crmLeadSourceMapper.cRMLeadSourceDTOToCRMLeadSource(leadSourcePt);
+        log.debug("REST request to save CrmLead : {}", leadSourcePt);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CrmLeadSource cRMLead = crmLeadSourceMapper.cRMLeadSourceDTOToCrmLeadSource(leadSourcePt);
         cRMLead.setNetwork(corNetwork);
         cRMLead = leadSourceRepository.save(cRMLead);
-        ConfLeadSourcePT result = crmLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(cRMLead);
+        ConfLeadSourcePT result = crmLeadSourceMapper.cRMLeadSourceToCrmLeadSourceDTO(cRMLead);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cRMLeadSource", result.getId().toString()))
             .body(result);
@@ -51,7 +49,7 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
 
     @Override
     public ResponseEntity<Void> deleteLeadsourceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete CRMLeadSource : {}", id);
+        log.debug("REST request to delete CrmLeadSource : {}", id);
         leadSourceRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cRMLeadSource", id.toString())).build();
 
@@ -59,19 +57,19 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
 
     @Override
     public ResponseEntity<List<ConfLeadSourcePT>> getAllLeadsourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all CRMLeadSources");
-        List<CRMLeadSource> cRMLeadSources = leadSourceRepository.findAll();
+        log.debug("REST request to get all CrmLeadSources");
+        List<CrmLeadSource> cRMLeadSources = leadSourceRepository.findAll();
 
         return ResponseEntity.ok()
-            .body(crmLeadSourceMapper.cRMLeadSourcesToCRMLeadSourceDTOs(cRMLeadSources));
+            .body(crmLeadSourceMapper.cRMLeadSourcesToCrmLeadSourceDTOs(cRMLeadSources));
 
     }
 
     @Override
     public ResponseEntity<ConfLeadSourcePT> getLeadSourceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CRMLeadSource : {}", id);
-        CRMLeadSource cRMLeadSource = leadSourceRepository.findOne(id);
-        ConfLeadSourcePT cRMLeadSourceDTO = crmLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(cRMLeadSource);
+        log.debug("REST request to get CrmLeadSource : {}", id);
+        CrmLeadSource cRMLeadSource = leadSourceRepository.findOne(id);
+        ConfLeadSourcePT cRMLeadSourceDTO = crmLeadSourceMapper.cRMLeadSourceToCrmLeadSourceDTO(cRMLeadSource);
         return Optional.ofNullable(cRMLeadSourceDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -81,15 +79,15 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
 
     @Override
     public ResponseEntity<ConfLeadSourcePT> updateLeadSourceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "leadStatus", required = true) @RequestBody ConfLeadSourcePT leadSourcePT) {
-        log.debug("REST request to update CRMLeadSource : {}", leadSourcePT);
+        log.debug("REST request to update CrmLeadSource : {}", leadSourcePT);
         if (leadSourcePT.getId() == null) {
             return createLeadsourceUsingPOST(networkShortcut, leadSourcePT);
         }
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CRMLeadSource cRMLeadSource = crmLeadSourceMapper.cRMLeadSourceDTOToCRMLeadSource(leadSourcePT);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CrmLeadSource cRMLeadSource = crmLeadSourceMapper.cRMLeadSourceDTOToCrmLeadSource(leadSourcePT);
         cRMLeadSource.setNetwork(corNetwork);
         cRMLeadSource = leadSourceRepository.save(cRMLeadSource);
-        ConfLeadSourcePT result = crmLeadSourceMapper.cRMLeadSourceToCRMLeadSourceDTO(cRMLeadSource);
+        ConfLeadSourcePT result = crmLeadSourceMapper.cRMLeadSourceToCrmLeadSourceDTO(cRMLeadSource);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cRMLeadSource", result.getId().toString()))
             .body(result);

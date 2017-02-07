@@ -1,7 +1,7 @@
 package io.protone.service;
 
 import io.protone.config.audit.AuditEventConverter;
-import io.protone.repository.PersistenceAuditEventRepository;
+
 import java.time.LocalDateTime;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;

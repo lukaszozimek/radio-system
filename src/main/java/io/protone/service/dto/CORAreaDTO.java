@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CORArea entity.
+ * A DTO for the CorArea entity.
  */
-public class CORAreaDTO implements Serializable {
+public class CorAreaDTO implements Serializable {
 
     private Long id;
 
@@ -17,7 +17,7 @@ public class CORAreaDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -50,7 +50,7 @@ public class CORAreaDTO implements Serializable {
             return false;
         }
 
-        CORAreaDTO cORAreaDTO = (CORAreaDTO) o;
+        CorAreaDTO cORAreaDTO = (CorAreaDTO) o;
 
         if ( ! Objects.equals(id, cORAreaDTO.id)) return false;
 
@@ -64,7 +64,7 @@ public class CORAreaDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CORAreaDTO{" +
+        return "CorAreaDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

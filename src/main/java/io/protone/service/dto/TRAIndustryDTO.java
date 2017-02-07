@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the TRAIndustry entity.
+ * A DTO for the TraIndustry entity.
  */
-public class TRAIndustryDTO implements Serializable {
+public class TraIndustryDTO implements Serializable {
 
     private Long id;
 
@@ -20,7 +20,7 @@ public class TRAIndustryDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -53,7 +53,7 @@ public class TRAIndustryDTO implements Serializable {
             return false;
         }
 
-        TRAIndustryDTO tRAIndustryDTO = (TRAIndustryDTO) o;
+        TraIndustryDTO tRAIndustryDTO = (TraIndustryDTO) o;
 
         if ( ! Objects.equals(id, tRAIndustryDTO.id)) return false;
 
@@ -67,7 +67,7 @@ public class TRAIndustryDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TRAIndustryDTO{" +
+        return "TraIndustryDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             '}';

@@ -3,7 +3,6 @@ package io.protone.service;
 import io.protone.domain.Authority;
 import io.protone.domain.User;
 import io.protone.repository.AuthorityRepository;
-import io.protone.repository.UserRepository;
 import io.protone.security.AuthoritiesConstants;
 import io.protone.security.SecurityUtils;
 import io.protone.service.util.RandomUtil;

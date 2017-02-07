@@ -4,8 +4,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.protone.domain.enumeration.CORContactTypeEnum;
-import io.protone.service.dto.CORContactDTO;
+import io.protone.domain.enumeration.CorContactTypeEnum;
+import io.protone.service.dto.CorContactDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -25,7 +25,7 @@ public class CoreContactPT   {
     private String contact;
 
     @NotNull
-    private CORContactTypeEnum contactType;
+    private CorContactTypeEnum contactType;
 
 
     private Long networkId;
@@ -44,11 +44,11 @@ public class CoreContactPT   {
     public void setContact(String contact) {
         this.contact = contact;
     }
-    public CORContactTypeEnum getContactType() {
+    public CorContactTypeEnum getContactType() {
         return contactType;
     }
 
-    public void setContactType(CORContactTypeEnum contactType) {
+    public void setContactType(CorContactTypeEnum contactType) {
         this.contactType = contactType;
     }
 
@@ -83,7 +83,7 @@ public class CoreContactPT   {
 
     @Override
     public String toString() {
-        return "CORContactDTO{" +
+        return "CorContactDTO{" +
             "id=" + id +
             ", contact='" + contact + "'" +
             ", contactType='" + contactType + "'" +

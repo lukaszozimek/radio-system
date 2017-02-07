@@ -3,7 +3,6 @@ package io.protone.web.rest;
 import io.protone.ProtoneApp;
 import io.protone.config.audit.AuditEventConverter;
 import io.protone.domain.PersistentAuditEvent;
-import io.protone.repository.PersistenceAuditEventRepository;
 import io.protone.service.AuditEventService;
 import org.junit.Before;
 import org.junit.Test;

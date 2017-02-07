@@ -2,11 +2,10 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.dto.CoreRangePT;
-import io.protone.custom.service.mapper.CustomCORRangeMapper;
+import io.protone.custom.service.mapper.CustomCorRangeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryRange;
-import io.protone.domain.CORNetwork;
-import io.protone.domain.CORRange;
-import io.protone.repository.CORRangeRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CorRange;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -27,38 +26,38 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
     private final Logger log = LoggerFactory.getLogger(ApiDictionaryRangeImpl.class);
 
     @Inject
-    private CORRangeRepository cORRangeRepository;
+    private CorRangeRepository cORRangeRepository;
     @Inject
     private NetworkService networkService;
     @Inject
-    private CustomCORRangeMapper customCORAreaMapper;
+    private CustomCorRangeMapper customCorAreaMapper;
 
     @Override
     public ResponseEntity<CoreRangePT> createRangeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "coreRangePT", required = true) @RequestBody CoreRangePT coreRangePT) {
-        log.debug("REST request to save CORRange : {}", coreRangePT);
+        log.debug("REST request to save CorRange : {}", coreRangePT);
         if (coreRangePT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORRange", "idexists", "A new cORRange cannot already have an ID")).body(null);
         }
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CORRange cORRange = customCORAreaMapper.cORRangeDTOToCORRange(coreRangePT);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorRange cORRange = customCorAreaMapper.cORRangeDTOToCorRange(coreRangePT);
         cORRange.setNetwork(corNetwork);
         cORRange = cORRangeRepository.save(cORRange);
-        CoreRangePT result = customCORAreaMapper.cORRangeToCORRangeDTO(cORRange);
+        CoreRangePT result = customCorAreaMapper.cORRangeToCorRangeDTO(cORRange);
         return ResponseEntity.ok().body(result);
     }
 
     @Override
     public ResponseEntity<List<CoreRangePT>> getAllRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all CORRanges");
-        List<CORRange> cORRanges = cORRangeRepository.findAll();
-        return ResponseEntity.ok().body(customCORAreaMapper.cORRangesToCORRangeDTOs(cORRanges));
+        log.debug("REST request to get all CorRanges");
+        List<CorRange> cORRanges = cORRangeRepository.findAll();
+        return ResponseEntity.ok().body(customCorAreaMapper.cORRangesToCorRangeDTOs(cORRanges));
     }
 
     @Override
     public ResponseEntity<CoreRangePT> getRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to get CORRange : {}", id);
-        CORRange cORRange = cORRangeRepository.findOne(id);
-        CoreRangePT cORRangeDTO = customCORAreaMapper.cORRangeToCORRangeDTO(cORRange);
+        log.debug("REST request to get CorRange : {}", id);
+        CorRange cORRange = cORRangeRepository.findOne(id);
+        CoreRangePT cORRangeDTO = customCorAreaMapper.cORRangeToCorRangeDTO(cORRange);
         return Optional.ofNullable(cORRangeDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -68,22 +67,22 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
 
     @Override
     public ResponseEntity<CoreRangePT> updateRangeUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "coreRangePT", required = true) @RequestBody CoreRangePT coreRangePT) {
-        log.debug("REST request to update CORRange : {}", coreRangePT);
+        log.debug("REST request to update CorRange : {}", coreRangePT);
         if (coreRangePT.getId() == null) {
             return createRangeUsingPOST(networkShortcut, coreRangePT);
         }
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CORRange cORRange = customCORAreaMapper.cORRangeDTOToCORRange(coreRangePT);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorRange cORRange = customCorAreaMapper.cORRangeDTOToCorRange(coreRangePT);
         cORRange.setNetwork(corNetwork);
         cORRange = cORRangeRepository.save(cORRange);
-        CoreRangePT result = customCORAreaMapper.cORRangeToCORRangeDTO(cORRange);
+        CoreRangePT result = customCorAreaMapper.cORRangeToCorRangeDTO(cORRange);
         return ResponseEntity.ok()
             .body(result);
     }
 
     @Override
     public ResponseEntity<Void> deleteRangeUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        log.debug("REST request to delete CORRange : {}", id);
+        log.debug("REST request to delete CorRange : {}", id);
         cORRangeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORRange", id.toString())).build();
 

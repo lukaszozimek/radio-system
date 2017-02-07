@@ -3,7 +3,6 @@ package io.protone.web.rest;
 import io.protone.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import io.protone.domain.User;
-import io.protone.repository.UserRepository;
 import io.protone.security.AuthoritiesConstants;
 import io.protone.service.MailService;
 import io.protone.service.UserService;

@@ -4,12 +4,9 @@ import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.protone.custom.service.mapper.CustomCFGMarkerConfigurationMapper;
 import io.protone.custom.web.rest.network.configuration.library.ApiConfigurationLibraryMarker;
 import io.protone.domain.CFGMarkerConfiguration;
-import io.protone.repository.CCORNetworkRepository;
-import io.protone.repository.CFGMarkerConfigurationRepository;
+import io.protone.repository.CCorNetworkRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +23,7 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
     @Inject
     private CFGMarkerConfigurationRepository cFGMarkerConfigurationRepository;
     @Inject
-    private CCORNetworkRepository networkRepository;
+    private CCorNetworkRepository networkRepository;
     @Inject
     private CustomCFGMarkerConfigurationMapper cFGMarkerConfigurationMapper;
 

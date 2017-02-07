@@ -5,7 +5,7 @@ import io.protone.custom.service.NetworkService;
 import io.protone.custom.service.TRACampaignService;
 import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerCampaign;
-import io.protone.domain.CORNetwork;
+import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +23,7 @@ public class ApiNetworkTrafficCustomerCampaignImpl implements ApiNetworkTrafficC
 
     @Override
     public ResponseEntity<List<TraCampaignPT>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
-        CORNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(campaignService.getCustomerCampaing(customerShortcut,corNetwork));
     }
 }

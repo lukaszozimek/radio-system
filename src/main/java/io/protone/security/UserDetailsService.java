@@ -1,7 +1,6 @@
 package io.protone.security;
 
 import io.protone.domain.User;
-import io.protone.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

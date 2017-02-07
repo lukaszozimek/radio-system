@@ -8,9 +8,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the TRAAdvertisement entity.
+ * A DTO for the TraAdvertisement entity.
  */
-public class TRAAdvertisementDTO implements Serializable {
+public class TraAdvertisementDTO implements Serializable {
 
     private Long id;
 
@@ -22,11 +22,11 @@ public class TRAAdvertisementDTO implements Serializable {
 
 
     private Long mediaItemId;
-    
+
     private Long customerId;
-    
+
     private Long industryId;
-    
+
     public Long getId() {
         return id;
     }
@@ -82,7 +82,7 @@ public class TRAAdvertisementDTO implements Serializable {
             return false;
         }
 
-        TRAAdvertisementDTO tRAAdvertisementDTO = (TRAAdvertisementDTO) o;
+        TraAdvertisementDTO tRAAdvertisementDTO = (TraAdvertisementDTO) o;
 
         if ( ! Objects.equals(id, tRAAdvertisementDTO.id)) return false;
 
@@ -96,7 +96,7 @@ public class TRAAdvertisementDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TRAAdvertisementDTO{" +
+        return "TraAdvertisementDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             ", description='" + description + "'" +

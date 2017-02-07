@@ -55,6 +55,11 @@ server:
 # ===================================================================
 
 jhipster:
+    s3:
+        url: set-url
+        username: set-username
+        password: set-password
+        bucket: set-bucket
     async:
         corePoolSize: 2
         maxPoolSize: 50

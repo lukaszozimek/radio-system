@@ -9,9 +9,9 @@ import java.util.Objects;
 import io.protone.domain.enumeration.LIBAudioQualityEnum;
 
 /**
- * A DTO for the LIBAudioObject entity.
+ * A DTO for the LibAudioObject entity.
  */
-public class LIBAudioObjectDTO implements Serializable {
+public class LibAudioObjectDTO implements Serializable {
 
     private Long id;
 
@@ -29,9 +29,9 @@ public class LIBAudioObjectDTO implements Serializable {
 
 
     private Long cloudObjectId;
-    
+
     private Long mediaItemId;
-    
+
     public Long getId() {
         return id;
     }
@@ -93,7 +93,7 @@ public class LIBAudioObjectDTO implements Serializable {
             return false;
         }
 
-        LIBAudioObjectDTO lIBAudioObjectDTO = (LIBAudioObjectDTO) o;
+        LibAudioObjectDTO lIBAudioObjectDTO = (LibAudioObjectDTO) o;
 
         if ( ! Objects.equals(id, lIBAudioObjectDTO.id)) return false;
 
@@ -107,7 +107,7 @@ public class LIBAudioObjectDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "LIBAudioObjectDTO{" +
+        return "LibAudioObjectDTO{" +
             "id=" + id +
             ", length='" + length + "'" +
             ", bitrate='" + bitrate + "'" +

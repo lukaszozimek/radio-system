@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 /**
- * A DTO for the CRMContact entity.
+ * A DTO for the CrmContact entity.
  */
-public class CRMContactDTO implements Serializable {
+public class CrmContactDTO implements Serializable {
 
     private Long id;
 
@@ -27,7 +27,7 @@ public class CRMContactDTO implements Serializable {
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -95,7 +95,7 @@ public class CRMContactDTO implements Serializable {
             return false;
         }
 
-        CRMContactDTO cRMContactDTO = (CRMContactDTO) o;
+        CrmContactDTO cRMContactDTO = (CrmContactDTO) o;
 
         if ( ! Objects.equals(id, cRMContactDTO.id)) return false;
 
@@ -109,7 +109,7 @@ public class CRMContactDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CRMContactDTO{" +
+        return "CrmContactDTO{" +
             "id=" + id +
             ", shortName='" + shortName + "'" +
             ", externalId1='" + externalId1 + "'" +

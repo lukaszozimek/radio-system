@@ -2,8 +2,8 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreContactPT;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
-import io.protone.domain.CORContact;
-import io.protone.domain.CORPerson;
+import io.protone.domain.CorContact;
+import io.protone.domain.CorPerson;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -19,36 +19,36 @@ import java.util.stream.Collectors;
 @Service
 public class CustomTRAPersonMapper {
     @Inject
-    private CustomCORContactMapper corContactMapper;
+    private CustomCorContactMapper corContactMapper;
 
-    public Map<CORPerson, List<CORContact>> createMapPersonToContact(List<TraCustomerPersonPT> traCustomerPersonPT) {
-        Map<CORPerson, List<CORContact>> corPersonListMap = new HashMap<>();
+    public Map<CorPerson, List<CorContact>> createMapPersonToContact(List<TraCustomerPersonPT> traCustomerPersonPT) {
+        Map<CorPerson, List<CorContact>> corPersonListMap = new HashMap<>();
         traCustomerPersonPT.stream().forEach(traCustomerPerson -> {
             corPersonListMap.put(createPersonEntity(traCustomerPerson), createContactEntities(traCustomerPerson));
         });
         return corPersonListMap;
     }
 
-    public TraCustomerPersonPT createDTOObject(CORPerson person) {
+    public TraCustomerPersonPT createDTOObject(CorPerson person) {
 
         return new TraCustomerPersonPT().id(person.getId()).
             lastName(person.getLastName())
             .firstName(person.getFirstName())
             .description(person.getDescription())
-            .contacts(corContactMapper.cORContactsToCORContactDTOs(person.getPersonContacts()));
+            .contacts(corContactMapper.cORContactsToCorContactDTOs(person.getPersonContacts()));
     }
 
 
-    public CORPerson createPersonEntity(TraCustomerPersonPT personPT) {
-        CORPerson corPerson = new CORPerson();
+    public CorPerson createPersonEntity(TraCustomerPersonPT personPT) {
+        CorPerson corPerson = new CorPerson();
         corPerson.setId(personPT.getId());
         return corPerson.lastName(personPT.getLastName())
             .firstName(personPT.getFirstName())
             .description(personPT.getDescription())
-            .personContacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCORContact(coreContactPT)).collect(Collectors.toSet()));
+            .personContacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCorContact(coreContactPT)).collect(Collectors.toSet()));
     }
 
-    private List<CORContact> createContactEntities(TraCustomerPersonPT personPT) {
-        return corContactMapper.cORContactDTOsToCORContacts(personPT.getContacts());
+    private List<CorContact> createContactEntities(TraCustomerPersonPT personPT) {
+        return corContactMapper.cORContactDTOsToCorContacts(personPT.getContacts());
     }
 }

@@ -6,12 +6,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-import io.protone.domain.enumeration.LIBArtistTypeEnum;
+import io.protone.domain.enumeration.LibArtistTypeEnum;
 
 /**
- * A DTO for the LIBArtist entity.
+ * A DTO for the LibArtist entity.
  */
-public class LIBArtistDTO implements Serializable {
+public class LibArtistDTO implements Serializable {
 
     private Long id;
 
@@ -19,13 +19,13 @@ public class LIBArtistDTO implements Serializable {
     @Size(max = 100)
     private String name;
 
-    private LIBArtistTypeEnum type;
+    private LibArtistTypeEnum type;
 
     private String description;
 
 
     private Long networkId;
-    
+
     public Long getId() {
         return id;
     }
@@ -40,11 +40,11 @@ public class LIBArtistDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public LIBArtistTypeEnum getType() {
+    public LibArtistTypeEnum getType() {
         return type;
     }
 
-    public void setType(LIBArtistTypeEnum type) {
+    public void setType(LibArtistTypeEnum type) {
         this.type = type;
     }
     public String getDescription() {
@@ -72,7 +72,7 @@ public class LIBArtistDTO implements Serializable {
             return false;
         }
 
-        LIBArtistDTO lIBArtistDTO = (LIBArtistDTO) o;
+        LibArtistDTO lIBArtistDTO = (LibArtistDTO) o;
 
         if ( ! Objects.equals(id, lIBArtistDTO.id)) return false;
 
@@ -86,7 +86,7 @@ public class LIBArtistDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "LIBArtistDTO{" +
+        return "LibArtistDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             ", type='" + type + "'" +
