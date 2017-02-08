@@ -41,10 +41,7 @@ public class CrmLeadPT {
     private ConfIndustryPT industry = null;
 
     @JsonProperty("person")
-    private ConfPersonPT person = null;
-
-    @JsonProperty("contact")
-    private List<CoreContactPT> contact = new ArrayList<CoreContactPT>();
+    private TraCustomerPersonPT person = null;
 
     @JsonProperty("tasks")
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
@@ -80,10 +77,12 @@ public class CrmLeadPT {
     public void setShortname(String shortname) {
         this.shortname = shortname;
     }
+
     public CrmLeadPT shortName(String shortname) {
         this.shortname = shortname;
         return this;
     }
+
     /**
      * Get name
      *
@@ -212,7 +211,7 @@ public class CrmLeadPT {
         this.industry = industry;
     }
 
-    public CrmLeadPT person(ConfPersonPT person) {
+    public CrmLeadPT person(TraCustomerPersonPT person) {
         this.person = person;
         return this;
     }
@@ -223,37 +222,14 @@ public class CrmLeadPT {
      * @return person
      **/
     @ApiModelProperty(value = "")
-    public ConfPersonPT getPerson() {
+    public TraCustomerPersonPT getPerson() {
         return person;
     }
 
-    public void setPerson(ConfPersonPT person) {
+    public void setPerson(TraCustomerPersonPT person) {
         this.person = person;
     }
 
-    public CrmLeadPT contact(List<CoreContactPT> contact) {
-        this.contact = contact;
-        return this;
-    }
-
-    public CrmLeadPT addContactItem(CoreContactPT contactItem) {
-        this.contact.add(contactItem);
-        return this;
-    }
-
-    /**
-     * Get contact
-     *
-     * @return contact
-     **/
-    @ApiModelProperty(value = "")
-    public List<CoreContactPT> getContact() {
-        return contact;
-    }
-
-    public void setContact(List<CoreContactPT> contact) {
-        this.contact = contact;
-    }
 
     public CrmLeadPT tasks(List<CrmTaskPT> tasks) {
         this.tasks = tasks;
@@ -298,14 +274,13 @@ public class CrmLeadPT {
             Objects.equals(this.area, crmLeadPT.area) &&
             Objects.equals(this.industry, crmLeadPT.industry) &&
             Objects.equals(this.person, crmLeadPT.person) &&
-            Objects.equals(this.contact, crmLeadPT.contact) &&
-            Objects.equals(this.tasks, crmLeadPT.tasks)&&
-            Objects.equals(this.shortname,crmLeadPT.shortname);
+            Objects.equals(this.tasks, crmLeadPT.tasks) &&
+            Objects.equals(this.shortname, crmLeadPT.shortname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, source, status, adress, area, industry, person, contact, tasks,shortname);
+        return Objects.hash(id, name, description, source, status, adress, area, industry, person, tasks, shortname);
     }
 
     @Override
@@ -322,7 +297,6 @@ public class CrmLeadPT {
         sb.append("    area: ").append(toIndentedString(area)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    person: ").append(toIndentedString(person)).append("\n");
-        sb.append("    contact: ").append(toIndentedString(contact)).append("\n");
         sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
         sb.append("    shortname: ").append(toIndentedString(shortname)).append("\n");
         sb.append("}");

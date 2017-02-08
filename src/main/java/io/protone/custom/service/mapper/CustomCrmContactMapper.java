@@ -47,9 +47,9 @@ public class CustomCrmContactMapper {
         CrmContact crmContact = new CrmContact();
         crmContact.setId(crmContactPT.getId());
         return crmContact
-            .name(crmContact.getName())
+            .name(crmContactPT.getName())
             .externalId1(crmContactPT.getIdNumber1())
-            .externalId1(crmContactPT.getIdNumber2())
+            .externalId2(crmContactPT.getIdNumber2())
             .shortName(crmContactPT.getShortName())
             .vatNumber(crmContactPT.getVatNumber())
             .paymentDelay(crmContactPT.getPaymentDelay())
@@ -75,7 +75,7 @@ public class CustomCrmContactMapper {
             .idNumber2(crmContact.getExternalId2())
             .shortName(crmContact.getShortName())
             .vatNumber(crmContact.getVatNumber())
-            .paymentDelay(Math.toIntExact(crmContact.getPaymentDelay()))
+            .paymentDelay(crmContact.getPaymentDelay())
             .industry(industryMapper.tRAIndustryToTraIndustryDTO(crmContact.getIndustry()))
             //.account(corUserMapper.corUserMapper(crmContact.getKeeper()))
             .size(customCorSizeMapper.cORSizeToCorSizeDTO(crmContact.getSize()))

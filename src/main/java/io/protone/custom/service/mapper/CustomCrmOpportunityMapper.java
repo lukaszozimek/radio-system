@@ -31,23 +31,26 @@ public class CustomCrmOpportunityMapper {
 
     public CrmOpportunity createOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        return new CrmOpportunity()
-            .name(opportunityPT.getName())
-            .closeDate(LocalDate.parse(opportunityPT.getCloseDate(), formatter))
-            .probability(opportunityPT.getPropability())
-            .lastTry(LocalDate.parse(opportunityPT.getLastTry(), formatter))
-            .network(corNetwork);
+        CrmOpportunity opportunity = new CrmOpportunity();
+        opportunity.setId(opportunityPT.getId());
+        return
+            opportunity.name(opportunityPT.getName())
+                ///.closeDate(LocalDate.parse(opportunityPT.getCloseDate(), formatter))
+                .probability(opportunityPT.getPropability())
+                //.lastTry(LocalDate.parse(opportunityPT.getLastTry(), formatter))
+                .network(corNetwork);
     }
 
     public CrmOpportunityPT buildDTOFromEntites(CrmOpportunity opportunity) {
         CrmOpportunityPT crmOpportunityPT = new CrmOpportunityPT();
-        opportunity.setId(opportunity.getId());
-        return crmOpportunityPT.lastTry(opportunity.getLastTry().toString())
+        crmOpportunityPT.setId(opportunity.getId());
+        return crmOpportunityPT
+            //.lastTry(opportunity.getLastTry().toString())
             .name(opportunity.getName())
-            .closeDate(opportunity.getCloseDate().toString())
+            .propability(opportunity.getProbability())
+            //.closeDate(opportunity.getCloseDate().toString())
             .tasks(customCrmTaskMapper.createCrmTasks(opportunity.getTasks()))
-            .contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
+            //.contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
             //.opportunityOwner(corUserMapper.corUserMapper(opportunity.getKeeper()))
             .stage(stageMapper.cRMStageToCrmStageDTO(opportunity.getStage()));
     }

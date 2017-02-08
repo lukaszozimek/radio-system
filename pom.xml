@@ -224,6 +224,16 @@
             <version>0.7.0</version>
         </dependency>
         <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient</artifactId>
             <version>${prometheus-simpleclient.version}</version>
@@ -401,21 +411,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>2.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>2.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sparkjava</groupId>
-            <artifactId>spark-core</artifactId>
-            <version>2.5.4</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>

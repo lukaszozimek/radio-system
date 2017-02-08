@@ -22,10 +22,7 @@ public class CustomCrmLeadMapper {
     private CustomCorAddressMapper corAddressMapper;
 
     @Inject
-    private CustomCorPersonMapper corPersonMapper;
-
-    @Inject
-    private CustomCorContactMapper corContactMapper;
+    private CustomTRAPersonMapper customTRAPersonMapper;
 
     @Inject
     private CustomTraIndustryMapper customTraIndustryMapper;
@@ -54,7 +51,7 @@ public class CustomCrmLeadMapper {
         crmLead.setAddres(corAddressMapper.cORAddressDTOToCorAddress(leadPT.getAdress()));
         crmLead.setLeadSource(customCrmLeadSourceMapper.cRMLeadSourceDTOToCrmLeadSource(leadPT.getSource()));
         crmLead.setLeadStatus(customCrmLeadStatusMapper.cRMLeadStatusDTOToCrmLeadStatus(leadPT.getStatus()));
-        crmLead.setPerson(corPersonMapper.cORPersonDTOToCorPerson(leadPT.getPerson()));
+        crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson()));
         crmLead.setNetwork(corNetwork);
         return crmLead;
     }
@@ -71,8 +68,7 @@ public class CustomCrmLeadMapper {
         crmLeadPT.setSource(customCrmLeadSourceMapper.cRMLeadSourceToCrmLeadSourceDTO(lead.getLeadSource()));
         crmLeadPT.setStatus(customCrmLeadStatusMapper.cRMLeadStatusToCrmLeadStatusDTO(lead.getLeadStatus()));
         crmLeadPT.setTasks(customCrmTaskMapper.createCrmTasks(lead.getTasks()));
-        crmLeadPT.setPerson(corPersonMapper.cORPersonToCorPersonDTO(lead.getPerson()));
-        crmLeadPT.setContact(corContactMapper.cORContactsToCorContactDTOs(lead.getPerson().getContacts()));
+        crmLeadPT.setPerson(customTRAPersonMapper.createDTOObject(lead.getPerson()));
         return crmLeadPT;
     }
 }

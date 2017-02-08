@@ -50,6 +50,7 @@ public class CustomCrmAccountMapper {
         crmAccount.setId(crmAccountPT.getId());
         return crmAccount
             .name(crmAccountPT.getName())
+            .shortName(crmAccountPT.getShortName())
             .externalId1(crmAccountPT.getIdNumber1())
             .externalId2(crmAccountPT.getIdNumber2())
             .shortName(crmAccountPT.getShortName())
@@ -70,6 +71,8 @@ public class CustomCrmAccountMapper {
         crmAccount.setId(traCustomerPT.getId());
         return crmAccount
             .name(traCustomerPT.getName())
+
+            .shortName(traCustomerPT.getShortName())
             .externalId1(traCustomerPT.getIdNumber1())
             .externalId2(traCustomerPT.getIdNumber2())
             .shortName(traCustomerPT.getShortName())
@@ -91,6 +94,8 @@ public class CustomCrmAccountMapper {
         return crmAccount.
             id(traCustomerPT.getId())
             .name(traCustomerPT.getName())
+
+            .shortName(crmAccount.getShortName())
             .idNumber1(traCustomerPT.getExternalId1())
             .idNumber2(traCustomerPT.getExternalId2())
             .shortName(traCustomerPT.getShortName())
@@ -109,6 +114,7 @@ public class CustomCrmAccountMapper {
         return new CrmAccountPT()
             .id(crmAccount.getId())
             .name(crmAccount.getName())
+            .shortName(crmAccount.getShortName())
             .idNumber1(crmAccount.getExternalId1())
             .idNumber2(crmAccount.getExternalId2())
             .shortName(crmAccount.getShortName())

@@ -7,6 +7,7 @@ import io.protone.custom.service.mapper.CustomCrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.toList;
  * Created by lukaszozimek on 17.01.2017.
  */
 @Service
+@Transactional
 public class CRMCustomerService {
 
     @Inject
