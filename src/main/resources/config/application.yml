@@ -59,6 +59,11 @@ server:
 # ===================================================================
 
 jhipster:
+    s3:
+        url: http://localhost:9000
+        username: protone-dev
+        password: protone-dev
+        bucket: protone-dev
     async:
         corePoolSize: 2
         maxPoolSize: 50

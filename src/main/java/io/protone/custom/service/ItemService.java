@@ -140,8 +140,9 @@ public class ItemService {
                 cloudObject.setSize(file.getSize());
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
-                User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-                cloudObject.setCreatedBy(new CorUser());
+                //User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+                //TODO fix current user addition to argument
+                cloudObject.setCreatedBy(null);
 
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
