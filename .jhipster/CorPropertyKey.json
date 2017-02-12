@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "network",
+            "otherEntityName": "corNetwork",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "key",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "cor_property_key",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

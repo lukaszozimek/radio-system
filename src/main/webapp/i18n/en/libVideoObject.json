@@ -1,0 +1,30 @@
+{
+    "protoneApp": {
+        "libVideoObject" : {
+            "home": {
+                "title": "Lib Video Objects",
+                "createLabel": "Create a new Lib Video Object",
+                "createOrEditLabel": "Create or edit a Lib Video Object",
+                "search": "Search for Lib Video Object"
+            },
+            "created": "A new Lib Video Object is created with identifier {{ param }}",
+            "updated": "A Lib Video Object is updated with identifier {{ param }}",
+            "deleted": "A Lib Video Object is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Lib Video Object {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Video Object"
+            },
+            "width": "Width",
+            "height": "Height",
+            "length": "Length",
+            "biTrate": "Bi Trate",
+            "codec": "Codec",
+            "quality": "Quality",
+            "aspecTratio": "Aspec Tratio",
+            "cloudObject": "Cloud Object",
+            "mediaItem": "Media Item"
+        }
+    }
+}

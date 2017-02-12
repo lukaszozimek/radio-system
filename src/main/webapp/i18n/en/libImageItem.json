@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "libImageItem" : {
+            "home": {
+                "title": "Lib Image Items",
+                "createLabel": "Create a new Lib Image Item",
+                "createOrEditLabel": "Create or edit a Lib Image Item",
+                "search": "Search for Lib Image Item"
+            },
+            "created": "A new Lib Image Item is created with identifier {{ param }}",
+            "updated": "A Lib Image Item is updated with identifier {{ param }}",
+            "deleted": "A Lib Image Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Lib Image Item {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Image Item"
+            },
+            "idx": "Idx",
+            "name": "Name",
+            "library": "Library"
+        }
+    }
+}

@@ -1,0 +1,68 @@
+<div>
+    <h2 data-translate="protoneApp.corAddress.home.title">Cor Addresses</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="cor-address.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.corAddress.home.createLabel">
+                        Create new Cor Address
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.corAddress.street">Street</span></th>
+                    <th><span data-translate="protoneApp.corAddress.number">Number</span></th>
+                    <th><span data-translate="protoneApp.corAddress.postalCode">Postal Code</span></th>
+                    <th><span data-translate="protoneApp.corAddress.city">City</span></th>
+                    <th><span data-translate="protoneApp.corAddress.country">Country</span></th>
+                    <th><span data-translate="protoneApp.corAddress.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="corAddress in vm.corAddresses track by corAddress.id">
+                    <td><a ui-sref="cor-address-detail({id:corAddress.id})">{{corAddress.id}}</a></td>
+                    <td>{{corAddress.street}}</td>
+                    <td>{{corAddress.number}}</td>
+                    <td>{{corAddress.postalCode}}</td>
+                    <td>{{corAddress.city}}</td>
+                    <td>{{corAddress.country}}</td>
+                    <td>
+                        <a ui-sref="cor-network-detail({id:corAddress.networkId})">{{corAddress.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="cor-address-detail({id:corAddress.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="cor-address.edit({id:corAddress.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="cor-address.delete({id:corAddress.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

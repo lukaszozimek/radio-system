@@ -1,0 +1,32 @@
+{
+    "protoneApp": {
+        "crmOpportunity" : {
+            "home": {
+                "title": "Crm Opportunities",
+                "createLabel": "Dodaj Crm Opportunity",
+                "createOrEditLabel": "Dodaj lub edytuj: Crm Opportunity",
+                "search": "Search for Crm Opportunity"
+            },
+            "created": "A new Crm Opportunity is created with identifier {{ param }}",
+            "updated": "A Crm Opportunity is updated with identifier {{ param }}",
+            "deleted": "A Crm Opportunity is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Crm Opportunity {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Opportunity"
+            },
+            "name": "Name",
+            "lastTry": "Last Try",
+            "closeDate": "Close Date",
+            "probability": "Probability",
+            "stage": "Stage",
+            "keeper": "Keeper",
+            "contact": "Contact",
+            "account": "Account",
+            "lead": "Lead",
+            "network": "Network",
+            "tasks": "Tasks"
+        }
+    }
+}

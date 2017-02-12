@@ -1,0 +1,87 @@
+
+<div>
+    <h2><span data-translate="protoneApp.crmContact.detail.title">Crm Contact</span> {{vm.crmContact.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.crmContact.shortName">Short Name</span></dt>
+        <dd>
+            <span>{{vm.crmContact.shortName}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.externalId1">External Id 1</span></dt>
+        <dd>
+            <span>{{vm.crmContact.externalId1}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.externalId2">External Id 2</span></dt>
+        <dd>
+            <span>{{vm.crmContact.externalId2}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.paymentDate">Payment Date</span></dt>
+        <dd>
+            <span>{{vm.crmContact.paymentDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.name">Name</span></dt>
+        <dd>
+            <span>{{vm.crmContact.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.paymentDelay">Payment Delay</span></dt>
+        <dd>
+            <span>{{vm.crmContact.paymentDelay}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.vatNumber">Vat Number</span></dt>
+        <dd>
+            <span>{{vm.crmContact.vatNumber}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.addres">Addres</span></dt>
+        <dd>
+            <a ui-sref="cor-address-detail({id:vm.crmContact.addresId})">{{vm.crmContact.addresId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.country">Country</span></dt>
+        <dd>
+            <a ui-sref="cor-country-detail({id:vm.crmContact.countryId})">{{vm.crmContact.countryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.person">Person</span></dt>
+        <dd>
+            <a ui-sref="cor-person-detail({id:vm.crmContact.personId})">{{vm.crmContact.personId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.crmContact.networkId})">{{vm.crmContact.networkId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.range">Range</span></dt>
+        <dd>
+            <a ui-sref="cor-range-detail({id:vm.crmContact.rangeId})">{{vm.crmContact.rangeId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.size">Size</span></dt>
+        <dd>
+            <a ui-sref="cor-size-detail({id:vm.crmContact.sizeId})">{{vm.crmContact.sizeId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.industry">Industry</span></dt>
+        <dd>
+            <a ui-sref="tra-industry-detail({id:vm.crmContact.industryId})">{{vm.crmContact.industryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.area">Area</span></dt>
+        <dd>
+            <a ui-sref="cor-area-detail({id:vm.crmContact.areaId})">{{vm.crmContact.areaId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.keeper">Keeper</span></dt>
+        <dd>
+            <a ui-sref="cor-user-detail({id:vm.crmContact.keeperId})">{{vm.crmContact.keeperId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmContact.status">Status</span></dt>
+        <dd>
+            <a ui-sref="crm-contact-status-detail({id:vm.crmContact.statusId})">{{vm.crmContact.statusId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="crm-contact-detail.edit({id:vm.crmContact.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

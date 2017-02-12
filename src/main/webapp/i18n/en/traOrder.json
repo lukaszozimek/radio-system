@@ -1,0 +1,31 @@
+{
+    "protoneApp": {
+        "traOrder" : {
+            "home": {
+                "title": "Tra Orders",
+                "createLabel": "Create a new Tra Order",
+                "createOrEditLabel": "Create or edit a Tra Order",
+                "search": "Search for Tra Order"
+            },
+            "created": "A new Tra Order is created with identifier {{ param }}",
+            "updated": "A Tra Order is updated with identifier {{ param }}",
+            "deleted": "A Tra Order is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Tra Order {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Order"
+            },
+            "name": "Name",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "calculatedPrize": "Calculated Prize",
+            "customer": "Customer",
+            "campaign": "Campaign",
+            "price": "Price",
+            "network": "Network",
+            "status": "Status",
+            "invoice": "Invoice"
+        }
+    }
+}

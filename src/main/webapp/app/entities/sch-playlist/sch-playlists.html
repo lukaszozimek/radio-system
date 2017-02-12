@@ -1,0 +1,66 @@
+<div>
+    <h2 data-translate="protoneApp.schPlaylist.home.title">Sch Playlists</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="sch-playlist.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.schPlaylist.home.createLabel">
+                        Create new Sch Playlist
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.schPlaylist.date">Date</span></th>
+                    <th><span data-translate="protoneApp.schPlaylist.dimYear">Dim Year</span></th>
+                    <th><span data-translate="protoneApp.schPlaylist.dimMonth">Dim Month</span></th>
+                    <th><span data-translate="protoneApp.schPlaylist.dimDay">Dim Day</span></th>
+                    <th><span data-translate="protoneApp.schPlaylist.channel">Channel</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="schPlaylist in vm.schPlaylists track by schPlaylist.id">
+                    <td><a ui-sref="sch-playlist-detail({id:schPlaylist.id})">{{schPlaylist.id}}</a></td>
+                        <td>{{schPlaylist.date | date:'mediumDate'}}</td>
+                    <td>{{schPlaylist.dimYear}}</td>
+                    <td>{{schPlaylist.dimMonth}}</td>
+                    <td>{{schPlaylist.dimDay}}</td>
+                    <td>
+                        <a ui-sref="cor-channel-detail({id:schPlaylist.channelId})">{{schPlaylist.channelId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="sch-playlist-detail({id:schPlaylist.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="sch-playlist.edit({id:schPlaylist.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="sch-playlist.delete({id:schPlaylist.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

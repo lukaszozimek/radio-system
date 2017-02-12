@@ -1,0 +1,55 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cloudObject",
+            "otherEntityName": "libCloudObject",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "libAudioObject"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "mediaItem",
+            "otherEntityName": "libMediaItem",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "length",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "biTrate",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "codec",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        },
+        {
+            "fieldName": "quality",
+            "fieldType": "LibAudioQualityEnum",
+            "fieldValues": "AQ_ORIGINAL,AQ_LOSSLESS,AQ_HIGH,AQ_NORMAL,AQ_LOW,AQ_OTHER"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "lib_audio_object",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

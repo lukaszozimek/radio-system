@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "corNotification" : {
+            "home": {
+                "title": "Cor Notifications",
+                "createLabel": "Dodaj Cor Notification",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Notification",
+                "search": "Search for Cor Notification"
+            },
+            "created": "A new Cor Notification is created with identifier {{ param }}",
+            "updated": "A Cor Notification is updated with identifier {{ param }}",
+            "deleted": "A Cor Notification is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Notification {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Notification"
+            },
+            "description": "Description",
+            "user": "User"
+        }
+    }
+}

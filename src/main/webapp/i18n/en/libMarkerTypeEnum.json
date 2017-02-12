@@ -1,0 +1,13 @@
+{
+    "protoneApp": {
+        "LibMarkerTypeEnum" : {
+            "null": "",
+            "MT_BASIC": "MT_BASIC",
+            "MT_INTRO": "MT_INTRO",
+            "MT_FADE": "MT_FADE",
+            "MT_HOOK": "MT_HOOK",
+            "MT_LOOP": "MT_LOOP",
+            "MT_CUSTOM": "MT_CUSTOM"
+        }
+    }
+}

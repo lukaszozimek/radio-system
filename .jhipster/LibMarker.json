@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "mediaItem",
+            "otherEntityName": "libMediaItem",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "markerType",
+            "fieldType": "LibMarkerTypeEnum",
+            "fieldValues": "MT_BASIC,MT_INTRO,MT_FADE,MT_HOOK,MT_LOOP,MT_CUSTOM",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        },
+        {
+            "fieldName": "startTime",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "lib_marker",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

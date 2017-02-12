@@ -1,0 +1,100 @@
+<div>
+    <h2 data-translate="protoneApp.schBlock.home.title">Sch Blocks</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="sch-block.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.schBlock.home.createLabel">
+                        Create new Sch Block
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.schBlock.seq">Seq</span></th>
+                    <th><span data-translate="protoneApp.schBlock.name">Name</span></th>
+                    <th><span data-translate="protoneApp.schBlock.type">Type</span></th>
+                    <th><span data-translate="protoneApp.schBlock.startType">Start Type</span></th>
+                    <th><span data-translate="protoneApp.schBlock.relativeDelay">Relative Delay</span></th>
+                    <th><span data-translate="protoneApp.schBlock.scheduledStartTime">Scheduled Start Time</span></th>
+                    <th><span data-translate="protoneApp.schBlock.scheduledEndTime">Scheduled End Time</span></th>
+                    <th><span data-translate="protoneApp.schBlock.scheduledLength">Scheduled Length</span></th>
+                    <th><span data-translate="protoneApp.schBlock.startTime">Start Time</span></th>
+                    <th><span data-translate="protoneApp.schBlock.endTime">End Time</span></th>
+                    <th><span data-translate="protoneApp.schBlock.length">Length</span></th>
+                    <th><span data-translate="protoneApp.schBlock.dimYear">Dim Year</span></th>
+                    <th><span data-translate="protoneApp.schBlock.dimMonth">Dim Month</span></th>
+                    <th><span data-translate="protoneApp.schBlock.dimDay">Dim Day</span></th>
+                    <th><span data-translate="protoneApp.schBlock.dimHour">Dim Hour</span></th>
+                    <th><span data-translate="protoneApp.schBlock.dimMinute">Dim Minute</span></th>
+                    <th><span data-translate="protoneApp.schBlock.dimSecond">Dim Second</span></th>
+                    <th><span data-translate="protoneApp.schBlock.playlist">Playlist</span></th>
+                    <th><span data-translate="protoneApp.schBlock.template">Template</span></th>
+                    <th><span data-translate="protoneApp.schBlock.parentBlock">Parent Block</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="schBlock in vm.schBlocks track by schBlock.id">
+                    <td><a ui-sref="sch-block-detail({id:schBlock.id})">{{schBlock.id}}</a></td>
+                    <td>{{schBlock.seq}}</td>
+                    <td>{{schBlock.name}}</td>
+                    <td data-translate="{{'protoneApp.SchBlockTypeEnum.' + schBlock.type}}">{{schBlock.type}}</td>
+                    <td data-translate="{{'protoneApp.SchStartTypeEnum.' + schBlock.startType}}">{{schBlock.startType}}</td>
+                    <td>{{schBlock.relativeDelay}}</td>
+                    <td>{{schBlock.scheduledStartTime | date:'medium'}}</td>
+                    <td>{{schBlock.scheduledEndTime | date:'medium'}}</td>
+                    <td>{{schBlock.scheduledLength}}</td>
+                    <td>{{schBlock.startTime | date:'medium'}}</td>
+                    <td>{{schBlock.endTime | date:'medium'}}</td>
+                    <td>{{schBlock.length}}</td>
+                    <td>{{schBlock.dimYear}}</td>
+                    <td>{{schBlock.dimMonth}}</td>
+                    <td>{{schBlock.dimDay}}</td>
+                    <td>{{schBlock.dimHour}}</td>
+                    <td>{{schBlock.dimMinute}}</td>
+                    <td>{{schBlock.dimSecond}}</td>
+                    <td>
+                        <a ui-sref="sch-playlist-detail({id:schBlock.playlistId})">{{schBlock.playlistId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="sch-template-detail({id:schBlock.templateId})">{{schBlock.templateId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="sch-block-detail({id:schBlock.parentBlockId})">{{schBlock.parentBlockId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="sch-block-detail({id:schBlock.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="sch-block.edit({id:schBlock.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="sch-block.delete({id:schBlock.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

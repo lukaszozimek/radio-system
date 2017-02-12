@@ -1,0 +1,26 @@
+{
+    "protoneApp": {
+        "libImageObject" : {
+            "home": {
+                "title": "Lib Image Objects",
+                "createLabel": "Dodaj Lib Image Object",
+                "createOrEditLabel": "Dodaj lub edytuj: Lib Image Object",
+                "search": "Search for Lib Image Object"
+            },
+            "created": "A new Lib Image Object is created with identifier {{ param }}",
+            "updated": "A Lib Image Object is updated with identifier {{ param }}",
+            "deleted": "A Lib Image Object is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Lib Image Object {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Image Object"
+            },
+            "width": "Width",
+            "height": "Height",
+            "imageSize": "Image Size",
+            "cloudObject": "Cloud Object",
+            "imageItem": "Image Item"
+        }
+    }
+}

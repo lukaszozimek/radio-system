@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="protoneApp.libFileItem.detail.title">Lib File Item</span> {{vm.libFileItem.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.libFileItem.idx">Idx</span></dt>
+        <dd>
+            <span>{{vm.libFileItem.idx}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libFileItem.name">Name</span></dt>
+        <dd>
+            <span>{{vm.libFileItem.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libFileItem.type">Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LibFileTypeEnum.' + vm.libFileItem.type}}">{{vm.libFileItem.type}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libFileItem.library">Library</span></dt>
+        <dd>
+            <a ui-sref="lib-library-detail({id:vm.libFileItem.libraryId})">{{vm.libFileItem.libraryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libFileItem.parentFile">Parent File</span></dt>
+        <dd>
+            <a ui-sref="lib-file-item-detail({id:vm.libFileItem.parentFileId})">{{vm.libFileItem.parentFileId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="lib-file-item-detail.edit({id:vm.libFileItem.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

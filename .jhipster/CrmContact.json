@@ -1,0 +1,113 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "addres",
+            "otherEntityName": "corAddress",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "crmContact"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "country",
+            "otherEntityName": "corCountry",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "crmContact"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "person",
+            "otherEntityName": "corPerson",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "crmContact"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "network",
+            "otherEntityName": "corNetwork",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "range",
+            "otherEntityName": "corRange",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "size",
+            "otherEntityName": "corSize",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "industry",
+            "otherEntityName": "traIndustry",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "area",
+            "otherEntityName": "corArea",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "keeper",
+            "otherEntityName": "corUser",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "status",
+            "otherEntityName": "crmContactStatus",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "tasks",
+            "otherEntityName": "crmTask",
+            "otherEntityRelationshipName": "contact"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "shortName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "externalId1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "externalId2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "paymentDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "paymentDelay",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "vatNumber",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "crm_contact",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

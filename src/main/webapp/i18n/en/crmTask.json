@@ -1,0 +1,34 @@
+{
+    "protoneApp": {
+        "crmTask" : {
+            "home": {
+                "title": "Crm Tasks",
+                "createLabel": "Create a new Crm Task",
+                "createOrEditLabel": "Create or edit a Crm Task",
+                "search": "Search for Crm Task"
+            },
+            "created": "A new Crm Task is created with identifier {{ param }}",
+            "updated": "A Crm Task is updated with identifier {{ param }}",
+            "deleted": "A Crm Task is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Crm Task {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Task"
+            },
+            "subject": "Subject",
+            "activityDate": "Activity Date",
+            "activityLength": "Activity Length",
+            "comment": "Comment",
+            "createdBy": "Created By",
+            "assignedTo": "Assigned To",
+            "status": "Status",
+            "network": "Network",
+            "opportunity": "Opportunity",
+            "contact": "Contact",
+            "account": "Account",
+            "lead": "Lead",
+            "tasks": "Tasks"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity CorUser.
+    -->
+    <changeSet id="20170212144239-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="cor_user"
+                                 constraintName="fk_cor_user_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="cor_user"
+                                 constraintName="fk_cor_user_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+    </changeSet>
+</databaseChangeLog>

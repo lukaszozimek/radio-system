@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "crmTaskStatus" : {
+            "home": {
+                "title": "Crm Task Statuses",
+                "createLabel": "Create a new Crm Task Status",
+                "createOrEditLabel": "Create or edit a Crm Task Status",
+                "search": "Search for Crm Task Status"
+            },
+            "created": "A new Crm Task Status is created with identifier {{ param }}",
+            "updated": "A Crm Task Status is updated with identifier {{ param }}",
+            "deleted": "A Crm Task Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Crm Task Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Task Status"
+            },
+            "name": "Name",
+            "network": "Network"
+        }
+    }
+}

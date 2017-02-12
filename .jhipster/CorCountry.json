@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "tax",
+            "otherEntityName": "corTax",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "corCountry"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "currnecy",
+            "otherEntityName": "corCurrency",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "corCountry"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "network",
+            "otherEntityName": "corNetwork",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "shortName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "cor_country",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

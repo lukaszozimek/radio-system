@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span data-translate="protoneApp.libLabel.detail.title">Lib Label</span> {{vm.libLabel.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.libLabel.name">Name</span></dt>
+        <dd>
+            <span>{{vm.libLabel.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLabel.description">Description</span></dt>
+        <dd>
+            <span>{{vm.libLabel.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLabel.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.libLabel.networkId})">{{vm.libLabel.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="lib-label-detail.edit({id:vm.libLabel.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

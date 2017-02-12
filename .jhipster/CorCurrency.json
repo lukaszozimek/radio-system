@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "network",
+            "otherEntityName": "corNetwork",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "symbol",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "delimiter",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "shortName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "cor_currency",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

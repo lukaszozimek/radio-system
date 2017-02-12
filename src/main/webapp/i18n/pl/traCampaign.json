@@ -1,0 +1,31 @@
+{
+    "protoneApp": {
+        "traCampaign" : {
+            "home": {
+                "title": "Tra Campaigns",
+                "createLabel": "Dodaj Tra Campaign",
+                "createOrEditLabel": "Dodaj lub edytuj: Tra Campaign",
+                "search": "Search for Tra Campaign"
+            },
+            "created": "A new Tra Campaign is created with identifier {{ param }}",
+            "updated": "A Tra Campaign is updated with identifier {{ param }}",
+            "deleted": "A Tra Campaign is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tra Campaign {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Campaign"
+            },
+            "name": "Name",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "prize": "Prize",
+            "customer": "Customer",
+            "network": "Network",
+            "status": "Status",
+            "price": "Price",
+            "orders": "Orders",
+            "emissions": "Emissions"
+        }
+    }
+}

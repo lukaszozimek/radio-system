@@ -1,0 +1,113 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myCfgMarkerConfigurationLabel" data-translate="protoneApp.cfgMarkerConfiguration.home.createOrEditLabel">Create or edit a Cfg Marker Configuration</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.cfgMarkerConfiguration.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.cfgMarkerConfiguration.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cfgMarkerConfiguration.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.cfgMarkerConfiguration.name"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cfgMarkerConfiguration.displayName" for="field_displayName">Display Name</label>
+            <input type="text" class="form-control" name="displayName" id="field_displayName"
+                    ng-model="vm.cfgMarkerConfiguration.displayName"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.displayName.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.displayName.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.displayName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cfgMarkerConfiguration.color" for="field_color">Color</label>
+            <input type="text" class="form-control" name="color" id="field_color"
+                    ng-model="vm.cfgMarkerConfiguration.color"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.color.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.color.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.color.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cfgMarkerConfiguration.keyboardShortcut" for="field_keyboardShortcut">Keyboard Shortcut</label>
+            <input type="text" class="form-control" name="keyboardShortcut" id="field_keyboardShortcut"
+                    ng-model="vm.cfgMarkerConfiguration.keyboardShortcut"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.keyboardShortcut.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.keyboardShortcut.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.keyboardShortcut.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.cfgMarkerConfiguration.type" for="field_type">Type</label>
+            <select class="form-control" name="type" ng-model="vm.cfgMarkerConfiguration.type" id="field_type" required>
+                <option value="MT_BASIC" data-translate="protoneApp.LibMarkerTypeEnum.MT_BASIC">MT_BASIC</option>
+                <option value="MT_INTRO" data-translate="protoneApp.LibMarkerTypeEnum.MT_INTRO">MT_INTRO</option>
+                <option value="MT_FADE" data-translate="protoneApp.LibMarkerTypeEnum.MT_FADE">MT_FADE</option>
+                <option value="MT_HOOK" data-translate="protoneApp.LibMarkerTypeEnum.MT_HOOK">MT_HOOK</option>
+                <option value="MT_LOOP" data-translate="protoneApp.LibMarkerTypeEnum.MT_LOOP">MT_LOOP</option>
+                <option value="MT_CUSTOM" data-translate="protoneApp.LibMarkerTypeEnum.MT_CUSTOM">MT_CUSTOM</option>
+            </select>
+            <div ng-show="editForm.type.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.type.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.cfgMarkerConfiguration.network" for="field_network">Network</label>
+            <select class="form-control" id="field_network" name="network" ng-model="vm.cfgMarkerConfiguration.networkId" ng-options="corNetwork.id as corNetwork.id for corNetwork in vm.cornetworks"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

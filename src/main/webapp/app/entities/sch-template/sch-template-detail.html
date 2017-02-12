@@ -1,0 +1,27 @@
+
+<div>
+    <h2><span data-translate="protoneApp.schTemplate.detail.title">Sch Template</span> {{vm.schTemplate.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.schTemplate.name">Name</span></dt>
+        <dd>
+            <span>{{vm.schTemplate.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schTemplate.channel">Channel</span></dt>
+        <dd>
+            <a ui-sref="cor-channel-detail({id:vm.schTemplate.channelId})">{{vm.schTemplate.channelId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="sch-template-detail.edit({id:vm.schTemplate.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

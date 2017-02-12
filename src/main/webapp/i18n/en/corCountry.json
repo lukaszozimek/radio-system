@@ -1,0 +1,26 @@
+{
+    "protoneApp": {
+        "corCountry" : {
+            "home": {
+                "title": "Cor Countries",
+                "createLabel": "Create a new Cor Country",
+                "createOrEditLabel": "Create or edit a Cor Country",
+                "search": "Search for Cor Country"
+            },
+            "created": "A new Cor Country is created with identifier {{ param }}",
+            "updated": "A Cor Country is updated with identifier {{ param }}",
+            "deleted": "A Cor Country is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor Country {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Country"
+            },
+            "name": "Name",
+            "shortName": "Short Name",
+            "tax": "Tax",
+            "currnecy": "Currnecy",
+            "network": "Network"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "traCampaingStatus" : {
+            "home": {
+                "title": "Tra Campaing Statuses",
+                "createLabel": "Create a new Tra Campaing Status",
+                "createOrEditLabel": "Create or edit a Tra Campaing Status",
+                "search": "Search for Tra Campaing Status"
+            },
+            "created": "A new Tra Campaing Status is created with identifier {{ param }}",
+            "updated": "A Tra Campaing Status is updated with identifier {{ param }}",
+            "deleted": "A Tra Campaing Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Tra Campaing Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Campaing Status"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

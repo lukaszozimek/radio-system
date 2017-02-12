@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "traOrderStatus" : {
+            "home": {
+                "title": "Tra Order Statuses",
+                "createLabel": "Dodaj Tra Order Status",
+                "createOrEditLabel": "Dodaj lub edytuj: Tra Order Status",
+                "search": "Search for Tra Order Status"
+            },
+            "created": "A new Tra Order Status is created with identifier {{ param }}",
+            "updated": "A Tra Order Status is updated with identifier {{ param }}",
+            "deleted": "A Tra Order Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tra Order Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Order Status"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

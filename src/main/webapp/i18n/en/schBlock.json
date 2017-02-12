@@ -1,0 +1,41 @@
+{
+    "protoneApp": {
+        "schBlock" : {
+            "home": {
+                "title": "Sch Blocks",
+                "createLabel": "Create a new Sch Block",
+                "createOrEditLabel": "Create or edit a Sch Block",
+                "search": "Search for Sch Block"
+            },
+            "created": "A new Sch Block is created with identifier {{ param }}",
+            "updated": "A Sch Block is updated with identifier {{ param }}",
+            "deleted": "A Sch Block is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Sch Block {{ id }}?"
+            },
+            "detail": {
+                "title": "Sch Block"
+            },
+            "seq": "Seq",
+            "name": "Name",
+            "type": "Type",
+            "startType": "Start Type",
+            "relativeDelay": "Relative Delay",
+            "scheduledStartTime": "Scheduled Start Time",
+            "scheduledEndTime": "Scheduled End Time",
+            "scheduledLength": "Scheduled Length",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "length": "Length",
+            "dimYear": "Dim Year",
+            "dimMonth": "Dim Month",
+            "dimDay": "Dim Day",
+            "dimHour": "Dim Hour",
+            "dimMinute": "Dim Minute",
+            "dimSecond": "Dim Second",
+            "playlist": "Playlist",
+            "template": "Template",
+            "parentBlock": "Parent Block"
+        }
+    }
+}

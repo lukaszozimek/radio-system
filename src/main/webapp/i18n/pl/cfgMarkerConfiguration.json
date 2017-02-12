@@ -1,0 +1,27 @@
+{
+    "protoneApp": {
+        "cfgMarkerConfiguration" : {
+            "home": {
+                "title": "Cfg Marker Configurations",
+                "createLabel": "Dodaj Cfg Marker Configuration",
+                "createOrEditLabel": "Dodaj lub edytuj: Cfg Marker Configuration",
+                "search": "Search for Cfg Marker Configuration"
+            },
+            "created": "A new Cfg Marker Configuration is created with identifier {{ param }}",
+            "updated": "A Cfg Marker Configuration is updated with identifier {{ param }}",
+            "deleted": "A Cfg Marker Configuration is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cfg Marker Configuration {{ id }}?"
+            },
+            "detail": {
+                "title": "Cfg Marker Configuration"
+            },
+            "name": "Name",
+            "displayName": "Display Name",
+            "color": "Color",
+            "keyboardShortcut": "Keyboard Shortcut",
+            "type": "Type",
+            "network": "Network"
+        }
+    }
+}

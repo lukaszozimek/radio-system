@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="protoneApp.libLibrary.detail.title">Lib Library</span> {{vm.libLibrary.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.libLibrary.prefix">Prefix</span></dt>
+        <dd>
+            <span>{{vm.libLibrary.prefix}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.idxLength">Idx Length</span></dt>
+        <dd>
+            <span>{{vm.libLibrary.idxLength}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.shortcut">Shortcut</span></dt>
+        <dd>
+            <span>{{vm.libLibrary.shortcut}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.name">Name</span></dt>
+        <dd>
+            <span>{{vm.libLibrary.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.counter">Counter</span></dt>
+        <dd>
+            <span>{{vm.libLibrary.counter}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.counterType">Counter Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LibCounterTypeEnum.' + vm.libLibrary.counterType}}">{{vm.libLibrary.counterType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.libraryType">Library Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LibObjectTypeEnum.' + vm.libLibrary.libraryType}}">{{vm.libLibrary.libraryType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.description">Description</span></dt>
+        <dd>
+            <span>{{vm.libLibrary.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libLibrary.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.libLibrary.networkId})">{{vm.libLibrary.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="lib-library-detail.edit({id:vm.libLibrary.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,26 @@
+{
+    "protoneApp": {
+        "corCurrency" : {
+            "home": {
+                "title": "Cor Currencies",
+                "createLabel": "Dodaj Cor Currency",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Currency",
+                "search": "Search for Cor Currency"
+            },
+            "created": "A new Cor Currency is created with identifier {{ param }}",
+            "updated": "A Cor Currency is updated with identifier {{ param }}",
+            "deleted": "A Cor Currency is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Currency {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Currency"
+            },
+            "name": "Name",
+            "symbol": "Symbol",
+            "delimiter": "Delimiter",
+            "shortName": "Short Name",
+            "network": "Network"
+        }
+    }
+}

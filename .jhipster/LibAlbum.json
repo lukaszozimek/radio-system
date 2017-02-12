@@ -1,0 +1,64 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cover",
+            "otherEntityName": "libImageItem",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "libAlbum"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "label",
+            "otherEntityName": "libLabel",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "artist",
+            "otherEntityName": "libArtist",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "network",
+            "otherEntityName": "corNetwork",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "albumType",
+            "fieldType": "LibAlbumTypeEnum",
+            "fieldValues": "AT_ALBUM,AT_SINGLE,AT_COMPILATION,AT_OTHER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        },
+        {
+            "fieldName": "releaseDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "lib_album",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "corPropertyKey" : {
+            "home": {
+                "title": "Cor Property Keys",
+                "createLabel": "Dodaj Cor Property Key",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Property Key",
+                "search": "Search for Cor Property Key"
+            },
+            "created": "A new Cor Property Key is created with identifier {{ param }}",
+            "updated": "A Cor Property Key is updated with identifier {{ param }}",
+            "deleted": "A Cor Property Key is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Property Key {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Property Key"
+            },
+            "key": "Key",
+            "network": "Network"
+        }
+    }
+}

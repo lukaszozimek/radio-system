@@ -1,0 +1,112 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myTraPriceLabel" data-translate="protoneApp.traPrice.home.createOrEditLabel">Create or edit a Tra Price</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.traPrice.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.traPrice.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.traPrice.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.traPrice.name"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.traPrice.validFrom" for="field_validFrom">Valid From</label>
+                <div class="input-group">
+                    <input id="field_validFrom" type="text" class="form-control" name="validFrom" uib-datepicker-popup="{{dateformat}}" ng-model="vm.traPrice.validFrom" is-open="vm.datePickerOpenStatus.validFrom"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('validFrom')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.traPrice.validTo" for="field_validTo">Valid To</label>
+                <div class="input-group">
+                    <input id="field_validTo" type="text" class="form-control" name="validTo" uib-datepicker-popup="{{dateformat}}" ng-model="vm.traPrice.validTo" is-open="vm.datePickerOpenStatus.validTo"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('validTo')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.traPrice.price" for="field_price">Price</label>
+            <input type="number" class="form-control" name="price" id="field_price"
+                    ng-model="vm.traPrice.price"
+                    required/>
+            <div ng-show="editForm.price.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.price.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.price.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.traPrice.baseLength" for="field_baseLength">Base Length</label>
+            <input type="number" class="form-control" name="baseLength" id="field_baseLength"
+                    ng-model="vm.traPrice.baseLength"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.traPrice.priceAlternative" for="field_priceAlternative">Price Alternative</label>
+            <input type="number" class="form-control" name="priceAlternative" id="field_priceAlternative"
+                    ng-model="vm.traPrice.priceAlternative"
+                    required/>
+            <div ng-show="editForm.priceAlternative.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.priceAlternative.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.priceAlternative.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.traPrice.currency" for="field_currency">Currency</label>
+            <select class="form-control" id="field_currency" name="currency" ng-model="vm.traPrice.currencyId" ng-options="corCurrency.id as corCurrency.id for corCurrency in vm.currencies | orderBy:'id'">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.traPrice.network" for="field_network">Network</label>
+            <select class="form-control" id="field_network" name="network" ng-model="vm.traPrice.networkId" ng-options="corNetwork.id as corNetwork.id for corNetwork in vm.cornetworks"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

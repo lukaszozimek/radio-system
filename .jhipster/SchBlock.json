@@ -1,0 +1,109 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "playlist",
+            "otherEntityName": "schPlaylist",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "template",
+            "otherEntityName": "schTemplate",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "parentBlock",
+            "otherEntityName": "schBlock",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "seq",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "SchBlockTypeEnum",
+            "fieldValues": "BT_DAY,BT_BAND,BT_HOUR,BT_NEWS,BT_COMMERCIAL,BT_PROGRAM,BT_LIVE,BT_OTHER"
+        },
+        {
+            "fieldName": "startType",
+            "fieldType": "SchStartTypeEnum",
+            "fieldValues": "ST_FREE,ST_RELATIVE,ST_ABSOLUTE"
+        },
+        {
+            "fieldName": "relativeDelay",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "scheduledStartTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "scheduledEndTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "scheduledLength",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "startTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "endTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "length",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "dimYear",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimMonth",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimDay",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimHour",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimMinute",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimSecond",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "sch_block",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

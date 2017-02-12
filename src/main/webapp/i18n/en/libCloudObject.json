@@ -1,0 +1,31 @@
+{
+    "protoneApp": {
+        "libCloudObject" : {
+            "home": {
+                "title": "Lib Cloud Objects",
+                "createLabel": "Create a new Lib Cloud Object",
+                "createOrEditLabel": "Create or edit a Lib Cloud Object",
+                "search": "Search for Lib Cloud Object"
+            },
+            "created": "A new Lib Cloud Object is created with identifier {{ param }}",
+            "updated": "A Lib Cloud Object is updated with identifier {{ param }}",
+            "deleted": "A Lib Cloud Object is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Lib Cloud Object {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Cloud Object"
+            },
+            "uuid": "Uuid",
+            "objectType": "Object Type",
+            "originalName": "Original Name",
+            "contentType": "Content Type",
+            "size": "Size",
+            "original": "Original",
+            "hash": "Hash",
+            "createDate": "Create Date",
+            "network": "Network",
+            "createdBy": "Created By"
+        }
+    }
+}
