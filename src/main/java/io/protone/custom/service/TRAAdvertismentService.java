@@ -1,17 +1,20 @@
 package io.protone.custom.service;
 
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.custom.service.mapper.CustomTraIndustryMapper;
-import io.protone.domain.*;
-import io.protone.repository.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.TraAdvertisement;
+import io.protone.repository.CrmAccountRepository;
+import io.protone.repository.LibMediaItemRepository;
+import io.protone.repository.TraAdvertisementRepository;
+import io.protone.repository.TraIndustryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -68,7 +71,8 @@ public class TRAAdvertismentService {
 
 
     public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CorNetwork corNetwork) {
-        return null;
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        return traAdvertisementRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traAdvertisment -> traAdvertismentMapper.transformEntityToDTO(traAdvertisment)).collect(toList());
     }
 
 

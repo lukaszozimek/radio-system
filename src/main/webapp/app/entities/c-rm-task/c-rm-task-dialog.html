@@ -7,12 +7,7 @@
         <h4 class="modal-title" id="myCRMTaskLabel" data-translate="protoneApp.cRMTask.home.createOrEditLabel">Create or edit a CRM Task</h4>
     </div>
     <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.cRMTask.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.cRMTask.id" readonly />
-        </div>
+
         <div class="form-group">
             <label class="control-label" data-translate="protoneApp.cRMTask.subject" for="field_subject">Subject</label>
             <input type="text" class="form-control" name="subject" id="field_subject"
@@ -32,13 +27,13 @@
         <div class="form-group">
             <label class="control-label" data-translate="protoneApp.cRMTask.activityLength" for="field_activityLength">Activity Length</label>
             <input type="number" class="form-control" name="activityLength" id="field_activityLength"
-                    ng-model="vm.cRMTask.activityLength"
+                    ng-model="task.activityLength"
                      />
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="protoneApp.cRMTask.comment" for="field_comment">Comment</label>
             <input type="text" class="form-control" name="comment" id="field_comment"
-                    ng-model="vm.cRMTask.comment"
+                    ng-model="task.comment"
                      />
         </div>
 

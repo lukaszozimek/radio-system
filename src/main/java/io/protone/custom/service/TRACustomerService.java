@@ -30,16 +30,13 @@ public class TRACustomerService {
     @Inject
     private CustomCrmAccountMapper customCrmAccountMapper;
 
-
     public List<TraCustomerPT> getAllCustomers(CorNetwork corNetwork) {
-
         return crmAccountRepository.findByNetwork(corNetwork).stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
     }
 
     public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CorNetwork corNetwork) {
         CrmAccount crmAccount = customCrmAccountMapper.createCrmAcountEntity(traCustomerPT,corNetwork);
         crmAccountRepository.save(crmAccount);
-
         return customCrmAccountMapper.createCustomerTrafficDTO(crmAccount);
     }
 

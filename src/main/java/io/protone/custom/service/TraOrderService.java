@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,6 +26,8 @@ public class TraOrderService {
 
     @Inject
     private TraOrderRepository traOrderRepository;
+    @Inject
+    private CrmAccountRepository crmAccountRepository;
 
     public List<TraOrderPT> getAllOrder(CorNetwork corNetwork) {
         return traOrderRepository.findByNetwork(corNetwork).stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());
@@ -55,7 +58,8 @@ public class TraOrderService {
     }
 
     public List<TraOrderPT> getCustomerOrders(String shortcut, CorNetwork corNetwork) {
-        return null;
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        return traOrderRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traOrder -> customTraOrderMapper.transfromEntiteToDTO(traOrder)).collect(toList());
     }
 
 }

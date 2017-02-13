@@ -27,7 +27,6 @@ public class TraInvoiceService {
     @Inject
     private CustomTraInvoiceMapper customTraInvoiceMapper;
 
-
     public List<TraInvoicePT> getAllInvoice(CorNetwork corNetwork) {
         return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> customTraInvoiceMapper.createDTOFromEnity(traInvoicePTS)).collect(toList());
     }

@@ -141,7 +141,7 @@ public class ItemService {
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
                 User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-                cloudObject.setCreatedBy(new CorUser());
+               // cloudObject.setCreatedBy(new CorUser());
 
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);

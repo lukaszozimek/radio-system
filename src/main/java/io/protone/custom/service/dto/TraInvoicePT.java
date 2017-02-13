@@ -29,6 +29,7 @@ public class TraInvoicePT {
 
     @JsonProperty("customer")
     private TraCustomerPT customerPT = null;
+
     @JsonProperty("status")
     private TraInvoiceStatus traStatus = null;
 

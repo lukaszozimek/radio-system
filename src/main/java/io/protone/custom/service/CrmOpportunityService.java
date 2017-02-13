@@ -37,7 +37,6 @@ public class CrmOpportunityService {
     @Inject
     private CrmTaskRepository crmTaskRepository;
 
-
     public List<CrmOpportunityPT> getAllOpportunity(CorNetwork corNetwork) {
         return opportunityRepository.findByNetwork(corNetwork).stream().map(opportunity -> customCrmOpportunityMapper.buildDTOFromEntites(opportunity)).collect(toList());
     }

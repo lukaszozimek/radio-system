@@ -61,6 +61,11 @@ server:
 # ===================================================================
 
 jhipster:
+    s3:
+        url: http://localhost:9000
+        username: protone-dev
+        password: protone-dev
+        bucket: protone-dev
     cache: # Hibernate 2nd level cache, used by CacheConfiguration
         hazelcast:
             timeToLiveSeconds: 3600

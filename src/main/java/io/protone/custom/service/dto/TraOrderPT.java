@@ -39,9 +39,6 @@ public class TraOrderPT {
     @JsonProperty("price")
     private TraPrice traPrice = null;
 
-    @JsonProperty("emission")
-    private List<SchEmissionPT> emission = new ArrayList<>();
-
     public TraOrderPT calculatedPrize(Long calculatedPrize) {
         this.calculatedPrize = calculatedPrize;
         return this;
@@ -194,25 +191,6 @@ public class TraOrderPT {
         this.startDate = startDate;
     }
 
-    public TraOrderPT emission(List<SchEmissionPT> emission) {
-        this.emission = emission;
-        return this;
-    }
-
-    /**
-     * Get emission
-     *
-     * @return emission
-     **/
-    @ApiModelProperty(value = "")
-    public List<SchEmissionPT> getEmission() {
-        return emission;
-    }
-
-    public void setEmission(List<SchEmissionPT> emission) {
-        this.emission = emission;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -230,13 +208,12 @@ public class TraOrderPT {
             Objects.equals(this.id, traOrderPT.id) &&
             Objects.equals(this.name, traOrderPT.name) &&
             Objects.equals(this.startDate, traOrderPT.startDate) &&
-            Objects.equals(this.traPrice, traOrderPT.traPrice) &&
-            Objects.equals(this.emission, traOrderPT.emission);
+            Objects.equals(this.traPrice, traOrderPT.traPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, emission, traPrice);
+        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, traPrice);
     }
 
     @Override
@@ -251,7 +228,6 @@ public class TraOrderPT {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-        sb.append("    emission: ").append(toIndentedString(emission)).append("\n");
         sb.append("    price: ").append(toIndentedString(traPrice)).append("\n");
         sb.append("}");
         return sb.toString();

@@ -50,13 +50,12 @@ public class TRACampaignService {
     }
 
     public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CorNetwork corNetwork) {
-        TraCampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT,corNetwork);
+        TraCampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT, corNetwork);
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
     }
 
     public void deleteCampaign(String shortcut, CorNetwork corNetwork) {
-
-
+        traCampaignRepository.deleteByNameAndNetwork(shortcut, corNetwork);
     }
 
     public TraCampaignPT getCampaign(TraCampaign traCampaign, CorNetwork corNetwork) {
@@ -72,7 +71,8 @@ public class TRACampaignService {
     }
 
     public List<TraCampaignPT> getCustomerCampaing(String shortcut, CorNetwork corNetwork) {
-    return null;
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        return traCampaignRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traCampaign -> customTRACampaignMapper.transfromEntitytoDTO(traCampaign)).collect(toList());
     }
 
 }

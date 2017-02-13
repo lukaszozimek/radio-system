@@ -76,7 +76,6 @@ public class CrmContactService {
 
     public CrmTaskPT getTaskAssociatedWithContact(String shortcut, Long taskId, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-
         return customCrmTaskMapper.createCrmTask(crmTaskRepository.findOneByIdAndNetwork(taskId, corNetwork));
     }
 

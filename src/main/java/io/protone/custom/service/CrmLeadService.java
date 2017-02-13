@@ -44,7 +44,6 @@ public class CrmLeadService {
     @Inject
     private CustomCrmTaskMapper customCrmTaskMapper;
 
-
     @Transactional
     public List<CrmLeadPT> getAllLeads(CorNetwork corNetwork) {
         return crmLeadRepository.findByNetwork(corNetwork).stream().map(crmLead -> customCrmLeadMapper.createDTOFromEntites(crmLead)).collect(toList());

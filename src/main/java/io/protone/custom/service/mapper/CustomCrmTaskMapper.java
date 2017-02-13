@@ -33,7 +33,7 @@ public class CustomCrmTaskMapper {
 
     public CrmTaskPT createCrmTask(CrmTask crmTask) {
         return new CrmTaskPT().id(crmTask.getId())
-            .activityDate(crmTask.getActivityDate().toString())
+        //    .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
             .crmTaskStatus(crmTask.getStatus())
             //.assignedTo(corUserMapper.corUserMapper(crmTask.getAssignedTo()))
@@ -51,7 +51,7 @@ public class CustomCrmTaskMapper {
         CrmTask crmTask = new CrmTask();
         crmTask.setId(taskPT.getId());
         crmTask.setSubject(taskPT.getSubject());
-        crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate(), formatter));
+     //   crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate(), formatter));
         crmTask.setActivityLength(taskPT.getActivityLenght());
         crmTask.setComment(taskPT.getComment());
         //crmTask.assignedTo(taskPT.getAssignedTo());
