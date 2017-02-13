@@ -18,14 +18,13 @@ public class CustomSchEmissionMapper {
 
     public SchEmissionPT creteDTOFromEntities(SchEmission emission) {
         return new SchEmissionPT()
-            .blockId(2L)
-            .endTime(emission.getEndTime().toString())
-            .startTime(emission.getStartTime().toString())
+            .id(emission.getId())
             .seq(emission.getSeq())
-            .mediaItemId(new LibItemPT())
-            .length(emission.getLength())
-            .templateId(2L)
-            .id(emission.getId());
+            .blockId(2L)
+            .startTime(emission.getStartTime())
+            .endTime(emission.getEndTime())
+            .mediaItem(new LibItemPT())
+            .length(emission.getLength());
     }
 
     public List<SchEmission> createListEmissionFromListDTO(List<SchEmissionPT> schEmissionPT) {

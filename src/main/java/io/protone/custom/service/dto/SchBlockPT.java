@@ -1,596 +1,463 @@
 package io.protone.custom.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
+import io.protone.domain.enumeration.SchBlockTypeEnum;
+import io.protone.domain.enumeration.SchStartTypeEnum;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * SchBlockPT
+ * A DTO for the SchBlock entity.
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
+public class SchBlockPT implements Serializable {
 
-public class SchBlockPT   {
-  @JsonProperty("channelId")
-  private Long channelId = null;
+    private Long id;
 
-  @JsonProperty("dimDay")
-  private Integer dimDay = null;
+    @NotNull
+    private Integer seq;
 
-  @JsonProperty("dimHour")
-  private Integer dimHour = null;
+    @NotNull
+    @Size(max = 100)
+    private String name;
 
-  @JsonProperty("dimMinute")
-  private Integer dimMinute = null;
+    private SchBlockTypeEnum type;
+    private SchStartTypeEnum startType;
+    private Long relativeDelay;
 
-  @JsonProperty("dimMonth")
-  private Integer dimMonth = null;
+    private ZonedDateTime scheduledStartTime;
+    private ZonedDateTime scheduledEndTime;
+    private Long scheduledLength;
 
-  @JsonProperty("dimSecond")
-  private Integer dimSecond = null;
+    private ZonedDateTime startTime;
+    private ZonedDateTime endTime;
+    private Long length;
 
-  @JsonProperty("dimYear")
-  private Integer dimYear = null;
+    private Integer dimYear;
+    private Integer dimMonth;
+    private Integer dimDay;
+    private Integer dimHour;
+    private Integer dimMinute;
+    private Integer dimSecond;
 
-  @JsonProperty("endTime")
-  private String endTime = null;
+    private Long playlistId;
+    private Long templateId;
+    private Long parentBlockId;
 
-  @JsonProperty("id")
-  private Long id = null;
+    private List<SchBlockPT> blocks;
+    private List<SchEmissionPT> emissions;
 
-  @JsonProperty("length")
-  private Long length = null;
+    public Long getId() {
+        return id;
+    }
 
-  @JsonProperty("name")
-  private String name = null;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  @JsonProperty("parentBlockId")
-  private Long parentBlockId = null;
+    public Integer getSeq() {
+        return seq;
+    }
 
-  @JsonProperty("relativeDelay")
-  private Long relativeDelay = null;
+    public void setSeq(Integer seq) {
+        this.seq = seq;
+    }
 
-  @JsonProperty("seq")
-  private Integer seq = null;
+    public String getName() {
+        return name;
+    }
 
-  @JsonProperty("startTime")
-  private String startTime = null;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  /**
-   * Gets or Sets startType
-   */
-  public enum StartTypeEnum {
-    FREE("ST_FREE"),
+    public SchBlockTypeEnum getType() {
+        return type;
+    }
 
-    RELATIVE("ST_RELATIVE"),
+    public void setType(SchBlockTypeEnum type) {
+        this.type = type;
+    }
 
-    ABSOLUTE("ST_ABSOLUTE");
+    public SchStartTypeEnum getStartType() {
+        return startType;
+    }
 
-    private String value;
+    public void setStartType(SchStartTypeEnum startType) {
+        this.startType = startType;
+    }
 
-    StartTypeEnum(String value) {
-      this.value = value;
+    public Long getRelativeDelay() {
+        return relativeDelay;
+    }
+
+    public void setRelativeDelay(Long relativeDelay) {
+        this.relativeDelay = relativeDelay;
+    }
+
+    public ZonedDateTime getScheduledStartTime() {
+        return scheduledStartTime;
+    }
+
+    public void setScheduledStartTime(ZonedDateTime scheduledStartTime) {
+        this.scheduledStartTime = scheduledStartTime;
+    }
+
+    public ZonedDateTime getScheduledEndTime() {
+        return scheduledEndTime;
+    }
+
+    public void setScheduledEndTime(ZonedDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+    }
+
+    public Long getScheduledLength() {
+        return scheduledLength;
+    }
+
+    public void setScheduledLength(Long scheduledLength) {
+        this.scheduledLength = scheduledLength;
+    }
+
+    public ZonedDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public ZonedDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
+    public Integer getDimYear() {
+        return dimYear;
+    }
+
+    public void setDimYear(Integer dimYear) {
+        this.dimYear = dimYear;
+    }
+
+    public Integer getDimMonth() {
+        return dimMonth;
+    }
+
+    public void setDimMonth(Integer dimMonth) {
+        this.dimMonth = dimMonth;
+    }
+
+    public Integer getDimDay() {
+        return dimDay;
+    }
+
+    public void setDimDay(Integer dimDay) {
+        this.dimDay = dimDay;
+    }
+
+    public Integer getDimHour() {
+        return dimHour;
+    }
+
+    public void setDimHour(Integer dimHour) {
+        this.dimHour = dimHour;
+    }
+
+    public Integer getDimMinute() {
+        return dimMinute;
+    }
+
+    public void setDimMinute(Integer dimMinute) {
+        this.dimMinute = dimMinute;
+    }
+
+    public Integer getDimSecond() {
+        return dimSecond;
+    }
+
+    public void setDimSecond(Integer dimSecond) {
+        this.dimSecond = dimSecond;
+    }
+
+    public Long getPlaylistId() {
+        return playlistId;
+    }
+
+    public void setPlaylistId(Long playlistId) {
+        this.playlistId = playlistId;
+    }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
+    }
+
+    public Long getParentBlockId() {
+        return parentBlockId;
+    }
+
+    public void setParentBlockId(Long parentBlockId) {
+        this.parentBlockId = parentBlockId;
+    }
+
+    public List<SchBlockPT> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(List<SchBlockPT> blocks) {
+        this.blocks = blocks;
+    }
+
+    public List<SchEmissionPT> getEmissions() {
+        return emissions;
+    }
+
+    public void setEmissions(List<SchEmissionPT> emissions) {
+        this.emissions = emissions;
+    }
+
+    public SchBlockPT id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public SchBlockPT seq(Integer seq) {
+        this.seq = seq;
+        return this;
+    }
+
+    public SchBlockPT name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public SchBlockPT type(SchBlockTypeEnum type) {
+        this.type = type;
+        return this;
+    }
+
+    public SchBlockPT startType(SchStartTypeEnum startType) {
+        this.startType = startType;
+        return this;
+    }
+
+    public SchBlockPT relativeDelay(Long relativeDelay) {
+        this.relativeDelay = relativeDelay;
+        return this;
+    }
+
+    public SchBlockPT scheduledStartTime(ZonedDateTime scheduledStartTime) {
+        this.scheduledStartTime = scheduledStartTime;
+        return this;
+    }
+
+    public SchBlockPT scheduledEndTime(ZonedDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+        return this;
+    }
+
+    public SchBlockPT scheduledLength(Long scheduledLength) {
+        this.scheduledLength = scheduledLength;
+        return this;
+    }
+
+    public SchBlockPT startTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    public SchBlockPT endTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    public SchBlockPT length(Long length) {
+        this.length = length;
+        return this;
+    }
+
+    public SchBlockPT dimYear(Integer dimYear) {
+        this.dimYear = dimYear;
+        return this;
+    }
+
+    public SchBlockPT dimMonth(Integer dimMonth) {
+        this.dimMonth = dimMonth;
+        return this;
+    }
+
+    public SchBlockPT dimDay(Integer dimDay) {
+        this.dimDay = dimDay;
+        return this;
+    }
+
+    public SchBlockPT dimHour(Integer dimHour) {
+        this.dimHour = dimHour;
+        return this;
+    }
+
+    public SchBlockPT dimMinute(Integer dimMinute) {
+        this.dimMinute = dimMinute;
+        return this;
+    }
+
+    public SchBlockPT dimSecond(Integer dimSecond) {
+        this.dimSecond = dimSecond;
+        return this;
+    }
+
+    public SchBlockPT playlistId(Long playlistId) {
+        this.playlistId = playlistId;
+        return this;
+    }
+
+    public SchBlockPT templateId(Long templateId) {
+        this.templateId = templateId;
+        return this;
+    }
+
+    public SchBlockPT parentBlockId(Long parentBlockId) {
+        this.parentBlockId = parentBlockId;
+        return this;
+    }
+
+    public SchBlockPT blocks(List<SchBlockPT> blocks) {
+        this.blocks = blocks;
+        return this;
+    }
+
+    public SchBlockPT addBlock(SchBlockPT block) {
+        this.blocks.add(block);
+        return this;
+    }
+
+    public SchBlockPT emissions(List<SchEmissionPT> emissions) {
+        this.emissions = emissions;
+        return this;
+    }
+
+    public SchBlockPT addEmission(SchEmissionPT emission) {
+        this.emissions.add(emission);
+        return this;
     }
 
     @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SchBlockPT)) return false;
 
-    @JsonCreator
-    public static StartTypeEnum fromValue(String text) {
-      for (StartTypeEnum b : StartTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
+        SchBlockPT that = (SchBlockPT) o;
 
-  @JsonProperty("startType")
-  private StartTypeEnum startType = null;
-
-  @JsonProperty("templateId")
-  private Long templateId = null;
-
-  /**
-   * Gets or Sets type
-   */
-  public enum TypeEnum {
-    BAND("BT_BAND"),
-
-    HOUR("BT_HOUR"),
-
-    NEWS("BT_NEWS"),
-
-    COMMERCIAL("BT_COMMERCIAL"),
-
-    PROGRAM("BT_PROGRAM"),
-
-    LIVE("BT_LIVE"),
-
-    DAY("BT_DAY"),
-
-    OTHER("BT_OTHER");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getSeq() != null ? !getSeq().equals(that.getSeq()) : that.getSeq() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getType() != that.getType()) return false;
+        if (getStartType() != that.getStartType()) return false;
+        if (getRelativeDelay() != null ? !getRelativeDelay().equals(that.getRelativeDelay()) : that.getRelativeDelay() != null)
+            return false;
+        if (getScheduledStartTime() != null ? !getScheduledStartTime().equals(that.getScheduledStartTime()) : that.getScheduledStartTime() != null)
+            return false;
+        if (getScheduledEndTime() != null ? !getScheduledEndTime().equals(that.getScheduledEndTime()) : that.getScheduledEndTime() != null)
+            return false;
+        if (getScheduledLength() != null ? !getScheduledLength().equals(that.getScheduledLength()) : that.getScheduledLength() != null)
+            return false;
+        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
+            return false;
+        if (getEndTime() != null ? !getEndTime().equals(that.getEndTime()) : that.getEndTime() != null) return false;
+        if (getLength() != null ? !getLength().equals(that.getLength()) : that.getLength() != null) return false;
+        if (getDimYear() != null ? !getDimYear().equals(that.getDimYear()) : that.getDimYear() != null) return false;
+        if (getDimMonth() != null ? !getDimMonth().equals(that.getDimMonth()) : that.getDimMonth() != null)
+            return false;
+        if (getDimDay() != null ? !getDimDay().equals(that.getDimDay()) : that.getDimDay() != null) return false;
+        if (getDimHour() != null ? !getDimHour().equals(that.getDimHour()) : that.getDimHour() != null) return false;
+        if (getDimMinute() != null ? !getDimMinute().equals(that.getDimMinute()) : that.getDimMinute() != null)
+            return false;
+        if (getDimSecond() != null ? !getDimSecond().equals(that.getDimSecond()) : that.getDimSecond() != null)
+            return false;
+        if (getPlaylistId() != null ? !getPlaylistId().equals(that.getPlaylistId()) : that.getPlaylistId() != null)
+            return false;
+        if (getTemplateId() != null ? !getTemplateId().equals(that.getTemplateId()) : that.getTemplateId() != null)
+            return false;
+        if (getParentBlockId() != null ? !getParentBlockId().equals(that.getParentBlockId()) : that.getParentBlockId() != null)
+            return false;
+        if (getBlocks() != null ? !getBlocks().equals(that.getBlocks()) : that.getBlocks() != null) return false;
+        return getEmissions() != null ? getEmissions().equals(that.getEmissions()) : that.getEmissions() == null;
     }
 
     @Override
-    @JsonValue
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getSeq() != null ? getSeq().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        result = 31 * result + (getStartType() != null ? getStartType().hashCode() : 0);
+        result = 31 * result + (getRelativeDelay() != null ? getRelativeDelay().hashCode() : 0);
+        result = 31 * result + (getScheduledStartTime() != null ? getScheduledStartTime().hashCode() : 0);
+        result = 31 * result + (getScheduledEndTime() != null ? getScheduledEndTime().hashCode() : 0);
+        result = 31 * result + (getScheduledLength() != null ? getScheduledLength().hashCode() : 0);
+        result = 31 * result + (getStartTime() != null ? getStartTime().hashCode() : 0);
+        result = 31 * result + (getEndTime() != null ? getEndTime().hashCode() : 0);
+        result = 31 * result + (getLength() != null ? getLength().hashCode() : 0);
+        result = 31 * result + (getDimYear() != null ? getDimYear().hashCode() : 0);
+        result = 31 * result + (getDimMonth() != null ? getDimMonth().hashCode() : 0);
+        result = 31 * result + (getDimDay() != null ? getDimDay().hashCode() : 0);
+        result = 31 * result + (getDimHour() != null ? getDimHour().hashCode() : 0);
+        result = 31 * result + (getDimMinute() != null ? getDimMinute().hashCode() : 0);
+        result = 31 * result + (getDimSecond() != null ? getDimSecond().hashCode() : 0);
+        result = 31 * result + (getPlaylistId() != null ? getPlaylistId().hashCode() : 0);
+        result = 31 * result + (getTemplateId() != null ? getTemplateId().hashCode() : 0);
+        result = 31 * result + (getParentBlockId() != null ? getParentBlockId().hashCode() : 0);
+        result = 31 * result + (getBlocks() != null ? getBlocks().hashCode() : 0);
+        result = 31 * result + (getEmissions() != null ? getEmissions().hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
-      return String.valueOf(value);
+        final StringBuilder sb = new StringBuilder("SchBlockPT{");
+        sb.append("id=").append(id);
+        sb.append(", seq=").append(seq);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", type=").append(type);
+        sb.append(", startType=").append(startType);
+        sb.append(", relativeDelay=").append(relativeDelay);
+        sb.append(", scheduledStartTime=").append(scheduledStartTime);
+        sb.append(", scheduledEndTime=").append(scheduledEndTime);
+        sb.append(", scheduledLength=").append(scheduledLength);
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", length=").append(length);
+        sb.append(", dimYear=").append(dimYear);
+        sb.append(", dimMonth=").append(dimMonth);
+        sb.append(", dimDay=").append(dimDay);
+        sb.append(", dimHour=").append(dimHour);
+        sb.append(", dimMinute=").append(dimMinute);
+        sb.append(", dimSecond=").append(dimSecond);
+        sb.append(", playlistId=").append(playlistId);
+        sb.append(", templateId=").append(templateId);
+        sb.append(", parentBlockId=").append(parentBlockId);
+        sb.append(", blocks=").append(blocks);
+        sb.append(", emissions=").append(emissions);
+        sb.append('}');
+        return sb.toString();
     }
-
-    @JsonCreator
-    public static TypeEnum fromValue(String text) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
-  @JsonProperty("type")
-  private TypeEnum type = null;
-
-  @JsonProperty("emission")
-  private List<SchEmissionPT> emission = new ArrayList<SchEmissionPT>();
-
-  @JsonProperty("price")
-  private CorePricePT price = null;
-
-  public SchBlockPT channelId(Long channelId) {
-    this.channelId = channelId;
-    return this;
-  }
-
-   /**
-   * Get channelId
-   * @return channelId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getChannelId() {
-    return channelId;
-  }
-
-  public void setChannelId(Long channelId) {
-    this.channelId = channelId;
-  }
-
-  public SchBlockPT dimDay(Integer dimDay) {
-    this.dimDay = dimDay;
-    return this;
-  }
-
-   /**
-   * Get dimDay
-   * @return dimDay
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getDimDay() {
-    return dimDay;
-  }
-
-  public void setDimDay(Integer dimDay) {
-    this.dimDay = dimDay;
-  }
-
-  public SchBlockPT dimHour(Integer dimHour) {
-    this.dimHour = dimHour;
-    return this;
-  }
-
-   /**
-   * Get dimHour
-   * @return dimHour
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getDimHour() {
-    return dimHour;
-  }
-
-  public void setDimHour(Integer dimHour) {
-    this.dimHour = dimHour;
-  }
-
-  public SchBlockPT dimMinute(Integer dimMinute) {
-    this.dimMinute = dimMinute;
-    return this;
-  }
-
-   /**
-   * Get dimMinute
-   * @return dimMinute
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getDimMinute() {
-    return dimMinute;
-  }
-
-  public void setDimMinute(Integer dimMinute) {
-    this.dimMinute = dimMinute;
-  }
-
-  public SchBlockPT dimMonth(Integer dimMonth) {
-    this.dimMonth = dimMonth;
-    return this;
-  }
-
-   /**
-   * Get dimMonth
-   * @return dimMonth
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getDimMonth() {
-    return dimMonth;
-  }
-
-  public void setDimMonth(Integer dimMonth) {
-    this.dimMonth = dimMonth;
-  }
-
-  public SchBlockPT dimSecond(Integer dimSecond) {
-    this.dimSecond = dimSecond;
-    return this;
-  }
-
-   /**
-   * Get dimSecond
-   * @return dimSecond
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getDimSecond() {
-    return dimSecond;
-  }
-
-  public void setDimSecond(Integer dimSecond) {
-    this.dimSecond = dimSecond;
-  }
-
-  public SchBlockPT dimYear(Integer dimYear) {
-    this.dimYear = dimYear;
-    return this;
-  }
-
-   /**
-   * Get dimYear
-   * @return dimYear
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getDimYear() {
-    return dimYear;
-  }
-
-  public void setDimYear(Integer dimYear) {
-    this.dimYear = dimYear;
-  }
-
-  public SchBlockPT endTime(String endTime) {
-    this.endTime = endTime;
-    return this;
-  }
-
-   /**
-   * Get endTime
-   * @return endTime
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getEndTime() {
-    return endTime;
-  }
-
-  public void setEndTime(String endTime) {
-    this.endTime = endTime;
-  }
-
-  public SchBlockPT id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(value = "")
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public SchBlockPT length(Long length) {
-    this.length = length;
-    return this;
-  }
-
-   /**
-   * Get length
-   * @return length
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Long getLength() {
-    return length;
-  }
-
-  public void setLength(Long length) {
-    this.length = length;
-  }
-
-  public SchBlockPT name(String name) {
-    this.name = name;
-    return this;
-  }
-
-   /**
-   * Get name
-   * @return name
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public SchBlockPT parentBlockId(Long parentBlockId) {
-    this.parentBlockId = parentBlockId;
-    return this;
-  }
-
-   /**
-   * Get parentBlockId
-   * @return parentBlockId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getParentBlockId() {
-    return parentBlockId;
-  }
-
-  public void setParentBlockId(Long parentBlockId) {
-    this.parentBlockId = parentBlockId;
-  }
-
-  public SchBlockPT relativeDelay(Long relativeDelay) {
-    this.relativeDelay = relativeDelay;
-    return this;
-  }
-
-   /**
-   * Get relativeDelay
-   * @return relativeDelay
-  **/
-  @ApiModelProperty(value = "")
-  public Long getRelativeDelay() {
-    return relativeDelay;
-  }
-
-  public void setRelativeDelay(Long relativeDelay) {
-    this.relativeDelay = relativeDelay;
-  }
-
-  public SchBlockPT seq(Integer seq) {
-    this.seq = seq;
-    return this;
-  }
-
-   /**
-   * Get seq
-   * @return seq
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Integer getSeq() {
-    return seq;
-  }
-
-  public void setSeq(Integer seq) {
-    this.seq = seq;
-  }
-
-  public SchBlockPT startTime(String startTime) {
-    this.startTime = startTime;
-    return this;
-  }
-
-   /**
-   * Get startTime
-   * @return startTime
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getStartTime() {
-    return startTime;
-  }
-
-  public void setStartTime(String startTime) {
-    this.startTime = startTime;
-  }
-
-  public SchBlockPT startType(StartTypeEnum startType) {
-    this.startType = startType;
-    return this;
-  }
-
-   /**
-   * Get startType
-   * @return startType
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public StartTypeEnum getStartType() {
-    return startType;
-  }
-
-  public void setStartType(StartTypeEnum startType) {
-    this.startType = startType;
-  }
-
-  public SchBlockPT templateId(Long templateId) {
-    this.templateId = templateId;
-    return this;
-  }
-
-   /**
-   * Get templateId
-   * @return templateId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getTemplateId() {
-    return templateId;
-  }
-
-  public void setTemplateId(Long templateId) {
-    this.templateId = templateId;
-  }
-
-  public SchBlockPT type(TypeEnum type) {
-    this.type = type;
-    return this;
-  }
-
-   /**
-   * Get type
-   * @return type
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public TypeEnum getType() {
-    return type;
-  }
-
-  public void setType(TypeEnum type) {
-    this.type = type;
-  }
-
-  public SchBlockPT emission(List<SchEmissionPT> emission) {
-    this.emission = emission;
-    return this;
-  }
-
-  public SchBlockPT addEmissionItem(SchEmissionPT emissionItem) {
-    this.emission.add(emissionItem);
-    return this;
-  }
-
-   /**
-   * Get emission
-   * @return emission
-  **/
-  @ApiModelProperty(value = "")
-  public List<SchEmissionPT> getEmission() {
-    return emission;
-  }
-
-  public void setEmission(List<SchEmissionPT> emission) {
-    this.emission = emission;
-  }
-
-  public SchBlockPT price(CorePricePT price) {
-    this.price = price;
-    return this;
-  }
-
-   /**
-   * Get price
-   * @return price
-  **/
-  @ApiModelProperty(value = "")
-  public CorePricePT getPrice() {
-    return price;
-  }
-
-  public void setPrice(CorePricePT price) {
-    this.price = price;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    SchBlockPT schBlockPT = (SchBlockPT) o;
-    return Objects.equals(this.channelId, schBlockPT.channelId) &&
-        Objects.equals(this.dimDay, schBlockPT.dimDay) &&
-        Objects.equals(this.dimHour, schBlockPT.dimHour) &&
-        Objects.equals(this.dimMinute, schBlockPT.dimMinute) &&
-        Objects.equals(this.dimMonth, schBlockPT.dimMonth) &&
-        Objects.equals(this.dimSecond, schBlockPT.dimSecond) &&
-        Objects.equals(this.dimYear, schBlockPT.dimYear) &&
-        Objects.equals(this.endTime, schBlockPT.endTime) &&
-        Objects.equals(this.id, schBlockPT.id) &&
-        Objects.equals(this.length, schBlockPT.length) &&
-        Objects.equals(this.name, schBlockPT.name) &&
-        Objects.equals(this.parentBlockId, schBlockPT.parentBlockId) &&
-        Objects.equals(this.relativeDelay, schBlockPT.relativeDelay) &&
-        Objects.equals(this.seq, schBlockPT.seq) &&
-        Objects.equals(this.startTime, schBlockPT.startTime) &&
-        Objects.equals(this.startType, schBlockPT.startType) &&
-        Objects.equals(this.templateId, schBlockPT.templateId) &&
-        Objects.equals(this.type, schBlockPT.type) &&
-        Objects.equals(this.emission, schBlockPT.emission) &&
-        Objects.equals(this.price, schBlockPT.price);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(channelId, dimDay, dimHour, dimMinute, dimMonth, dimSecond, dimYear, endTime, id, length, name, parentBlockId, relativeDelay, seq, startTime, startType, templateId, type, emission, price);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class SchBlockPT {\n");
-
-    sb.append("    channelId: ").append(toIndentedString(channelId)).append("\n");
-    sb.append("    dimDay: ").append(toIndentedString(dimDay)).append("\n");
-    sb.append("    dimHour: ").append(toIndentedString(dimHour)).append("\n");
-    sb.append("    dimMinute: ").append(toIndentedString(dimMinute)).append("\n");
-    sb.append("    dimMonth: ").append(toIndentedString(dimMonth)).append("\n");
-    sb.append("    dimSecond: ").append(toIndentedString(dimSecond)).append("\n");
-    sb.append("    dimYear: ").append(toIndentedString(dimYear)).append("\n");
-    sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    length: ").append(toIndentedString(length)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    parentBlockId: ").append(toIndentedString(parentBlockId)).append("\n");
-    sb.append("    relativeDelay: ").append(toIndentedString(relativeDelay)).append("\n");
-    sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
-    sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
-    sb.append("    startType: ").append(toIndentedString(startType)).append("\n");
-    sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    emission: ").append(toIndentedString(emission)).append("\n");
-    sb.append("    price: ").append(toIndentedString(price)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }
-
