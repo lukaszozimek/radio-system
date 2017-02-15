@@ -25,7 +25,7 @@ public interface ApiNetworkSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<SchTemplatePT> updateSchedulerTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -41,7 +41,7 @@ public interface ApiNetworkSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<SchTemplatePT> creatSchedulerTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -55,8 +55,7 @@ public interface ApiNetworkSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
@@ -68,8 +67,7 @@ public interface ApiNetworkSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchTemplatePT> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
@@ -84,8 +82,6 @@ public interface ApiNetworkSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerTemplateUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);

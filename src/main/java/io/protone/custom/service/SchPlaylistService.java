@@ -1,7 +1,6 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.SchPlaylistPT;
-import io.protone.custom.service.dto.SchTemplatePT;
 import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
@@ -35,7 +34,6 @@ public class SchPlaylistService {
     @Inject
     CustomCorChannelRepository channelRepository;
 
-
     public SchPlaylistPT getPlaylist(String networkShortcut, String channelShortcut, String date) {
         SchPlaylistPT result = null;
 
@@ -56,7 +54,6 @@ public class SchPlaylistService {
         SchPlaylistPT result = null;
         return playlist;
     }
-
 
     public List<SchPlaylistPT> getPlaylists(String networkShortcut, String channelShortcut) {
         List<SchPlaylistPT> results = new ArrayList<>();
@@ -94,5 +91,33 @@ public class SchPlaylistService {
     public void deletePlaylist(String networkShortcut, String channelShortcut, String date) {
         SchPlaylistPT playlistToDelete = getPlaylist(networkShortcut, channelShortcut, date);
         playlistRepository.delete(playlistMapper.DTOToDB(playlistToDelete));
+    }
+
+    @Transactional
+    public SchPlaylistPT createOrUpdatePlaylist(String networkShortcut, SchPlaylistPT playlist) {
+        return playlistMapper.DBToDTO(playlistRepository.saveAndFlush(playlistMapper.DTOToDB(playlist)));
+    }
+
+    public List<SchPlaylistPT> getPlaylist(String networkShortcut, String date) {
+        List<SchPlaylistPT> results = new ArrayList<>();
+
+        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
+        if (networkDB == null)
+            return results;
+
+        List<CorChannel> channelsDB = channelRepository.findAllByNetwork(networkDB);
+
+        for (CorChannel channelDB: channelsDB) {
+            Optional<SchPlaylist> playlistDB = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
+            if (playlistDB.isPresent())
+                results.add(playlistMapper.DBToDTO(playlistDB.get()));
+        }
+
+        return results;
+    }
+
+    public void deletePlaylist(String networkShortcut, String date) {
+        List<SchPlaylistPT> toDeleteDAO = getPlaylist(networkShortcut, date);
+        playlistRepository.delete(playlistMapper.DTOsToDBs(toDeleteDAO));
     }
 }
