@@ -1,5 +1,6 @@
 package io.protone.custom.service;
 
+import io.protone.domain.CorNetwork;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.domain.CorChannel;
 import org.springframework.stereotype.Service;
@@ -15,22 +16,34 @@ import java.util.List;
 public class CorChannelService {
 
     @Inject
-    private CustomCorChannelRepository ccorChannelRepository;
+    private CustomCorChannelRepository channelRepository;
+
+    @Inject
+    private CorNetworkService networkService;
 
     public List<CorChannel> findAllChannel() {
-        return ccorChannelRepository.findAll();
+        return channelRepository.findAll();
     }
 
-    public CorChannel findChannel(String shortcut) {
-        return ccorChannelRepository.findOneByShortcut(shortcut);
+    public CorChannel findChannel(String networkShortcut, String channelShortcut) {
+        return findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
     }
 
     @Transactional
-    public void deleteChannel(String shortcut) {
-        ccorChannelRepository.findOneByShortcut(shortcut);
+    public void deleteChannel(String networkShortcut, String channelShortcut) {
+        channelRepository.delete(findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut));
     }
 
     public CorChannel save(CorChannel network) {
-        return ccorChannelRepository.save(network);
+        return channelRepository.save(network);
+    }
+
+    public CorChannel findChannelByNetworkShortcutAndChannelShortcut(String networkShortcut, String channelShortcut) {
+        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
+        if (networkDB == null)
+            return null;
+
+        CorChannel channel = channelRepository.findOneByNetworkAndShortcut(networkDB, channelShortcut);
+             return channel;
     }
 }

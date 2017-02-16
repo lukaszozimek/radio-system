@@ -69,7 +69,7 @@ public class ApiChannelImpl implements ApiChannel {
     @Override
     public ResponseEntity<CoreChannelPT> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get CORChannel : {}", channelShortcut);
-        CorChannel corChannel = channelService.findChannel(channelShortcut);
+        CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
         CoreChannelPT corChannelDTO = customCORChannelMapper.cORChannelToCORChannelDTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
             .map(result -> new ResponseEntity<>(
@@ -81,7 +81,7 @@ public class ApiChannelImpl implements ApiChannel {
     @Override
     public ResponseEntity<Void> deleteChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to delete CORChannel : {}", channelShortcut);
-        channelService.deleteChannel(channelShortcut);
+        channelService.deleteChannel(networkShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORChannel", channelShortcut.toString())).build();
 
     }
