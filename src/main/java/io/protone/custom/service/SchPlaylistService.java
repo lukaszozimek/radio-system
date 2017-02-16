@@ -41,7 +41,7 @@ public class SchPlaylistService {
         if (networkDB == null)
             return result;
 
-        CorChannel channelDB = channelService.findChannel(channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
             return result;
 
@@ -62,7 +62,7 @@ public class SchPlaylistService {
         if (networkDB == null)
             return results;
 
-        CorChannel channelDB = channelService.findChannel(channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
             return results;
 
@@ -119,5 +119,11 @@ public class SchPlaylistService {
     public void deletePlaylist(String networkShortcut, String date) {
         List<SchPlaylistPT> toDeleteDAO = getPlaylist(networkShortcut, date);
         playlistRepository.delete(playlistMapper.DTOsToDBs(toDeleteDAO));
+    }
+
+    public SchPlaylistPT createOrUpdatePlaylist(String networkShortcut, String channelShortcut, SchPlaylistPT playlist) {
+        CorChannel channel = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+        playlist.setChannelId(channel.getId());
+        return playlistMapper.DBToDTO(playlistRepository.saveAndFlush(playlistMapper.DTOToDB(playlist)));
     }
 }

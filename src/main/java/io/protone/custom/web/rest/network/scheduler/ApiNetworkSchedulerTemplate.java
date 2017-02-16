@@ -69,7 +69,7 @@ public interface ApiNetworkSchedulerTemplate {
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<SchTemplatePT> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchTemplatePT>> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 

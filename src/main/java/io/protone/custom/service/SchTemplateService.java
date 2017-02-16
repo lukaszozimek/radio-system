@@ -35,45 +35,19 @@ public class SchTemplateService {
 
 
     public SchTemplatePT getTemplate(String networkShortcut, String channelShortcut, String templateName) {
-        SchTemplatePT result = null;
-
-        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
-        if (networkDB == null)
-            return result;
-
-        CorChannel channelDB = channelService.findChannel(channelShortcut);
-        if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
-            return result;
-
+        CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
         Optional<SchTemplate> templateDB = templateRepository.findByChannelAndName(channelDB, templateName);
-
         return templateMapper.DBToDTO(templateDB.get());
     }
 
-    public SchTemplatePT setTemplate(String networkShortcut, String channelShortcut, SchTemplatePT template) {
-        SchTemplatePT result = null;
-        return template;
-    }
-
     public List<SchTemplatePT> getTemplates(String networkShortcut, String channelShortcut) {
-        List<SchTemplatePT> results = new ArrayList<>();
-
-        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
-        if (networkDB == null)
-            return results;
-
-        CorChannel channelDB = channelService.findChannel(channelShortcut);
-        if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
-            return results;
-
+        CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
         List<SchTemplate> resultsDB = templateRepository.findByChannel(channelDB);
-
         return templateMapper.DBsToDTOs(resultsDB);
     }
 
-    public List<SchTemplatePT> getPlaylists(String networkShortcut) {
+    public List<SchTemplatePT> getTemplates(String networkShortcut) {
         List<SchTemplatePT> results = new ArrayList<>();
-
         CorNetwork networkDB = networkService.findNetwork(networkShortcut);
         if (networkDB == null)
             return results;
@@ -88,8 +62,26 @@ public class SchTemplateService {
     }
 
     @Transactional
-    public void deleteTemplate(String networkShortcut, String channelShortcut, String date) {
-        SchTemplatePT templateToDelete = getTemplate(networkShortcut, channelShortcut, date);
-        templateRepository.delete(templateMapper.DTOToDB(templateToDelete));
+    public void deleteTemplate(String networkShortcut, String date) {
+        List<SchTemplatePT> templatesToDelete = getTemplates(networkShortcut, date);
+        templateRepository.delete(templateMapper.DTOsToDBs(templatesToDelete));
+    }
+
+    @Transactional
+    public SchTemplatePT createOrUpdateTemplate(String networkShortcut, SchTemplatePT template) {
+        return templateMapper.DBToDTO(templateRepository.saveAndFlush(templateMapper.DTOToDB(template)));
+    }
+
+    @Transactional
+    public SchTemplatePT createOrUpdateTemplate(String networkShortcut, String channelShortcut, SchTemplatePT template) {
+        CorChannel channel = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+        template.setChannelId(channel.getId());
+        return templateMapper.DBToDTO(templateRepository.saveAndFlush(templateMapper.DTOToDB(template)));
+    }
+
+    @Transactional
+    public void deleteTemplate(String networkShortcut, String channelShortcut, String shortName) {
+        SchTemplatePT toDelete = getTemplate(networkShortcut, channelShortcut, shortName);
+        templateRepository.delete(templateMapper.DTOToDB(toDelete));
     }
 }
