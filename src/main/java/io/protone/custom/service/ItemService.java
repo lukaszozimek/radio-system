@@ -32,24 +32,24 @@ import java.util.UUID;
 public class ItemService {
 
     @Inject
-    S3Client s3Client;
+    private S3Client s3Client;
 
     @Inject
-    LibraryService libraryService;
+    private LibraryService libraryService;
 
     @Inject
-    LibMediaItemRepositoryEx itemRepository;
+    private LibMediaItemRepositoryEx itemRepository;
 
     @Inject
-    CustomItemMapperExt itemMapper;
+    private CustomItemMapperExt itemMapper;
     @Inject
-    LibCloudObjectRepository cloudObjectRepository;
+    private LibCloudObjectRepository cloudObjectRepository;
     @Inject
-    MediaUtils mediaUtils;
+    private MediaUtils mediaUtils;
     @Inject
-    LibMediaItemRepositoryEx mediaItemRepository;
+    private LibMediaItemRepositoryEx mediaItemRepository;
     @Inject
-    LibAudioObjectRepositoryEx audioObjectRepository;
+    private LibAudioObjectRepositoryEx audioObjectRepository;
     @Inject
     private UserRepository userRepository;
 
@@ -141,7 +141,7 @@ public class ItemService {
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
                 User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-               // cloudObject.setCreatedBy(new CorUser());
+                // cloudObject.setCreatedBy(new CorUser());
 
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
