@@ -1,0 +1,82 @@
+<div>
+    <h2 data-translate="protoneApp.traCampaign.home.title">Tra Campaigns</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="tra-campaign.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.traCampaign.home.createLabel">
+                        Create new Tra Campaign
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.name">Name</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.startDate">Start Date</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.endDate">End Date</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.prize">Prize</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.customer">Customer</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.network">Network</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.status">Status</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.price">Price</span></th>
+                    <th><span data-translate="protoneApp.traCampaign.orders">Orders</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="traCampaign in vm.traCampaigns track by traCampaign.id">
+                    <td><a ui-sref="tra-campaign-detail({id:traCampaign.id})">{{traCampaign.id}}</a></td>
+                    <td>{{traCampaign.name}}</td>
+                        <td>{{traCampaign.startDate | date:'mediumDate'}}</td>
+                        <td>{{traCampaign.endDate | date:'mediumDate'}}</td>
+                    <td>{{traCampaign.prize}}</td>
+                    <td>
+                        <a ui-sref="crm-account-detail({id:traCampaign.customerId})">{{traCampaign.customerId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-network-detail({id:traCampaign.networkId})">{{traCampaign.networkId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-campaing-status-detail({id:traCampaign.statusId})">{{traCampaign.statusId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-price-detail({id:traCampaign.priceId})">{{traCampaign.priceId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-order-detail({id:traCampaign.ordersId})">{{traCampaign.ordersId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="tra-campaign-detail({id:traCampaign.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="tra-campaign.edit({id:traCampaign.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="tra-campaign.delete({id:traCampaign.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

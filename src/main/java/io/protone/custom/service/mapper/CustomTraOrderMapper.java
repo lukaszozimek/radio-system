@@ -1,8 +1,10 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.TRACustomerService;
+import io.protone.custom.service.TraCustomerService;
 import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraOrder;
+import io.protone.domain.TraPrice;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -31,7 +33,7 @@ public class CustomTraOrderMapper {
     private CustomSchEmissionMapper customSchEmissionMapper;
 
     @Inject
-    private TRACustomerService customerService;
+    private TraCustomerService customerService;
 
     public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, CorNetwork corNetwork) {
         List<TraOrder> traOrdersList = new ArrayList<>();

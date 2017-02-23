@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.configuration.crm;
 
-import io.protone.custom.service.dto.ConfCrmStagePT;
 import io.protone.custom.service.dto.ConfLeadStatusPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;

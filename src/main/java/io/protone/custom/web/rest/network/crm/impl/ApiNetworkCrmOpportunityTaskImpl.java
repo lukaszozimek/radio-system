@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.custom.service.CrmOpportunityService;
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmOpportunityTask;
 import io.protone.domain.CorNetwork;
@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.util.List;
+
 @RestController
 public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunityTask {
 
     @Inject
     private CrmOpportunityService crmOpportunityService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllOpportunityActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);

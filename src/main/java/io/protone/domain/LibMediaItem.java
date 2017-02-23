@@ -1,15 +1,16 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import io.protone.domain.enumeration.LibItemTypeEnum;
+
+import io.protone.domain.enumeration.LibItemStateEnum;
 
 /**
  * A LibMediaItem.
@@ -22,7 +23,8 @@ public class LibMediaItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull

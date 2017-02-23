@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "cloudObject",
+            "otherEntityName": "libCloudObject",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "libImageObject"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "imageItem",
+            "otherEntityName": "libImageItem",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "width",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "height",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "imageSize",
+            "fieldType": "LibImageSizeEnum",
+            "fieldValues": "IS_ORIGINAL,IS_LARGE,IS_NORMAL,IS_SMALL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "lib_image_object",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

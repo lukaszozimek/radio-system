@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.impl;
 
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreKeyPT;
 import io.protone.custom.service.mapper.CustomCorPropertyKeyMapper;
 import io.protone.custom.web.rest.network.configuration.core.ApiPropertyKey;
@@ -28,7 +28,7 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
     @Inject
     private CorPropertyKeyRepository cORPropertyKeyRepository;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Inject
     private CustomCorPropertyKeyMapper corPropertyKeyMapper;
 

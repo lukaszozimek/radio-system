@@ -1,7 +1,10 @@
 package io.protone.repository;
 
 import io.protone.domain.SchEmission;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the SchEmission entity.

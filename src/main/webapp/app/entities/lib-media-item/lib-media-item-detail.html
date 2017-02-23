@@ -1,0 +1,67 @@
+
+<div>
+    <h2><span data-translate="protoneApp.libMediaItem.detail.title">Lib Media Item</span> {{vm.libMediaItem.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.libMediaItem.idx">Idx</span></dt>
+        <dd>
+            <span>{{vm.libMediaItem.idx}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.name">Name</span></dt>
+        <dd>
+            <span>{{vm.libMediaItem.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.itemType">Item Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LibItemTypeEnum.' + vm.libMediaItem.itemType}}">{{vm.libMediaItem.itemType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.length">Length</span></dt>
+        <dd>
+            <span>{{vm.libMediaItem.length}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.state">State</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LibItemStateEnum.' + vm.libMediaItem.state}}">{{vm.libMediaItem.state}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.command">Command</span></dt>
+        <dd>
+            <span>{{vm.libMediaItem.command}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.description">Description</span></dt>
+        <dd>
+            <span>{{vm.libMediaItem.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.library">Library</span></dt>
+        <dd>
+            <a ui-sref="lib-library-detail({id:vm.libMediaItem.libraryId})">{{vm.libMediaItem.libraryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.label">Label</span></dt>
+        <dd>
+            <a ui-sref="lib-label-detail({id:vm.libMediaItem.labelId})">{{vm.libMediaItem.labelId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.artist">Artist</span></dt>
+        <dd>
+            <a ui-sref="lib-artist-detail({id:vm.libMediaItem.artistId})">{{vm.libMediaItem.artistId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.album">Album</span></dt>
+        <dd>
+            <a ui-sref="lib-album-detail({id:vm.libMediaItem.albumId})">{{vm.libMediaItem.albumId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libMediaItem.track">Track</span></dt>
+        <dd>
+            <a ui-sref="lib-track-detail({id:vm.libMediaItem.trackId})">{{vm.libMediaItem.trackId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="lib-media-item-detail.edit({id:vm.libMediaItem.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,62 @@
+<div>
+    <h2 data-translate="protoneApp.libLabel.home.title">Lib Labels</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="lib-label.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.libLabel.home.createLabel">
+                        Create new Lib Label
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.libLabel.name">Name</span></th>
+                    <th><span data-translate="protoneApp.libLabel.description">Description</span></th>
+                    <th><span data-translate="protoneApp.libLabel.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="libLabel in vm.libLabels track by libLabel.id">
+                    <td><a ui-sref="lib-label-detail({id:libLabel.id})">{{libLabel.id}}</a></td>
+                    <td>{{libLabel.name}}</td>
+                    <td>{{libLabel.description}}</td>
+                    <td>
+                        <a ui-sref="cor-network-detail({id:libLabel.networkId})">{{libLabel.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="lib-label-detail({id:libLabel.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="lib-label.edit({id:libLabel.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="lib-label.delete({id:libLabel.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

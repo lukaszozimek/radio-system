@@ -1,9 +1,8 @@
 package io.protone.custom.web.rest.network;
 
-import io.protone.custom.service.dto.*;
+import io.protone.custom.service.dto.CoreNetworkPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="protoneApp.corCountry.detail.title">Cor Country</span> {{vm.corCountry.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.corCountry.name">Name</span></dt>
+        <dd>
+            <span>{{vm.corCountry.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.corCountry.shortName">Short Name</span></dt>
+        <dd>
+            <span>{{vm.corCountry.shortName}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.corCountry.tax">Tax</span></dt>
+        <dd>
+            <a ui-sref="cor-tax-detail({id:vm.corCountry.taxId})">{{vm.corCountry.taxId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.corCountry.currnecy">Currnecy</span></dt>
+        <dd>
+            <a ui-sref="cor-currency-detail({id:vm.corCountry.currnecyId})">{{vm.corCountry.currnecyId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.corCountry.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.corCountry.networkId})">{{vm.corCountry.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="cor-country-detail.edit({id:vm.corCountry.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

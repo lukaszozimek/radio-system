@@ -1,9 +1,8 @@
 package io.protone.repository;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContact;
 import io.protone.domain.CrmTask;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
 
@@ -11,10 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the CrmTask entity.
  */
 @SuppressWarnings("unused")
-public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
-    CrmTask findOneByIdAndNetwork( Long id, CorNetwork network);
+public interface CrmTaskRepository extends JpaRepository<CrmTask,Long> {
 
-    List<CrmTask> findByNetwork(CorNetwork network);
-
-    void deleteByIdAndNetwork(Long id, CorNetwork network);
 }

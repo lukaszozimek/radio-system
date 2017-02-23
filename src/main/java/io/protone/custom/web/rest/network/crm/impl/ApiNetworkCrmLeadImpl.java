@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.custom.service.CrmLeadService;
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLead;
 import io.protone.domain.CorNetwork;
@@ -20,7 +20,7 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
     @Inject
     private CrmLeadService crmLeadService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {

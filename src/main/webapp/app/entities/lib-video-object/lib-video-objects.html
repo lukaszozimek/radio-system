@@ -1,0 +1,76 @@
+<div>
+    <h2 data-translate="protoneApp.libVideoObject.home.title">Lib Video Objects</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="lib-video-object.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.libVideoObject.home.createLabel">
+                        Create new Lib Video Object
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.width">Width</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.height">Height</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.length">Length</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.biTrate">Bi Trate</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.codec">Codec</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.quality">Quality</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.aspecTratio">Aspec Tratio</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.cloudObject">Cloud Object</span></th>
+                    <th><span data-translate="protoneApp.libVideoObject.mediaItem">Media Item</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="libVideoObject in vm.libVideoObjects track by libVideoObject.id">
+                    <td><a ui-sref="lib-video-object-detail({id:libVideoObject.id})">{{libVideoObject.id}}</a></td>
+                    <td>{{libVideoObject.width}}</td>
+                    <td>{{libVideoObject.height}}</td>
+                    <td>{{libVideoObject.length}}</td>
+                    <td>{{libVideoObject.biTrate}}</td>
+                    <td>{{libVideoObject.codec}}</td>
+                    <td data-translate="{{'protoneApp.LibVideoQualityEnum.' + libVideoObject.quality}}">{{libVideoObject.quality}}</td>
+                    <td data-translate="{{'protoneApp.LibAspecTratioEnum.' + libVideoObject.aspecTratio}}">{{libVideoObject.aspecTratio}}</td>
+                    <td>
+                        <a ui-sref="lib-cloud-object-detail({id:libVideoObject.cloudObjectId})">{{libVideoObject.cloudObjectId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="lib-media-item-detail({id:libVideoObject.mediaItemId})">{{libVideoObject.mediaItemId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="lib-video-object-detail({id:libVideoObject.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="lib-video-object.edit({id:libVideoObject.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="lib-video-object.delete({id:libVideoObject.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

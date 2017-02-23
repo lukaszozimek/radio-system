@@ -1,8 +1,8 @@
 package io.protone.repository;
 
-import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
 
@@ -10,9 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the CrmOpportunity entity.
  */
 @SuppressWarnings("unused")
-public interface CrmOpportunityRepository extends JpaRepository<CrmOpportunity, Long> {
-    List<CrmOpportunity> findByNetwork(CorNetwork network);
+public interface CrmOpportunityRepository extends JpaRepository<CrmOpportunity,Long> {
 
-    void deleteByNameAndNetwork(String name, CorNetwork network);
-    CrmOpportunity findOneByNameAndNetwork(String name,CorNetwork network);
 }

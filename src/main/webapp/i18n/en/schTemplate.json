@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "schTemplate" : {
+            "home": {
+                "title": "Sch Templates",
+                "createLabel": "Create a new Sch Template",
+                "createOrEditLabel": "Create or edit a Sch Template",
+                "search": "Search for Sch Template"
+            },
+            "created": "A new Sch Template is created with identifier {{ param }}",
+            "updated": "A Sch Template is updated with identifier {{ param }}",
+            "deleted": "A Sch Template is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Sch Template {{ id }}?"
+            },
+            "detail": {
+                "title": "Sch Template"
+            },
+            "name": "Name",
+            "channel": "Channel"
+        }
+    }
+}

@@ -2,18 +2,14 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreUserPT;
-
 import io.protone.domain.User;
-
-import java.util.ArrayList;
-
-import java.util.List;
+import io.protone.repository.UserRepository;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Generated;
 import javax.inject.Inject;
-
-import io.protone.repository.UserRepository;
-import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated(
 

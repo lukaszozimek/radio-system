@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.crm.impl;
 
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfLeadSourcePT;
 import io.protone.custom.service.mapper.CustomCrmLeadSourceMapper;
 import io.protone.custom.web.rest.network.configuration.crm.ApiConfigurationCrmDictionaryLeadSource;
@@ -29,7 +29,7 @@ public class ApiConfigurationCrmDictionaryLeadSourceImpl implements ApiConfigura
     @Inject
     private CrmLeadSourceRepository leadSourceRepository;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Inject
     private CustomCrmLeadSourceMapper crmLeadSourceMapper;
 

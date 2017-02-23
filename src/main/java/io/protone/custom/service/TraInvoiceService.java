@@ -1,16 +1,17 @@
 package io.protone.custom.service;
 
+import io.protone.repository.custom.CustomTraInvoiceRepository;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.mapper.CustomTraInvoiceMapper;
-import io.protone.domain.*;
-import io.protone.repository.TraInvoiceRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraInvoice;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
 
-import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -22,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 public class TraInvoiceService {
 
     @Inject
-    private TraInvoiceRepository traInvoiceRepository;
+    private CustomTraInvoiceRepository traInvoiceRepository;
 
     @Inject
     private CustomTraInvoiceMapper customTraInvoiceMapper;

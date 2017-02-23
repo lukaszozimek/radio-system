@@ -1,8 +1,8 @@
 package io.protone.repository;
 
-import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
 
@@ -10,8 +10,6 @@ import java.util.List;
  * Spring Data JPA repository for the LibLibrary entity.
  */
 @SuppressWarnings("unused")
-public interface LibLibraryRepository extends JpaRepository<LibLibrary, Long> {
-    LibLibrary findOneByNetworkAndShortcut(CorNetwork network, String shortcut);
+public interface LibLibraryRepository extends JpaRepository<LibLibrary,Long> {
 
-    List<LibLibrary> findByNetwork(CorNetwork network);
 }

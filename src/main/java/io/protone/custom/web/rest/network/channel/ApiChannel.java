@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.channel;
 
 import io.protone.custom.service.dto.CoreChannelPT;
-import io.protone.custom.service.dto.CoreNetworkPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

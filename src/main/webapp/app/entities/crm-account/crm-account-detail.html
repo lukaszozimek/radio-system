@@ -1,0 +1,83 @@
+
+<div>
+    <h2><span data-translate="protoneApp.crmAccount.detail.title">Crm Account</span> {{vm.crmAccount.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.crmAccount.shortName">Short Name</span></dt>
+        <dd>
+            <span>{{vm.crmAccount.shortName}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.externalId1">External Id 1</span></dt>
+        <dd>
+            <span>{{vm.crmAccount.externalId1}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.externalId2">External Id 2</span></dt>
+        <dd>
+            <span>{{vm.crmAccount.externalId2}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.name">Name</span></dt>
+        <dd>
+            <span>{{vm.crmAccount.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.paymentDelay">Payment Delay</span></dt>
+        <dd>
+            <span>{{vm.crmAccount.paymentDelay}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.vatNumber">Vat Number</span></dt>
+        <dd>
+            <span>{{vm.crmAccount.vatNumber}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.person">Person</span></dt>
+        <dd>
+            <a ui-sref="cor-person-detail({id:vm.crmAccount.personId})">{{vm.crmAccount.personId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.addres">Addres</span></dt>
+        <dd>
+            <a ui-sref="cor-address-detail({id:vm.crmAccount.addresId})">{{vm.crmAccount.addresId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.crmAccount.networkId})">{{vm.crmAccount.networkId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.discount">Discount</span></dt>
+        <dd>
+            <a ui-sref="tra-discount-detail({id:vm.crmAccount.discountId})">{{vm.crmAccount.discountId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.keeper">Keeper</span></dt>
+        <dd>
+            <a ui-sref="cor-user-detail({id:vm.crmAccount.keeperId})">{{vm.crmAccount.keeperId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.country">Country</span></dt>
+        <dd>
+            <a ui-sref="cor-country-detail({id:vm.crmAccount.countryId})">{{vm.crmAccount.countryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.range">Range</span></dt>
+        <dd>
+            <a ui-sref="cor-range-detail({id:vm.crmAccount.rangeId})">{{vm.crmAccount.rangeId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.size">Size</span></dt>
+        <dd>
+            <a ui-sref="cor-size-detail({id:vm.crmAccount.sizeId})">{{vm.crmAccount.sizeId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.industry">Industry</span></dt>
+        <dd>
+            <a ui-sref="tra-industry-detail({id:vm.crmAccount.industryId})">{{vm.crmAccount.industryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmAccount.area">Area</span></dt>
+        <dd>
+            <a ui-sref="cor-area-detail({id:vm.crmAccount.areaId})">{{vm.crmAccount.areaId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="crm-account-detail.edit({id:vm.crmAccount.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

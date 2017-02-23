@@ -1,13 +1,11 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CoreContactPT;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.domain.CorContact;
 import io.protone.domain.CorPerson;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

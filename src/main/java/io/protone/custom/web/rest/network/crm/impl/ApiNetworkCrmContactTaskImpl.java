@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.custom.service.CrmContactService;
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
@@ -19,7 +19,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
     @Inject
     private CrmContactService crmContactService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllContactActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);

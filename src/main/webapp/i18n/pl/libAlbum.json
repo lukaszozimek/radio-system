@@ -1,0 +1,29 @@
+{
+    "protoneApp": {
+        "libAlbum" : {
+            "home": {
+                "title": "Lib Albums",
+                "createLabel": "Dodaj Lib Album",
+                "createOrEditLabel": "Dodaj lub edytuj: Lib Album",
+                "search": "Search for Lib Album"
+            },
+            "created": "A new Lib Album is created with identifier {{ param }}",
+            "updated": "A Lib Album is updated with identifier {{ param }}",
+            "deleted": "A Lib Album is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Lib Album {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Album"
+            },
+            "albumType": "Album Type",
+            "name": "Name",
+            "releaseDate": "Release Date",
+            "description": "Description",
+            "cover": "Cover",
+            "label": "Label",
+            "artist": "Artist",
+            "network": "Network"
+        }
+    }
+}

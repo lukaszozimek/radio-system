@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.traffic;
 
-import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.custom.service.dto.TraCustomerOrdersPT;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.swagger.annotations.*;

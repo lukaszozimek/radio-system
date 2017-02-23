@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.crm;
 
-import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;

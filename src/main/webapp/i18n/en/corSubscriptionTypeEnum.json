@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "CorSubscriptionTypeEnum" : {
+            "null": "",
+            "ST_CRM": "ST_CRM",
+            "ST_TRAFFIC": "ST_TRAFFIC",
+            "ST_PLAYOUT": "ST_PLAYOUT",
+            "ST_LIBRARY": "ST_LIBRARY"
+        }
+    }
+}

@@ -1,7 +1,7 @@
 package io.protone.security;
 
 /**
- * Constants for Spring Security authoritiesf.
+ * Constants for Spring Security authorities.
  */
 public final class AuthoritiesConstants {
 

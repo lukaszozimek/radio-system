@@ -23,9 +23,9 @@ public interface ApiChannelPlayoutPlaylist {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> loadPlaylistUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                               @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                               @ApiParam(value = "date",required=true ) @PathVariable("date") String date);
+    ResponseEntity<Void> loadPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                               @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
     @ApiOperation(value = "refreshPlaylist", notes = "", response = Void.class, tags={ "PLAYOUT", })
     @ApiResponses(value = {
@@ -38,9 +38,9 @@ public interface ApiChannelPlayoutPlaylist {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> refreshPlaylistUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                                  @ApiParam(value = "date",required=true ) @PathVariable("date") String date);
+    ResponseEntity<Void> refreshPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                  @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
 
 

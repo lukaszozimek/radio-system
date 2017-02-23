@@ -1,0 +1,13 @@
+{
+    "protoneApp": {
+        "LibAudioQualityEnum" : {
+            "null": "",
+            "AQ_ORIGINAL": "AQ_ORIGINAL",
+            "AQ_LOSSLESS": "AQ_LOSSLESS",
+            "AQ_HIGH": "AQ_HIGH",
+            "AQ_NORMAL": "AQ_NORMAL",
+            "AQ_LOW": "AQ_LOW",
+            "AQ_OTHER": "AQ_OTHER"
+        }
+    }
+}

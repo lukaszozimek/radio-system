@@ -2,7 +2,6 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
 
 import java.util.ArrayList;
 import java.util.List;

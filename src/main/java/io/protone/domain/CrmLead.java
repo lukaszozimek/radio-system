@@ -7,8 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A CrmLead.
@@ -21,7 +21,8 @@ public class CrmLead implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @Column(name = "name")
@@ -225,13 +226,13 @@ public class CrmLead implements Serializable {
     }
 
     public CrmLead addTasks(CrmTask crmTask) {
-        tasks.add(crmTask);
+        this.tasks.add(crmTask);
         crmTask.setLead(this);
         return this;
     }
 
     public CrmLead removeTasks(CrmTask crmTask) {
-        tasks.remove(crmTask);
+        this.tasks.remove(crmTask);
         crmTask.setLead(null);
         return this;
     }

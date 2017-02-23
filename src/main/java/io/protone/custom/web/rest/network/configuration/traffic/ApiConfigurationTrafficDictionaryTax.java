@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.configuration.traffic;
 
-import io.protone.custom.service.dto.ConfIndustryPT;
 import io.protone.custom.service.dto.ConfTaxPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getTax", notes = "", response = ConfTaxPT.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -39,8 +38,8 @@ public interface ApiConfigurationTrafficDictionaryTax {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<ConfTaxPT> getTaxUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                             @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<ConfTaxPT> getTaxUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                             @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "updateTax", notes = "", response = ConfTaxPT.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -54,8 +53,8 @@ public interface ApiConfigurationTrafficDictionaryTax {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ConfTaxPT> updateTaxUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                @ApiParam(value = "taxDTO" ,required=true ) @RequestBody ConfTaxPT taxDTO);
+    ResponseEntity<ConfTaxPT> updateTaxUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                @ApiParam(value = "taxDTO", required = true) @RequestBody ConfTaxPT taxDTO);
 
 
     @ApiOperation(value = "createTax", notes = "", response = ConfTaxPT.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -69,8 +68,8 @@ public interface ApiConfigurationTrafficDictionaryTax {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ConfTaxPT> createTaxUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                 @ApiParam(value = "taxDTO" ,required=true ) @RequestBody ConfTaxPT taxDTO);
+    ResponseEntity<ConfTaxPT> createTaxUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                 @ApiParam(value = "taxDTO", required = true) @RequestBody ConfTaxPT taxDTO);
 
 
 
@@ -84,8 +83,8 @@ public interface ApiConfigurationTrafficDictionaryTax {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTaxUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                              @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<Void> deleteTaxUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                              @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 

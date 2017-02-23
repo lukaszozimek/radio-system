@@ -4,7 +4,6 @@ import io.protone.custom.service.dto.ConfLeadSourcePT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLeadSource;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

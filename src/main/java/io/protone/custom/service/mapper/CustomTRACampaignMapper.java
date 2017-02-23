@@ -1,15 +1,11 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.custom.service.dto.TraCustomerPT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraCampaign;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -24,7 +20,7 @@ public class CustomTRACampaignMapper {
     @Inject
     private CustomCrmAccountMapper crmAccountMapper;
 
-    public TraCampaign transfromDTOToEntity(TraCampaignPT traCampaignPT,CorNetwork corNetwork) {
+    public TraCampaign transfromDTOToEntity(TraCampaignPT traCampaignPT, CorNetwork corNetwork) {
         TraCampaign traCampaign = new TraCampaign();
         traCampaign.setId(traCampaign.getId());
         return traCampaign

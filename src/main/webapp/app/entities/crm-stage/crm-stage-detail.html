@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span data-translate="protoneApp.crmStage.detail.title">Crm Stage</span> {{vm.crmStage.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.crmStage.name">Name</span></dt>
+        <dd>
+            <span>{{vm.crmStage.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmStage.description">Description</span></dt>
+        <dd>
+            <span>{{vm.crmStage.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmStage.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.crmStage.networkId})">{{vm.crmStage.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="crm-stage-detail.edit({id:vm.crmStage.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

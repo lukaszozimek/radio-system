@@ -1,0 +1,25 @@
+{
+    "protoneApp": {
+        "libMarker" : {
+            "home": {
+                "title": "Lib Markers",
+                "createLabel": "Dodaj Lib Marker",
+                "createOrEditLabel": "Dodaj lub edytuj: Lib Marker",
+                "search": "Search for Lib Marker"
+            },
+            "created": "A new Lib Marker is created with identifier {{ param }}",
+            "updated": "A Lib Marker is updated with identifier {{ param }}",
+            "deleted": "A Lib Marker is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Lib Marker {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Marker"
+            },
+            "markerType": "Marker Type",
+            "name": "Name",
+            "startTime": "Start Time",
+            "mediaItem": "Media Item"
+        }
+    }
+}

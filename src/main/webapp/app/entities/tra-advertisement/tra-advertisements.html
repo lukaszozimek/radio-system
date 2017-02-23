@@ -1,0 +1,82 @@
+<div>
+    <h2 data-translate="protoneApp.traAdvertisement.home.title">Tra Advertisements</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="tra-advertisement.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.traAdvertisement.home.createLabel">
+                        Create new Tra Advertisement
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.name">Name</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.description">Description</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.mediaItem">Media Item</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.libitem">Libitem</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.industry">Industry</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.type">Type</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.customer">Customer</span></th>
+                    <th><span data-translate="protoneApp.traAdvertisement.network">Network</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="traAdvertisement in vm.traAdvertisements track by traAdvertisement.id">
+                    <td><a ui-sref="tra-advertisement-detail({id:traAdvertisement.id})">{{traAdvertisement.id}}</a></td>
+                    <td>{{traAdvertisement.name}}</td>
+                    <td>{{traAdvertisement.description}}</td>
+                    <td>
+                        <a ui-sref="lib-media-item-detail({id:traAdvertisement.mediaItemId})">{{traAdvertisement.mediaItemId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="lib-media-item-detail({id:traAdvertisement.libitemId})">{{traAdvertisement.libitemId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-industry-detail({id:traAdvertisement.industryId})">{{traAdvertisement.industryId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-advertisment-type-detail({id:traAdvertisement.typeId})">{{traAdvertisement.typeId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="crm-account-detail({id:traAdvertisement.customerId})">{{traAdvertisement.customerId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-network-detail({id:traAdvertisement.networkId})">{{traAdvertisement.networkId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="tra-advertisement-detail({id:traAdvertisement.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="tra-advertisement.edit({id:traAdvertisement.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="tra-advertisement.delete({id:traAdvertisement.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

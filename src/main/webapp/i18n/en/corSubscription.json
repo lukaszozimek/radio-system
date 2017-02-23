@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "corSubscription" : {
+            "home": {
+                "title": "Cor Subscriptions",
+                "createLabel": "Create a new Cor Subscription",
+                "createOrEditLabel": "Create or edit a Cor Subscription",
+                "search": "Search for Cor Subscription"
+            },
+            "created": "A new Cor Subscription is created with identifier {{ param }}",
+            "updated": "A Cor Subscription is updated with identifier {{ param }}",
+            "deleted": "A Cor Subscription is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor Subscription {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Subscription"
+            },
+            "name": "Name",
+            "price": "Price",
+            "subscription": "Subscription"
+        }
+    }
+}

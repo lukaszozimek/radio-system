@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A TraInvoice.
@@ -23,7 +23,8 @@ public class TraInvoice implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @Column(name = "paid")
@@ -145,13 +146,13 @@ public class TraInvoice implements Serializable {
     }
 
     public TraInvoice addOrders(TraOrder traOrder) {
-        orders.add(traOrder);
+        this.orders.add(traOrder);
         traOrder.setInvoice(this);
         return this;
     }
 
     public TraInvoice removeOrders(TraOrder traOrder) {
-        orders.remove(traOrder);
+        this.orders.remove(traOrder);
         traOrder.setInvoice(null);
         return this;
     }

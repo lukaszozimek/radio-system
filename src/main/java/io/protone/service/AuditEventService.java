@@ -1,17 +1,14 @@
 package io.protone.service;
 
 import io.protone.config.audit.AuditEventConverter;
-
-import java.time.LocalDateTime;
-
 import io.protone.repository.PersistenceAuditEventRepository;
+import java.time.LocalDateTime;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.Optional;
 
 /**
@@ -24,11 +21,10 @@ import java.util.Optional;
 @Transactional
 public class AuditEventService {
 
-    private PersistenceAuditEventRepository persistenceAuditEventRepository;
+    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
-    private AuditEventConverter auditEventConverter;
+    private final AuditEventConverter auditEventConverter;
 
-    @Inject
     public AuditEventService(
         PersistenceAuditEventRepository persistenceAuditEventRepository,
         AuditEventConverter auditEventConverter) {

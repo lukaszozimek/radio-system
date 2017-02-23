@@ -1,0 +1,35 @@
+{
+    "protoneApp": {
+        "schEmission" : {
+            "home": {
+                "title": "Sch Emissions",
+                "createLabel": "Create a new Sch Emission",
+                "createOrEditLabel": "Create or edit a Sch Emission",
+                "search": "Search for Sch Emission"
+            },
+            "created": "A new Sch Emission is created with identifier {{ param }}",
+            "updated": "A Sch Emission is updated with identifier {{ param }}",
+            "deleted": "A Sch Emission is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Sch Emission {{ id }}?"
+            },
+            "detail": {
+                "title": "Sch Emission"
+            },
+            "seq": "Seq",
+            "name": "Name",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "length": "Length",
+            "dimYear": "Dim Year",
+            "dimMonth": "Dim Month",
+            "dimDay": "Dim Day",
+            "dimHour": "Dim Hour",
+            "dimMinute": "Dim Minute",
+            "dimSecond": "Dim Second",
+            "mediaItem": "Media Item",
+            "block": "Block",
+            "campaings": "Campaings"
+        }
+    }
+}

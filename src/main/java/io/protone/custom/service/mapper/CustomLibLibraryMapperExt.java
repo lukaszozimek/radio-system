@@ -1,11 +1,8 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.consts.GKAssociationConstants;
-import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
-import io.protone.domain.User;
 import io.protone.domain.enumeration.LibCounterTypeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
 import io.protone.repository.CorChannelRepository;

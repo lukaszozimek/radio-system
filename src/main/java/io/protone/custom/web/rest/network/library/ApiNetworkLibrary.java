@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.library;
 
-import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.LibraryPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +26,8 @@ public interface ApiNetworkLibrary {
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<LibraryPT> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                    @ApiParam(value = "library" ,required=true ) @RequestBody LibraryPT library);
+    ResponseEntity<LibraryPT> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                    @ApiParam(value = "library", required = true) @RequestBody LibraryPT library);
 
 
     @ApiOperation(value = "getAllLibraries", notes = "", response = LibraryPT.class, responseContainer = "List", tags={"LIBRARY", "CORE",})
@@ -40,7 +39,7 @@ public interface ApiNetworkLibrary {
     @RequestMapping(value = "/api/network/{networkShortcut}/library",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
 
@@ -55,8 +54,8 @@ public interface ApiNetworkLibrary {
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<LibraryPT> createLibraryUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "library" ,required=true ) @RequestBody LibraryPT library);
+    ResponseEntity<LibraryPT> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                     @ApiParam(value = "library", required = true) @RequestBody LibraryPT library);
 
 
     @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags={"LIBRARY", "CORE",})
@@ -68,8 +67,8 @@ public interface ApiNetworkLibrary {
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLibraryUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix);
+    ResponseEntity<Void> deleteLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                  @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
 
 
@@ -82,8 +81,8 @@ public interface ApiNetworkLibrary {
     @RequestMapping(value = "/api/network/{networkShortcut}/library/{libraryPrefix}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<LibraryPT> getLibraryUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                 @ApiParam(value = "libraryPrefix",required=true ) @PathVariable("libraryPrefix") String libraryPrefix);
+    ResponseEntity<LibraryPT> getLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                 @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
 
 

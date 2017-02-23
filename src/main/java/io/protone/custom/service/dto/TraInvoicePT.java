@@ -2,7 +2,6 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.TraInvoiceStatus;
-import io.protone.domain.TraOrderStatus;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;

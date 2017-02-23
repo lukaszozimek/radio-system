@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
-import io.protone.custom.service.NetworkService;
-import io.protone.custom.service.TRACampaignService;
+import io.protone.custom.service.CorNetworkService;
+import io.protone.custom.service.TraCampaignService;
 import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCampaign;
 import io.protone.domain.CorNetwork;
@@ -17,9 +17,9 @@ import java.util.List;
 @RestController
 public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign {
     @Inject
-    private TRACampaignService campaignService;
+    private TraCampaignService campaignService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {

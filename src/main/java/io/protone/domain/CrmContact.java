@@ -8,8 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A CrmContact.
@@ -22,7 +22,8 @@ public class CrmContact implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @Column(name = "short_name")
@@ -323,13 +324,13 @@ public class CrmContact implements Serializable {
     }
 
     public CrmContact addTasks(CrmTask crmTask) {
-        tasks.add(crmTask);
+        this.tasks.add(crmTask);
         crmTask.setContact(this);
         return this;
     }
 
     public CrmContact removeTasks(CrmTask crmTask) {
-        tasks.remove(crmTask);
+        this.tasks.remove(crmTask);
         crmTask.setContact(null);
         return this;
     }

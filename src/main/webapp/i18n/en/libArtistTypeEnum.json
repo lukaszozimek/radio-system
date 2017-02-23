@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "LibArtistTypeEnum" : {
+            "null": "",
+            "AT_PERSON": "AT_PERSON",
+            "AT_BAND": "AT_BAND",
+            "AT_CHOIR": "AT_CHOIR",
+            "AT_OTHER": "AT_OTHER"
+        }
+    }
+}

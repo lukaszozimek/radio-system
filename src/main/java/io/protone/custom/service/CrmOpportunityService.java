@@ -7,7 +7,7 @@ import io.protone.custom.service.mapper.CustomCrmTaskMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
-import io.protone.repository.CrmOpportunityRepository;
+import io.protone.repository.custom.CustomCrmOpportunityRepository;
 import io.protone.repository.CrmTaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ import static java.util.stream.Collectors.toList;
 public class CrmOpportunityService {
 
     @Inject
-    private CrmOpportunityRepository opportunityRepository;
+    private CustomCrmOpportunityRepository opportunityRepository;
 
     @Inject
     private CustomCrmOpportunityMapper customCrmOpportunityMapper;

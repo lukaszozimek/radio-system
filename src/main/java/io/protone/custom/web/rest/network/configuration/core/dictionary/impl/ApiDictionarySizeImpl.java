@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreSizePT;
 import io.protone.custom.service.mapper.CustomCorSizeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionarySize;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 public class ApiDictionarySizeImpl implements ApiDictionarySize {
 
@@ -28,7 +29,7 @@ public class ApiDictionarySizeImpl implements ApiDictionarySize {
     @Inject
     private CorSizeRepository cORSizeRepository;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Inject
     private CustomCorSizeMapper customCorSizeMapper;
 

@@ -5,13 +5,12 @@ import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmContactMapper;
 import io.protone.custom.service.mapper.CustomCrmTaskMapper;
 import io.protone.domain.*;
-import io.protone.repository.*;
+import io.protone.repository.custom.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -28,22 +27,22 @@ public class CrmContactService {
     private CustomCrmContactMapper customCrmContactMapper;
 
     @Inject
-    private CrmContactRepository crmContactRepository;
+    private CustomCrmContactRepository crmContactRepository;
 
     @Inject
-    private CrmTaskRepository crmTaskRepository;
+    private CustomCrmTaskRepository crmTaskRepository;
 
     @Inject
     private CustomCrmTaskMapper customCrmTaskMapper;
 
     @Inject
-    private CorPersonRepository personRepository;
+    private CustomCorPersonRepository personRepository;
 
     @Inject
-    private CorContactRepository corContactRepository;
+    private CustomCorContactRepository corContactRepository;
 
     @Inject
-    private CorAddressRepository addressRepository;
+    private CustomCorAddressRepository addressRepository;
 
     public List<CrmContactPT> getAllContact(CorNetwork corNetwork) {
         return crmContactRepository.findByNetwork(corNetwork).stream().map(crmContact -> customCrmContactMapper.buildContactDTOFromEntities(crmContact)).collect(toList());

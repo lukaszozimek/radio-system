@@ -3,7 +3,7 @@ package io.protone.config.s3;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.errors.*;
-import io.protone.config.JHipsterProperties;
+import io.protone.config.ApplicationProperties;
 import io.protone.config.s3.exceptions.DeleteException;
 import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.S3Exception;
@@ -22,7 +22,7 @@ import java.security.NoSuchAlgorithmException;
 public class S3Client {
 
     @Inject
-    private JHipsterProperties jHipsterProperties;
+    private ApplicationProperties applicationProperties;
     private MinioClient minioCLient;
 
     public MinioClient getClient() throws S3Exception {
@@ -31,8 +31,8 @@ public class S3Client {
 
         try {
             if (client == null)
-                client = new MinioClient(jHipsterProperties.getS3().getUrl(),
-                    jHipsterProperties.getS3().getUsername(), jHipsterProperties.getS3().getPassword());
+                client = new MinioClient(applicationProperties.getS3().getUrl(),
+                    applicationProperties.getS3().getUsername(), applicationProperties.getS3().getPassword());
 
         } catch (InvalidEndpointException e) {
             throw new S3Exception(e.getMessage());
@@ -46,7 +46,7 @@ public class S3Client {
     public void upload(String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {
 
         try {
-            getClient().putObject(jHipsterProperties.getS3().getBucket(), uuid, bais, bais.available(), contentType);
+            getClient().putObject(applicationProperties.getS3().getBucket(), uuid, bais, bais.available(), contentType);
         } catch (InvalidBucketNameException e) {
             throw new UploadException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -73,8 +73,8 @@ public class S3Client {
 
     public InputStream download(String uuid) throws DownloadException, S3Exception {
         try {
-            ObjectStat so = getClient().statObject(jHipsterProperties.getS3().getBucket(), uuid);
-            return getClient().getObject(jHipsterProperties.getS3().getBucket(), uuid);
+            ObjectStat so = getClient().statObject(applicationProperties.getS3().getBucket(), uuid);
+            return getClient().getObject(applicationProperties.getS3().getBucket(), uuid);
         } catch (InvalidBucketNameException e) {
             throw new DownloadException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -100,8 +100,8 @@ public class S3Client {
 
     public void delete(String uuid) throws DeleteException, S3Exception {
         try {
-            ObjectStat so = getClient().statObject(jHipsterProperties.getS3().getBucket(), uuid);
-            getClient().removeObject(jHipsterProperties.getS3().getBucket(), uuid);
+            ObjectStat so = getClient().statObject(applicationProperties.getS3().getBucket(), uuid);
+            getClient().removeObject(applicationProperties.getS3().getBucket(), uuid);
         } catch (InvalidBucketNameException e) {
             throw new DeleteException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {

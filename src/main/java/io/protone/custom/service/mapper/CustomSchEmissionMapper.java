@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,17 +18,13 @@ public class CustomSchEmissionMapper {
 
     public SchEmissionPT creteDTOFromEntities(SchEmission emission) {
         return new SchEmissionPT()
-            .blockId(2L)
-            .endTime(emission.getEndTime().toString())
-            .startTime(emission.getStartTime().toString())
-            .finished(emission.isFinished())
+            .id(emission.getId())
             .seq(emission.getSeq())
-            .relativeDelay(emission.getRelativeDelay())
-            .mediaItemId(new LibItemPT())
-            .startType(emission.getStartType())
-            .length(emission.getLength())
-            .templateId(2L)
-            .id(emission.getId());
+            .blockId(2L)
+            .startTime(emission.getStartTime())
+            .endTime(emission.getEndTime())
+            .mediaItem(new LibItemPT())
+            .length(emission.getLength());
     }
 
     public List<SchEmission> createListEmissionFromListDTO(List<SchEmissionPT> schEmissionPT) {
@@ -44,10 +39,7 @@ public class CustomSchEmissionMapper {
         SchEmission schEmission = new SchEmission();
         schEmission.setId(schEmissionPT.getId());
         return schEmission
-            .finished(schEmissionPT.getFinished())
             .seq(schEmissionPT.getSeq())
-            .relativeDelay(schEmissionPT.getRelativeDelay())
-            .startType(schEmissionPT.getStartType())
             .length(schEmissionPT.getLength());
     }
 

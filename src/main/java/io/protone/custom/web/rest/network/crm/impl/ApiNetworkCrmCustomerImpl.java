@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CRMCustomerService;
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CrmCustomerService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.util.List;
+
 @RestController
 public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmCustomer {
 
     @Inject
-    private CRMCustomerService crmCustomerService;
+    private CrmCustomerService crmCustomerService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmAccountPT customeryPT) {

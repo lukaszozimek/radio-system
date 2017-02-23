@@ -2,13 +2,13 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.custom.service.dto.TraCustomerPT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 21.01.2017.

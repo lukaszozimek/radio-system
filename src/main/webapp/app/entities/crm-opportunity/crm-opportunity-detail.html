@@ -1,0 +1,59 @@
+
+<div>
+    <h2><span data-translate="protoneApp.crmOpportunity.detail.title">Crm Opportunity</span> {{vm.crmOpportunity.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.crmOpportunity.name">Name</span></dt>
+        <dd>
+            <span>{{vm.crmOpportunity.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.lastTry">Last Try</span></dt>
+        <dd>
+            <span>{{vm.crmOpportunity.lastTry | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.closeDate">Close Date</span></dt>
+        <dd>
+            <span>{{vm.crmOpportunity.closeDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.probability">Probability</span></dt>
+        <dd>
+            <span>{{vm.crmOpportunity.probability}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.stage">Stage</span></dt>
+        <dd>
+            <a ui-sref="crm-stage-detail({id:vm.crmOpportunity.stageId})">{{vm.crmOpportunity.stageId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.keeper">Keeper</span></dt>
+        <dd>
+            <a ui-sref="cor-user-detail({id:vm.crmOpportunity.keeperId})">{{vm.crmOpportunity.keeperId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.contact">Contact</span></dt>
+        <dd>
+            <a ui-sref="crm-contact-detail({id:vm.crmOpportunity.contactId})">{{vm.crmOpportunity.contactId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.account">Account</span></dt>
+        <dd>
+            <a ui-sref="crm-account-detail({id:vm.crmOpportunity.accountId})">{{vm.crmOpportunity.accountId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.lead">Lead</span></dt>
+        <dd>
+            <a ui-sref="crm-lead-detail({id:vm.crmOpportunity.leadId})">{{vm.crmOpportunity.leadId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.crmOpportunity.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.crmOpportunity.networkId})">{{vm.crmOpportunity.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="crm-opportunity-detail.edit({id:vm.crmOpportunity.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

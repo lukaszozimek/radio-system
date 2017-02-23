@@ -1,0 +1,11 @@
+{
+    "protoneApp": {
+        "LibImageSizeEnum" : {
+            "null": "",
+            "IS_ORIGINAL": "IS_ORIGINAL",
+            "IS_LARGE": "IS_LARGE",
+            "IS_NORMAL": "IS_NORMAL",
+            "IS_SMALL": "IS_SMALL"
+        }
+    }
+}

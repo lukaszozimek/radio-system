@@ -1,13 +1,11 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.*;
-import io.protone.domain.*;
+import io.protone.custom.service.dto.CrmLeadPT;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmLead;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 18.01.2017.

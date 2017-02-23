@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "crmTaskComment" : {
+            "home": {
+                "title": "Crm Task Comments",
+                "createLabel": "Create a new Crm Task Comment",
+                "createOrEditLabel": "Create or edit a Crm Task Comment",
+                "search": "Search for Crm Task Comment"
+            },
+            "created": "A new Crm Task Comment is created with identifier {{ param }}",
+            "updated": "A Crm Task Comment is updated with identifier {{ param }}",
+            "deleted": "A Crm Task Comment is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Crm Task Comment {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Task Comment"
+            },
+            "comment": "Comment",
+            "taskComment": "Task Comment",
+            "createdBy": "Created By"
+        }
+    }
+}

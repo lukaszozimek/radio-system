@@ -1,0 +1,59 @@
+
+<div>
+    <h2><span data-translate="protoneApp.libCloudObject.detail.title">Lib Cloud Object</span> {{vm.libCloudObject.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.libCloudObject.uuid">Uuid</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.uuid}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.objectType">Object Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.LibObjectTypeEnum.' + vm.libCloudObject.objectType}}">{{vm.libCloudObject.objectType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.originalName">Original Name</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.originalName}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.contentType">Content Type</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.contentType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.size">Size</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.size}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.original">Original</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.original}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.hash">Hash</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.hash}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.createDate">Create Date</span></dt>
+        <dd>
+            <span>{{vm.libCloudObject.createDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.libCloudObject.network.id})">{{vm.libCloudObject.network.id}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libCloudObject.createdBy">Created By</span></dt>
+        <dd>
+            <a ui-sref="cor-user-detail({id:vm.libCloudObject.createdBy.id})">{{vm.libCloudObject.createdBy.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="lib-cloud-object-detail.edit({id:vm.libCloudObject.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

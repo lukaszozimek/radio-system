@@ -1,17 +1,13 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.service.dto.CrmOpportunityPT;
-import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmOpportunity;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 18.01.2017.

@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.library;
 
 import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
-import io.protone.custom.service.dto.CoreNetworkPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +27,8 @@ public interface ApiConfigurationLibraryMarker {
         produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ConfMarkerConfigurationPT> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                @ApiParam(value = "markerConfigurationDTO" ,required=true ) @RequestBody ConfMarkerConfigurationPT markerConfigurationDTO);
+    ResponseEntity<ConfMarkerConfigurationPT> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                @ApiParam(value = "markerConfigurationDTO", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationDTO);
 
 
     @ApiOperation(value = "createMarkerConfiguration", notes = "", response = ConfMarkerConfigurationPT.class, tags={ "CONFIGURATION","CORE", })
@@ -43,8 +42,8 @@ public interface ApiConfigurationLibraryMarker {
         produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ConfMarkerConfigurationPT> createMarkerConfigurationUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                 @ApiParam(value = "markerConfigurationPT" ,required=true ) @RequestBody ConfMarkerConfigurationPT markerConfigurationPT);
+    ResponseEntity<ConfMarkerConfigurationPT> createMarkerConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                 @ApiParam(value = "markerConfigurationPT", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationPT);
 
 
     @ApiOperation(value = "deleteMarkerConfiguration", notes = "", response = Void.class, tags={ "CONFIGURATION","CORE", })
@@ -56,8 +55,8 @@ public interface ApiConfigurationLibraryMarker {
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker/{id}",
         produces = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "id",required=true ) @PathVariable("id") String id);
+    ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                              @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
     @ApiOperation(value = "getAllMarkerConfiguration", notes = "", response = ConfMarkerConfigurationPT.class, responseContainer = "List", tags={ "CONFIGURATION","CORE", })
@@ -69,7 +68,7 @@ public interface ApiConfigurationLibraryMarker {
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker",
         produces = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getMarkerConfiguration", notes = "", response = ConfMarkerConfigurationPT.class, tags={ "CONFIGURATION","CORE", })
@@ -81,8 +80,8 @@ public interface ApiConfigurationLibraryMarker {
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker/{id}",
         produces = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<ConfMarkerConfigurationPT> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                             @ApiParam(value = "id",required=true ) @PathVariable("id") String id);
+    ResponseEntity<ConfMarkerConfigurationPT> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                             @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
 

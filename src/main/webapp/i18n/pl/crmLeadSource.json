@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "crmLeadSource" : {
+            "home": {
+                "title": "Crm Lead Sources",
+                "createLabel": "Dodaj Crm Lead Source",
+                "createOrEditLabel": "Dodaj lub edytuj: Crm Lead Source",
+                "search": "Search for Crm Lead Source"
+            },
+            "created": "A new Crm Lead Source is created with identifier {{ param }}",
+            "updated": "A Crm Lead Source is updated with identifier {{ param }}",
+            "deleted": "A Crm Lead Source is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Crm Lead Source {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Lead Source"
+            },
+            "name": "Name",
+            "network": "Network"
+        }
+    }
+}

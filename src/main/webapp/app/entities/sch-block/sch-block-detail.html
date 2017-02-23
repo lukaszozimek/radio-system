@@ -1,0 +1,99 @@
+
+<div>
+    <h2><span data-translate="protoneApp.schBlock.detail.title">Sch Block</span> {{vm.schBlock.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.schBlock.seq">Seq</span></dt>
+        <dd>
+            <span>{{vm.schBlock.seq}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.name">Name</span></dt>
+        <dd>
+            <span>{{vm.schBlock.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.type">Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.SchBlockTypeEnum.' + vm.schBlock.type}}">{{vm.schBlock.type}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.startType">Start Type</span></dt>
+        <dd>
+            <span data-translate="{{'protoneApp.SchStartTypeEnum.' + vm.schBlock.startType}}">{{vm.schBlock.startType}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.relativeDelay">Relative Delay</span></dt>
+        <dd>
+            <span>{{vm.schBlock.relativeDelay}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.scheduledStartTime">Scheduled Start Time</span></dt>
+        <dd>
+            <span>{{vm.schBlock.scheduledStartTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.scheduledEndTime">Scheduled End Time</span></dt>
+        <dd>
+            <span>{{vm.schBlock.scheduledEndTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.scheduledLength">Scheduled Length</span></dt>
+        <dd>
+            <span>{{vm.schBlock.scheduledLength}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.startTime">Start Time</span></dt>
+        <dd>
+            <span>{{vm.schBlock.startTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.endTime">End Time</span></dt>
+        <dd>
+            <span>{{vm.schBlock.endTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.length">Length</span></dt>
+        <dd>
+            <span>{{vm.schBlock.length}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.dimYear">Dim Year</span></dt>
+        <dd>
+            <span>{{vm.schBlock.dimYear}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.dimMonth">Dim Month</span></dt>
+        <dd>
+            <span>{{vm.schBlock.dimMonth}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.dimDay">Dim Day</span></dt>
+        <dd>
+            <span>{{vm.schBlock.dimDay}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.dimHour">Dim Hour</span></dt>
+        <dd>
+            <span>{{vm.schBlock.dimHour}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.dimMinute">Dim Minute</span></dt>
+        <dd>
+            <span>{{vm.schBlock.dimMinute}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.dimSecond">Dim Second</span></dt>
+        <dd>
+            <span>{{vm.schBlock.dimSecond}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.playlist">Playlist</span></dt>
+        <dd>
+            <a ui-sref="sch-playlist-detail({id:vm.schBlock.playlistId})">{{vm.schBlock.playlistId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.template">Template</span></dt>
+        <dd>
+            <a ui-sref="sch-template-detail({id:vm.schBlock.templateId})">{{vm.schBlock.templateId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.schBlock.parentBlock">Parent Block</span></dt>
+        <dd>
+            <a ui-sref="sch-block-detail({id:vm.schBlock.parentBlockId})">{{vm.schBlock.parentBlockId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="sch-block-detail.edit({id:vm.schBlock.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

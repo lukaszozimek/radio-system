@@ -23,11 +23,10 @@ public interface ApiChannelSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/templates",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                   @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut);
+    ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
 
 
     @ApiOperation(value = "updateSchedulerTemplatesForChannel", notes = "", response = SchTemplatePT.class, tags={ "SCHEDULER", })
@@ -38,12 +37,12 @@ public interface ApiChannelSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/templates",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<SchTemplatePT> updateSchedulerTemplatesForChannelUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                             @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "schdeulerTemplate" ,required=true ) @RequestBody SchTemplatePT schdeulerTemplate);
+    ResponseEntity<SchTemplatePT> updateSchedulerTemplatesForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                             @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT schdeulerTemplate);
 
 
     @ApiOperation(value = "createSchedulerTemplatesForChannel", notes = "", response = SchTemplatePT.class, tags={ "SCHEDULER", })
@@ -54,12 +53,12 @@ public interface ApiChannelSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/templates",
-        produces = { "*/*" },
+        produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<SchTemplatePT> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                             @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "schdeulerTemplate" ,required=true ) @RequestBody SchTemplatePT schdeulerTemplate);
+    ResponseEntity<SchTemplatePT> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                             @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT schdeulerTemplate);
 
 
     @ApiOperation(value = "deleteSchedulerTemplateForChannel", notes = "", response = Void.class, tags={ "SCHEDULER", })
@@ -70,12 +69,10 @@ public interface ApiChannelSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/templates/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerTemplateForChannelUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                                                      @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> deleteSchedulerTemplateForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
     @ApiOperation(value = "getSchedulerTemplateForChannel", notes = "", response = SchTemplatePT.class, tags={ "SCHEDULER", })
@@ -85,12 +82,11 @@ public interface ApiChannelSchedulerTemplate {
         @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/templates/{shortName}",
-        produces = { "*/*" },
-        consumes = { "application/json" },
+        produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<SchTemplatePT> getSchedulerTemplateForChannelUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                         @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<SchTemplatePT> getSchedulerTemplateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
 }

@@ -1,0 +1,83 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "mediaItem",
+            "otherEntityName": "libMediaItem",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "block",
+            "otherEntityName": "schBlock",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "campaings",
+            "otherEntityName": "traCampaign",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "seq",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        },
+        {
+            "fieldName": "startTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "endTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "length",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "dimYear",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimMonth",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimDay",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimHour",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimMinute",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "dimSecond",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170212144239",
+    "entityTableName": "sch_emission",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "microserviceName": "protones"
+}

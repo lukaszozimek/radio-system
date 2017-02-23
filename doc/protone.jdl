@@ -375,21 +375,39 @@ enum LibFileTypeEnum {
     FT_FILE
 }
 
+entity SchTemplate {
+	name String required maxlength(100)
+}
+
+entity SchPlaylist {
+    date LocalDate  required
+    dimYear Integer
+    dimMonth Integer
+    dimDay Integer
+}
+
 entity SchBlock {
 	seq Integer required
 	name String required maxlength(100)
-    type SchBlockTypeEnum required
-    startTime ZonedDateTime required
-    startType SchStartTypeEnum required
+    type SchBlockTypeEnum
+
+    startType SchStartTypeEnum
     relativeDelay Long
-    endTime ZonedDateTime required
-    length Long required
-	dimYear Integer required
-    dimMonth Integer required
-    dimDay Integer required
-    dimHour Integer required
-    dimMinute Integer required
-    dimSecond Integer required
+
+    scheduledStartTime ZonedDateTime
+    scheduledEndTime ZonedDateTime
+    scheduledLength Long
+
+    startTime ZonedDateTime
+    endTime ZonedDateTime
+    length Long
+
+	dimYear Integer
+    dimMonth Integer
+    dimDay Integer
+    dimHour Integer
+    dimMinute Integer
+    dimSecond Integer
 }
 
 enum SchStartTypeEnum {
@@ -409,57 +427,26 @@ enum SchBlockTypeEnum {
     BT_OTHER
 }
 
-entity SchTemplate {
-	seq Integer required
-	name String required maxlength(100)
-    type SchBlockTypeEnum  required
-    startTime ZonedDateTime required
-    startType SchStartTypeEnum required
-    relativeDelay Long
-    endTime ZonedDateTime required
-    length Long required
-    dimYear Integer required
-    dimMonth Integer required
-    dimDay Integer required
-    dimHour Integer required
-    dimMinute Integer required
-    dimSecond Integer required
-}
-
-entity SchPlaylist {
-	seq Integer required
-	name String required maxlength(100)
-    type SchBlockTypeEnum  required
-    startTime ZonedDateTime required
-    startType SchStartTypeEnum required
-    relativeDelay Long
-    endTime ZonedDateTime required
-    length Long required
-    dimYear Integer required
-    dimMonth Integer required
-    dimDay Integer required
-    dimHour Integer required
-    dimMinute Integer required
-    dimSecond Integer required
-}
-
 entity SchEmission {
 	seq Integer required
-	startTime ZonedDateTime required
-    startType SchStartTypeEnum required
-    relativeDelay Long
-    endTime ZonedDateTime required
-    length Long required
-    finished Boolean required
+	name String required maxlength(100)
+
+    startTime ZonedDateTime
+    endTime ZonedDateTime
+    length Long
+
+	dimYear Integer
+    dimMonth Integer
+    dimDay Integer
+    dimHour Integer
+    dimMinute Integer
+    dimSecond Integer
 }
-
-
 
 entity TraAdvertisement {
     name String required maxlength(100)
     description String
 }
-
 
 entity TraDiscount {
 	validFrom LocalDate
@@ -561,11 +548,11 @@ relationship ManyToOne {
     LibLibrary{network} to CorNetwork,
  	CorChannel{network} to CorNetwork,
 
+    SchBlock{playlist} to SchPlaylist,
     SchBlock{template} to SchTemplate,
+
     SchBlock{parentBlock} to SchBlock,
     SchEmission{block} to SchBlock,
-
-    SchBlock{playlist} to SchPlaylist,
 
     LibMediaItem{label} to LibLabel,
     LibMediaItem{artist} to LibArtist,
@@ -704,4 +691,3 @@ relationship ManyToOne {
 }
 dto * with mapstruct except LibCloudObject
 microservice * with protones
-

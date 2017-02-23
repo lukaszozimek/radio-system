@@ -1,15 +1,12 @@
 package io.protone.custom.web.rest.network.configuration.library;
 
 import io.protone.custom.service.dto.ConfLibraryProcessingConfigurationPT;
-import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
 
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
@@ -28,9 +25,9 @@ public interface ApiConfigurationLibraryProcessing {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ConfLibraryProcessingConfigurationPT> updateLibraryProcessingConfigurationUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                      @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName,
-                                                                                                      @ApiParam(value = "library" ,required=true ) @RequestBody ConfLibraryProcessingConfigurationPT library);
+    ResponseEntity<ConfLibraryProcessingConfigurationPT> updateLibraryProcessingConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                                                      @ApiParam(value = "library", required = true) @RequestBody ConfLibraryProcessingConfigurationPT library);
 
 
     @ApiOperation(value = "createLibraryProcessingConfiguration", notes = "", response = ConfLibraryProcessingConfigurationPT.class, tags={ "LIBRARY","CONFIGURATION", })
@@ -44,9 +41,9 @@ public interface ApiConfigurationLibraryProcessing {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ConfLibraryProcessingConfigurationPT> createLibraryProcessingConfigurationUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                       @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName,
-                                                                                                       @ApiParam(value = "library" ,required=true ) @RequestBody ConfLibraryProcessingConfigurationPT library);
+    ResponseEntity<ConfLibraryProcessingConfigurationPT> createLibraryProcessingConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                                                       @ApiParam(value = "library", required = true) @RequestBody ConfLibraryProcessingConfigurationPT library);
 
 
     @ApiOperation(value = "deleteLibraryProcessingConfiguration", notes = "", response = Void.class, tags={ "LIBRARY","CONFIGURATION", })
@@ -59,8 +56,8 @@ public interface ApiConfigurationLibraryProcessing {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteLibraryProcessingConfigurationUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                         @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> deleteLibraryProcessingConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
     @ApiOperation(value = "getLibraryProcessingConfiguration", notes = "", response = Object.class, tags={ "LIBRARY","CONFIGURATION", })
@@ -73,8 +70,8 @@ public interface ApiConfigurationLibraryProcessing {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<Object> getLibraryProcessingConfigurationUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Object> getLibraryProcessingConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
 

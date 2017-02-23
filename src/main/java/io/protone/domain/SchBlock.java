@@ -1,16 +1,17 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.SchBlockTypeEnum;
-import io.protone.domain.enumeration.SchStartTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import io.protone.domain.enumeration.SchBlockTypeEnum;
+
+import io.protone.domain.enumeration.SchStartTypeEnum;
 
 /**
  * A SchBlock.
@@ -23,7 +24,8 @@ public class SchBlock implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -35,63 +37,61 @@ public class SchBlock implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     private SchBlockTypeEnum type;
 
-    @NotNull
-    @Column(name = "start_time", nullable = false)
-    private ZonedDateTime startTime;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "start_type", nullable = false)
+    @Column(name = "start_type")
     private SchStartTypeEnum startType;
 
     @Column(name = "relative_delay")
     private Long relativeDelay;
 
-    @NotNull
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "scheduled_start_time")
+    private ZonedDateTime scheduledStartTime;
+
+    @Column(name = "scheduled_end_time")
+    private ZonedDateTime scheduledEndTime;
+
+    @Column(name = "scheduled_length")
+    private Long scheduledLength;
+
+    @Column(name = "start_time")
+    private ZonedDateTime startTime;
+
+    @Column(name = "end_time")
     private ZonedDateTime endTime;
 
-    @NotNull
-    @Column(name = "length", nullable = false)
+    @Column(name = "length")
     private Long length;
 
-    @NotNull
-    @Column(name = "dim_year", nullable = false)
+    @Column(name = "dim_year")
     private Integer dimYear;
 
-    @NotNull
-    @Column(name = "dim_month", nullable = false)
+    @Column(name = "dim_month")
     private Integer dimMonth;
 
-    @NotNull
-    @Column(name = "dim_day", nullable = false)
+    @Column(name = "dim_day")
     private Integer dimDay;
 
-    @NotNull
-    @Column(name = "dim_hour", nullable = false)
+    @Column(name = "dim_hour")
     private Integer dimHour;
 
-    @NotNull
-    @Column(name = "dim_minute", nullable = false)
+    @Column(name = "dim_minute")
     private Integer dimMinute;
 
-    @NotNull
-    @Column(name = "dim_second", nullable = false)
+    @Column(name = "dim_second")
     private Integer dimSecond;
+
+    @ManyToOne
+    private SchPlaylist playlist;
 
     @ManyToOne
     private SchTemplate template;
 
     @ManyToOne
     private SchBlock parentBlock;
-
-    @ManyToOne
-    private SchPlaylist playlist;
 
     public Long getId() {
         return id;
@@ -140,19 +140,6 @@ public class SchBlock implements Serializable {
         this.type = type;
     }
 
-    public ZonedDateTime getStartTime() {
-        return startTime;
-    }
-
-    public SchBlock startTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-    }
-
     public SchStartTypeEnum getStartType() {
         return startType;
     }
@@ -177,6 +164,58 @@ public class SchBlock implements Serializable {
 
     public void setRelativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
+    }
+
+    public ZonedDateTime getScheduledStartTime() {
+        return scheduledStartTime;
+    }
+
+    public SchBlock scheduledStartTime(ZonedDateTime scheduledStartTime) {
+        this.scheduledStartTime = scheduledStartTime;
+        return this;
+    }
+
+    public void setScheduledStartTime(ZonedDateTime scheduledStartTime) {
+        this.scheduledStartTime = scheduledStartTime;
+    }
+
+    public ZonedDateTime getScheduledEndTime() {
+        return scheduledEndTime;
+    }
+
+    public SchBlock scheduledEndTime(ZonedDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+        return this;
+    }
+
+    public void setScheduledEndTime(ZonedDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+    }
+
+    public Long getScheduledLength() {
+        return scheduledLength;
+    }
+
+    public SchBlock scheduledLength(Long scheduledLength) {
+        this.scheduledLength = scheduledLength;
+        return this;
+    }
+
+    public void setScheduledLength(Long scheduledLength) {
+        this.scheduledLength = scheduledLength;
+    }
+
+    public ZonedDateTime getStartTime() {
+        return startTime;
+    }
+
+    public SchBlock startTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public ZonedDateTime getEndTime() {
@@ -283,6 +322,19 @@ public class SchBlock implements Serializable {
         this.dimSecond = dimSecond;
     }
 
+    public SchPlaylist getPlaylist() {
+        return playlist;
+    }
+
+    public SchBlock playlist(SchPlaylist schPlaylist) {
+        this.playlist = schPlaylist;
+        return this;
+    }
+
+    public void setPlaylist(SchPlaylist schPlaylist) {
+        this.playlist = schPlaylist;
+    }
+
     public SchTemplate getTemplate() {
         return template;
     }
@@ -307,19 +359,6 @@ public class SchBlock implements Serializable {
 
     public void setParentBlock(SchBlock schBlock) {
         this.parentBlock = schBlock;
-    }
-
-    public SchPlaylist getPlaylist() {
-        return playlist;
-    }
-
-    public SchBlock playlist(SchPlaylist schPlaylist) {
-        this.playlist = schPlaylist;
-        return this;
-    }
-
-    public void setPlaylist(SchPlaylist schPlaylist) {
-        this.playlist = schPlaylist;
     }
 
     @Override
@@ -349,9 +388,12 @@ public class SchBlock implements Serializable {
             ", seq='" + seq + "'" +
             ", name='" + name + "'" +
             ", type='" + type + "'" +
-            ", startTime='" + startTime + "'" +
             ", startType='" + startType + "'" +
             ", relativeDelay='" + relativeDelay + "'" +
+            ", scheduledStartTime='" + scheduledStartTime + "'" +
+            ", scheduledEndTime='" + scheduledEndTime + "'" +
+            ", scheduledLength='" + scheduledLength + "'" +
+            ", startTime='" + startTime + "'" +
             ", endTime='" + endTime + "'" +
             ", length='" + length + "'" +
             ", dimYear='" + dimYear + "'" +

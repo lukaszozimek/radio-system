@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "traInvoiceStatus" : {
+            "home": {
+                "title": "Tra Invoice Statuses",
+                "createLabel": "Dodaj Tra Invoice Status",
+                "createOrEditLabel": "Dodaj lub edytuj: Tra Invoice Status",
+                "search": "Search for Tra Invoice Status"
+            },
+            "created": "A new Tra Invoice Status is created with identifier {{ param }}",
+            "updated": "A Tra Invoice Status is updated with identifier {{ param }}",
+            "deleted": "A Tra Invoice Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tra Invoice Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Invoice Status"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

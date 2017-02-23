@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "crmStage" : {
+            "home": {
+                "title": "Crm Stages",
+                "createLabel": "Dodaj Crm Stage",
+                "createOrEditLabel": "Dodaj lub edytuj: Crm Stage",
+                "search": "Search for Crm Stage"
+            },
+            "created": "A new Crm Stage is created with identifier {{ param }}",
+            "updated": "A Crm Stage is updated with identifier {{ param }}",
+            "deleted": "A Crm Stage is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Crm Stage {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Stage"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

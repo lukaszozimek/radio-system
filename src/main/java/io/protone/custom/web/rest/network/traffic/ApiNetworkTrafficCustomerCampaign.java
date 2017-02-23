@@ -1,11 +1,9 @@
 package io.protone.custom.web.rest.network.traffic;
 
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.custom.service.dto.TraCustomerPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 

@@ -1,9 +1,10 @@
 package io.protone.custom.service;
 
+import io.protone.repository.custom.CustomTraOrderRepository;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.service.mapper.CustomTraOrderMapper;
-import io.protone.domain.*;
-import io.protone.repository.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +26,7 @@ public class TraOrderService {
     private CustomTraOrderMapper customTraOrderMapper;
 
     @Inject
-    private TraOrderRepository traOrderRepository;
-    @Inject
-    private CrmAccountRepository crmAccountRepository;
+    private CustomTraOrderRepository traOrderRepository;
 
     public List<TraOrderPT> getAllOrder(CorNetwork corNetwork) {
         return traOrderRepository.findByNetwork(corNetwork).stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());

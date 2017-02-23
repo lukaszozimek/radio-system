@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "crmContactStatus" : {
+            "home": {
+                "title": "Crm Contact Statuses",
+                "createLabel": "Dodaj Crm Contact Status",
+                "createOrEditLabel": "Dodaj lub edytuj: Crm Contact Status",
+                "search": "Search for Crm Contact Status"
+            },
+            "created": "A new Crm Contact Status is created with identifier {{ param }}",
+            "updated": "A Crm Contact Status is updated with identifier {{ param }}",
+            "deleted": "A Crm Contact Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Crm Contact Status {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Contact Status"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

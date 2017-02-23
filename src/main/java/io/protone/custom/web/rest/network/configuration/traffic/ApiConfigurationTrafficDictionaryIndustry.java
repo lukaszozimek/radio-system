@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.traffic;
 
 import io.protone.custom.service.dto.ConfIndustryPT;
-import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

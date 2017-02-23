@@ -1,0 +1,25 @@
+{
+    "protoneApp": {
+        "corContact" : {
+            "home": {
+                "title": "Cor Contacts",
+                "createLabel": "Dodaj Cor Contact",
+                "createOrEditLabel": "Dodaj lub edytuj: Cor Contact",
+                "search": "Search for Cor Contact"
+            },
+            "created": "A new Cor Contact is created with identifier {{ param }}",
+            "updated": "A Cor Contact is updated with identifier {{ param }}",
+            "deleted": "A Cor Contact is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Cor Contact {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Contact"
+            },
+            "contact": "Contact",
+            "contactType": "Contact Type",
+            "network": "Network",
+            "person": "Person"
+        }
+    }
+}

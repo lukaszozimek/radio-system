@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.custom.service.CrmOpportunityService;
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmOpportunity;
 import io.protone.domain.CorNetwork;
@@ -20,7 +20,7 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
     @Inject
     private CrmOpportunityService opportunityService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Override
     public ResponseEntity<CrmOpportunityPT> updateOpportunityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmOpportunityPT", required = true) @RequestBody CrmOpportunityPT crmOpportunityPT) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);

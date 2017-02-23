@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.traffic;
 
-import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;

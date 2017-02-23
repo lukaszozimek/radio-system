@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "libLabel" : {
+            "home": {
+                "title": "Lib Labels",
+                "createLabel": "Create a new Lib Label",
+                "createOrEditLabel": "Create or edit a Lib Label",
+                "search": "Search for Lib Label"
+            },
+            "created": "A new Lib Label is created with identifier {{ param }}",
+            "updated": "A Lib Label is updated with identifier {{ param }}",
+            "deleted": "A Lib Label is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Lib Label {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Label"
+            },
+            "name": "Name",
+            "description": "Description",
+            "network": "Network"
+        }
+    }
+}

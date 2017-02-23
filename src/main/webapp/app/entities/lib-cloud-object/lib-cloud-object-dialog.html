@@ -1,0 +1,143 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myLibCloudObjectLabel" data-translate="protoneApp.libCloudObject.home.createOrEditLabel">Create or edit a Lib Cloud Object</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.libCloudObject.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.libCloudObject.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.uuid" for="field_uuid">Uuid</label>
+            <input type="text" class="form-control" name="uuid" id="field_uuid"
+                    ng-model="vm.libCloudObject.uuid"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.uuid.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.uuid.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.uuid.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.objectType" for="field_objectType">Object Type</label>
+            <select class="form-control" name="objectType" ng-model="vm.libCloudObject.objectType" id="field_objectType">
+                <option value="OT_IMAGE" data-translate="protoneApp.LibObjectTypeEnum.OT_IMAGE">OT_IMAGE</option>
+                <option value="OT_AUDIO" data-translate="protoneApp.LibObjectTypeEnum.OT_AUDIO">OT_AUDIO</option>
+                <option value="OT_VIDEO" data-translate="protoneApp.LibObjectTypeEnum.OT_VIDEO">OT_VIDEO</option>
+                <option value="OT_FILE" data-translate="protoneApp.LibObjectTypeEnum.OT_FILE">OT_FILE</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.originalName" for="field_originalName">Original Name</label>
+            <input type="text" class="form-control" name="originalName" id="field_originalName"
+                    ng-model="vm.libCloudObject.originalName"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.originalName.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.originalName.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.originalName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.contentType" for="field_contentType">Content Type</label>
+            <input type="text" class="form-control" name="contentType" id="field_contentType"
+                    ng-model="vm.libCloudObject.contentType"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.contentType.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.contentType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.contentType.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.size" for="field_size">Size</label>
+            <input type="number" class="form-control" name="size" id="field_size"
+                    ng-model="vm.libCloudObject.size"
+                    required/>
+            <div ng-show="editForm.size.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.size.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.size.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.original" for="field_original">Original</label>
+            <input type="checkbox" class="form-control" name="original" id="field_original"
+                    ng-model="vm.libCloudObject.original"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.hash" for="field_hash">Hash</label>
+            <input type="text" class="form-control" name="hash" id="field_hash"
+                    ng-model="vm.libCloudObject.hash"
+                    required ng-maxlength="100"/>
+            <div ng-show="editForm.hash.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.hash.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.hash.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="protoneApp.libCloudObject.createDate" for="field_createDate">Create Date</label>
+                <div class="input-group">
+                    <input id="field_createDate" type="text" class="form-control" name="createDate" datetime-picker="{{dateformat}}" ng-model="vm.libCloudObject.createDate" is-open="vm.datePickerOpenStatus.createDate"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('createDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="protoneApp.libCloudObject.network" for="field_network">Network</label>
+            <select class="form-control" id="field_network" name="network" ng-model="vm.libCloudObject.network" ng-options="corNetwork as corNetwork.id for corNetwork in vm.cornetworks track by corNetwork.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="protoneApp.libCloudObject.createdBy" for="field_createdBy">Created By</label>
+            <select class="form-control" id="field_createdBy" name="createdBy" ng-model="vm.libCloudObject.createdBy" ng-options="corUser as corUser.id for corUser in vm.corusers track by corUser.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

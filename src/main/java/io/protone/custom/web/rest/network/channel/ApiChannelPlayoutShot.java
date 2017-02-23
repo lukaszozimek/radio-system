@@ -23,9 +23,9 @@ public interface ApiChannelPlayoutShot {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> playShotUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                           @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                           @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> playShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
     @ApiOperation(value = "stopShot", notes = "", response = Void.class, tags={ "PLAYOUT", })
@@ -39,9 +39,9 @@ public interface ApiChannelPlayoutShot {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> stopShotUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                           @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                           @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> stopShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
     @ApiOperation(value = "pauseShot", notes = "", response = Void.class, tags={ "PLAYOUT", })
@@ -55,9 +55,9 @@ public interface ApiChannelPlayoutShot {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> pauseShotUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                            @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                            @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> pauseShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
     @ApiOperation(value = "unloadShot", notes = "", response = Void.class, tags={ "PLAYOUT", })
@@ -71,9 +71,9 @@ public interface ApiChannelPlayoutShot {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> unloadShotUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                             @ApiParam(value = "channelShortcut",required=true ) @PathVariable("channelShortcut") String channelShortcut,
-                                             @ApiParam(value = "shortName",required=true ) @PathVariable("shortName") String shortName);
+    ResponseEntity<Void> unloadShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
 

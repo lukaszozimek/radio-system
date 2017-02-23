@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.configuration.scheduler;
 
-import io.protone.custom.service.dto.ConfCommercialLogPT;
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +25,8 @@ public interface ApiConfigurationSchedulerLogMusic {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ConfMusicLogPT> updateMusicLogConfigurationUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "confMusicLogPT" ,required=true ) @RequestBody ConfMusicLogPT confMusicLogPT);
+    ResponseEntity<ConfMusicLogPT> updateMusicLogConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                       @ApiParam(value = "confMusicLogPT", required = true) @RequestBody ConfMusicLogPT confMusicLogPT);
 
 
     @ApiOperation(value = "createMusicLogConfiguration", notes = "", response = ConfMusicLogPT.class, tags={ "CONFIGURATION", })
@@ -41,8 +40,8 @@ public interface ApiConfigurationSchedulerLogMusic {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ConfMusicLogPT> createMusicLogConfigurationUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                                        @ApiParam(value = "confMusicLogPT" ,required=true ) @RequestBody ConfMusicLogPT confMusicLogPT);
+    ResponseEntity<ConfMusicLogPT> createMusicLogConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                        @ApiParam(value = "confMusicLogPT", required = true) @RequestBody ConfMusicLogPT confMusicLogPT);
 
 
     @ApiOperation(value = "deleteMusicLogConfiguration", notes = "", response = Void.class, tags={ "CONFIGURATION","DICTIONARY", })
@@ -55,7 +54,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteMusicLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<Void> deleteMusicLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getMusicLogConfiguration", notes = "", response = Object.class, tags={ "CONFIGURATION", })
@@ -68,7 +67,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<Object> getMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<Object> getMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
 

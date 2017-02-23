@@ -1,0 +1,26 @@
+{
+    "protoneApp": {
+        "schPlaylist" : {
+            "home": {
+                "title": "Sch Playlists",
+                "createLabel": "Dodaj Sch Playlist",
+                "createOrEditLabel": "Dodaj lub edytuj: Sch Playlist",
+                "search": "Search for Sch Playlist"
+            },
+            "created": "A new Sch Playlist is created with identifier {{ param }}",
+            "updated": "A Sch Playlist is updated with identifier {{ param }}",
+            "deleted": "A Sch Playlist is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Sch Playlist {{ id }}?"
+            },
+            "detail": {
+                "title": "Sch Playlist"
+            },
+            "date": "Date",
+            "dimYear": "Dim Year",
+            "dimMonth": "Dim Month",
+            "dimDay": "Dim Day",
+            "channel": "Channel"
+        }
+    }
+}

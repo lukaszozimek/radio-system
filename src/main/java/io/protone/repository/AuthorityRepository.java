@@ -1,6 +1,7 @@
 package io.protone.repository;
 
 import io.protone.domain.Authority;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

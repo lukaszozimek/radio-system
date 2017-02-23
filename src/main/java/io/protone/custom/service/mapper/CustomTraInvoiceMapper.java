@@ -1,14 +1,12 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraInvoice;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 21.01.2017.

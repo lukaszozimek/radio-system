@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="protoneApp.traAdvertisement.detail.title">Tra Advertisement</span> {{vm.traAdvertisement.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.traAdvertisement.name">Name</span></dt>
+        <dd>
+            <span>{{vm.traAdvertisement.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.description">Description</span></dt>
+        <dd>
+            <span>{{vm.traAdvertisement.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.mediaItem">Media Item</span></dt>
+        <dd>
+            <a ui-sref="lib-media-item-detail({id:vm.traAdvertisement.mediaItemId})">{{vm.traAdvertisement.mediaItemId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.libitem">Libitem</span></dt>
+        <dd>
+            <a ui-sref="lib-media-item-detail({id:vm.traAdvertisement.libitemId})">{{vm.traAdvertisement.libitemId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.industry">Industry</span></dt>
+        <dd>
+            <a ui-sref="tra-industry-detail({id:vm.traAdvertisement.industryId})">{{vm.traAdvertisement.industryId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.type">Type</span></dt>
+        <dd>
+            <a ui-sref="tra-advertisment-type-detail({id:vm.traAdvertisement.typeId})">{{vm.traAdvertisement.typeId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.customer">Customer</span></dt>
+        <dd>
+            <a ui-sref="crm-account-detail({id:vm.traAdvertisement.customerId})">{{vm.traAdvertisement.customerId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traAdvertisement.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.traAdvertisement.networkId})">{{vm.traAdvertisement.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="tra-advertisement-detail.edit({id:vm.traAdvertisement.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

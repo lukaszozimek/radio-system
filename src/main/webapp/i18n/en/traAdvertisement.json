@@ -1,0 +1,29 @@
+{
+    "protoneApp": {
+        "traAdvertisement" : {
+            "home": {
+                "title": "Tra Advertisements",
+                "createLabel": "Create a new Tra Advertisement",
+                "createOrEditLabel": "Create or edit a Tra Advertisement",
+                "search": "Search for Tra Advertisement"
+            },
+            "created": "A new Tra Advertisement is created with identifier {{ param }}",
+            "updated": "A Tra Advertisement is updated with identifier {{ param }}",
+            "deleted": "A Tra Advertisement is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Tra Advertisement {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Advertisement"
+            },
+            "name": "Name",
+            "description": "Description",
+            "mediaItem": "Media Item",
+            "libitem": "Libitem",
+            "industry": "Industry",
+            "type": "Type",
+            "customer": "Customer",
+            "network": "Network"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfPersonPT;
 import io.protone.custom.service.mapper.CustomCorPersonMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryPeople;
@@ -28,7 +28,7 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
     private CorPersonRepository cORPersonRepository;
 
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Inject
     private CustomCorPersonMapper customCorPersonMapper;

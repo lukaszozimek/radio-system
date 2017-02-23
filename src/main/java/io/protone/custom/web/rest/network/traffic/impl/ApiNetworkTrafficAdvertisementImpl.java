@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
-import io.protone.custom.service.NetworkService;
-import io.protone.custom.service.TRAAdvertismentService;
+import io.protone.custom.service.CorNetworkService;
+import io.protone.custom.service.TraAdvertismentService;
 import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficAdvertisement;
 import io.protone.domain.CorNetwork;
@@ -17,9 +17,9 @@ import java.util.List;
 @RestController
 public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdvertisement {
     @Inject
-    private TRAAdvertismentService traAdvertismentService;
+    private TraAdvertismentService traAdvertismentService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "advertisementDTO", required = true) @RequestBody TraAdvertisementPT advertisementDTO) {

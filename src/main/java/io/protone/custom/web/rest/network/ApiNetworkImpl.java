@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network;
 
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
 import io.protone.domain.CorNetwork;
@@ -26,7 +26,7 @@ public class ApiNetworkImpl implements ApiNetwork {
     CustomCorNetworkMapper customCorNetworkMapper;
 
     @Inject
-    NetworkService networkService;
+    CorNetworkService networkService;
 
     @Override
     public ResponseEntity<List<CoreNetworkPT>> getAllNetworksUsingGET() {

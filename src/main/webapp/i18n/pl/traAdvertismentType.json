@@ -1,0 +1,23 @@
+{
+    "protoneApp": {
+        "traAdvertismentType" : {
+            "home": {
+                "title": "Tra Advertisment Types",
+                "createLabel": "Dodaj Tra Advertisment Type",
+                "createOrEditLabel": "Dodaj lub edytuj: Tra Advertisment Type",
+                "search": "Search for Tra Advertisment Type"
+            },
+            "created": "A new Tra Advertisment Type is created with identifier {{ param }}",
+            "updated": "A Tra Advertisment Type is updated with identifier {{ param }}",
+            "deleted": "A Tra Advertisment Type is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tra Advertisment Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Tra Advertisment Type"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

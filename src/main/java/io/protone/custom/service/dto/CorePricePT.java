@@ -3,7 +3,6 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-
 import java.math.BigDecimal;
 import java.util.Objects;
 

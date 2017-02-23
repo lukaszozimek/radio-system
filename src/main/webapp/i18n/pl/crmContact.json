@@ -1,0 +1,39 @@
+{
+    "protoneApp": {
+        "crmContact" : {
+            "home": {
+                "title": "Crm Contacts",
+                "createLabel": "Dodaj Crm Contact",
+                "createOrEditLabel": "Dodaj lub edytuj: Crm Contact",
+                "search": "Search for Crm Contact"
+            },
+            "created": "A new Crm Contact is created with identifier {{ param }}",
+            "updated": "A Crm Contact is updated with identifier {{ param }}",
+            "deleted": "A Crm Contact is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Crm Contact {{ id }}?"
+            },
+            "detail": {
+                "title": "Crm Contact"
+            },
+            "shortName": "Short Name",
+            "externalId1": "External Id 1",
+            "externalId2": "External Id 2",
+            "paymentDate": "Payment Date",
+            "name": "Name",
+            "paymentDelay": "Payment Delay",
+            "vatNumber": "Vat Number",
+            "addres": "Addres",
+            "country": "Country",
+            "person": "Person",
+            "network": "Network",
+            "range": "Range",
+            "size": "Size",
+            "industry": "Industry",
+            "area": "Area",
+            "keeper": "Keeper",
+            "status": "Status",
+            "tasks": "Tasks"
+        }
+    }
+}

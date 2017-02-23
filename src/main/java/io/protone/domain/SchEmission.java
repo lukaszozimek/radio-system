@@ -1,11 +1,10 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.SchStartTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -21,7 +20,8 @@ public class SchEmission implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -29,28 +29,36 @@ public class SchEmission implements Serializable {
     private Integer seq;
 
     @NotNull
-    @Column(name = "start_time", nullable = false)
+    @Size(max = 100)
+    @Column(name = "name", length = 100, nullable = false)
+    private String name;
+
+    @Column(name = "start_time")
     private ZonedDateTime startTime;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "start_type", nullable = false)
-    private SchStartTypeEnum startType;
-
-    @Column(name = "relative_delay")
-    private Long relativeDelay;
-
-    @NotNull
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     private ZonedDateTime endTime;
 
-    @NotNull
-    @Column(name = "length", nullable = false)
+    @Column(name = "length")
     private Long length;
 
-    @NotNull
-    @Column(name = "finished", nullable = false)
-    private Boolean finished;
+    @Column(name = "dim_year")
+    private Integer dimYear;
+
+    @Column(name = "dim_month")
+    private Integer dimMonth;
+
+    @Column(name = "dim_day")
+    private Integer dimDay;
+
+    @Column(name = "dim_hour")
+    private Integer dimHour;
+
+    @Column(name = "dim_minute")
+    private Integer dimMinute;
+
+    @Column(name = "dim_second")
+    private Integer dimSecond;
 
     @ManyToOne
     private LibMediaItem mediaItem;
@@ -82,6 +90,19 @@ public class SchEmission implements Serializable {
         this.seq = seq;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public SchEmission name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public ZonedDateTime getStartTime() {
         return startTime;
     }
@@ -93,32 +114,6 @@ public class SchEmission implements Serializable {
 
     public void setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
-    }
-
-    public SchStartTypeEnum getStartType() {
-        return startType;
-    }
-
-    public SchEmission startType(SchStartTypeEnum startType) {
-        this.startType = startType;
-        return this;
-    }
-
-    public void setStartType(SchStartTypeEnum startType) {
-        this.startType = startType;
-    }
-
-    public Long getRelativeDelay() {
-        return relativeDelay;
-    }
-
-    public SchEmission relativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
-        return this;
-    }
-
-    public void setRelativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
     }
 
     public ZonedDateTime getEndTime() {
@@ -147,17 +142,82 @@ public class SchEmission implements Serializable {
         this.length = length;
     }
 
-    public Boolean isFinished() {
-        return finished;
+    public Integer getDimYear() {
+        return dimYear;
     }
 
-    public SchEmission finished(Boolean finished) {
-        this.finished = finished;
+    public SchEmission dimYear(Integer dimYear) {
+        this.dimYear = dimYear;
         return this;
     }
 
-    public void setFinished(Boolean finished) {
-        this.finished = finished;
+    public void setDimYear(Integer dimYear) {
+        this.dimYear = dimYear;
+    }
+
+    public Integer getDimMonth() {
+        return dimMonth;
+    }
+
+    public SchEmission dimMonth(Integer dimMonth) {
+        this.dimMonth = dimMonth;
+        return this;
+    }
+
+    public void setDimMonth(Integer dimMonth) {
+        this.dimMonth = dimMonth;
+    }
+
+    public Integer getDimDay() {
+        return dimDay;
+    }
+
+    public SchEmission dimDay(Integer dimDay) {
+        this.dimDay = dimDay;
+        return this;
+    }
+
+    public void setDimDay(Integer dimDay) {
+        this.dimDay = dimDay;
+    }
+
+    public Integer getDimHour() {
+        return dimHour;
+    }
+
+    public SchEmission dimHour(Integer dimHour) {
+        this.dimHour = dimHour;
+        return this;
+    }
+
+    public void setDimHour(Integer dimHour) {
+        this.dimHour = dimHour;
+    }
+
+    public Integer getDimMinute() {
+        return dimMinute;
+    }
+
+    public SchEmission dimMinute(Integer dimMinute) {
+        this.dimMinute = dimMinute;
+        return this;
+    }
+
+    public void setDimMinute(Integer dimMinute) {
+        this.dimMinute = dimMinute;
+    }
+
+    public Integer getDimSecond() {
+        return dimSecond;
+    }
+
+    public SchEmission dimSecond(Integer dimSecond) {
+        this.dimSecond = dimSecond;
+        return this;
+    }
+
+    public void setDimSecond(Integer dimSecond) {
+        this.dimSecond = dimSecond;
     }
 
     public LibMediaItem getMediaItem() {
@@ -224,12 +284,16 @@ public class SchEmission implements Serializable {
         return "SchEmission{" +
             "id=" + id +
             ", seq='" + seq + "'" +
+            ", name='" + name + "'" +
             ", startTime='" + startTime + "'" +
-            ", startType='" + startType + "'" +
-            ", relativeDelay='" + relativeDelay + "'" +
             ", endTime='" + endTime + "'" +
             ", length='" + length + "'" +
-            ", finished='" + finished + "'" +
+            ", dimYear='" + dimYear + "'" +
+            ", dimMonth='" + dimMonth + "'" +
+            ", dimDay='" + dimDay + "'" +
+            ", dimHour='" + dimHour + "'" +
+            ", dimMinute='" + dimMinute + "'" +
+            ", dimSecond='" + dimSecond + "'" +
             '}';
     }
 }

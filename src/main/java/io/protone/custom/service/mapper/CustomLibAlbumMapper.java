@@ -48,7 +48,7 @@ public interface CustomLibAlbumMapper {
         return lIBLabel;
     }
 
-    default LibArtist mapLibArtist (Long id) {
+    default LibArtist mapLibArtist(Long id) {
         if (id == null) {
             return null;
         }

@@ -5,7 +5,7 @@ import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmLeadMapper;
 import io.protone.custom.service.mapper.CustomCrmTaskMapper;
 import io.protone.domain.*;
-import io.protone.repository.*;
+import io.protone.repository.custom.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,19 +27,19 @@ public class CrmLeadService {
     private CustomCrmLeadMapper customCrmLeadMapper;
 
     @Inject
-    private CrmLeadRepository crmLeadRepository;
+    private CustomCrmLeadRepository crmLeadRepository;
 
     @Inject
-    private CorAddressRepository addressRepository;
+    private CustomCorAddressRepository addressRepository;
 
     @Inject
-    private CorContactRepository corContactRepository;
+    private CustomCorContactRepository corContactRepository;
 
     @Inject
-    private CorPersonRepository personRepository;
+    private CustomCorPersonRepository personRepository;
 
     @Inject
-    private CrmTaskRepository crmTaskRepository;
+    private CustomCrmTaskRepository crmTaskRepository;
 
     @Inject
     private CustomCrmTaskMapper customCrmTaskMapper;

@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="protoneApp.libTrack.detail.title">Lib Track</span> {{vm.libTrack.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.libTrack.discNo">Disc No</span></dt>
+        <dd>
+            <span>{{vm.libTrack.discNo}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.trackNo">Track No</span></dt>
+        <dd>
+            <span>{{vm.libTrack.trackNo}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.name">Name</span></dt>
+        <dd>
+            <span>{{vm.libTrack.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.length">Length</span></dt>
+        <dd>
+            <span>{{vm.libTrack.length}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.description">Description</span></dt>
+        <dd>
+            <span>{{vm.libTrack.description}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.album">Album</span></dt>
+        <dd>
+            <a ui-sref="lib-album-detail({id:vm.libTrack.albumId})">{{vm.libTrack.albumId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.artist">Artist</span></dt>
+        <dd>
+            <a ui-sref="lib-artist-detail({id:vm.libTrack.artistId})">{{vm.libTrack.artistId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.libTrack.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.libTrack.networkId})">{{vm.libTrack.networkId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="lib-track-detail.edit({id:vm.libTrack.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

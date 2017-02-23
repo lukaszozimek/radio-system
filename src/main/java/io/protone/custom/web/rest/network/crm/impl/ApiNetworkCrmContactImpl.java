@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.custom.service.CrmContactService;
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmContact;
 import io.protone.domain.CorNetwork;
@@ -20,7 +20,7 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
     @Inject
     private CrmContactService contactService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customeryPT) {

@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.crm;
 
 import io.protone.custom.service.dto.ConfCrmStagePT;
-import io.protone.custom.service.dto.ConfCurrencyPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

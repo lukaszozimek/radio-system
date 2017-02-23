@@ -1,7 +1,7 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.domain.*;
+import io.protone.domain.User;
 import org.springframework.stereotype.Service;
 
 /**

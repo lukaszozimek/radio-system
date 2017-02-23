@@ -1,0 +1,27 @@
+{
+    "protoneApp": {
+        "corAddress" : {
+            "home": {
+                "title": "Cor Addresses",
+                "createLabel": "Create a new Cor Address",
+                "createOrEditLabel": "Create or edit a Cor Address",
+                "search": "Search for Cor Address"
+            },
+            "created": "A new Cor Address is created with identifier {{ param }}",
+            "updated": "A Cor Address is updated with identifier {{ param }}",
+            "deleted": "A Cor Address is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor Address {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Address"
+            },
+            "street": "Street",
+            "number": "Number",
+            "postalCode": "Postal Code",
+            "city": "City",
+            "country": "Country",
+            "network": "Network"
+        }
+    }
+}

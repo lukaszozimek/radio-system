@@ -1,8 +1,8 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
 
-import io.protone.custom.service.NetworkService;
-import io.protone.custom.service.TRACustomerService;
+import io.protone.custom.service.CorNetworkService;
+import io.protone.custom.service.TraCustomerService;
 import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomer;
 import io.protone.domain.CorNetwork;
@@ -18,9 +18,9 @@ import java.util.List;
 @RestController
 public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer {
     @Inject
-    private TRACustomerService customerService;
+    private TraCustomerService customerService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "CustomerVM", required = true) @RequestBody TraCustomerPT customer) {

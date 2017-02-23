@@ -1,9 +1,11 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.TRACustomerService;
+import io.protone.custom.service.TraCustomerService;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.LibMediaItem;
+import io.protone.domain.TraAdvertisement;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -21,7 +23,7 @@ public class CustomTRAAdvertismentMapper {
     private CustomCrmAccountMapper customCrmAccountMapper;
 
     @Inject
-    private TRACustomerService customerService;
+    private TraCustomerService customerService;
 
     public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
         TraAdvertisement advertisement = new TraAdvertisement();

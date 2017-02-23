@@ -5,12 +5,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A CorPerson.
@@ -23,7 +22,8 @@ public class CorPerson implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -117,13 +117,13 @@ public class CorPerson implements Serializable {
     }
 
     public CorPerson addContacts(CorContact corContact) {
-        contacts.add(corContact);
+        this.contacts.add(corContact);
         corContact.setPerson(this);
         return this;
     }
 
     public CorPerson removeContacts(CorContact corContact) {
-        contacts.remove(corContact);
+        this.contacts.remove(corContact);
         corContact.setPerson(null);
         return this;
     }

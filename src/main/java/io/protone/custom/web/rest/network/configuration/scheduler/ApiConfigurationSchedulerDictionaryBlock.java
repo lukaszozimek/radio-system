@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.scheduler;
 
 import io.protone.custom.service.dto.ConfBlockPT;
-import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +26,8 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ConfBlockPT> updateBlockTypesUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "confBlockPT" ,required=true ) @RequestBody ConfBlockPT confBlockPT);
+    ResponseEntity<ConfBlockPT> updateBlockTypesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                         @ApiParam(value = "confBlockPT", required = true) @RequestBody ConfBlockPT confBlockPT);
 
 
     @ApiOperation(value = "createIndustry", notes = "", response = ConfBlockPT.class, tags={ "CONFIGURATION", })
@@ -42,8 +41,8 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ConfBlockPT> createBlockTypesUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "confBlockPT" ,required=true ) @RequestBody ConfBlockPT confBlockPT);
+    ResponseEntity<ConfBlockPT> createBlockTypesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "confBlockPT", required = true) @RequestBody ConfBlockPT confBlockPT);
 
 
     @ApiOperation(value = "deleteBlockType", notes = "", response = Void.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -56,8 +55,8 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteBlockTypeUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                    @ApiParam(value = "blockShortName",required=true ) @PathVariable("blockShortName") String blockShortName);
+    ResponseEntity<Void> deleteBlockTypeUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                    @ApiParam(value = "blockShortName", required = true) @PathVariable("blockShortName") String blockShortName);
 
 
     @ApiOperation(value = "getAllIndustries", notes = "", response = ConfBlockPT.class, responseContainer = "List", tags={ "DICTIONARY","CONFIGURATION", })
@@ -70,7 +69,7 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfBlockPT>> getAllBlockTypesUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfBlockPT>> getAllBlockTypesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getBlockType", notes = "", response = ConfBlockPT.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -83,8 +82,8 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<ConfBlockPT> getBlockTypeUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "blockShortName",required=true ) @PathVariable("blockShortName") String blockShortName);
+    ResponseEntity<ConfBlockPT> getBlockTypeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                     @ApiParam(value = "blockShortName", required = true) @PathVariable("blockShortName") String blockShortName);
 
 
 

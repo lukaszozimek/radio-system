@@ -1,0 +1,27 @@
+{
+    "protoneApp": {
+        "libAudioObject" : {
+            "home": {
+                "title": "Lib Audio Objects",
+                "createLabel": "Dodaj Lib Audio Object",
+                "createOrEditLabel": "Dodaj lub edytuj: Lib Audio Object",
+                "search": "Search for Lib Audio Object"
+            },
+            "created": "A new Lib Audio Object is created with identifier {{ param }}",
+            "updated": "A Lib Audio Object is updated with identifier {{ param }}",
+            "deleted": "A Lib Audio Object is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Lib Audio Object {{ id }}?"
+            },
+            "detail": {
+                "title": "Lib Audio Object"
+            },
+            "length": "Length",
+            "biTrate": "Bi Trate",
+            "codec": "Codec",
+            "quality": "Quality",
+            "cloudObject": "Cloud Object",
+            "mediaItem": "Media Item"
+        }
+    }
+}

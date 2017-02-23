@@ -1,15 +1,10 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.Authority;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * CoreManagedUserPT

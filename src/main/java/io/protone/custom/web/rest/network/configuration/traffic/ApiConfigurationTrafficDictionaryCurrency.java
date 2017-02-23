@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.traffic;
 
 import io.protone.custom.service.dto.ConfCurrencyPT;
-import io.protone.custom.service.dto.ConfTaxPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +25,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfCurrencyPT>> getAllCurrencyUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfCurrencyPT>> getAllCurrencyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getCurrency", notes = "", response = ConfCurrencyPT.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -39,8 +38,8 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<ConfCurrencyPT> getCurrencyUsingGET(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<ConfCurrencyPT> getCurrencyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "updateCurrency", notes = "", response = ConfCurrencyPT.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -54,8 +53,8 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ConfCurrencyPT> updateCurrencyUsingPUT(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "taxDTO" ,required=true ) @RequestBody ConfCurrencyPT taxDTO);
+    ResponseEntity<ConfCurrencyPT> updateCurrencyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "taxDTO", required = true) @RequestBody ConfCurrencyPT taxDTO);
 
     @ApiOperation(value = "createCurrency", notes = "", response = ConfCurrencyPT.class, tags={ "DICTIONARY","CONFIGURATION", })
     @ApiResponses(value = {
@@ -68,8 +67,8 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ConfCurrencyPT> createCurrencyUsingPOST(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                           @ApiParam(value = "taxDTO" ,required=true ) @RequestBody ConfCurrencyPT taxDTO);
+    ResponseEntity<ConfCurrencyPT> createCurrencyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                           @ApiParam(value = "taxDTO", required = true) @RequestBody ConfCurrencyPT taxDTO);
 
 
     @ApiOperation(value = "deleteCurrency", notes = "", response = Void.class, tags={ "DICTIONARY","CONFIGURATION", })
@@ -82,8 +81,8 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteCurrencyUsingDELETE(@ApiParam(value = "networkShortcut",required=true ) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "id",required=true ) @PathVariable("id") Long id);
+    ResponseEntity<Void> deleteCurrencyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 

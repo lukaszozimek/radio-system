@@ -1,9 +1,8 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
-import io.protone.custom.service.NetworkService;
-import io.protone.custom.service.TRAAdvertismentService;
+import io.protone.custom.service.CorNetworkService;
+import io.protone.custom.service.TraAdvertismentService;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerAdvertisement;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
@@ -17,9 +16,9 @@ import java.util.List;
 @RestController
 public class ApiNetworkTrafficCustomerAdvertisementImpl implements ApiNetworkTrafficCustomerAdvertisement {
     @Inject
-    private TRAAdvertismentService traAdvertismentService;
+    private TraAdvertismentService traAdvertismentService;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<List<TraAdvertisementPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {

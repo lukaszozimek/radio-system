@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.configuration.core;
 
-import io.protone.custom.service.dto.ConfTagPT;
 import io.protone.custom.service.dto.CoreKeyPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;

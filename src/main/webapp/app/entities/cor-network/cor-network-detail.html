@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span data-translate="protoneApp.corNetwork.detail.title">Cor Network</span> {{vm.corNetwork.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.corNetwork.shortcut">Shortcut</span></dt>
+        <dd>
+            <span>{{vm.corNetwork.shortcut}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.corNetwork.name">Name</span></dt>
+        <dd>
+            <span>{{vm.corNetwork.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.corNetwork.description">Description</span></dt>
+        <dd>
+            <span>{{vm.corNetwork.description}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="cor-network-detail.edit({id:vm.corNetwork.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,6 +1,5 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary;
 
-import io.protone.custom.service.dto.ConfCountryPt;
 import io.protone.custom.service.dto.CoreAreaPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;

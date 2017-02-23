@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
-import io.protone.custom.service.NetworkService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreRangePT;
 import io.protone.custom.service.mapper.CustomCorRangeMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryRange;
@@ -29,7 +29,7 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
     @Inject
     private CorRangeRepository cORRangeRepository;
     @Inject
-    private NetworkService networkService;
+    private CorNetworkService networkService;
     @Inject
     private CustomCorRangeMapper customCorAreaMapper;
 

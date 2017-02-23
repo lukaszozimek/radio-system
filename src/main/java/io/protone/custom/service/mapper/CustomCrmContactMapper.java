@@ -1,16 +1,11 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CrmContactPT;
-import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmContact;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 

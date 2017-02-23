@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="protoneApp.traCampaign.detail.title">Tra Campaign</span> {{vm.traCampaign.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="protoneApp.traCampaign.name">Name</span></dt>
+        <dd>
+            <span>{{vm.traCampaign.name}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.startDate">Start Date</span></dt>
+        <dd>
+            <span>{{vm.traCampaign.startDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.endDate">End Date</span></dt>
+        <dd>
+            <span>{{vm.traCampaign.endDate | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.prize">Prize</span></dt>
+        <dd>
+            <span>{{vm.traCampaign.prize}}</span>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.customer">Customer</span></dt>
+        <dd>
+            <a ui-sref="crm-account-detail({id:vm.traCampaign.customerId})">{{vm.traCampaign.customerId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.network">Network</span></dt>
+        <dd>
+            <a ui-sref="cor-network-detail({id:vm.traCampaign.networkId})">{{vm.traCampaign.networkId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.status">Status</span></dt>
+        <dd>
+            <a ui-sref="tra-campaing-status-detail({id:vm.traCampaign.statusId})">{{vm.traCampaign.statusId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.price">Price</span></dt>
+        <dd>
+            <a ui-sref="tra-price-detail({id:vm.traCampaign.priceId})">{{vm.traCampaign.priceId}}</a>
+        </dd>
+        <dt><span data-translate="protoneApp.traCampaign.orders">Orders</span></dt>
+        <dd>
+            <a ui-sref="tra-order-detail({id:vm.traCampaign.ordersId})">{{vm.traCampaign.ordersId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="tra-campaign-detail.edit({id:vm.traCampaign.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

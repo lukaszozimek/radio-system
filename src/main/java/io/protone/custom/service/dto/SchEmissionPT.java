@@ -1,116 +1,40 @@
 package io.protone.custom.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.enumeration.SchStartTypeEnum;
-import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
- * SchEmissionPT
+ * A DTO for the SchEmission entity.
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
+public class SchEmissionPT implements Serializable {
 
-public class SchEmissionPT {
-    @JsonProperty("blockId")
-    private Long blockId = null;
+    private Long id;
 
-    @JsonProperty("endTime")
-    private String endTime = null;
+    @NotNull
+    private Integer seq;
 
-    @JsonProperty("finished")
-    private Boolean finished = null;
+    @NotNull
+    @Size(max = 100)
+    private String name;
 
-    @JsonProperty("id")
-    private Long id = null;
+    private ZonedDateTime startTime;
+    private ZonedDateTime endTime;
+    private Long length;
 
-    @JsonProperty("length")
-    private Long length = null;
+    private Integer dimYear;
+    private Integer dimMonth;
+    private Integer dimDay;
+    private Integer dimHour;
+    private Integer dimMinute;
+    private Integer dimSecond;
 
-    @JsonProperty("mediaItemId")
-    private LibItemPT mediaItemId = null;
+    private LibItemPT mediaItem;
+    private Long blockId;
+    private Long campaingsId;
 
-    @JsonProperty("relativeDelay")
-    private Long relativeDelay = null;
-
-    @JsonProperty("seq")
-    private Integer seq = null;
-
-    @JsonProperty("startTime")
-    private String startTime = null;
-    @JsonProperty("startType")
-    private SchStartTypeEnum startType = null;
-    @JsonProperty("templateId")
-    private Long templateId = null;
-
-    public SchEmissionPT blockId(Long blockId) {
-        this.blockId = blockId;
-        return this;
-    }
-
-    /**
-     * Get blockId
-     *
-     * @return blockId
-     **/
-    @ApiModelProperty(value = "")
-    public Long getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Long blockId) {
-        this.blockId = blockId;
-    }
-
-    public SchEmissionPT endTime(String endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    /**
-     * Get endTime
-     *
-     * @return endTime
-     **/
-    @ApiModelProperty(required = true, value = "")
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public SchEmissionPT finished(Boolean finished) {
-        this.finished = finished;
-        return this;
-    }
-
-    /**
-     * Get finished
-     *
-     * @return finished
-     **/
-    @ApiModelProperty(required = true, value = "")
-    public Boolean getFinished() {
-        return finished;
-    }
-
-    public void setFinished(Boolean finished) {
-        this.finished = finished;
-    }
-
-    public SchEmissionPT id(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return id
-     **/
-    @ApiModelProperty(value = "")
     public Long getId() {
         return id;
     }
@@ -119,74 +43,6 @@ public class SchEmissionPT {
         this.id = id;
     }
 
-    public SchEmissionPT length(Long length) {
-        this.length = length;
-        return this;
-    }
-
-    /**
-     * Get length
-     *
-     * @return length
-     **/
-    @ApiModelProperty(required = true, value = "")
-    public Long getLength() {
-        return length;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
-    public SchEmissionPT mediaItemId(LibItemPT mediaItemId) {
-        this.mediaItemId = mediaItemId;
-        return this;
-    }
-
-    /**
-     * Get mediaItemId
-     *
-     * @return mediaItemId
-     **/
-    @ApiModelProperty(value = "")
-    public LibItemPT getMediaItemId() {
-        return mediaItemId;
-    }
-
-    public void setMediaItemId(LibItemPT mediaItemId) {
-        this.mediaItemId = mediaItemId;
-    }
-
-    public SchEmissionPT relativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
-        return this;
-    }
-
-    /**
-     * Get relativeDelay
-     *
-     * @return relativeDelay
-     **/
-    @ApiModelProperty(value = "")
-    public Long getRelativeDelay() {
-        return relativeDelay;
-    }
-
-    public void setRelativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
-    }
-
-    public SchEmissionPT seq(Integer seq) {
-        this.seq = seq;
-        return this;
-    }
-
-    /**
-     * Get seq
-     *
-     * @return seq
-     **/
-    @ApiModelProperty(required = true, value = "")
     public Integer getSeq() {
         return seq;
     }
@@ -195,121 +51,253 @@ public class SchEmissionPT {
         this.seq = seq;
     }
 
-    public SchEmissionPT startTime(String startTime) {
-        this.startTime = startTime;
-        return this;
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Get startTime
-     *
-     * @return startTime
-     **/
-    @ApiModelProperty(required = true, value = "")
-    public String getStartTime() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ZonedDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(ZonedDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public SchEmissionPT startType(SchStartTypeEnum startType) {
-        this.startType = startType;
+    public ZonedDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
+    public Integer getDimYear() {
+        return dimYear;
+    }
+
+    public void setDimYear(Integer dimYear) {
+        this.dimYear = dimYear;
+    }
+
+    public Integer getDimMonth() {
+        return dimMonth;
+    }
+
+    public void setDimMonth(Integer dimMonth) {
+        this.dimMonth = dimMonth;
+    }
+
+    public Integer getDimDay() {
+        return dimDay;
+    }
+
+    public void setDimDay(Integer dimDay) {
+        this.dimDay = dimDay;
+    }
+
+    public Integer getDimHour() {
+        return dimHour;
+    }
+
+    public void setDimHour(Integer dimHour) {
+        this.dimHour = dimHour;
+    }
+
+    public Integer getDimMinute() {
+        return dimMinute;
+    }
+
+    public void setDimMinute(Integer dimMinute) {
+        this.dimMinute = dimMinute;
+    }
+
+    public Integer getDimSecond() {
+        return dimSecond;
+    }
+
+    public void setDimSecond(Integer dimSecond) {
+        this.dimSecond = dimSecond;
+    }
+
+    public LibItemPT getMediaItem() {
+        return mediaItem;
+    }
+
+    public void setMediaItem(LibItemPT mediaItem) {
+        this.mediaItem = mediaItem;
+    }
+
+    public Long getBlockId() {
+        return blockId;
+    }
+
+    public void setBlockId(Long blockId) {
+        this.blockId = blockId;
+    }
+
+    public Long getCampaingsId() {
+        return campaingsId;
+    }
+
+    public void setCampaingsId(Long campaingsId) {
+        this.campaingsId = campaingsId;
+    }
+
+    public SchEmissionPT id(Long id) {
+        this.id = id;
         return this;
     }
 
-    /**
-     * Get startType
-     *
-     * @return startType
-     **/
-    @ApiModelProperty(required = true, value = "")
-    public SchStartTypeEnum getStartType() {
-        return startType;
-    }
-
-    public void setStartType(SchStartTypeEnum startType) {
-        this.startType = startType;
-    }
-
-    public SchEmissionPT templateId(Long templateId) {
-        this.templateId = templateId;
+    public SchEmissionPT seq(Integer seq) {
+        this.seq = seq;
         return this;
     }
 
-    /**
-     * Get templateId
-     *
-     * @return templateId
-     **/
-    @ApiModelProperty(value = "")
-    public Long getTemplateId() {
-        return templateId;
+    public SchEmissionPT name(String name) {
+        this.name = name;
+        return this;
     }
 
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
+    public SchEmissionPT startTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    public SchEmissionPT endTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    public SchEmissionPT length(Long length) {
+        this.length = length;
+        return this;
+    }
+
+    public SchEmissionPT dimYear(Integer dimYear) {
+        this.dimYear = dimYear;
+        return this;
+    }
+
+    public SchEmissionPT dimMonth(Integer dimMonth) {
+        this.dimMonth = dimMonth;
+        return this;
+    }
+
+    public SchEmissionPT dimDay(Integer dimDay) {
+        this.dimDay = dimDay;
+        return this;
+    }
+
+    public SchEmissionPT dimHour(Integer dimHour) {
+        this.dimHour = dimHour;
+        return this;
+    }
+
+    public SchEmissionPT dimMinute(Integer dimMinute) {
+        this.dimMinute = dimMinute;
+        return this;
+    }
+
+    public SchEmissionPT dimSecond(Integer dimSecond) {
+        this.dimSecond = dimSecond;
+        return this;
+    }
+
+    public SchEmissionPT mediaItem(LibItemPT mediaItem) {
+        this.mediaItem = mediaItem;
+        return this;
+    }
+
+    public SchEmissionPT blockId(Long blockId) {
+        this.blockId = blockId;
+        return this;
+    }
+
+    public SchEmissionPT campaingsId(Long campaingsId) {
+        this.campaingsId = campaingsId;
+        return this;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (this == o) return true;
+        if (!(o instanceof SchEmissionPT)) return false;
+
+        SchEmissionPT that = (SchEmissionPT) o;
+
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getSeq() != null ? !getSeq().equals(that.getSeq()) : that.getSeq() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
             return false;
-        }
-        SchEmissionPT schEmissionPT = (SchEmissionPT) o;
-        return Objects.equals(this.blockId, schEmissionPT.blockId) &&
-            Objects.equals(this.endTime, schEmissionPT.endTime) &&
-            Objects.equals(this.finished, schEmissionPT.finished) &&
-            Objects.equals(this.id, schEmissionPT.id) &&
-            Objects.equals(this.length, schEmissionPT.length) &&
-            Objects.equals(this.mediaItemId, schEmissionPT.mediaItemId) &&
-            Objects.equals(this.relativeDelay, schEmissionPT.relativeDelay) &&
-            Objects.equals(this.seq, schEmissionPT.seq) &&
-            Objects.equals(this.startTime, schEmissionPT.startTime) &&
-            Objects.equals(this.startType, schEmissionPT.startType) &&
-            Objects.equals(this.templateId, schEmissionPT.templateId);
+        if (getEndTime() != null ? !getEndTime().equals(that.getEndTime()) : that.getEndTime() != null) return false;
+        if (getLength() != null ? !getLength().equals(that.getLength()) : that.getLength() != null) return false;
+        if (getDimYear() != null ? !getDimYear().equals(that.getDimYear()) : that.getDimYear() != null) return false;
+        if (getDimMonth() != null ? !getDimMonth().equals(that.getDimMonth()) : that.getDimMonth() != null)
+            return false;
+        if (getDimDay() != null ? !getDimDay().equals(that.getDimDay()) : that.getDimDay() != null) return false;
+        if (getDimHour() != null ? !getDimHour().equals(that.getDimHour()) : that.getDimHour() != null) return false;
+        if (getDimMinute() != null ? !getDimMinute().equals(that.getDimMinute()) : that.getDimMinute() != null)
+            return false;
+        if (getDimSecond() != null ? !getDimSecond().equals(that.getDimSecond()) : that.getDimSecond() != null)
+            return false;
+        if (getMediaItem() != null ? !getMediaItem().equals(that.getMediaItem()) : that.getMediaItem() != null)
+            return false;
+        if (getBlockId() != null ? !getBlockId().equals(that.getBlockId()) : that.getBlockId() != null) return false;
+        return getCampaingsId() != null ? getCampaingsId().equals(that.getCampaingsId()) : that.getCampaingsId() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blockId, endTime, finished, id, length, mediaItemId, relativeDelay, seq, startTime, startType, templateId);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getSeq() != null ? getSeq().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getStartTime() != null ? getStartTime().hashCode() : 0);
+        result = 31 * result + (getEndTime() != null ? getEndTime().hashCode() : 0);
+        result = 31 * result + (getLength() != null ? getLength().hashCode() : 0);
+        result = 31 * result + (getDimYear() != null ? getDimYear().hashCode() : 0);
+        result = 31 * result + (getDimMonth() != null ? getDimMonth().hashCode() : 0);
+        result = 31 * result + (getDimDay() != null ? getDimDay().hashCode() : 0);
+        result = 31 * result + (getDimHour() != null ? getDimHour().hashCode() : 0);
+        result = 31 * result + (getDimMinute() != null ? getDimMinute().hashCode() : 0);
+        result = 31 * result + (getDimSecond() != null ? getDimSecond().hashCode() : 0);
+        result = 31 * result + (getMediaItem() != null ? getMediaItem().hashCode() : 0);
+        result = 31 * result + (getBlockId() != null ? getBlockId().hashCode() : 0);
+        result = 31 * result + (getCampaingsId() != null ? getCampaingsId().hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SchEmissionPT {\n");
-
-        sb.append("    blockId: ").append(toIndentedString(blockId)).append("\n");
-        sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
-        sb.append("    finished: ").append(toIndentedString(finished)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    length: ").append(toIndentedString(length)).append("\n");
-        sb.append("    mediaItemId: ").append(toIndentedString(mediaItemId)).append("\n");
-        sb.append("    relativeDelay: ").append(toIndentedString(relativeDelay)).append("\n");
-        sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
-        sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
-        sb.append("    startType: ").append(toIndentedString(startType)).append("\n");
-        sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
-        sb.append("}");
+        final StringBuilder sb = new StringBuilder("SchEmissionPT{");
+        sb.append("id=").append(id);
+        sb.append(", seq=").append(seq);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", startTime=").append(startTime);
+        sb.append(", endTime=").append(endTime);
+        sb.append(", length=").append(length);
+        sb.append(", dimYear=").append(dimYear);
+        sb.append(", dimMonth=").append(dimMonth);
+        sb.append(", dimDay=").append(dimDay);
+        sb.append(", dimHour=").append(dimHour);
+        sb.append(", dimMinute=").append(dimMinute);
+        sb.append(", dimSecond=").append(dimSecond);
+        sb.append(", mediaItem=").append(mediaItem);
+        sb.append(", blockId=").append(blockId);
+        sb.append(", campaingsId=").append(campaingsId);
+        sb.append('}');
         return sb.toString();
     }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-
 }
-

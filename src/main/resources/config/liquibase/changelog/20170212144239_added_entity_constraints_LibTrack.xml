@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity LibTrack.
+    -->
+    <changeSet id="20170212144239-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="album_id"
+                                 baseTableName="lib_track"
+                                 constraintName="fk_lib_track_album_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_album"/>
+
+        <addForeignKeyConstraint baseColumnNames="artist_id"
+                                 baseTableName="lib_track"
+                                 constraintName="fk_lib_track_artist_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_artist"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="lib_track"
+                                 constraintName="fk_lib_track_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+    </changeSet>
+</databaseChangeLog>

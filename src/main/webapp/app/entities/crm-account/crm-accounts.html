@@ -1,0 +1,106 @@
+<div>
+    <h2 data-translate="protoneApp.crmAccount.home.title">Crm Accounts</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="crm-account.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="protoneApp.crmAccount.home.createLabel">
+                        Create new Crm Account
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.shortName">Short Name</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.externalId1">External Id 1</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.externalId2">External Id 2</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.name">Name</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.paymentDelay">Payment Delay</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.vatNumber">Vat Number</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.person">Person</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.addres">Addres</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.network">Network</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.discount">Discount</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.keeper">Keeper</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.country">Country</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.range">Range</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.size">Size</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.industry">Industry</span></th>
+                    <th><span data-translate="protoneApp.crmAccount.area">Area</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="crmAccount in vm.crmAccounts track by crmAccount.id">
+                    <td><a ui-sref="crm-account-detail({id:crmAccount.id})">{{crmAccount.id}}</a></td>
+                    <td>{{crmAccount.shortName}}</td>
+                    <td>{{crmAccount.externalId1}}</td>
+                    <td>{{crmAccount.externalId2}}</td>
+                    <td>{{crmAccount.name}}</td>
+                    <td>{{crmAccount.paymentDelay}}</td>
+                    <td>{{crmAccount.vatNumber}}</td>
+                    <td>
+                        <a ui-sref="cor-person-detail({id:crmAccount.personId})">{{crmAccount.personId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-address-detail({id:crmAccount.addresId})">{{crmAccount.addresId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-network-detail({id:crmAccount.networkId})">{{crmAccount.networkId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-discount-detail({id:crmAccount.discountId})">{{crmAccount.discountId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-user-detail({id:crmAccount.keeperId})">{{crmAccount.keeperId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-country-detail({id:crmAccount.countryId})">{{crmAccount.countryId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-range-detail({id:crmAccount.rangeId})">{{crmAccount.rangeId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-size-detail({id:crmAccount.sizeId})">{{crmAccount.sizeId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="tra-industry-detail({id:crmAccount.industryId})">{{crmAccount.industryId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="cor-area-detail({id:crmAccount.areaId})">{{crmAccount.areaId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="crm-account-detail({id:crmAccount.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="crm-account.edit({id:crmAccount.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="crm-account.delete({id:crmAccount.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

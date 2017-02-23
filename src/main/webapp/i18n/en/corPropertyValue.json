@@ -1,0 +1,24 @@
+{
+    "protoneApp": {
+        "corPropertyValue" : {
+            "home": {
+                "title": "Cor Property Values",
+                "createLabel": "Create a new Cor Property Value",
+                "createOrEditLabel": "Create or edit a Cor Property Value",
+                "search": "Search for Cor Property Value"
+            },
+            "created": "A new Cor Property Value is created with identifier {{ param }}",
+            "updated": "A Cor Property Value is updated with identifier {{ param }}",
+            "deleted": "A Cor Property Value is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Cor Property Value {{ id }}?"
+            },
+            "detail": {
+                "title": "Cor Property Value"
+            },
+            "value": "Value",
+            "propertyKey": "Property Key",
+            "libItemPropertyValue": "Lib Item Property Value"
+        }
+    }
+}
