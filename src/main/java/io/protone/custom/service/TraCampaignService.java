@@ -5,9 +5,11 @@ import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.custom.service.mapper.CustomSchEmissionMapper;
 import io.protone.custom.service.mapper.CustomTRACampaignMapper;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
 import io.protone.repository.CrmAccountRepository;
 import io.protone.repository.SchEmissionRepository;
+import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraCampaignRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ public class TraCampaignService {
     private CustomCrmAccountMapper customCrmAccountMapper;
 
     @Inject
-    private CrmAccountRepository crmAccountRepository;
+    private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     @Inject
     private SchEmissionRepository schEmissionRepository;

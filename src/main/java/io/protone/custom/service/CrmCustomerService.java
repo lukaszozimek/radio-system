@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toList;
  */
 @Service
 @Transactional
-public class CRMCustomerService {
+public class CrmCustomerService {
 
     @Inject
     private CustomCrmAccountRepositoryEx accountRepository;

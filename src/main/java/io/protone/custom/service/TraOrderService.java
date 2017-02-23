@@ -1,5 +1,7 @@
 package io.protone.custom.service;
 
+import io.protone.domain.CrmAccount;
+import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraOrderRepository;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.service.mapper.CustomTraOrderMapper;
@@ -27,6 +29,7 @@ public class TraOrderService {
 
     @Inject
     private CustomTraOrderRepository traOrderRepository;
+    private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     public List<TraOrderPT> getAllOrder(CorNetwork corNetwork) {
         return traOrderRepository.findByNetwork(corNetwork).stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());

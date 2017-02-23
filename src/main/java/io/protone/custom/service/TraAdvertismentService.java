@@ -8,6 +8,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.TraAdvertisement;
 import io.protone.repository.CrmAccountRepository;
 import io.protone.repository.LibMediaItemRepository;
+import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
 import io.protone.repository.TraIndustryRepository;
 import io.protone.domain.CorNetwork;
@@ -52,7 +53,7 @@ public class TraAdvertismentService {
     private TraIndustryRepository traIndustryRepository;
 
     @Inject
-    private CrmAccountRepository crmAccountRepository;
+    private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     public List<TraAdvertisementPT> getAllAdvertisement(CorNetwork corNetwork) {
         return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.transformEntityToDTO(traAdvertisement)).collect(toList());
