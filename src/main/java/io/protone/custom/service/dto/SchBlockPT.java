@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,8 +49,8 @@ public class SchBlockPT implements Serializable {
     private Long templateId;
     private Long parentBlockId;
 
-    private List<SchBlockPT> blocks;
-    private List<SchEmissionPT> emissions;
+    private List<SchBlockPT> blocks = new ArrayList<>();
+    private List<SchEmissionPT> emissions = new ArrayList<>();
 
     public Long getId() {
         return id;

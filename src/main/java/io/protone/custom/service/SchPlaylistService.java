@@ -2,6 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.SchPlaylistPT;
 import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
+import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
@@ -34,7 +35,14 @@ public class SchPlaylistService {
     @Inject
     CustomCorChannelRepository channelRepository;
 
+    @Inject
+    SchBlockService blockService;
+
+    @Inject
+    BlockUtils blockUtils;
+
     public SchPlaylistPT getPlaylist(String networkShortcut, String channelShortcut, String date) {
+
         SchPlaylistPT result = null;
 
         CorNetwork networkDB = networkService.findNetwork(networkShortcut);
@@ -45,9 +53,17 @@ public class SchPlaylistService {
         if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
             return result;
 
-        Optional<SchPlaylist> playlistDB = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
+        //Optional<SchPlaylist> playlistDB = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
+        LocalDate localDate = LocalDate.parse(date);
 
-        return playlistMapper.DBToDTO(playlistDB.get());
+        return new SchPlaylistPT()
+            .channelId(channelDB.getId())
+            .dimYear(localDate.getYear())
+            .dimMonth(localDate.getMonthValue())
+            .dimDay(localDate.getDayOfMonth())
+            .blocks(blockUtils.sampleDay());
+
+        //return playlistMapper.DBToDTO(playlistDB.get());
     }
 
     public SchPlaylistPT setPlaylist(String networkShortcut, String channelShortcut, SchPlaylistPT playlist) {
