@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class LibLibraryService {
 
     @Inject
@@ -50,7 +51,6 @@ public class LibLibraryService {
         return result;
     }
 
-    @Transactional
     public void deleteLibrary(String networkShortcut, String libraryShortcut) {
         LibLibrary libraryToDelete = findLibrary(networkShortcut, libraryShortcut);
         if (libraryToDelete != null) {
@@ -59,7 +59,6 @@ public class LibLibraryService {
         }
     }
 
-    @Transactional
     public LibLibrary createOrUpdateLibrary(String networkShortcut, LibraryPT library) {
 
         CorNetwork network = getNetworkByShortcut(networkShortcut);

@@ -33,6 +33,7 @@ public class CorChannelDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getShortcut() {
         return shortcut;
     }
@@ -40,6 +41,7 @@ public class CorChannelDTO implements Serializable {
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
     }
+
     public String getName() {
         return name;
     }
@@ -47,6 +49,7 @@ public class CorChannelDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getDescription() {
         return description;
     }
@@ -74,7 +77,9 @@ public class CorChannelDTO implements Serializable {
 
         CorChannelDTO corChannelDTO = (CorChannelDTO) o;
 
-        if ( ! Objects.equals(id, corChannelDTO.id)) { return false; }
+        if (!Objects.equals(id, corChannelDTO.id)) {
+            return false;
+        }
 
         return true;
     }

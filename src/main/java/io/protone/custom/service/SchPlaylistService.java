@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class SchPlaylistService {
 
     @Inject
@@ -103,13 +104,13 @@ public class SchPlaylistService {
         return results;
     }
 
-    @Transactional
+
     public void deletePlaylist(String networkShortcut, String channelShortcut, String date) {
         SchPlaylistPT playlistToDelete = getPlaylist(networkShortcut, channelShortcut, date);
         playlistRepository.delete(playlistMapper.DTOToDB(playlistToDelete));
     }
 
-    @Transactional
+
     public SchPlaylistPT createOrUpdatePlaylist(String networkShortcut, SchPlaylistPT playlist) {
         return playlistMapper.DBToDTO(playlistRepository.saveAndFlush(playlistMapper.DTOToDB(playlist)));
     }
