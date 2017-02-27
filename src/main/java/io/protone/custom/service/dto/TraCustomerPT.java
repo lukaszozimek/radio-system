@@ -54,7 +54,7 @@ public class TraCustomerPT {
     private CoreAddressPT adress = null;
 
     @JsonProperty("account")
-    private CoreManagedUserPT account = null;
+    private CoreUserPT account = null;
 
     @JsonProperty("persons")
     private TraCustomerPersonPT persons = null;
@@ -320,7 +320,7 @@ public class TraCustomerPT {
         this.adress = adress;
     }
 
-    public TraCustomerPT account(CoreManagedUserPT account) {
+    public TraCustomerPT account(CoreUserPT account) {
         this.account = account;
         return this;
     }
@@ -331,11 +331,11 @@ public class TraCustomerPT {
      * @return account
      **/
     @ApiModelProperty(value = "")
-    public CoreManagedUserPT getAccount() {
+    public CoreUserPT getAccount() {
         return account;
     }
 
-    public void setAccount(CoreManagedUserPT account) {
+    public void setAccount(CoreUserPT account) {
         this.account = account;
     }
 

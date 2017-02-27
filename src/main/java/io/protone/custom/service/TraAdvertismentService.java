@@ -6,18 +6,11 @@ import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.custom.service.mapper.CustomTraIndustryMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraAdvertisement;
-import io.protone.repository.CrmAccountRepository;
 import io.protone.repository.LibMediaItemRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
 import io.protone.repository.TraIndustryRepository;
-import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
-import io.protone.domain.TraAdvertisement;
-import io.protone.repository.CrmAccountRepository;
-import io.protone.repository.LibMediaItemRepository;
-import io.protone.repository.TraAdvertisementRepository;
-import io.protone.repository.TraIndustryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

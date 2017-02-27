@@ -34,7 +34,7 @@ Several quick start options are available:
 * Install with [Bower](http://bower.io): `bower install bootstrap`.
 * Install with [npm](https://www.npmjs.com): `npm install bootstrap@3`.
 * Install with [Meteor](https://www.meteor.com): `meteor add twbs:bootstrap`.
-* Install with [Composer](https://getcomposer.org): `composer require twbs/bootstrap`.
+* Install with [Composer](https://getcomposer.org): `composers require twbs/bootstrap`.
 
 Read the [Getting started page](http://getbootstrap.com/getting-started/) for information on the framework contents, templates and examples, and more.
 

@@ -23,10 +23,10 @@ public class ApiNetworkImpl implements ApiNetwork {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkImpl.class);
 
     @Inject
-    CustomCorNetworkMapper customCorNetworkMapper;
+    private CustomCorNetworkMapper customCorNetworkMapper;
 
     @Inject
-    CorNetworkService networkService;
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<List<CoreNetworkPT>> getAllNetworksUsingGET() {

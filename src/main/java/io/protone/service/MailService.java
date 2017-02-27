@@ -94,6 +94,7 @@ public class MailService {
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
+
     @Async
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset e-mail to '{}'", user.getEmail());

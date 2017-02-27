@@ -6,7 +6,6 @@ import io.protone.domain.CrmOpportunity;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -23,14 +22,14 @@ public class CustomCrmOpportunityMapper {
     @Inject
     private CustomCrmTaskMapper customCrmTaskMapper;
     @Inject
-    private CustomCORUserMapper corUserMapper;
+    private CustomCorUserMapperExt corUserMapper;
 
     public CrmOpportunity createOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CrmOpportunity opportunity = new CrmOpportunity();
         opportunity.setId(opportunityPT.getId());
         return
-            opportunity.name(opportunityPT.getName())
+            opportunity.name(opportunityPT.getName()).keeper(corUserMapper.coreUserPTToUser(opportunityPT.getOpportunityOwner()))
                 ///.closeDate(LocalDate.parse(opportunityPT.getCloseDate(), formatter))
                 .probability(opportunityPT.getPropability())
                 //.lastTry(LocalDate.parse(opportunityPT.getLastTry(), formatter))
@@ -47,7 +46,7 @@ public class CustomCrmOpportunityMapper {
             //.closeDate(opportunity.getCloseDate().toString())
             .tasks(customCrmTaskMapper.createCrmTasks(opportunity.getTasks()))
             //.contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
-            //.opportunityOwner(corUserMapper.corUserMapper(opportunity.getKeeper()))
+            .opportunityOwner(corUserMapper.userToCoreUserPT(opportunity.getKeeper()))
             .stage(stageMapper.cRMStageToCrmStageDTO(opportunity.getStage()));
     }
 

@@ -4,8 +4,6 @@ import io.protone.domain.TraIndustry;
 
 import org.springframework.data.jpa.repository.*;
 
-import java.util.List;
-
 /**
  * Spring Data JPA repository for the TraIndustry entity.
  */

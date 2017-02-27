@@ -2,12 +2,9 @@ package io.protone.custom.utils;
 
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
-import io.protone.domain.LibLibrary;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
-import io.protone.repository.LibLibraryRepository;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

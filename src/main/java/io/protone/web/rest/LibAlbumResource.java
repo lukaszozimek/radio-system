@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing LibAlbum.
@@ -31,7 +29,7 @@ public class LibAlbumResource {
     private final Logger log = LoggerFactory.getLogger(LibAlbumResource.class);
 
     private static final String ENTITY_NAME = "libAlbum";
-        
+
     private final LibAlbumRepository libAlbumRepository;
 
     private final LibAlbumMapper libAlbumMapper;

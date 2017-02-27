@@ -3,7 +3,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.SchPlaylistPT;
 import io.protone.domain.CorChannel;
 import io.protone.domain.SchPlaylist;
-import io.protone.service.dto.SchPlaylistDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

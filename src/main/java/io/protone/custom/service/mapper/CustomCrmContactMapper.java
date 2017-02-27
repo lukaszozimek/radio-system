@@ -36,7 +36,7 @@ public class CustomCrmContactMapper {
     private CustomCrmTaskMapper customCrmTaskMapper;
 
     @Inject
-    private CustomCORUserMapper corUserMapper;
+    private CustomCorUserMapperExt corUserMapper;
 
     public CrmContact createCrmContactEntity(CrmContactPT crmContactPT, CorNetwork corNetwork) {
         CrmContact crmContact = new CrmContact();
@@ -49,7 +49,7 @@ public class CustomCrmContactMapper {
             .vatNumber(crmContactPT.getVatNumber())
             .paymentDelay(crmContactPT.getPaymentDelay())
             .industry(industryMapper.tRAIndustryDTOToTraIndustry(crmContactPT.getIndustry()))
-            //.keeper(corUserMapper.tranformUserDTO(crmContactPT.getAccount()))
+            .keeper(corUserMapper.coreUserPTToUser(crmContactPT.getAccount()))
             .size(customCorSizeMapper.cORSizeDTOToCorSize(crmContactPT.getSize()))
             .range(customCorRangeMapper.cORRangeDTOToCorRange(crmContactPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmContactPT.getAdress()))

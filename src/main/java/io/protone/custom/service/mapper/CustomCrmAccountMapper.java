@@ -43,7 +43,7 @@ public class CustomCrmAccountMapper {
     private CustomTRACampaignMapper customTRACampaignMapper;
 
     @Inject
-    private CustomCORUserMapper corUserMapper;
+    private CustomCorUserMapperExt corUserMapper;
 
     public CrmAccount createCrmAcountEntity(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
         CrmAccount crmAccount = new CrmAccount();
@@ -79,7 +79,7 @@ public class CustomCrmAccountMapper {
             .vatNumber(traCustomerPT.getVatNumber())
             .paymentDelay(traCustomerPT.getPaymentDelay())
             .industry(industryMapper.tRAIndustryDTOToTraIndustry(traCustomerPT.getIndustry()))
-            //.keeper(corUserMapper.tranformUserDTO(traCustomerPT.getAccount()))
+            .keeper(corUserMapper.coreUserPTToUser(traCustomerPT.getAccount()))
             .size(customCorSizeMapper.cORSizeDTOToCorSize(traCustomerPT.getSize()))
             .range(customCorRangeMapper.cORRangeDTOToCorRange(traCustomerPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(traCustomerPT.getAdress()))
@@ -102,7 +102,7 @@ public class CustomCrmAccountMapper {
             .vatNumber(traCustomerPT.getVatNumber())
             .paymentDelay(Math.toIntExact(traCustomerPT.getPaymentDelay()))
             .industry(industryMapper.tRAIndustryToTraIndustryDTO(traCustomerPT.getIndustry()))
-           // .account(corUserMapper.corUserMapper(traCustomerPT.getKeeper()))
+            .account(corUserMapper.userToCoreUserPT(traCustomerPT.getKeeper()))
             .size(customCorSizeMapper.cORSizeToCorSizeDTO(traCustomerPT.getSize()))
             .range(customCorRangeMapper.cORRangeToCorRangeDTO(traCustomerPT.getRange()))
             .adress(corAddressMapper.cORAddressToCorAddressDTO(traCustomerPT.getAddres()))
@@ -121,7 +121,7 @@ public class CustomCrmAccountMapper {
             .vatNumber(crmAccount.getVatNumber())
             .paymentDelay(Math.toIntExact(crmAccount.getPaymentDelay()))
             .industry(industryMapper.tRAIndustryToTraIndustryDTO(crmAccount.getIndustry()))
-           // .account(corUserMapper.corUserMapper(crmAccount.getKeeper()))
+            .account(corUserMapper.userToCoreUserPT(crmAccount.getKeeper()))
             .size(customCorSizeMapper.cORSizeToCorSizeDTO(crmAccount.getSize()))
             .range(customCorRangeMapper.cORRangeToCorRangeDTO(crmAccount.getRange()))
             .adress(corAddressMapper.cORAddressToCorAddressDTO(crmAccount.getAddres()))

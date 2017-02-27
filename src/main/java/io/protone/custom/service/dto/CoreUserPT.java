@@ -1,172 +1,222 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.CorUser;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * CoreUserPT
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreUserPT   {
+public class CoreUserPT {
 
-  @JsonProperty("id")
-  private Long id = null;
+    @JsonProperty("id")
+    private Long id = null;
 
-  @JsonProperty("activated")
-  private Boolean activated = null;
+    @JsonProperty("activated")
+    private Boolean activated = null;
 
-  @JsonProperty("authoritiesf")
-  private List<String> authorities = new ArrayList<String>();
+    @JsonProperty("authoritiesf")
+    private List<String> authorities = new ArrayList<String>();
 
-  @JsonProperty("email")
-  private String email = null;
+    @JsonProperty("imageurl")
+    private String imageurl = null;
 
-  @JsonProperty("firstName")
-  private String firstName = null;
+    @JsonProperty("email")
+    private String email = null;
 
-  @JsonProperty("langKey")
-  private String langKey = null;
+    @JsonProperty("firstName")
+    private String firstName = null;
 
-  @JsonProperty("lastName")
-  private String lastName = null;
+    @JsonProperty("langKey")
+    private String langKey = null;
 
-  @JsonProperty("login")
-  private String login = null;
+    @JsonProperty("lastName")
+    private String lastName = null;
 
-  public CoreUserPT activated(Boolean activated) {
-    this.activated = activated;
-    return this;
-  }
+    @JsonProperty("login")
+    private String login = null;
 
-   /**
-   * Get activated
-   * @return activated
-  **/
-  @ApiModelProperty(value = "")
-  public Boolean getActivated() {
-    return activated;
-  }
+    public CoreUserPT(Long id) {
+        this.id = id;
+    }
 
-  public void setActivated(Boolean activated) {
-    this.activated = activated;
-  }
+    public CoreUserPT() {
 
-  public CoreUserPT authorities(List<String> authorities) {
-    this.authorities = authorities;
-    return this;
-  }
+    }
 
-  public CoreUserPT addAuthoritiesItem(String authoritiesItem) {
-    this.authorities.add(authoritiesItem);
-    return this;
-  }
+    public CoreUserPT(CorUser corUser) {
+        this.id = corUser.getId();
+        this.activated = corUser.isActivated();
+        this.authorities = corUser.getAuthorities().stream().map(authority -> authority.getName().toString()).collect(Collectors.toList());
+        this.imageurl = corUser.getImageurl();
+        this.email = corUser.getEmail();
+        this.firstName = corUser.getFirstname();
+        this.langKey = corUser.getLangkey();
+        this.lastName = corUser.getLastname();
+        this.login = corUser.getLogin();
 
-   /**
-   * Get authoritiesf
-   * @return authoritiesf
-  **/
-  @ApiModelProperty(value = "")
-  public List<String> getAuthorities() {
-    return authorities;
-  }
+    }
 
-  public void setAuthorities(List<String> authorities) {
-    this.authorities = authorities;
-  }
 
-  public CoreUserPT email(String email) {
-    this.email = email;
-    return this;
-  }
+    public CoreUserPT activated(Boolean activated) {
+        this.activated = activated;
+        return this;
+    }
 
-   /**
-   * Get email
-   * @return email
-  **/
-  @ApiModelProperty(value = "")
-  public String getEmail() {
-    return email;
-  }
+    /**
+     * Get activated
+     *
+     * @return activated
+     **/
+    @ApiModelProperty(value = "")
+    public Boolean getActivated() {
+        return activated;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
 
-  public CoreUserPT firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
+    public CoreUserPT authorities(List<String> authorities) {
+        this.authorities = authorities;
+        return this;
+    }
 
-   /**
-   * Get firstName
-   * @return firstName
-  **/
-  @ApiModelProperty(value = "")
-  public String getFirstName() {
-    return firstName;
-  }
+    public CoreUserPT addAuthoritiesItem(String authoritiesItem) {
+        this.authorities.add(authoritiesItem);
+        return this;
+    }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+    /**
+     * Get authoritiesf
+     *
+     * @return authoritiesf
+     **/
+    @ApiModelProperty(value = "")
+    public List<String> getAuthorities() {
+        return authorities;
+    }
 
-  public CoreUserPT langKey(String langKey) {
-    this.langKey = langKey;
-    return this;
-  }
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
+    }
 
-   /**
-   * Get langKey
-   * @return langKey
-  **/
-  @ApiModelProperty(value = "")
-  public String getLangKey() {
-    return langKey;
-  }
+    public CoreUserPT email(String email) {
+        this.email = email;
+        return this;
+    }
 
-  public void setLangKey(String langKey) {
-    this.langKey = langKey;
-  }
+    /**
+     * Get email
+     *
+     * @return email
+     **/
+    @ApiModelProperty(value = "")
+    public String getEmail() {
+        return email;
+    }
 
-  public CoreUserPT lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-   /**
-   * Get lastName
-   * @return lastName
-  **/
-  @ApiModelProperty(value = "")
-  public String getLastName() {
-    return lastName;
-  }
+    public CoreUserPT firstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+    /**
+     * Get firstName
+     *
+     * @return firstName
+     **/
+    @ApiModelProperty(value = "")
+    public String getFirstName() {
+        return firstName;
+    }
 
-  public CoreUserPT login(String login) {
-    this.login = login;
-    return this;
-  }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-   /**
-   * Get login
-   * @return login
-  **/
-  @ApiModelProperty(value = "")
-  public String getLogin() {
-    return login;
-  }
+    public CoreUserPT langKey(String langKey) {
+        this.langKey = langKey;
+        return this;
+    }
 
-  public void setLogin(String login) {
-    this.login = login;
-  }
+    /**
+     * Get langKey
+     *
+     * @return langKey
+     **/
+    @ApiModelProperty(value = "")
+    public String getLangKey() {
+        return langKey;
+    }
+
+    public void setLangKey(String langKey) {
+        this.langKey = langKey;
+    }
+
+    public CoreUserPT lastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return lastName
+     **/
+    @ApiModelProperty(value = "")
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public CoreUserPT login(String login) {
+        this.login = login;
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
+    }
+
+    public CoreUserPT imageUrl(String imageurl) {
+        this.imageurl = imageurl;
+        return this;
+    }
+
+
+    /**
+     * Get login
+     *
+     * @return login
+     **/
+    @ApiModelProperty(value = "")
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
 
     public Long getId() {
@@ -197,6 +247,8 @@ public class CoreUserPT   {
         if (getLastName() != null ? !getLastName().equals(that.getLastName()) : that.getLastName() != null)
             return false;
         if (getLogin() != null ? !getLogin().equals(that.getLogin()) : that.getLogin() != null) return false;
+        if (getImageurl() != null ? !getImageurl().equals(that.getImageurl()) : that.getImageurl() != null)
+            return false;
 
         return true;
     }
@@ -211,6 +263,7 @@ public class CoreUserPT   {
         result = 31 * result + (getLangKey() != null ? getLangKey().hashCode() : 0);
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
+        result = 31 * result + (getImageurl() != null ? getImageurl().hashCode() : 0);
         return result;
     }
 
@@ -225,6 +278,7 @@ public class CoreUserPT   {
         sb.append(", langKey='").append(langKey).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", login='").append(login).append('\'');
+        sb.append(", imageurl='").append(imageurl).append('\'');
         sb.append('}');
         return sb.toString();
 

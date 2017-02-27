@@ -31,7 +31,8 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
 
     @Override
     public ResponseEntity<LibItemPT> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "mediaItem", required = true) @RequestBody LibItemPT mediaItem) {
-        return null;
+        return ResponseEntity.ok()
+            .body(itemService.update(mediaItem));
     }
 
     @Override
