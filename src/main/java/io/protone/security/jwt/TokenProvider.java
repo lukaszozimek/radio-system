@@ -5,7 +5,10 @@ import io.github.jhipster.config.JHipsterProperties;
 import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import io.protone.domain.CorUser;
+import io.protone.repository.custom.CustomCorUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +39,9 @@ public class TokenProvider {
         this.jHipsterProperties = jHipsterProperties;
     }
 
+    @Inject
+    private CustomCorUserRepository customCorUserRepository;
+
     @PostConstruct
     public void init() {
         this.secretKey =
@@ -59,8 +65,12 @@ public class TokenProvider {
         } else {
             validity = new Date(now + this.tokenValidityInMilliseconds);
         }
-
+        CorUser corUser = customCorUserRepository.findOneByLogin(authentication.getName()).orElse(null);
+        Map<String, Object> jwtHeader = new HashMap<>();
+        jwtHeader.put("NETWORK", corUser.getNetwork());
+        jwtHeader.put("CHANNEL", corUser.getChannel());
         return Jwts.builder()
+            .setHeader(jwtHeader)
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
             .signWith(SignatureAlgorithm.HS512, secretKey)

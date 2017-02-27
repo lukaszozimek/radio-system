@@ -4,7 +4,6 @@ import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.domain.SchBlock;
 import io.protone.domain.SchPlaylist;
 import io.protone.domain.SchTemplate;
-import io.protone.service.dto.SchBlockDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

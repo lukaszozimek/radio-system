@@ -36,7 +36,8 @@ public class CustomCrmLeadMapper {
 
     @Inject
     private CustomTraIndustryMapper industryMapper;
-
+    @Inject
+    private CustomCorUserMapperExt corUserMapper;
 
     public CrmLead createLeadEntity(CrmLeadPT leadPT, CorNetwork corNetwork) {
         CrmLead crmLead = new CrmLead();
@@ -50,6 +51,7 @@ public class CustomCrmLeadMapper {
         crmLead.setLeadSource(customCrmLeadSourceMapper.cRMLeadSourceDTOToCrmLeadSource(leadPT.getSource()));
         crmLead.setLeadStatus(customCrmLeadStatusMapper.cRMLeadStatusDTOToCrmLeadStatus(leadPT.getStatus()));
         crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson()));
+        crmLead.keeper(corUserMapper.coreUserPTToUser(leadPT.getOwner()));
         crmLead.setNetwork(corNetwork);
         return crmLead;
     }
@@ -67,6 +69,7 @@ public class CustomCrmLeadMapper {
         crmLeadPT.setStatus(customCrmLeadStatusMapper.cRMLeadStatusToCrmLeadStatusDTO(lead.getLeadStatus()));
         crmLeadPT.setTasks(customCrmTaskMapper.createCrmTasks(lead.getTasks()));
         crmLeadPT.setPerson(customTRAPersonMapper.createDTOObject(lead.getPerson()));
+        crmLeadPT.setOwner(corUserMapper.userToCoreUserPT(lead.getKeeper()));
         return crmLeadPT;
     }
 }

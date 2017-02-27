@@ -6,7 +6,6 @@ import io.protone.domain.LibMediaItem;
 import io.protone.domain.SchBlock;
 import io.protone.domain.SchEmission;
 import io.protone.domain.TraCampaign;
-import io.protone.service.dto.SchEmissionDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

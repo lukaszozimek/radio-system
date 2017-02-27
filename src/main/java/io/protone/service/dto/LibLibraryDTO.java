@@ -3,8 +3,6 @@ package io.protone.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import io.protone.domain.enumeration.LibCounterTypeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;

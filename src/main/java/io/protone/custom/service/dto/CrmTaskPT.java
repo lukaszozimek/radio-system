@@ -21,10 +21,10 @@ public class CrmTaskPT {
     private CrmTaskStatus crmTaskStatus = null;
 
     @JsonProperty("createdBy")
-    private CoreManagedUserPT createdBy = null;
+    private CoreUserPT createdBy = null;
 
     @JsonProperty("assignedTo")
-    private CoreManagedUserPT assignedTo = null;
+    private CoreUserPT assignedTo = null;
 
     @JsonProperty("subject")
     private String subject = null;
@@ -60,7 +60,7 @@ public class CrmTaskPT {
         this.id = id;
     }
 
-    public CrmTaskPT createdBy(CoreManagedUserPT createdBy) {
+    public CrmTaskPT createdBy(CoreUserPT createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -71,15 +71,15 @@ public class CrmTaskPT {
      * @return createdBy
      **/
     @ApiModelProperty(value = "")
-    public CoreManagedUserPT getCreatedBy() {
+    public CoreUserPT getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(CoreManagedUserPT createdBy) {
+    public void setCreatedBy(CoreUserPT createdBy) {
         this.createdBy = createdBy;
     }
 
-    public CrmTaskPT assignedTo(CoreManagedUserPT assignedTo) {
+    public CrmTaskPT assignedTo(CoreUserPT assignedTo) {
         this.assignedTo = assignedTo;
         return this;
     }
@@ -90,11 +90,11 @@ public class CrmTaskPT {
      * @return assignedTo
      **/
     @ApiModelProperty(value = "")
-    public CoreManagedUserPT getAssignedTo() {
+    public CoreUserPT getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(CoreManagedUserPT assignedTo) {
+    public void setAssignedTo(CoreUserPT assignedTo) {
         this.assignedTo = assignedTo;
     }
 

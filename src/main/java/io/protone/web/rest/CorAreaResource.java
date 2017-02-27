@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing CorArea.
@@ -30,7 +28,7 @@ public class CorAreaResource {
     private final Logger log = LoggerFactory.getLogger(CorAreaResource.class);
 
     private static final String ENTITY_NAME = "corArea";
-        
+
     private final CorAreaRepository corAreaRepository;
 
     private final CorAreaMapper corAreaMapper;

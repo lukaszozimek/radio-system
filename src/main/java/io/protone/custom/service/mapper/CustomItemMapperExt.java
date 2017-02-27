@@ -10,33 +10,36 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 @Component
 public class CustomItemMapperExt {
 
     @Inject
-    CustomLibAlbumMapper albumMapper;
+    private CustomLibAlbumMapper albumMapper;
 
     @Inject
-    CustomLibArtistMapper artistMapper;
+    private CustomLibArtistMapper artistMapper;
 
     @Inject
-    CustomCorPersonMapperExt personMapper;
+    private CustomCorPersonMapperExt personMapper;
 
     @Inject
-    CustomLibLabelMapperExt labelMapper;
+    private CustomLibLabelMapperExt labelMapper;
 
     @Inject
-    CustomLibLibraryMapperExt libraryMapper;
+    private CustomLibLibraryMapperExt libraryMapper;
 
     @Inject
-    CustomLibMarkerMapperExt markerMapper;
+    private CustomLibMarkerMapperExt markerMapper;
 
     @Inject
-    CustomLibTrackMapperExt trackMapper;
+    private CustomLibTrackMapperExt trackMapper;
 
     public LibItemPT DB2DTO(LibMediaItem db) {
 
-        if (db == null )
+        if (db == null)
             return null;
 
         LibItemPT dto = new LibItemPT()
@@ -50,11 +53,9 @@ public class CustomItemMapperExt {
             .artist(artistMapper.DB2DTO(db.getArtist()))
             .library(libraryMapper.DB2DTO(db.getLibrary()))
             .track(trackMapper.DB2DTO(db.getTrack()))
-            ;
-
-        dto.author(null).composer(null); //add author and composer associacions
-        dto.markers(null); //add markers
-
+            .author(db.getAuthors().stream().map(corPerson -> personMapper.DB2DTO(corPerson)).collect(toList()))
+            .composer(db.getComposers().stream().map(corPerson -> personMapper.DB2DTO(corPerson)).collect(toList()))
+            .markers(db.getMarkers().stream().map(libMarker -> markerMapper.DB2DTO(libMarker)).collect(toList()));
         return dto;
     }
 
@@ -93,12 +94,12 @@ public class CustomItemMapperExt {
 
     public List<LibItemPT> DBs2DTOs(List<LibMediaItem> dbs) {
 
-        if ( dbs == null )
+        if (dbs == null)
             return null;
 
         List<LibItemPT> dtos = new ArrayList<>();
-        for (LibMediaItem item : dbs )
-            dtos.add( DB2DTO(item));
+        for (LibMediaItem item : dbs)
+            dtos.add(DB2DTO(item));
 
         return dtos;
     }
@@ -118,11 +119,10 @@ public class CustomItemMapperExt {
             .album(albumMapper.DTO2DB(dto.getAlbum()))
             .artist(artistMapper.DTO2DB(dto.getArtist()))
             .library(libraryMapper.DTO2DB(dto.getLibrary()))
-            .track(trackMapper.DTO2DB(dto.getTrack()));
-
-        //add author and composer associacions
-        //add markers
-
+            .track(trackMapper.DTO2DB(dto.getTrack()))
+            .authors(dto.getAuthors().stream().map(corPerson -> personMapper.DTO2DB(corPerson)).collect(toSet()))
+            .composers(dto.getComposers().stream().map(corPerson -> personMapper.DTO2DB(corPerson)).collect(toSet()))
+            .markers(dto.getMarkers().stream().map(libMarkerPT -> markerMapper.DTO2DB(libMarkerPT)).collect(toSet()));
         return db;
     }
 
@@ -144,8 +144,8 @@ public class CustomItemMapperExt {
             return null;
 
         List<LibMediaItem> dbs = new ArrayList<>();
-        for (LibItemPT item : dtos )
-            dbs.add( DTO2DB(item));
+        for (LibItemPT item : dtos)
+            dbs.add(DTO2DB(item));
 
         return dbs;
     }

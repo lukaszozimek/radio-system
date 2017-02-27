@@ -4,8 +4,6 @@ package io.protone.service.dto;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.domain.enumeration.SchStartTypeEnum;

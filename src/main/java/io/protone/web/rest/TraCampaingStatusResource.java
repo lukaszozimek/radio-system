@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing TraCampaingStatus.
@@ -30,7 +28,7 @@ public class TraCampaingStatusResource {
     private final Logger log = LoggerFactory.getLogger(TraCampaingStatusResource.class);
 
     private static final String ENTITY_NAME = "traCampaingStatus";
-        
+
     private final TraCampaingStatusRepository traCampaingStatusRepository;
 
     private final TraCampaingStatusMapper traCampaingStatusMapper;

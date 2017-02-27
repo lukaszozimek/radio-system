@@ -54,7 +54,7 @@ public class CrmContactPT {
     private CoreAddressPT adress = null;
 
     @JsonProperty("account")
-    private CoreManagedUserPT account = null;
+    private CoreUserPT account = null;
 
     @JsonProperty("person")
     private TraCustomerPersonPT persons;
@@ -326,7 +326,7 @@ public class CrmContactPT {
         this.adress = adress;
     }
 
-    public CrmContactPT account(CoreManagedUserPT account) {
+    public CrmContactPT account(CoreUserPT account) {
         this.account = account;
         return this;
     }
@@ -337,11 +337,11 @@ public class CrmContactPT {
      * @return account
      **/
     @ApiModelProperty(value = "")
-    public CoreManagedUserPT getAccount() {
+    public CoreUserPT getAccount() {
         return account;
     }
 
-    public void setAccount(CoreManagedUserPT account) {
+    public void setAccount(CoreUserPT account) {
         this.account = account;
     }
 
