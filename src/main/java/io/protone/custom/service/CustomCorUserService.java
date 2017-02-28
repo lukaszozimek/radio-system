@@ -1,11 +1,11 @@
 package io.protone.custom.service;
 
+import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
-import io.protone.domain.CorAuthorities;
+import io.protone.domain.CorAuthority;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
-import io.protone.repository.CorNetworkRepository;
 import io.protone.repository.custom.CustomAuthorityRepository;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
@@ -14,6 +14,7 @@ import io.protone.security.SecurityUtils;
 import io.protone.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
+
 /**
  * Service class for managing users.
  */
@@ -35,21 +38,19 @@ import java.util.Set;
 public class CustomCorUserService {
 
     private final Logger log = LoggerFactory.getLogger(CustomCorUserService.class);
+    @Autowired
+    private CustomCorUserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CustomAuthorityRepository authorityRepository;
+    @Autowired
+    private CustomCorNetworkRepository corNetworkRepository;
+    @Autowired
+    private CustomCorNetworkRepository customCorNetworkRepository;
+    @Autowired
+    private CustomCorNetworkMapper customCorNetworkMapper;
 
-    private final CustomCorUserRepository userRepository;
-
-    private final PasswordEncoder passwordEncoder;
-
-    private final CustomAuthorityRepository authorityRepository;
-
-    private final CustomCorNetworkRepository corNetworkRepository;
-
-    public CustomCorUserService(CustomCorUserRepository userRepository, PasswordEncoder passwordEncoder, CustomAuthorityRepository authorityRepository, CustomCorNetworkRepository customCorNetworkRepository) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authorityRepository = authorityRepository;
-        this.corNetworkRepository = customCorNetworkRepository;
-    }
 
     public Optional<CorUser> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -62,8 +63,8 @@ public class CustomCorUserService {
                 return user;
             });
         if (corUser.isPresent()) {
-            ///set activation code corNetworkRepository.save(corUser.get().getNetwork().);
-            return corUser;
+            CorNetwork network = corNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
+
         }
         return corUser;
     }
@@ -95,11 +96,13 @@ public class CustomCorUserService {
     }
 
     public CorUser createUser(String login, String password, String firstName, String lastName, String email,
-                              String imageUrl, String langKey, CorNetwork network) {
+                              String imageUrl, String langKey, CoreNetworkPT networkPt) {
 
         CorUser newUser = new CorUser();
-        CorAuthorities authority = authorityRepository.findOne(AuthoritiesConstants.USER);
-        Set<CorAuthorities> authorities = new HashSet<>();
+        CorNetwork network = customCorNetworkRepository.save(customCorNetworkMapper.cORNetworkDTOToCorNetwork(networkPt));
+        CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Set<CorAuthority> authorities = new HashSet<>();
+
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
         // new user gets initially a generated password
@@ -115,8 +118,10 @@ public class CustomCorUserService {
         newUser.setActivationkey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
-        newUser.network(network);
+        newUser.setNetworks(newHashSet(network));
         userRepository.save(newUser);
+        network.setNetworkUsers(newUser);
+        customCorNetworkRepository.save(network);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -134,7 +139,7 @@ public class CustomCorUserService {
             user.setLangkey(userDTO.getLangKey());
         }
         if (userDTO.getAuthorities() != null) {
-            Set<CorAuthorities> authorities = new HashSet<>();
+            Set<CorAuthority> authorities = new HashSet<>();
             userDTO.getAuthorities().forEach(
                 authority -> authorities.add(authorityRepository.findOne(authority))
             );
@@ -177,7 +182,7 @@ public class CustomCorUserService {
                 user.setImageurl(userDTO.getImageurl());
                 user.setActivated(userDTO.getActivated());
                 user.setLangkey(userDTO.getLangKey());
-                Set<CorAuthorities> managedAuthorities = user.getAuthorities();
+                Set<CorAuthority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findOne)

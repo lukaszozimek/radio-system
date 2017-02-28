@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A TraInvoice.

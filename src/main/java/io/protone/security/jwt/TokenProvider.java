@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class TokenProvider {
@@ -52,7 +53,7 @@ public class TokenProvider {
         this.tokenValidityInMillisecondsForRememberMe =
             1000 * jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe();
     }
-
+    @Transactional
     public String createToken(Authentication authentication, Boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
@@ -67,8 +68,8 @@ public class TokenProvider {
         }
         CorUser corUser = customCorUserRepository.findOneByLogin(authentication.getName()).orElse(null);
         Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put("NETWORK", corUser.getNetwork());
-        jwtHeader.put("CHANNEL", corUser.getChannel());
+        jwtHeader.put("NETWORK", corUser.getNetworks().stream().findFirst().get());
+        jwtHeader.put("CHANNEL", corUser.getChannels());
         return Jwts.builder()
             .setHeader(jwtHeader)
             .setSubject(authentication.getName())

@@ -4,8 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -34,8 +33,14 @@ public class CorNetwork implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    private CorUser networkUsers;
 
     public Long getId() {
         return id;
@@ -71,6 +76,19 @@ public class CorNetwork implements Serializable {
         this.name = name;
     }
 
+    public Boolean isActive() {
+        return active;
+    }
+
+    public CorNetwork active(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -82,6 +100,19 @@ public class CorNetwork implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public CorUser getNetworkUsers() {
+        return networkUsers;
+    }
+
+    public CorNetwork networkUsers(CorUser corUser) {
+        this.networkUsers = corUser;
+        return this;
+    }
+
+    public void setNetworkUsers(CorUser corUser) {
+        this.networkUsers = corUser;
     }
 
     @Override
@@ -110,6 +141,7 @@ public class CorNetwork implements Serializable {
             "id=" + id +
             ", shortcut='" + shortcut + "'" +
             ", name='" + name + "'" +
+            ", active='" + active + "'" +
             ", description='" + description + "'" +
             '}';
     }

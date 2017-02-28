@@ -16,7 +16,13 @@
         vm.errorUserExists = null;
         vm.login = LoginService.open;
         vm.register = register;
-        vm.registerAccount = {};
+        vm.registerAccount = {
+            network:{
+                name:'',
+                description:'',
+                shortcut:''
+            }
+        };
         vm.success = null;
 
         $timeout(function (){angular.element('#login').focus();});

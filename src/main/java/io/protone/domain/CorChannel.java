@@ -4,8 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -41,7 +40,7 @@ public class CorChannel implements Serializable {
     private CorNetwork network;
 
     @ManyToOne
-    private CorUser channelUser;
+    private CorUser channelUsers;
 
     public Long getId() {
         return id;
@@ -103,17 +102,17 @@ public class CorChannel implements Serializable {
         this.network = corNetwork;
     }
 
-    public CorUser getChannelUser() {
-        return channelUser;
+    public CorUser getChannelUsers() {
+        return channelUsers;
     }
 
-    public CorChannel channelUser(CorUser corUser) {
-        this.channelUser = corUser;
+    public CorChannel channelUsers(CorUser corUser) {
+        this.channelUsers = corUser;
         return this;
     }
 
-    public void setChannelUser(CorUser corUser) {
-        this.channelUser = corUser;
+    public void setChannelUsers(CorUser corUser) {
+        this.channelUsers = corUser;
     }
 
     @Override

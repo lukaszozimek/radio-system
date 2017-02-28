@@ -1,18 +1,19 @@
 package io.protone.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
+
+import io.protone.domain.enumeration.LibItemTypeEnum;
+
+import io.protone.domain.enumeration.LibItemStateEnum;
 
 /**
  * A LibMediaItem.
