@@ -112,6 +112,7 @@ entity CorPropertyValue {
 entity CorNetwork {
 	shortcut String required maxlength(100)
 	name String required maxlength(100)
+		active Boolean
     description String
 }
 
@@ -511,8 +512,11 @@ entity CorUser{
   last_modified_date LocalDate
 }
 
-entity CorAuthorities{
+entity CorAuthority{
     name String required
+}
+entity CorUserAuthority{
+
 }
 
 entity CorSubscription{
@@ -528,6 +532,7 @@ enum CorSubscriptionTypeEnum {
 }
 
 relationship OneToOne {
+
     TraAdvertisement{mediaItem} to LibMediaItem,
     LibImageObject{cloudObject} to LibCloudObject,
     LibAudioObject{cloudObject} to LibCloudObject,
@@ -552,7 +557,8 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-    CorAuthorities{authorities} to CorUser {authorities},
+    CorUserAuthority{user} to CorUser{authorities},
+    CorUserAuthority{authority} to CorAuthority,
     SchTemplate{channel} to CorChannel,
     SchPlaylist{channel} to CorChannel,
 
@@ -704,8 +710,8 @@ relationship ManyToOne {
     CrmTaskComment{createdBy} to CorUser,
     CorChannel{network} to CorNetwork,
     CorNotification{user} to CorUser,
-    CorChannel{channelUser} to CorUser{channel}
-    CorSubscription{userSubscription} to CorUser{subscriptions}
+    CorChannel{channelUsers} to CorUser{channel},
+    CorNetwork{networkUsers} to CorUser{network}
 }
 dto * with mapstruct except LibCloudObject
 microservice * with protones

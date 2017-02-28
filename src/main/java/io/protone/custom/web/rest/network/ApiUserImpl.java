@@ -5,6 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import io.protone.custom.CustomMailService;
 import io.protone.custom.service.CustomCorUserService;
 import io.protone.custom.service.dto.CoreManagedUserPT;
+import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
 import io.protone.domain.CorNetwork;
@@ -19,6 +20,7 @@ import io.protone.service.dto.UserDTO;
 import io.protone.web.rest.util.HeaderUtil;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
 import io.protone.web.rest.vm.ManagedUserVM;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +42,7 @@ import java.util.Optional;
 @RequestMapping("/api/user")
 public class ApiUserImpl implements ApiUser {
 
-    private final Logger log = LoggerFactory.getLogger(io.protone.web.rest.AccountResource.class);
+    private final Logger log = LoggerFactory.getLogger(ApiUserImpl.class);
 
     private final CustomCorUserRepository userRepository;
 
@@ -52,7 +55,7 @@ public class ApiUserImpl implements ApiUser {
     private final CustomMailService mailService;
 
     public ApiUserImpl(CustomCorUserRepository userRepository, CustomCorUserService userService,
-                       CustomMailService mailService, CustomCorNetworkRepository, CustomCorNetworkRepository customCorNetworkRepository, CustomCorNetworkMapper customCorNetworkMapper) {
+                       CustomMailService mailService, CustomCorNetworkRepository customCorNetworkRepository, CustomCorNetworkMapper customCorNetworkMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;
@@ -70,6 +73,7 @@ public class ApiUserImpl implements ApiUser {
     @PostMapping(path = "/register",
         produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
+    @Override
     public ResponseEntity registerAccount(@Valid @RequestBody CoreManagedUserPT managedUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
@@ -82,17 +86,17 @@ public class ApiUserImpl implements ApiUser {
                 .orElseGet(() -> customCorNetworkRepository.findOneByShortcutOrName(managedUserVM.getNetwork().getShortcut(), managedUserVM.getNetwork().getName())
                     .map(user -> new ResponseEntity<>("network with this name and shortcut is already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                     .orElseGet(() -> {
-                        CorNetwork network = customCorNetworkRepository.save(customCorNetworkMapper.cORNetworkDTOToCorNetwork(managedUserVM.getNetwork()));
+
                         CorUser user = userService
                             .createUser(managedUserVM.getLogin(), managedUserVM.getLogin(),
                                 managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                                managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageurl(), managedUserVM.getLangKey(), network);
+                                managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageurl(), managedUserVM.getLangKey(), managedUserVM.getNetwork());
 
 
                         mailService.sendActivationEmail(user);
                         return new ResponseEntity<>(HttpStatus.CREATED);
                     })
-                );
+                ));
     }
 
     /**
@@ -103,6 +107,7 @@ public class ApiUserImpl implements ApiUser {
      */
     @GetMapping("/activate")
     @Timed
+    @Override
     public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
         return userService.activateRegistration(key)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
@@ -117,6 +122,7 @@ public class ApiUserImpl implements ApiUser {
      */
     @GetMapping("/authenticate")
     @Timed
+    @Override
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
@@ -129,6 +135,7 @@ public class ApiUserImpl implements ApiUser {
      */
     @GetMapping("/account")
     @Timed
+    @Override
     public ResponseEntity<CoreUserPT> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
             .map(user -> new ResponseEntity<>(new CoreUserPT(user), HttpStatus.OK))
@@ -143,6 +150,7 @@ public class ApiUserImpl implements ApiUser {
      */
     @PostMapping("/account")
     @Timed
+    @Override
     public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
         Optional<CorUser> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
@@ -167,6 +175,7 @@ public class ApiUserImpl implements ApiUser {
     @PostMapping(path = "/account/change_password",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
+    @Override
     public ResponseEntity changePassword(@RequestBody String password) {
         if (!checkPasswordLength(password)) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
@@ -184,6 +193,7 @@ public class ApiUserImpl implements ApiUser {
     @PostMapping(path = "/account/reset_password/init",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
+    @Override
     public ResponseEntity requestPasswordReset(@RequestBody String mail) {
         return userService.requestPasswordReset(mail)
             .map(user -> {
@@ -202,6 +212,7 @@ public class ApiUserImpl implements ApiUser {
     @PostMapping(path = "/account/reset_password/finish",
         produces = MediaType.TEXT_PLAIN_VALUE)
     @Timed
+    @Override
     public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
@@ -216,4 +227,6 @@ public class ApiUserImpl implements ApiUser {
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
             password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH);
     }
+
+
 }

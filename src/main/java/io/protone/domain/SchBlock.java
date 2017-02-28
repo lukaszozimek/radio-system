@@ -1,16 +1,17 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.SchBlockTypeEnum;
-import io.protone.domain.enumeration.SchStartTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import io.protone.domain.enumeration.SchBlockTypeEnum;
+
+import io.protone.domain.enumeration.SchStartTypeEnum;
 
 /**
  * A SchBlock.

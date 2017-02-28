@@ -1,6 +1,7 @@
 package io.protone.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,8 +10,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
  * A CorUser.
@@ -72,18 +73,25 @@ public class CorUser implements Serializable {
     @Column(name = "lastmodifieddate")
     private LocalDate lastmodifieddate;
 
-    @ManyToOne
-    private CorNetwork network;
-
-    @OneToMany(mappedBy = "authorities")
     @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "cor_user_authority",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "name")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CorAuthorities> authorities = new HashSet<>();
+    @BatchSize(size = 20)
+    private Set<CorAuthority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "channelUser")
+    @OneToMany(mappedBy = "channelUsers")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorChannel> channels = new HashSet<>();
+
+    @OneToMany(mappedBy = "networkUsers",fetch = FetchType.EAGER)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CorNetwork> networks = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -288,42 +296,17 @@ public class CorUser implements Serializable {
         this.lastmodifieddate = lastmodifieddate;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public CorUser network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public Set<CorAuthorities> getAuthorities() {
+    public Set<CorAuthority> getAuthorities() {
         return authorities;
     }
 
-    public CorUser authorities(Set<CorAuthorities> corAuthorities) {
-        this.authorities = corAuthorities;
+    public CorUser authorities(Set<CorAuthority> corUserAuthorities) {
+        this.authorities = corUserAuthorities;
         return this;
     }
 
-    public CorUser addAuthorities(CorAuthorities corAuthorities) {
-        this.authorities.add(corAuthorities);
-        corAuthorities.setAuthorities(this);
-        return this;
-    }
-
-    public CorUser removeAuthorities(CorAuthorities corAuthorities) {
-        this.authorities.remove(corAuthorities);
-        corAuthorities.setAuthorities(null);
-        return this;
-    }
-
-    public void setAuthorities(Set<CorAuthorities> corAuthorities) {
-        this.authorities = corAuthorities;
+    public void setAuthorities(Set<CorAuthority> corUserAuthorities) {
+        this.authorities = corUserAuthorities;
     }
 
     public Set<CorChannel> getChannels() {
@@ -337,18 +320,43 @@ public class CorUser implements Serializable {
 
     public CorUser addChannel(CorChannel corChannel) {
         this.channels.add(corChannel);
-        corChannel.setChannelUser(this);
+        corChannel.setChannelUsers(this);
         return this;
     }
 
     public CorUser removeChannel(CorChannel corChannel) {
         this.channels.remove(corChannel);
-        corChannel.setChannelUser(null);
+        corChannel.setChannelUsers(null);
         return this;
     }
 
     public void setChannels(Set<CorChannel> corChannels) {
         this.channels = corChannels;
+    }
+
+    public Set<CorNetwork> getNetworks() {
+        return networks;
+    }
+
+    public CorUser networks(Set<CorNetwork> corNetworks) {
+        this.networks = corNetworks;
+        return this;
+    }
+
+    public CorUser addNetwork(CorNetwork corNetwork) {
+        this.networks.add(corNetwork);
+        corNetwork.setNetworkUsers(this);
+        return this;
+    }
+
+    public CorUser removeNetwork(CorNetwork corNetwork) {
+        this.networks.remove(corNetwork);
+        corNetwork.setNetworkUsers(null);
+        return this;
+    }
+
+    public void setNetworks(Set<CorNetwork> corNetworks) {
+        this.networks = corNetworks;
     }
 
     @Override

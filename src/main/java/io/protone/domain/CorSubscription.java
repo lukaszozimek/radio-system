@@ -1,12 +1,13 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.CorSubscriptionTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import io.protone.domain.enumeration.CorSubscriptionTypeEnum;
 
 /**
  * A CorSubscription.
