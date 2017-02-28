@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CorUser;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * CoreUserPT
@@ -43,24 +46,43 @@ public class CoreUserPT {
     @JsonProperty("login")
     private String login = null;
 
+    @JsonProperty("network")
+    private CoreNetworkPT networkPT;
+
+    @JsonProperty("channel")
+    private List<CoreChannelPT> channelPT = null;
+
     public CoreUserPT(Long id) {
         this.id = id;
     }
 
     public CoreUserPT() {
-
     }
 
     public CoreUserPT(CorUser corUser) {
         this.id = corUser.getId();
         this.activated = corUser.isActivated();
-        this.authorities = corUser.getAuthorities().stream().map(authority -> authority.getName().toString()).collect(Collectors.toList());
+        this.authorities = corUser.getAuthorities().stream().map(authority -> authority.getName().toString()).collect(toList());
         this.imageurl = corUser.getImageurl();
         this.email = corUser.getEmail();
         this.firstName = corUser.getFirstname();
         this.langKey = corUser.getLangkey();
         this.lastName = corUser.getLastname();
         this.login = corUser.getLogin();
+
+
+    }
+
+    public CoreUserPT(Long id, String login, String firstName, String lastName, String email, boolean activated, String imageUrl, String langKey, String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities) {
+        this.id = id;
+        this.activated = activated;
+        this.authorities = authorities.stream().collect(toList());
+        this.imageurl = imageUrl;
+        this.email = email;
+        this.firstName = firstName;
+        this.langKey = langKey;
+        this.lastName = lastName;
+        this.login = login;
 
     }
 
@@ -203,6 +225,34 @@ public class CoreUserPT {
         return this;
     }
 
+    @ApiModelProperty(value = "")
+    public CoreNetworkPT getNetwork() {
+        return this.networkPT;
+    }
+
+    public void setNetwork(CoreNetworkPT networkPt) {
+        this.networkPT = networkPt;
+    }
+
+    public CoreUserPT network(CoreNetworkPT networkPt) {
+        this.networkPT = networkPt;
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public List<CoreChannelPT> getChannel() {
+        return this.channelPT;
+    }
+
+    public void setChannel(List<CoreChannelPT> channelId) {
+        this.channelPT = channelId;
+    }
+
+    public CoreUserPT channel(List<CoreChannelPT> channelId) {
+        this.channelPT = channelId;
+        return this;
+    }
+
 
     /**
      * Get login
@@ -264,6 +314,9 @@ public class CoreUserPT {
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
         result = 31 * result + (getImageurl() != null ? getImageurl().hashCode() : 0);
+        result = 31 * result + (getChannel() != null ? getChannel().hashCode() : 0);
+        result = 31 * result + (getNetwork() != null ? getNetwork().hashCode() : 0);
+
         return result;
     }
 
@@ -279,6 +332,8 @@ public class CoreUserPT {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", login='").append(login).append('\'');
         sb.append(", imageurl='").append(imageurl).append('\'');
+        sb.append(", network='").append(networkPT).append('\'');
+        sb.append(", channel='").append(channelPT).append('\'');
         sb.append('}');
         return sb.toString();
 

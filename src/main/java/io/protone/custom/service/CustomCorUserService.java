@@ -1,9 +1,13 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.custom.service.mapper.CustomCorNetworkMapper;
 import io.protone.domain.CorAuthorities;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
+import io.protone.repository.CorNetworkRepository;
 import io.protone.repository.custom.CustomAuthorityRepository;
+import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.security.AuthoritiesConstants;
 import io.protone.security.SecurityUtils;
@@ -38,15 +42,18 @@ public class CustomCorUserService {
 
     private final CustomAuthorityRepository authorityRepository;
 
-    public CustomCorUserService(CustomCorUserRepository userRepository, PasswordEncoder passwordEncoder, CustomAuthorityRepository authorityRepository) {
+    private final CustomCorNetworkRepository corNetworkRepository;
+
+    public CustomCorUserService(CustomCorUserRepository userRepository, PasswordEncoder passwordEncoder, CustomAuthorityRepository authorityRepository, CustomCorNetworkRepository customCorNetworkRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.corNetworkRepository = customCorNetworkRepository;
     }
 
     public Optional<CorUser> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
-        return userRepository.findOneByActivationkey(key)
+        Optional<CorUser> corUser = userRepository.findOneByActivationkey(key)
             .map(user -> {
                 // activate given user for the registration key.
                 user.setActivated(true);
@@ -54,22 +61,27 @@ public class CustomCorUserService {
                 log.debug("Activated user: {}", user);
                 return user;
             });
+        if (corUser.isPresent()) {
+            ///set activation code corNetworkRepository.save(corUser.get().getNetwork().);
+            return corUser;
+        }
+        return corUser;
     }
 
     public Optional<CorUser> completePasswordReset(String newPassword, String key) {
-       log.debug("Reset user password for reset key {}", key);
+        log.debug("Reset user password for reset key {}", key);
 
-       return userRepository.findOneByResetkey(key)
+        return userRepository.findOneByResetkey(key)
             .filter(user -> {
                 ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
                 return user.getResetdate().isAfter(oneDayAgo);
-           })
-           .map(user -> {
+            })
+            .map(user -> {
                 user.setPasswordhash(passwordEncoder.encode(newPassword));
                 user.setResetkey(null);
                 user.setResetdate(null);
                 return user;
-           });
+            });
     }
 
     public Optional<CorUser> requestPasswordReset(String mail) {
@@ -83,7 +95,7 @@ public class CustomCorUserService {
     }
 
     public CorUser createUser(String login, String password, String firstName, String lastName, String email,
-        String imageUrl, String langKey) {
+                              String imageUrl, String langKey, CorNetwork network) {
 
         CorUser newUser = new CorUser();
         CorAuthorities authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -103,6 +115,7 @@ public class CustomCorUserService {
         newUser.setActivationkey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        newUser.network(network);
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
