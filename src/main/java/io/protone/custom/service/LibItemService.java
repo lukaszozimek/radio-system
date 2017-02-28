@@ -18,6 +18,10 @@ import io.protone.domain.LibMediaItem;
 import io.protone.repository.LibCloudObjectRepository;
 import io.protone.repository.UserRepository;
 import org.apache.commons.io.IOUtils;
+import org.apache.tika.detect.Detector;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.parser.AutoDetectParser;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,16 +126,16 @@ public class LibItemService {
         for (MultipartFile file : files) {
 
             String fileName = file.getOriginalFilename();
-
-            //FIX THIS ASAP!!!
-            //Path filePath = Paths.get(String.format("%s%s", File.separator, fileName));
-            //String contentType = Files.probeContentType(filePath);
-            String contentType = "application/octet-stream";
-
             String fileUUID = UUID.randomUUID().toString();
 
-            ByteArrayInputStream bais = null;
-            bais = new ByteArrayInputStream(file.getBytes());
+            ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+
+            AutoDetectParser parser = new AutoDetectParser();
+            Detector detector = parser.getDetector();
+            Metadata md = new Metadata();
+            md.add(Metadata.RESOURCE_NAME_KEY, fileName);
+            MediaType mediaType = detector.detect(bais, md);
+            String contentType = mediaType.toString();
 
             try {
                 s3Client.upload(fileUUID, bais, contentType);
@@ -212,8 +216,7 @@ public class LibItemService {
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
             responseHeaders.add("Content-Length", String.format("%d", cloudObject.getSize()));
 
-            // TODO: usunac hardcode , brac dane z pola stream.contentType
-            responseHeaders.add("Content-Type", "audio/mpeg");
+            responseHeaders.add("Content-Type", cloudObject.getContentType());
 
             result = IOUtils.toByteArray(stream);
         } catch (S3Exception e) {
