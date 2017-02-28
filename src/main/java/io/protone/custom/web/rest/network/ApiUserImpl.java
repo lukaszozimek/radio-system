@@ -2,8 +2,15 @@ package io.protone.custom.web.rest.network;
 
 
 import com.codahale.metrics.annotation.Timed;
+import io.protone.custom.CustomMailService;
+import io.protone.custom.service.CustomCorUserService;
+import io.protone.custom.service.dto.CoreManagedUserPT;
+import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.custom.service.mapper.CustomCorNetworkMapper;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.domain.User;
+import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.security.SecurityUtils;
 import io.protone.service.MailService;
@@ -36,16 +43,22 @@ public class ApiUserImpl implements ApiUser {
 
     private final CustomCorUserRepository userRepository;
 
-    private final UserService userService;
+    private final CustomCorNetworkRepository customCorNetworkRepository;
 
-    private final MailService mailService;
+    private final CustomCorNetworkMapper customCorNetworkMapper;
 
-    public ApiUserImpl(CustomCorUserRepository userRepository, UserService userService,
-                       MailService mailService) {
+    private final CustomCorUserService userService;
+
+    private final CustomMailService mailService;
+
+    public ApiUserImpl(CustomCorUserRepository userRepository, CustomCorUserService userService,
+                       CustomMailService mailService, CustomCorNetworkRepository, CustomCorNetworkRepository customCorNetworkRepository, CustomCorNetworkMapper customCorNetworkMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.customCorNetworkRepository = customCorNetworkRepository;
+        this.customCorNetworkMapper = customCorNetworkMapper;
     }
 
     /**
@@ -57,7 +70,7 @@ public class ApiUserImpl implements ApiUser {
     @PostMapping(path = "/register",
         produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
-    public ResponseEntity registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity registerAccount(@Valid @RequestBody CoreManagedUserPT managedUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -66,16 +79,20 @@ public class ApiUserImpl implements ApiUser {
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
                 .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    User user = userService
-                        .createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
-                            managedUserVM.getFirstName(), managedUserVM.getLastName(),
-                            managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageUrl(), managedUserVM.getLangKey());
+                .orElseGet(() -> customCorNetworkRepository.findOneByShortcutOrName(managedUserVM.getNetwork().getShortcut(), managedUserVM.getNetwork().getName())
+                    .map(user -> new ResponseEntity<>("network with this name and shortcut is already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
+                    .orElseGet(() -> {
+                        CorNetwork network = customCorNetworkRepository.save(customCorNetworkMapper.cORNetworkDTOToCorNetwork(managedUserVM.getNetwork()));
+                        CorUser user = userService
+                            .createUser(managedUserVM.getLogin(), managedUserVM.getLogin(),
+                                managedUserVM.getFirstName(), managedUserVM.getLastName(),
+                                managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageurl(), managedUserVM.getLangKey(), network);
 
-                    mailService.sendActivationEmail(user);
-                    return new ResponseEntity<>(HttpStatus.CREATED);
-                })
-            );
+
+                        mailService.sendActivationEmail(user);
+                        return new ResponseEntity<>(HttpStatus.CREATED);
+                    })
+                );
     }
 
     /**
@@ -112,9 +129,9 @@ public class ApiUserImpl implements ApiUser {
      */
     @GetMapping("/account")
     @Timed
-    public ResponseEntity<UserDTO> getAccount() {
+    public ResponseEntity<CoreUserPT> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
-            .map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
+            .map(user -> new ResponseEntity<>(new CoreUserPT(user), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
