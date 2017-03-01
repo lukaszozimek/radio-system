@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 @RestController
-public class ApiNetworkTrafficCustomerCampaignImpl implements ApiNetworkTrafficCustomerCampaign {
+public class    ApiNetworkTrafficCustomerCampaignImpl implements ApiNetworkTrafficCustomerCampaign {
     @Inject
     private TraCampaignService campaignService;
     @Inject
