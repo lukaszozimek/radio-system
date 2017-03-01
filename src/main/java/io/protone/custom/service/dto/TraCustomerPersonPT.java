@@ -26,7 +26,7 @@ public class TraCustomerPersonPT   {
   private String lastName = null;
 
   @JsonProperty("networkId")
-  private Long networkId = null;
+  private CoreNetworkPT networkId = null;
 
   @JsonProperty("contacts")
   private List<CoreContactPT> contacts = new ArrayList<CoreContactPT>();
@@ -103,7 +103,7 @@ public class TraCustomerPersonPT   {
     this.lastName = lastName;
   }
 
-  public TraCustomerPersonPT networkId(Long networkId) {
+  public TraCustomerPersonPT networkId(CoreNetworkPT networkId) {
     this.networkId = networkId;
     return this;
   }
@@ -113,11 +113,11 @@ public class TraCustomerPersonPT   {
    * @return networkId
   **/
   @ApiModelProperty(value = "")
-  public Long getNetworkId() {
+  public CoreNetworkPT getNetworkId() {
     return networkId;
   }
 
-  public void setNetworkId(Long networkId) {
+  public void setNetworkId(CoreNetworkPT networkId) {
     this.networkId = networkId;
   }
 

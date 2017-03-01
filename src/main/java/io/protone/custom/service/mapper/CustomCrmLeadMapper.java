@@ -50,8 +50,8 @@ public class CustomCrmLeadMapper {
         crmLead.setAddres(corAddressMapper.cORAddressDTOToCorAddress(leadPT.getAdress()));
         crmLead.setLeadSource(customCrmLeadSourceMapper.cRMLeadSourceDTOToCrmLeadSource(leadPT.getSource()));
         crmLead.setLeadStatus(customCrmLeadStatusMapper.cRMLeadStatusDTOToCrmLeadStatus(leadPT.getStatus()));
-        crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson()));
         crmLead.keeper(corUserMapper.coreUserPTToUser(leadPT.getOwner()));
+        crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson(),corNetwork));
         crmLead.setNetwork(corNetwork);
         return crmLead;
     }

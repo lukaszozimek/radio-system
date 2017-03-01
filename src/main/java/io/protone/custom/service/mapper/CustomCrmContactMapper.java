@@ -54,7 +54,7 @@ public class CustomCrmContactMapper {
             .range(customCorRangeMapper.cORRangeDTOToCorRange(crmContactPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmContactPT.getAdress()))
             .area(customCorAreaMapper.cORAreaDTOToCorArea(crmContactPT.getArea()))
-            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons()))
+            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons(),corNetwork))
             .network(corNetwork);
     }
 
