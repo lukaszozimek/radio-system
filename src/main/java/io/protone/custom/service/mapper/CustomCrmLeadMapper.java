@@ -40,6 +40,9 @@ public class CustomCrmLeadMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public CrmLead createLeadEntity(CrmLeadPT leadPT, CorNetwork corNetwork) {
+        if (leadPT == null || corNetwork == null) {
+            return new CrmLead();
+        }
         CrmLead crmLead = new CrmLead();
         crmLead.setId(leadPT.getId());
         crmLead.setName(leadPT.getName());
@@ -57,6 +60,9 @@ public class CustomCrmLeadMapper {
     }
 
     public CrmLeadPT createDTOFromEntites(CrmLead lead) {
+        if (lead == null) {
+            return new CrmLeadPT();
+        }
         CrmLeadPT crmLeadPT = new CrmLeadPT();
         crmLeadPT.setId(lead.getId());
         crmLeadPT.setName(lead.getName());

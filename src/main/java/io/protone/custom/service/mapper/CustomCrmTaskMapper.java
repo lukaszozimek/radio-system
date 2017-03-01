@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,14 +25,23 @@ public class CustomCrmTaskMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public List<CrmTaskPT> createCrmTasks(Set<CrmTask> crmTask) {
+        if(crmTask ==null){
+            return new ArrayList<>();
+        }
         return crmTask.stream().map(this::createCrmTask).collect(toList());
     }
 
     public List<CrmTaskPT> createCrmTasks(List<CrmTask> crmTask) {
+        if(crmTask ==null){
+            return new ArrayList<>();
+        }
         return crmTask.stream().map(this::createCrmTask).collect(toList());
     }
 
     public CrmTaskPT createCrmTask(CrmTask crmTask) {
+        if(crmTask ==null){
+            return new CrmTaskPT();
+        }
         return new CrmTaskPT().id(crmTask.getId())
             ///   .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
@@ -42,10 +53,16 @@ public class CustomCrmTaskMapper {
     }
 
     public Set<CrmTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
+        if(crmTaskPTS ==null){
+            return new HashSet<>();
+        }
         return crmTaskPTS.stream().map(this::createTaskEntity).collect(toSet());
     }
 
     public CrmTask createTaskEntity(CrmTaskPT taskPT) {
+        if(taskPT ==null){
+            return new CrmTask();
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CrmTask crmTask = new CrmTask();
         crmTask.setId(taskPT.getId());

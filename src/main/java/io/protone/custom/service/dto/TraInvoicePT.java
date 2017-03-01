@@ -109,7 +109,7 @@ public class TraInvoicePT {
         return price;
     }
 
-    public void setPrice(BigDecimal paymentDay) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

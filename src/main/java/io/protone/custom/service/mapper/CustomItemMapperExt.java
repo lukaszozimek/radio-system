@@ -39,9 +39,9 @@ public class CustomItemMapperExt {
 
     public LibItemPT DB2DTO(LibMediaItem db) {
 
-        if (db == null)
+        if (db == null){
             return null;
-
+        }
         LibItemPT dto = new LibItemPT()
             .idx(db.getIdx())
             .length(db.getLength().intValue())
@@ -94,9 +94,9 @@ public class CustomItemMapperExt {
 
     public List<LibItemPT> DBs2DTOs(List<LibMediaItem> dbs) {
 
-        if (dbs == null)
+        if (dbs == null) {
             return null;
-
+        }
         List<LibItemPT> dtos = new ArrayList<>();
         for (LibMediaItem item : dbs)
             dtos.add(DB2DTO(item));
@@ -106,9 +106,9 @@ public class CustomItemMapperExt {
 
     public LibMediaItem DTO2DB(LibItemPT dto) {
 
-        if (dto == null)
+        if (dto == null) {
             return null;
-
+        }
         LibMediaItem db = new LibMediaItem()
             .idx(dto.getIdx())
             .length(dto.getLength().longValue())
@@ -140,9 +140,9 @@ public class CustomItemMapperExt {
 
     public List<LibMediaItem> DTOs2DBs(List<LibItemPT> dtos) {
 
-        if (dtos == null)
+        if (dtos == null) {
             return null;
-
+        }
         List<LibMediaItem> dbs = new ArrayList<>();
         for (LibItemPT item : dtos)
             dbs.add(DTO2DB(item));

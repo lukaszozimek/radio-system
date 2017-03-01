@@ -26,6 +26,9 @@ public class CustomTRAAdvertismentMapper {
     private TraCustomerService customerService;
 
     public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
+        if (traAdvertisementPT == null || corNetwork == null) {
+            return new TraAdvertisement();
+        }
         TraAdvertisement advertisement = new TraAdvertisement();
         advertisement.setId(traAdvertisementPT.getId());
         return advertisement.name(traAdvertisementPT.getName())
@@ -37,6 +40,9 @@ public class CustomTRAAdvertismentMapper {
     }
 
     public TraAdvertisementPT transformEntityToDTO(TraAdvertisement traAdvertisement) {
+        if (traAdvertisement == null) {
+            return new TraAdvertisementPT();
+        }
         return new TraAdvertisementPT()
             .id(traAdvertisement.getId())
             .name(traAdvertisement.getName())

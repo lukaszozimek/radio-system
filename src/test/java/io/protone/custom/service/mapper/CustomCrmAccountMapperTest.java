@@ -1,10 +1,11 @@
 package io.protone.custom.service.mapper;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.service.dto.TraCustomerPT;
+import io.protone.custom.service.dto.*;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
+import io.protone.domain.TraDiscount;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,8 @@ import static org.junit.Assert.*;
 /**
  * Created by lukaszozimek on 01/03/2017.
  */
+
+///TODO: Apply this test after merging Security user and country
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CustomCrmAccountMapperTest {
@@ -37,7 +40,6 @@ public class CustomCrmAccountMapperTest {
 
     private TraCustomerPT mockTraCustomerPT = null;
 
-
     private CorNetwork mockCorNetwork = null;
 
     @Before
@@ -47,6 +49,24 @@ public class CustomCrmAccountMapperTest {
         mockCorNetwork.setName("test");
         mockCorNetwork.setDescription("test");
         mockCorNetwork.setShortcut("test");
+        mockTraCustomerPT = new TraCustomerPT();
+        mockTraCustomerPT.setId((long) 1);
+        mockTraCustomerPT.shortName("test");
+        mockTraCustomerPT.area(new CoreAreaPT());
+        mockTraCustomerPT.idNumber1("test");
+        mockTraCustomerPT.idNumber2("test2");
+        mockTraCustomerPT.paymentDelay(21412421);
+        mockTraCustomerPT.industry(new ConfIndustryPT());
+        mockTraCustomerPT.name("test");
+        mockTraCustomerPT.networkId(new CoreNetworkPT());
+        mockTraCustomerPT.paymentDate(121421412);
+        mockTraCustomerPT.range(new CoreRangePT());
+        mockTraCustomerPT.setSize(new CoreSizePT());
+        mockTraCustomerPT.vatNumber("tetst");
+        mockTraCustomerPT.setAdress(new CoreAddressPT());
+        mockTraCustomerPT.setAccount(new CoreUserPT());
+        mockTraCustomerPT.setPersons(new TraCustomerPersonPT());
+        mockTraCustomerPT.discount(new TraDiscount());
 
     }
 
@@ -55,28 +75,28 @@ public class CustomCrmAccountMapperTest {
         //then
         CrmAccount result = crmAccountMappera.createCrmAcountEntity(mockCrmAccoumntPT, mockCorNetwork);
         //assert
-        assertEquals(false, checkFiledsNotNull(result));
+        assertEquals(true, checkFiledsNotNull(result));
     }
 
     @Test
     public void createCrmAcountEntity1() throws Exception {
-        CrmAccount result =  crmAccountMappera.createCrmAcountEntity(mockTraCustomerPT,mockCorNetwork);
+        CrmAccount result = crmAccountMappera.createCrmAcountEntity(mockTraCustomerPT, mockCorNetwork);
         //assert
-        assertEquals(false, checkFiledsNotNull(result));
+        assertEquals(true, checkFiledsNotNull(result));
     }
 
     @Test
     public void createCustomerTrafficDTO() throws Exception {
-        TraCustomerPT result =   crmAccountMappera.createCustomerTrafficDTO(mockCrmAccount);
+        TraCustomerPT result = crmAccountMappera.createCustomerTrafficDTO(mockCrmAccount);
         //assert
-        assertEquals(false, checkFiledsNotNull(result));
+        assertEquals(true, checkFiledsNotNull(result));
     }
 
     @Test
     public void buildContactDTOFromEntities() throws Exception {
-        CrmAccountPT result =  crmAccountMappera.buildContactDTOFromEntities(mockCrmAccount);
+        CrmAccountPT result = crmAccountMappera.buildContactDTOFromEntities(mockCrmAccount);
         //assert
-        assertEquals(false, checkFiledsNotNull(result));
+        assertEquals(true, checkFiledsNotNull(result));
     }
 
 }
