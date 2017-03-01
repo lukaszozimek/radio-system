@@ -39,6 +39,9 @@ public class CustomCrmContactMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public CrmContact createCrmContactEntity(CrmContactPT crmContactPT, CorNetwork corNetwork) {
+        if (crmContactPT == null || corNetwork == null) {
+            return new CrmContact();
+        }
         CrmContact crmContact = new CrmContact();
         crmContact.setId(crmContactPT.getId());
         return crmContact
@@ -54,15 +57,15 @@ public class CustomCrmContactMapper {
             .range(customCorRangeMapper.cORRangeDTOToCorRange(crmContactPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmContactPT.getAdress()))
             .area(customCorAreaMapper.cORAreaDTOToCorArea(crmContactPT.getArea()))
-            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons(),corNetwork))
+            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons(), corNetwork))
             .network(corNetwork);
     }
 
 
-
-
-
     public CrmContactPT buildContactDTOFromEntities(CrmContact crmContact) {
+        if (crmContact == null) {
+            return new CrmContactPT();
+        }
         return new CrmContactPT()
             .id(crmContact.getId())
             .name(crmContact.getName())

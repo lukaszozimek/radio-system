@@ -74,15 +74,21 @@ public class CustomTraOrderMapper {
     }
 
     public TraOrderPT transfromEntiteToDTO(TraOrder traOrder) {
-        return new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
+        TraOrderPT traOrderPt = new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
             .calculatedPrize(traOrder.getCalculatedPrize())
             .startDate(traOrder.getStartDate())
-            .endDate(traOrder.getEndDate())
-            .traCampaign(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()))
-            .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()))
-            .traPrice(traOrder.getPrice()).traOrderStatus(traOrder.getStatus())
-            .traInvoiceT(customTraInvoiceMapper.createDTOFromEnity(traOrder.getInvoice()));
-
+            .endDate(traOrder.getEndDate());
+        if (traOrder.getCampaign() != null) {
+            traOrderPt.traCampaign(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()));
+        }
+        if (traOrder.getCustomer() != null) {
+            traOrderPt.customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()));
+        }
+        traOrderPt.traPrice(traOrder.getPrice()).traOrderStatus(traOrder.getStatus());
+        if (traOrder.getInvoice() != null) {
+            traOrderPt.traInvoiceT(customTraInvoiceMapper.createDTOFromEnity(traOrder.getInvoice()));
+        }
+        return traOrderPt;
     }
 
 

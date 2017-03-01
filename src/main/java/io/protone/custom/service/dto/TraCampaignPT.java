@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.TraCampaingStatus;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -32,6 +33,12 @@ public class TraCampaignPT {
     @JsonProperty("startDate")
     private LocalDate startDate = null;
 
+    @JsonProperty("status")
+    private TraCampaingStatus status = null;
+
+    @JsonProperty("order")
+    private TraOrderPT orderPT = null;
+
     @JsonProperty("emission")
     private List<SchEmissionPT> emission = new ArrayList<SchEmissionPT>();
 
@@ -40,6 +47,24 @@ public class TraCampaignPT {
         return this;
     }
 
+    /**
+     * Get customerId
+     *
+     * @return customerId
+     **/
+    @ApiModelProperty(value = "")
+    public TraOrderPT getOrderPT() {
+        return orderPT;
+    }
+
+    public void setOrderPT(TraOrderPT orderPT) {
+        this.orderPT = orderPT;
+    }
+
+    public TraCampaignPT order(TraOrderPT orderPT) {
+        this.orderPT = orderPT;
+        return this;
+    }
     /**
      * Get customerId
      *
@@ -56,6 +81,26 @@ public class TraCampaignPT {
 
     public TraCampaignPT endDate(LocalDate endDate) {
         this.endDate = endDate;
+        return this;
+    }
+
+
+    /**
+     * Get statsus
+     *
+     * @return status
+     **/
+    @ApiModelProperty(value = "")
+    public TraCampaingStatus getStatsus() {
+        return status;
+    }
+
+    public void setStatus(TraCampaingStatus status) {
+        this.status = status;
+    }
+
+    public TraCampaignPT status(TraCampaingStatus status) {
+        this.status = status;
         return this;
     }
 
@@ -194,7 +239,7 @@ public class TraCampaignPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerPT, endDate, id, name, prize, startDate, emission);
+        return Objects.hash(customerPT, endDate, id, name, prize, startDate, emission, status);
     }
 
     @Override
@@ -209,6 +254,7 @@ public class TraCampaignPT {
         sb.append("    prize: ").append(toIndentedString(prize)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
         sb.append("    emission: ").append(toIndentedString(emission)).append("\n");
+        sb.append("    status: ").append(toIndentedString(status)).append("\n");
         sb.append("}");
         return sb.toString();
     }

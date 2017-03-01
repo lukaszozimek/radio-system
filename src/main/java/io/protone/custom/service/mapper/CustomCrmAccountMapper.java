@@ -46,6 +46,9 @@ public class CustomCrmAccountMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public CrmAccount createCrmAcountEntity(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
+        if (crmAccountPT == null || corNetwork == null) {
+            return new CrmAccount();
+        }
         CrmAccount crmAccount = new CrmAccount();
         crmAccount.setId(crmAccountPT.getId());
         return crmAccount
@@ -79,12 +82,13 @@ public class CustomCrmAccountMapper {
             .externalId2(traCustomerPT.getIdNumber2())
             .shortName(traCustomerPT.getShortName())
             .vatNumber(traCustomerPT.getVatNumber())
-            .paymentDelay(traCustomerPT.getPaymentDelay());
+            .paymentDelay(traCustomerPT.getPaymentDelay())
+            .discount(traCustomerPT.getDiscount());
         if (traCustomerPT.getIndustry() != null) {
             crmAccount.industry(industryMapper.tRAIndustryDTOToTraIndustry(traCustomerPT.getIndustry()));
         }
         if (traCustomerPT.getSize() != null) {
-            //.keeper(corUserMapper.tranformUserDTO(traCustomerPT.getAccount()))
+            //crmAccount .keeper(corUserMapper.tranformUserDTO(traCustomerPT.getAccount()))
             crmAccount.size(customCorSizeMapper.cORSizeDTOToCorSize(traCustomerPT.getSize()));
         }
         if (traCustomerPT.getRange() != null) {
@@ -105,7 +109,7 @@ public class CustomCrmAccountMapper {
 
     public TraCustomerPT createCustomerTrafficDTO(CrmAccount traCustomerPT) {
         if (traCustomerPT == null) {
-            return null;
+            return new TraCustomerPT();
         }
         TraCustomerPT crmAccount = new TraCustomerPT();
         crmAccount.setId(traCustomerPT.getId());
@@ -142,6 +146,9 @@ public class CustomCrmAccountMapper {
     }
 
     public CrmAccountPT buildContactDTOFromEntities(CrmAccount crmAccount) {
+        if (crmAccount == null) {
+            return new CrmAccountPT();
+        }
         return new CrmAccountPT()
             .id(crmAccount.getId())
             .name(crmAccount.getName())

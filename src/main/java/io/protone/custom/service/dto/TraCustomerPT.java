@@ -1,6 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -36,7 +38,7 @@ public class TraCustomerPT {
     private String name = null;
 
     @JsonProperty("networkId")
-    private Long networkId = null;
+    private CoreNetworkPT networkId = null;
 
     @JsonProperty("paymentDate")
     private Integer paymentDate = null;
@@ -58,6 +60,9 @@ public class TraCustomerPT {
 
     @JsonProperty("persons")
     private TraCustomerPersonPT persons = null;
+
+    @JsonProperty("discount")
+    private TraDiscount traDiscount = null;
 
     public TraCustomerPT id(Long id) {
         this.id = id;
@@ -99,6 +104,25 @@ public class TraCustomerPT {
 
     public TraCustomerPT area(CoreAreaPT area) {
         this.area = area;
+        return this;
+    }
+
+    /**
+     * Get shortName
+     *
+     * @return shortName
+     **/
+    @ApiModelProperty(value = "")
+    public TraDiscount getDiscount() {
+        return traDiscount;
+    }
+
+    public void setDiscount(TraDiscount traDiscount) {
+        this.traDiscount = traDiscount;
+    }
+
+    public TraCustomerPT discount(TraDiscount traDiscount) {
+        this.traDiscount = traDiscount;
         return this;
     }
 
@@ -206,7 +230,7 @@ public class TraCustomerPT {
         this.name = name;
     }
 
-    public TraCustomerPT networkId(Long networkId) {
+    public TraCustomerPT networkId(CoreNetworkPT networkId) {
         this.networkId = networkId;
         return this;
     }
@@ -217,11 +241,11 @@ public class TraCustomerPT {
      * @return networkId
      **/
     @ApiModelProperty(value = "")
-    public Long getNetworkId() {
+    public CoreNetworkPT getNetworkId() {
         return networkId;
     }
 
-    public void setNetworkId(Long networkId) {
+    public void setNetworkId(CoreNetworkPT networkId) {
         this.networkId = networkId;
     }
 

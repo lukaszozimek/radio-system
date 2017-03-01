@@ -53,7 +53,7 @@ public class CustomTraInvoiceMapperTest {
         mockTraInvoicePt = new TraInvoicePT();
         mockTraInvoicePt.setId((long) 2);
         mockTraInvoicePt.setPaid(true);
-        mockTraInvoicePt.setPrice(new BigDecimal(2222));
+        mockTraInvoicePt.price(new BigDecimal(222222222));
         mockTraInvoicePt.paymentDay(LocalDate.now());
         mockTraInvoicePt.customerId(new TraCustomerPT());
         mockTraInvoicePt.setTraStatus(new TraInvoiceStatus());
