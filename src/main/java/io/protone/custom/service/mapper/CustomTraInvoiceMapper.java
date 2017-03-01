@@ -23,9 +23,10 @@ public class CustomTraInvoiceMapper {
 
     public TraInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
         TraInvoice traInvoice = new TraInvoice();
-        traInvoice.setId(traInvoice.getId());
-        return traInvoice.paid(traInvoice.isPaid())
-            .paymentDay(traInvoice.getPaymentDay())
+        traInvoice.setId(traInvoicePT.getId());
+        return traInvoice.paid(traInvoicePT.getPaid())
+            .paymentDay(traInvoicePT.getPaymentDay())
+            .price(traInvoicePT.getPrice())
             .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
             .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
             .network(corNetwork)

@@ -61,53 +61,84 @@ public class CustomCrmAccountMapper {
             .size(customCorSizeMapper.cORSizeDTOToCorSize(crmAccountPT.getSize()))
             .range(customCorRangeMapper.cORRangeDTOToCorRange(crmAccountPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmAccountPT.getAdress()))
-            .person(customTRAPersonMapper.createPersonEntity(crmAccountPT.getPersons()))
+            .person(customTRAPersonMapper.createPersonEntity(crmAccountPT.getPersons(), corNetwork))
             .area(customCorAreaMapper.cORAreaDTOToCorArea(crmAccountPT.getArea()))
             .network(corNetwork);
     }
 
     public CrmAccount createCrmAcountEntity(TraCustomerPT traCustomerPT, CorNetwork network) {
+        if (traCustomerPT == null || network == null) {
+            return new CrmAccount();
+        }
         CrmAccount crmAccount = new CrmAccount();
         crmAccount.setId(traCustomerPT.getId());
-        return crmAccount
+        crmAccount
             .name(traCustomerPT.getName())
-
             .shortName(traCustomerPT.getShortName())
             .externalId1(traCustomerPT.getIdNumber1())
             .externalId2(traCustomerPT.getIdNumber2())
             .shortName(traCustomerPT.getShortName())
             .vatNumber(traCustomerPT.getVatNumber())
-            .paymentDelay(traCustomerPT.getPaymentDelay())
-            .industry(industryMapper.tRAIndustryDTOToTraIndustry(traCustomerPT.getIndustry()))
-            .keeper(corUserMapper.coreUserPTToUser(traCustomerPT.getAccount()))
-            .size(customCorSizeMapper.cORSizeDTOToCorSize(traCustomerPT.getSize()))
-            .range(customCorRangeMapper.cORRangeDTOToCorRange(traCustomerPT.getRange()))
-            .addres(corAddressMapper.cORAddressDTOToCorAddress(traCustomerPT.getAdress()))
-            .person(customTRAPersonMapper.createPersonEntity(traCustomerPT.getPersons()))
-            .area(customCorAreaMapper.cORAreaDTOToCorArea(traCustomerPT.getArea()))
-            .network(network);
+            .paymentDelay(traCustomerPT.getPaymentDelay());
+        if (traCustomerPT.getIndustry() != null) {
+            crmAccount.industry(industryMapper.tRAIndustryDTOToTraIndustry(traCustomerPT.getIndustry()));
+        }
+        if (traCustomerPT.getSize() != null) {
+            //.keeper(corUserMapper.tranformUserDTO(traCustomerPT.getAccount()))
+            crmAccount.size(customCorSizeMapper.cORSizeDTOToCorSize(traCustomerPT.getSize()));
+        }
+        if (traCustomerPT.getRange() != null) {
+            crmAccount.range(customCorRangeMapper.cORRangeDTOToCorRange(traCustomerPT.getRange()));
+        }
+        if (traCustomerPT.getAdress() != null) {
+            crmAccount.addres(corAddressMapper.cORAddressDTOToCorAddress(traCustomerPT.getAdress()));
+        }
+        if (traCustomerPT.getPersons() != null) {
+            crmAccount.person(customTRAPersonMapper.createPersonEntity(traCustomerPT.getPersons(), network));
+        }
+        if (traCustomerPT.getArea() != null) {
+            crmAccount.area(customCorAreaMapper.cORAreaDTOToCorArea(traCustomerPT.getArea()));
+        }
+        crmAccount.network(network);
+        return crmAccount;
     }
 
     public TraCustomerPT createCustomerTrafficDTO(CrmAccount traCustomerPT) {
+        if (traCustomerPT == null) {
+            return null;
+        }
         TraCustomerPT crmAccount = new TraCustomerPT();
         crmAccount.setId(traCustomerPT.getId());
-        return crmAccount.
-            id(traCustomerPT.getId())
+        crmAccount.id(traCustomerPT.getId())
             .name(traCustomerPT.getName())
-
             .shortName(crmAccount.getShortName())
             .idNumber1(traCustomerPT.getExternalId1())
             .idNumber2(traCustomerPT.getExternalId2())
             .shortName(traCustomerPT.getShortName())
-            .vatNumber(traCustomerPT.getVatNumber())
-            .paymentDelay(Math.toIntExact(traCustomerPT.getPaymentDelay()))
-            .industry(industryMapper.tRAIndustryToTraIndustryDTO(traCustomerPT.getIndustry()))
-            .account(corUserMapper.userToCoreUserPT(traCustomerPT.getKeeper()))
-            .size(customCorSizeMapper.cORSizeToCorSizeDTO(traCustomerPT.getSize()))
-            .range(customCorRangeMapper.cORRangeToCorRangeDTO(traCustomerPT.getRange()))
-            .adress(corAddressMapper.cORAddressToCorAddressDTO(traCustomerPT.getAddres()))
-            .persons(customTRAPersonMapper.createDTOObject(traCustomerPT.getPerson()))
-            .area(customCorAreaMapper.cORAreaToCorAreaDTO(traCustomerPT.getArea()));
+            .vatNumber(traCustomerPT.getVatNumber());
+        if (traCustomerPT.getPaymentDelay() != null) {
+            crmAccount.paymentDelay(Math.toIntExact(traCustomerPT.getPaymentDelay()));
+        }
+        if (traCustomerPT.getIndustry() != null) {
+            crmAccount.industry(industryMapper.tRAIndustryToTraIndustryDTO(traCustomerPT.getIndustry()));
+        }
+        // .account(corUserMapper.corUserMapper(traCustomerPT.getKeeper()))
+        if (traCustomerPT.getSize() != null) {
+            crmAccount.size(customCorSizeMapper.cORSizeToCorSizeDTO(traCustomerPT.getSize()));
+        }
+        if (traCustomerPT.getRange() != null) {
+            crmAccount.range(customCorRangeMapper.cORRangeToCorRangeDTO(traCustomerPT.getRange()));
+        }
+        if (traCustomerPT.getAddres() != null) {
+            crmAccount.adress(corAddressMapper.cORAddressToCorAddressDTO(traCustomerPT.getAddres()));
+        }
+        if (traCustomerPT.getPerson() != null) {
+            crmAccount.persons(customTRAPersonMapper.createDTOObject(traCustomerPT.getPerson()));
+        }
+        if (traCustomerPT.getArea() != null) {
+            crmAccount.area(customCorAreaMapper.cORAreaToCorAreaDTO(traCustomerPT.getArea()));
+        }
+        return crmAccount;
     }
 
     public CrmAccountPT buildContactDTOFromEntities(CrmAccount crmAccount) {
