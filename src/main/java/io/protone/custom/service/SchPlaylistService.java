@@ -59,10 +59,8 @@ public class SchPlaylistService {
 
         return new SchPlaylistPT()
             .channelId(channelDB.getId())
-            .dimYear(localDate.getYear())
-            .dimMonth(localDate.getMonthValue())
-            .dimDay(localDate.getDayOfMonth())
-            .blocks(blockUtils.sampleDay());
+            .date(localDate)
+            .blocks(blockUtils.sampleBand());
 
         //return playlistMapper.DBToDTO(playlistDB.get());
     }

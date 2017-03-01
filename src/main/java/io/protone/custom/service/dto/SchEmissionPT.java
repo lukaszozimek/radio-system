@@ -22,7 +22,7 @@ public class SchEmissionPT implements Serializable {
 
     private ZonedDateTime startTime;
     private ZonedDateTime endTime;
-    private Long length;
+    private Long length = 0L;
 
     private Integer dimYear;
     private Integer dimMonth;
@@ -172,6 +172,14 @@ public class SchEmissionPT implements Serializable {
 
     public SchEmissionPT startTime(ZonedDateTime startTime) {
         this.startTime = startTime;
+
+        this.dimYear(startTime.getYear())
+            .dimMonth(startTime.getMonthValue())
+            .dimDay(startTime.getDayOfMonth())
+            .dimHour(startTime.getHour())
+            .dimMinute(startTime.getMinute())
+            .dimSecond(startTime.getSecond());
+
         return this;
     }
 

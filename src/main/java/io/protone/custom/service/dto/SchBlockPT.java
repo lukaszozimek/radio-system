@@ -32,11 +32,11 @@ public class SchBlockPT implements Serializable {
 
     private ZonedDateTime scheduledStartTime;
     private ZonedDateTime scheduledEndTime;
-    private Long scheduledLength;
+    private Long scheduledLength = 0L;
 
     private ZonedDateTime startTime;
     private ZonedDateTime endTime;
-    private Long length;
+    private Long length = 0L;
 
     private Integer dimYear;
     private Integer dimMonth;
@@ -122,6 +122,7 @@ public class SchBlockPT implements Serializable {
 
     public void setScheduledLength(Long scheduledLength) {
         this.scheduledLength = scheduledLength;
+        this.length = scheduledLength;
     }
 
     public ZonedDateTime getStartTime() {
@@ -145,7 +146,9 @@ public class SchBlockPT implements Serializable {
     }
 
     public void setLength(Long length) {
+
         this.length = length;
+        this.scheduledLength = length;
     }
 
     public Integer getDimYear() {
@@ -278,11 +281,18 @@ public class SchBlockPT implements Serializable {
 
     public SchBlockPT scheduledLength(Long scheduledLength) {
         this.scheduledLength = scheduledLength;
+        this.length = scheduledLength;
         return this;
     }
 
     public SchBlockPT startTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
+        this.setStartTime(startTime);
+        this.dimYear(startTime.getYear())
+            .dimMonth(startTime.getMonthValue())
+            .dimDay(startTime.getDayOfMonth())
+            .dimHour(startTime.getHour())
+            .dimMinute(startTime.getMinute())
+            .dimSecond(startTime.getSecond());
         return this;
     }
 
@@ -293,6 +303,7 @@ public class SchBlockPT implements Serializable {
 
     public SchBlockPT length(Long length) {
         this.length = length;
+        this.scheduledLength = length;
         return this;
     }
 
@@ -343,21 +354,35 @@ public class SchBlockPT implements Serializable {
 
     public SchBlockPT blocks(List<SchBlockPT> blocks) {
         this.blocks = blocks;
+        Long totalLength = 0L;
+        for (SchBlockPT block: blocks)
+            totalLength += block.getLength();
+        for (SchEmissionPT emission: this.getEmissions())
+            totalLength += emission.getLength();
+        this.length(totalLength);
         return this;
     }
 
     public SchBlockPT addBlock(SchBlockPT block) {
         this.blocks.add(block);
+        this.setLength(this.getLength() + block.getLength());
         return this;
     }
 
     public SchBlockPT emissions(List<SchEmissionPT> emissions) {
         this.emissions = emissions;
+        Long totalLength = 0L;
+        for (SchBlockPT block: this.getBlocks())
+            totalLength += block.getLength();
+        for (SchEmissionPT emission: emissions)
+            totalLength += emission.getLength();
+        this.length(totalLength);
         return this;
     }
 
     public SchBlockPT addEmission(SchEmissionPT emission) {
         this.emissions.add(emission);
+        this.setLength(this.getLength() + emission.getLength());
         return this;
     }
 

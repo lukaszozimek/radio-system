@@ -86,6 +86,10 @@ public class SchPlaylistPT implements Serializable {
 
     public SchPlaylistPT date(LocalDate date) {
         this.date = date;
+        this.dimYear(date.getYear())
+            .dimMonth(date.getMonthValue())
+            .dimDay(date.getDayOfMonth());
+
         return this;
     }
 
