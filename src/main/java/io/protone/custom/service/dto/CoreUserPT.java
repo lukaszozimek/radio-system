@@ -25,7 +25,7 @@ public class CoreUserPT {
     @JsonProperty("activated")
     private Boolean activated = null;
 
-    @JsonProperty("authoritiesf")
+    @JsonProperty("authorities")
     private List<String> authorities = new ArrayList<String>();
 
     @JsonProperty("imageurl")

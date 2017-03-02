@@ -17,12 +17,7 @@
         Added the entity CorAuthority.
     -->
     <changeSet id="20170228213234-1" author="jhipster">
-        <createTable tableName="cor_authority">
-            <column name="name" type="varchar(50)">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
-        </createTable>
+
 
     </changeSet>
 </databaseChangeLog>

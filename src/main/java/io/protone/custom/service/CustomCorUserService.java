@@ -1,8 +1,10 @@
 package io.protone.custom.service;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
+import io.protone.custom.service.mapper.CustomCorUserMapperExt;
 import io.protone.domain.CorAuthority;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
@@ -44,10 +46,11 @@ public class CustomCorUserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomAuthorityRepository authorityRepository;
-    @Autowired
-    private CustomCorNetworkRepository corNetworkRepository;
+
     @Autowired
     private CustomCorNetworkRepository customCorNetworkRepository;
+    @Autowired
+    private CustomCorUserMapperExt customCorUserMapperExt;
     @Autowired
     private CustomCorNetworkMapper customCorNetworkMapper;
 
@@ -63,7 +66,7 @@ public class CustomCorUserService {
                 return user;
             });
         if (corUser.isPresent()) {
-            CorNetwork network = corNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
+            CorNetwork network = customCorNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
 
         }
         return corUser;
@@ -111,7 +114,13 @@ public class CustomCorUserService {
         newUser.setLastname(lastName);
         newUser.setEmail(email);
         newUser.setImageurl(imageUrl);
-        newUser.setLangkey(langKey);
+        if (Strings.isNullOrEmpty(langKey)) {
+            newUser.setLangkey("en");
+        } else {
+            newUser.setLangkey(langKey);
+
+        }
+
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -223,8 +232,9 @@ public class CustomCorUserService {
     }
 
     @Transactional(readOnly = true)
-    public CorUser getUserWithAuthorities() {
-        return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
+    public CoreUserPT getUserWithAuthorities() {
+        CorUser corUser = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
+        return customCorUserMapperExt.userToCoreUserPT(corUser);
     }
 
 

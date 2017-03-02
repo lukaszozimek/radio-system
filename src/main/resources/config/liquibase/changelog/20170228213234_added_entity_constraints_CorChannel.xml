@@ -7,18 +7,7 @@
         Added the constraints for entity CorChannel.
     -->
     <changeSet id="20170228213234-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="cor_channel"
-                                 constraintName="fk_cor_channel_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
 
-        <addForeignKeyConstraint baseColumnNames="channel_users_id"
-                                 baseTableName="cor_channel"
-                                 constraintName="fk_cor_channel_channel_users_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
 
     </changeSet>
 </databaseChangeLog>

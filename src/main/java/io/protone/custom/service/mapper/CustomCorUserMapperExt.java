@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Generated(
 
     value = "org.mapstruct.ap.MappingProcessor",
@@ -27,6 +29,8 @@ public class CustomCorUserMapperExt {
 
     @Inject
     private CustomCorUserRepository customCorUserRepository;
+    @Inject
+    private CustomCorNetworkMapper customCorNetworkMapper;
 
     public CoreUserPT userToCoreUserPT(CorUser user) {
 
@@ -50,7 +54,12 @@ public class CustomCorUserMapperExt {
         coreUserPT.setLogin(user.getLogin());
 
         coreUserPT.setId(user.getId());
-
+        if (user.getAuthorities() != null) {
+            coreUserPT.setAuthorities(user.getAuthorities().stream().map(corAuthority -> corAuthority.getName()).collect(toList()));
+        }
+        if (user.getNetworks().stream().findFirst().isPresent()) {
+            coreUserPT.network(customCorNetworkMapper.cORNetworkToCorNetworkDTO(user.getNetworks().stream().findFirst().get()));
+        }
         return coreUserPT;
     }
 
