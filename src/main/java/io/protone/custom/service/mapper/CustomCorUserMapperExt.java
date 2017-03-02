@@ -2,14 +2,16 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.domain.User;
-import io.protone.repository.UserRepository;
+import io.protone.domain.CorUser;
+import io.protone.repository.custom.CustomCorUserRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Generated;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Generated(
 
@@ -26,85 +28,92 @@ import java.util.List;
 public class CustomCorUserMapperExt {
 
     @Inject
-    private UserRepository userRepository;
+    private CustomCorUserRepository customCorUserRepository;
+    @Inject
+    private CustomCorNetworkMapper customCorNetworkMapper;
 
-    public CoreUserPT userToCoreUserPT(User user) {
+    public CoreUserPT userToCoreUserPT(CorUser user) {
 
-        if ( user == null ) {
+        if (user == null) {
 
             return null;
         }
 
         CoreUserPT coreUserPT = new CoreUserPT();
 
-        coreUserPT.setActivated( user.getActivated() );
+        coreUserPT.setActivated(user.isActivated());
 
-        coreUserPT.setEmail( user.getEmail() );
+        coreUserPT.setEmail(user.getEmail());
 
-        coreUserPT.setFirstName( user.getFirstName() );
+        coreUserPT.setFirstName(user.getFirstname());
 
-        coreUserPT.setLangKey( user.getLangKey() );
+        coreUserPT.setLangKey(user.getLangkey());
 
-        coreUserPT.setLastName( user.getLastName() );
+        coreUserPT.setLastName(user.getLastname());
 
-        coreUserPT.setLogin( user.getLogin() );
+        coreUserPT.setLogin(user.getLogin());
 
-        coreUserPT.setId( user.getId() );
-
+        coreUserPT.setId(user.getId());
+        if (user.getAuthorities() != null) {
+            coreUserPT.setAuthorities(user.getAuthorities().stream().map(corAuthority -> corAuthority.getName()).collect(toList()));
+        }
+        if (user.getNetworks().stream().findFirst().isPresent()) {
+            coreUserPT.network(customCorNetworkMapper.cORNetworkToCorNetworkDTO(user.getNetworks().stream().findFirst().get()));
+        }
         return coreUserPT;
     }
 
-    public List<CoreUserPT> usersToCoreUserPTs(List<User> users) {
+    public List<CoreUserPT> usersToCoreUserPTs(List<CorUser> users) {
 
-        if ( users == null ) {
+        if (users == null) {
 
             return null;
         }
 
         List<CoreUserPT> list = new ArrayList<CoreUserPT>();
 
-        for ( User user : users ) {
+        for (CorUser user : users) {
 
-            list.add( userToCoreUserPT( user ) );
+            list.add(userToCoreUserPT(user));
         }
 
         return list;
     }
 
-    public User coreUserPTToUser(CoreUserPT userPT) {
+    public CorUser coreUserPTToUser(CoreUserPT userPT) {
 
-        if ( userPT == null ) {
+        if (userPT == null) {
 
             return null;
         }
 
-        User user = userRepository.findOneByLogin(userPT.getLogin()).get();
-        user.setFirstName( userPT.getFirstName() );
-        user.setLastName( userPT.getLastName() );
-        user.setEmail( userPT.getEmail() );
+        CorUser user = customCorUserRepository.findOneByLogin(userPT.getLogin()).get();
+        user.setFirstname(userPT.getFirstName());
+        user.setLastname(userPT.getLastName());
+        user.setEmail(userPT.getEmail());
 
-        if ( userPT.getActivated() != null ) {
+        if (userPT.getActivated() != null) {
 
-            user.setActivated( userPT.getActivated() );
+            user.setActivated(userPT.getActivated());
         }
 
-        user.setLangKey( userPT.getLangKey() );
+        user.setLangkey(userPT.getLangKey());
 
         return user;
     }
 
-    public List<User> coreUserPTsToUsers(List<CoreUserPT> userPTs) {
+    public List<CorUser> coreUserPTsToUsers(List<CoreUserPT> userPTs) {
 
-        if ( userPTs == null ) {
+        if (userPTs == null) {
 
             return null;
         }
 
-        List<User> list = new ArrayList<User>();
+        List<CorUser> list = new ArrayList<CorUser>();
 
-        for ( CoreUserPT coreUserPT : userPTs ) {
+        for (CoreUserPT coreUserPT : userPTs) {
 
-            list.add( coreUserPTToUser( coreUserPT ) );
+            list.add(coreUserPTToUser(coreUserPT));
         }
 
         return list;

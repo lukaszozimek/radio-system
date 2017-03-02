@@ -3,7 +3,6 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.SchTemplatePT;
 import io.protone.domain.CorChannel;
 import io.protone.domain.SchTemplate;
-import io.protone.service.dto.SchTemplateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

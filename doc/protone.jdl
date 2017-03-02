@@ -112,6 +112,7 @@ entity CorPropertyValue {
 entity CorNetwork {
 	shortcut String required maxlength(100)
 	name String required maxlength(100)
+		active Boolean
     description String
 }
 
@@ -150,18 +151,7 @@ entity CorNotification{
 	description String
 }
 
-entity CorSubscription{
-	name String
-    price Long
-    subscription CorSubscriptionTypeEnum
 
-}
-enum CorSubscriptionTypeEnum {
-	ST_CRM,
-    ST_TRAFFIC,
-    ST_PLAYOUT,
-    ST_LIBRARY
-}
 entity CorCountry{
    		name String
   		shortName String
@@ -505,22 +495,52 @@ entity TraOrderStatus{
     description String
 }
 entity CorUser{
-    name String
+  login String
+  password_hash  String
+  first_name String
+  last_name String
+  email String
+  image_url String
+  activated Boolean
+  lang_key String
+  activation_key String
+  reset_key String
+  created_by String
+  created_date LocalDate
+  reset_date ZonedDateTime
+  last_modified_by String
+  last_modified_date LocalDate
 }
+
+entity CorAuthority{
+    name String required
+}
+entity CorUserAuthority{
+
+}
+
+entity CorSubscription{
+	name String
+    price Long
+    subscription CorSubscriptionTypeEnum
+}
+enum CorSubscriptionTypeEnum {
+    ST_TRAFFIC,
+    ST_CRM,
+    ST_PLAYOUT,
+    ST_LIBRARY
+}
+
 relationship OneToOne {
+
     TraAdvertisement{mediaItem} to LibMediaItem,
-
-
     LibImageObject{cloudObject} to LibCloudObject,
     LibAudioObject{cloudObject} to LibCloudObject,
     LibVideoObject{cloudObject} to LibCloudObject,
-
     LibAlbum{cover} to LibImageItem,
 
     CorCountry{tax} to CorTax,
     CorCountry{currnecy} to CorCurrency,
-
-
     CrmContact{addres} to CorAddress,
     CrmContact{country} to CorCountry,
     CrmContact{person} to CorPerson ,
@@ -537,7 +557,8 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-
+    CorUserAuthority{user} to CorUser{authorities},
+    CorUserAuthority{authority} to CorAuthority,
     SchTemplate{channel} to CorChannel,
     SchPlaylist{channel} to CorChannel,
 
@@ -582,9 +603,12 @@ relationship ManyToOne {
     LibImageItem{Library} to LibLibrary,
     LibFileItem{Library} to LibLibrary,
 
-    LibMarker{mediaItem} to LibMediaItem,
-	CorTag{tags} to LibMediaItem,
-    CorPropertyValue{libItemPropertyValue} to LibMediaItem,
+    CorPerson{author} to LibMediaItem {author},
+    CorPerson{composer} to LibMediaItem {composer},
+    LibMarker{mediaItem} to LibMediaItem {markers},
+
+    CorTag{tags} to LibMediaItem {tags} ,
+    CorPropertyValue{libItemPropertyValue} to LibMediaItem {properites},
 
     LibAudioObject{mediaItem} to LibMediaItem,
     LibVideoObject{mediaItem} to LibMediaItem,
@@ -683,11 +707,11 @@ relationship ManyToOne {
     CrmTask {lead} to CrmLead {tasks},
     CrmTask {tasks} to CrmTask,
     CrmTaskComment{taskComment} to CrmTask,
-      CrmTaskComment{createdBy} to CorUser,
+    CrmTaskComment{createdBy} to CorUser,
     CorChannel{network} to CorNetwork,
     CorNotification{user} to CorUser,
-    CorUser {network} to CorNetwork,
-    CorUser{channel} to CorChannel
+    CorChannel{channelUsers} to CorUser{channel},
+    CorNetwork{networkUsers} to CorUser{network}
 }
 dto * with mapstruct except LibCloudObject
 microservice * with protones

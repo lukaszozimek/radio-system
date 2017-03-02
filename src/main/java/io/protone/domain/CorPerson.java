@@ -42,6 +42,12 @@ public class CorPerson implements Serializable {
     @ManyToOne
     private CorNetwork network;
 
+    @ManyToOne
+    private LibMediaItem author;
+
+    @ManyToOne
+    private LibMediaItem composer;
+
     @OneToMany(mappedBy = "person")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -105,6 +111,32 @@ public class CorPerson implements Serializable {
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
+    }
+
+    public LibMediaItem getAuthor() {
+        return author;
+    }
+
+    public CorPerson author(LibMediaItem libMediaItem) {
+        this.author = libMediaItem;
+        return this;
+    }
+
+    public void setAuthor(LibMediaItem libMediaItem) {
+        this.author = libMediaItem;
+    }
+
+    public LibMediaItem getComposer() {
+        return composer;
+    }
+
+    public CorPerson composer(LibMediaItem libMediaItem) {
+        this.composer = libMediaItem;
+        return this;
+    }
+
+    public void setComposer(LibMediaItem libMediaItem) {
+        this.composer = libMediaItem;
     }
 
     public Set<CorContact> getContacts() {

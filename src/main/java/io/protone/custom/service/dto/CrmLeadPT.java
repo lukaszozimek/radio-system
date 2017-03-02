@@ -40,6 +40,9 @@ public class CrmLeadPT {
     @JsonProperty("industry")
     private ConfIndustryPT industry = null;
 
+    @JsonProperty("leadOwner")
+    private CoreUserPT leadOwner = null;
+
     @JsonProperty("person")
     private TraCustomerPersonPT person = null;
 
@@ -118,6 +121,19 @@ public class CrmLeadPT {
 
     public CrmLeadPT source(ConfLeadSourcePT source) {
         this.source = source;
+        return this;
+    }
+    @ApiModelProperty(value = "")
+    public CoreUserPT getOwner() {
+        return leadOwner;
+    }
+
+    public void setOwner(CoreUserPT leadOwner) {
+        this.leadOwner = leadOwner;
+    }
+
+    public CrmLeadPT owner(CoreUserPT leadOwner) {
+        this.leadOwner = leadOwner;
         return this;
     }
 

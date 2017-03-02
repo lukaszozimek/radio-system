@@ -3,20 +3,18 @@ package io.protone.custom.service;
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
 import io.protone.custom.consts.ServiceConstants;
-import io.protone.domain.LibAudioObject;
-import io.protone.domain.LibCloudObject;
+import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.repository.custom.CustomLibAudioObjectRepository;
 import io.protone.repository.custom.CustomLibMediaItemRepository;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.mapper.CustomItemMapperExt;
 import io.protone.custom.utils.MediaUtils;
-import io.protone.domain.LibLibrary;
-import io.protone.domain.LibMediaItem;
 import io.protone.repository.LibCloudObjectRepository;
-import io.protone.repository.UserRepository;
+import io.protone.security.SecurityUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.metadata.Metadata;
@@ -56,11 +54,11 @@ public class LibItemService {
     @Inject
     private MediaUtils mediaUtils;
     @Inject
-    CustomLibMediaItemRepository mediaItemRepository;
+    private CustomLibMediaItemRepository mediaItemRepository;
     @Inject
-    CustomLibAudioObjectRepository audioObjectRepository;
+    private CustomLibAudioObjectRepository audioObjectRepository;
     @Inject
-    private UserRepository userRepository;
+    private CustomCorUserRepository userRepository;
 
     public LibItemPT getItem(String networkShortcut, String libraryShortcut, String idx) {
         LibItemPT result = null;
@@ -111,7 +109,10 @@ public class LibItemService {
         }
 
     }
-
+    public LibItemPT update(LibItemPT libItemPT) {
+        LibMediaItem item = itemRepository.save(itemMapper.DTO2DB(libItemPT));
+        return itemMapper.DB2DTO(item);
+    }
     public List<LibItemPT> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException {
 
         List<LibItemPT> result = new ArrayList<>();
@@ -149,9 +150,9 @@ public class LibItemService {
                 cloudObject.setSize(file.getSize());
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
-                //User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-                //TODO fix current user addition to argument
-                cloudObject.setCreatedBy(null);
+                CorUser currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+
+                cloudObject.setCreatedBy(currentUser);
 
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
@@ -239,4 +240,5 @@ public class LibItemService {
 
         return optItemDB.orElse(null);
     }
+
 }

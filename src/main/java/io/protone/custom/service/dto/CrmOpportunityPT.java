@@ -17,7 +17,7 @@ public class CrmOpportunityPT {
     private Long id = null;
 
     @JsonProperty("opportunityOwner")
-    private CoreManagedUserPT opportunityOwner = null;
+    private CoreUserPT opportunityOwner = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -60,7 +60,7 @@ public class CrmOpportunityPT {
         this.id = id;
     }
 
-    public CrmOpportunityPT opportunityOwner(CoreManagedUserPT opportunityOwner) {
+    public CrmOpportunityPT opportunityOwner(CoreUserPT opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
         return this;
     }
@@ -71,11 +71,11 @@ public class CrmOpportunityPT {
      * @return opportunityOwner
      **/
     @ApiModelProperty(value = "")
-    public CoreManagedUserPT getOpportunityOwner() {
+    public CoreUserPT getOpportunityOwner() {
         return opportunityOwner;
     }
 
-    public void setOpportunityOwner(CoreManagedUserPT opportunityOwner) {
+    public void setOpportunityOwner(CoreUserPT opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
     }
 

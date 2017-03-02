@@ -39,6 +39,9 @@ public class CorChannel implements Serializable {
     @ManyToOne
     private CorNetwork network;
 
+    @ManyToOne
+    private CorUser channelUsers;
+
     public Long getId() {
         return id;
     }
@@ -97,6 +100,19 @@ public class CorChannel implements Serializable {
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
+    }
+
+    public CorUser getChannelUsers() {
+        return channelUsers;
+    }
+
+    public CorChannel channelUsers(CorUser corUser) {
+        this.channelUsers = corUser;
+        return this;
+    }
+
+    public void setChannelUsers(CorUser corUser) {
+        this.channelUsers = corUser;
     }
 
     @Override

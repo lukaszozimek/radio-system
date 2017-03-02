@@ -5,7 +5,6 @@ import io.protone.domain.CrmTask;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +20,7 @@ public class CustomCrmTaskMapper {
 
     public static final String CRM_TASK_STATUS = "CrmTaskStatus";
     @Inject
-    private CustomCORUserMapper corUserMapper;
+    private CustomCorUserMapperExt corUserMapper;
 
     public List<CrmTaskPT> createCrmTasks(Set<CrmTask> crmTask) {
         return crmTask.stream().map(this::createCrmTask).collect(toList());
@@ -33,13 +32,13 @@ public class CustomCrmTaskMapper {
 
     public CrmTaskPT createCrmTask(CrmTask crmTask) {
         return new CrmTaskPT().id(crmTask.getId())
-        //    .activityDate(crmTask.getActivityDate().toString())
+            ///   .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
             .crmTaskStatus(crmTask.getStatus())
-            //.assignedTo(corUserMapper.corUserMapper(crmTask.getAssignedTo()))
+            .assignedTo(corUserMapper.userToCoreUserPT(crmTask.getAssignedTo()))
             .comment(crmTask.getComment())
-            .subject(crmTask.getSubject());
-          //  .createdBy(corUserMapper.corUserMapper(crmTask.getCreatedBy()));
+            .subject(crmTask.getSubject())
+            .createdBy(corUserMapper.userToCoreUserPT(crmTask.getCreatedBy()));
     }
 
     public Set<CrmTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
@@ -51,11 +50,11 @@ public class CustomCrmTaskMapper {
         CrmTask crmTask = new CrmTask();
         crmTask.setId(taskPT.getId());
         crmTask.setSubject(taskPT.getSubject());
-     //   crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate(), formatter));
+        //   crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate(), formatter));
         crmTask.setActivityLength(taskPT.getActivityLenght());
         crmTask.setComment(taskPT.getComment());
-        //crmTask.assignedTo(taskPT.getAssignedTo());
-        //crmTask.createdBy(taskPT.getCreatedBy())
+        crmTask.assignedTo(corUserMapper.coreUserPTToUser(taskPT.getAssignedTo()));
+        crmTask.createdBy(corUserMapper.coreUserPTToUser(taskPT.getCreatedBy()));
         return crmTask;
     }
 

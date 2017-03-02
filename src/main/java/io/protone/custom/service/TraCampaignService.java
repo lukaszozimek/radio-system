@@ -7,7 +7,6 @@ import io.protone.custom.service.mapper.CustomTRACampaignMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
-import io.protone.repository.CrmAccountRepository;
 import io.protone.repository.SchEmissionRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraCampaignRepository;

@@ -4,8 +4,6 @@ import io.protone.domain.LibImageObject;
 
 import org.springframework.data.jpa.repository.*;
 
-import java.util.List;
-
 /**
  * Spring Data JPA repository for the LibImageObject entity.
  */
