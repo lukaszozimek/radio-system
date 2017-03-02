@@ -88,7 +88,7 @@ public class ApiUserImpl implements ApiUser {
                     .orElseGet(() -> {
 
                         CorUser user = userService
-                            .createUser(managedUserVM.getLogin(), managedUserVM.getLogin(),
+                            .createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
                                 managedUserVM.getFirstName(), managedUserVM.getLastName(),
                                 managedUserVM.getEmail().toLowerCase(), managedUserVM.getImageurl(), managedUserVM.getLangKey(), managedUserVM.getNetwork());
 
@@ -138,7 +138,7 @@ public class ApiUserImpl implements ApiUser {
     @Override
     public ResponseEntity<CoreUserPT> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
-            .map(user -> new ResponseEntity<>(new CoreUserPT(user), HttpStatus.OK))
+            .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 

@@ -7,12 +7,8 @@
         Added the constraints for entity CorNetwork.
     -->
     <changeSet id="20170228213234-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="network_users_id"
-                                 baseTableName="cor_network"
-                                 constraintName="fk_cor_network_network_users_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
+
+
 
     </changeSet>
 </databaseChangeLog>

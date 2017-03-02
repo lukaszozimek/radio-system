@@ -8,17 +8,6 @@
     -->
     <changeSet id="20170228213234-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="cor_user_authority"
-                                 constraintName="fk_cor_user_authority_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="authority_id"
-                                 baseTableName="cor_user_authority"
-                                 constraintName="fk_cor_user_authority_authority_id"
-                                 referencedColumnNames="name"
-                                 referencedTableName="cor_authority"/>
 
     </changeSet>
 </databaseChangeLog>
