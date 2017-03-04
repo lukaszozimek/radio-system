@@ -37,6 +37,8 @@ public class CustomCrmContactMapper {
 
     @Inject
     private CustomCorUserMapperExt corUserMapper;
+    @Inject
+    private CustomCorNetworkMapper customCorNetworkMapper;
 
     public CrmContact createCrmContactEntity(CrmContactPT crmContactPT, CorNetwork corNetwork) {
         if (crmContactPT == null || corNetwork == null) {
@@ -82,7 +84,7 @@ public class CustomCrmContactMapper {
             .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
             .area(customCorAreaMapper.cORAreaToCorAreaDTO(crmContact.getArea()))
             .tasks(crmContact.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()))
-            .networkId(crmContact.getId());
+            .networkId(customCorNetworkMapper.cORNetworkToCorNetworkDTO(crmContact.getNetwork()));
 
     }
 

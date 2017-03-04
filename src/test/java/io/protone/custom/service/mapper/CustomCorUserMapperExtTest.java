@@ -3,6 +3,7 @@ package io.protone.custom.service.mapper;
 import com.google.common.collect.Lists;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.domain.CorUser;
 import io.protone.domain.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,9 +32,9 @@ public class CustomCorUserMapperExtTest {
 
     private CoreUserPT mockUserDto = null;
 
-    private User mockUser = null;
+    private CorUser mockUser = null;
 
-    private List<User> mockUsers = null;
+    private List<CorUser> mockUsers = null;
 
     private List<CoreUserPT> mockUsersPT = null;
 
@@ -48,16 +49,22 @@ public class CustomCorUserMapperExtTest {
         mockUserDto.setLangKey("test");
         mockUserDto.setFirstName("test");
         mockUserDto.setLastName("test");
-        mockUser = new User();
+        mockUser = new CorUser();
         mockUser.setId((long) 1);
         mockUser.setActivated(true);
         mockUser.setAuthorities(new HashSet<>());
         mockUser.setEmail("test");
         mockUser.setLogin("test");
-        mockUser.setLangKey("test");
-        mockUser.setFirstName("test");
-        mockUser.setLastName("test");
-        mockUser.setActivationKey("");
+        mockUser.setLangkey("test");
+        mockUser.setFirstname("test");
+        mockUser.setLastname("test");
+        mockUser.setActivationkey("");
+
+
+
+
+
+
 
     }
 
