@@ -1,15 +1,23 @@
 package io.protone.custom.service.mapper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmLeadPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmLead;
+import io.protone.custom.service.dto.*;
+import io.protone.domain.*;
+import org.hibernate.annotations.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static io.protone.util.FiledVisitor.checkFiledsNotNull;
 import static org.junit.Assert.*;
@@ -28,6 +36,33 @@ public class CustomCrmLeadMapperTest {
 
     @Before
     public void initialize() {
+        mockCorNetwork = new CorNetwork();
+        mockCrmLead = new CrmLead();
+        mockCrmLead.setId((long) 1);
+        mockCrmLead.name("test")
+            .shortname("test")
+            .description("test")
+            .person(new CorPerson())
+            .addres(new CorAddress())
+            .leadStatus(new CrmLeadStatus())
+            .leadSource(new CrmLeadSource())
+            .keeper(new CorUser())
+            .industry(new TraIndustry())
+            .area(new CorArea())
+            .network(new CorNetwork())
+            .addTasks(new CrmTask());
+        mockCrmLeadPT = new CrmLeadPT().id((long) 1)
+            .name("test")
+            .shortName("test")
+            .description("test")
+            .source(new ConfLeadSourcePT())
+            .status(new ConfLeadStatusPT())
+            .adress(new CoreAddressPT())
+            .area(new CoreAreaPT())
+            .industry(new ConfIndustryPT())
+            .owner(new CoreUserPT())
+            .person(new TraCustomerPersonPT())
+            .addTasksItem(new CrmTaskPT());
 
     }
 

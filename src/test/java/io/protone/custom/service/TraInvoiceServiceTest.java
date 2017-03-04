@@ -1,11 +1,14 @@
 package io.protone.custom.service;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.TraInvoice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +19,9 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class TraInvoiceServiceTest {
+    @Inject
+    private TraInvoiceService traInvoiceService;
+
     @Test
     public void getAllInvoice() throws Exception {
 

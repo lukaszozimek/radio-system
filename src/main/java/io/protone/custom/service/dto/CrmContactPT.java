@@ -32,7 +32,7 @@ public class CrmContactPT {
     private String name = null;
 
     @JsonProperty("networkId")
-    private Long networkId = null;
+    private CoreNetworkPT networkId = null;
 
     @JsonProperty("paymentDate")
     private Integer paymentDate = null;
@@ -212,7 +212,7 @@ public class CrmContactPT {
         this.name = name;
     }
 
-    public CrmContactPT networkId(Long networkId) {
+    public CrmContactPT networkId(CoreNetworkPT networkId) {
         this.networkId = networkId;
         return this;
     }
@@ -223,11 +223,11 @@ public class CrmContactPT {
      * @return networkId
      **/
     @ApiModelProperty(value = "")
-    public Long getNetworkId() {
+    public CoreNetworkPT getNetworkId() {
         return networkId;
     }
 
-    public void setNetworkId(Long networkId) {
+    public void setNetworkId(CoreNetworkPT networkId) {
         this.networkId = networkId;
     }
 
