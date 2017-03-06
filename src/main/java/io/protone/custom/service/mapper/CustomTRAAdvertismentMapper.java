@@ -2,6 +2,7 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.TraCustomerService;
 import io.protone.custom.service.dto.LibItemPT;
+import io.protone.custom.service.dto.LibMediaItemPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibMediaItem;
@@ -24,6 +25,8 @@ public class CustomTRAAdvertismentMapper {
 
     @Inject
     private TraCustomerService customerService;
+    @Inject
+    private CustomLibMediaItemMapper customLibMediaItemMapper;
 
     public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
         TraAdvertisement advertisement = new TraAdvertisement();
@@ -31,7 +34,7 @@ public class CustomTRAAdvertismentMapper {
         return advertisement.name(traAdvertisementPT.getName())
             .description(traAdvertisementPT.getDescription())
             .industry(customTraIndustryMapper.tRAIndustryDTOToTraIndustry(traAdvertisementPT.getIndustryId()))
-            .libitem((new LibMediaItem()))
+            .mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(traAdvertisementPT.getMediaItemId()))
             .customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
 
     }
@@ -42,7 +45,7 @@ public class CustomTRAAdvertismentMapper {
             .name(traAdvertisement.getName())
             .description(traAdvertisement.getDescription())
             .industryId(customTraIndustryMapper.tRAIndustryToTraIndustryDTO(traAdvertisement.getIndustry()))
-            .mediaItemId(new LibItemPT())
+            .mediaItemId(customLibMediaItemMapper.lIBMediaItemToLibMediaItemPT(traAdvertisement.getMediaItem()))
             .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCustomer()));
 
     }
