@@ -47,27 +47,24 @@ public class SchPlaylistService {
     @Inject
     BlockUtils blockUtils;
 
-    public SchPlaylistPT getPlaylist(String networkShortcut, String channelShortcut, String date) {
-
-        SchPlaylistPT result = null;
-
-        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
-        if (networkDB == null)
-            return result;
-
-        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
-        if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
-            return result;
-
-        //Optional<SchPlaylist> playlistDB = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
+    public SchPlaylistPT randomPlaylist(String networkShortcut, String channelShortcut, String date) {
+        CorChannel channelDB = getChannel(networkShortcut, channelShortcut);
         LocalDate localDate = LocalDate.parse(date);
 
         return new SchPlaylistPT()
             .channelId(channelDB.getId())
             .date(localDate)
             .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
+    }
 
-        //return playlistMapper.DBToDTO(playlistDB.get());
+    public SchPlaylistPT getPlaylist(String networkShortcut, String channelShortcut, String date) {
+
+        SchPlaylistPT result = null;
+        CorChannel channelDB = getChannel(networkShortcut, channelShortcut);
+        Optional<SchPlaylist> optionalPlaylist = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
+        if (optionalPlaylist.isPresent())
+            result = playlistMapper.DBToDTO(optionalPlaylist.get());
+        return result;
     }
 
     public SchPlaylistPT setPlaylist(String networkShortcut, String channelShortcut, SchPlaylistPT playlist) {
@@ -161,4 +158,18 @@ public class SchPlaylistService {
     public SchPlaylistPT createOrUpdatePlaylist(String networkShortcut, String channelShortcut, SchPlaylistPT playlist) {
         return setPlaylist(networkShortcut, channelShortcut, playlist);
     }
+
+    public CorChannel getChannel(String networkShortcut, String channelShortcut) {
+
+        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
+        if (networkDB == null)
+            return null;
+
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
+        if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
+            return null;
+        else
+            return channelDB;
+    }
+
 }
