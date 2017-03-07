@@ -2,6 +2,8 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
+import io.protone.custom.service.dto.SchPlaylistPT;
+import io.protone.custom.service.dto.SchTemplatePT;
 import io.protone.custom.service.mapper.CustomSchBlockMapper;
 import io.protone.custom.service.mapper.CustomSchEmissionMapperV2;
 import io.protone.custom.utils.BlockUtils;
@@ -10,8 +12,11 @@ import io.protone.domain.SchEmission;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,25 +39,30 @@ public class SchBlockService {
     private BlockUtils blockUtils;
 
     public List<SchBlockPT> getBlocks() {
-        return blockUtils.sampleDay();
+        return blockUtils.sampleDay(ZonedDateTime.now());
     }
 
-    public List<SchBlockPT> setBlocks(List<SchBlockPT> blocks) {
+    public List<SchBlockPT> setBlocks(List<SchBlockPT> blocks, SchPlaylistPT playlist, SchTemplatePT template) {
 
         List<SchBlockPT> results = new ArrayList<>();
 
         for (SchBlockPT block: blocks)
-            results.add(setBlock(block));
+            results.add(setBlock(block, null, playlist, template));
 
         return results;
     }
 
-    public SchBlockPT setBlock(SchBlockPT blockDTO) {
-
-        for (SchEmissionPT emission: blockDTO.getEmissions())
-            setEmission(emission);
+    @Transactional
+    public SchBlockPT setBlock(SchBlockPT blockDTO, Long parentId, SchPlaylistPT playlist, SchTemplatePT template) {
 
         SchBlock blockDB = blockMapper.DTO2DB(blockDTO);
+        blockDB.setParentBlock(emissionMapper.mapSchBlock(parentId));
+
+        if (playlist != null)
+            blockDB.setPlaylist(blockMapper.mapSchPlaylist(playlist.getId()));
+
+        if (template != null)
+            blockDB.setTemplate(blockMapper.mapSchTemplate(template.getId()));
 
         if (blockDB.getId() == null) {
             // new block - add it
@@ -70,14 +80,20 @@ public class SchBlockService {
             blockDB = null;
         }
 
-        for(SchBlockPT block: blockDTO.getBlocks())
-            setBlock(block);
+        SchBlockPT result = blockMapper.DB2DTO(blockDB);
 
-        return blockMapper.DB2DTO(blockDB);
+        for(SchBlockPT block: blockDTO.getBlocks())
+            result.addBlock(setBlock(block, blockDB.getId(), playlist, template));
+
+        for (SchEmissionPT emission: blockDTO.getEmissions())
+            result.addEmission(setEmission(emission, blockDB.getId()));
+
+        return result;
     }
 
-    private SchEmissionPT setEmission(SchEmissionPT emissionDTO) {
+    private SchEmissionPT setEmission(SchEmissionPT emissionDTO, Long parentId) {
         SchEmission emissionDB = emissionMapper.DTO2DB(emissionDTO);
+        emissionDB.setBlock(emissionMapper.mapSchBlock(parentId));
 
         if (emissionDB.getId() == null) {
             // new emission - add it

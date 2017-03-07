@@ -1,5 +1,6 @@
 package io.protone.custom.utils;
 
+import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.domain.LibLibrary;
@@ -19,12 +20,15 @@ import java.util.List;
 public class BlockUtils {
 
     public List<SchBlockPT> sampleBand() {
+
+        ZonedDateTime now = ZonedDateTime.now();
+
         List<SchBlockPT> results = new ArrayList<>();
         SchBlockPT band = new SchBlockPT();
         band.type(SchBlockTypeEnum.BT_BAND)
             .name("SAMPLE_" + band.getType())
-        .addBlock(sampleHour(false))
-        .startTime(ZonedDateTime.now())
+        .addBlock(sampleHour(now, 12,false))
+        .startTime(now)
         .startType(SchStartTypeEnum.ST_ABSOLUTE)
         .relativeDelay(0L);
         results.add(band);
@@ -61,17 +65,26 @@ public class BlockUtils {
         }
     }
 
-    public List<SchBlockPT> sampleDay() {
+    public List<SchBlockPT> sampleDay(ZonedDateTime dateTime) {
         List<SchBlockPT> results = new ArrayList<>();
         for (int h = 0; h < 24; h++)
-            results.add(sampleHour(true));
+            results.add(sampleHour(dateTime, h, true));
+        SchBlockPT firstBlock = results.iterator().next();
+        updateSeq(results);
+        updateStartTime(results, firstBlock.getStartTime());
         return results;
     }
 
-    public SchBlockPT sampleHour(boolean full) {
+    public SchBlockPT sampleHour(ZonedDateTime dateTime, int h, boolean full) {
 
-        SchBlockPT result = new SchBlockPT();
-        result.setType(SchBlockTypeEnum.BT_HOUR);
+        ZonedDateTime dt = dateTime.withHour(h).withMinute(0).withSecond(0).withNano(0);
+
+        SchBlockPT result = new SchBlockPT()
+            .type(SchBlockTypeEnum.BT_HOUR)
+            .startTime(dt)
+            .startType(SchStartTypeEnum.ST_ABSOLUTE)
+            .relativeDelay(0L)
+            .name("SAMPLE_" + SchBlockTypeEnum.BT_HOUR);
         if (full)
             for (int i = 0; i < 4; i++) {
                 result.addBlock(sampleCommercial(3));
@@ -113,7 +126,10 @@ public class BlockUtils {
     }
 
     public SchEmissionPT sampleEmission(Long length) {
-        SchEmissionPT emission = new SchEmissionPT();
+        SchEmissionPT emission = new SchEmissionPT()
+            .name("SAMPLE_EMISSION")
+            //.mediaItem(new LibItemPT())
+            ;
         emission.length(length);
         return emission;
     }

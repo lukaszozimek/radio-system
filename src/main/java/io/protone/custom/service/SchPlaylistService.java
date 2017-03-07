@@ -8,11 +8,13 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
+import io.protone.service.mapper.SchBlockMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +42,9 @@ public class SchPlaylistService {
     SchBlockService blockService;
 
     @Inject
+    SchBlockMapper blockMapper;
+
+    @Inject
     BlockUtils blockUtils;
 
     public SchPlaylistPT getPlaylist(String networkShortcut, String channelShortcut, String date) {
@@ -60,14 +65,31 @@ public class SchPlaylistService {
         return new SchPlaylistPT()
             .channelId(channelDB.getId())
             .date(localDate)
-            .blocks(blockUtils.sampleBand());
+            .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
 
         //return playlistMapper.DBToDTO(playlistDB.get());
     }
 
     public SchPlaylistPT setPlaylist(String networkShortcut, String channelShortcut, SchPlaylistPT playlist) {
-        SchPlaylistPT result = null;
-        return playlist;
+        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
+        if (networkDB == null)
+            return null;
+
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
+        if ((channelDB == null) || (channelDB.getNetwork().getId().compareTo(networkDB.getId()) != 0))
+            return null;
+
+        SchPlaylistPT result = savePlaylist(playlist);
+
+        return result;
+    }
+
+    private SchPlaylistPT savePlaylist(SchPlaylistPT playlist) {
+        SchPlaylist playlistDB = playlistMapper.DTOToDB(playlist);
+        playlistDB = playlistRepository.saveAndFlush(playlistDB);
+        SchPlaylistPT result = playlistMapper.DBToDTO(playlistDB);
+        result.blocks(blockService.setBlocks(playlist.getBlocks(), result, null));
+        return result;
     }
 
     public List<SchPlaylistPT> getPlaylists(String networkShortcut, String channelShortcut) {
@@ -137,8 +159,6 @@ public class SchPlaylistService {
     }
 
     public SchPlaylistPT createOrUpdatePlaylist(String networkShortcut, String channelShortcut, SchPlaylistPT playlist) {
-        CorChannel channel = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
-        playlist.setChannelId(channel.getId());
-        return playlistMapper.DBToDTO(playlistRepository.saveAndFlush(playlistMapper.DTOToDB(playlist)));
+        return setPlaylist(networkShortcut, channelShortcut, playlist);
     }
 }
