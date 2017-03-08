@@ -1,24 +1,32 @@
 package io.protone.custom.service;
 
+import com.google.common.collect.Lists;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.SchBlockPT;
-import io.protone.custom.service.dto.SchEmissionPT;
+import io.protone.custom.service.dto.LibMediaItemPT;
+import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.custom.service.dto.TraShuffleAdvertisementPT;
 import io.protone.custom.service.mapper.CustomLibMediaItemMapper;
-import io.protone.domain.enumeration.SchBlockTypeEnum;
-import io.protone.domain.enumeration.SchStartTypeEnum;
+import io.protone.domain.LibMediaItem;
+import io.protone.domain.SchBlock;
+import io.protone.domain.SchEmission;
+import io.protone.domain.TraAdvertisement;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.ZonedDateTime;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 06/03/2017.
@@ -28,85 +36,79 @@ import java.util.List;
 @Transactional
 public class AdvertisementShuffleTest {
 
-    @Inject
+    @Mock
     private CustomSchBlockRepository customSchBlockRepository;
 
-    @Inject
+    @Mock
     private CustomSchEmissionRepository schEmissionRepository;
 
-    @Inject
+    @Mock
     private CustomTraAdvertisementRepository customTraAdvertisementRepository;
-    @Inject
+
+    @Mock
     private CustomLibMediaItemMapper customLibMediaItemMapper;
 
-    @Inject
+    @InjectMocks
     private AdvertisementShuffle advertisementShuffle;
 
     @Before
     public void initMock() {
-        List<SchBlockPT> results = sampleDay();
+        MockitoAnnotations.initMocks(this);
+        SchBlock schBlock = new SchBlock();
+        SchBlock schBlock1 = new SchBlock();
+        SchEmission schEmission = new SchEmission();
+        schEmission.setMediaItem(new LibMediaItem().idx("3"));
 
+        SchEmission schEmission1 = new SchEmission();
+        schEmission1.setMediaItem(new LibMediaItem().idx("2"));
+        when(customTraAdvertisementRepository.findOne((long) 1)).thenReturn(new TraAdvertisement());
+        when(customSchBlockRepository.findByScheduledStartTimeBetweenAndType(any(ZonedDateTime.class), any(ZonedDateTime.class), any())).thenReturn(Lists.newArrayList(schBlock, schBlock1));
+        when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
+        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem());
     }
 
     @Test
-    public void schuffleCommercials() throws Exception {
-
+    public void shuffleCommercials() throws Exception {
+        TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
+        tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
+        tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
+        tarShuffleAdvertisementPT.setNumber(2);
+        tarShuffleAdvertisementPT.setTraAdvertisementPT(new TraAdvertisementPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().setId((long) 1);
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().setMediaItemId(new LibMediaItemPT());
+        advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
 
-    public List<SchBlockPT> sampleDay() {
-        List<SchBlockPT> results = new ArrayList<>();
-        for (int h = 0; h < 24; h++)
-            results.add(sampleHour(true));
-        return results;
+    @Test
+    public void shuffleCommercialsLessThanAvailableBlocks() throws Exception {
+        TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
+        tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
+        tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
+        tarShuffleAdvertisementPT.setNumber(3);
+        tarShuffleAdvertisementPT.setTraAdvertisementPT(new TraAdvertisementPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().setId((long) 1);
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().setMediaItemId(new LibMediaItemPT());
+        advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
 
-    private SchBlockPT sampleHour(boolean full) {
+    @Test
+    public void shuffleCommercialsIfOneExistInBlock() throws Exception {
+        SchEmission schEmission = new SchEmission();
+        schEmission.setMediaItem(new LibMediaItem().idx("1"));
 
-        SchBlockPT result = new SchBlockPT();
-        result.setType(SchBlockTypeEnum.BT_HOUR);
-        if (full)
-            for (int i = 0; i < 4; i++) {
-                result.addBlock(sampleCommercial(3));
-                result.addBlock(sampleMusic(4));
-            }
-        else {
-            result.addBlock(sampleCommercial(3));
-            result.addBlock(sampleMusic(3));
-        }
-
-        return result;
+        SchEmission schEmission1 = new SchEmission();
+        schEmission1.setMediaItem(new LibMediaItem().idx("2"));
+        when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
+        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem().idx("1"));
+        TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
+        tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
+        tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
+        tarShuffleAdvertisementPT.setNumber(3);
+        tarShuffleAdvertisementPT.setTraAdvertisementPT(new TraAdvertisementPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().setId((long) 1);
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().setMediaItemId(new LibMediaItemPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId().setIdx("1");
+        advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
 
-    private SchBlockPT sampleCommercial(int numOfElements) {
-        SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_COMMERCIAL)
-            .name("SAMPLE_" + SchBlockTypeEnum.BT_COMMERCIAL)
-            .startType(SchStartTypeEnum.ST_ABSOLUTE)
-            .relativeDelay(0L);
-        //intro:
-        result.addEmission(sampleEmission(1500L));
-        //commercials:
-        for (int c = 0; c < numOfElements; c++)
-            result.addEmission(sampleEmission(30000L));
-        //outro:
-        result.addEmission(sampleEmission(1500L));
-        return result;
-    }
-
-    private SchBlockPT sampleMusic(int numOfElements) {
-        SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_PROGRAM)
-            .name("SAMPLE_" + SchBlockTypeEnum.BT_PROGRAM)
-            .startType(SchStartTypeEnum.ST_ABSOLUTE)
-            .relativeDelay(0L);
-        for (int i = 0; i < numOfElements; i++)
-            result.addEmission(sampleEmission(240000L));
-        return result;
-    }
-
-    private SchEmissionPT sampleEmission(Long length) {
-        SchEmissionPT emission = new SchEmissionPT();
-        emission.length(length);
-        return emission;
-    }
 }

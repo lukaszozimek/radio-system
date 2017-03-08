@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 /**
  * Created by lukaszozimek on 06/03/2017.
  */
-public class TraShuffleAdvertismentPT {
+public class TraShuffleAdvertisementPT {
 
     @JsonProperty("advertisement")
     private TraAdvertisementPT traAdvertisementPT;
@@ -22,7 +22,7 @@ public class TraShuffleAdvertismentPT {
     private int number;
 
     @JsonProperty("optional")
-    private TraShuffleAdvertismentOptionaltPT traShuffleAdvertismentOptionaltPT;
+    private TraShuffleAdvertisementOptionalPT tarShuffleAdvertisementOptionalPT;
 
     public ZonedDateTime getFrom() {
         return from;
@@ -48,12 +48,12 @@ public class TraShuffleAdvertismentPT {
         this.number = number;
     }
 
-    public TraShuffleAdvertismentOptionaltPT getTraShuffleAdvertismentOptionaltPT() {
-        return traShuffleAdvertismentOptionaltPT;
+    public TraShuffleAdvertisementOptionalPT getTarShuffleAdvertisementOptionalPT() {
+        return tarShuffleAdvertisementOptionalPT;
     }
 
-    public void setTraShuffleAdvertismentOptionaltPT(TraShuffleAdvertismentOptionaltPT traShuffleAdvertismentOptionaltPT) {
-        this.traShuffleAdvertismentOptionaltPT = traShuffleAdvertismentOptionaltPT;
+    public void setTarShuffleAdvertisementOptionalPT(TraShuffleAdvertisementOptionalPT tarShuffleAdvertisementOptionalPT) {
+        this.tarShuffleAdvertisementOptionalPT = tarShuffleAdvertisementOptionalPT;
     }
 
     public TraAdvertisementPT getTraAdvertisementPT() {
