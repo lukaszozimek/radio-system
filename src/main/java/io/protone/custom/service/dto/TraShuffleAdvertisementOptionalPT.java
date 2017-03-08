@@ -1,12 +1,16 @@
 package io.protone.custom.service.dto;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by lukaszozimek on 06/03/2017.
  */
-public class TraShuffleAdvertismentOptionaltPT {
+public class TraShuffleAdvertisementOptionalPT {
+
+    @JsonProperty("priority")
     private String priority;
+
+    @JsonProperty("offsetType")
     private String offsetType;
 
     public String getPriority() {
