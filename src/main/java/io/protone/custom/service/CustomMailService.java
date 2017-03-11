@@ -1,8 +1,7 @@
-package io.protone.custom;
+package io.protone.custom.service;
 
 import io.github.jhipster.config.JHipsterProperties;
 import io.protone.domain.CorUser;
-import io.protone.domain.User;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

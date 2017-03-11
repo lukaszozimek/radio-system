@@ -20,8 +20,8 @@ import java.util.List;
  * Created by lukaszozimek on 06/03/2017.
  */
 @Service
-public class AdvertisementShuffle {
-    private final Logger log = LoggerFactory.getLogger(AdvertisementShuffle.class);
+public class TraAdvertisementShuffleService {
+    private final Logger log = LoggerFactory.getLogger(TraAdvertisementShuffleService.class);
 
     @Inject
     private CustomSchBlockRepository customSchBlockRepository;
@@ -51,7 +51,8 @@ public class AdvertisementShuffle {
                 List<SchEmission> schEmissionList = schEmissionRepository.findByBlock(schBlockList.get(blockIndex));
                 long numberOfAdvertisements = schEmissionList.stream()
                     .filter(schEmission ->
-                    schEmission.getMediaItem().getIdx().equalsIgnoreCase(tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId().getIdx())).count();
+                        schEmission.getMediaItem().getIdx().equalsIgnoreCase(tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId().getIdx())).count();
+
                 ///Add Filtering by lenghtScheduledTime
                 if (numberOfAdvertisements == 0) {
                     SchBlock schBlock = schBlockList.get(blockIndex);
