@@ -52,7 +52,6 @@ public class TraAdvertisementShuffleService {
                 long numberOfAdvertisements = schEmissionList.stream()
                     .filter(schEmission ->
                         schEmission.getMediaItem().getIdx().equalsIgnoreCase(tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId().getIdx())).count();
-
                 ///Add Filtering by lenghtScheduledTime
                 if (numberOfAdvertisements == 0) {
                     SchBlock schBlock = schBlockList.get(blockIndex);
