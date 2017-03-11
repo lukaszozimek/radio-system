@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class AdvertisementShuffleTest {
+public class TraAdvertisementShuffleServiceTest {
 
     @Mock
     private CustomSchBlockRepository customSchBlockRepository;
@@ -49,7 +49,7 @@ public class AdvertisementShuffleTest {
     private CustomLibMediaItemMapper customLibMediaItemMapper;
 
     @InjectMocks
-    private AdvertisementShuffle advertisementShuffle;
+    private TraAdvertisementShuffleService advertisementShuffle;
 
     @Before
     public void initMock() {
@@ -58,7 +58,6 @@ public class AdvertisementShuffleTest {
         SchBlock schBlock1 = new SchBlock();
         SchEmission schEmission = new SchEmission();
         schEmission.setMediaItem(new LibMediaItem().idx("3"));
-
         SchEmission schEmission1 = new SchEmission();
         schEmission1.setMediaItem(new LibMediaItem().idx("2"));
         when(customTraAdvertisementRepository.findOne((long) 1)).thenReturn(new TraAdvertisement());
@@ -69,6 +68,7 @@ public class AdvertisementShuffleTest {
 
     @Test
     public void shuffleCommercials() throws Exception {
+        //when
         TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
         tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
@@ -76,11 +76,13 @@ public class AdvertisementShuffleTest {
         tarShuffleAdvertisementPT.setTraAdvertisementPT(new TraAdvertisementPT());
         tarShuffleAdvertisementPT.getTraAdvertisementPT().setId((long) 1);
         tarShuffleAdvertisementPT.getTraAdvertisementPT().setMediaItemId(new LibMediaItemPT());
+
         advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
 
     @Test
     public void shuffleCommercialsLessThanAvailableBlocks() throws Exception {
+        //given
         TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
         tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
@@ -88,18 +90,22 @@ public class AdvertisementShuffleTest {
         tarShuffleAdvertisementPT.setTraAdvertisementPT(new TraAdvertisementPT());
         tarShuffleAdvertisementPT.getTraAdvertisementPT().setId((long) 1);
         tarShuffleAdvertisementPT.getTraAdvertisementPT().setMediaItemId(new LibMediaItemPT());
+        //then
         advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
 
     @Test
     public void shuffleCommercialsIfOneExistInBlock() throws Exception {
+        ///when
         SchEmission schEmission = new SchEmission();
-        schEmission.setMediaItem(new LibMediaItem().idx("1"));
-
+        schEmission.setMediaItem(new LibMediaItem().idx("1").length(2L));
+        schEmission.setBlock(new SchBlock().scheduledLength(3L));
         SchEmission schEmission1 = new SchEmission();
-        schEmission1.setMediaItem(new LibMediaItem().idx("2"));
+        schEmission1.block(new SchBlock().scheduledLength(3L));
+        schEmission1.setMediaItem(new LibMediaItem().idx("2").length(2L));
         when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
-        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem().idx("1"));
+        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem().idx("1").length(1L));
+        //given
         TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
         tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
@@ -108,6 +114,7 @@ public class AdvertisementShuffleTest {
         tarShuffleAdvertisementPT.getTraAdvertisementPT().setId((long) 1);
         tarShuffleAdvertisementPT.getTraAdvertisementPT().setMediaItemId(new LibMediaItemPT());
         tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId().setIdx("1");
+        //then
         advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
 

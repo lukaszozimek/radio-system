@@ -2,25 +2,19 @@ package io.protone.custom.web.rest.network;
 
 
 import com.codahale.metrics.annotation.Timed;
-import io.protone.custom.CustomMailService;
+import io.protone.custom.service.CustomMailService;
 import io.protone.custom.service.CustomCorUserService;
 import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
-import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
-import io.protone.domain.User;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.security.SecurityUtils;
-import io.protone.service.MailService;
-import io.protone.service.UserService;
 import io.protone.service.dto.UserDTO;
 import io.protone.web.rest.util.HeaderUtil;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
 import io.protone.web.rest.vm.ManagedUserVM;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
