@@ -57,7 +57,6 @@ public class TraAdvertisementShuffleService {
                 if (numberOfAdvertisements == 0) {
                     SchBlock schBlock = schBlockList.get(blockIndex);
                     SchEmission emission = new SchEmission().block(schBlock).seq(schEmissionList.size() + 1).mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId()));
-                    schEmissionRepository.save(emission);
                     numberOfCommercialsShuffled++;
                 }
             } else {
