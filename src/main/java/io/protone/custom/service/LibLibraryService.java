@@ -26,13 +26,13 @@ public class LibLibraryService {
     private CustomLibLibraryRepository libraryRepository;
 
     @Inject
-    CustomLibLibraryMapperExt customLibLibraryMapper;
+    private CustomLibLibraryMapperExt customLibLibraryMapper;
 
     @Inject
-    CustomCORChannelMapper customCorChannelMapper;
+    private CustomCORChannelMapper customCorChannelMapper;
 
     @Inject
-    CustomCorUserMapperExt userMapper;
+    private CustomCorUserMapperExt userMapper;
 
 
     public List<LibLibrary> findLibrary(String networkShortcut) {
@@ -72,8 +72,6 @@ public class LibLibraryService {
     private CorNetwork getNetworkByShortcut(String networkShortcut) {
         return networkRepository.findOneByShortcut(networkShortcut);
     }
-
-
 
 
 }

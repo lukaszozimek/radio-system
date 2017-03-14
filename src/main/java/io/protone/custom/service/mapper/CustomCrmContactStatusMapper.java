@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCrmContactStatusMapper {
-
+/*
     @Mapping(source = "networkId", target = "network")
     CrmContactStatus DTO2DB(ConfCrmContactStatusPT confCrmTaskStatusPT);
 
@@ -34,4 +34,5 @@ public interface CustomCrmContactStatusMapper {
         cORNetwork.setId(id);
         return cORNetwork;
     }
+    */
 }

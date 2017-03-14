@@ -17,6 +17,7 @@ import io.protone.repository.LibCloudObjectRepository;
 import io.protone.security.SecurityUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.detect.Detector;
+import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.AutoDetectParser;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
@@ -36,6 +38,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class LibItemService {
 
     @Inject
@@ -49,16 +52,24 @@ public class LibItemService {
 
     @Inject
     private CustomItemMapperExt itemMapper;
+
     @Inject
     private LibCloudObjectRepository cloudObjectRepository;
+
     @Inject
     private MediaUtils mediaUtils;
+
     @Inject
     private CustomLibMediaItemRepository mediaItemRepository;
+
     @Inject
     private CustomLibAudioObjectRepository audioObjectRepository;
+
     @Inject
     private CustomCorUserRepository userRepository;
+
+    @Inject
+    private LibMetadataService libMetadataService;
 
     public LibItemPT getItem(String networkShortcut, String libraryShortcut, String idx) {
         LibItemPT result = null;
@@ -109,10 +120,12 @@ public class LibItemService {
         }
 
     }
+
     public LibItemPT update(LibItemPT libItemPT) {
         LibMediaItem item = itemRepository.save(itemMapper.DTO2DB(libItemPT));
         return itemMapper.DB2DTO(item);
     }
+
     public List<LibItemPT> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException {
 
         List<LibItemPT> result = new ArrayList<>();
@@ -130,8 +143,7 @@ public class LibItemService {
             String fileUUID = UUID.randomUUID().toString();
 
             ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
-
-            AutoDetectParser parser = new AutoDetectParser();
+           AutoDetectParser parser = new AutoDetectParser();
             Detector detector = parser.getDetector();
             Metadata md = new Metadata();
             md.add(Metadata.RESOURCE_NAME_KEY, fileName);
@@ -151,21 +163,14 @@ public class LibItemService {
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
                 CorUser currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
-
+                CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
                 cloudObject.setCreatedBy(currentUser);
-
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
-
+                cloudObject.network(corNetwork);
                 cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
 
-                LibMediaItem mediaItem = new LibMediaItem();
-                mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
-                mediaItem.setName(ServiceConstants.NO_DATA);
-                mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
-                mediaItem.setLength(-1L);
-                mediaItem.setState(LibItemStateEnum.IS_NEW);
-                mediaItem.setLibrary(libraryDB);
+                LibMediaItem mediaItem = libMetadataService.resolveMetadata(file, libraryDB, corNetwork);
 
                 mediaItemRepository.saveAndFlush(mediaItem);
 
@@ -183,6 +188,10 @@ public class LibItemService {
             } catch (UploadException e) {
                 e.printStackTrace();
             } catch (S3Exception e) {
+                e.printStackTrace();
+            } catch (TikaException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
                 e.printStackTrace();
             } finally {
                 bais.close();
