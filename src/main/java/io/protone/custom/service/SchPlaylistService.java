@@ -62,8 +62,11 @@ public class SchPlaylistService {
         SchPlaylistPT result = null;
         CorChannel channelDB = getChannel(networkShortcut, channelShortcut);
         Optional<SchPlaylist> optionalPlaylist = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
-        if (optionalPlaylist.isPresent())
+        if (optionalPlaylist.isPresent()) {
             result = playlistMapper.DBToDTO(optionalPlaylist.get());
+            result.blocks(new ArrayList<>());
+            result.blocks(blockService.getBlocks(result, null, null));
+        }
         return result;
     }
 

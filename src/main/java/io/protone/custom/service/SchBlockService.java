@@ -6,9 +6,12 @@ import io.protone.custom.service.dto.SchPlaylistPT;
 import io.protone.custom.service.dto.SchTemplatePT;
 import io.protone.custom.service.mapper.CustomSchBlockMapper;
 import io.protone.custom.service.mapper.CustomSchEmissionMapperV2;
+import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
 import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.SchBlock;
 import io.protone.domain.SchEmission;
+import io.protone.domain.SchPlaylist;
+import io.protone.domain.SchTemplate;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
 import org.springframework.stereotype.Service;
@@ -38,8 +41,35 @@ public class SchBlockService {
     @Inject
     private BlockUtils blockUtils;
 
-    public List<SchBlockPT> getBlocks() {
-        return blockUtils.sampleDay(ZonedDateTime.now());
+    public List<SchBlockPT> getBlocks(SchPlaylistPT playlistDTO, SchTemplatePT templateDTO, SchBlockPT parentBlockDTO) {
+
+        List<SchBlockPT> results = new ArrayList<>();
+
+        SchPlaylist playlistDB = null;
+        if (playlistDTO != null)
+            playlistDB = blockMapper.mapSchPlaylist(playlistDTO.getId());
+
+        SchTemplate templateDB = null;
+        if (templateDTO != null)
+            templateDB = blockMapper.mapSchTemplate(templateDTO.getId());
+
+        SchBlock parentBlockDB = null;
+        if (parentBlockDTO != null)
+            parentBlockDB = emissionMapper.mapSchBlock(parentBlockDTO.getId());
+
+        List<SchBlock> rootBlocksDB = blockRepository.findByPlaylistAndTemplateAndParentBlock(playlistDB, templateDB, parentBlockDB);
+        for (SchBlock childBlockDB: rootBlocksDB) {
+            SchBlockPT childBlockDTO = blockMapper.DB2DTO(childBlockDB);
+            childBlockDTO.blocks(getBlocks(playlistDTO, templateDTO, childBlockDTO));
+            childBlockDTO.emissions(getEmissions(childBlockDTO));
+            results.add(childBlockDTO);
+        }
+
+        return results;
+    }
+
+    private List<SchEmissionPT> getEmissions(SchBlockPT childBlockDTO) {
+        return emissionMapper.DBs2DTOs(emissionRepository.findByBlock(emissionMapper.mapSchBlock(childBlockDTO.getId())));
     }
 
     public List<SchBlockPT> setBlocks(List<SchBlockPT> blocks, SchPlaylistPT playlist, SchTemplatePT template) {
