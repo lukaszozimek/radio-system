@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-type type="audio/av-wav">
+    <acronym>AV-WAV</acronym>
+    <magic priority="20">
+        <match value="Broadcast Electronics AudioVAULT" type="string" offset="534"
+               mask="0xFFFFFFFF00000000FFFFFFFF"/>
+    </magic>
+
+</mime-type>

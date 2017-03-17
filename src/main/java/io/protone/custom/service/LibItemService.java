@@ -143,7 +143,7 @@ public class LibItemService {
             String fileUUID = UUID.randomUUID().toString();
 
             ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
-           AutoDetectParser parser = new AutoDetectParser();
+            AutoDetectParser parser = new AutoDetectParser();
             Detector detector = parser.getDetector();
             Metadata md = new Metadata();
             md.add(Metadata.RESOURCE_NAME_KEY, fileName);
@@ -169,22 +169,17 @@ public class LibItemService {
                 cloudObject.setHash(ServiceConstants.NO_HASH);
                 cloudObject.network(corNetwork);
                 cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
-
-                LibMediaItem mediaItem = libMetadataService.resolveMetadata(file, libraryDB, corNetwork);
-
-                mediaItemRepository.saveAndFlush(mediaItem);
-
+                LibMediaItem libMediaItem = new LibMediaItem();
                 LibAudioObject audioObject = new LibAudioObject();
-                audioObject.setBiTrate(-1);
+                libMetadataService.resolveMetadata(file, libraryDB, corNetwork, libMediaItem, audioObject);
+
+                libMediaItem = mediaItemRepository.saveAndFlush(libMediaItem);
                 audioObject.setCloudObject(cloudObject);
-                audioObject.setMediaItem(mediaItem);
-                audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
-                audioObject.setLength(-1L);
-                audioObject.setCodec(ServiceConstants.NO_DATA);
+                audioObject.setMediaItem(libMediaItem);
 
                 audioObjectRepository.saveAndFlush(audioObject);
 
-                result.add(itemMapper.DB2DTO(mediaItem));
+                result.add(itemMapper.DB2DTO(libMediaItem));
             } catch (UploadException e) {
                 e.printStackTrace();
             } catch (S3Exception e) {

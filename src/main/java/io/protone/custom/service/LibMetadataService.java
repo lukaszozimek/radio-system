@@ -1,38 +1,35 @@
 package io.protone.custom.service;
 
-import io.protone.custom.consts.ServiceConstants;
 import io.protone.custom.utils.MediaUtils;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.LibAudioObject;
+import io.protone.domain.LibLibrary;
+import io.protone.domain.LibMediaItem;
+import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.repository.LibArtistRepository;
-import org.apache.tika.detect.Detector;
 import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.*;
-import org.apache.tika.mime.MediaType;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.metadata.XMPDM;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
-import javax.xml.ws.ServiceMode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.instrument.Instrumentation;
-import java.util.HashSet;
 
 /**
  * Created by lukaszozimek on 14/03/2017.
  */
 @Service
-
 @Transactional
 public class LibMetadataService {
 
@@ -48,8 +45,10 @@ public class LibMetadataService {
     @Inject
     private LibAlbumService libAlbumService;
 
+    @Inject
+    private LibMarkerService libMArkerService;
 
-    public LibMediaItem resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork) throws TikaException, SAXException, IOException {
+    public void resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
         InputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
         Parser parser = new AutoDetectParser();
         BodyContentHandler handler = new BodyContentHandler();
@@ -58,27 +57,23 @@ public class LibMetadataService {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
 
-        ///TODO:http://stackoverflow.com/questions/5865728/bitconverter-for-java resolve cart chunk
-
-        //byte[] bytes = new byte["".length() * (Character.SIZE / 8)];
-       // System.arraycopy(toString().toCharArray(), 0, bytes, 0, bytes.length);
-       // return bytes;
-        //algorythm migration
-        LibMediaItem mediaItem = new LibMediaItem();
         mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
         mediaItem.setName(metadata.get(TikaCoreProperties.TITLE));
         mediaItem.setDescription(metadata.get(TikaCoreProperties.COMMENTS));
-        mediaItem.setArtist(new LibArtist().name(metadata.get(XMPDM.ARTIST)));
-        mediaItem.addComposer(new CorPerson().firstName(metadata.get(XMPDM.COMPOSER)));
-        mediaItem.addAuthor(new CorPerson().firstName(metadata.get(XMPDM.COMPOSER)));
-        mediaItem.album(new LibAlbum().name(metadata.get(XMPDM.ALBUM)).artist(new LibArtist().name(metadata.get(XMPDM.ALBUM_ARTIST))));
+        mediaItem.setArtist(libArtistService.findOrSaveOne(metadata.get(XMPDM.ARTIST), corNetwork));
+        mediaItem.album(libAlbumService.findOrSaveOne(metadata.get(XMPDM.ALBUM), metadata.get(XMPDM.ALBUM_ARTIST), corNetwork));
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
-        mediaItem.setLength(-1L);
+        //Change to Double
+        ///mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
 
+        audioObject.biTrate(Integer.valueOf(metadata.get(XMPDM.FILE_DATA_RATE)));
+        audioObject.setLength(mediaItem.getLength());
+        audioObject.setCodec(metadata.get(XMPDM.AUDIO_COMPRESSOR));
+        audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
 
-        return mediaItem;
+
     }
 
 }
