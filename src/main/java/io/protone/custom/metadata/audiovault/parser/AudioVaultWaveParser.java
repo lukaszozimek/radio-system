@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Set;
 
+import static io.protone.custom.metadata.ProtoneMetadataProperty.*;
+
 /**
  * Created by lukaszozimek on 16/03/2017.
  */
@@ -40,57 +42,54 @@ public class AudioVaultWaveParser extends AudioParser {
         audioParser.parse(stream, handler, metadata, context);
         metadata.set(Metadata.CONTENT_TYPE, HELLO_MIME_TYPE);
         cartChunk(stream, metadata);
-        listChunkAV(stream, metadata);
+        listAV(stream, metadata);
         XHTMLContentHandler xhtml = new XHTMLContentHandler(handler, metadata);
         xhtml.startDocument();
         xhtml.endDocument();
-        //  listBextAV(stream, metadata);
+        /// listBextAV(stream, metadata);
         //  av10(stream, metadata);
 
     }
 
-    private void listChunkAV(InputStream stream, Metadata metadata) throws IOException {
+    private void listAV(InputStream stream, Metadata metadata) throws IOException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         String file = new String(inputStream);
         int index = file.indexOf("LIST");
         String listChunkMetadata = file.substring(index, index + 1140);
-        metadata.add("AVListChunkDateModified", "");
-        metadata.add("AVListChunkDateAdd", "");
-        metadata.add("AVListChunkDateAdd", "");
-        metadata.add("AVListChunkCategory", "");
-        metadata.add("AVListChunkCategory", "");
-        metadata.add("AVListChunkClass", "");
-        metadata.add("AVListChunkClass", "");
-        metadata.add("AVListChunkIntroTime", "");
-        metadata.add("AVListChunkSourceDisk", "");
-        metadata.add("AVListChunkSourceDisk", "");
-        metadata.add("AVListChunkSourceTrack", "");
-        metadata.add("AVListChunkSongID", "");
-        metadata.add("AVListLiricist", "");
-        metadata.add("AVListLiricist", "");
-        metadata.add("AVListClickUrl", "");
-        metadata.add("AVListTempo", "");
-        metadata.add("AVListGenre", "");
-        metadata.add("AVListSubcategory", "");
-        metadata.add("AVListLanguage", "");
-        metadata.add("AVListAlbumName", "");
-        metadata.add("AVListAlbumTrackName", "");
-        metadata.add("AVListAlbumArtLink", "");
-        metadata.add("AVListAlbumRelYear", "");
-        metadata.add("AVListAlbumOrignYear", "");
-        metadata.add("AVListAlbumMuzeNumber", "");
-        metadata.add("AVListAlbumRecordLabel", "");
-        metadata.add("AVListAlbumPublisher", "");
-        metadata.add("AVListAlbumLicensee", "");
-        metadata.add("AVListAlbumCatalogNumber", "");
-        metadata.add("AVListAlbumUPCNumber", "");
-        metadata.add("AVListAlbumISRC", "");
-        metadata.add("AVListSoundtrackProducer", "");
-        metadata.add("AVListSoundtrackDirector", "");
-        metadata.add("AVListSoundtrackBookAuthor", "");
-        metadata.add("AVListSoundtrackScreenPlay", "");
-        metadata.add("AVListSoundtrackCast", "");
+        String[] splitedUser = listChunkMetadata.split("USER");
+        metadata.add(DATE_MODIFIED, splitedUser[1]);
+        metadata.add(DATE_ADD, splitedUser[2]);
+        metadata.add(CATEGORY, splitedUser[3]);
+        metadata.add(CLASS, splitedUser[4]);
+        metadata.add(INTROTIME, splitedUser[5]);
+        metadata.add(SOURCEDISK, splitedUser[6]);
+        metadata.add(SOURCE_TRACK, splitedUser[7]);
+        metadata.add(SONG_ID, splitedUser[8]);
+        metadata.add(COMPOSER, splitedUser[9]);
+        metadata.add(LIRICIST, splitedUser[10]);
+        metadata.add(CLICK_URL, splitedUser[11]);
+        metadata.add(TEMPO, splitedUser[12]);
+        metadata.add(GENRE, splitedUser[13]);
+        metadata.add(SUBCATEGORY, splitedUser[14]);
+        metadata.add(LANGUAGE, splitedUser[15]);
+        metadata.add(ALBUM_NAME, splitedUser[16]);
+        // metadata.add("AVListAlbumTrackName", splitedUser[1]);
+        metadata.add(ALBUM_ART_LINK, splitedUser[17]);
+        metadata.add(ALBUM_REL_YEAR, splitedUser[18]);
+        metadata.add(ALBUM_ORIGN_YEAR, splitedUser[19]);
+        metadata.add(ALBUM_MUZE_NUMBER, splitedUser[20]);
+        metadata.add(ALBUM_RECORD_LABEL, splitedUser[21]);
+        metadata.add(ALBUM_PUBLISHER, splitedUser[22]);
+        metadata.add(ALBUM_LICENSEE, splitedUser[23]);
+        metadata.add(ALBUM_CATALOG_NUMBER, splitedUser[24]);
+        metadata.add(ALBUM_UPC_NUMBER, splitedUser[25]);
+        metadata.add(ALBUM_ISRC, splitedUser[26]);
+        metadata.add(SOUNDTRACK_PRODUCER, splitedUser[27]);
+        metadata.add(SOUNDTRACK_DIRECTOR, splitedUser[28]);
+        metadata.add(SOUNDTRACK_BOOK_AUTHOR, splitedUser[29]);
+        metadata.add(SOUNDTRACK_SCREEN_PLAY, splitedUser[30]);
+        metadata.add(SOUNDTRACK_CAST, splitedUser[31]);
 
 
     }
@@ -133,9 +132,9 @@ public class AudioVaultWaveParser extends AudioParser {
 
         metadata.add("CartChunkTimerAUDe",
             String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(684, 692))));
-        metadata.add("CartChunkTimerSEGs",  String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(692, 699))));
-        metadata.add("CartChunkTimerSEGe",  String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(699, 707))));
-        metadata.add("CartChunkTimerINT",  String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(707, 715))));
+        metadata.add("CartChunkTimerSEGs", String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(692, 699))));
+        metadata.add("CartChunkTimerSEGe", String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(699, 707))));
+        metadata.add("CartChunkTimerINT", String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(707, 715))));
         metadata.add("CartChunkFifthTimer", s2.substring(692, 700).trim());
         metadata.add("CartChunkSixthTimer", s2.substring(692, 700).trim());
         metadata.add("CartChunkSeventhTimer", s2.substring(692, 700).trim());
@@ -149,10 +148,10 @@ public class AudioVaultWaveParser extends AudioParser {
     }
 
     public static long ToUInt32(byte[] bytes, int offset) {
-        long result = (int)bytes[offset]&0xff;
-        result |= ((int)bytes[offset+1]&0xff) << 8;
-        result |= ((int)bytes[offset+2]&0xff) << 16;
-        result |= ((int)bytes[offset+3]&0xff) << 24;
+        long result = (int) bytes[offset] & 0xff;
+        result |= ((int) bytes[offset + 1] & 0xff) << 8;
+        result |= ((int) bytes[offset + 2] & 0xff) << 16;
+        result |= ((int) bytes[offset + 3] & 0xff) << 24;
         return result & 0xFFFFFFFFL;
     }
 

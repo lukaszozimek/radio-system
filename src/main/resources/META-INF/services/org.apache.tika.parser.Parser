@@ -14,3 +14,5 @@
 #  limitations under the License.
 
 io.protone.custom.metadata.audiovault.parser.AudioVaultWaveParser
+io.protone.custom.metadata.audiovault.parser.AudioVaultMp3Parser
+io.protone.custom.metadata.audiovault.parser.AudioVaultMP2Parser

@@ -1,5 +1,6 @@
 package io.protone.custom.service;
 
+import io.protone.custom.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAudioObject;
@@ -58,21 +59,20 @@ public class LibMetadataService {
 
 
         mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
-        mediaItem.setName(metadata.get(TikaCoreProperties.TITLE));
-        mediaItem.setDescription(metadata.get(TikaCoreProperties.COMMENTS));
-        mediaItem.setArtist(libArtistService.findOrSaveOne(metadata.get(XMPDM.ARTIST), corNetwork));
-        mediaItem.album(libAlbumService.findOrSaveOne(metadata.get(XMPDM.ALBUM), metadata.get(XMPDM.ALBUM_ARTIST), corNetwork));
+        mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
+        mediaItem.setDescription(metadata.get(ProtoneMetadataProperty.COMMENTS));
+        mediaItem.setArtist(libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork));
+        mediaItem.album(libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM), metadata.get(ProtoneMetadataProperty.ALBUM_ARTIST), corNetwork));
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
         //Change to Double
         ///mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
 
-        audioObject.biTrate(Integer.valueOf(metadata.get(XMPDM.FILE_DATA_RATE)));
+        audioObject.biTrate(Integer.valueOf(metadata.get(ProtoneMetadataProperty.FILE_DATA_RATE)));
         audioObject.setLength(mediaItem.getLength());
-        audioObject.setCodec(metadata.get(XMPDM.AUDIO_COMPRESSOR));
+        audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
         audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
-
 
     }
 
