@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mime-type type="audio/av-wav">
-    <acronym>AV-WAV</acronym>
-    <magic priority="20">
-        <match value="Broadcast Electronics AudioVAULT" type="string" offset="534"
-               mask="0xFFFFFFFF00000000FFFFFFFF"/>
-    </magic>
+<mime-info>
 
-</mime-type>
+    <mime-type type="audio/av-wav">
+        <acronym>AV-WAV</acronym>
+        <magic priority="20">
+            <match value="Broadcast Electronics AudioVAULT" type="string" offset="534"
+            />
+        </magic>
+
+    </mime-type>
+    <mime-type type="audio/av-mp2">
+        <acronym>AV-WAV</acronym>
+        <magic priority="20">
+
+            <match value="Broadcast Electronics AudioVAULT" type="string" offset="568"
+            />
+        </magic>
+
+    </mime-type>
+    <mime-type type="audio/av-mp3">
+        <acronym>AV-MP3</acronym>
+        <magic priority="20">
+            <match value="TXXX" type="string" offset="24"/>
+        </magic>
+    </mime-type>
+</mime-info>

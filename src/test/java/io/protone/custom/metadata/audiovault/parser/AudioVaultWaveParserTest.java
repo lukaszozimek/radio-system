@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
  * Created by lukaszozimek on 16/03/2017.
  */
 public class AudioVaultWaveParserTest {
+
     @Test
     public void parse() throws Exception {
         Parser parser = new AutoDetectParser();
@@ -28,9 +29,20 @@ public class AudioVaultWaveParserTest {
         BodyContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
         ParseContext pcontext = new ParseContext();
-
-//        parser.parse(inputStream, handler, metadata, pcontext);
+        parser.parse(inputStream, handler, metadata, pcontext);
 
     }
 
+    @Test
+    public void parseMP2() throws Exception {
+
+        //TODO We need more example connected with MP2
+        Parser parser = new AutoDetectParser();
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("audio/audiovault/2WW.mp2");
+        BodyContentHandler handler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        ParseContext pcontext = new ParseContext();
+        parser.parse(inputStream, handler, metadata, pcontext);
+
+    }
 }
