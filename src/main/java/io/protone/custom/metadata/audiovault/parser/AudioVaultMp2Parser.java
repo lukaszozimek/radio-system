@@ -13,7 +13,7 @@ import java.io.InputStream;
 /**
  * Created by lukaszozimek on 16/03/2017.
  */
-public class AudioVaultMp2Parser extends MP4Parser {
+public class AudioVaultMP2Parser extends MP4Parser {
     @Override
     public void parse(
         InputStream stream, ContentHandler handler,
