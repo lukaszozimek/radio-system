@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -27,7 +28,7 @@ public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlayl
     @Override
     public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get all playlists");
-        List<SchPlaylistPT> playlists = playlistService.getPlaylist(networkShortcut, channelShortcut);
+        List<SchPlaylistPT> playlists = playlistService.getAllPlaylistsByChannel(networkShortcut, channelShortcut);
         return ResponseEntity.ok()
             .body(playlists);
     }
@@ -56,9 +57,13 @@ public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlayl
     }
 
     @Override
-    public ResponseEntity<SchPlaylistPT> getSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut, @ApiParam(value = "date", required = true) @PathVariable("date") String date) {
+    public ResponseEntity<SchPlaylistPT> getSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut, @ApiParam(value = "date", required = true) @PathVariable("date") String date, @ApiParam(value = "random", required = false) @RequestParam(value = "random", required = false) Boolean random) {
         log.debug("REST request to get playlist: {}", date);
-        SchPlaylistPT playlistDAO = playlistService.getPlaylist(networkShortcut, channelShortcut, date);
+        SchPlaylistPT playlistDAO = null;
+        if (random != null && random)
+            playlistDAO = playlistService.randomPlaylist(networkShortcut, channelShortcut, date);
+        else
+            playlistDAO = playlistService.getPlaylistByChannelAndDate(networkShortcut, channelShortcut, date);
         return ResponseEntity.ok()
             .body(playlistDAO);
     }

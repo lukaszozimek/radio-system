@@ -46,4 +46,9 @@ public class CorChannelService {
         CorChannel channel = channelRepository.findOneByNetworkAndShortcut(networkDB, channelShortcut);
              return channel;
     }
+
+    public CorChannel getChannel(String networkShortcut, String channelShortcut) {
+        return findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+    }
+
 }

@@ -24,6 +24,8 @@ public class ApiNetworkSchedulerPlaylistImpl implements ApiNetworkSchedulerPlayl
     @Inject
     SchPlaylistService playlistService;
 
+    /* DISABLED !!!
+
     @Override
     public ResponseEntity<SchPlaylistPT> updateSchedulerPlaylistUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchPlaylistPT playlist) {
         log.debug("REST request to update playlist: {}", playlist);
@@ -41,17 +43,9 @@ public class ApiNetworkSchedulerPlaylistImpl implements ApiNetworkSchedulerPlayl
     }
 
     @Override
-    public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all playlists");
-        List<SchPlaylistPT> playlists = playlistService.getPlaylists(networkShortcut);
-        return ResponseEntity.ok()
-            .body(playlists);
-    }
-
-    @Override
     public ResponseEntity<List<SchPlaylistPT>> getSchedulerPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "date", required = true) @PathVariable("date") String date) {
         log.debug("REST request to get playlist: {}", date);
-        List<SchPlaylistPT> resultsDAO = playlistService.getPlaylist(networkShortcut, date);
+        List<SchPlaylistPT> resultsDAO = playlistService.getAllPlaylistsByDate(networkShortcut, date);
         return ResponseEntity.ok()
             .body(resultsDAO);
     }
@@ -61,5 +55,15 @@ public class ApiNetworkSchedulerPlaylistImpl implements ApiNetworkSchedulerPlayl
         log.debug("REST request to delete playlist : {}", date);
         playlistService.deletePlaylist(networkShortcut, date);
         return ResponseEntity.ok().build();
+    }
+
+    */
+
+    @Override
+    public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+        log.debug("REST request to get all playlists");
+        List<SchPlaylistPT> playlists = playlistService.getAllPlaylists(networkShortcut);
+        return ResponseEntity.ok()
+            .body(playlists);
     }
 }

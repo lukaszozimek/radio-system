@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -56,10 +57,14 @@ public class ApiChannelSchedulerTemplateImpl implements ApiChannelSchedulerTempl
     }
 
     @Override
-    public ResponseEntity<SchTemplatePT> getSchedulerTemplateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<SchTemplatePT> getSchedulerTemplateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "random", required = false) @RequestParam(value = "random", required = false) Boolean random) {
         log.debug("REST request to get template: {}", shortName);
-        SchTemplatePT templateDAO = templateService.getTemplate(networkShortcut, channelShortcut, shortName);
+        SchTemplatePT result = null;
+        if (random != null && random)
+            result = templateService.randomTemplate(networkShortcut, channelShortcut, shortName);
+        else
+            result = templateService.getTemplateByChannelAndShortcut(networkShortcut, channelShortcut, shortName);
         return ResponseEntity.ok()
-            .body(templateDAO);
+            .body(result);
     }
 }
