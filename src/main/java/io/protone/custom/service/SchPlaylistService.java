@@ -1,6 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.SchPlaylistPT;
+import io.protone.custom.service.mapper.CustomSchBlockMapper;
 import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
 import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
@@ -8,7 +9,6 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
-import io.protone.service.mapper.SchBlockMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,28 +24,28 @@ import java.util.Optional;
 public class SchPlaylistService {
 
     @Inject
-    CorNetworkService networkService;
+    private CorNetworkService networkService;
 
     @Inject
-    CorChannelService channelService;
+    private CorChannelService channelService;
 
     @Inject
-    CustomSchPlaylistRepository playlistRepository;
+    private CustomSchPlaylistRepository playlistRepository;
 
     @Inject
-    CustomSchPlaylistMapper playlistMapper;
+    private CustomSchPlaylistMapper playlistMapper;
 
     @Inject
-    CustomCorChannelRepository channelRepository;
+    private CustomCorChannelRepository channelRepository;
 
     @Inject
-    SchBlockService blockService;
+    private SchBlockService blockService;
 
     @Inject
-    SchBlockMapper blockMapper;
+    private CustomSchBlockMapper blockMapper;
 
     @Inject
-    BlockUtils blockUtils;
+    private BlockUtils blockUtils;
 
     public SchPlaylistPT randomPlaylist(String networkShortcut, String channelShortcut, String date) {
         CorChannel channelDB = channelService.getChannel(networkShortcut, channelShortcut);
