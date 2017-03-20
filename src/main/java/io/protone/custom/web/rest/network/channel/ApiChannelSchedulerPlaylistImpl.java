@@ -28,7 +28,7 @@ public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlayl
     @Override
     public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get all playlists");
-        List<SchPlaylistPT> playlists = playlistService.getPlaylist(networkShortcut, channelShortcut);
+        List<SchPlaylistPT> playlists = playlistService.getAllPlaylistsByChannel(networkShortcut, channelShortcut);
         return ResponseEntity.ok()
             .body(playlists);
     }
@@ -63,7 +63,7 @@ public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlayl
         if (random != null && random)
             playlistDAO = playlistService.randomPlaylist(networkShortcut, channelShortcut, date);
         else
-            playlistDAO = playlistService.getPlaylist(networkShortcut, channelShortcut, date);
+            playlistDAO = playlistService.getPlaylistByChannelAndDate(networkShortcut, channelShortcut, date);
         return ResponseEntity.ok()
             .body(playlistDAO);
     }

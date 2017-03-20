@@ -16,6 +16,8 @@ import java.util.List;
 public interface ApiNetworkSchedulerPlaylist {
 
 
+    /* DISABLED !!!
+
     @ApiOperation(value = "updateSchedulerPlaylist", notes = "", response = SchPlaylistPT.class, tags={ "SCHEDULER", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchPlaylistPT.class),
@@ -45,19 +47,6 @@ public interface ApiNetworkSchedulerPlaylist {
     ResponseEntity<SchPlaylistPT> creatSchedulerPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchPlaylistPT schdeulerTemplate);
 
-
-    @ApiOperation(value = "getAllSchedulerPlaylist", notes = "", response = SchPlaylistPT.class, responseContainer = "List", tags={ "SCHEDULER", })
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/playlist",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
-    ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
-
-
     @ApiOperation(value = "getSchedulerPlaylist", notes = "", response = SchPlaylistPT.class, tags={ "SCHEDULER", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchPlaylistPT.class),
@@ -83,6 +72,18 @@ public interface ApiNetworkSchedulerPlaylist {
     ResponseEntity<Void> deleteSchedulerPlaylistUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                             @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
+    */
+
+    @ApiOperation(value = "getAllSchedulerPlaylist", notes = "", response = SchPlaylistPT.class, responseContainer = "List", tags={ "SCHEDULER", })
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = SchPlaylistPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistPT.class) })
+    @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/playlist",
+        produces = {"application/json"},
+        method = RequestMethod.GET)
+    ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
 }

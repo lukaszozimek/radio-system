@@ -75,6 +75,16 @@ public class BlockUtils {
         return results;
     }
 
+    public List<SchBlockPT> sampleTemplate() {
+        List<SchBlockPT> results = new ArrayList<>();
+        for (int h = 0; h < 24; h++)
+            results.add(sampleHour(ZonedDateTime.now(), h, true));
+        SchBlockPT firstBlock = results.iterator().next();
+        updateSeq(results);
+        updateStartTime(results, firstBlock.getStartTime());
+        return results;
+    }
+
     public SchBlockPT sampleHour(ZonedDateTime dateTime, int h, boolean full) {
 
         ZonedDateTime dt = dateTime.withHour(h).withMinute(0).withSecond(0).withNano(0);

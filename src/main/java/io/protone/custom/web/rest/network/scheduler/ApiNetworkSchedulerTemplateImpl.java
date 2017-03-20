@@ -24,6 +24,8 @@ public class ApiNetworkSchedulerTemplateImpl implements ApiNetworkSchedulerTempl
     @Inject
     SchTemplateService templateService;
 
+    /* DISABLED !!!
+
     @Override
     public ResponseEntity<SchTemplatePT> updateSchedulerTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT template) {
         log.debug("REST request to update template: {}", template);
@@ -41,14 +43,6 @@ public class ApiNetworkSchedulerTemplateImpl implements ApiNetworkSchedulerTempl
     }
 
     @Override
-    public ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
-        log.debug("REST request to get all templates");
-        List<SchTemplatePT> templates = templateService.getTemplates(networkShortcut);
-        return ResponseEntity.ok()
-            .body(templates);
-    }
-
-    @Override
     public ResponseEntity<List<SchTemplatePT>> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get template: {}", shortName);
         List<SchTemplatePT> templatesDAO = templateService.getTemplates(networkShortcut, shortName);
@@ -61,5 +55,15 @@ public class ApiNetworkSchedulerTemplateImpl implements ApiNetworkSchedulerTempl
         log.debug("REST request to delete template : {}", shortName);
         templateService.deleteTemplate(networkShortcut, shortName);
         return ResponseEntity.ok().build();
+    }
+
+    */
+
+    @Override
+    public ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+        log.debug("REST request to get all templates");
+        List<SchTemplatePT> templates = templateService.getTemplates(networkShortcut);
+        return ResponseEntity.ok()
+            .body(templates);
     }
 }

@@ -3,10 +3,7 @@ package io.protone.custom.web.rest.network.channel;
 import io.protone.custom.service.dto.SchTemplatePT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -86,7 +83,8 @@ public interface ApiChannelSchedulerTemplate {
         method = RequestMethod.GET)
     ResponseEntity<SchTemplatePT> getSchedulerTemplateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
+                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                         @ApiParam(value = "random", required = false) @RequestParam(value = "random", required = false) Boolean random);
 
 
 }
