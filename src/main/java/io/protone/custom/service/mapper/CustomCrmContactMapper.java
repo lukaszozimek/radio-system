@@ -37,8 +37,13 @@ public class CustomCrmContactMapper {
 
     @Inject
     private CustomCorUserMapperExt corUserMapper;
+    @Inject
+    private CustomCorNetworkMapper customCorNetworkMapper;
 
     public CrmContact createCrmContactEntity(CrmContactPT crmContactPT, CorNetwork corNetwork) {
+        if (crmContactPT == null || corNetwork == null) {
+            return new CrmContact();
+        }
         CrmContact crmContact = new CrmContact();
         crmContact.setId(crmContactPT.getId());
         return crmContact
@@ -54,15 +59,15 @@ public class CustomCrmContactMapper {
             .range(customCorRangeMapper.cORRangeDTOToCorRange(crmContactPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmContactPT.getAdress()))
             .area(customCorAreaMapper.cORAreaDTOToCorArea(crmContactPT.getArea()))
-            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons()))
+            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons(), corNetwork))
             .network(corNetwork);
     }
 
 
-
-
-
     public CrmContactPT buildContactDTOFromEntities(CrmContact crmContact) {
+        if (crmContact == null) {
+            return new CrmContactPT();
+        }
         return new CrmContactPT()
             .id(crmContact.getId())
             .name(crmContact.getName())
@@ -79,7 +84,7 @@ public class CustomCrmContactMapper {
             .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
             .area(customCorAreaMapper.cORAreaToCorAreaDTO(crmContact.getArea()))
             .tasks(crmContact.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()))
-            .networkId(crmContact.getId());
+            .networkId(customCorNetworkMapper.cORNetworkToCorNetworkDTO(crmContact.getNetwork()));
 
     }
 

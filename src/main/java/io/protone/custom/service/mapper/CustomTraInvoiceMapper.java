@@ -22,10 +22,14 @@ public class CustomTraInvoiceMapper {
     private CustomTraOrderMapper traOrderMapper;
 
     public TraInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
+        if (traInvoicePT == null || corNetwork == null) {
+            return new TraInvoice();
+        }
         TraInvoice traInvoice = new TraInvoice();
-        traInvoice.setId(traInvoice.getId());
-        return traInvoice.paid(traInvoice.isPaid())
-            .paymentDay(traInvoice.getPaymentDay())
+        traInvoice.setId(traInvoicePT.getId());
+        return traInvoice.paid(traInvoicePT.getPaid())
+            .paymentDay(traInvoicePT.getPaymentDay())
+            .price(traInvoicePT.getPrice())
             .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
             .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
             .network(corNetwork)
@@ -33,12 +37,16 @@ public class CustomTraInvoiceMapper {
     }
 
     public TraInvoicePT createDTOFromEnity(TraInvoice traInvoicePT) {
+        if (traInvoicePT == null) {
+            return new TraInvoicePT();
+        }
         return new TraInvoicePT().id(traInvoicePT.getId())
             .order(customTraOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrders()))
             .paid(traInvoicePT.isPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
             .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCustomer()))
-            .traStatus(traInvoicePT.getStatus());
+            .traStatus(traInvoicePT.getStatus())
+            .price(traInvoicePT.getPrice());
     }
 
 

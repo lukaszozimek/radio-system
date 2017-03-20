@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.TraOrderStatus;
 import io.protone.domain.TraPrice;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -36,6 +37,11 @@ public class TraOrderPT {
 
     @JsonProperty("price")
     private TraPrice traPrice = null;
+    @JsonProperty("status")
+    private TraOrderStatus traOrderStatus = null;
+
+    @JsonProperty
+    private TraInvoicePT traInvoicePT = null;
 
     public TraOrderPT calculatedPrize(Long calculatedPrize) {
         this.calculatedPrize = calculatedPrize;
@@ -56,7 +62,7 @@ public class TraOrderPT {
         this.calculatedPrize = calculatedPrize;
     }
 
-    public TraOrderPT campaignId(TraCampaignPT campaignId) {
+    public TraOrderPT traCampaign(TraCampaignPT campaignId) {
         this.traCampaignPT = campaignId;
         return this;
     }
@@ -75,7 +81,7 @@ public class TraOrderPT {
         this.traCampaignPT = traCampaignPT;
     }
 
-    public TraOrderPT campaignId(TraPrice price) {
+    public TraOrderPT traPrice(TraPrice price) {
         this.traPrice = price;
         return this;
     }
@@ -174,6 +180,45 @@ public class TraOrderPT {
         this.startDate = startDate;
         return this;
     }
+
+    /**
+     * Get trainvoice
+     *
+     * @return status
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public TraInvoicePT getTraInvoice() {
+        return traInvoicePT;
+    }
+
+    public void setTraInvoice(TraInvoicePT traInvoicePT) {
+        this.traInvoicePT = traInvoicePT;
+    }
+
+    public TraOrderPT traInvoiceT(TraInvoicePT traInvoicePT) {
+        this.traInvoicePT = traInvoicePT;
+        return this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return status
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public TraOrderStatus getTraOrderStatus() {
+        return traOrderStatus;
+    }
+
+    public void setTraOrderStatus(TraOrderStatus traOrderStatus) {
+        this.traOrderStatus = traOrderStatus;
+    }
+
+    public TraOrderPT traOrderStatus(TraOrderStatus traOrderStatus) {
+        this.traOrderStatus = traOrderStatus;
+        return this;
+    }
+
 
     /**
      * Get startDate

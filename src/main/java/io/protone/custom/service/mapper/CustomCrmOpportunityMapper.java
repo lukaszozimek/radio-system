@@ -25,6 +25,9 @@ public class CustomCrmOpportunityMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public CrmOpportunity createOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
+        if (opportunityPT != null || corNetwork != null) {
+            return new CrmOpportunity();
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CrmOpportunity opportunity = new CrmOpportunity();
         opportunity.setId(opportunityPT.getId());
@@ -37,6 +40,9 @@ public class CustomCrmOpportunityMapper {
     }
 
     public CrmOpportunityPT buildDTOFromEntites(CrmOpportunity opportunity) {
+        if (opportunity != null) {
+            return new CrmOpportunityPT();
+        }
         CrmOpportunityPT crmOpportunityPT = new CrmOpportunityPT();
         crmOpportunityPT.setId(opportunity.getId());
         return crmOpportunityPT

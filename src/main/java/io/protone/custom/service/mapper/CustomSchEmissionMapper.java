@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 public class CustomSchEmissionMapper {
 
     public SchEmissionPT creteDTOFromEntities(SchEmission emission) {
+        if (emission == null) {
+            return new SchEmissionPT();
+        }
         return new SchEmissionPT()
             .id(emission.getId())
             .seq(emission.getSeq())
@@ -28,6 +31,9 @@ public class CustomSchEmissionMapper {
     }
 
     public List<SchEmission> createListEmissionFromListDTO(List<SchEmissionPT> schEmissionPT) {
+        if (schEmissionPT == null) {
+            return new ArrayList<>();
+        }
         List<SchEmission> listEmission = new ArrayList<>();
         schEmissionPT.stream().forEach(emissionPT -> {
             listEmission.add(createEmissionFromDTO(emissionPT));
@@ -36,6 +42,9 @@ public class CustomSchEmissionMapper {
     }
 
     public SchEmission createEmissionFromDTO(SchEmissionPT schEmissionPT) {
+        if (schEmissionPT == null) {
+            return new SchEmission();
+        }
         SchEmission schEmission = new SchEmission();
         schEmission.setId(schEmissionPT.getId());
         return schEmission
@@ -44,7 +53,9 @@ public class CustomSchEmissionMapper {
     }
 
     public List<SchEmissionPT> createDTOFromListEntites(Set<SchEmission> schEmissionLibItemPTMap) {
-
+        if (schEmissionLibItemPTMap == null) {
+            return new ArrayList<>();
+        }
         return schEmissionLibItemPTMap.stream().map(this::creteDTOFromEntities).collect(Collectors.toList());
     }
 

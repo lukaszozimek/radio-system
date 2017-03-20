@@ -1,10 +1,9 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.TraCustomerService;
+import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraOrder;
-import io.protone.domain.TraPrice;
+import io.protone.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -31,7 +30,8 @@ public class CustomTraOrderMapper {
 
     @Inject
     private CustomSchEmissionMapper customSchEmissionMapper;
-
+    @Inject
+    private CustomTraInvoiceMapper customTraInvoiceMapper;
     @Inject
     private TraCustomerService customerService;
 
@@ -44,15 +44,29 @@ public class CustomTraOrderMapper {
     }
 
     public TraOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, CorNetwork corNetwork) {
+        if (traOrderPT == null || corNetwork == null) {
+            return null;
+        }
         TraOrder traOrder = new TraOrder();
-        traOrder.setId(traOrder.getId());
-        return traOrder.name(traOrder.getName())
+        traOrder.setId(traOrderPT.getId());
+        traOrder.name(traOrderPT.getName())
             .calculatedPrize(traOrderPT.getCalculatedPrize())
-            .startDate(traOrder.getStartDate())
-            .endDate(traOrder.getEndDate())
-            .campaign(customTRACampaignMapper.transfromDTOToEntity(traOrderPT.getTraCampaignPT(), corNetwork))
-            .customer(customCrmAccountMapper.createCrmAcountEntity(traOrderPT.getCustomerPT(), corNetwork))
-            .price(new TraPrice());
+            .startDate(traOrderPT.getStartDate())
+            .endDate(traOrderPT.getEndDate());
+        if (traOrderPT.getTraCampaignPT() != null) {
+            traOrder.campaign(customTRACampaignMapper.transfromDTOToEntity(traOrderPT.getTraCampaignPT(), corNetwork));
+        }
+        if (traOrderPT.getTraCampaignPT() != null) {
+            traOrder.customer(customCrmAccountMapper.createCrmAcountEntity(traOrderPT.getCustomerPT(), corNetwork));
+        }
+        if (traOrderPT.getTraInvoice() != null) {
+            traOrder.invoice(customTraInvoiceMapper.createEntityFromDTO(traOrderPT.getTraInvoice(), corNetwork));
+        }
+        traOrder.price(traOrderPT.getTraPrice()).status(traOrder.getStatus())
+            .startDate(traOrderPT.getStartDate())
+            .endDate(traOrderPT.getEndDate())
+            .network(corNetwork);
+        return traOrder;
     }
 
     public List<TraOrderPT> transfromEntitesToDTO(Set<TraOrder> traOrder) {
@@ -60,13 +74,21 @@ public class CustomTraOrderMapper {
     }
 
     public TraOrderPT transfromEntiteToDTO(TraOrder traOrder) {
-        return new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
+        TraOrderPT traOrderPt = new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
             .calculatedPrize(traOrder.getCalculatedPrize())
             .startDate(traOrder.getStartDate())
-            .endDate(traOrder.getEndDate())
-            .campaignId(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()))
-            .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()));
-
+            .endDate(traOrder.getEndDate());
+        if (traOrder.getCampaign() != null) {
+            traOrderPt.traCampaign(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()));
+        }
+        if (traOrder.getCustomer() != null) {
+            traOrderPt.customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()));
+        }
+        traOrderPt.traPrice(traOrder.getPrice()).traOrderStatus(traOrder.getStatus());
+        if (traOrder.getInvoice() != null) {
+            traOrderPt.traInvoiceT(customTraInvoiceMapper.createDTOFromEnity(traOrder.getInvoice()));
+        }
+        return traOrderPt;
     }
 
 

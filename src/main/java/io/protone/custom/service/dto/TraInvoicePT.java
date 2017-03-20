@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.TraInvoiceStatus;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Column;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +27,9 @@ public class TraInvoicePT {
 
     @JsonProperty("paymentDay")
     private LocalDate paymentDay = null;
+
+    @JsonProperty("price")
+    private BigDecimal price = null;
 
     @JsonProperty("customer")
     private TraCustomerPT customerPT = null;
@@ -91,6 +96,26 @@ public class TraInvoicePT {
 
     public TraInvoicePT paymentDay(LocalDate paymentDay) {
         this.paymentDay = paymentDay;
+        return this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return price
+     **/
+    @ApiModelProperty(value = "")
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+
+    public TraInvoicePT price(BigDecimal price) {
+        this.price = price;
         return this;
     }
 
@@ -179,7 +204,9 @@ public class TraInvoicePT {
         sb.append("    order: ").append(toIndentedString(order)).append("\n");
         sb.append("    paid: ").append(toIndentedString(paid)).append("\n");
         sb.append("    paymentDay: ").append(toIndentedString(paymentDay)).append("\n");
-        sb.append("    paymentDay: ").append(toIndentedString(customerPT)).append("\n");
+        sb.append("    customer: ").append(toIndentedString(customerPT)).append("\n");
+        sb.append("    status: ").append(toIndentedString(traStatus)).append("\n");
+        sb.append("    price: ").append(toIndentedString(price)).append("\n");
         sb.append("}");
         return sb.toString();
     }
