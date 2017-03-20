@@ -48,7 +48,7 @@ public class CustomTRAAdvertismentMapperTest {
             .description("test")
             .industryId(new ConfIndustryPT())
             .customerId(new TraCustomerPT())
-            .mediaItemId(new LibItemPT())
+            .mediaItemId(new LibMediaItemPT())
             .name("test");
     }
 
