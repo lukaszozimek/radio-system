@@ -152,9 +152,7 @@ public class LibItemService {
 
             try {
                 s3Client.upload(fileUUID, bais, contentType);
-
                 LibCloudObject cloudObject = new LibCloudObject();
-
                 cloudObject.setUuid(fileUUID);
                 cloudObject.setContentType(contentType);
                 cloudObject.setOriginalName(fileName);
@@ -164,6 +162,7 @@ public class LibItemService {
 
                 CorUser currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
                 CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
+
                 cloudObject.setCreatedBy(currentUser);
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
@@ -171,9 +170,9 @@ public class LibItemService {
                 cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
                 LibMediaItem libMediaItem = new LibMediaItem();
                 LibAudioObject audioObject = new LibAudioObject();
-                libMetadataService.resolveMetadata(file, libraryDB, corNetwork, libMediaItem, audioObject);
+                libMediaItem = libMetadataService.resolveMetadata(file, libraryDB, corNetwork, libMediaItem, audioObject);
 
-                libMediaItem = mediaItemRepository.saveAndFlush(libMediaItem);
+
                 audioObject.setCloudObject(cloudObject);
                 audioObject.setMediaItem(libMediaItem);
 

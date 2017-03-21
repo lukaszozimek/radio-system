@@ -21,25 +21,25 @@ import java.util.Optional;
 public class SchTemplateService {
 
     @Inject
-    CorNetworkService networkService;
+    private CorNetworkService networkService;
 
     @Inject
-    CorChannelService channelService;
+    private CorChannelService channelService;
 
     @Inject
-    CustomSchTemplateRepository templateRepository;
+    private CustomSchTemplateRepository templateRepository;
 
     @Inject
-    CustomSchTemplateMapper templateMapper;
+    private CustomSchTemplateMapper templateMapper;
 
     @Inject
-    CustomCorChannelRepository channelRepository;
+    private CustomCorChannelRepository channelRepository;
 
     @Inject
-    SchBlockService blockService;
+    private SchBlockService blockService;
 
     @Inject
-    BlockUtils blockUtils;
+    private BlockUtils blockUtils;
 
     public SchTemplatePT randomTemplate(String networkShortcut, String channelShortcut, String templateName) {
         CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
@@ -78,7 +78,7 @@ public class SchTemplateService {
 
         List<CorChannel> channels = channelRepository.findAllByNetwork(networkDB);
 
-        for (CorChannel channel: channels) {
+        for (CorChannel channel : channels) {
             List<SchTemplate> templates = templateRepository.findByChannel(channel);
             results.addAll(templateMapper.DBsToDTOs(templates));
         }

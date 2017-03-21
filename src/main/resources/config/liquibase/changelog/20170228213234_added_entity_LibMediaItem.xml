@@ -33,7 +33,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="length" type="bigint">
+            <column name="length" type="double">
                 <constraints nullable="false" />
             </column>
 

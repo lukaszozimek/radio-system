@@ -28,6 +28,9 @@ public class TraOrderStatus implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @ManyToOne
+    private CorNetwork network;
+
     public Long getId() {
         return id;
     }
@@ -60,6 +63,19 @@ public class TraOrderStatus implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public TraOrderStatus network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     @Override

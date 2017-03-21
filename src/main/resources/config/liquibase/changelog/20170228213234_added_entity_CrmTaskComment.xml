@@ -25,6 +25,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="network_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="task_comment_id" type="bigint">
                 <constraints nullable="true" />
             </column>

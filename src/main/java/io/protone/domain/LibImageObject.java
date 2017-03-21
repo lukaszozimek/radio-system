@@ -1,14 +1,13 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.LibImageSizeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.LibImageSizeEnum;
 
 /**
  * A LibImageObject.

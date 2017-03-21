@@ -15,11 +15,11 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomTraOrderStatusMapper {
-/*
-    @Mapping(source = "networkId", target = "network")
+
+    @Mapping(source = "networkPT", target = "network")
     TraOrderStatus DTO2DB(ConfTraOrderStatusPT confCrmTaskStatusPT);
 
-    @Mapping(source = "network.id", target = "networkId")
+    @Mapping(source = "network.id", target = "networkPT.id")
     ConfTraOrderStatusPT DB2DTO(TraOrderStatus crmTaskStatus);
 
     List<ConfTraOrderStatusPT> DBs2DTOs(List<TraOrderStatus> crmTaskStatuses);
@@ -33,5 +33,5 @@ public interface CustomTraOrderStatusMapper {
         CorNetwork cORNetwork = new CorNetwork();
         cORNetwork.setId(id);
         return cORNetwork;
-    }*/
+    }
 }

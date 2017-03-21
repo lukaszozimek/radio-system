@@ -111,7 +111,7 @@ public class CustomItemMapperExt {
         }
         LibMediaItem db = new LibMediaItem()
             .idx(dto.getIdx())
-            .length(dto.getLength().longValue())
+            .length(dto.getLength().doubleValue())
             .name(dto.getName())
             .itemType(mapItemType(dto.getResourceType()))
             .state(LibItemStateEnum.valueOf(dto.getState().toString()))

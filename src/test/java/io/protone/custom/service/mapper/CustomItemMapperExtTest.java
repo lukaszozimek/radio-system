@@ -53,7 +53,7 @@ public class CustomItemMapperExtTest {
         mockLibMediaItem.idx("test")
             .name("test")
             .itemType(LibItemTypeEnum.IT_AUDIO)
-            .length((long) 1)
+            .length(2.0)
             .state(LibItemStateEnum.IS_ARCHIVED)
             .description("test")
             .command("test")

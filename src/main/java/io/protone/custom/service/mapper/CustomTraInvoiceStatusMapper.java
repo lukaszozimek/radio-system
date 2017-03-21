@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomTraInvoiceStatusMapper {
-/*
+
     @Mapping(source = "networkId", target = "network")
     TraInvoiceStatus DTO2DB(ConfInvoiceStatusPT confCrmTaskStatusPT);
 
@@ -34,5 +34,5 @@ public interface CustomTraInvoiceStatusMapper {
         cORNetwork.setId(id);
         return cORNetwork;
     }
-    */
+
 }

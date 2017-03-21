@@ -65,6 +65,7 @@
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_TraOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_TraOrderStatus.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_TraPrice.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170321202155_added_entity_CfgExternalSystemLog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_CrmTaskComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_CfgMarkerConfiguration.xml" relativeToChangelogFile="false"/>
@@ -118,5 +119,11 @@
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraInvoice.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraPrice.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_CorStatus.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_CorSubscription.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraCampaingStatus.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraInvoiceStatus.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraOrderStatus.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170321202155_added_entity_constraints_CfgExternalSystemLog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

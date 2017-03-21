@@ -1,12 +1,15 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A CrmTask.
@@ -61,6 +64,11 @@ public class CrmTask implements Serializable {
 
     @ManyToOne
     private CrmTask tasks;
+
+    @OneToMany(mappedBy = "taskComment")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<CrmTaskComment> comments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -239,6 +247,31 @@ public class CrmTask implements Serializable {
         this.tasks = crmTask;
     }
 
+    public Set<CrmTaskComment> getComments() {
+        return comments;
+    }
+
+    public CrmTask comments(Set<CrmTaskComment> crmTaskComments) {
+        this.comments = crmTaskComments;
+        return this;
+    }
+
+    public CrmTask addComments(CrmTaskComment crmTaskComment) {
+        this.comments.add(crmTaskComment);
+        crmTaskComment.setTaskComment(this);
+        return this;
+    }
+
+    public CrmTask removeComments(CrmTaskComment crmTaskComment) {
+        this.comments.remove(crmTaskComment);
+        crmTaskComment.setTaskComment(null);
+        return this;
+    }
+
+    public void setComments(Set<CrmTaskComment> crmTaskComments) {
+        this.comments = crmTaskComments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -269,6 +302,4 @@ public class CrmTask implements Serializable {
             ", comment='" + comment + "'" +
             '}';
     }
-
-
 }

@@ -170,6 +170,16 @@ entity CfgMarkerConfiguration {
 	keyboardShortcut String required maxlength(100)
 	type LibMarkerTypeEnum required
 }
+entity CfgExternalSystemLog{
+	name String
+    lenght Integer
+    logColumn CfgLogTypeEnum
+
+}
+enum CfgLogTypeEnum{
+	LT_MUSIC,
+    LT_COMMERCIAL
+}
 
 entity LibAlbum {
 	albumType LibAlbumTypeEnum required
@@ -202,7 +212,7 @@ entity LibMediaItem {
 	idx String required maxlength(15)
     name String required maxlength(100)
     itemType LibItemTypeEnum required
-    length Long required
+    length Double required
     state LibItemStateEnum required
     command String
     description String
@@ -304,7 +314,7 @@ enum LibImageSizeEnum {
 }
 
 entity LibAudioObject {
-	length Long required
+	length Double required
     biTrate Integer required
     codec String required maxlength(100)
     quality LibAudioQualityEnum
@@ -584,15 +594,18 @@ relationship ManyToOne {
     LibTrack{album} to LibAlbum,
     LibTrack{artist} to LibArtist,
     LibAlbum{artist} to LibArtist,
-
     LibLabel{network} to CorNetwork,
+    TraCampaingStatus{network} to CorNetwork,
+    TraInvoiceStatus{network} to CorNetwork,
+    TraOrderStatus{network} to CorNetwork,
     LibArtist{network} to CorNetwork,
     LibAlbum{network} to CorNetwork,
     LibTrack{network} to CorNetwork,
 
     CorPropertyKey{network} to CorNetwork,
     CorPropertyValue{propertyKey} to CorPropertyKey,
-
+	CfgExternalSystemLog{network} to CorNetwork,
+    CfgExternalSystemLog{channel} to CorChannel,
     CorTag{network} to CorNetwork,
     CorContact{network} to CorNetwork,
     CorContact {person} to CorPerson{contacts},
@@ -629,7 +642,9 @@ relationship ManyToOne {
     CrmContact {network} to CorNetwork,
     CrmContactStatus {network} to CorNetwork,
 
-    CorCountry{network} to CorNetwork,
+    CorCountry {network} to CorNetwork,
+    CorStatus {network} to CorNetwork,
+    CorSubscription {network} to CorNetwork,
     CrmLeadStatus {network} to CorNetwork,
     CrmLeadSource {network} to CorNetwork,
     TraIndustry{network} to CorNetwork,
@@ -706,7 +721,8 @@ relationship ManyToOne {
     CrmTask {account} to CrmAccount {tasks},
     CrmTask {lead} to CrmLead {tasks},
     CrmTask {tasks} to CrmTask,
-    CrmTaskComment{taskComment} to CrmTask,
+    CrmTaskComment{network} to CorNetwork,
+    CrmTaskComment{taskComment} to CrmTask {comments},
     CrmTaskComment{createdBy} to CorUser,
     CorChannel{network} to CorNetwork,
     CorNotification{user} to CorUser,

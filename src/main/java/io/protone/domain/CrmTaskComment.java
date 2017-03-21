@@ -26,6 +26,9 @@ public class CrmTaskComment implements Serializable {
     private String comment;
 
     @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
     private CrmTask taskComment;
 
     @ManyToOne
@@ -50,6 +53,19 @@ public class CrmTaskComment implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public CrmTaskComment network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CrmTask getTaskComment() {

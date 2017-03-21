@@ -14,10 +14,10 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity TraOrderStatus.
+        Added the entity CfgExternalSystemLog.
     -->
-    <changeSet id="20170228213234-1" author="jhipster">
-        <createTable tableName="tra_order_status">
+    <changeSet id="20170321202155-1" author="jhipster">
+        <createTable tableName="cfg_external_system_log">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -25,11 +25,19 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="description" type="varchar(255)">
+            <column name="lenght" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="log_column" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
             <column name="network_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="channel_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

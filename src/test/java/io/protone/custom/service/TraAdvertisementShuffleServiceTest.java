@@ -98,13 +98,13 @@ public class TraAdvertisementShuffleServiceTest {
     public void shuffleCommercialsIfOneExistInBlock() throws Exception {
         ///when
         SchEmission schEmission = new SchEmission();
-        schEmission.setMediaItem(new LibMediaItem().idx("1").length(2L));
+        schEmission.setMediaItem(new LibMediaItem().idx("1").length(2.0));
         schEmission.setBlock(new SchBlock().scheduledLength(3L));
         SchEmission schEmission1 = new SchEmission();
         schEmission1.block(new SchBlock().scheduledLength(3L));
-        schEmission1.setMediaItem(new LibMediaItem().idx("2").length(2L));
+        schEmission1.setMediaItem(new LibMediaItem().idx("2").length(2.0));
         when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
-        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem().idx("1").length(1L));
+        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem().idx("1").length(2.0));
         //given
         TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));

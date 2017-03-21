@@ -1,14 +1,14 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.LibAudioQualityEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.LibAudioQualityEnum;
 
 /**
  * A LibAudioObject.
@@ -27,7 +27,7 @@ public class LibAudioObject implements Serializable {
 
     @NotNull
     @Column(name = "length", nullable = false)
-    private Long length;
+    private Double length;
 
     @NotNull
     @Column(name = "bi_trate", nullable = false)
@@ -57,16 +57,16 @@ public class LibAudioObject implements Serializable {
         this.id = id;
     }
 
-    public Long getLength() {
+    public Double getLength() {
         return length;
     }
 
-    public LibAudioObject length(Long length) {
+    public LibAudioObject length(Double length) {
         this.length = length;
         return this;
     }
 
-    public void setLength(Long length) {
+    public void setLength(Double length) {
         this.length = length;
     }
 

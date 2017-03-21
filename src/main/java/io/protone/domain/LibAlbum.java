@@ -1,15 +1,15 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.LibAlbumTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.LibAlbumTypeEnum;
 
 /**
  * A LibAlbum.

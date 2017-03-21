@@ -1,13 +1,12 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.CorSubscriptionTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.CorSubscriptionTypeEnum;
 
 /**
  * A CorSubscription.
@@ -33,6 +32,9 @@ public class CorSubscription implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "subscription")
     private CorSubscriptionTypeEnum subscription;
+
+    @ManyToOne
+    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -79,6 +81,19 @@ public class CorSubscription implements Serializable {
 
     public void setSubscription(CorSubscriptionTypeEnum subscription) {
         this.subscription = subscription;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public CorSubscription network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     @Override

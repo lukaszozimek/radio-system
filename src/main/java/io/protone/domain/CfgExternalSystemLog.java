@@ -1,22 +1,20 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.LibArtistTypeEnum;
+import io.protone.domain.enumeration.CfgLogTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A LibArtist.
+ * A CfgExternalSystemLog.
  */
 @Entity
-@Table(name = "lib_artist")
+@Table(name = "cfg_external_system_log")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibArtist implements Serializable {
+public class CfgExternalSystemLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,20 +23,21 @@ public class LibArtist implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private LibArtistTypeEnum type;
+    @Column(name = "lenght")
+    private Integer lenght;
 
-    @Column(name = "description")
-    private String description;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "log_column")
+    private CfgLogTypeEnum logColumn;
 
     @ManyToOne
     private CorNetwork network;
+
+    @ManyToOne
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -52,7 +51,7 @@ public class LibArtist implements Serializable {
         return name;
     }
 
-    public LibArtist name(String name) {
+    public CfgExternalSystemLog name(String name) {
         this.name = name;
         return this;
     }
@@ -61,43 +60,56 @@ public class LibArtist implements Serializable {
         this.name = name;
     }
 
-    public LibArtistTypeEnum getType() {
-        return type;
+    public Integer getLenght() {
+        return lenght;
     }
 
-    public LibArtist type(LibArtistTypeEnum type) {
-        this.type = type;
+    public CfgExternalSystemLog lenght(Integer lenght) {
+        this.lenght = lenght;
         return this;
     }
 
-    public void setType(LibArtistTypeEnum type) {
-        this.type = type;
+    public void setLenght(Integer lenght) {
+        this.lenght = lenght;
     }
 
-    public String getDescription() {
-        return description;
+    public CfgLogTypeEnum getLogColumn() {
+        return logColumn;
     }
 
-    public LibArtist description(String description) {
-        this.description = description;
+    public CfgExternalSystemLog logColumn(CfgLogTypeEnum logColumn) {
+        this.logColumn = logColumn;
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLogColumn(CfgLogTypeEnum logColumn) {
+        this.logColumn = logColumn;
     }
 
     public CorNetwork getNetwork() {
         return network;
     }
 
-    public LibArtist network(CorNetwork corNetwork) {
+    public CfgExternalSystemLog network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
     }
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public CfgExternalSystemLog channel(CorChannel corChannel) {
+        this.channel = corChannel;
+        return this;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     @Override
@@ -108,11 +120,11 @@ public class LibArtist implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LibArtist libArtist = (LibArtist) o;
-        if (libArtist.id == null || id == null) {
+        CfgExternalSystemLog cfgExternalSystemLog = (CfgExternalSystemLog) o;
+        if (cfgExternalSystemLog.id == null || id == null) {
             return false;
         }
-        return Objects.equals(id, libArtist.id);
+        return Objects.equals(id, cfgExternalSystemLog.id);
     }
 
     @Override
@@ -122,11 +134,11 @@ public class LibArtist implements Serializable {
 
     @Override
     public String toString() {
-        return "LibArtist{" +
+        return "CfgExternalSystemLog{" +
             "id=" + id +
             ", name='" + name + "'" +
-            ", type='" + type + "'" +
-            ", description='" + description + "'" +
+            ", lenght='" + lenght + "'" +
+            ", logColumn='" + logColumn + "'" +
             '}';
     }
 }
