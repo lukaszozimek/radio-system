@@ -1,19 +1,18 @@
 package io.protone.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.domain.enumeration.LibItemStateEnum;
+import io.protone.domain.enumeration.LibItemTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.LibItemTypeEnum;
-
-import io.protone.domain.enumeration.LibItemStateEnum;
+import java.util.Set;
 
 /**
  * A LibMediaItem.
@@ -47,7 +46,7 @@ public class LibMediaItem implements Serializable {
 
     @NotNull
     @Column(name = "length", nullable = false)
-    private Long length;
+    private Double length;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -147,16 +146,16 @@ public class LibMediaItem implements Serializable {
         this.itemType = itemType;
     }
 
-    public Long getLength() {
+    public Double getLength() {
         return length;
     }
 
-    public LibMediaItem length(Long length) {
+    public LibMediaItem length(Double length) {
         this.length = length;
         return this;
     }
 
-    public void setLength(Long length) {
+    public void setLength(Double length) {
         this.length = length;
     }
 

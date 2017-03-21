@@ -1,14 +1,15 @@
 package io.protone.custom.service;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.LibAudioObject;
-import io.protone.domain.LibLibrary;
-import io.protone.domain.LibMediaItem;
+import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.repository.CorPropertyKeyRepository;
+import io.protone.repository.CorPropertyValueRepository;
+import io.protone.repository.custom.CustomLibMediaItemRepository;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
@@ -26,6 +27,9 @@ import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+
+import static io.protone.custom.consts.ServiceConstants.NO_DATA;
 
 /**
  * Created by lukaszozimek on 14/03/2017.
@@ -49,7 +53,16 @@ public class LibMetadataService {
     @Inject
     private LibMarkerService libMArkerService;
 
-    public void resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
+    @Inject
+    private CorPropertyKeyRepository corPropertyKeyRepository;
+
+    @Inject
+    private CorPropertyValueRepository corPropertyValueRepository;
+
+    @Inject
+    private CustomLibMediaItemRepository mediaItemRepository;
+
+    public LibMediaItem resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
         InputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
         Parser parser = new AutoDetectParser();
         BodyContentHandler handler = new BodyContentHandler();
@@ -57,23 +70,37 @@ public class LibMetadataService {
         ParseContext pcontext = new ParseContext();
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
-
         mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
-        mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
+        if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.TITLE))) {
+            mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
+        } else {
+            mediaItem.setName(NO_DATA);
+        }
         mediaItem.setDescription(metadata.get(ProtoneMetadataProperty.COMMENTS));
-        mediaItem.setArtist(libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork));
-        mediaItem.album(libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM), metadata.get(ProtoneMetadataProperty.ALBUM_ARTIST), corNetwork));
+        LibArtist libArtist = libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
+        if (libArtist != null) {
+            mediaItem.setArtist(libArtist);
+        }
+        LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM_NAME), metadata.get(ProtoneMetadataProperty.ALBUM_ARTIST), corNetwork);
+        if (libAlbum != null) {
+            mediaItem.album(libAlbum);
+        }
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
-        //Change to Double
-        ///mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
+        mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
-
-        audioObject.biTrate(Integer.valueOf(metadata.get(ProtoneMetadataProperty.FILE_DATA_RATE)));
+        mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
+        LibMediaItem finalMediaItem = mediaItem;
+        Arrays.stream(metadata.names()).forEach(metadataName -> {
+            CorPropertyKey corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
+            corPropertyKeyRepository.saveAndFlush(corPropertyKey);
+            corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(finalMediaItem).propertyKey(corPropertyKey));
+        });
+        audioObject.biTrate(1);
         audioObject.setLength(mediaItem.getLength());
         audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
         audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
-
+        return mediaItem;
     }
 
 }
