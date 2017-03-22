@@ -25,7 +25,7 @@ public interface ApiConfigurationCrmDictionaryTaskStatus {
         produces = {"application/json"},
 
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfCrmStagePT>> getAllCrmTaskStatusUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfCrmTaskStatusPT>> getAllCrmTaskStatusUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getCrmTaskStatus", notes = "", response = ConfCrmTaskStatusPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

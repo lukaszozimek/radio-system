@@ -27,8 +27,10 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
 
     @Inject
     private CorPropertyKeyRepository cORPropertyKeyRepository;
+
     @Inject
     private CorNetworkService networkService;
+
     @Inject
     private CustomCorPropertyKeyMapper corPropertyKeyMapper;
 

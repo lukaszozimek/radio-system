@@ -1,10 +1,10 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.ConfCrmContactStatusPT;
-import io.protone.custom.service.dto.ConfCrmTaskStatusPT;
+import io.protone.custom.service.dto.ConfCampaingStatusPT;
+import io.protone.custom.service.dto.ConfTraOrderStatusPT;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContactStatus;
-import io.protone.domain.CrmTaskStatus;
+import io.protone.domain.TraCampaingStatus;
+import io.protone.domain.TraOrderStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,17 +14,17 @@ import java.util.List;
  * Mapper for the entity CorRange and its DTO CorRangeDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomCrmContactStatusMapper {
+public interface CustomTraCampaingStatusMapper {
 
     @Mapping(source = "networkId", target = "network")
-    CrmContactStatus DTO2DB(ConfCrmContactStatusPT confCrmTaskStatusPT);
+    TraCampaingStatus DTO2DB(ConfCampaingStatusPT confCrmTaskStatusPT);
 
     @Mapping(source = "network.id", target = "networkId")
-    ConfCrmContactStatusPT DB2DTO(CrmContactStatus crmTaskStatus);
+    ConfCampaingStatusPT DB2DTO(TraCampaingStatus crmTaskStatus);
 
-    List<ConfCrmContactStatusPT> DBs2DTOs(List<CrmContactStatus> crmTaskStatuses);
+    List<ConfCampaingStatusPT> DBs2DTOs(List<TraCampaingStatus> crmTaskStatuses);
 
-    List<CrmContactStatus> DTOs2DBs(List<ConfCrmContactStatusPT> confCrmTaskStatusPTS);
+    List<TraCampaingStatus> DTOs2DBs(List<ConfCampaingStatusPT> confCrmTaskStatusPTS);
 
     default CorNetwork cORNetworkFromId(Long id) {
         if (id == null) {

@@ -28,8 +28,10 @@ public class ApiDictionaryRangeImpl implements ApiDictionaryRange {
 
     @Inject
     private CorRangeRepository cORRangeRepository;
+
     @Inject
     private CorNetworkService networkService;
+
     @Inject
     private CustomCorRangeMapper customCorAreaMapper;
 
