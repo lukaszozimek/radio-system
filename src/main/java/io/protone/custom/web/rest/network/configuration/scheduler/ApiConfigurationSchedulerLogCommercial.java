@@ -1,6 +1,7 @@
 package io.protone.custom.web.rest.network.configuration.scheduler;
 
 import java.util.List;
+
 import io.protone.custom.service.dto.ConfCommercialLogPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,7 @@ public interface ApiConfigurationSchedulerLogCommercial {
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCommercialLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "id", required = true) @PathVariable("id") String id);
+                                                                     @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "getCommercialLogConfiguration", notes = "", response = ConfCommercialLogPT.class, tags = {"CONFIGURATION",})
@@ -80,5 +81,5 @@ public interface ApiConfigurationSchedulerLogCommercial {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfCommercialLogPT> getCommercialLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") String id);
+                                                                              @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 }

@@ -1,6 +1,7 @@
 package io.protone.custom.web.rest.network.configuration.scheduler;
 
 import java.util.List;
+
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -51,10 +52,11 @@ public interface ApiConfigurationSchedulerLogMusic {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music",
+    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music/{id]",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteMusicLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<Void> deleteMusicLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "getMusicLogConfiguration", notes = "", response = ConfMusicLogPT.class, tags = {"CONFIGURATION",})
@@ -79,7 +81,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfMusicLogPT> getMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                          @ApiParam(value = "id", required = true) @PathVariable("id") String id);
+                                                                    @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }

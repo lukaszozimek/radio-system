@@ -17,13 +17,13 @@ public interface CustomConfMusicLogMapper {
 
     @Mapping(source = "network.id", target = "networkId")
     @Mapping(source = "channel.id", target = "channelId")
-    ConfMusicLogPT Db2Dto(CfgExternalSystemLog cfgExternalSystemLog);
+    ConfMusicLogPT DB2DTO(CfgExternalSystemLog cfgExternalSystemLog);
 
-    List<ConfMusicLogPT> Dbs2Dto(List<CfgExternalSystemLog> cfgExternalSystemLogs);
+    List<ConfMusicLogPT> DBs2DTOs(List<CfgExternalSystemLog> cfgExternalSystemLogs);
 
     @Mapping(source = "networkId", target = "network")
     @Mapping(source = "channelId", target = "channel")
-    CfgExternalSystemLog Dto2Db(ConfMusicLogPT cfgExternalSystemLogDTO);
+    CfgExternalSystemLog DTO2DB(ConfMusicLogPT cfgExternalSystemLogDTO);
 
     List<CfgExternalSystemLog> DTOs2DBs(List<ConfMusicLogPT> cfgExternalSystemLogDTOs);
 

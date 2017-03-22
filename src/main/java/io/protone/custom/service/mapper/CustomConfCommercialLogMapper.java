@@ -18,13 +18,13 @@ public interface CustomConfCommercialLogMapper {
 
     @Mapping(source = "network.id", target = "networkId")
     @Mapping(source = "channel.id", target = "channelId")
-    ConfCommercialLogPT Db2Dto(CfgExternalSystemLog cfgExternalSystemLog);
+    ConfCommercialLogPT DB2DTO(CfgExternalSystemLog cfgExternalSystemLog);
 
-    List<ConfCommercialLogPT> Dbs2Dto(List<CfgExternalSystemLog> cfgExternalSystemLogs);
+    List<ConfCommercialLogPT> DBs2DTOs(List<CfgExternalSystemLog> cfgExternalSystemLogs);
 
     @Mapping(source = "networkId", target = "network")
     @Mapping(source = "channelId", target = "channel")
-    CfgExternalSystemLog Dto2Db(ConfCommercialLogPT cfgExternalSystemLogDTO);
+    CfgExternalSystemLog DTO2DB(ConfCommercialLogPT cfgExternalSystemLogDTO);
 
     List<CfgExternalSystemLog> DTOs2DBs(List<ConfCommercialLogPT> cfgExternalSystemLogDTOs);
 
