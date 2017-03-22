@@ -1,8 +1,10 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.enumeration.CfgLogTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,65 +12,97 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class ConfMusicLogPT   {
-  @JsonProperty("id")
-  private Long id = null;
+public class ConfMusicLogPT implements Serializable {
+    private Long id;
 
-  public ConfMusicLogPT id(Long id) {
-    this.id = id;
-    return this;
-  }
+    private String name;
 
-   /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public Long getId() {
-    return id;
-  }
+    private Integer lenght;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    private CfgLogTypeEnum logColumn;
 
+    private Long networkId;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    private Long channelId;
+
+    public Long getId() {
+        return id;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    ConfMusicLogPT confMusicLogPT = (ConfMusicLogPT) o;
-    return Objects.equals(this.id, confMusicLogPT.id);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ConfMusicLogPT {\n");
-
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
+    public String getName() {
+        return name;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getLenght() {
+        return lenght;
+    }
+
+    public void setLenght(Integer lenght) {
+        this.lenght = lenght;
+    }
+
+    public CfgLogTypeEnum getLogColumn() {
+        return logColumn;
+    }
+
+    public void setLogColumn(CfgLogTypeEnum logColumn) {
+        this.logColumn = logColumn;
+    }
+
+    public Long getNetworkId() {
+        return networkId;
+    }
+
+    public void setNetworkId(Long corNetworkId) {
+        this.networkId = corNetworkId;
+    }
+
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long corChannelId) {
+        this.channelId = corChannelId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ConfMusicLogPT cfgExternalSystemLogDTO = (ConfMusicLogPT) o;
+        if (!Objects.equals(id, cfgExternalSystemLogDTO.id)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "CfgExternalSystemLogDTO{" +
+            "id=" + id +
+            ", name='" + name + "'" +
+            ", lenght='" + lenght + "'" +
+            ", logColumn='" + logColumn + "'" +
+            '}';
+    }
 }
 

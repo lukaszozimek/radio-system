@@ -33,6 +33,12 @@ public class CfgExternalSystemLog implements Serializable {
     @Column(name = "log_column")
     private CfgLogTypeEnum logColumn;
 
+    @Column(name = "delimiter")
+    private String delimiter;
+
+    @Column(name = "column_sequence")
+    private Integer columnSequence;
+
     @ManyToOne
     private CorNetwork network;
 
@@ -84,6 +90,32 @@ public class CfgExternalSystemLog implements Serializable {
 
     public void setLogColumn(CfgLogTypeEnum logColumn) {
         this.logColumn = logColumn;
+    }
+
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public CfgExternalSystemLog delimiter(String delimiter) {
+        this.delimiter = delimiter;
+        return this;
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public Integer getColumnSequence() {
+        return columnSequence;
+    }
+
+    public CfgExternalSystemLog columnSequence(Integer columnSequence) {
+        this.columnSequence = columnSequence;
+        return this;
+    }
+
+    public void setColumnSequence(Integer columnSequence) {
+        this.columnSequence = columnSequence;
     }
 
     public CorNetwork getNetwork() {
@@ -139,6 +171,8 @@ public class CfgExternalSystemLog implements Serializable {
             ", name='" + name + "'" +
             ", lenght='" + lenght + "'" +
             ", logColumn='" + logColumn + "'" +
+            ", delimiter='" + delimiter + "'" +
+            ", columnSequence='" + columnSequence + "'" +
             '}';
     }
 }
