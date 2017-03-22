@@ -174,7 +174,8 @@ entity CfgExternalSystemLog{
 	name String
     lenght Integer
     logColumn CfgLogTypeEnum
-
+    delimiter String
+    columnSequence Integer
 }
 enum CfgLogTypeEnum{
 	LT_MUSIC,
