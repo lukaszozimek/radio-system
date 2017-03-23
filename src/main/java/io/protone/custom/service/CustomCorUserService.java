@@ -213,9 +213,6 @@ public class CustomCorUserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
-            user.setNetworks(null);
-            user = userRepository.save(user);
-
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });

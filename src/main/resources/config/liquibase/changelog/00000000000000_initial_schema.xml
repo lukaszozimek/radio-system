@@ -325,6 +325,7 @@
                                  baseTableName="cor_network_network_users"
                                  constraintName="fk_cor_network_network_users_network_users_id"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
                                  referencedTableName="cor_user"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
