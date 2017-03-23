@@ -125,5 +125,7 @@
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraInvoiceStatus.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraOrderStatus.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170321202155_added_entity_constraints_CfgExternalSystemLog.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraAdvertismentType.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

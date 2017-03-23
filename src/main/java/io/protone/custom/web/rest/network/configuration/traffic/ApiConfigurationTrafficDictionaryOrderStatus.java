@@ -77,7 +77,7 @@ public interface ApiConfigurationTrafficDictionaryOrderStatus {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/order/status{id}",
+    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/order/status/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteOrderStatusUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
