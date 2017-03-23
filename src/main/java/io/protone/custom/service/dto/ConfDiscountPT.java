@@ -1,5 +1,7 @@
 package io.protone.custom.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -8,15 +10,19 @@ import java.util.Objects;
  * A DTO for the TraDiscount entity.
  */
 public class ConfDiscountPT implements Serializable {
-
+    @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("validFrom")
     private LocalDate validFrom;
 
+    @JsonProperty("validTo")
     private LocalDate validTo;
 
+    @JsonProperty("discount")
     private Long discount;
 
+    @JsonProperty("networkId")
     private Long networkId;
 
     public Long getId() {
@@ -26,6 +32,7 @@ public class ConfDiscountPT implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public LocalDate getValidFrom() {
         return validFrom;
     }
@@ -33,6 +40,7 @@ public class ConfDiscountPT implements Serializable {
     public void setValidFrom(LocalDate validFrom) {
         this.validFrom = validFrom;
     }
+
     public LocalDate getValidTo() {
         return validTo;
     }
@@ -40,6 +48,7 @@ public class ConfDiscountPT implements Serializable {
     public void setValidTo(LocalDate validTo) {
         this.validTo = validTo;
     }
+
     public Long getDiscount() {
         return discount;
     }
@@ -67,7 +76,9 @@ public class ConfDiscountPT implements Serializable {
 
         ConfDiscountPT traDiscountDTO = (ConfDiscountPT) o;
 
-        if ( ! Objects.equals(id, traDiscountDTO.id)) { return false; }
+        if (!Objects.equals(id, traDiscountDTO.id)) {
+            return false;
+        }
 
         return true;
     }

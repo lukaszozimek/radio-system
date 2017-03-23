@@ -25,7 +25,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfTaxPT>> getAllDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfDiscountPT>> getAllDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
     @ApiOperation(value = "getDiscount", notes = "", response = ConfDiscountPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -37,7 +37,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<ConfTaxPT> getDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<ConfDiscountPT> getDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
@@ -52,7 +52,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<ConfTaxPT> updateDiscountUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<ConfDiscountPT> updateDiscountUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "discountPT", required = true) @RequestBody ConfDiscountPT discountPT);
 
 
@@ -67,7 +67,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<ConfTaxPT> createDiscountUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<ConfDiscountPT> createDiscountUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                       @ApiParam(value = "discountPT", required = true) @RequestBody ConfDiscountPT discountPT);
 
 
