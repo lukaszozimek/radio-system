@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -88,7 +89,8 @@ public class CorUser implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorChannel> channels = new HashSet<>();
 
-    @OneToMany(mappedBy = "networkUsers",fetch = FetchType.EAGER)
+
+    @ManyToMany(mappedBy = "networkUsers")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorNetwork> networks = new HashSet<>();
@@ -320,13 +322,13 @@ public class CorUser implements Serializable {
 
     public CorUser addChannel(CorChannel corChannel) {
         this.channels.add(corChannel);
-        corChannel.setChannelUsers(this);
+        corChannel.addChannelUsers(this);
         return this;
     }
 
     public CorUser removeChannel(CorChannel corChannel) {
         this.channels.remove(corChannel);
-        corChannel.setChannelUsers(null);
+        corChannel.addChannelUsers(null);
         return this;
     }
 
@@ -345,13 +347,13 @@ public class CorUser implements Serializable {
 
     public CorUser addNetwork(CorNetwork corNetwork) {
         this.networks.add(corNetwork);
-        corNetwork.setNetworkUsers(this);
+        corNetwork.addNetworkUsers(this);
         return this;
     }
 
     public CorUser removeNetwork(CorNetwork corNetwork) {
         this.networks.remove(corNetwork);
-        corNetwork.setNetworkUsers(null);
+        corNetwork.addNetworkUsers(null);
         return this;
     }
 

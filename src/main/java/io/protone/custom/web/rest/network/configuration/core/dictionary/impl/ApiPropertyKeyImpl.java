@@ -1,9 +1,9 @@
-package io.protone.custom.web.rest.network.configuration.core.impl;
+package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreKeyPT;
 import io.protone.custom.service.mapper.CustomCorPropertyKeyMapper;
-import io.protone.custom.web.rest.network.configuration.core.ApiPropertyKey;
+import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiPropertyKey;
 import io.protone.domain.CorPropertyKey;
 import io.protone.repository.CorPropertyKeyRepository;
 import io.protone.web.rest.util.HeaderUtil;

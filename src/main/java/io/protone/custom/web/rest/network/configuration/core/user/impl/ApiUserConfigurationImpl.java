@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.configuration.core.user;
+package io.protone.custom.web.rest.network.configuration.core.user.impl;
 
 /**
  * Created by lukaszozimek on 27/02/2017.
@@ -7,9 +7,12 @@ package io.protone.custom.web.rest.network.configuration.core.user;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.protone.config.Constants;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.CustomMailService;
 import io.protone.custom.service.CustomCorUserService;
 import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.custom.web.rest.network.configuration.core.user.ApiConfigurationUser;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.security.AuthoritiesConstants;
@@ -26,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -56,7 +60,6 @@ import java.util.Optional;
  * <p>Another option would be to have a specific JPA entity graph to handle this case.</p>
  */
 @RestController
-@RequestMapping("")
 public class ApiUserConfigurationImpl implements ApiConfigurationUser {
 
     private final Logger log = LoggerFactory.getLogger(ApiUserConfigurationImpl.class);
@@ -69,12 +72,15 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
 
     private final CustomCorUserService userService;
 
+    private final CorNetworkService corNetworkService;
+
     public ApiUserConfigurationImpl(CustomCorUserRepository userRepository, CustomMailService mailService,
-                                    CustomCorUserService userService) {
+                                    CustomCorUserService userService, CorNetworkService corNetworkService) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
+        this.corNetworkService = corNetworkService;
     }
 
     /**
@@ -85,28 +91,27 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
      * The user needs to be activated on creation.
      * </p>
      *
-     * @param managedUserVM the user to create
      * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/users")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+
+
     @Override
-    public ResponseEntity createUser(@RequestBody CoreUserPT managedUserVM) throws URISyntaxException {
-        log.debug("REST request to save User : {}", managedUserVM);
+    public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                              @ApiParam(value = "coreUserPT", required = true) @RequestBody CoreUserPT coreUserPT) throws URISyntaxException {
+        log.debug("REST request to save User : {}", coreUserPT);
 
         //Lowercase the user login before comparing with database
-        if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
+        if (userRepository.findOneByLogin(coreUserPT.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
                 .body(null);
-        } else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent()) {
+        } else if (userRepository.findOneByEmail(coreUserPT.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
                 .body(null);
         } else {
-            CorUser newUser = userService.createUser(managedUserVM);
+            CorUser newUser = userService.createUser(coreUserPT);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
@@ -122,11 +127,11 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
      * or with status 400 (Bad Request) if the login or email is already in use,
      * or with status 500 (Internal Server Error) if the user couldn't be updated
      */
-    @PutMapping("/users")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+
+
     @Override
-    public ResponseEntity<CoreUserPT> updateUser(@RequestBody CoreUserPT coreUserPT) {
+    public ResponseEntity<CoreUserPT> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                         @ApiParam(value = "coreUserPT", required = true) @RequestBody CoreUserPT coreUserPT) {
         log.debug("REST request to update User : {}", coreUserPT);
         Optional<CorUser> existingUser = userRepository.findOneByEmail(coreUserPT.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(coreUserPT.getId()))) {
@@ -142,21 +147,12 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
             HeaderUtil.createAlert("userManagement.updated", coreUserPT.getLogin()));
     }
 
-    /**
-     * GET  /users : get all users.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and with body all users
-     * @throws URISyntaxException if the pagination headers couldn't be generated
-     */
-    @GetMapping("/users")
-    @Timed
+
     @Override
-    public ResponseEntity<List<CoreUserPT>> getAllUsers(@ApiParam Pageable pageable)
-        throws URISyntaxException {
-        final Page<CoreUserPT> page = userService.getAllManagedUsers(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<CoreUserPT>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+        CorNetwork network = corNetworkService.findNetwork(networkShortcut);
+        List<CoreUserPT> coreUserPTList = userService.getAllManagedUsers(network);
+        return ResponseEntity.ok().body(coreUserPTList);
     }
 
     /**
@@ -165,13 +161,13 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
      * @param login the login of the user to find
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    @Timed
     @Override
-    public ResponseEntity<CoreUserPT> getUser(@PathVariable String login) {
+    public ResponseEntity<CoreUserPT> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                      @ApiParam(value = "login", required = true) @PathVariable("login") String login) {
         log.debug("REST request to get User : {}", login);
+        CorNetwork network = corNetworkService.findNetwork(networkShortcut);
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByLogin(login)
+            userService.getUserWithAuthoritiesByLoginAndNetwork(login, network)
                 .map(CoreUserPT::new));
     }
 
@@ -181,11 +177,9 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
      * @param login the login of the user to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
     @Override
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
+    public ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                      @ApiParam(value = "login", required = true) @PathVariable("login") String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();

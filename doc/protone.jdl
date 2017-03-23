@@ -652,6 +652,7 @@ relationship ManyToOne {
     CrmStage{network} to CorNetwork,
     CrmTaskStatus{network} to CorNetwork,
     CorTax{network} to CorNetwork,
+    TraAdvertismentType {network} to CorNetwork,
 
 
     CrmContact{range} to CorRange,
@@ -726,7 +727,10 @@ relationship ManyToOne {
     CrmTaskComment{taskComment} to CrmTask {comments},
     CrmTaskComment{createdBy} to CorUser,
     CorChannel{network} to CorNetwork,
-    CorNotification{user} to CorUser,
+    CorNotification{user} to CorUser
+}
+relationship ManyToMany {
+
     CorChannel{channelUsers} to CorUser{channel},
     CorNetwork{networkUsers} to CorUser{network}
 }

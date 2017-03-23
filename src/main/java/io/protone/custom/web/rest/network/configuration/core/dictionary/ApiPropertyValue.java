@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.configuration.core;
+package io.protone.custom.web.rest.network.configuration.core.dictionary;
 
 import io.protone.custom.service.dto.CoreValuePT;
 import io.swagger.annotations.*;

@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A CorChannel.
@@ -40,8 +42,12 @@ public class CorChannel implements Serializable {
     @ManyToOne
     private CorNetwork network;
 
-    @ManyToOne
-    private CorUser channelUsers;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "cor_channel_channel_users",
+               joinColumns = @JoinColumn(name="cor_channels_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="channel_users_id", referencedColumnName="id"))
+    private Set<CorUser> channelUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -103,17 +109,29 @@ public class CorChannel implements Serializable {
         this.network = corNetwork;
     }
 
-    public CorUser getChannelUsers() {
+    public Set<CorUser> getChannelUsers() {
         return channelUsers;
     }
 
-    public CorChannel channelUsers(CorUser corUser) {
-        this.channelUsers = corUser;
+    public CorChannel channelUsers(Set<CorUser> corUsers) {
+        this.channelUsers = corUsers;
         return this;
     }
 
-    public void setChannelUsers(CorUser corUser) {
-        this.channelUsers = corUser;
+    public CorChannel addChannelUsers(CorUser corUser) {
+        this.channelUsers.add(corUser);
+        corUser.getChannels().add(this);
+        return this;
+    }
+
+    public CorChannel removeChannelUsers(CorUser corUser) {
+        this.channelUsers.remove(corUser);
+        corUser.getChannels().remove(this);
+        return this;
+    }
+
+    public void setChannelUsers(Set<CorUser> corUsers) {
+        this.channelUsers = corUsers;
     }
 
     @Override

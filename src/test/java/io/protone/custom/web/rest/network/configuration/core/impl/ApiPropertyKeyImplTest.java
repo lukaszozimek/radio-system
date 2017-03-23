@@ -1,8 +1,8 @@
 package io.protone.custom.web.rest.network.configuration.core.impl;
 
 import io.protone.ProtoneApp;
+import io.protone.custom.web.rest.network.configuration.core.dictionary.impl.ApiPropertyKeyImpl;
 import io.protone.domain.CorPropertyKey;
-import io.protone.domain.CorRange;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;

@@ -292,8 +292,40 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
+        <createTable tableName="cor_network_network_users">
+            <column name="network_users_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cor_networks_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="cor_networks_id, network_users_id" tableName="cor_network_network_users"/>
+
 
         <addPrimaryKey columnNames="user_id, authority_id" tableName="cor_user_authority"/>
+        <createTable tableName="cor_channel_channel_users">
+            <column name="channel_users_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cor_channels_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="cor_channels_id, channel_users_id" tableName="cor_channel_channel_users"/>
+
+        <addForeignKeyConstraint baseColumnNames="cor_networks_id"
+                                 baseTableName="cor_network_network_users"
+                                 constraintName="fk_cor_network_network_users_cor_networks_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+        <addForeignKeyConstraint baseColumnNames="network_users_id"
+                                 baseTableName="cor_network_network_users"
+                                 constraintName="fk_cor_network_network_users_network_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="cor_channel"
@@ -301,9 +333,14 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="cor_channels_id"
+                                 baseTableName="cor_channel_channel_users"
+                                 constraintName="fk_cor_channel_channel_users_cor_channels_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
         <addForeignKeyConstraint baseColumnNames="channel_users_id"
-                                 baseTableName="cor_channel"
-                                 constraintName="fk_cor_channel_channel_users_id"
+                                 baseTableName="cor_channel_channel_users"
+                                 constraintName="fk_cor_channel_channel_users_channel_users_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
 
@@ -346,6 +383,10 @@
         <loadData tableName="cor_network"
                   separator=";"
                   file="config/liquibase/cor_network.csv"
+                  encoding="UTF-8"/>
+        <loadData tableName="cor_network_network_users"
+                  separator=";"
+                  file="config/liquibase/network_users.csv"
                   encoding="UTF-8"/>
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>

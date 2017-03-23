@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A CorNetwork.
@@ -40,8 +42,12 @@ public class CorNetwork implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    private CorUser networkUsers;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "cor_network_network_users",
+               joinColumns = @JoinColumn(name="cor_networks_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="network_users_id", referencedColumnName="id"))
+    private Set<CorUser> networkUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -103,17 +109,29 @@ public class CorNetwork implements Serializable {
         this.description = description;
     }
 
-    public CorUser getNetworkUsers() {
+    public Set<CorUser> getNetworkUsers() {
         return networkUsers;
     }
 
-    public CorNetwork networkUsers(CorUser corUser) {
-        this.networkUsers = corUser;
+    public CorNetwork networkUsers(Set<CorUser> corUsers) {
+        this.networkUsers = corUsers;
         return this;
     }
 
-    public void setNetworkUsers(CorUser corUser) {
-        this.networkUsers = corUser;
+    public CorNetwork addNetworkUsers(CorUser corUser) {
+        this.networkUsers.add(corUser);
+        corUser.getNetworks().add(this);
+        return this;
+    }
+
+    public CorNetwork removeNetworkUsers(CorUser corUser) {
+        this.networkUsers.remove(corUser);
+        corUser.getNetworks().remove(this);
+        return this;
+    }
+
+    public void setNetworkUsers(Set<CorUser> corUsers) {
+        this.networkUsers = corUsers;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.protone.custom.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
@@ -29,8 +30,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Service class for managing users.
@@ -129,7 +133,7 @@ public class CustomCorUserService {
         newUser.setAuthorities(authorities);
         newUser.setNetworks(newHashSet(network));
         userRepository.save(newUser);
-        network.setNetworkUsers(newUser);
+        network.addNetworkUsers(newUser);
         customCorNetworkRepository.save(network);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
@@ -137,11 +141,17 @@ public class CustomCorUserService {
 
     public CorUser createUser(CoreUserPT userDTO) {
         CorUser user = new CorUser();
+        CorUser userCreator = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+
         user.setLogin(userDTO.getLogin());
         user.setFirstname(userDTO.getFirstName());
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setImageurl(userDTO.getImageurl());
+        userCreator.getNetworks().stream().forEach(network -> {
+            user.addNetwork(network);
+        });
+
         if (userDTO.getLangKey() == null) {
             user.setLangkey("en"); // default language
         } else {
@@ -203,6 +213,9 @@ public class CustomCorUserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
+            user.setNetworks(null);
+            user = userRepository.save(user);
+
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });
@@ -217,8 +230,8 @@ public class CustomCorUserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CoreUserPT> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAll(pageable).map(CoreUserPT::new);
+    public List<CoreUserPT> getAllManagedUsers(CorNetwork corNetwork) {
+        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(CoreUserPT::new).collect(toList());
     }
 
     @Transactional(readOnly = true)
@@ -252,5 +265,10 @@ public class CustomCorUserService {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<CorUser> getUserWithAuthoritiesByLoginAndNetwork(String login, CorNetwork corNetwork) {
+        return userRepository.findOneWithAuthoritiesByLoginAndNetworks(login, Sets.newHashSet(corNetwork));
     }
 }
