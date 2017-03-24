@@ -1,9 +1,11 @@
 package io.protone.custom.web.rest.network.channel;
 
 import io.protone.custom.service.CorChannelService;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.custom.service.mapper.CustomCORChannelMapper;
 import io.protone.domain.CorChannel;
+import io.protone.domain.CorNetwork;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -30,6 +32,8 @@ public class ApiChannelImpl implements ApiChannel {
 
     @Inject
     private CustomCORChannelMapper customCORChannelMapper;
+    @Inject
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<CoreChannelPT> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) {
@@ -38,6 +42,8 @@ public class ApiChannelImpl implements ApiChannel {
             return createChannelUsingPOST(networkShortcut, channelDTO);
         }
         CorChannel corChannel = customCORChannelMapper.cORChannelDTOToCORChannel(channelDTO);
+        CorNetwork network = networkService.findNetwork(networkShortcut);
+        corChannel.setNetwork(network);
         corChannel = channelService.save(corChannel);
         CoreChannelPT result = customCORChannelMapper.cORChannelToCORChannelDTO(corChannel);
         return ResponseEntity.ok()
@@ -51,7 +57,10 @@ public class ApiChannelImpl implements ApiChannel {
         if (channelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
         }
+
         CorChannel corChannel = customCORChannelMapper.cORChannelDTOToCORChannel(channelDTO);
+        CorNetwork network = networkService.findNetwork(networkShortcut);
+        corChannel.setNetwork(network);
         corChannel = channelService.save(corChannel);
         CoreChannelPT result = customCORChannelMapper.cORChannelToCORChannelDTO(corChannel);
         return ResponseEntity.ok()

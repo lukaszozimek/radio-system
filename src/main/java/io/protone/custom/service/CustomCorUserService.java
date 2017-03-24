@@ -4,12 +4,15 @@ import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.custom.service.mapper.CustomCORChannelMapper;
 import io.protone.custom.service.mapper.CustomCorNetworkMapper;
 import io.protone.custom.service.mapper.CustomCorUserMapperExt;
 import io.protone.domain.CorAuthority;
+import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomAuthorityRepository;
+import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.security.AuthoritiesConstants;
@@ -35,6 +38,7 @@ import java.util.stream.Collectors;
 import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Service class for managing users.
@@ -50,6 +54,8 @@ public class CustomCorUserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomAuthorityRepository authorityRepository;
+    @Autowired
+    private CustomCorChannelRepository customCorChannelRepository;
 
     @Autowired
     private CustomCorNetworkRepository customCorNetworkRepository;
@@ -57,6 +63,8 @@ public class CustomCorUserService {
     private CustomCorUserMapperExt customCorUserMapperExt;
     @Autowired
     private CustomCorNetworkMapper customCorNetworkMapper;
+    @Autowired
+    private CustomCORChannelMapper customCORChannelMapper;
 
 
     public Optional<CorUser> activateRegistration(String key) {
@@ -151,7 +159,10 @@ public class CustomCorUserService {
         userCreator.getNetworks().stream().forEach(network -> {
             user.addNetwork(network);
         });
+        userDTO.getChannel().stream().forEach(coreChannelPT -> {
+            user.addChannel(customCORChannelMapper.cORChannelDTOToCORChannel(coreChannelPT));
 
+        });
         if (userDTO.getLangKey() == null) {
             user.setLangkey("en"); // default language
         } else {
@@ -190,8 +201,9 @@ public class CustomCorUserService {
     /**
      * Update all information for a specific user, and return the modified user.
      */
-    public Optional<CoreUserPT> updateUser(CoreUserPT userDTO) {
-        return Optional.of(userRepository
+    public CoreUserPT updateUser(CoreUserPT userDTO) {
+
+        CorUser corUser = Optional.of(userRepository
             .findOne(userDTO.getId()))
             .map(user -> {
                 user.setLogin(userDTO.getLogin());
@@ -201,6 +213,12 @@ public class CustomCorUserService {
                 user.setImageurl(userDTO.getImageurl());
                 user.setActivated(userDTO.getActivated());
                 user.setLangkey(userDTO.getLangKey());
+                user.getChannels().clear();
+                Set<CorChannel> corChannels = user.getChannels();
+                corChannels.clear();
+                userDTO.getChannel().stream()
+                    .map(channelPT -> customCorChannelRepository.findOne(channelPT.getId()))
+                    .forEach(corChannels::add);
                 Set<CorAuthority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()
@@ -208,7 +226,9 @@ public class CustomCorUserService {
                     .forEach(managedAuthorities::add);
                 log.debug("Changed Information for User: {}", user);
                 return user;
-            }).map(CoreUserPT::new);
+            }).get();
+        corUser = userRepository.saveAndFlush(corUser);
+        return customCorUserMapperExt.userToCoreUserPT(corUser);
     }
 
     public void deleteUser(String login) {
@@ -228,7 +248,7 @@ public class CustomCorUserService {
 
     @Transactional(readOnly = true)
     public List<CoreUserPT> getAllManagedUsers(CorNetwork corNetwork) {
-        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(CoreUserPT::new).collect(toList());
+        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(customCorUserMapperExt::userToCoreUserPT).collect(toList());
     }
 
     @Transactional(readOnly = true)

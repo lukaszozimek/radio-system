@@ -1,6 +1,7 @@
 
 package io.protone.custom.service.mapper;
 
+import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorUserRepository;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Generated(
 
@@ -31,6 +33,8 @@ public class CustomCorUserMapperExt {
     private CustomCorUserRepository customCorUserRepository;
     @Inject
     private CustomCorNetworkMapper customCorNetworkMapper;
+    @Inject
+    private CustomCORChannelMapper customCORChannelMapper;
 
     public CoreUserPT userToCoreUserPT(CorUser user) {
 
@@ -57,7 +61,11 @@ public class CustomCorUserMapperExt {
         if (user.getAuthorities() != null) {
             coreUserPT.setAuthorities(user.getAuthorities().stream().map(corAuthority -> corAuthority.getName()).collect(toList()));
         }
-        if (user.getNetworks().stream().findFirst().isPresent()) {
+        if (!user.getChannels().isEmpty()) {
+            coreUserPT.setChannel(user.getChannels().stream().map(customCORChannelMapper::cORChannelToCORChannelDTO).collect(toList()));
+
+        }
+        if (!user.getNetworks().isEmpty()) {
             coreUserPT.network(customCorNetworkMapper.cORNetworkToCorNetworkDTO(user.getNetworks().stream().findFirst().get()));
         }
         return coreUserPT;
@@ -91,7 +99,8 @@ public class CustomCorUserMapperExt {
         user.setFirstname(userPT.getFirstName());
         user.setLastname(userPT.getLastName());
         user.setEmail(userPT.getEmail());
-
+        user.setNetworks(Sets.newHashSet(customCorNetworkMapper.cORNetworkDTOToCorNetwork(userPT.getNetwork())));
+        user.channels(userPT.getChannel().stream().map(customCORChannelMapper::cORChannelDTOToCORChannel).collect(toSet()));
         if (userPT.getActivated() != null) {
 
             user.setActivated(userPT.getActivated());

@@ -141,7 +141,7 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(coreUserPT.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
         }
-        Optional<CoreUserPT> updatedUser = userService.updateUser(coreUserPT);
+        Optional<CoreUserPT> updatedUser = Optional.of(userService.updateUser(coreUserPT));
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert("userManagement.updated", coreUserPT.getLogin()));

@@ -1,5 +1,6 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -42,11 +43,9 @@ public class CorNetwork implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "networks")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "cor_network_network_users",
-               joinColumns = @JoinColumn(name="cor_networks_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="network_users_id", referencedColumnName="id"))
     private Set<CorUser> networkUsers = new HashSet<>();
 
     public Long getId() {

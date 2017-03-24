@@ -75,7 +75,7 @@ public class CorUser implements Serializable {
     private LocalDate lastmodifieddate;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "cor_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -84,15 +84,19 @@ public class CorUser implements Serializable {
     @BatchSize(size = 20)
     private Set<CorAuthority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "channelUsers")
-    @JsonIgnore
+
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "cor_user_channel",
+        joinColumns = @JoinColumn(name="cor_users_id", referencedColumnName="id"),
+        inverseJoinColumns = @JoinColumn(name="channels_id", referencedColumnName="id"))
     private Set<CorChannel> channels = new HashSet<>();
 
-
-    @ManyToMany(mappedBy = "networkUsers")
-    @JsonIgnore
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "cor_user_network",
+        joinColumns = @JoinColumn(name="cor_users_id", referencedColumnName="id"),
+        inverseJoinColumns = @JoinColumn(name="networks_id", referencedColumnName="id"))
     private Set<CorNetwork> networks = new HashSet<>();
 
     public Long getId() {

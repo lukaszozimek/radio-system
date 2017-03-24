@@ -731,8 +731,8 @@ relationship ManyToOne {
 }
 relationship ManyToMany {
 
-    CorChannel{channelUsers} to CorUser{channel},
-    CorNetwork{networkUsers} to CorUser{network}
+      CorUser{channel} to CorChannel{channelUsers},
+     CorUser{network} to CorNetwork{networkUsers}
 }
 dto * with mapstruct except LibCloudObject
 microservice * with protones

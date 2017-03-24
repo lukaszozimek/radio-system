@@ -13,6 +13,7 @@ import java.util.List;
  * Created by lukaszozimek on 16.01.2017.
  */
 @Service
+@Transactional
 public class CorChannelService {
 
     @Inject
@@ -29,13 +30,14 @@ public class CorChannelService {
         return findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
     }
 
-    @Transactional
+
     public void deleteChannel(String networkShortcut, String channelShortcut) {
         channelRepository.delete(findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut));
     }
 
-    public CorChannel save(CorChannel network) {
-        return channelRepository.save(network);
+    public CorChannel save(CorChannel channel) {
+
+        return channelRepository.saveAndFlush(channel);
     }
 
     public CorChannel findChannelByNetworkShortcutAndChannelShortcut(String networkShortcut, String channelShortcut) {
