@@ -78,11 +78,10 @@ class ApiClient(object):
             login_vm = models.LoginVM()
             login_vm.username = username
             login_vm.password = password
-            # login_vm.remember_me = True
-            # result = self.authorize(login_vm)
-            # self.default_headers['Authorization'] = 'Bearer ' + result[0]['id_token']
-            self.default_headers['Authorization'] = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTQ5MjU5MDE3Nn0.dYMD1Vcy94gRN_ivW5HWE3uq6Bf0qYimxPQdfJXVCaH8hZuNKwUeHUUajDL8VLQZ1y_tgilHGF2MR9aL6w_ZSA'
-
+            login_vm.remember_me = True
+            authResult = self.authorize(login_vm)
+            self.default_headers['Authorization'] = 'Bearer ' + authResult[0]['id_token']
+            
     @property
     def user_agent(self):
         """
@@ -635,3 +634,83 @@ class ApiClient(object):
                 setattr(instance, attr, self.__deserialize(value, attr_type))
 
         return instance
+
+    def authorize(self, login_vm, **kwargs):
+        """
+        authorize
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please define a `callback` function
+        to be invoked when receiving the response.
+        >>> def callback_function(response):
+        >>>     pprint(response)
+        >>>
+        >>> thread = api.authorize_using_post_with_http_info(login_vm, callback=callback_function)
+
+        :param callback function: The callback function
+            for asynchronous request. (optional)
+        :param LoginVM login_vm: loginVM (required)
+        :return: object
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['login_vm']
+        all_params.append('callback')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method authorize_using_post" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'login_vm' is set
+        if ('login_vm' not in params) or (params['login_vm'] is None):
+            raise ValueError("Missing the required parameter `login_vm` when calling `authorize_using_post`")
+
+
+        collection_formats = {}
+
+        resource_path = '/api/user/authenticate'.replace('{format}', 'json')
+        path_params = {}
+
+        query_params = {}
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        if 'login_vm' in params:
+            body_params = params['login_vm']
+        # HTTP header `Accept`
+        header_params['Accept'] = self.\
+            select_header_accept(['*/*'])
+
+        # HTTP header `Content-Type`
+        header_params['Content-Type'] = self.\
+            select_header_content_type(['application/json'])
+
+        # Authentication setting
+        auth_settings = []
+
+        return self.call_api(resource_path, 'POST',
+                             path_params,
+                             query_params,
+                             header_params,
+                             body=body_params,
+                             post_params=form_params,
+                             files=local_var_files,
+                             response_type='object',
+                             auth_settings=auth_settings,
+                             callback=params.get('callback'),
+                             _return_http_data_only=params.get('_return_http_data_only'),
+                             _preload_content=params.get('_preload_content', True),
+                             _request_timeout=params.get('_request_timeout'),
+                             collection_formats=collection_formats)

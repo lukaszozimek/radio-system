@@ -13,6 +13,6 @@ login_vm.password = 'admin'
 try: 
     # getAllNetworks
     api_response = api_instance.authorize_using_post(login_vm)
-    pprint(api_response['id_token'])
+    print 'JWT token is: ' + api_response['id_token']
 except ApiException as e:
     print("Exception when calling UserjwtcontrollerApi->authorize_using_post: %s\n" % e)
