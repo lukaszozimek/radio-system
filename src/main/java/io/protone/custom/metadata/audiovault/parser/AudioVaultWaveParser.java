@@ -134,10 +134,10 @@ public class AudioVaultWaveParser extends AudioParser {
         metadata.add(CART_CHUNK_TIMER_SEG_S, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(692, 699))));
         metadata.add(CART_CHUNK_TIMER_SEG_E, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(699, 707))));
         metadata.add(CART_CHUNK_TIMER_INT, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(707, 715))));
-        metadata.add(CART_CHUNK_FIFTH_TIMER, s2.substring(692, 700).trim());
-        metadata.add(CART_CHUNK_SIXTH_TIMER, s2.substring(692, 700).trim());
-        metadata.add(CART_CHUNK_SEVENTH_TIMER, s2.substring(692, 700).trim());
-        metadata.add(CART_CHUNK_EIGHT_TIMER, s2.substring(692, 700).trim());
+  //      metadata.add(CART_CHUNK_FIFTH_TIMER, s2.substring(692, 700).trim());
+    ///    metadata.add(CART_CHUNK_SIXTH_TIMER, s2.substring(692, 700).trim());
+      //  metadata.add(CART_CHUNK_SEVENTH_TIMER, s2.substring(692, 700).trim());
+       // metadata.add(CART_CHUNK_EIGHT_TIMER, s2.substring(692, 700).trim());
 
     }
 

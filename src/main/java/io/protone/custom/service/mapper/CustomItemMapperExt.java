@@ -1,5 +1,8 @@
 package io.protone.custom.service.mapper;
 
+import io.protone.custom.service.dto.CoreKeyPT;
+import io.protone.custom.service.dto.CoreKeyValuePT;
+import io.protone.custom.service.dto.CoreValuePT;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibItemStateEnum;
@@ -37,9 +40,10 @@ public class CustomItemMapperExt {
     @Inject
     private CustomLibTrackMapperExt trackMapper;
 
+
     public LibItemPT DB2DTO(LibMediaItem db) {
 
-        if (db == null){
+        if (db == null) {
             return null;
         }
         LibItemPT dto = new LibItemPT()
@@ -55,7 +59,12 @@ public class CustomItemMapperExt {
             .track(trackMapper.DB2DTO(db.getTrack()))
             .author(db.getAuthors().stream().map(corPerson -> personMapper.DB2DTO(corPerson)).collect(toList()))
             .composer(db.getComposers().stream().map(corPerson -> personMapper.DB2DTO(corPerson)).collect(toList()))
-            .markers(db.getMarkers().stream().map(libMarker -> markerMapper.DB2DTO(libMarker)).collect(toList()));
+            .markers(db.getMarkers().stream().map(libMarker -> markerMapper.DB2DTO(libMarker)).collect(toList()))
+            .properties(db.getProperites().stream().map(corPropertyValue -> {
+                return new CoreKeyValuePT()
+                    .key(new CoreKeyPT().id(corPropertyValue.getPropertyKey().getId()).key(corPropertyValue.getPropertyKey().getKey()))
+                    .value(new CoreValuePT().id(corPropertyValue.getId()).value(corPropertyValue.getValue()));
+            }).collect(toList()));
         return dto;
     }
 

@@ -12,12 +12,12 @@ import java.util.Objects;
 
 public class CoreKeyValuePT   {
   @JsonProperty("key")
-  private String key = null;
+  private CoreKeyPT key = null;
 
   @JsonProperty("value")
-  private String value = null;
+  private CoreValuePT value = null;
 
-  public CoreKeyValuePT key(String key) {
+  public CoreKeyValuePT key(CoreKeyPT key) {
     this.key = key;
     return this;
   }
@@ -27,15 +27,15 @@ public class CoreKeyValuePT   {
    * @return key
   **/
   @ApiModelProperty(value = "")
-  public String getKey() {
+  public CoreKeyPT getKey() {
     return key;
   }
 
-  public void setKey(String key) {
+  public void setKey(CoreKeyPT key) {
     this.key = key;
   }
 
-  public CoreKeyValuePT value(String value) {
+  public CoreKeyValuePT value(CoreValuePT value) {
     this.value = value;
     return this;
   }
@@ -45,11 +45,11 @@ public class CoreKeyValuePT   {
    * @return value
   **/
   @ApiModelProperty(value = "")
-  public String getValue() {
+  public CoreValuePT getValue() {
     return value;
   }
 
-  public void setValue(String value) {
+  public void setValue(CoreValuePT value) {
     this.value = value;
   }
 

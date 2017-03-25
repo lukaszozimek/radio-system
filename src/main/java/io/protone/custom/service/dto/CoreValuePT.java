@@ -15,7 +15,7 @@ public class CoreValuePT   {
   private Long id = null;
 
   @JsonProperty("propertyKeyId")
-  private Long propertyKeyId = null;
+  private CoreKeyPT propertyKeyId = null;
 
   @JsonProperty("value")
   private String value = null;
@@ -38,7 +38,7 @@ public class CoreValuePT   {
     this.id = id;
   }
 
-  public CoreValuePT propertyKeyId(Long propertyKeyId) {
+  public CoreValuePT propertyKeyId(CoreKeyPT propertyKeyId) {
     this.propertyKeyId = propertyKeyId;
     return this;
   }
@@ -48,11 +48,11 @@ public class CoreValuePT   {
    * @return propertyKeyId
   **/
   @ApiModelProperty(value = "")
-  public Long getPropertyKeyId() {
+  public CoreKeyPT getPropertyKeyId() {
     return propertyKeyId;
   }
 
-  public void setPropertyKeyId(Long propertyKeyId) {
+  public void setPropertyKeyId(CoreKeyPT propertyKeyId) {
     this.propertyKeyId = propertyKeyId;
   }
 

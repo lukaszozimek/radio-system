@@ -86,7 +86,12 @@ public class LibMetadataService {
             mediaItem.album(libAlbum);
         }
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
-        mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
+        if (metadata.get(XMPDM.DURATION) != null) {
+            mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
+
+        } else {
+            mediaItem.setLength(1.0);
+        }
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
@@ -98,7 +103,13 @@ public class LibMetadataService {
         });
         audioObject.biTrate(1);
         audioObject.setLength(mediaItem.getLength());
-        audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
+       if(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR)!=null) {
+           audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
+       }
+       else {
+           audioObject.setCodec(NO_DATA);
+       }
+
         audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
         return mediaItem;
     }
