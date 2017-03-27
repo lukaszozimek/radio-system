@@ -76,14 +76,20 @@ public class LibMetadataService {
         } else {
             mediaItem.setName(NO_DATA);
         }
+
+        metadata.remove(ProtoneMetadataProperty.TITLE.getName());
         mediaItem.setDescription(metadata.get(ProtoneMetadataProperty.COMMENTS));
         LibArtist libArtist = libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
         if (libArtist != null) {
             mediaItem.setArtist(libArtist);
         }
-        LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM_NAME), metadata.get(ProtoneMetadataProperty.ALBUM_ARTIST), corNetwork);
-        if (libAlbum != null) {
-            mediaItem.album(libAlbum);
+        if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.ALBUM_NAME))) {
+            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM_NAME), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
+            if (libAlbum != null) {
+                mediaItem.album(libAlbum);
+            }
+        } else {
+            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(NO_DATA), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
         }
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
         if (metadata.get(XMPDM.DURATION) != null) {
@@ -92,25 +98,30 @@ public class LibMetadataService {
         } else {
             mediaItem.setLength(1.0);
         }
+        metadata.remove(ProtoneMetadataProperty.DURATION.getName());
+        metadata.remove(ProtoneMetadataProperty.ALBUM_NAME);
+        metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;
+
+
+        audioObject.biTrate(1);
+        audioObject.setLength(mediaItem.getLength());
+        if (metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR) != null) {
+            audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
+            metadata.remove(ProtoneMetadataProperty.AUDIO_COMPRESSOR.getName());
+        } else {
+            audioObject.setCodec(NO_DATA);
+        }
+        audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
         Arrays.stream(metadata.names()).forEach(metadataName -> {
             CorPropertyKey corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
             corPropertyKeyRepository.saveAndFlush(corPropertyKey);
             corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(finalMediaItem).propertyKey(corPropertyKey));
         });
-        audioObject.biTrate(1);
-        audioObject.setLength(mediaItem.getLength());
-       if(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR)!=null) {
-           audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
-       }
-       else {
-           audioObject.setCodec(NO_DATA);
-       }
 
-        audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
         return mediaItem;
     }
 

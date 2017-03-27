@@ -1,5 +1,6 @@
 package io.protone.custom.service;
 
+import com.google.common.base.Strings;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import io.protone.domain.LibArtist;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+
+import static io.protone.custom.consts.ServiceConstants.NO_DATA;
 
 /**
  * Created by lukaszozimek on 14/03/2017.
@@ -31,6 +34,9 @@ public class LibAlbumService {
                 return libAlbum;
             }
             return libAlbumRepository.saveAndFlush(new LibAlbum().albumType(LibAlbumTypeEnum.AT_ALBUM).artist(libArtist).name(name).network(network));
+        }
+        if (Strings.isNullOrEmpty(name)) {
+            return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
         }
         return libAlbumRepository.saveAndFlush(new LibAlbum().name(name).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
     }

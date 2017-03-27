@@ -59,94 +59,185 @@ public class AudioVaultWaveParser extends AudioParser {
         int index = file.indexOf("LIST");
         String listChunkMetadata = file.substring(index, index + 1140);
         String[] splitedUser = listChunkMetadata.split("USER");
-        metadata.add(DATE_MODIFIED, splitedUser[1].replace("\u0000","").trim());
-        metadata.add(DATE_ADD, splitedUser[2].replace("\u0000","").trim());
-        metadata.add(CATEGORY, splitedUser[3].replace("\u0000","").trim());
-        metadata.add(CLASS, splitedUser[4].replace("\u0000","").trim());
-        metadata.add(INTRO_TIME, splitedUser[5].replace("\u0000","").trim());
-        metadata.add(SOURCE_DISK, splitedUser[6].replace("\u0000","").trim());
-        metadata.add(SOURCE_TRACK, splitedUser[7].replace("\u0000","").trim());
-        metadata.add(SONG_ID, splitedUser[8].replace("\u0000","").trim());
-        metadata.add(COMPOSER, splitedUser[9].replace("\u0000","").trim());
-        metadata.add(LYRICIST, splitedUser[10].replace("\u0000","").trim());
-        metadata.add(CLICK_URL, splitedUser[11].replace("\u0000","").trim());
-        metadata.add(TEMPO, splitedUser[12].replace("\u0000","").trim());
-        metadata.add(GENRE, splitedUser[13].replace("\u0000","").trim());
-        metadata.add(SUBCATEGORY, splitedUser[14].replace("\u0000","").trim());
-        metadata.add(LANGUAGE, splitedUser[15].replace("\u0000","").trim());
-        metadata.add(ALBUM_NAME, splitedUser[16].replace("\u0000","").trim());
-        // metadata.add("AVListAlbumTrackName", splitedUser[1]);
-        metadata.add(ALBUM_ART_LINK, splitedUser[17].replace("\u0000","").trim());
-        metadata.add(ALBUM_REL_YEAR, splitedUser[18].replace("\u0000","").trim());
-        metadata.add(ALBUM_ORIGIN_YEAR, splitedUser[19].replace("\u0000","").trim());
-        metadata.add(ALBUM_MUZE_NUMBER, splitedUser[20].replace("\u0000","").trim());
-        metadata.add(ALBUM_RECORD_LABEL, splitedUser[21].replace("\u0000","").trim());
-        metadata.add(ALBUM_PUBLISHER, splitedUser[22].replace("\u0000","").trim());
-        metadata.add(ALBUM_LICENSEE, splitedUser[23].replace("\u0000","").trim());
-        metadata.add(ALBUM_CATALOG_NUMBER, splitedUser[24].replace("\u0000","").trim());
-        metadata.add(ALBUM_UPC_NUMBER, splitedUser[25].replace("\u0000","").trim());
-        metadata.add(ALBUM_ISRC, splitedUser[26].replace("\u0000","").trim());
-        metadata.add(SOUNDTRACK_PRODUCER, splitedUser[27].replace("\u0000","").trim());
-        metadata.add(SOUNDTRACK_DIRECTOR, splitedUser[28].replace("\u0000","").trim());
-        metadata.add(SOUNDTRACK_BOOK_AUTHOR, splitedUser[29].replace("\u0000","").trim());
-        metadata.add(SOUNDTRACK_SCREEN_PLAY, splitedUser[30].replace("\u0000","").trim());
-        metadata.add(SOUNDTRACK_CAST, splitedUser[31].replace("\u0000","").trim());
+       if(splitedUser[splitedUser.length-1].length()>=101){
+           splitedUser[splitedUser.length-1]=splitedUser[splitedUser.length-1].substring(0,100);
+       }
+        if (splitedUser.length >= 2) {
+            metadata.add(DATE_MODIFIED, splitedUser[1].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 3) {
+            metadata.add(DATE_ADD, splitedUser[2].replace("\u0000", "").trim());
+        }
+
+        if (splitedUser.length >= 4) {
+            metadata.add(CATEGORY, splitedUser[3].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 5) {
+
+            metadata.add(CLASS, splitedUser[4].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 6) {
+
+            metadata.add(INTRO_TIME, splitedUser[5].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 7) {
+            metadata.add(SOURCE_DISK, splitedUser[6].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 8) {
+
+            metadata.add(SOURCE_TRACK, splitedUser[7].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 9) {
+            metadata.add(SONG_ID, splitedUser[8].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 10) {
+            metadata.add(COMPOSER, splitedUser[9].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 11) {
+            metadata.add(LYRICIST, splitedUser[10].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 12) {
+            metadata.add(CLICK_URL, splitedUser[11].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 13) {
+            metadata.add(TEMPO, splitedUser[12].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 14) {
+            metadata.add(GENRE, splitedUser[13].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 15) {
+            metadata.add(SUBCATEGORY, splitedUser[14].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 16) {
+            metadata.add(LANGUAGE, splitedUser[15].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 17) {
+            metadata.add(ALBUM_NAME, splitedUser[16].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 18) {
+            // metadata.add("AVListAlbumTrackName", splitedUser[1]);
+        }
+        if (splitedUser.length >= 18) {
+            metadata.add(ALBUM_ART_LINK, splitedUser[17].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 19) {
+            metadata.add(ALBUM_REL_YEAR, splitedUser[18].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 20) {
+            metadata.add(ALBUM_ORIGIN_YEAR, splitedUser[19].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 21) {
+            metadata.add(ALBUM_MUZE_NUMBER, splitedUser[20].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 22) {
+            metadata.add(ALBUM_RECORD_LABEL, splitedUser[21].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 23) {
+            metadata.add(ALBUM_PUBLISHER, splitedUser[22].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 24) {
+            metadata.add(ALBUM_LICENSEE, splitedUser[23].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 25) {
+            metadata.add(ALBUM_CATALOG_NUMBER, splitedUser[24].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 26) {
+            metadata.add(ALBUM_UPC_NUMBER, splitedUser[25].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 27) {
+            metadata.add(ALBUM_ISRC, splitedUser[26].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 28) {
+            metadata.add(SOUNDTRACK_PRODUCER, splitedUser[27].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 29) {
+            metadata.add(SOUNDTRACK_DIRECTOR, splitedUser[28].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 30) {
+            metadata.add(SOUNDTRACK_BOOK_AUTHOR, splitedUser[29].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 31) {
+            metadata.add(SOUNDTRACK_SCREEN_PLAY, splitedUser[30].replace("\u0000", "").trim());
+        }
+        if (splitedUser.length >= 32) {
+            metadata.add(SOUNDTRACK_CAST, splitedUser[31].replace("\u0000", "").trim());
+        }
     }
 
-    private void listBextAV(InputStream stream, Metadata metadata) throws IOException {
+    private void listBextAV
+        (InputStream
+             stream, Metadata
+             metadata) throws
+        IOException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
+        stream.close();
         String file = new String(inputStream);
         int index = file.indexOf("bext");
         String listChunkMetadata = file.substring(index, index + 604);
     }
 
-    private void av10(InputStream stream, Metadata metadata) throws IOException {
+    private void av10
+        (InputStream
+             stream, Metadata
+             metadata) throws
+        IOException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
+        stream.close();
         String file = new String(inputStream);
         int index = file.indexOf("av10");
         String listChunkMetadata = file.substring(index, index + 141);
     }
 
-    private void cartChunk(InputStream stream, Metadata metadata) throws IOException {
+    private void cartChunk
+        (InputStream
+             stream, Metadata
+             metadata) throws
+        IOException {
+        byte[] inputStream = new byte[stream.available()];
+        stream.read(inputStream);
+        stream.close();
+        String file = new String(inputStream);
+        int index = file.indexOf("cart");
+        String s2 = new String(inputStream);
+        s2 = s2.substring(index+12, 2000);
 
-        byte[] buffer = new byte[758];
-        stream.skip(46);
-        stream.read(buffer, 0, 758);
-        String s2 = new String(buffer);
-        metadata.add(CART_CHUNK_TITLE, s2.substring(0, 64).trim());
-        metadata.add(CART_CHUNK_ARTIST, s2.substring(64, 128).trim());
-        metadata.add(CART_CHUNK_AUDIOVAULTID, s2.substring(128, 192).trim());
-        metadata.add(CART_CHUNK_CLIENTID, s2.substring(192, 256).trim());
-        metadata.add(CART_CHUNK_CATEGORYID, s2.substring(256, 320).trim());
-        metadata.add(CART_CHUNK_CLASSYFICATION, s2.substring(320, 384).trim());
-        metadata.add(CART_CHUNK_OUT_CUE, s2.substring(384, 448).trim());
-        metadata.add(CART_CHUNK_START_DATE, s2.substring(452, 462).trim());
-        metadata.add(CART_CHUNK_START_TIME, s2.substring(462, 470).trim());
-        metadata.add(CART_CHUNK_END_DATE, s2.substring(470, 480).trim());
-        metadata.add(CART_CHUNK_END_TIME, s2.substring(480, 488).trim());
-        metadata.add(CART_CHUNK_PRODUCER_APP_ID, s2.substring(488, 552).trim());
-        metadata.add(CART_CHUNK_PRODUCER_APP_VERSION, s2.substring(552, 616).trim());
+        metadata.add(CART_CHUNK_TITLE, s2.substring(0, 64).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_ARTIST, s2.substring(64, 128).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_AUDIOVAULTID, s2.substring(128, 192).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_CLIENTID, s2.substring(192, 256).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_CATEGORYID, s2.substring(256, 320).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_CLASSYFICATION, s2.substring(320, 384).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_OUT_CUE, s2.substring(384, 448).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_START_DATE, s2.substring(448, 458).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_START_TIME, s2.substring(458, 468).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_END_DATE, s2.substring(468, 478).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_END_TIME, s2.substring(478, 484).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_PRODUCER_APP_ID, s2.substring(484, 548).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(CART_CHUNK_PRODUCER_APP_VERSION, s2.substring(548, 614).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
 
-        metadata.add(CART_CHUNK_TIMER_AUD_E,
-            String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(684, 692))));
-        metadata.add(CART_CHUNK_TIMER_SEG_S, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(692, 699))));
-        metadata.add(CART_CHUNK_TIMER_SEG_E, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(699, 707))));
-        metadata.add(CART_CHUNK_TIMER_INT, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(707, 715))));
-  //      metadata.add(CART_CHUNK_FIFTH_TIMER, s2.substring(692, 700).trim());
-    ///    metadata.add(CART_CHUNK_SIXTH_TIMER, s2.substring(692, 700).trim());
-      //  metadata.add(CART_CHUNK_SEVENTH_TIMER, s2.substring(692, 700).trim());
-       // metadata.add(CART_CHUNK_EIGHT_TIMER, s2.substring(692, 700).trim());
+        metadata.add(CART_CHUNK_TIMER_AUD_E, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(680, 688))));
+        metadata.add(CART_CHUNK_TIMER_SEG_S, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(688, 695)  )));
+        metadata.add(CART_CHUNK_TIMER_SEG_E, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(695, 703))));
+        metadata.add(CART_CHUNK_TIMER_INT, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(703, 711))));
+        //      metadata.add(CART_CHUNK_FIFTH_TIMER, s2.substring(711, 719));
+        ///    metadata.add(CART_CHUNK_SIXTH_TIMER, s2.substring(719, 727)));
+        //  metadata.add(CART_CHUNK_SEVENTH_TIMER,s2.substring(727, 735));
+        // metadata.add(CART_CHUNK_EIGHT_TIMER, ss2.substring(735,743 ));
 
     }
 
-    private long convertCartChunkTimerToSampleOffset(String timerValuePosition) {
+    private long convertCartChunkTimerToSampleOffset
+        (String
+             timerValuePosition) {
         return ToUInt32(timerValuePosition.substring(4).getBytes(), 0);
 
     }
 
-    public static long ToUInt32(byte[] bytes, int offset) {
+    public static long ToUInt32
+        (byte[] bytes,
+         int offset) {
         long result = (int) bytes[offset] & 0xff;
         result |= ((int) bytes[offset + 1] & 0xff) << 8;
         result |= ((int) bytes[offset + 2] & 0xff) << 16;

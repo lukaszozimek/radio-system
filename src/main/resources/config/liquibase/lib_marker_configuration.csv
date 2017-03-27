@@ -1,0 +1,6 @@
+id;name;display_name;color;keyboard_shortcut;type;network_id
+1;auds;Audio Start;;a;;1
+1;aude;Audio End;;a;;1
+1;seqs;Seq Start;;a;;1
+1;seqe;Seq End;;a;;1
+1;intro;Intro;;a;;1

@@ -12,7 +12,6 @@
     <mime-type type="audio/av-mp2">
         <acronym>AV-WAV</acronym>
         <magic priority="20">
-
             <match value="Broadcast Electronics AudioVAULT" type="string" offset="568"
             />
         </magic>
@@ -22,6 +21,73 @@
         <acronym>AV-MP3</acronym>
         <magic priority="20">
             <match value="TXXX" type="string" offset="24"/>
+            <match value="TXXX" type="string" offset="25"/>
+            <match value="TXXX" type="string" offset="26"/>
+            <match value="TXXX" type="string" offset="27"/>
+            <match value="TXXX" type="string" offset="28"/>
+            <match value="TXXX" type="string" offset="29"/>
+            <match value="TXXX" type="string" offset="30"/>
+            <match value="TXXX" type="string" offset="31"/>
+            <match value="TXXX" type="string" offset="32"/>
+            <match value="TXXX" type="string" offset="33"/>
+            <match value="TXXX" type="string" offset="34"/>
+            <match value="TXXX" type="string" offset="35"/>
+            <match value="TXXX" type="string" offset="36"/>
+            <match value="TXXX" type="string" offset="37"/>
+            <match value="TXXX" type="string" offset="38"/>
+            <match value="TXXX" type="string" offset="39"/>
+            <match value="TXXX" type="string" offset="40"/>
+            <match value="TXXX" type="string" offset="41"/>
+            <match value="TXXX" type="string" offset="42"/>
+            <match value="TXXX" type="string" offset="43"/>
+            <match value="TXXX" type="string" offset="44"/>
+            <match value="TXXX" type="string" offset="45"/>
+            <match value="TXXX" type="string" offset="46"/>
+            <match value="TXXX" type="string" offset="47"/>
+            <match value="TXXX" type="string" offset="48"/>
+            <match value="TXXX" type="string" offset="49"/>
+            <match value="TXXX" type="string" offset="50"/>
+            <match value="TXXX" type="string" offset="51"/>
+            <match value="TXXX" type="string" offset="52"/>
+            <match value="TXXX" type="string" offset="53"/>
+            <match value="TXXX" type="string" offset="54"/>
+            <match value="TXXX" type="string" offset="55"/>
+            <match value="TXXX" type="string" offset="56"/>
+            <match value="TXXX" type="string" offset="57"/>
+            <match value="TXXX" type="string" offset="58"/>
+            <match value="TXXX" type="string" offset="59"/>
+            <match value="TXXX" type="string" offset="60"/>
+            <match value="TXXX" type="string" offset="61"/>
+            <match value="TXXX" type="string" offset="62"/>
+            <match value="TXXX" type="string" offset="63"/>
+            <match value="TXXX" type="string" offset="64"/>
+            <match value="TXXX" type="string" offset="65"/>
+            <match value="TXXX" type="string" offset="66"/>
+            <match value="TXXX" type="string" offset="67"/>
+            <match value="TXXX" type="string" offset="68"/>
+            <match value="TXXX" type="string" offset="69"/>
+            <match value="TXXX" type="string" offset="70"/>
+            <match value="TXXX" type="string" offset="71"/>
+            <match value="TXXX" type="string" offset="72"/>
+            <match value="TXXX" type="string" offset="73"/>
+            <match value="TXXX" type="string" offset="74"/>
+            <match value="TXXX" type="string" offset="75"/>
+            <match value="TXXX" type="string" offset="76"/>
+            <match value="TXXX" type="string" offset="77"/>
+            <match value="TXXX" type="string" offset="78"/>
+            <match value="TXXX" type="string" offset="79"/>
+            <match value="TXXX" type="string" offset="80"/>
+            <match value="TXXX" type="string" offset="81"/>
+            <match value="TXXX" type="string" offset="82"/>
+            <match value="TXXX" type="string" offset="83"/>
+            <match value="TXXX" type="string" offset="84"/>
+            <match value="TXXX" type="string" offset="85"/>
+            <match value="TXXX" type="string" offset="86"/>
+            <match value="TXXX" type="string" offset="87"/>
+            <match value="TXXX" type="string" offset="88"/>
+            <match value="TXXX" type="string" offset="89"/>
+            <match value="TXXX" type="string" offset="100"/>
+            <match value="TXXX" type="string" offset="101"/>
         </magic>
     </mime-type>
 </mime-info>
