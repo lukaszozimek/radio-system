@@ -329,13 +329,14 @@ class LibraryPT(object):
         :param type: The type of this LibraryPT.
         :type: str
         """
+        """
         allowed_values = ["LT_IMAGE", "LT_AUDIO", "LT_VIDEO", "LT_FILE"]
         if type not in allowed_values:
             raise ValueError(
                 "Invalid value for `type` ({0}), must be one of {1}"
                 .format(type, allowed_values)
             )
-
+        """
         self._type = type
 
     @property
