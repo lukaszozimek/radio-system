@@ -1,6 +1,7 @@
 package io.protone.custom.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import io.protone.custom.consts.MarkerConstans;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.domain.*;
@@ -28,6 +29,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.protone.custom.consts.ServiceConstants.NO_DATA;
 
@@ -61,6 +64,19 @@ public class LibMetadataService {
 
     @Inject
     private CustomLibMediaItemRepository mediaItemRepository;
+
+    private Map<String, String> metadataMap;
+
+    public LibMetadataService() {
+        metadataMap = new HashMap<>();
+        metadataMap.put(MarkerConstans.AUDe, MarkerConstans.AUDe);
+        metadataMap.put(MarkerConstans.AUDs, MarkerConstans.AUDs);
+        metadataMap.put(MarkerConstans.TERs, MarkerConstans.TERs);
+        metadataMap.put(MarkerConstans.TERe, MarkerConstans.TERe);
+        metadataMap.put(MarkerConstans.SEGs, MarkerConstans.SEGs);
+        metadataMap.put(MarkerConstans.SEGe, MarkerConstans.SEGe);
+        metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
+    }
 
     public LibMediaItem resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
         InputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
@@ -116,6 +132,13 @@ public class LibMetadataService {
             audioObject.setCodec(NO_DATA);
         }
         audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
+        metadataMap.keySet().stream().forEach(timer -> {
+            String timerValue = metadata.get(timer);
+            if (!Strings.isNullOrEmpty(timerValue)) {
+                libMArkerService.saveLibMarker(timer, Long.valueOf(timerValue), finalMediaItem);
+                metadata.remove(timer);
+            }
+        });
         Arrays.stream(metadata.names()).forEach(metadataName -> {
             CorPropertyKey corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
             corPropertyKeyRepository.saveAndFlush(corPropertyKey);

@@ -19,8 +19,8 @@ public class LibMarkerService {
     @Inject
     private LibMarkerRepository libMarkerRepository;
 
-    public LibMarker saveLibMarker(String markerName, Integer startTime , LibMediaItem mediaItem){
-       return libMarkerRepository.saveAndFlush(new LibMarker().name(markerName).startTime(startTime).mediaItem(mediaItem));
+    public LibMarker saveLibMarker(String markerName, Long startTime, LibMediaItem mediaItem) {
+        return libMarkerRepository.saveAndFlush(new LibMarker().name(markerName).startTime(startTime).markerType(LibMarkerTypeEnum.MT_BASIC).mediaItem(mediaItem));
     }
 
 }

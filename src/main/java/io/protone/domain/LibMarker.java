@@ -37,7 +37,7 @@ public class LibMarker implements Serializable {
 
     @NotNull
     @Column(name = "start_time", nullable = false)
-    private Integer startTime;
+    private Long startTime;
 
     @ManyToOne
     private LibMediaItem mediaItem;
@@ -76,16 +76,16 @@ public class LibMarker implements Serializable {
         this.name = name;
     }
 
-    public Integer getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
-    public LibMarker startTime(Integer startTime) {
+    public LibMarker startTime(Long startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public void setStartTime(Integer startTime) {
+    public void setStartTime(Long startTime) {
         this.startTime = startTime;
     }
 

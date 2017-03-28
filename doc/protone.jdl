@@ -246,7 +246,7 @@ entity LibLabel {
 entity LibMarker {
 	markerType LibMarkerTypeEnum required
 	name String  required maxlength(100)
-	startTime Integer required
+	startTime Long required
 }
 
 enum LibMarkerTypeEnum {

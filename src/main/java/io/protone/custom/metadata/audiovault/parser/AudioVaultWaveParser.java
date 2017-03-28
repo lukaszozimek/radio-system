@@ -1,5 +1,8 @@
 package io.protone.custom.metadata.audiovault.parser;
 
+import com.google.common.base.Strings;
+import io.protone.custom.consts.MarkerConstans;
+import io.protone.custom.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
@@ -13,9 +16,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import static io.protone.custom.consts.MarkerConstans.EMPTY_TIMER;
 import static io.protone.custom.metadata.ProtoneMetadataProperty.*;
 
 /**
@@ -32,6 +38,20 @@ public class AudioVaultWaveParser extends AudioParser {
         return SUPPORTED_TYPES;
     }
 
+    private Map<String, String> metadataMap;
+
+    public AudioVaultWaveParser() {
+        metadataMap = new HashMap<>();
+        metadataMap.put(MarkerConstans.AUDe, MarkerConstans.AUDe);
+        metadataMap.put(MarkerConstans.AUDs, MarkerConstans.AUDs);
+        metadataMap.put(MarkerConstans.TERs, MarkerConstans.TERs);
+        metadataMap.put(MarkerConstans.TERe, MarkerConstans.TERe);
+        metadataMap.put(MarkerConstans.SEGs, MarkerConstans.SEGs);
+        metadataMap.put(MarkerConstans.SEGe, MarkerConstans.SEGe);
+        metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
+
+    }
+
     @Override
     public void parse(
         InputStream stream, ContentHandler handler,
@@ -44,9 +64,7 @@ public class AudioVaultWaveParser extends AudioParser {
         super.parse(inputStreamSupplier.get(), handler, metadata, context);
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
-        XHTMLContentHandler xhtml = new XHTMLContentHandler(handler, metadata);
-        xhtml.startDocument();
-        xhtml.endDocument();
+
         /// listBextAV(stream, metadata);
         //  av10(stream, metadata);
 
@@ -59,9 +77,9 @@ public class AudioVaultWaveParser extends AudioParser {
         int index = file.indexOf("LIST");
         String listChunkMetadata = file.substring(index, index + 1140);
         String[] splitedUser = listChunkMetadata.split("USER");
-       if(splitedUser[splitedUser.length-1].length()>=101){
-           splitedUser[splitedUser.length-1]=splitedUser[splitedUser.length-1].substring(0,100);
-       }
+        if (splitedUser[splitedUser.length - 1].length() >= 101) {
+            splitedUser[splitedUser.length - 1] = splitedUser[splitedUser.length - 1].substring(0, 100);
+        }
         if (splitedUser.length >= 2) {
             metadata.add(DATE_MODIFIED, splitedUser[1].replace("\u0000", "").trim());
         }
@@ -201,10 +219,10 @@ public class AudioVaultWaveParser extends AudioParser {
         String file = new String(inputStream);
         int index = file.indexOf("cart");
         String s2 = new String(inputStream);
-        s2 = s2.substring(index+12, 2000);
+        s2 = s2.substring(index + 12, 2000);
 
-        metadata.add(CART_CHUNK_TITLE, s2.substring(0, 64).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
-        metadata.add(CART_CHUNK_ARTIST, s2.substring(64, 128).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(ProtoneMetadataProperty.TITLE, s2.substring(0, 64).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
+        metadata.add(ProtoneMetadataProperty.ARTIST, s2.substring(64, 128).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
         metadata.add(CART_CHUNK_AUDIOVAULTID, s2.substring(128, 192).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
         metadata.add(CART_CHUNK_CLIENTID, s2.substring(192, 256).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
         metadata.add(CART_CHUNK_CATEGORYID, s2.substring(256, 320).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
@@ -217,20 +235,31 @@ public class AudioVaultWaveParser extends AudioParser {
         metadata.add(CART_CHUNK_PRODUCER_APP_ID, s2.substring(484, 548).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
         metadata.add(CART_CHUNK_PRODUCER_APP_VERSION, s2.substring(548, 614).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
 
-        metadata.add(CART_CHUNK_TIMER_AUD_E, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(680, 688))));
-        metadata.add(CART_CHUNK_TIMER_SEG_S, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(688, 695)  )));
-        metadata.add(CART_CHUNK_TIMER_SEG_E, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(695, 703))));
-        metadata.add(CART_CHUNK_TIMER_INT, String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(703, 711))));
-        //      metadata.add(CART_CHUNK_FIFTH_TIMER, s2.substring(711, 719));
-        ///    metadata.add(CART_CHUNK_SIXTH_TIMER, s2.substring(719, 727)));
-        //  metadata.add(CART_CHUNK_SEVENTH_TIMER,s2.substring(727, 735));
-        // metadata.add(CART_CHUNK_EIGHT_TIMER, ss2.substring(735,743 ));
+        metadata.add(resolveTimerType(s2.substring(680, 688)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(680, 688))));
+        metadata.add(resolveTimerType(s2.substring(688, 696)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(688, 696))));
+        metadata.add(resolveTimerType(s2.substring(696, 704)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(696, 704))));
+        metadata.add(resolveTimerType(s2.substring(704, 712)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(703, 712))));
+        metadata.add(resolveTimerType(s2.substring(712, 720)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(712, 720))));
+        metadata.add(resolveTimerType(s2.substring(720, 728)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(720, 728))));
+        metadata.add(resolveTimerType(s2.substring(728, 736)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(728, 736))));
+        metadata.add(resolveTimerType(s2.substring(736, 744)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(736, 744))));
 
     }
 
+    private String resolveTimerType(String timer) {
+        if (!Strings.isNullOrEmpty(timer.substring(0, 4))) {
+            if (Strings.isNullOrEmpty(metadataMap.get(timer.substring(0, 4).trim()))) {
+                return EMPTY_TIMER;
+            }
+            return metadataMap.get(timer.substring(0, 4));
+        } else {
+            return EMPTY_TIMER;
+        }
+    }
+
+
     private long convertCartChunkTimerToSampleOffset
-        (String
-             timerValuePosition) {
+        (String timerValuePosition) {
         return ToUInt32(timerValuePosition.substring(4).getBytes(), 0);
 
     }

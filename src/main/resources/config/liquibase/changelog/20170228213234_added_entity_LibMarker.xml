@@ -29,7 +29,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="start_time" type="integer">
+            <column name="start_time" type="bigint">
                 <constraints nullable="false" />
             </column>
 
