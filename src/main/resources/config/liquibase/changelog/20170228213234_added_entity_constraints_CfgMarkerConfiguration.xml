@@ -7,12 +7,15 @@
         Added the constraints for entity CfgMarkerConfiguration.
     -->
     <changeSet id="20170228213234-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="cfg_marker_configuration"
                                  constraintName="fk_cfg_marker_configuration_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
-
+        <loadData tableName="cfg_marker_configuration"
+                  separator=";"
+                  file="config/liquibase/lib_marker_configuration.csv"
+                  encoding="UTF-8"/>
     </changeSet>
 </databaseChangeLog>

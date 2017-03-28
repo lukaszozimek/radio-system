@@ -60,11 +60,9 @@ public class AudioVaultWaveParser extends AudioParser {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
-
-        super.parse(inputStreamSupplier.get(), handler, metadata, context);
+      //      super.parse(inputStreamSupplier.get(), handler, metadata, context);
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
-
         /// listBextAV(stream, metadata);
         //  av10(stream, metadata);
 

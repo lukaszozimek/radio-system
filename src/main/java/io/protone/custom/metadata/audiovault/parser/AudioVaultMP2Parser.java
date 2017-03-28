@@ -60,12 +60,9 @@ public class AudioVaultMP2Parser extends MP4Parser {
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
 
-        super.parse(inputStreamSupplier.get(), handler, metadata, context);
+       /// super.parse(inputStreamSupplier.get(), handler, metadata, context);
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
-        XHTMLContentHandler xhtml = new XHTMLContentHandler(handler, metadata);
-        xhtml.startDocument();
-        xhtml.endDocument();
         /// listBextAV(stream, metadata);
         //  av10(stream, metadata);
 

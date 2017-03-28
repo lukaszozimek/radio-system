@@ -4,6 +4,7 @@ import com.google.api.client.repackaged.com.google.common.base.Strings;
 import io.protone.custom.consts.MarkerConstans;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
+import io.protone.custom.web.rest.network.channel.ApiChannelImpl;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
@@ -19,6 +20,8 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +43,7 @@ import static io.protone.custom.consts.ServiceConstants.NO_DATA;
 @Service
 @Transactional
 public class LibMetadataService {
+    private final Logger log = LoggerFactory.getLogger(LibMetadataService.class);
 
     @Inject
     private MediaUtils mediaUtils;
@@ -79,6 +83,7 @@ public class LibMetadataService {
     }
 
     public LibMediaItem resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
+        log.debug("Start processing :"+file.getOriginalFilename());
         InputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
         Parser parser = new AutoDetectParser();
         BodyContentHandler handler = new BodyContentHandler();
@@ -140,8 +145,14 @@ public class LibMetadataService {
             }
         });
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            CorPropertyKey corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
-            corPropertyKeyRepository.saveAndFlush(corPropertyKey);
+            CorPropertyKey corPropertyKey;
+            if(Strings.isNullOrEmpty(metadataName)){
+                 corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);
+            }
+            else {
+                 corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
+            }
+            corPropertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey);
             corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(finalMediaItem).propertyKey(corPropertyKey));
         });
 
