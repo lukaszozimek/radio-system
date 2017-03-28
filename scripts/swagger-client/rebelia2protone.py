@@ -11,6 +11,7 @@ client = swagger_client.ApiClient(username='admin', password='admin')
 net = swagger_client.NETWORKApi(api_client=client)
 cha = swagger_client.CHANNELApi(api_client=client)
 lib = swagger_client.LIBRARYApi(api_client=client)
+cor = swagger_client.COREApi(api_client=client)
 
 def wipe(network_shortcut):
     network = net.get_network_using_get_using_get(network_shortcut)
@@ -67,13 +68,15 @@ def rebelia_library(net=CoreNetworkPT, cha=CoreChannelPT):
     library.channels = [cha]
 
     return library
-
+"""
 try:
     # wiping network
     wipe('RR')
 except ApiException as e:
     print 'Nothing to wipe...'
+"""
 
+"""
 try: 
     # creating network
     print 'Creating network'
@@ -81,7 +84,16 @@ try:
     log('Network created', network)
 except ApiException as e:
     print 'Network creation failed:\n%s\n' % e
+"""
+def test_network():
+    try:
+        network = net.get_network_using_get_using_get('test')
+        return network
+    except ApiException as e:
+        print 'Test network not found' % e 
+        return None       
 
+"""
 try: 
     # creating channel
     print 'Creating channel'
@@ -89,7 +101,17 @@ try:
     log('Channel created', channel)
 except ApiException as e:
     print 'Channel creation failed:\n%s\n' % e
+"""
 
+def test_channel():
+    try:
+        channel = cha.get_channel_using_get_using_get('test', 'tes')
+        return channel
+    except ApiException as e:
+        print 'Test channel not found' % e
+        return None        
+
+"""
 try: 
     # creating library
     print 'Creating library'
@@ -97,7 +119,17 @@ try:
     log('Library created', library)
 except ApiException as e:
     print 'Library creation failed:\n%s\n' % e
+"""
 
+def test_library():
+    try:
+        library = cor.get_library_using_get_using_get('test', 'TES')
+        return library
+    except ApiException as e:
+        print 'Test library not found' % e     
+        return None  
+
+"""
 try: 
     # uploading file
     print 'Uploading file'
@@ -105,4 +137,10 @@ try:
     print 'File uploaded: {0}'.format(item)
 except ApiException as e:
     print 'File upload failed:\n%s\n' % e
+"""
 
+nnn = test_network()
+ccc = test_channel()
+lll = test_library()
+
+print 'Bye...'

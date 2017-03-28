@@ -1534,7 +1534,7 @@ class COREApi(object):
         body_params = None
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.\
-            select_header_accept(['application/json'])
+            select_header_accept(['*/*'])
 
         # HTTP header `Content-Type`
         header_params['Content-Type'] = self.api_client.\
