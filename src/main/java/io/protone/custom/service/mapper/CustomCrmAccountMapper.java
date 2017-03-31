@@ -60,7 +60,7 @@ public class CustomCrmAccountMapper {
             .vatNumber(crmAccountPT.getVatNumber())
             .paymentDelay(crmAccountPT.getPaymentDelay())
             .industry(industryMapper.tRAIndustryDTOToTraIndustry(crmAccountPT.getIndustry()))
-            //.keeper(corUserMapper.tranformUserDTO(crmAccountPT.getAccount()))
+            .keeper(corUserMapper.coreUserPTToUser(crmAccountPT.getAccount()))
             .size(customCorSizeMapper.cORSizeDTOToCorSize(crmAccountPT.getSize()))
             .range(customCorRangeMapper.cORRangeDTOToCorRange(crmAccountPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmAccountPT.getAdress()))
@@ -126,7 +126,10 @@ public class CustomCrmAccountMapper {
         if (traCustomerPT.getIndustry() != null) {
             crmAccount.industry(industryMapper.tRAIndustryToTraIndustryDTO(traCustomerPT.getIndustry()));
         }
-        // .account(corUserMapper.corUserMapper(traCustomerPT.getKeeper()))
+        if (traCustomerPT.getKeeper() != null) {
+            crmAccount.account(corUserMapper.userToCoreUserPT(traCustomerPT.getKeeper()));
+
+        }
         if (traCustomerPT.getSize() != null) {
             crmAccount.size(customCorSizeMapper.cORSizeToCorSizeDTO(traCustomerPT.getSize()));
         }
@@ -149,23 +152,47 @@ public class CustomCrmAccountMapper {
         if (crmAccount == null) {
             return new CrmAccountPT();
         }
-        return new CrmAccountPT()
+        CrmAccountPT crmAccountPT = new CrmAccountPT()
             .id(crmAccount.getId())
             .name(crmAccount.getName())
             .shortName(crmAccount.getShortName())
             .idNumber1(crmAccount.getExternalId1())
             .idNumber2(crmAccount.getExternalId2())
             .shortName(crmAccount.getShortName())
-            .vatNumber(crmAccount.getVatNumber())
-            .paymentDelay(Math.toIntExact(crmAccount.getPaymentDelay()))
-            .industry(industryMapper.tRAIndustryToTraIndustryDTO(crmAccount.getIndustry()))
-            .account(corUserMapper.userToCoreUserPT(crmAccount.getKeeper()))
-            .size(customCorSizeMapper.cORSizeToCorSizeDTO(crmAccount.getSize()))
-            .range(customCorRangeMapper.cORRangeToCorRangeDTO(crmAccount.getRange()))
-            .adress(corAddressMapper.cORAddressToCorAddressDTO(crmAccount.getAddres()))
-            .persons(customTRAPersonMapper.createDTOObject(crmAccount.getPerson()))
-            .area(customCorAreaMapper.cORAreaToCorAreaDTO(crmAccount.getArea()))
-            .tasks(crmAccount.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()));
+            .vatNumber(crmAccount.getVatNumber());
+        if (crmAccount.getPaymentDelay() != null) {
+            crmAccountPT = crmAccountPT.paymentDelay(Math.toIntExact(crmAccount.getPaymentDelay()));
+        }
+        if (crmAccount.getIndustry() != null) {
+            crmAccountPT = crmAccountPT.industry(industryMapper.tRAIndustryToTraIndustryDTO(crmAccount.getIndustry()));
+        }
+        if (crmAccount.getKeeper() != null) {
+            crmAccountPT = crmAccountPT.account(corUserMapper.userToCoreUserPT(crmAccount.getKeeper()));
+        }
+        if (crmAccount.getSize() != null) {
+            crmAccountPT = crmAccountPT.size(customCorSizeMapper.cORSizeToCorSizeDTO(crmAccount.getSize()));
+        }
+
+        if (crmAccount.getRange() != null) {
+            crmAccountPT = crmAccountPT.range(customCorRangeMapper.cORRangeToCorRangeDTO(crmAccount.getRange()));
+        }
+
+        if (crmAccount.getAddres() != null) {
+            crmAccountPT = crmAccountPT.adress(corAddressMapper.cORAddressToCorAddressDTO(crmAccount.getAddres()));
+        }
+        if (crmAccount.getPerson() != null) {
+            crmAccountPT = crmAccountPT.persons(customTRAPersonMapper.createDTOObject(crmAccount.getPerson()));
+        }
+        if (crmAccount.getPerson() != null) {
+
+            crmAccountPT = crmAccountPT.area(customCorAreaMapper.cORAreaToCorAreaDTO(crmAccount.getArea()));
+
+        }
+        if (crmAccount.getTasks() != null) {
+
+            crmAccountPT = crmAccountPT.tasks(crmAccount.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()));
+        }
+        return crmAccountPT;
 
     }
 

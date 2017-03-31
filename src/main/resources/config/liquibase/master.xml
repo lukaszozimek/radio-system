@@ -127,5 +127,65 @@
     <include file="classpath:config/liquibase/changelog/20170321202155_added_entity_constraints_CfgExternalSystemLog.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228213234_added_entity_constraints_TraAdvertismentType.xml" relativeToChangelogFile="false"/>
 
+    <changeSet id="InseryDanych" author="jhipster">
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/demo/cor_area.csv"
+                  separator=";"
+                  tableName="cor_area"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/demo/cor_range.csv"
+                  separator=";"
+                  tableName="cor_range"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/demo/cor_size.csv"
+                  separator=";"
+                  tableName="cor_size"/>
+
+        <loadData tableName="crm_contact_status"
+                  separator=";"
+                  file="config/liquibase/demo/crm_contact_status.csv"
+                  encoding="UTF-8"/>
+
+        <loadData tableName="crm_lead_source"
+                  separator=";"
+                  file="config/liquibase/demo/crm_lead_source.csv"
+                  encoding="UTF-8"/>
+
+        <loadData tableName="crm_lead_status"
+                  separator=";"
+                  file="config/liquibase/demo/crm_lead_status.csv"
+                  encoding="UTF-8"/>
+
+        <loadData tableName="crm_task_status"
+                  separator=";"
+                  file="config/liquibase/demo/crm_task_status.csv"
+                  encoding="UTF-8"/>
+
+        <loadData tableName="tra_advertisment_type"
+                  separator=";"
+                  file="config/liquibase/demo/tra_advertisment_type.csv"
+                  encoding="UTF-8"/>
+
+        <loadData tableName="tra_industry"
+                  separator=";"
+                  file="config/liquibase/demo/tra_industry.csv"
+                  encoding="UTF-8"/>
+
+        <loadData tableName="tra_invoice_status"
+                  separator=";"
+                  file="config/liquibase/demo/tra_invoice_status.csv"
+                  encoding="UTF-8"/>
+        <loadData tableName="tra_order_status"
+                  separator=";"
+                  file="config/liquibase/demo/tra_order_status.csv"
+                  encoding="UTF-8"/>
+        <loadData tableName="tra_campaing_status"
+                  separator=";"
+                  file="config/liquibase/demo/tra_campaign_status.csv"
+                  encoding="UTF-8"/>
+    </changeSet>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

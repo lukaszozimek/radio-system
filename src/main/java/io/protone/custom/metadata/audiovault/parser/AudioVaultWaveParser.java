@@ -1,6 +1,7 @@
 package io.protone.custom.metadata.audiovault.parser;
 
 import com.google.common.base.Strings;
+import com.google.common.primitives.UnsignedInteger;
 import io.protone.custom.consts.MarkerConstans;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
@@ -8,13 +9,15 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.audio.AudioParser;
-import org.apache.tika.sax.XHTMLContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +63,7 @@ public class AudioVaultWaveParser extends AudioParser {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
-      //      super.parse(inputStreamSupplier.get(), handler, metadata, context);
+        //      super.parse(inputStreamSupplier.get(), handler, metadata, context);
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
         /// listBextAV(stream, metadata);
@@ -256,20 +259,64 @@ public class AudioVaultWaveParser extends AudioParser {
     }
 
 
-    private long convertCartChunkTimerToSampleOffset
-        (String timerValuePosition) {
-        return ToUInt32(timerValuePosition.substring(4).getBytes(), 0);
-
+    private Double convertCartChunkTimerToSampleOffset(String s2) {
+        return Double.valueOf(ByteBuffer.wrap((hexStringToByteArray("B8CE0000"))).order(ByteOrder.LITTLE_ENDIAN).getInt()) / 44100;
     }
 
-    public static long ToUInt32
-        (byte[] bytes,
-         int offset) {
-        long result = (int) bytes[offset] & 0xff;
-        result |= ((int) bytes[offset + 1] & 0xff) << 8;
-        result |= ((int) bytes[offset + 2] & 0xff) << 16;
-        result |= ((int) bytes[offset + 3] & 0xff) << 24;
-        return result & 0xFFFFFFFFL;
+
+    public static byte[] hexStringToByteArray(String s) {
+        byte[] b = new byte[s.length() / 2];
+        for (int i = 0; i < b.length; i++) {
+            int index = i * 2;
+            int v = Integer.parseUnsignedInt(s.substring(index, index + 2), 32);
+            b[i] = (byte) v;
+        }
+        return b;
+    }
+
+    public static void convertToHex(String out, InputStream file) throws IOException {
+        InputStream is = file;
+
+        int bytesCounter = 0;
+        int value = 0;
+        StringBuilder sbHex = new StringBuilder();
+        StringBuilder sbText = new StringBuilder();
+        StringBuilder sbResult = new StringBuilder();
+
+        while ((value = is.read()) != -1) {
+            //convert to hex value with "X" formatter
+            sbHex.append(String.format("%02X ", value));
+
+            //If the chracater is not convertable, just print a dot symbol "."
+            if (!Character.isISOControl(value)) {
+                sbText.append((char) value);
+            } else {
+                sbText.append(".");
+            }
+
+            //if 16 bytes are read, reset the counter,
+            //clear the StringBuilder for formatting purpose only.
+            if (bytesCounter == 15) {
+                sbResult.append(sbHex).append("      ").append(sbText).append("\n");
+                sbHex.setLength(0);
+                sbText.setLength(0);
+                bytesCounter = 0;
+            } else {
+                bytesCounter++;
+            }
+        }
+
+        //if still got content
+        if (bytesCounter != 0) {
+            //add spaces more formatting purpose only
+            for (; bytesCounter < 16; bytesCounter++) {
+                //1 character 3 spaces
+                sbHex.append("   ");
+            }
+            sbResult.append(sbHex).append("      ").append(sbText).append("\n");
+        }
+
+        is.close();
     }
 
 }

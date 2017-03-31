@@ -1,0 +1,5 @@
+id;name;description;network_id
+2;Do zapłaty;Test;1
+3;Zapłacona;Test;1
+4;Wystawiona;Test;1
+5;Odroczona;Test;1

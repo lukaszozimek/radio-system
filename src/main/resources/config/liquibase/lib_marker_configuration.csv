@@ -1,8 +1,8 @@
 id;name;display_name;color;keyboard_shortcut;type;network_id
-1;AUDs;Audio Start;rgba(0, 255, 255,1) ;w;MT_BASIC;1
-2;AUDe;Audio End;rgba(255, 0, 0,1) ;s;MT_BASIC;1
-3;SEGs;Seq Start;rgba(255, 204, 0,1) ;a;MT_BASIC;1
-4;SEGe;Seq End;rgba(255, 204, 0,1) ;d;MT_BASIC;1
-5;INT;Intro;rgba(0, 255, 128,1);q;MT_BASIC;1
-6;TERs;TERs;rgba(255, 204, 0,1) ;d;MT_BASIC;1
-7;TERe;TERe;rgba(0, 255, 128,1);q;MT_BASIC;1
+1;AUDs;Audio Start ;rgba(0, 255, 255,1);w;MT_BASIC;1
+2;AUDe;Audio End   ;rgba(255, 0, 0,1);s;MT_BASIC;1
+3;SEGs;Seq Start   ;rgba(255, 204, 0,1);a;MT_BASIC;1
+4;SEGe;Seq End     ;rgba(255, 204, 0,1);d;MT_BASIC;1
+5;INT;Intro        ;rgba(0, 255, 128,1);c;MT_BASIC;1
+6;TERs;TERs        ;rgba(255, 204, 0,1);e;MT_BASIC;1
+7;TERe;TERe        ;rgba(0, 255, 128,1);q;MT_BASIC;1

@@ -53,8 +53,8 @@ public class CrmLeadService {
         CrmLead lead1 = customCrmLeadMapper.createLeadEntity(lead, corNetwork);
         CorAddress address = addressRepository.save(lead1.getAddres());
         List<CorContact> corContact = corContactRepository.save(lead1.getPerson().getContacts());
+        lead1.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
         CorPerson person = personRepository.save(lead1.getPerson());
-        person.setContacts(corContact.stream().collect(Collectors.toSet()));
         lead1.setAddres(address);
         lead1.person(person);
         lead1 = crmLeadRepository.save(lead1);

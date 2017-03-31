@@ -5,6 +5,7 @@ import io.protone.domain.CrmTask;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class CustomCrmTaskMapper {
             return new CrmTaskPT();
         }
         return new CrmTaskPT().id(crmTask.getId())
-            ///   .activityDate(crmTask.getActivityDate().toString())
+            .activityDate(crmTask.getActivityDate().toString())
             .activityLenght(crmTask.getActivityLength())
             .crmTaskStatus(crmTask.getStatus())
             .assignedTo(corUserMapper.userToCoreUserPT(crmTask.getAssignedTo()))
@@ -63,11 +64,10 @@ public class CustomCrmTaskMapper {
         if(taskPT ==null){
             return new CrmTask();
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CrmTask crmTask = new CrmTask();
         crmTask.setId(taskPT.getId());
         crmTask.setSubject(taskPT.getSubject());
-        //   crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate(), formatter));
+         crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate()));
         crmTask.setActivityLength(taskPT.getActivityLenght());
         crmTask.setComment(taskPT.getComment());
         crmTask.assignedTo(corUserMapper.coreUserPTToUser(taskPT.getAssignedTo()));
