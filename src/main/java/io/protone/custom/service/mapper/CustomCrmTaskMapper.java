@@ -26,48 +26,51 @@ public class CustomCrmTaskMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public List<CrmTaskPT> createCrmTasks(Set<CrmTask> crmTask) {
-        if(crmTask ==null){
+        if (crmTask == null) {
             return new ArrayList<>();
         }
         return crmTask.stream().map(this::createCrmTask).collect(toList());
     }
 
     public List<CrmTaskPT> createCrmTasks(List<CrmTask> crmTask) {
-        if(crmTask ==null){
+        if (crmTask == null) {
             return new ArrayList<>();
         }
         return crmTask.stream().map(this::createCrmTask).collect(toList());
     }
 
     public CrmTaskPT createCrmTask(CrmTask crmTask) {
-        if(crmTask ==null){
+        if (crmTask == null) {
             return new CrmTaskPT();
         }
-        return new CrmTaskPT().id(crmTask.getId())
-            .activityDate(crmTask.getActivityDate().toString())
-            .activityLenght(crmTask.getActivityLength())
+        CrmTaskPT crmTaskPT = new CrmTaskPT().id(crmTask.getId()).activityLenght(crmTask.getActivityLength())
             .crmTaskStatus(crmTask.getStatus())
             .assignedTo(corUserMapper.userToCoreUserPT(crmTask.getAssignedTo()))
             .comment(crmTask.getComment())
             .subject(crmTask.getSubject())
             .createdBy(corUserMapper.userToCoreUserPT(crmTask.getCreatedBy()));
+        if (crmTask.getActivityDate() != null) {
+            crmTaskPT.activityDate(crmTask.getActivityDate().toString());
+        }
+        return crmTaskPT;
+
     }
 
     public Set<CrmTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
-        if(crmTaskPTS ==null){
+        if (crmTaskPTS == null) {
             return new HashSet<>();
         }
         return crmTaskPTS.stream().map(this::createTaskEntity).collect(toSet());
     }
 
     public CrmTask createTaskEntity(CrmTaskPT taskPT) {
-        if(taskPT ==null){
+        if (taskPT == null) {
             return new CrmTask();
         }
         CrmTask crmTask = new CrmTask();
         crmTask.setId(taskPT.getId());
         crmTask.setSubject(taskPT.getSubject());
-         crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate()));
+        crmTask.setActivityDate(LocalDate.parse(taskPT.getActivityDate()));
         crmTask.setActivityLength(taskPT.getActivityLenght());
         crmTask.setComment(taskPT.getComment());
         crmTask.assignedTo(corUserMapper.coreUserPTToUser(taskPT.getAssignedTo()));

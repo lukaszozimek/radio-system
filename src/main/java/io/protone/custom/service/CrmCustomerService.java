@@ -49,13 +49,13 @@ public class CrmCustomerService {
 
     public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
         CrmAccount crmAccount = crmAccountMapper.createCrmAcountEntity(crmAccountPT, corNetwork);
-        CorAddress address = addressRepository.save(crmAccount.getAddres());
+        CorAddress address = addressRepository.saveAndFlush(crmAccount.getAddres());
         List<CorContact> corContact = corContactRepository.save(crmAccount.getPerson().getContacts());
-        CorPerson person = personRepository.save(crmAccount.getPerson());
-        person.setContacts(corContact.stream().collect(Collectors.toSet()));
+        crmAccount.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
+        CorPerson person = personRepository.saveAndFlush(crmAccount.getPerson());
         crmAccount.setAddres(address);
         crmAccount.person(person);
-        crmAccount = accountRepository.save(crmAccount);
+        crmAccount = accountRepository.saveAndFlush(crmAccount);
         return crmAccountMapper.buildContactDTOFromEntities(crmAccount);
     }
 
