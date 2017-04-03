@@ -18,10 +18,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static io.protone.custom.consts.MarkerConstans.EMPTY_TIMER;
@@ -39,20 +37,6 @@ public class AudioVaultWaveParser extends AudioParser {
     @Override
     public Set<MediaType> getSupportedTypes(ParseContext context) {
         return SUPPORTED_TYPES;
-    }
-
-    private Map<String, String> metadataMap;
-
-    public AudioVaultWaveParser() {
-        metadataMap = new HashMap<>();
-        metadataMap.put(MarkerConstans.AUDe, MarkerConstans.AUDe);
-        metadataMap.put(MarkerConstans.AUDs, MarkerConstans.AUDs);
-        metadataMap.put(MarkerConstans.TERs, MarkerConstans.TERs);
-        metadataMap.put(MarkerConstans.TERe, MarkerConstans.TERe);
-        metadataMap.put(MarkerConstans.SEGs, MarkerConstans.SEGs);
-        metadataMap.put(MarkerConstans.SEGe, MarkerConstans.SEGe);
-        metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
-
     }
 
     @Override
@@ -236,87 +220,67 @@ public class AudioVaultWaveParser extends AudioParser {
         metadata.add(CART_CHUNK_PRODUCER_APP_ID, s2.substring(484, 548).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
         metadata.add(CART_CHUNK_PRODUCER_APP_VERSION, s2.substring(548, 614).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
 
-        metadata.add(resolveTimerType(s2.substring(680, 688)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(680, 688))));
-        metadata.add(resolveTimerType(s2.substring(688, 696)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(688, 696))));
-        metadata.add(resolveTimerType(s2.substring(696, 704)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(696, 704))));
-        metadata.add(resolveTimerType(s2.substring(704, 712)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(703, 712))));
-        metadata.add(resolveTimerType(s2.substring(712, 720)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(712, 720))));
-        metadata.add(resolveTimerType(s2.substring(720, 728)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(720, 728))));
-        metadata.add(resolveTimerType(s2.substring(728, 736)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(728, 736))));
-        metadata.add(resolveTimerType(s2.substring(736, 744)), String.valueOf(convertCartChunkTimerToSampleOffset(s2.substring(736, 744))));
+        metadata.add(MarkerConstans.AUDs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.AUDs)));
+        metadata.add(MarkerConstans.AUDe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.AUDe)));
+        metadata.add(MarkerConstans.INT, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.INT)));
+        metadata.add(MarkerConstans.SEGs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.SEGs)));
+        metadata.add(MarkerConstans.SEGe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.SEGe)));
+        metadata.add(MarkerConstans.TERe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.TERe)));
+        metadata.add(MarkerConstans.TERs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.TERs)));
+
 
     }
 
-    private String resolveTimerType(String timer) {
-        if (!Strings.isNullOrEmpty(timer.substring(0, 4))) {
-            if (Strings.isNullOrEmpty(metadataMap.get(timer.substring(0, 4).trim()))) {
-                return EMPTY_TIMER;
-            }
-            return metadataMap.get(timer.substring(0, 4));
-        } else {
-            return EMPTY_TIMER;
+    private long getFindAudioStartMarker(byte[] inputStream, String marker) {
+        int markerStartIndex = indexOf(inputStream, marker.getBytes());
+        if (markerStartIndex != -1) {
+            byte[] timerValue = Arrays.copyOfRange(inputStream, markerStartIndex + marker.getBytes().length, markerStartIndex + marker.getBytes().length + 4);
+            return convertCartChunkTimerToSampleOffset(timerValue);
         }
+        return 0;
     }
 
 
-    private Double convertCartChunkTimerToSampleOffset(String s2) {
-        return Double.valueOf(ByteBuffer.wrap((hexStringToByteArray("B8CE0000"))).order(ByteOrder.LITTLE_ENDIAN).getInt()) / 44100;
+    private Long convertCartChunkTimerToSampleOffset(byte[] timer) {
+        return Long.valueOf(ByteBuffer.wrap(timer).order(ByteOrder.LITTLE_ENDIAN).getInt());
     }
 
+    public int indexOf(byte[] data, byte[] pattern) {
+        int[] failure = computeFailure(pattern);
 
-    public static byte[] hexStringToByteArray(String s) {
-        byte[] b = new byte[s.length() / 2];
-        for (int i = 0; i < b.length; i++) {
-            int index = i * 2;
-            int v = Integer.parseUnsignedInt(s.substring(index, index + 2), 32);
-            b[i] = (byte) v;
-        }
-        return b;
-    }
+        int j = 0;
+        if (data.length == 0) return -1;
 
-    public static void convertToHex(String out, InputStream file) throws IOException {
-        InputStream is = file;
-
-        int bytesCounter = 0;
-        int value = 0;
-        StringBuilder sbHex = new StringBuilder();
-        StringBuilder sbText = new StringBuilder();
-        StringBuilder sbResult = new StringBuilder();
-
-        while ((value = is.read()) != -1) {
-            //convert to hex value with "X" formatter
-            sbHex.append(String.format("%02X ", value));
-
-            //If the chracater is not convertable, just print a dot symbol "."
-            if (!Character.isISOControl(value)) {
-                sbText.append((char) value);
-            } else {
-                sbText.append(".");
+        for (int i = 0; i < data.length; i++) {
+            while (j > 0 && pattern[j] != data[i]) {
+                j = failure[j - 1];
             }
-
-            //if 16 bytes are read, reset the counter,
-            //clear the StringBuilder for formatting purpose only.
-            if (bytesCounter == 15) {
-                sbResult.append(sbHex).append("      ").append(sbText).append("\n");
-                sbHex.setLength(0);
-                sbText.setLength(0);
-                bytesCounter = 0;
-            } else {
-                bytesCounter++;
+            if (pattern[j] == data[i]) {
+                j++;
+            }
+            if (j == pattern.length) {
+                return i - pattern.length + 1;
             }
         }
+        return -1;
+    }
 
-        //if still got content
-        if (bytesCounter != 0) {
-            //add spaces more formatting purpose only
-            for (; bytesCounter < 16; bytesCounter++) {
-                //1 character 3 spaces
-                sbHex.append("   ");
+    private int[] computeFailure(byte[] pattern) {
+        int[] failure = new int[pattern.length];
+
+        int j = 0;
+        for (int i = 1; i < pattern.length; i++) {
+            while (j > 0 && pattern[j] != pattern[i]) {
+                j = failure[j - 1];
             }
-            sbResult.append(sbHex).append("      ").append(sbText).append("\n");
+            if (pattern[j] == pattern[i]) {
+                j++;
+            }
+            failure[i] = j;
         }
 
-        is.close();
+        return failure;
     }
+
 
 }
