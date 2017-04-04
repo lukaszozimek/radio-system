@@ -47,8 +47,9 @@ public class CustomItemMapperExt {
             return null;
         }
 
-        LibItemPT dto = new LibItemPT()
-            .idx(db.getIdx())
+        LibItemPT dto = new LibItemPT();
+        dto.setId(db.getId());
+        dto.idx(db.getIdx())
             .length(db.getLength().intValue())
             .name(db.getName())
             .resourceType(mapResourceType(db.getItemType()))
@@ -66,7 +67,7 @@ public class CustomItemMapperExt {
                     .key(new CoreKeyPT().id(corPropertyValue.getPropertyKey().getId()).key(corPropertyValue.getPropertyKey().getKey()))
                     .value(new CoreValuePT().id(corPropertyValue.getId()).value(corPropertyValue.getValue()));
             }).collect(toList()));
-        dto.setId(db.getId());
+
         return dto;
     }
 

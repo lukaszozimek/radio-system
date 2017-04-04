@@ -54,7 +54,7 @@ public class LibItemPT {
         return id;
     }
 
-    public void setId(Long ind) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -505,19 +505,20 @@ public class LibItemPT {
             Objects.equals(this.state, libItemPT.state) &&
             Objects.equals(this.stream, libItemPT.stream) &&
             Objects.equals(this.tags, libItemPT.tags) &&
+            Objects.equals(this.id, libItemPT.id) &&
             Objects.equals(this.track, libItemPT.track);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, resourceType, state, stream, tags, track);
+        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, resourceType, state, stream, tags, track,id);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class LibItemPT {\n");
-
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    album: ").append(toIndentedString(album)).append("\n");
         sb.append("    artist: ").append(toIndentedString(artist)).append("\n");
         sb.append("    authors: ").append(toIndentedString(authors)).append("\n");
