@@ -79,7 +79,6 @@ public interface CustomLibAlbumMapper {
     }
 
     default LibAlbumTypeEnum mapLibAlbumTypeEnum(LibAlbumPT.AlbumTypeEnum value) {
-
         if (value.compareTo(LibAlbumPT.AlbumTypeEnum.ALBUM) == 0)
             return LibAlbumTypeEnum.AT_ALBUM;
         else if (value.compareTo(LibAlbumPT.AlbumTypeEnum.COMPILATION) == 0)

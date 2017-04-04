@@ -30,7 +30,7 @@ public class LibAlbumService {
 
         LibArtist libArtist = libArtistService.findOrSaveOne(albumArtistName, network);
         if (libArtist != null) {
-            if(Strings.isNullOrEmpty(name)){
+            if (Strings.isNullOrEmpty(name)) {
                 return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
 
             }
@@ -45,4 +45,13 @@ public class LibAlbumService {
         return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
     }
 
+    public LibAlbum findOrSaveOne(LibAlbum libAlbum,LibArtist artist, CorNetwork network) {
+
+            LibAlbum album = libAlbumRepository.findOneByNameAndArtistAndNetwork(libAlbum.getName(), artist, network);
+            if (album != null) {
+                return album;
+            }
+
+            return libAlbumRepository.saveAndFlush(libAlbum);
+        }
 }

@@ -13,9 +13,6 @@
                                  constraintName="fk_cfg_marker_configuration_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
-        <loadData tableName="cfg_marker_configuration"
-                  separator=";"
-                  file="config/liquibase/lib_marker_configuration.csv"
-                  encoding="UTF-8"/>
+
     </changeSet>
 </databaseChangeLog>
