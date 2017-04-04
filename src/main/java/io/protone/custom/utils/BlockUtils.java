@@ -1,6 +1,8 @@
 package io.protone.custom.utils;
 
+import io.protone.custom.service.LibItemService;
 import io.protone.custom.service.dto.LibItemPT;
+import io.protone.custom.service.dto.LibMediaItemPT;
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.domain.LibLibrary;
@@ -8,6 +10,7 @@ import io.protone.domain.SchBlock;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.domain.enumeration.SchStartTypeEnum;
 import io.protone.repository.LibLibraryRepository;
+import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -15,9 +18,16 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class BlockUtils {
+
+    @Inject
+    private LibItemService itemService;
+    private List<LibItemPT> mediaItems;
+
+    private Random rnd = new Random();
 
     public List<SchBlockPT> sampleBand() {
 
@@ -75,6 +85,35 @@ public class BlockUtils {
         return results;
     }
 
+    public List<SchBlockPT> samplePlaylist() {
+
+        if (mediaItems == null)
+            mediaItems = itemService.getItem("RR", "LIB");
+
+        List<SchBlockPT> result = new ArrayList<>();
+        SchBlockPT rootBlock = new SchBlockPT()
+            .type(SchBlockTypeEnum.BT_PROGRAM)
+            .name("SAMPLE_" + SchBlockTypeEnum.BT_PROGRAM)
+            .startTime(ZonedDateTime.now().plusDays(7))
+            .startType(SchStartTypeEnum.ST_ABSOLUTE)
+            .relativeDelay(0L);
+        for (int e = 1; e <= 10; e++) {
+            SchEmissionPT emission = new SchEmissionPT().
+                name("SAMPLE_EMISSION_" + e);
+            LibMediaItemPT mediaItem = new LibMediaItemPT();
+            emission.setMediaItem(sampleMediaItem(mediaItems));
+            rootBlock.addEmission(emission);
+        }
+        result.add(rootBlock);
+        updateSeq(result);
+        updateStartTime(result, rootBlock.getStartTime());
+        return result;
+    }
+
+    private LibItemPT sampleMediaItem(List<LibItemPT> mediaItems) {
+        return mediaItems.get(rnd.nextInt(mediaItems.size()));
+    }
+
     public List<SchBlockPT> sampleTemplate() {
         List<SchBlockPT> results = new ArrayList<>();
         for (int h = 0; h < 24; h++)
@@ -116,7 +155,7 @@ public class BlockUtils {
             .relativeDelay(0L);
         //intro:
         result.addEmission(sampleEmission(1500L));
-        //commercials:
+        //commercials
         for (int c = 0; c < numOfElements; c++)
             result.addEmission(sampleEmission(30000L));
         //outro:

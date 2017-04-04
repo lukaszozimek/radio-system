@@ -54,7 +54,7 @@ public class SchPlaylistService {
         return new SchPlaylistPT()
             .channelId(channelDB.getId())
             .date(localDate)
-            .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
+            .blocks(blockUtils.samplePlaylist());
     }
 
     private SchPlaylistPT savePlaylist(SchPlaylistPT playlist) {

@@ -1,17 +1,13 @@
 package io.protone.custom.service;
 
-import io.protone.custom.service.dto.SchBlockPT;
-import io.protone.custom.service.dto.SchEmissionPT;
-import io.protone.custom.service.dto.SchPlaylistPT;
-import io.protone.custom.service.dto.SchTemplatePT;
+import io.protone.custom.service.dto.*;
+import io.protone.custom.service.mapper.CustomItemMapperExt;
 import io.protone.custom.service.mapper.CustomSchBlockMapper;
 import io.protone.custom.service.mapper.CustomSchEmissionMapperV2;
 import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
 import io.protone.custom.utils.BlockUtils;
-import io.protone.domain.SchBlock;
-import io.protone.domain.SchEmission;
-import io.protone.domain.SchPlaylist;
-import io.protone.domain.SchTemplate;
+import io.protone.domain.*;
+import io.protone.repository.custom.CustomLibMediaItemRepository;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
 import org.springframework.stereotype.Service;
@@ -39,7 +35,16 @@ public class SchBlockService {
     private CustomSchBlockRepository blockRepository;
 
     @Inject
+    private CustomItemMapperExt itemMapper;
+
+    @Inject
+    private LibItemService itemService;
+
+    @Inject
     private BlockUtils blockUtils;
+
+    @Inject
+    private CustomLibMediaItemRepository itemRepository;
 
     public List<SchBlockPT> getBlocks(SchPlaylistPT playlistDTO, SchTemplatePT templateDTO, SchBlockPT parentBlockDTO) {
 
@@ -69,7 +74,20 @@ public class SchBlockService {
     }
 
     private List<SchEmissionPT> getEmissions(SchBlockPT childBlockDTO) {
-        return emissionMapper.DBs2DTOs(emissionRepository.findByBlock(emissionMapper.mapSchBlock(childBlockDTO.getId())));
+
+        List<SchEmissionPT> results = new ArrayList<>();
+
+        SchBlock blockDB = emissionMapper.mapSchBlock(childBlockDTO.getId());
+        List<SchEmission> emissionsDB = emissionRepository.findByBlock(blockDB);
+        for (SchEmission emissionDB: emissionsDB) {
+            SchEmissionPT emissionDTO = emissionMapper.DB2DTO(emissionDB);
+            LibMediaItem itemDB = itemRepository.findOne(emissionDB.getMediaItem().getId());
+            LibItemPT itemDTO = itemMapper.DB2DTO(itemDB);
+            emissionDTO.setMediaItem(itemDTO);
+            results.add(emissionDTO);
+        }
+
+        return results;
     }
 
     public List<SchBlockPT> setBlocks(List<SchBlockPT> blocks, SchPlaylistPT playlist, SchTemplatePT template) {
@@ -127,6 +145,11 @@ public class SchBlockService {
 
         if (emissionDB.getId() == null) {
             // new emission - add it
+            LibMediaItem mediaItemDB = itemMapper.DTO2DB(emissionDTO.getMediaItem());
+            String libShortcut = mediaItemDB.getLibrary().getShortcut();
+            Long networkId = mediaItemDB.getLibrary().getNetwork().getId();
+            mediaItemDB.setId(itemService.getItemId(networkId, libShortcut, mediaItemDB.getIdx()));
+            emissionDB.setMediaItem(mediaItemDB);
             emissionDB = emissionRepository.saveAndFlush(emissionDB);
         }
         else if (emissionDB.getId() > 0) {

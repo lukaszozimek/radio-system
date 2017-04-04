@@ -7,6 +7,7 @@ import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.repository.custom.CustomLibAudioObjectRepository;
 import io.protone.repository.custom.CustomLibMediaItemRepository;
@@ -45,6 +46,9 @@ public class LibItemService {
     private S3Client s3Client;
 
     @Inject
+    private CustomCorNetworkRepository networkRepository;
+
+    @Inject
     private LibLibraryService libraryService;
 
     @Inject
@@ -80,6 +84,21 @@ public class LibItemService {
         Optional<LibMediaItem> optionalItemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx);
         result = itemMapper.DB2DTO(optionalItemDB.orElse(null));
         return result;
+    }
+
+    public Long getItemId(Long networkId, String libraryShortcut, String idx) {
+
+        CorNetwork networkDB = networkRepository.getOne(networkId);
+
+        LibLibrary libraryDB = libraryService.findLibrary(networkDB.getShortcut(), libraryShortcut);
+        if (libraryDB == null)
+            return -1L;
+
+        Optional<LibMediaItem> optionalItemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx);
+        if (optionalItemDB.isPresent())
+            return optionalItemDB.get().getId();
+        else
+            return -1L;
     }
 
     public List<LibItemPT> getItem(String networkShortcut, String libraryShortcut) {

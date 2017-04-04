@@ -15,6 +15,7 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class LibItemPT {
+
     @JsonProperty("album")
     private LibAlbumPT album = null;
 
