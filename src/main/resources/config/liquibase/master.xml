@@ -186,6 +186,18 @@
                   separator=";"
                   file="config/liquibase/demo/tra_campaign_status.csv"
                   encoding="UTF-8"/>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/demo/lib_library.csv"
+                  separator=";"
+                  tableName="lib_library"/>
+        <loadData tableName="cfg_marker_configuration"
+                  separator=";"
+                  file="config/liquibase/demo/lib_marker_configuration.csv"
+                  encoding="UTF-8"/>
+        <loadData tableName="crm_stage"
+                  separator=";"
+                  file="config/liquibase/demo/crm_stage.csv"
+                  encoding="UTF-8"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

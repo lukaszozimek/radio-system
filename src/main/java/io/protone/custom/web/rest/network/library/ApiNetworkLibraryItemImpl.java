@@ -1,7 +1,9 @@
 package io.protone.custom.web.rest.network.library;
 
+import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.LibItemService;
 import io.protone.custom.service.dto.LibItemPT;
+import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +29,15 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkLibraryItemImpl.class);
 
     @Inject
-    LibItemService itemService;
+    private LibItemService itemService;
+    @Inject
+    private CorNetworkService corNetworkService;
 
     @Override
     public ResponseEntity<LibItemPT> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "mediaItem", required = true) @RequestBody LibItemPT mediaItem) {
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         return ResponseEntity.ok()
-            .body(itemService.update(mediaItem));
+            .body(itemService.update(mediaItem, corNetwork));
     }
 
     @Override

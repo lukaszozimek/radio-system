@@ -7,13 +7,13 @@ import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.repository.*;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.repository.custom.CustomLibAudioObjectRepository;
 import io.protone.repository.custom.CustomLibMediaItemRepository;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.mapper.CustomItemMapperExt;
 import io.protone.custom.utils.MediaUtils;
-import io.protone.repository.LibCloudObjectRepository;
 import io.protone.security.SecurityUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.detect.Detector;
@@ -71,6 +71,20 @@ public class LibItemService {
     @Inject
     private LibMetadataService libMetadataService;
 
+    @Inject
+    private LibArtistService libArtistRepository;
+
+    @Inject
+    private LibAlbumService libAlbumRepository;
+
+    @Inject
+    private LibMarkerService libMarkerService;
+
+    @Inject
+    private LibTrackRepository libTrackRepository;
+    @Inject
+    private LibLabelRepository libLabelRepository;
+
     public LibItemPT getItem(String networkShortcut, String libraryShortcut, String idx) {
         LibItemPT result = null;
         LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
@@ -121,8 +135,16 @@ public class LibItemService {
 
     }
 
-    public LibItemPT update(LibItemPT libItemPT) {
-        LibMediaItem item = itemRepository.save(itemMapper.DTO2DB(libItemPT));
+    public LibItemPT update(LibItemPT libItemPT, CorNetwork corNetwork) {
+        LibMediaItem libItem = itemMapper.DTO2DB(libItemPT);
+        LibArtist artist = libArtistRepository.findOrSaveOne(libItem.getArtist().getName(), corNetwork);
+        libItem.setArtist(artist);
+        LibAlbum album = libAlbumRepository.findOrSaveOne(libItem.getAlbum(), artist, corNetwork);
+        libItem.setAlbum(album);
+        libLabelRepository.saveAndFlush(libItem.getLabel());
+        libTrackRepository.saveAndFlush(libItem.getTrack());
+        LibMediaItem item = itemRepository.saveAndFlush(libItem);
+
         return itemMapper.DB2DTO(item);
     }
 

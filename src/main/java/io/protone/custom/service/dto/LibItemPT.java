@@ -15,6 +15,8 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class LibItemPT {
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("album")
     private LibAlbumPT album = null;
 
@@ -47,6 +49,14 @@ public class LibItemPT {
 
     @JsonProperty("properties")
     private List<CoreKeyValuePT> properties = new ArrayList<CoreKeyValuePT>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long ind) {
+        this.id = id;
+    }
 
     /**
      * Gets or Sets resourceType

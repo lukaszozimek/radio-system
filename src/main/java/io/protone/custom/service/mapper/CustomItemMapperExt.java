@@ -46,6 +46,7 @@ public class CustomItemMapperExt {
         if (db == null) {
             return null;
         }
+
         LibItemPT dto = new LibItemPT()
             .idx(db.getIdx())
             .length(db.getLength().intValue())
@@ -65,6 +66,7 @@ public class CustomItemMapperExt {
                     .key(new CoreKeyPT().id(corPropertyValue.getPropertyKey().getId()).key(corPropertyValue.getPropertyKey().getKey()))
                     .value(new CoreValuePT().id(corPropertyValue.getId()).value(corPropertyValue.getValue()));
             }).collect(toList()));
+        dto.setId(db.getId());
         return dto;
     }
 
@@ -132,6 +134,7 @@ public class CustomItemMapperExt {
             .authors(dto.getAuthors().stream().map(corPerson -> personMapper.DTO2DB(corPerson)).collect(toSet()))
             .composers(dto.getComposers().stream().map(corPerson -> personMapper.DTO2DB(corPerson)).collect(toSet()))
             .markers(dto.getMarkers().stream().map(libMarkerPT -> markerMapper.DTO2DB(libMarkerPT)).collect(toSet()));
+        db.setId(dto.getId());
         return db;
     }
 
