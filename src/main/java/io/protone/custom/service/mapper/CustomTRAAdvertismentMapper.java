@@ -34,12 +34,19 @@ public class CustomTRAAdvertismentMapper {
         }
         TraAdvertisement advertisement = new TraAdvertisement();
         advertisement.setId(traAdvertisementPT.getId());
-        return advertisement.name(traAdvertisementPT.getName())
-            .description(traAdvertisementPT.getDescription())
-            .industry(customTraIndustryMapper.tRAIndustryDTOToTraIndustry(traAdvertisementPT.getIndustryId()))
-            .mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(traAdvertisementPT.getMediaItemId()))
-            .customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
-
+        advertisement.name(traAdvertisementPT.getName())
+            .network(corNetwork)
+            .description(traAdvertisementPT.getDescription());
+        if (traAdvertisementPT.getIndustryId() != null) {
+            advertisement.industry(customTraIndustryMapper.tRAIndustryDTOToTraIndustry(traAdvertisementPT.getIndustryId()));
+        }
+        if (traAdvertisementPT.getMediaItemId() != null) {
+            advertisement.mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(traAdvertisementPT.getMediaItemId()));
+        }
+        if (traAdvertisementPT.getCustomerId() != null) {
+            advertisement.customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
+        }
+        return advertisement;
     }
 
     public TraAdvertisementPT transformEntityToDTO(TraAdvertisement traAdvertisement) {

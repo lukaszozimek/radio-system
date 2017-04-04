@@ -49,6 +49,7 @@ public class TraAdvertismentService {
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     public List<TraAdvertisementPT> getAllAdvertisement(CorNetwork corNetwork) {
+        System.out.println("test");
         return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.transformEntityToDTO(traAdvertisement)).collect(toList());
     }
 
