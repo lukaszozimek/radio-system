@@ -33,9 +33,9 @@
             </column>            <column name="libitem_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>            <column name="industry_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints unique="false" nullable="true" />
             </column>            <column name="type_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints unique="false" nullable="true" />
             </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="true" />
@@ -47,6 +47,6 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>
