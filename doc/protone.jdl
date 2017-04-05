@@ -559,8 +559,7 @@ relationship OneToOne {
 
     TraAdvertisement{Libitem} to LibMediaItem,
 
-    TraAdvertisement{industry} to TraIndustry,
-    TraAdvertisement {type} to TraAdvertismentType,
+
     CrmAccount{person} to CorPerson,
     CrmAccount{addres} to CorAddress,
     CrmLead{person} to CorPerson,
@@ -568,6 +567,7 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
+
     CorUserAuthority{user} to CorUser{authorities},
     CorUserAuthority{authority} to CorAuthority,
     SchTemplate{channel} to CorChannel,
@@ -668,7 +668,8 @@ relationship ManyToOne {
     TraPrice {network} to CorNetwork,
     TraAdvertisement{customer} to CrmAccount,
     TraAdvertisement{network} to CorNetwork,
-
+    TraAdvertisement{industry} to TraIndustry,
+    TraAdvertisement {type} to TraAdvertismentType,
     TraAdvertisement{customer} to CrmAccount,
     TraCampaign{customer} to CrmAccount,
     TraCampaign{network} to CorNetwork,
@@ -711,7 +712,7 @@ relationship ManyToOne {
     CrmTask{assignedTo} to CorUser,
     CrmTask{status} to CrmTaskStatus,
     CrmTask{network} to CorNetwork,
-
+    TraOrder{advertisment}to TraAdvertisement,
     SchEmission {order} to TraOrder {emissions},
     TraOrder {campaign} to TraCampaign {orders} ,
     TraOrder {invoice} to TraInvoice {orders},
