@@ -2,10 +2,7 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchEmissionPT;
-import io.protone.domain.LibMediaItem;
-import io.protone.domain.SchBlock;
-import io.protone.domain.SchEmission;
-import io.protone.domain.TraCampaign;
+import io.protone.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,13 +15,13 @@ import java.util.List;
 public interface CustomSchEmissionMapperV2 {
 
     @Mapping(source = "block.id", target = "blockId")
-    @Mapping(source = "campaings.id", target = "campaingsId")
+    @Mapping(source = "order.id", target = "campaingsId")
     SchEmissionPT DB2DTO(SchEmission schEmission);
 
     List<SchEmissionPT> DBs2DTOs(List<SchEmission> schEmissions);
 
     @Mapping(source = "blockId", target = "block")
-    @Mapping(source = "campaingsId", target = "campaings")
+    @Mapping(source = "campaingsId", target = "order")
     SchEmission DTO2DB(SchEmissionPT schEmissionDTO);
 
     List<SchEmission> DTOs2DBs(List<SchEmissionPT> schEmissionDTOs);
@@ -59,12 +56,12 @@ public interface CustomSchEmissionMapperV2 {
         return schBlock;
     }
 
-    default TraCampaign mapTraCampaign(Long id) {
+    default TraOrder mapTraCampaign(Long id) {
         if (id == null) {
             return null;
         }
-        TraCampaign traCampaign = new TraCampaign();
-        traCampaign.setId(id);
-        return traCampaign;
+        TraOrder traOrder = new TraOrder();
+        traOrder.setId(id);
+        return traOrder;
     }
 }

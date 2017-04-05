@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **customer_id** | [**TraCustomerPT**](TraCustomerPT.md) |  | [optional] 
 **customer_pt** | [**TraCustomerPT**](TraCustomerPT.md) |  | [optional] 
-**emission** | [**list[SchEmissionPT]**](SchEmissionPT.md) |  | [optional] 
+**orders** | [**list[SchEmissionPT]**](SchEmissionPT.md) |  | [optional] 
 **end_date** | **date** |  | [optional] 
 **id** | **int** |  | [optional] 
 **name** | **str** |  | 

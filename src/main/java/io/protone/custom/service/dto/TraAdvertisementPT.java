@@ -2,6 +2,7 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.LibMediaItem;
+import io.protone.domain.TraAdvertismentType;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -26,9 +27,25 @@ public class TraAdvertisementPT {
 
     @JsonProperty("mediaItemId")
     private LibMediaItemPT mediaItemId = null;
-
+    @JsonProperty("typeId")
+    private ConfTraAdvertismentTypePT typePT;
     @JsonProperty("name")
     private String name = null;
+
+
+    public TraAdvertisementPT type(ConfTraAdvertismentTypePT typePT) {
+        this.typePT = typePT;
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public ConfTraAdvertismentTypePT getTypePT() {
+        return typePT;
+    }
+
+    public void setTypePT(ConfTraAdvertismentTypePT typePT) {
+        this.typePT = typePT;
+    }
 
     public TraAdvertisementPT customerId(TraCustomerPT customerId) {
         this.customerId = customerId;

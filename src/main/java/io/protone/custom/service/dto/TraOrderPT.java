@@ -1,11 +1,16 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+
+import io.protone.domain.SchEmission;
 import io.protone.domain.TraOrderStatus;
 import io.protone.domain.TraPrice;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -39,6 +44,9 @@ public class TraOrderPT {
     private TraPrice traPrice = null;
     @JsonProperty("status")
     private TraOrderStatus traOrderStatus = null;
+
+    @JsonProperty("emission")
+    private List<SchEmissionPT> schEmissionPT = new ArrayList<SchEmissionPT>();
 
     @JsonProperty
     private TraInvoicePT traInvoicePT = null;
@@ -219,6 +227,34 @@ public class TraOrderPT {
         return this;
     }
 
+    /**
+     * Get emissions
+     *
+     * @return status
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public List<SchEmissionPT> getEmissions() {
+        return schEmissionPT;
+    }
+
+    public void setEmissions(List<SchEmissionPT> emissions) {
+        this.schEmissionPT = emissions;
+    }
+
+    public TraOrderPT addEmission(SchEmissionPT emission) {
+        this.schEmissionPT.add(emission);
+        return this;
+    }
+
+    public TraOrderPT removeEmission(SchEmissionPT emission) {
+        this.schEmissionPT.remove(emission);
+        return this;
+    }
+
+    public TraOrderPT emissions(List<SchEmissionPT> emissions) {
+        this.schEmissionPT = emissions;
+        return this;
+    }
 
     /**
      * Get startDate
@@ -251,12 +287,13 @@ public class TraOrderPT {
             Objects.equals(this.id, traOrderPT.id) &&
             Objects.equals(this.name, traOrderPT.name) &&
             Objects.equals(this.startDate, traOrderPT.startDate) &&
+            Objects.equals(this.schEmissionPT, traOrderPT.schEmissionPT) &&
             Objects.equals(this.traPrice, traOrderPT.traPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, traPrice);
+        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, traPrice, schEmissionPT);
     }
 
     @Override
@@ -272,6 +309,8 @@ public class TraOrderPT {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
         sb.append("    price: ").append(toIndentedString(traPrice)).append("\n");
+        sb.append("    emissions: ").append(toIndentedString(schEmissionPT)).append("\n");
+
         sb.append("}");
         return sb.toString();
     }

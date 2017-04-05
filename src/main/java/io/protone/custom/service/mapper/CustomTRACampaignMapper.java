@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
+import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -35,11 +37,10 @@ public class CustomTRACampaignMapper {
             .name(traCampaignPT.getName())
             .prize(traCampaignPT.getPrize())
             .customer(crmAccountMapper.createCrmAcountEntity(traCampaignPT.getCustomerId(), corNetwork))
-            .emissions(traCampaignPT.getEmission().stream().map(schEmissionPT -> emissionMapper.createEmissionFromDTO(schEmissionPT)).collect(toSet()))
             .status(traCampaignPT.getStatsus())
             .price(new TraPrice());
-        if (traCampaignPT.getOrderPT() != null) {
-            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrderPT(), corNetwork));
+        if (traCampaignPT.getOrders() != null) {
+            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(), corNetwork).stream().collect(toSet()));
         }
         traCampaign.network(corNetwork);
         return traCampaign;
@@ -56,10 +57,9 @@ public class CustomTRACampaignMapper {
                 .prize(traCampaign.getPrize())
                 .startDate(traCampaign.getStartDate())
                 .endDate(traCampaign.getEndDate())
-                .emission(emissionMapper.createDTOFromListEntites(traCampaign.getEmissions()))
                 .customerId(crmAccountMapper.createCustomerTrafficDTO(traCampaign.getCustomer()))
                 .status(traCampaign.getStatus())
-                .order(customTraOrderMapper.transfromEntiteToDTO(traCampaign.getOrders()));
+                .orders(customTraOrderMapper.transfromEntitesToDTO(traCampaign.getOrders()).stream().collect(Collectors.toList()));
     }
 
 

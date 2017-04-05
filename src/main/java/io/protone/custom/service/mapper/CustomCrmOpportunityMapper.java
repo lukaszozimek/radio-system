@@ -25,10 +25,9 @@ public class CustomCrmOpportunityMapper {
     private CustomCorUserMapperExt corUserMapper;
 
     public CrmOpportunity createOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
-        if (opportunityPT != null || corNetwork != null) {
+        if (opportunityPT == null || corNetwork == null) {
             return new CrmOpportunity();
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         CrmOpportunity opportunity = new CrmOpportunity();
         opportunity.setId(opportunityPT.getId());
         return
@@ -46,12 +45,12 @@ public class CustomCrmOpportunityMapper {
         CrmOpportunityPT crmOpportunityPT = new CrmOpportunityPT();
         crmOpportunityPT.setId(opportunity.getId());
         return crmOpportunityPT
-            //.lastTry(opportunity.getLastTry().toString())
+            .lastTry(opportunity.getLastTry().toString())
             .name(opportunity.getName())
             .propability(opportunity.getProbability())
-            //.closeDate(opportunity.getCloseDate().toString())
+            .closeDate(opportunity.getCloseDate().toString())
             .tasks(customCrmTaskMapper.createCrmTasks(opportunity.getTasks()))
-            //.contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
+            .contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
             .opportunityOwner(corUserMapper.userToCoreUserPT(opportunity.getKeeper()))
             .stage(stageMapper.cRMStageToCrmStageDTO(opportunity.getStage()));
     }

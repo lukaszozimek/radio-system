@@ -25,8 +25,12 @@ public class CustomTRAAdvertismentMapper {
 
     @Inject
     private TraCustomerService customerService;
+
     @Inject
     private CustomLibMediaItemMapper customLibMediaItemMapper;
+
+    @Inject
+    private CustomTraAdvertismentTypeMapper traAdvertismentTypeMapper;
 
     public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
         if (traAdvertisementPT == null || corNetwork == null) {
@@ -46,6 +50,9 @@ public class CustomTRAAdvertismentMapper {
         if (traAdvertisementPT.getCustomerId() != null) {
             advertisement.customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
         }
+        if (traAdvertisementPT.getTypePT() != null) {
+            advertisement.type(traAdvertismentTypeMapper.DTO2DB(traAdvertisementPT.getTypePT()));
+        }
         return advertisement;
     }
 
@@ -59,6 +66,7 @@ public class CustomTRAAdvertismentMapper {
             .description(traAdvertisement.getDescription())
             .industryId(customTraIndustryMapper.tRAIndustryToTraIndustryDTO(traAdvertisement.getIndustry()))
             .mediaItemId(customLibMediaItemMapper.lIBMediaItemToLibMediaItemPT(traAdvertisement.getMediaItem()))
+            .type(traAdvertismentTypeMapper.DB2DTO(traAdvertisement.getType()))
             .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCustomer()));
 
     }

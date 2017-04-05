@@ -87,8 +87,11 @@ public class CustomCrmAccountMapper {
         if (traCustomerPT.getIndustry() != null) {
             crmAccount.industry(industryMapper.tRAIndustryDTOToTraIndustry(traCustomerPT.getIndustry()));
         }
+        if (traCustomerPT.getAccount() != null) {
+            crmAccount.keeper(corUserMapper.coreUserPTToUser(traCustomerPT.getAccount()));
+        }
         if (traCustomerPT.getSize() != null) {
-            //crmAccount .keeper(corUserMapper.tranformUserDTO(traCustomerPT.getAccount()))
+
             crmAccount.size(customCorSizeMapper.cORSizeDTOToCorSize(traCustomerPT.getSize()));
         }
         if (traCustomerPT.getRange() != null) {

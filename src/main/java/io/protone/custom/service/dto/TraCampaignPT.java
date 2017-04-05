@@ -36,35 +36,15 @@ public class TraCampaignPT {
     @JsonProperty("status")
     private TraCampaingStatus status = null;
 
-    @JsonProperty("order")
-    private TraOrderPT orderPT = null;
-
-    @JsonProperty("emission")
-    private List<SchEmissionPT> emission = new ArrayList<SchEmissionPT>();
+    @JsonProperty("orders")
+    private List<TraOrderPT> orders = new ArrayList<TraOrderPT>();
 
     public TraCampaignPT customerId(TraCustomerPT customerId) {
         this.customerPT = customerId;
         return this;
     }
 
-    /**
-     * Get customerId
-     *
-     * @return customerId
-     **/
-    @ApiModelProperty(value = "")
-    public TraOrderPT getOrderPT() {
-        return orderPT;
-    }
 
-    public void setOrderPT(TraOrderPT orderPT) {
-        this.orderPT = orderPT;
-    }
-
-    public TraCampaignPT order(TraOrderPT orderPT) {
-        this.orderPT = orderPT;
-        return this;
-    }
     /**
      * Get customerId
      *
@@ -194,28 +174,28 @@ public class TraCampaignPT {
         this.startDate = startDate;
     }
 
-    public TraCampaignPT emission(List<SchEmissionPT> emission) {
-        this.emission = emission;
+    public TraCampaignPT orders(List<TraOrderPT> orders) {
+        this.orders = orders;
         return this;
     }
 
-    public TraCampaignPT addEmissionItem(SchEmissionPT emissionItem) {
-        this.emission.add(emissionItem);
+    public TraCampaignPT addOrder(TraOrderPT order) {
+        this.orders.add(order);
         return this;
     }
 
     /**
-     * Get emission
+     * Get orders
      *
-     * @return emission
+     * @return orders
      **/
     @ApiModelProperty(value = "")
-    public List<SchEmissionPT> getEmission() {
-        return emission;
+    public List<TraOrderPT> getOrders() {
+        return orders;
     }
 
-    public void setEmission(List<SchEmissionPT> emission) {
-        this.emission = emission;
+    public void setOrders(List<TraOrderPT> orders) {
+        this.orders = orders;
     }
 
 
@@ -234,12 +214,12 @@ public class TraCampaignPT {
             Objects.equals(this.name, traCampaignPT.name) &&
             Objects.equals(this.prize, traCampaignPT.prize) &&
             Objects.equals(this.startDate, traCampaignPT.startDate) &&
-            Objects.equals(this.emission, traCampaignPT.emission);
+            Objects.equals(this.orders, traCampaignPT.orders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerPT, endDate, id, name, prize, startDate, emission, status);
+        return Objects.hash(customerPT, endDate, id, name, prize, startDate, orders, status);
     }
 
     @Override
@@ -253,7 +233,7 @@ public class TraCampaignPT {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    prize: ").append(toIndentedString(prize)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-        sb.append("    emission: ").append(toIndentedString(emission)).append("\n");
+        sb.append("    orders: ").append(toIndentedString(orders)).append("\n");
         sb.append("    status: ").append(toIndentedString(status)).append("\n");
         sb.append("}");
         return sb.toString();
