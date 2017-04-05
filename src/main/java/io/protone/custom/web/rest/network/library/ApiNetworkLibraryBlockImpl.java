@@ -4,6 +4,8 @@ import io.protone.custom.service.LibItemService;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
+import io.protone.domain.enumeration.SchBlockTypeEnum;
+import io.protone.domain.enumeration.SchStartTypeEnum;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,8 @@ public class ApiNetworkLibraryBlockImpl implements ApiNetworkLibraryBlock {
     @Inject
     private LibItemService itemService;
 
+    private int seq = 0;
+
     @Override
     public ResponseEntity<SchBlockPT> getRandomBlockFromSelectedLibrary(
         @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -41,7 +45,11 @@ public class ApiNetworkLibraryBlockImpl implements ApiNetworkLibraryBlock {
         List<LibItemPT> items = itemService.getItem(networkShortcut, libraryPrefix);
         Set<LibItemPT> set = new HashSet<>();
 
-        SchBlockPT result = new SchBlockPT();
+        SchBlockPT result = new SchBlockPT()
+            .name("SampleBlock")
+            .seq(seq++)
+            .startType(SchStartTypeEnum.ST_FREE)
+            .type(SchBlockTypeEnum.BT_PROGRAM);
 
         if (items.size() == 0)
             return ResponseEntity.ok().body(result);
@@ -84,6 +92,7 @@ public class ApiNetworkLibraryBlockImpl implements ApiNetworkLibraryBlock {
         return new SchEmissionPT()
             .name("EmissionOf_" + rndItem.getName())
             .mediaItem(rndItem)
-            .length(rndItem.getLength().longValue());
+            .length(rndItem.getLength().longValue())
+            .seq(seq++);
     }
 }

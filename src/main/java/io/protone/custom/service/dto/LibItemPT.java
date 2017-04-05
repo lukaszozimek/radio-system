@@ -15,12 +15,10 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class LibItemPT {
-<<<<<<< e0f8717798ff54d838b73ebb41f65f7c486a6b3c
 
-=======
     @JsonProperty("id")
     private Long id;
->>>>>>> Improvement in saving mediaitem
+
     @JsonProperty("album")
     private LibAlbumPT album = null;
 
