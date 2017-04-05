@@ -20,18 +20,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_media_item"/>
 
-        <addForeignKeyConstraint baseColumnNames="industry_id"
-                                 baseTableName="tra_advertisement"
-                                 constraintName="fk_tra_advertisement_industry_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_industry"/>
-
-        <addForeignKeyConstraint baseColumnNames="type_id"
-                                 baseTableName="tra_advertisement"
-                                 constraintName="fk_tra_advertisement_type_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_advertisment_type"/>
-
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="tra_advertisement"
                                  constraintName="fk_tra_advertisement_customer_id"
@@ -43,6 +31,18 @@
                                  constraintName="fk_tra_advertisement_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="industry_id"
+                                 baseTableName="tra_advertisement"
+                                 constraintName="fk_tra_advertisement_industry_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_industry"/>
+
+        <addForeignKeyConstraint baseColumnNames="type_id"
+                                 baseTableName="tra_advertisement"
+                                 constraintName="fk_tra_advertisement_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_advertisment_type"/>
 
     </changeSet>
 </databaseChangeLog>

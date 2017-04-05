@@ -55,6 +55,9 @@ public class TraOrder implements Serializable {
     private TraOrderStatus status;
 
     @ManyToOne
+    private TraAdvertisement advertisment;
+
+    @ManyToOne
     private TraCampaign campaign;
 
     @ManyToOne
@@ -175,6 +178,19 @@ public class TraOrder implements Serializable {
 
     public void setStatus(TraOrderStatus traOrderStatus) {
         this.status = traOrderStatus;
+    }
+
+    public TraAdvertisement getAdvertisment() {
+        return advertisment;
+    }
+
+    public TraOrder advertisment(TraAdvertisement traAdvertisement) {
+        this.advertisment = traAdvertisement;
+        return this;
+    }
+
+    public void setAdvertisment(TraAdvertisement traAdvertisement) {
+        this.advertisment = traAdvertisement;
     }
 
     public TraCampaign getCampaign() {
