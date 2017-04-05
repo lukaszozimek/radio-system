@@ -680,7 +680,6 @@ relationship ManyToOne {
     TraInvoice{status} to TraInvoiceStatus,
 
     TraOrder{customer} to CrmAccount,
-    TraOrder{campaign} to TraCampaign,
     TraOrder{price} to TraPrice,
     TraOrder{network} to CorNetwork,
     TraOrder{status} to TraOrderStatus,
@@ -713,8 +712,8 @@ relationship ManyToOne {
     CrmTask{status} to CrmTaskStatus,
     CrmTask{network} to CorNetwork,
 
-    SchEmission {campaings} to TraCampaign {emissions},
-    TraCampaign {orders} to TraOrder,
+    SchEmission {order} to TraOrder {emissions},
+    TraOrder {campaign} to TraCampaign {orders} ,
     TraOrder {invoice} to TraInvoice {orders},
 
 

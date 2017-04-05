@@ -32,11 +32,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="tra_price"/>
 
-        <addForeignKeyConstraint baseColumnNames="orders_id"
-                                 baseTableName="tra_campaign"
-                                 constraintName="fk_tra_campaign_orders_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_order"/>
-
     </changeSet>
 </databaseChangeLog>

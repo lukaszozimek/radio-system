@@ -20,11 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="sch_block"/>
 
-        <addForeignKeyConstraint baseColumnNames="campaings_id"
+        <addForeignKeyConstraint baseColumnNames="order_id"
                                  baseTableName="sch_emission"
-                                 constraintName="fk_sch_emission_campaings_id"
+                                 constraintName="fk_sch_emission_order_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="tra_campaign"/>
+                                 referencedTableName="tra_order"/>
 
     </changeSet>
 </databaseChangeLog>

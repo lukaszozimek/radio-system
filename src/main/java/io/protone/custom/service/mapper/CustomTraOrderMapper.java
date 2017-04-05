@@ -88,6 +88,9 @@ public class CustomTraOrderMapper {
         if (traOrder.getInvoice() != null) {
             traOrderPt.traInvoiceT(customTraInvoiceMapper.createDTOFromEnity(traOrder.getInvoice()));
         }
+        if (traOrder.getEmissions() != null) {
+            traOrderPt.emissions(customSchEmissionMapper.createDTOFromListEntites(traOrder.getEmissions()));
+        }
         return traOrderPt;
     }
 

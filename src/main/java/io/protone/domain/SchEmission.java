@@ -68,7 +68,7 @@ public class SchEmission implements Serializable {
     private SchBlock block;
 
     @ManyToOne
-    private TraCampaign campaings;
+    private TraOrder order;
 
     public Long getId() {
         return id;
@@ -247,17 +247,17 @@ public class SchEmission implements Serializable {
         this.block = schBlock;
     }
 
-    public TraCampaign getCampaings() {
-        return campaings;
+    public TraOrder getOrder() {
+        return order;
     }
 
-    public SchEmission campaings(TraCampaign traCampaign) {
-        this.campaings = traCampaign;
+    public SchEmission order(TraOrder traOrder) {
+        this.order = traOrder;
         return this;
     }
 
-    public void setCampaings(TraCampaign traCampaign) {
-        this.campaings = traCampaign;
+    public void setOrder(TraOrder traOrder) {
+        this.order = traOrder;
     }
 
     @Override

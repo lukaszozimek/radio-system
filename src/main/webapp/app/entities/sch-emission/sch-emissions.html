@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="sch-emission.new" >
+                <button class="btn btn-primary" ui-sref="sch-orders.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="protoneApp.schEmission.home.createLabel">
                         Create new Sch Emission
@@ -38,7 +38,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="schEmission in vm.schEmissions track by schEmission.id">
-                    <td><a ui-sref="sch-emission-detail({id:schEmission.id})">{{schEmission.id}}</a></td>
+                    <td><a ui-sref="sch-orders-detail({id:schEmission.id})">{{schEmission.id}}</a></td>
                     <td>{{schEmission.seq}}</td>
                     <td>{{schEmission.name}}</td>
                     <td>{{schEmission.startTime | date:'medium'}}</td>
@@ -62,19 +62,19 @@
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
-                                    ui-sref="sch-emission-detail({id:schEmission.id})"
+                                    ui-sref="sch-orders-detail({id:schEmission.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="sch-emission.edit({id:schEmission.id})"
+                                    ui-sref="sch-orders.edit({id:schEmission.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="sch-emission.delete({id:schEmission.id})"
+                                    ui-sref="sch-orders.delete({id:schEmission.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span>

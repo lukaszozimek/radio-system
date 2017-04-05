@@ -41,10 +41,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="campaign_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="price_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -54,6 +50,10 @@
             </column>
 
             <column name="status_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="campaign_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

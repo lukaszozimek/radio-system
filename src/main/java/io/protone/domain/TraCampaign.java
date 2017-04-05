@@ -54,13 +54,10 @@ public class TraCampaign implements Serializable {
     @ManyToOne
     private TraPrice price;
 
-    @ManyToOne
-    private TraOrder orders;
-
-    @OneToMany(mappedBy = "campaings")
+    @OneToMany(mappedBy = "campaign")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private Set<TraOrder> orders = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -174,42 +171,29 @@ public class TraCampaign implements Serializable {
         this.price = traPrice;
     }
 
-    public TraOrder getOrders() {
+    public Set<TraOrder> getOrders() {
         return orders;
     }
 
-    public TraCampaign orders(TraOrder traOrder) {
-        this.orders = traOrder;
+    public TraCampaign orders(Set<TraOrder> traOrders) {
+        this.orders = traOrders;
         return this;
     }
 
-    public void setOrders(TraOrder traOrder) {
-        this.orders = traOrder;
-    }
-
-    public Set<SchEmission> getEmissions() {
-        return emissions;
-    }
-
-    public TraCampaign emissions(Set<SchEmission> schEmissions) {
-        this.emissions = schEmissions;
+    public TraCampaign addOrders(TraOrder traOrder) {
+        this.orders.add(traOrder);
+        traOrder.setCampaign(this);
         return this;
     }
 
-    public TraCampaign addEmissions(SchEmission schEmission) {
-        this.emissions.add(schEmission);
-        schEmission.setCampaings(this);
+    public TraCampaign removeOrders(TraOrder traOrder) {
+        this.orders.remove(traOrder);
+        traOrder.setCampaign(null);
         return this;
     }
 
-    public TraCampaign removeEmissions(SchEmission schEmission) {
-        this.emissions.remove(schEmission);
-        schEmission.setCampaings(null);
-        return this;
-    }
-
-    public void setEmissions(Set<SchEmission> schEmissions) {
-        this.emissions = schEmissions;
+    public void setOrders(Set<TraOrder> traOrders) {
+        this.orders = traOrders;
     }
 
     @Override

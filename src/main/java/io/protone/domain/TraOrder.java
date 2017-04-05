@@ -1,5 +1,6 @@
 package io.protone.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,7 +9,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A TraOrder.
@@ -43,9 +46,6 @@ public class TraOrder implements Serializable {
     private CrmAccount customer;
 
     @ManyToOne
-    private TraCampaign campaign;
-
-    @ManyToOne
     private TraPrice price;
 
     @ManyToOne
@@ -55,7 +55,15 @@ public class TraOrder implements Serializable {
     private TraOrderStatus status;
 
     @ManyToOne
+    private TraCampaign campaign;
+
+    @ManyToOne
     private TraInvoice invoice;
+
+    @OneToMany(mappedBy = "order")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SchEmission> emissions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -130,19 +138,6 @@ public class TraOrder implements Serializable {
         this.customer = crmAccount;
     }
 
-    public TraCampaign getCampaign() {
-        return campaign;
-    }
-
-    public TraOrder campaign(TraCampaign traCampaign) {
-        this.campaign = traCampaign;
-        return this;
-    }
-
-    public void setCampaign(TraCampaign traCampaign) {
-        this.campaign = traCampaign;
-    }
-
     public TraPrice getPrice() {
         return price;
     }
@@ -182,6 +177,19 @@ public class TraOrder implements Serializable {
         this.status = traOrderStatus;
     }
 
+    public TraCampaign getCampaign() {
+        return campaign;
+    }
+
+    public TraOrder campaign(TraCampaign traCampaign) {
+        this.campaign = traCampaign;
+        return this;
+    }
+
+    public void setCampaign(TraCampaign traCampaign) {
+        this.campaign = traCampaign;
+    }
+
     public TraInvoice getInvoice() {
         return invoice;
     }
@@ -193,6 +201,31 @@ public class TraOrder implements Serializable {
 
     public void setInvoice(TraInvoice traInvoice) {
         this.invoice = traInvoice;
+    }
+
+    public Set<SchEmission> getEmissions() {
+        return emissions;
+    }
+
+    public TraOrder emissions(Set<SchEmission> schEmissions) {
+        this.emissions = schEmissions;
+        return this;
+    }
+
+    public TraOrder addEmissions(SchEmission schEmission) {
+        this.emissions.add(schEmission);
+        schEmission.setOrder(this);
+        return this;
+    }
+
+    public TraOrder removeEmissions(SchEmission schEmission) {
+        this.emissions.remove(schEmission);
+        schEmission.setOrder(null);
+        return this;
+    }
+
+    public void setEmissions(Set<SchEmission> schEmissions) {
+        this.emissions = schEmissions;
     }
 
     @Override
