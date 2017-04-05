@@ -40,19 +40,17 @@ public class TraAdvertisement implements Serializable {
     @JoinColumn(unique = true)
     private LibMediaItem libitem;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private TraIndustry industry;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private TraAdvertismentType type;
-
     @ManyToOne
     private CrmAccount customer;
 
     @ManyToOne
     private CorNetwork network;
+
+    @ManyToOne
+    private TraIndustry industry;
+
+    @ManyToOne
+    private TraAdvertismentType type;
 
     public Long getId() {
         return id;
@@ -114,32 +112,6 @@ public class TraAdvertisement implements Serializable {
         this.libitem = libMediaItem;
     }
 
-    public TraIndustry getIndustry() {
-        return industry;
-    }
-
-    public TraAdvertisement industry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
-        return this;
-    }
-
-    public void setIndustry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
-    }
-
-    public TraAdvertismentType getType() {
-        return type;
-    }
-
-    public TraAdvertisement type(TraAdvertismentType traAdvertismentType) {
-        this.type = traAdvertismentType;
-        return this;
-    }
-
-    public void setType(TraAdvertismentType traAdvertismentType) {
-        this.type = traAdvertismentType;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
     }
@@ -164,6 +136,32 @@ public class TraAdvertisement implements Serializable {
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
+    }
+
+    public TraIndustry getIndustry() {
+        return industry;
+    }
+
+    public TraAdvertisement industry(TraIndustry traIndustry) {
+        this.industry = traIndustry;
+        return this;
+    }
+
+    public void setIndustry(TraIndustry traIndustry) {
+        this.industry = traIndustry;
+    }
+
+    public TraAdvertismentType getType() {
+        return type;
+    }
+
+    public TraAdvertisement type(TraAdvertismentType traAdvertismentType) {
+        this.type = traAdvertismentType;
+        return this;
+    }
+
+    public void setType(TraAdvertismentType traAdvertismentType) {
+        this.type = traAdvertismentType;
     }
 
     @Override

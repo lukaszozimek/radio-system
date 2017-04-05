@@ -32,6 +32,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="tra_order_status"/>
 
+        <addForeignKeyConstraint baseColumnNames="advertisment_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_advertisment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_advertisement"/>
+
         <addForeignKeyConstraint baseColumnNames="campaign_id"
                                  baseTableName="tra_order"
                                  constraintName="fk_tra_order_campaign_id"
