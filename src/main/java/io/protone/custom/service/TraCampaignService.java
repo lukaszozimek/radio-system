@@ -53,6 +53,7 @@ public class TraCampaignService {
 
     public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CorNetwork corNetwork) {
         TraCampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT, corNetwork);
+        traCampaignRepository.save(traCampaign);
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
     }
 

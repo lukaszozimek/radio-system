@@ -37,8 +37,10 @@ public class CustomTRACampaignMapper {
             .name(traCampaignPT.getName())
             .prize(traCampaignPT.getPrize())
             .customer(crmAccountMapper.createCrmAcountEntity(traCampaignPT.getCustomerId(), corNetwork))
-            .status(traCampaignPT.getStatsus())
-            .price(new TraPrice());
+            .status(traCampaignPT.getStatsus());
+        if (traCampaign.getPrice()!=null) {
+            traCampaign.price(new TraPrice());
+        }
         if (traCampaignPT.getOrders() != null) {
             traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(), corNetwork).stream().collect(toSet()));
         }

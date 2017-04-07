@@ -42,6 +42,10 @@ public class TraOrderPT {
 
     @JsonProperty("price")
     private TraPrice traPrice = null;
+
+    @JsonProperty("advertisment")
+    private TraAdvertisementPT traAdvertisementPT = null;
+
     @JsonProperty("status")
     private TraOrderStatus traOrderStatus = null;
 
@@ -228,6 +232,25 @@ public class TraOrderPT {
     }
 
     /**
+     * Get status
+     *
+     * @return status
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public TraAdvertisementPT getAdvertisment() {
+        return traAdvertisementPT;
+    }
+
+    public void setAdvertisment(TraAdvertisementPT advertisment) {
+        this.traAdvertisementPT = advertisment;
+    }
+
+    public TraOrderPT advertimsnet(TraAdvertisementPT advertisment) {
+        this.traAdvertisementPT = advertisment;
+        return this;
+    }
+
+    /**
      * Get emissions
      *
      * @return status
@@ -288,12 +311,13 @@ public class TraOrderPT {
             Objects.equals(this.name, traOrderPT.name) &&
             Objects.equals(this.startDate, traOrderPT.startDate) &&
             Objects.equals(this.schEmissionPT, traOrderPT.schEmissionPT) &&
+            Objects.equals(this.traAdvertisementPT, traOrderPT.traAdvertisementPT) &&
             Objects.equals(this.traPrice, traOrderPT.traPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, traPrice, schEmissionPT);
+        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, traPrice, schEmissionPT, traAdvertisementPT);
     }
 
     @Override
@@ -310,6 +334,7 @@ public class TraOrderPT {
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
         sb.append("    price: ").append(toIndentedString(traPrice)).append("\n");
         sb.append("    emissions: ").append(toIndentedString(schEmissionPT)).append("\n");
+        sb.append("    advertisment: ").append(toIndentedString(traAdvertisementPT)).append("\n");
 
         sb.append("}");
         return sb.toString();

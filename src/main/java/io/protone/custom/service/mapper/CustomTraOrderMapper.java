@@ -35,6 +35,9 @@ public class CustomTraOrderMapper {
     @Inject
     private TraCustomerService customerService;
 
+    @Inject
+    private CustomTRAAdvertismentMapper traAdvertismentMapper;
+
     public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, CorNetwork corNetwork) {
         List<TraOrder> traOrdersList = new ArrayList<>();
         traOrderPT.stream().forEach(traOrderPT1 -> {
@@ -61,6 +64,9 @@ public class CustomTraOrderMapper {
         }
         if (traOrderPT.getTraInvoice() != null) {
             traOrder.invoice(customTraInvoiceMapper.createEntityFromDTO(traOrderPT.getTraInvoice(), corNetwork));
+        }
+        if (traOrderPT.getAdvertisment() != null) {
+            traOrder.advertisment(traAdvertismentMapper.transformDTOToEntity(traOrderPT.getAdvertisment(), corNetwork));
         }
         traOrder.price(traOrderPT.getTraPrice()).status(traOrder.getStatus())
             .startDate(traOrderPT.getStartDate())
@@ -90,6 +96,9 @@ public class CustomTraOrderMapper {
         }
         if (traOrder.getEmissions() != null) {
             traOrderPt.emissions(customSchEmissionMapper.createDTOFromListEntites(traOrder.getEmissions()));
+        }
+        if (traOrder.getAdvertisment() != null) {
+            traOrderPt.advertimsnet(traAdvertismentMapper.transformEntityToDTO(traOrder.getAdvertisment()));
         }
         return traOrderPt;
     }
