@@ -58,7 +58,7 @@ public class SchBlockService {
             parentBlockDB = emissionMapper.mapSchBlock(parentBlockDTO.getId());
 
         List<SchBlock> rootBlocksDB = blockRepository.findByPlaylistAndTemplateAndParentBlock(playlistDB, templateDB, parentBlockDB);
-        for (SchBlock childBlockDB: rootBlocksDB) {
+        for (SchBlock childBlockDB : rootBlocksDB) {
             SchBlockPT childBlockDTO = blockMapper.DB2DTO(childBlockDB);
             childBlockDTO.blocks(getBlocks(playlistDTO, templateDTO, childBlockDTO));
             childBlockDTO.emissions(getEmissions(childBlockDTO));
@@ -76,7 +76,7 @@ public class SchBlockService {
 
         List<SchBlockPT> results = new ArrayList<>();
 
-        for (SchBlockPT block: blocks)
+        for (SchBlockPT block : blocks)
             results.add(setBlock(block, null, playlist, template));
 
         return results;
@@ -97,12 +97,10 @@ public class SchBlockService {
         if (blockDB.getId() == null) {
             // new block - add it
             blockDB = blockRepository.saveAndFlush(blockDB);
-        }
-        else if (blockDB.getId() > 0) {
+        } else if (blockDB.getId() > 0) {
             // existing block - update it
             blockDB = blockRepository.saveAndFlush(blockDB);
-        }
-        else {
+        } else {
             // existing block - to delete
             blockDB.setId(-1 * blockDB.getId());
             blockRepository.delete(blockDB);
@@ -112,28 +110,29 @@ public class SchBlockService {
 
         SchBlockPT result = blockMapper.DB2DTO(blockDB);
 
-        for(SchBlockPT block: blockDTO.getBlocks())
+        for (SchBlockPT block : blockDTO.getBlocks())
             result.addBlock(setBlock(block, blockDB.getId(), playlist, template));
 
-        for (SchEmissionPT emission: blockDTO.getEmissions())
+        for (SchEmissionPT emission : blockDTO.getEmissions())
             result.addEmission(setEmission(emission, blockDB.getId()));
 
         return result;
     }
 
     private SchEmissionPT setEmission(SchEmissionPT emissionDTO, Long parentId) {
+        if (emissionDTO == null) {
+            return new SchEmissionPT();
+        }
         SchEmission emissionDB = emissionMapper.DTO2DB(emissionDTO);
         emissionDB.setBlock(emissionMapper.mapSchBlock(parentId));
 
         if (emissionDB.getId() == null) {
             // new emission - add it
             emissionDB = emissionRepository.saveAndFlush(emissionDB);
-        }
-        else if (emissionDB.getId() > 0) {
+        } else if (emissionDB.getId() > 0) {
             // existing emission - update it
             emissionDB = emissionRepository.saveAndFlush(emissionDB);
-        }
-        else {
+        } else {
             // existing emission - to delete
             emissionDB.setId(-1 * emissionDB.getId());
             emissionRepository.delete(emissionDB);

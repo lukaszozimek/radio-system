@@ -1,6 +1,9 @@
 package io.protone.custom.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+
+import java.util.*;
+
 import io.protone.custom.consts.MarkerConstans;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
@@ -31,9 +34,6 @@ import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import static io.protone.custom.consts.ServiceConstants.NO_DATA;
 
@@ -83,7 +83,7 @@ public class LibMetadataService {
     }
 
     public LibMediaItem resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
-        log.debug("Start processing :"+file.getOriginalFilename());
+        log.debug("Start processing :" + file.getOriginalFilename());
         InputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
         Parser parser = new AutoDetectParser();
         BodyContentHandler handler = new BodyContentHandler();
@@ -137,20 +137,21 @@ public class LibMetadataService {
             audioObject.setCodec(NO_DATA);
         }
         audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
+        Set<LibMarker> markers = new HashSet<>();
         metadataMap.keySet().stream().forEach(timer -> {
             String timerValue = metadata.get(timer);
             if (!Strings.isNullOrEmpty(timerValue)) {
-                libMArkerService.saveLibMarker(timer, Long.valueOf(timerValue), finalMediaItem);
+                markers.add(libMArkerService.saveLibMarker(timer, Long.valueOf(timerValue), finalMediaItem));
                 metadata.remove(timer);
             }
         });
+        mediaItem.markers(markers);
         Arrays.stream(metadata.names()).forEach(metadataName -> {
             CorPropertyKey corPropertyKey;
-            if(Strings.isNullOrEmpty(metadataName)){
-                 corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);
-            }
-            else {
-                 corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
+            if (Strings.isNullOrEmpty(metadataName)) {
+                corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);
+            } else {
+                corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
             }
             corPropertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey);
             corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(finalMediaItem).propertyKey(corPropertyKey));
