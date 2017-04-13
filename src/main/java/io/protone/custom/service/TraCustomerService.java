@@ -49,6 +49,7 @@ public class TraCustomerService {
         List<CorContact> corContact = corContactRepository.save(crmAccount.getPerson().getContacts());
         crmAccount.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
         CorPerson person = personRepository.saveAndFlush(crmAccount.getPerson());
+        corContact.stream().forEach(corContact1 -> corContactRepository.save(corContact1.person(person)));
         crmAccount.setAddres(address);
         crmAccount.person(person);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
@@ -58,7 +59,7 @@ public class TraCustomerService {
 
     public void deleteCustomer(String shortcut, CorNetwork corNetwork) {
 
-
+        crmAccountRepository.deleteByShortNameAndNetwork(shortcut,corNetwork);
     }
 
     public TraCustomerPT getCustomer(String shortcut, CorNetwork corNetwork) {

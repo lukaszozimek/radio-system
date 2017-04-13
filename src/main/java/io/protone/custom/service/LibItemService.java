@@ -141,8 +141,15 @@ public class LibItemService {
         libItem.setArtist(artist);
         LibAlbum album = libAlbumRepository.findOrSaveOne(libItem.getAlbum(), artist, corNetwork);
         libItem.setAlbum(album);
-        libLabelRepository.saveAndFlush(libItem.getLabel());
-        libTrackRepository.saveAndFlush(libItem.getTrack());
+        if (libItem.getLabel() != null) {
+            libLabelRepository.saveAndFlush(libItem.getLabel());
+        }
+        if (libItem.getTrack() != null) {
+            libTrackRepository.saveAndFlush(libItem.getTrack());
+        }
+        if (libItem.getMarkers() != null) {
+            libItem.setMarkers(libMarkerService.saveLibMarkers(libItem.getMarkers()));
+        }
         LibMediaItem item = itemRepository.saveAndFlush(libItem);
 
         return itemMapper.DB2DTO(item);

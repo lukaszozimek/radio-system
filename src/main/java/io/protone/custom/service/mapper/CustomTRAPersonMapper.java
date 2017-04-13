@@ -40,7 +40,7 @@ public class CustomTRAPersonMapper {
         return corPerson.lastName(personPT.getLastName())
             .firstName(personPT.getFirstName())
             .description(personPT.getDescription())
-            .contacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCorContact(coreContactPT)).collect(Collectors.toSet()))
+            .contacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCorContact(coreContactPT.network(network.getId()))).collect(Collectors.toSet()))
             .network(network);
     }
 

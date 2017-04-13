@@ -47,7 +47,7 @@ public class LibAlbumService {
 
     public LibAlbum findOrSaveOne(LibAlbum libAlbum,LibArtist artist, CorNetwork network) {
         if (libAlbum == null) {
-            libAlbum = new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_OTHER);
+            libAlbum = new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_OTHER).network(network);
         }
             LibAlbum album = libAlbumRepository.findOneByNameAndArtistAndNetwork(libAlbum.getName(), artist, network);
             if (album != null) {

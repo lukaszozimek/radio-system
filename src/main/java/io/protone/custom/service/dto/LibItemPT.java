@@ -3,6 +3,7 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class LibItemPT {
     @JsonProperty("album")
     private LibAlbumPT album = null;
 
+    @JsonProperty("itemType")
+    private LibItemTypeEnum libItemTypeEnum = null;
     @JsonProperty("artist")
     private LibArtistPT artist = null;
 

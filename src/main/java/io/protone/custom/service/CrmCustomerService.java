@@ -53,6 +53,7 @@ public class CrmCustomerService {
         List<CorContact> corContact = corContactRepository.save(crmAccount.getPerson().getContacts());
         crmAccount.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
         CorPerson person = personRepository.saveAndFlush(crmAccount.getPerson());
+        corContact.stream().forEach(corContact1 -> corContactRepository.save(corContact1.person(person)));
         crmAccount.setAddres(address);
         crmAccount.person(person);
         crmAccount = accountRepository.saveAndFlush(crmAccount);

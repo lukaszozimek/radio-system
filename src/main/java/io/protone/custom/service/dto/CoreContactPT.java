@@ -38,6 +38,7 @@ public class CoreContactPT   {
     public void setContact(String contact) {
         this.contact = contact;
     }
+
     public CorContactTypeEnum getContactType() {
         return contactType;
     }
@@ -54,6 +55,10 @@ public class CoreContactPT   {
         this.networkId = cORNetworkId;
     }
 
+    public CoreContactPT network(Long networkId){
+        this.networkId = networkId;
+        return this;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
