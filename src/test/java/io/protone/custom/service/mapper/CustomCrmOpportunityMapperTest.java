@@ -35,7 +35,7 @@ public class CustomCrmOpportunityMapperTest {
     private CrmOpportunity mockCrmOpportunity = null;
     private CrmOpportunityPT mockCrmOpportunityPT = null;
 
-   // @Before
+    // @Before
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockCrmOpportunity = new CrmOpportunity();
@@ -56,8 +56,8 @@ public class CustomCrmOpportunityMapperTest {
             .opportunityOwner(new CoreUserPT())
             .name("test")
             .contact(new CrmContactPT())
-            .lastTry(LocalDate.now().toString())
-            .closeDate(LocalDate.now().toString())
+            .lastTry(LocalDate.now())
+            .closeDate(LocalDate.now())
             .stage(new ConfCrmStagePT())
             .propability(1)
             .addTasksItem(new CrmTaskPT());
@@ -71,7 +71,7 @@ public class CustomCrmOpportunityMapperTest {
         assertEquals(false, checkFiledsNotNull(result));
     }
 
-  //  @Test
+    //  @Test
     public void buildDTOFromEntites() throws Exception {
         //then
         CrmOpportunityPT result = customCrmOpportunityMapper.buildDTOFromEntites(mockCrmOpportunity);
