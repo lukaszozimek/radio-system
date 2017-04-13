@@ -28,7 +28,8 @@ public class ApiNetworkCrmCustomerTaskImpl implements io.protone.custom.web.rest
 
     @Override
     public ResponseEntity<CrmTaskPT> updateCustomerActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT) {
-        return null;
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        return ResponseEntity.ok().body(crmCustomerService.createTasksAssociatedWithLead(shortName, crmActivityPT,corNetwork));
     }
 
     @Override

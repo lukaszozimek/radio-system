@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CrmTaskStatus;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class CrmTaskPT {
     private String subject = null;
 
     @JsonProperty("activityDate")
-    private String activityDate = null;
+    private LocalDate activityDate = null;
 
     @JsonProperty("activityLenght")
     private Long activityLenght = null;
@@ -131,7 +132,7 @@ public class CrmTaskPT {
         this.subject = subject;
     }
 
-    public CrmTaskPT activityDate(String activityDate) {
+    public CrmTaskPT activityDate(LocalDate activityDate) {
         this.activityDate = activityDate;
         return this;
     }
@@ -142,11 +143,11 @@ public class CrmTaskPT {
      * @return activityDate
      **/
     @ApiModelProperty(value = "")
-    public String getActivityDate() {
+    public LocalDate getActivityDate() {
         return activityDate;
     }
 
-    public void setActivityDate(String activityDate) {
+    public void setActivityDate(LocalDate activityDate) {
         this.activityDate = activityDate;
     }
 

@@ -60,7 +60,7 @@ public class CustomCrmTaskMapperTest {
             .createdBy(new CoreUserPT())
             .assignedTo(new CoreUserPT())
             .subject("test")
-            .activityDate(LocalDate.now().toString())
+            .activityDate(LocalDate.now())
             .activityLenght((long) 21444)
             .comment("test")
             .addRelatedTasksItem(new CrmTaskPT());
