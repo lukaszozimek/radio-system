@@ -28,12 +28,12 @@ def get_filepaths(directory):
 # uploading file
 print 'Uploading files'
 
-files = get_filepaths('/Users/gk/RC_AvVol1/HOO')
+files = get_filepaths('/Users/gk/Temp/CENTRUM')
     
 for file in files:
     try: 
         print 'Uploading file {0}...'.format(file)
-        item = lib.upload_items_by_networ_shortcut_and_library_prefix_using_post('RR', 'LIB', file)
+        item = lib.upload_items_by_networ_shortcut_and_library_prefix_using_post('test', 'rr', file)
         print 'File uploaded: {0}'.format(item)
     except ApiException as e:
         print 'File upload failed:\n%s\n' % e
