@@ -3,6 +3,7 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,10 +27,10 @@ public class CrmOpportunityPT {
     private CrmContactPT contact = null;
 
     @JsonProperty("lastTry")
-    private String lastTry = null;
+    private LocalDate lastTry = null;
 
     @JsonProperty("closeDate")
-    private String closeDate = null;
+    private LocalDate closeDate = null;
 
     @JsonProperty("stage")
     private ConfCrmStagePT stage = null;
@@ -117,7 +118,7 @@ public class CrmOpportunityPT {
         this.contact = contact;
     }
 
-    public CrmOpportunityPT lastTry(String lastTry) {
+    public CrmOpportunityPT lastTry(LocalDate lastTry) {
         this.lastTry = lastTry;
         return this;
     }
@@ -128,15 +129,15 @@ public class CrmOpportunityPT {
      * @return lastTry
      **/
     @ApiModelProperty(value = "")
-    public String getLastTry() {
+    public LocalDate getLastTry() {
         return lastTry;
     }
 
-    public void setLastTry(String lastTry) {
+    public void setLastTry(LocalDate lastTry) {
         this.lastTry = lastTry;
     }
 
-    public CrmOpportunityPT closeDate(String closeDate) {
+    public CrmOpportunityPT closeDate(LocalDate closeDate) {
         this.closeDate = closeDate;
         return this;
     }
@@ -147,11 +148,11 @@ public class CrmOpportunityPT {
      * @return closeDate
      **/
     @ApiModelProperty(value = "")
-    public String getCloseDate() {
+    public LocalDate getCloseDate() {
         return closeDate;
     }
 
-    public void setCloseDate(String closeDate) {
+    public void setCloseDate(LocalDate closeDate) {
         this.closeDate = closeDate;
     }
 
@@ -197,6 +198,7 @@ public class CrmOpportunityPT {
         this.tasks = tasks;
         return this;
     }
+
     public CrmOpportunityPT addTasksItem(CrmTaskPT tasksItem) {
         this.tasks.add(tasksItem);
         return this;

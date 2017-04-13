@@ -32,9 +32,9 @@ public class CustomCrmOpportunityMapper {
         opportunity.setId(opportunityPT.getId());
         return
             opportunity.name(opportunityPT.getName()).keeper(corUserMapper.coreUserPTToUser(opportunityPT.getOpportunityOwner()))
-                ///.closeDate(LocalDate.parse(opportunityPT.getCloseDate(), formatter))
+                .closeDate(opportunityPT.getCloseDate())
                 .probability(opportunityPT.getPropability())
-                //.lastTry(LocalDate.parse(opportunityPT.getLastTry(), formatter))
+                .lastTry(opportunityPT.getLastTry())
                 .network(corNetwork);
     }
 
@@ -45,10 +45,10 @@ public class CustomCrmOpportunityMapper {
         CrmOpportunityPT crmOpportunityPT = new CrmOpportunityPT();
         crmOpportunityPT.setId(opportunity.getId());
         return crmOpportunityPT
-            .lastTry(opportunity.getLastTry().toString())
+            .lastTry(opportunity.getLastTry())
             .name(opportunity.getName())
             .propability(opportunity.getProbability())
-            .closeDate(opportunity.getCloseDate().toString())
+            .closeDate(opportunity.getCloseDate())
             .tasks(customCrmTaskMapper.createCrmTasks(opportunity.getTasks()))
             .contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
             .opportunityOwner(corUserMapper.userToCoreUserPT(opportunity.getKeeper()))

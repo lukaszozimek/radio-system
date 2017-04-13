@@ -55,6 +55,7 @@ public class CrmLeadService {
         List<CorContact> corContact = corContactRepository.save(lead1.getPerson().getContacts());
         lead1.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
         CorPerson person = personRepository.save(lead1.getPerson());
+        corContact.stream().forEach(corContact1 -> corContactRepository.save(corContact1.person(person)));
         lead1.setAddres(address);
         lead1.person(person);
         lead1 = crmLeadRepository.save(lead1);
