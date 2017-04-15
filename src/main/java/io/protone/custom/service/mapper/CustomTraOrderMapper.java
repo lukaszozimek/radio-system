@@ -46,6 +46,41 @@ public class CustomTraOrderMapper {
         return traOrdersList;
     }
 
+    public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, Long traCampaign, CorNetwork corNetwork) {
+        List<TraOrder> traOrdersList = new ArrayList<>();
+        traOrderPT.stream().forEach(traOrderPT1 -> {
+            traOrdersList.add(trasnformDTOtoEntity(traOrderPT1, traCampaign, corNetwork));
+        });
+        return traOrdersList;
+    }
+
+    public TraOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, Long traCampaign, CorNetwork corNetwork) {
+        if (traOrderPT == null || corNetwork == null) {
+            return null;
+        }
+        TraOrder traOrder = new TraOrder();
+        traOrder.setId(traOrderPT.getId());
+        traOrder.name(traOrderPT.getName())
+            .calculatedPrize(traOrderPT.getCalculatedPrize())
+            .startDate(traOrderPT.getStartDate())
+            .endDate(traOrderPT.getEndDate());
+        traOrder.campaign(new TraCampaign()).getCampaign().setId(traCampaign);
+        if (traOrderPT.getTraCampaignPT() != null) {
+            traOrder.customer(customCrmAccountMapper.createCrmAcountEntity(traOrderPT.getCustomerPT(), corNetwork));
+        }
+        if (traOrderPT.getTraInvoice() != null) {
+            traOrder.invoice(customTraInvoiceMapper.createEntityFromDTO(traOrderPT.getTraInvoice(), corNetwork));
+        }
+        if (traOrderPT.getAdvertisment() != null) {
+            traOrder.advertisment(traAdvertismentMapper.transformDTOToEntity(traOrderPT.getAdvertisment(), corNetwork));
+        }
+        traOrder.price(traOrderPT.getTraPrice()).status(traOrder.getStatus())
+            .startDate(traOrderPT.getStartDate())
+            .endDate(traOrderPT.getEndDate())
+            .network(corNetwork);
+        return traOrder;
+    }
+
     public TraOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, CorNetwork corNetwork) {
         if (traOrderPT == null || corNetwork == null) {
             return null;
@@ -85,7 +120,7 @@ public class CustomTraOrderMapper {
             .startDate(traOrder.getStartDate())
             .endDate(traOrder.getEndDate());
         if (traOrder.getCampaign() != null) {
-            traOrderPt.traCampaign(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()));
+//            traOrderPt.traCampaign(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()));
         }
         if (traOrder.getCustomer() != null) {
             traOrderPt.customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()));

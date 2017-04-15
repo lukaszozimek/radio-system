@@ -8,6 +8,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
 import io.protone.repository.SchEmissionRepository;
+import io.protone.repository.TraOrderRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraCampaignRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -46,6 +48,8 @@ public class TraCampaignService {
 
     @Inject
     private TraCustomerService traCustomerService;
+    @Inject
+    private TraOrderRepository traOrderRepository;
 
     public List<TraCampaignPT> getAllCampaign(CorNetwork corNetwork) {
         return traCampaignRepository.findByNetwork(corNetwork).stream().map(campaign -> getCampaign(campaign, corNetwork)).collect(toList());
@@ -53,7 +57,11 @@ public class TraCampaignService {
 
     public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CorNetwork corNetwork) {
         TraCampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT, corNetwork);
-        traCampaignRepository.save(traCampaign);
+        if (!traCampaign.getOrders().isEmpty() && traCampaign.getOrders() != null) {
+            traCampaign.setOrders(traCampaign.getOrders().stream().map(traOrder -> traOrderRepository.saveAndFlush(traOrder)).collect(Collectors.toSet()));
+        }
+        traCampaign = traCampaignRepository.saveAndFlush(traCampaign);
+
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
     }
 

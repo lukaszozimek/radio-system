@@ -42,7 +42,7 @@ public class CustomTRACampaignMapper {
             traCampaign.price(new TraPrice());
         }
         if (traCampaignPT.getOrders() != null) {
-            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(), corNetwork).stream().collect(toSet()));
+            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(),traCampaignPT.getId(), corNetwork).stream().collect(toSet()));
         }
         traCampaign.network(corNetwork);
         return traCampaign;
