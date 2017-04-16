@@ -1,10 +1,9 @@
 package io.protone.custom.web.rest.network.scheduler;
 
-import io.protone.custom.service.dto.SchTemplatePT;
+import io.protone.custom.service.dto.SchEventPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,45 +17,45 @@ public interface ApiNetworkSchedulerTemplate {
 
     /* DISABLED !!!
 
-    @ApiOperation(value = "updateSchedulerTemplates", notes = "", response = SchTemplatePT.class, tags={ "SCHEDULER", })
+    @ApiOperation(value = "updateSchedulerTemplates", notes = "", response = SchEventPT.class, tags={ "SCHEDULER", })
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 201, message = "Created", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 201, message = "Created", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<SchTemplatePT> updateSchedulerTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT schdeulerTemplate);
+    ResponseEntity<SchEventPT> updateSchedulerTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                   @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchEventPT schdeulerTemplate);
 
 
-    @ApiOperation(value = "createSchedulerTemplates", notes = "", response = SchTemplatePT.class, tags={ "SCHEDULER", })
+    @ApiOperation(value = "createSchedulerTemplates", notes = "", response = SchEventPT.class, tags={ "SCHEDULER", })
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 201, message = "Created", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 201, message = "Created", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<SchTemplatePT> creatSchedulerTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT schdeulerTemplate);
+    ResponseEntity<SchEventPT> creatSchedulerTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                   @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchEventPT schdeulerTemplate);
 
-    @ApiOperation(value = "getSchedulerTemplate", notes = "", response = SchTemplatePT.class, tags={ "SCHEDULER", })
+    @ApiOperation(value = "getSchedulerTemplate", notes = "", response = SchEventPT.class, tags={ "SCHEDULER", })
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<SchTemplatePT>> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<SchEventPT>> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
@@ -75,16 +74,16 @@ public interface ApiNetworkSchedulerTemplate {
 
     */
 
-    @ApiOperation(value = "getAllSchedulerTemplates", notes = "", response = SchTemplatePT.class, responseContainer = "List", tags={ "SCHEDULER", })
+    @ApiOperation(value = "getAllSchedulerTemplates", notes = "", response = SchEventPT.class, responseContainer = "List", tags={ "SCHEDULER", })
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class) })
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
     @RequestMapping(value = "/api/network/{networkShortcut}/scheduler/templates",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<SchEventPT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
 

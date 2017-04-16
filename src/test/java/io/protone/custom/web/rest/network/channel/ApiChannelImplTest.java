@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.channel;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CfgMarkerConfiguration;
+import io.protone.custom.web.rest.network.channel.impl.ApiChannelImpl;
 import io.protone.domain.CorChannel;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;

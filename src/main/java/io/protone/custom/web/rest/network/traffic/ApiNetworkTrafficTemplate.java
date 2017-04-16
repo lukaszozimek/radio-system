@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.traffic;
 
-import io.protone.custom.service.dto.SchTemplatePT;
+import io.protone.custom.service.dto.SchEventPT;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,59 +16,59 @@ import java.util.List;
 public interface ApiNetworkTrafficTemplate {
 
 
-    @ApiOperation(value = "updateTrafficTemplates", notes = "", response = SchTemplatePT.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "updateTrafficTemplates", notes = "", response = SchEventPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 201, message = "Created", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 201, message = "Created", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/templates",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<SchTemplatePT> updateTrafficTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                 @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT schdeulerTemplate);
+    ResponseEntity<SchEventPT> updateTrafficTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                              @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchEventPT schdeulerTemplate);
 
 
-    @ApiOperation(value = "createTrafficTemplates", notes = "", response = SchTemplatePT.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "createTrafficTemplates", notes = "", response = SchEventPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 201, message = "Created", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 201, message = "Created", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/templates",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<SchTemplatePT> creatTrafficTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                 @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT schdeulerTemplate);
+    ResponseEntity<SchEventPT> creatTrafficTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                              @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchEventPT schdeulerTemplate);
 
 
-    @ApiOperation(value = "getAllTrafficTemplates", notes = "", response = SchTemplatePT.class, responseContainer = "List", tags = {"TRAFFIC",})
+    @ApiOperation(value = "getAllTrafficTemplates", notes = "", response = SchEventPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/templates",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<SchTemplatePT>> getAllTrafficTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<SchEventPT>> getAllTrafficTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "getTrafficTemplate", notes = "", response = SchTemplatePT.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "getTrafficTemplate", notes = "", response = SchEventPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchTemplatePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchTemplatePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchTemplatePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchTemplatePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = SchEventPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/traffic/templates/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<SchTemplatePT> getTrafficTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
+    ResponseEntity<SchEventPT> getTrafficTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
     @ApiOperation(value = "deleteTrafficTemplate", notes = "", response = Void.class, tags = {"TRAFFIC",})

@@ -1,9 +1,10 @@
-package io.protone.custom.web.rest.network.channel;
+package io.protone.custom.web.rest.network.channel.impl;
 
 import io.protone.custom.service.CorChannelService;
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.custom.service.mapper.CustomCORChannelMapper;
+import io.protone.custom.web.rest.network.channel.ApiChannel;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.util.HeaderUtil;

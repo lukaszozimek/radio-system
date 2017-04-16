@@ -1,7 +1,8 @@
-package io.protone.custom.web.rest.network.channel;
+package io.protone.custom.web.rest.network.channel.impl;
 
 import io.protone.custom.service.SchPlaylistService;
 import io.protone.custom.service.dto.SchPlaylistPT;
+import io.protone.custom.web.rest.network.channel.ApiChannelSchedulerPlaylist;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

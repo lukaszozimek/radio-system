@@ -1,13 +1,12 @@
 package io.protone.custom.web.rest.network.scheduler;
 
 import io.protone.custom.service.SchTemplateService;
-import io.protone.custom.service.dto.SchTemplatePT;
+import io.protone.custom.service.dto.SchEventPT;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -27,25 +26,25 @@ public class ApiNetworkSchedulerTemplateImpl implements ApiNetworkSchedulerTempl
     /* DISABLED !!!
 
     @Override
-    public ResponseEntity<SchTemplatePT> updateSchedulerTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT template) {
+    public ResponseEntity<SchEventPT> updateSchedulerTemplatesUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchEventPT template) {
         log.debug("REST request to update template: {}", template);
-        SchTemplatePT resultDAO = templateService.createOrUpdateTemplate(networkShortcut, template);
+        SchEventPT resultDAO = templateService.createOrUpdateTemplate(networkShortcut, template);
         return ResponseEntity.ok()
             .body(resultDAO);
     }
 
     @Override
-    public ResponseEntity<SchTemplatePT> creatSchedulerTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchTemplatePT template) {
+    public ResponseEntity<SchEventPT> creatSchedulerTemplatesUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchEventPT template) {
         log.debug("REST request to create template: {}", template);
-        SchTemplatePT resultDAO = templateService.createOrUpdateTemplate(networkShortcut, template);
+        SchEventPT resultDAO = templateService.createOrUpdateTemplate(networkShortcut, template);
         return ResponseEntity.ok()
             .body(resultDAO);
     }
 
     @Override
-    public ResponseEntity<List<SchTemplatePT>> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<List<SchEventPT>> getSchedulerTemplateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get template: {}", shortName);
-        List<SchTemplatePT> templatesDAO = templateService.getTemplates(networkShortcut, shortName);
+        List<SchEventPT> templatesDAO = templateService.getTemplates(networkShortcut, shortName);
         return ResponseEntity.ok()
             .body(templatesDAO);
     }
@@ -60,9 +59,9 @@ public class ApiNetworkSchedulerTemplateImpl implements ApiNetworkSchedulerTempl
     */
 
     @Override
-    public ResponseEntity<List<SchTemplatePT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<SchEventPT>> getAllSchedulerTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get all templates");
-        List<SchTemplatePT> templates = templateService.getTemplates(networkShortcut);
+        List<SchEventPT> templates = templateService.getTemplates(networkShortcut);
         return ResponseEntity.ok()
             .body(templates);
     }

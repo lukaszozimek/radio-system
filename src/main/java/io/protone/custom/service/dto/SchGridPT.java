@@ -5,12 +5,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A DTO for the SchTemplate entity.
  */
-public class SchTemplatePT implements Serializable {
+public class SchGridPT implements Serializable {
 
     private Long id;
 
@@ -53,27 +52,27 @@ public class SchTemplatePT implements Serializable {
         this.blocks = blocks;
     }
 
-    public SchTemplatePT id(Long id) {
+    public SchGridPT id(Long id) {
         this.id = id;
         return this;
     }
 
-    public SchTemplatePT name(String name) {
+    public SchGridPT name(String name) {
         this.name = name;
         return this;
     }
 
-    public SchTemplatePT channelId(Long channelId) {
+    public SchGridPT channelId(Long channelId) {
         this.channelId = channelId;
         return this;
     }
 
-    public SchTemplatePT blocks(List<SchBlockPT> blocks) {
+    public SchGridPT blocks(List<SchBlockPT> blocks) {
         this.blocks = blocks;
         return this;
     }
 
-    public SchTemplatePT addblock(SchBlockPT block) {
+    public SchGridPT addblock(SchBlockPT block) {
         this.blocks.add(block);
         return this;
     }
@@ -81,9 +80,9 @@ public class SchTemplatePT implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SchTemplatePT)) return false;
+        if (!(o instanceof SchGridPT)) return false;
 
-        SchTemplatePT that = (SchTemplatePT) o;
+        SchGridPT that = (SchGridPT) o;
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
@@ -103,7 +102,7 @@ public class SchTemplatePT implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SchTemplatePT{");
+        final StringBuilder sb = new StringBuilder("SchEventPT{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", channelId=").append(channelId);

@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.channel;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorChannel;
+import io.protone.custom.web.rest.network.channel.impl.ApiChannelSchedulerPlaylistImpl;
 import io.protone.domain.SchPlaylist;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;

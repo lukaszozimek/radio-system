@@ -1,6 +1,6 @@
 package io.protone.custom.service;
 
-import io.protone.custom.service.dto.SchTemplatePT;
+import io.protone.custom.service.dto.SchEventPT;
 import io.protone.custom.service.mapper.CustomSchTemplateMapper;
 import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,17 +40,17 @@ public class SchTemplateService {
     @Inject
     private BlockUtils blockUtils;
 
-    public SchTemplatePT randomTemplate(String networkShortcut, String channelShortcut, String templateName) {
+    public SchEventPT randomTemplate(String networkShortcut, String channelShortcut, String templateName) {
         CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
 
-        return new SchTemplatePT()
+        return new SchEventPT()
             .channelId(channelDB.getId())
             .name(templateName)
             .blocks(blockUtils.sampleTemplate());
     }
 
-    public SchTemplatePT getTemplateByChannelAndShortcut(String networkShortcut, String channelShortcut, String templateName) {
-        SchTemplatePT result = null;
+    public SchEventPT getTemplateByChannelAndShortcut(String networkShortcut, String channelShortcut, String templateName) {
+        SchEventPT result = null;
         CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
         Optional<SchTemplate> optionalTemplateDB = templateRepository.findByChannelAndName(channelDB, templateName);
 
@@ -64,14 +63,14 @@ public class SchTemplateService {
         return result;
     }
 
-    public List<SchTemplatePT> getTemplates(String networkShortcut, String channelShortcut) {
+    public List<SchEventPT> getTemplates(String networkShortcut, String channelShortcut) {
         CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
         List<SchTemplate> resultsDB = templateRepository.findByChannel(channelDB);
         return templateMapper.DBsToDTOs(resultsDB);
     }
 
-    public List<SchTemplatePT> getTemplates(String networkShortcut) {
-        List<SchTemplatePT> results = new ArrayList<>();
+    public List<SchEventPT> getTemplates(String networkShortcut) {
+        List<SchEventPT> results = new ArrayList<>();
         CorNetwork networkDB = networkService.findNetwork(networkShortcut);
         if (networkDB == null)
             return results;
@@ -87,42 +86,42 @@ public class SchTemplateService {
 
     @Transactional
     public void deleteTemplate(String networkShortcut, String date) {
-        List<SchTemplatePT> templatesToDelete = getTemplates(networkShortcut, date);
+        List<SchEventPT> templatesToDelete = getTemplates(networkShortcut, date);
         templateRepository.delete(templateMapper.DTOsToDBs(templatesToDelete));
     }
 
     @Transactional
-    public SchTemplatePT createOrUpdateTemplate(String networkShortcut, SchTemplatePT template) {
+    public SchEventPT createOrUpdateTemplate(String networkShortcut, SchEventPT template) {
         return templateMapper.DBToDTO(templateRepository.saveAndFlush(templateMapper.DTOToDB(template)));
     }
 
     @Transactional
-    public SchTemplatePT createOrUpdateTemplate(String networkShortcut, String channelShortcut, SchTemplatePT template) {
+    public SchEventPT createOrUpdateTemplate(String networkShortcut, String channelShortcut, SchEventPT template) {
         return setTemplate(networkShortcut, channelShortcut, template);
     }
 
-    private SchTemplatePT setTemplate(String networkShortcut, String channelShortcut, SchTemplatePT template) {
+    private SchEventPT setTemplate(String networkShortcut, String channelShortcut, SchEventPT template) {
 
         CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         if (channelDB == null)
             return null;
 
-        SchTemplatePT result = saveTemplate(template);
+        SchEventPT result = saveTemplate(template);
 
         return result;
     }
 
-    private SchTemplatePT saveTemplate(SchTemplatePT template) {
+    private SchEventPT saveTemplate(SchEventPT template) {
         SchTemplate templateDB = templateMapper.DTOToDB(template);
         templateDB = templateRepository.saveAndFlush(templateDB);
-        SchTemplatePT result = templateMapper.DBToDTO(templateDB);
+        SchEventPT result = templateMapper.DBToDTO(templateDB);
         result.blocks(blockService.setBlocks(template.getBlocks(), null, result));
         return result;
     }
 
     @Transactional
     public void deleteTemplate(String networkShortcut, String channelShortcut, String shortName) {
-        SchTemplatePT toDelete = getTemplateByChannelAndShortcut(networkShortcut, channelShortcut, shortName);
+        SchEventPT toDelete = getTemplateByChannelAndShortcut(networkShortcut, channelShortcut, shortName);
         templateRepository.delete(templateMapper.DTOToDB(toDelete));
     }
 }

@@ -1,6 +1,6 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.SchTemplatePT;
+import io.protone.custom.service.dto.SchEventPT;
 import io.protone.domain.CorChannel;
 import io.protone.domain.SchTemplate;
 import org.mapstruct.Mapper;
@@ -15,14 +15,14 @@ import java.util.List;
 public interface CustomSchTemplateMapper {
 
     @Mapping(source = "channel.id", target = "channelId")
-    SchTemplatePT DBToDTO(SchTemplate schTemplate);
+    SchEventPT DBToDTO(SchTemplate schTemplate);
 
-    List<SchTemplatePT> DBsToDTOs(List<SchTemplate> schTemplates);
+    List<SchEventPT> DBsToDTOs(List<SchTemplate> schTemplates);
 
     @Mapping(source = "channelId", target = "channel")
-    SchTemplate DTOToDB(SchTemplatePT schTemplateDTO);
+    SchTemplate DTOToDB(SchEventPT schTemplateDTO);
 
-    List<SchTemplate> DTOsToDBs(List<SchTemplatePT> schTemplateDTOs);
+    List<SchTemplate> DTOsToDBs(List<SchEventPT> schTemplateDTOs);
 
     default CorChannel mapCorChannel(Long id) {
         if (id == null) {
