@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.channel;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.web.rest.network.channel.impl.ApiChannelSchedulerTemplateImpl;
+import io.protone.custom.web.rest.network.channel.impl.ApiChannelSchedulerEventImpl;
 import io.protone.domain.SchTemplate;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
 @SpringBootTest(classes = ProtoneApp.class)
 public class ApiChannelSchedulerTemplateImplTest {
     @Autowired
-    private ApiChannelSchedulerTemplateImpl apiChannelSchedulerTemplate;
+    private ApiChannelSchedulerEventImpl apiChannelSchedulerTemplate;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;

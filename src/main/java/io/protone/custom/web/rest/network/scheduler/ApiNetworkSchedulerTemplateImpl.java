@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.scheduler;
 
-import io.protone.custom.service.SchTemplateService;
+import io.protone.custom.service.SchEventService;
 import io.protone.custom.service.dto.SchEventPT;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class ApiNetworkSchedulerTemplateImpl implements ApiNetworkSchedulerTempl
     private final Logger log = LoggerFactory.getLogger(ApiNetworkSchedulerTemplateImpl.class);
 
     @Inject
-    SchTemplateService templateService;
+    SchEventService templateService;
 
     /* DISABLED !!!
 

@@ -1,6 +1,10 @@
 package io.protone.custom.service.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -16,9 +20,57 @@ public class SchGridPT implements Serializable {
     @NotNull
     @Size(max = 100)
     private String name;
-    private Long channelId;
 
-    private List<SchBlockPT> blocks;
+    @NotNull
+    @Size(max = 3)
+    private String shortName;
+
+    @JsonProperty("dayOfWeek")
+    private SchGridPT.DayOfWeekEnum dayOfWeek = null;
+
+    /**
+     * Gets or Sets resourceType
+     */
+    public enum DayOfWeekEnum {
+        MONDAY("MONDAY"),
+
+        TUESDAY("TUESDAY"),
+
+        WEDNESDAY("WEDNESDAY"),
+
+        THURSDAY("THURSDAY"),
+
+        FRIDAY("FRIDAY"),
+
+        SATURDAY("SATURDAY"),
+
+        SUNDAY("SUNDAY");
+
+        private String value;
+
+        DayOfWeekEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        @JsonCreator
+        public static SchGridPT.DayOfWeekEnum fromValue(String text) {
+            for (SchGridPT.DayOfWeekEnum b : SchGridPT.DayOfWeekEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+    }
+
+
+    private List<SchClockPT> clocks;
 
     public Long getId() {
         return id;
@@ -36,20 +88,29 @@ public class SchGridPT implements Serializable {
         this.name = name;
     }
 
-    public Long getChannelId() {
-        return channelId;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setChannelId(Long channelId) {
-        this.channelId = channelId;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
-    public List<SchBlockPT> getBlocks() {
-        return blocks;
+    public DayOfWeekEnum getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setBlocks(List<SchBlockPT> blocks) {
-        this.blocks = blocks;
+    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+
+    public List<SchClockPT> getClocks() {
+        return clocks;
+    }
+
+    public void setClocks(List<SchClockPT> clocks) {
+        this.clocks = clocks;
     }
 
     public SchGridPT id(Long id) {
@@ -62,18 +123,23 @@ public class SchGridPT implements Serializable {
         return this;
     }
 
-    public SchGridPT channelId(Long channelId) {
-        this.channelId = channelId;
+    public SchGridPT shortName(String shortName) {
+        this.shortName = shortName;
         return this;
     }
 
-    public SchGridPT blocks(List<SchBlockPT> blocks) {
-        this.blocks = blocks;
+    public SchGridPT dayOfWeek(DayOfWeekEnum dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
         return this;
     }
 
-    public SchGridPT addblock(SchBlockPT block) {
-        this.blocks.add(block);
+    public SchGridPT clock(List<SchClockPT> schClockPT) {
+        this.clocks = schClockPT;
+        return this;
+    }
+
+    public SchGridPT addClock(SchClockPT block) {
+        this.clocks.add(block);
         return this;
     }
 
@@ -86,27 +152,29 @@ public class SchGridPT implements Serializable {
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getChannelId() != null ? !getChannelId().equals(that.getChannelId()) : that.getChannelId() != null)
+        if (getShortName() != null ? !getShortName().equals(that.getShortName()) : that.getShortName() != null)
             return false;
-        return getBlocks() != null ? getBlocks().equals(that.getBlocks()) : that.getBlocks() == null;
+        return getClocks() != null ? getClocks().equals(that.getClocks()) : that.getClocks() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getChannelId() != null ? getChannelId().hashCode() : 0);
-        result = 31 * result + (getBlocks() != null ? getBlocks().hashCode() : 0);
+        result = 31 * result + (getShortName() != null ? getShortName().hashCode() : 0);
+        result = 31 * result + (getClocks() != null ? getClocks().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SchEventPT{");
+        final StringBuilder sb = new StringBuilder("SchGridPT{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", channelId=").append(channelId);
-        sb.append(", blocks=").append(blocks);
+        sb.append(", shortName=").append(shortName);
+        sb.append(", clocks=").append(clocks);
+        sb.append(", dayOfWeek=").append(dayOfWeek);
+
         sb.append('}');
         return sb.toString();
     }

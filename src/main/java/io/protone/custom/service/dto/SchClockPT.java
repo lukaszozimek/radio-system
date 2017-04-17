@@ -3,6 +3,7 @@ package io.protone.custom.service.dto;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,8 +13,10 @@ public class SchClockPT implements Serializable {
 
     private Long id;
     private String shortName;
-    private Long channelId;
-    private List<SchBlockPT> blocks;
+    private String name;
+    private Integer seq;
+    private List<SchBlockPT> blocks = new ArrayList<>();
+    private List<SchEmissionPT> emissions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -31,12 +34,12 @@ public class SchClockPT implements Serializable {
         this.shortName = shortName;
     }
 
-    public Long getChannelId() {
-        return channelId;
+    public String getName() {
+        return name;
     }
 
-    public void setChannelId(Long channelId) {
-        this.channelId = channelId;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -50,6 +53,11 @@ public class SchClockPT implements Serializable {
 
     public SchClockPT id(Long id) {
         this.id = id;
+        return this;
+    }
+
+    private SchClockPT name(String name) {
+        this.name = name;
         return this;
     }
 
@@ -72,16 +80,17 @@ public class SchClockPT implements Serializable {
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null) return false;
-        if (getChannelId() != null ? !getChannelId().equals(that.getChannelId()) : that.getChannelId() != null)
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
             return false;
         return getBlocks() != null ? getBlocks().equals(that.getBlocks()) : that.getBlocks() == null;
     }
+
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getDate() != null ? getDate().hashCode() : 0);
-        result = 31 * result + (getChannelId() != null ? getChannelId().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getBlocks() != null ? getBlocks().hashCode() : 0);
         return result;
     }
@@ -91,7 +100,7 @@ public class SchClockPT implements Serializable {
         final StringBuilder sb = new StringBuilder("SchPlaylistPT{");
         sb.append("id=").append(id);
         sb.append(", shortName=").append(shortName);
-        sb.append(", channelId=").append(channelId);
+        sb.append(", channelId=").append(name);
         sb.append(", blocks=").append(blocks);
         sb.append('}');
         return sb.toString();

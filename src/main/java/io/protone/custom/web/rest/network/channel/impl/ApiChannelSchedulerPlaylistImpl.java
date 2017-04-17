@@ -21,10 +21,10 @@ import java.util.List;
 @RestController
 public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlaylist {
 
-    private final Logger log = LoggerFactory.getLogger(ApiChannelSchedulerTemplateImpl.class);
+    private final Logger log = LoggerFactory.getLogger(ApiChannelSchedulerEventImpl.class);
 
     @Inject
-    SchPlaylistService playlistService;
+    private SchPlaylistService playlistService;
 
     @Override
     public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {

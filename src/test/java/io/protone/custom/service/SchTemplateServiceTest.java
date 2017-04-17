@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by lukaszozimek on 01/03/2017.
  */
@@ -19,7 +17,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class SchTemplateServiceTest {
     @Inject
-    private SchTemplateService templateService;
+    private SchEventService eventService;
 
     @Test
     public void getTemplate() throws Exception {

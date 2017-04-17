@@ -52,16 +52,15 @@ public class SchPlaylistService {
         LocalDate localDate = LocalDate.parse(date);
 
         return new SchPlaylistPT()
-            .channelId(channelDB.getId())
-            .date(localDate)
-            .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
+            .date(localDate);
+          //  .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
     }
 
     private SchPlaylistPT savePlaylist(SchPlaylistPT playlist) {
         SchPlaylist playlistDB = playlistMapper.DTOToDB(playlist);
         playlistDB = playlistRepository.saveAndFlush(playlistDB);
         SchPlaylistPT result = playlistMapper.DBToDTO(playlistDB);
-        result.blocks(blockService.setBlocks(playlist.getBlocks(), result, null));
+      //  result.blocks(blockService.setBlocks(playlist.getBlocks(), result, null));
         return result;
     }
 
@@ -105,7 +104,7 @@ public class SchPlaylistService {
         if (optionalPlaylist.isPresent()) {
             result = playlistMapper.DBToDTO(optionalPlaylist.get());
             result.blocks(new ArrayList<>());
-            result.blocks(blockService.getBlocks(result, null, null));
+           // result.blocks(blockService.getBlocks(result, null, null));
         }
         return result;
     }

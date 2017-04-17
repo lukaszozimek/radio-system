@@ -48,7 +48,7 @@ public class BlockUtils {
             block.endTime(dt);
             for (SchEmissionPT emission: block.getEmissions()) {
                 emission.startTime(dt);
-                dt = dt.plus(emission.getLength(), ChronoField.MILLI_OF_DAY.getBaseUnit());
+                dt = dt.plus(emission.getMediaItem().getLength(), ChronoField.MILLI_OF_DAY.getBaseUnit());
                 emission.endTime(dt);
             }
             updateStartTime(block.getBlocks(), dt);
@@ -140,7 +140,6 @@ public class BlockUtils {
             .name("SAMPLE_EMISSION")
             //.mediaItem(new LibItemPT())
             ;
-        emission.length(length);
         return emission;
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SchTemplateService {
+public class SchEventService {
 
     @Inject
     private CorNetworkService networkService;
@@ -44,7 +44,7 @@ public class SchTemplateService {
         CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
 
         return new SchEventPT()
-            .channelId(channelDB.getId())
+          //  .channelId(channelDB.getId())
             .name(templateName)
             .blocks(blockUtils.sampleTemplate());
     }
