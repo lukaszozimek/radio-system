@@ -1,11 +1,12 @@
 package io.protone.custom.service.dto;
 
 
+import io.protone.custom.service.dto.thin.SchLibItemThinPT;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 /**
  * A DTO for the SchEmission entity.
@@ -25,7 +26,7 @@ public class SchEmissionPT implements Serializable {
 
     private ZonedDateTime endTime;
 
-    private SchLibItemPT mediaItem;
+    private SchLibItemThinPT mediaItem;
 
     private Long blockId;
 
@@ -69,11 +70,11 @@ public class SchEmissionPT implements Serializable {
         this.endTime = endTime;
     }
 
-    public SchLibItemPT getMediaItem() {
+    public SchLibItemThinPT getMediaItem() {
         return mediaItem;
     }
 
-    public void setMediaItem(SchLibItemPT mediaItem) {
+    public void setMediaItem(SchLibItemThinPT mediaItem) {
         this.mediaItem = mediaItem;
     }
 
@@ -112,7 +113,7 @@ public class SchEmissionPT implements Serializable {
     }
 
 
-    public SchEmissionPT mediaItem(SchLibItemPT mediaItem) {
+    public SchEmissionPT mediaItem(SchLibItemThinPT mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }

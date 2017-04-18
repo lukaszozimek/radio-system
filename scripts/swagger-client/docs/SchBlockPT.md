@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**blocks** | [**list[SchBlockPT]**](SchBlockPT.md) |  | [optional] 
+**clocks** | [**list[SchBlockPT]**](SchBlockPT.md) |  | [optional] 
 **dim_day** | **int** |  | [optional] 
 **dim_hour** | **int** |  | [optional] 
 **dim_minute** | **int** |  | [optional] 

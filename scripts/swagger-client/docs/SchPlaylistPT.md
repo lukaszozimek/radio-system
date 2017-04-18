@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**blocks** | [**list[SchBlockPT]**](SchBlockPT.md) |  | [optional] 
+**clocks** | [**list[SchBlockPT]**](SchBlockPT.md) |  | [optional] 
 **channel_id** | **int** |  | [optional] 
 **date** | **date** |  | 
 **dim_day** | **int** |  | [optional] 

@@ -1,9 +1,7 @@
-package io.protone.custom.service.dto;
+package io.protone.custom.service.dto.thin;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.custom.service.dto.LibMarkerPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class SchLibItemPT {
+public class SchLibItemThinPT {
     @JsonProperty("id")
     private Long id;
 
@@ -50,7 +48,7 @@ public class SchLibItemPT {
     @JsonProperty("stream")
     private String stream = null;
 
-    public SchLibItemPT album(String album) {
+    public SchLibItemThinPT album(String album) {
         this.albumName = album;
         return this;
     }
@@ -69,7 +67,7 @@ public class SchLibItemPT {
         this.albumName = album;
     }
 
-    public SchLibItemPT artist(String artist) {
+    public SchLibItemThinPT artist(String artist) {
         this.artistName = artist;
         return this;
     }
@@ -88,7 +86,7 @@ public class SchLibItemPT {
         this.artistName = artist;
     }
 
-    public SchLibItemPT idx(String idx) {
+    public SchLibItemThinPT idx(String idx) {
         this.idx = idx;
         return this;
     }
@@ -107,7 +105,7 @@ public class SchLibItemPT {
         this.idx = idx;
     }
 
-    public SchLibItemPT length(Integer length) {
+    public SchLibItemThinPT length(Integer length) {
         this.length = length;
         return this;
     }
@@ -126,12 +124,12 @@ public class SchLibItemPT {
         this.length = length;
     }
 
-    public SchLibItemPT markers(List<LibMarkerPT> markers) {
+    public SchLibItemThinPT markers(List<LibMarkerPT> markers) {
         this.markers = markers;
         return this;
     }
 
-    public SchLibItemPT addMarkersItem(LibMarkerPT markersItem) {
+    public SchLibItemThinPT addMarkersItem(LibMarkerPT markersItem) {
         this.markers.add(markersItem);
         return this;
     }
@@ -150,7 +148,7 @@ public class SchLibItemPT {
         this.markers = markers;
     }
 
-    public SchLibItemPT name(String name) {
+    public SchLibItemThinPT name(String name) {
         this.name = name;
         return this;
     }
@@ -193,7 +191,7 @@ public class SchLibItemPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchLibItemPT libItemPT = (SchLibItemPT) o;
+        SchLibItemThinPT libItemPT = (SchLibItemThinPT) o;
         return Objects.equals(this.albumName, libItemPT.albumName) &&
             Objects.equals(this.artistName, libItemPT.artistName) &&
             Objects.equals(this.idx, libItemPT.idx) &&

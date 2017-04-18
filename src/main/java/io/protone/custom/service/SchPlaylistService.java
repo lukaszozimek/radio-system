@@ -60,7 +60,7 @@ public class SchPlaylistService {
         SchPlaylist playlistDB = playlistMapper.DTOToDB(playlist);
         playlistDB = playlistRepository.saveAndFlush(playlistDB);
         SchPlaylistPT result = playlistMapper.DBToDTO(playlistDB);
-      //  result.blocks(blockService.setBlocks(playlist.getBlocks(), result, null));
+      //  result.blocks(blockService.setClocks(playlist.getBlocks(), result, null));
         return result;
     }
 
