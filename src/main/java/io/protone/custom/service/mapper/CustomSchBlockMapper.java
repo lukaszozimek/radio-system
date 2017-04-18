@@ -15,15 +15,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomSchBlockMapper {
 
-    @Mapping(source = "playlist.id", target = "playlistId")
-    @Mapping(source = "template.id", target = "templateId")
     @Mapping(source = "parentBlock.id", target = "parentBlockId")
     SchBlockPT DB2DTO(SchBlock schBlock);
 
     List<SchBlockPT> DBs2DTOs(List<SchBlock> schBlocks);
 
-    @Mapping(source = "playlistId", target = "playlist")
-    @Mapping(source = "templateId", target = "template")
     @Mapping(source = "parentBlockId", target = "parentBlock")
     SchBlock DTO2DB(SchBlockPT schBlockDTO);
 

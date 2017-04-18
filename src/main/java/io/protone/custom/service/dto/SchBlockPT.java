@@ -25,9 +25,9 @@ public class SchBlockPT implements Serializable {
     @Size(max = 100)
     private String name;
 
-    private SchBlockTypeEnum type;
-
     private SchStartTypeEnum startType;
+
+    private SchEventPT.SchEventTypeEnum schEventType;
 
     private Long relativeDelay;
 
@@ -73,13 +73,7 @@ public class SchBlockPT implements Serializable {
         this.name = name;
     }
 
-    public SchBlockTypeEnum getType() {
-        return type;
-    }
 
-    public void setType(SchBlockTypeEnum type) {
-        this.type = type;
-    }
 
     public SchStartTypeEnum getStartType() {
         return startType;
@@ -188,11 +182,6 @@ public class SchBlockPT implements Serializable {
         return this;
     }
 
-    public SchBlockPT type(SchBlockTypeEnum type) {
-        this.type = type;
-        return this;
-    }
-
     public SchBlockPT startType(SchStartTypeEnum startType) {
         this.startType = startType;
         return this;
@@ -285,7 +274,6 @@ public class SchBlockPT implements Serializable {
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getSeq() != null ? !getSeq().equals(that.getSeq()) : that.getSeq() != null) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getType() != that.getType()) return false;
         if (getStartType() != that.getStartType()) return false;
         if (getRelativeDelay() != null ? !getRelativeDelay().equals(that.getRelativeDelay()) : that.getRelativeDelay() != null)
             return false;
@@ -310,7 +298,6 @@ public class SchBlockPT implements Serializable {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getSeq() != null ? getSeq().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         result = 31 * result + (getStartType() != null ? getStartType().hashCode() : 0);
         result = 31 * result + (getRelativeDelay() != null ? getRelativeDelay().hashCode() : 0);
         result = 31 * result + (getScheduledStartTime() != null ? getScheduledStartTime().hashCode() : 0);
@@ -331,7 +318,6 @@ public class SchBlockPT implements Serializable {
         sb.append("id=").append(id);
         sb.append(", seq=").append(seq);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", type=").append(type);
         sb.append(", startType=").append(startType);
         sb.append(", relativeDelay=").append(relativeDelay);
         sb.append(", scheduledStartTime=").append(scheduledStartTime);
@@ -344,5 +330,13 @@ public class SchBlockPT implements Serializable {
         sb.append(", emissions=").append(emissions);
         sb.append('}');
         return sb.toString();
+    }
+
+    public SchEventPT.SchEventTypeEnum getSchEventType() {
+        return schEventType;
+    }
+
+    public void setSchEventType(SchEventPT.SchEventTypeEnum schEventType) {
+        this.schEventType = schEventType;
     }
 }

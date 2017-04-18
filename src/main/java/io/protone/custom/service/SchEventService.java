@@ -45,8 +45,7 @@ public class SchEventService {
 
         return new SchEventPT()
           //  .channelId(channelDB.getId())
-            .name(templateName)
-            .blocks(blockUtils.sampleTemplate());
+            .name(templateName);
     }
 
     public SchEventPT getTemplateByChannelAndShortcut(String networkShortcut, String channelShortcut, String templateName) {
@@ -56,9 +55,7 @@ public class SchEventService {
 
         if (optionalTemplateDB.isPresent()) {
             result = templateMapper.DBToDTO(optionalTemplateDB.get());
-            result.blocks(new ArrayList<>());
-            result.blocks(blockService.getBlocks(null, result, null));
-        }
+       }
 
         return result;
     }
@@ -105,7 +102,6 @@ public class SchEventService {
         CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         if (channelDB == null)
             return null;
-
         SchEventPT result = saveTemplate(template);
 
         return result;
@@ -115,8 +111,7 @@ public class SchEventService {
         SchTemplate templateDB = templateMapper.DTOToDB(template);
         templateDB = templateRepository.saveAndFlush(templateDB);
         SchEventPT result = templateMapper.DBToDTO(templateDB);
-        result.blocks(blockService.setBlocks(template.getBlocks(), null, result));
-        return result;
+       return result;
     }
 
     @Transactional

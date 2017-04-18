@@ -1,9 +1,15 @@
 package io.protone.custom.service.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.SchStartTypeEnum;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,9 +22,54 @@ public class SchEventPT implements Serializable {
     @NotNull
     @Size(max = 100)
     private String name;
-    private String shortName;
 
-    private List<SchBlockPT> blocks;
+    private SchStartTypeEnum startType;
+
+    private SchEventTypeEnum schEventType;
+
+    private Long relativeDelay;
+
+    private Long scheduledLength = 0L;
+
+    private Long length = 0L;
+
+    private List<SchEmissionPT> emissions = new ArrayList<>();
+
+
+    public enum SchEventTypeEnum {
+        MUSIC_IMPORT("ET_MUSIC_IMPORT"),
+
+        COMMERCIAL_IMPORT("ET_COMMERCIAL_IMPORT"),
+
+        AUTOMATION("ET_AUTOMATION"),
+
+        AUDIO("ET_AUDIO"),
+
+        OTHER("ET_OTHER");
+
+        private String value;
+
+        SchEventTypeEnum(String value) {
+            this.value = value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
+
+        @JsonCreator
+        public static SchEventPT.SchEventTypeEnum fromValue(String text) {
+            for (SchEventPT.SchEventTypeEnum b : SchEventPT.SchEventTypeEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+    }
+
 
     public Long getId() {
         return id;
@@ -36,20 +87,57 @@ public class SchEventPT implements Serializable {
         this.name = name;
     }
 
-    public String getShortName() {
-        return shortName;
+
+    public SchStartTypeEnum getStartType() {
+        return startType;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setStartType(SchStartTypeEnum startType) {
+        this.startType = startType;
     }
 
-    public List<SchBlockPT> getBlocks() {
-        return blocks;
+    public Long getRelativeDelay() {
+        return relativeDelay;
     }
 
-    public void setBlocks(List<SchBlockPT> blocks) {
-        this.blocks = blocks;
+    public void setRelativeDelay(Long relativeDelay) {
+        this.relativeDelay = relativeDelay;
+    }
+
+    public Long getScheduledLength() {
+        return scheduledLength;
+    }
+
+    public void setScheduledLength(Long scheduledLength) {
+        this.scheduledLength = scheduledLength;
+        this.length = scheduledLength;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+
+        this.length = length;
+        this.scheduledLength = length;
+    }
+
+
+    public List<SchEmissionPT> getEmissions() {
+        return emissions;
+    }
+
+    public void setEmissions(List<SchEmissionPT> emissions) {
+        this.emissions = emissions;
+    }
+
+    public SchEventTypeEnum getSchEventType() {
+        return schEventType;
+    }
+
+    public void setSchEventType(SchEventTypeEnum schEventType) {
+        this.schEventType = schEventType;
     }
 
     public SchEventPT id(Long id) {
@@ -57,56 +145,95 @@ public class SchEventPT implements Serializable {
         return this;
     }
 
+
     public SchEventPT name(String name) {
         this.name = name;
         return this;
     }
 
-    public SchEventPT shortName(String channelId) {
-        this.shortName = channelId;
+    public SchEventPT startType(SchStartTypeEnum startType) {
+        this.startType = startType;
         return this;
     }
 
-    public SchEventPT blocks(List<SchBlockPT> blocks) {
-        this.blocks = blocks;
+    public SchEventPT relativeDelay(Long relativeDelay) {
+        this.relativeDelay = relativeDelay;
         return this;
     }
 
-    public SchEventPT addblock(SchBlockPT block) {
-        this.blocks.add(block);
+
+    public SchEventPT scheduledLength(Long scheduledLength) {
+        this.scheduledLength = scheduledLength;
+        this.length = scheduledLength;
+        return this;
+    }
+
+
+    public SchEventPT length(Long length) {
+        this.length = length;
+        this.scheduledLength = length;
+        return this;
+    }
+
+
+    public SchEventPT emissions(List<SchEmissionPT> emissions) {
+        this.emissions = emissions;
+        Long totalLength = 0L;
+        for (SchEmissionPT emission : emissions)
+            totalLength += emission.getMediaItem().getLength();
+        this.length(totalLength);
+        return this;
+    }
+
+    public SchEventPT addEmission(SchEmissionPT emission) {
+        this.emissions.add(emission);
+        this.setLength(this.getLength() + emission.getMediaItem().getLength());
+        return this;
+    }
+
+    public SchEventPT eventType(SchEventTypeEnum eventTypeEnum) {
+        this.schEventType = eventTypeEnum;
         return this;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SchEventPT)) return false;
+        if (!(o instanceof SchBlockPT)) return false;
 
-        SchEventPT that = (SchEventPT) o;
+        SchBlockPT that = (SchBlockPT) o;
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getShortName() != null ? !getShortName().equals(that.getShortName()) : that.getShortName() != null)
+        if (getStartType() != that.getStartType()) return false;
+        if (getRelativeDelay() != null ? !getRelativeDelay().equals(that.getRelativeDelay()) : that.getRelativeDelay() != null)
             return false;
-        return getBlocks() != null ? getBlocks().equals(that.getBlocks()) : that.getBlocks() == null;
+        if (getScheduledLength() != null ? !getScheduledLength().equals(that.getScheduledLength()) : that.getScheduledLength() != null)
+            return false;
+        if (getLength() != null ? !getLength().equals(that.getLength()) : that.getLength() != null) return false;
+        return getEmissions() != null ? getEmissions().equals(that.getEmissions()) : that.getEmissions() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getShortName() != null ? getShortName().hashCode() : 0);
-        result = 31 * result + (getBlocks() != null ? getBlocks().hashCode() : 0);
+        result = 31 * result + (getStartType() != null ? getStartType().hashCode() : 0);
+        result = 31 * result + (getRelativeDelay() != null ? getRelativeDelay().hashCode() : 0);
+        result = 31 * result + (getScheduledLength() != null ? getScheduledLength().hashCode() : 0);
+        result = 31 * result + (getLength() != null ? getLength().hashCode() : 0);
+        result = 31 * result + (getEmissions() != null ? getEmissions().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SchEventPT{");
+        final StringBuilder sb = new StringBuilder("SchBlockPT{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", shortName=").append(shortName);
-        sb.append(", blocks=").append(blocks);
+        sb.append(", startType=").append(startType);
+        sb.append(", scheduledLength=").append(scheduledLength);
+        sb.append(", emissions=").append(emissions);
         sb.append('}');
         return sb.toString();
     }

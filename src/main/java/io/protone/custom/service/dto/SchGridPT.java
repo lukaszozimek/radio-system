@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A DTO for the SchTemplate entity.
+ * A DTO for the SchGridPT entity.
  */
 public class SchGridPT implements Serializable {
 
@@ -174,7 +174,6 @@ public class SchGridPT implements Serializable {
         sb.append(", shortName=").append(shortName);
         sb.append(", clocks=").append(clocks);
         sb.append(", dayOfWeek=").append(dayOfWeek);
-
         sb.append('}');
         return sb.toString();
     }

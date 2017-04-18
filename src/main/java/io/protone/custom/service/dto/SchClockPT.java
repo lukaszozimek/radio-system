@@ -1,8 +1,6 @@
 package io.protone.custom.service.dto;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +24,11 @@ public class SchClockPT implements Serializable {
         this.id = id;
     }
 
-    public String getDate() {
+    public String getShortName() {
         return shortName;
     }
 
-    public void setDate(String date) {
+    public void setShortName(String shortName) {
         this.shortName = shortName;
     }
 
@@ -61,6 +59,11 @@ public class SchClockPT implements Serializable {
         return this;
     }
 
+    private SchClockPT shortName(String shortName) {
+        this.shortName = shortName;
+        return this;
+    }
+
     public SchClockPT blocks(List<SchBlockPT> blocks) {
         this.blocks = blocks;
         return this;
@@ -79,7 +82,8 @@ public class SchClockPT implements Serializable {
         SchClockPT that = (SchClockPT) o;
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
-        if (getDate() != null ? !getDate().equals(that.getDate()) : that.getDate() != null) return false;
+        if (getShortName() != null ? !getShortName().equals(that.getShortName()) : that.getShortName() != null)
+            return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
             return false;
         return getBlocks() != null ? getBlocks().equals(that.getBlocks()) : that.getBlocks() == null;
@@ -89,7 +93,7 @@ public class SchClockPT implements Serializable {
     @Override
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getDate() != null ? getDate().hashCode() : 0);
+        result = 31 * result + (getShortName() != null ? getShortName().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getBlocks() != null ? getBlocks().hashCode() : 0);
         return result;

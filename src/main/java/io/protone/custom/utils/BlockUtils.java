@@ -25,8 +25,7 @@ public class BlockUtils {
 
         List<SchBlockPT> results = new ArrayList<>();
         SchBlockPT band = new SchBlockPT();
-        band.type(SchBlockTypeEnum.BT_BAND)
-            .name("SAMPLE_" + band.getType())
+        band
         .addBlock(sampleHour(now, 12,false))
         .startTime(now)
         .startType(SchStartTypeEnum.ST_ABSOLUTE)
@@ -90,7 +89,6 @@ public class BlockUtils {
         ZonedDateTime dt = dateTime.withHour(h).withMinute(0).withSecond(0).withNano(0);
 
         SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_HOUR)
             .startTime(dt)
             .startType(SchStartTypeEnum.ST_ABSOLUTE)
             .relativeDelay(0L)
@@ -110,7 +108,6 @@ public class BlockUtils {
 
     public SchBlockPT sampleCommercial(int numOfElements) {
         SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_COMMERCIAL)
             .name("SAMPLE_" + SchBlockTypeEnum.BT_COMMERCIAL)
             .startType(SchStartTypeEnum.ST_ABSOLUTE)
             .relativeDelay(0L);
@@ -126,7 +123,6 @@ public class BlockUtils {
 
     public SchBlockPT sampleMusic(int numOfElements) {
         SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_PROGRAM)
             .name("SAMPLE_" + SchBlockTypeEnum.BT_PROGRAM)
             .startType(SchStartTypeEnum.ST_ABSOLUTE)
             .relativeDelay(0L);
