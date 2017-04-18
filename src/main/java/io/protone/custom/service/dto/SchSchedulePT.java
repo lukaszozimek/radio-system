@@ -1,5 +1,7 @@
 package io.protone.custom.service.dto;
 
+import io.protone.custom.service.dto.thin.SchGridThinPT;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -14,7 +16,7 @@ public class SchSchedulePT implements Serializable {
     @NotNull
     private LocalDate date;
 
-    private SchGridPT schGridPT;
+    private SchGridThinPT schGridPT;
 
     public Long getId() {
         return id;
@@ -32,11 +34,11 @@ public class SchSchedulePT implements Serializable {
         this.date = date;
     }
 
-    public SchGridPT getSchGridPT() {
+    public SchGridThinPT getSchGridPT() {
         return schGridPT;
     }
 
-    public void setSchGridPT(SchGridPT schGridPT) {
+    public void setSchGridPT(SchGridThinPT schGridPT) {
         this.schGridPT = schGridPT;
     }
 
@@ -50,7 +52,7 @@ public class SchSchedulePT implements Serializable {
         return this;
     }
 
-    public SchSchedulePT clock(SchGridPT schClockPT) {
+    public SchSchedulePT clock(SchGridThinPT schClockPT) {
         this.schGridPT = schClockPT;
         return this;
     }

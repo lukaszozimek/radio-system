@@ -18,13 +18,13 @@ public class SchEmissionPT implements Serializable {
     @NotNull
     private Integer seq;
 
-    @NotNull
-    @Size(max = 100)
-    private String name;
-
     private ZonedDateTime startTime;
 
     private ZonedDateTime endTime;
+
+    private ZonedDateTime scheduledStartTime;
+
+    private ZonedDateTime scheduledEndTime;
 
     private SchLibItemThinPT mediaItem;
 
@@ -44,14 +44,6 @@ public class SchEmissionPT implements Serializable {
 
     public void setSeq(Integer seq) {
         this.seq = seq;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ZonedDateTime getStartTime() {
@@ -86,6 +78,21 @@ public class SchEmissionPT implements Serializable {
         this.blockId = blockId;
     }
 
+    public ZonedDateTime getScheduledStartTime() {
+        return scheduledStartTime;
+    }
+
+    public void setScheduledStartTime(ZonedDateTime scheduledStartTime) {
+        this.scheduledStartTime = scheduledStartTime;
+    }
+
+    public ZonedDateTime getScheduledEndTime() {
+        return scheduledEndTime;
+    }
+
+    public void setScheduledEndTime(ZonedDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+    }
 
     public SchEmissionPT id(Long id) {
         this.id = id;
@@ -94,11 +101,6 @@ public class SchEmissionPT implements Serializable {
 
     public SchEmissionPT seq(Integer seq) {
         this.seq = seq;
-        return this;
-    }
-
-    public SchEmissionPT name(String name) {
-        this.name = name;
         return this;
     }
 
@@ -128,7 +130,6 @@ public class SchEmissionPT implements Serializable {
     public int hashCode() {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getSeq() != null ? getSeq().hashCode() : 0);
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getStartTime() != null ? getStartTime().hashCode() : 0);
         result = 31 * result + (getEndTime() != null ? getEndTime().hashCode() : 0);
         result = 31 * result + (getMediaItem() != null ? getMediaItem().hashCode() : 0);
@@ -141,7 +142,6 @@ public class SchEmissionPT implements Serializable {
         final StringBuilder sb = new StringBuilder("SchEmissionPT{");
         sb.append("id=").append(id);
         sb.append(", seq=").append(seq);
-        sb.append(", name='").append(name).append('\'');
         sb.append(", startTime=").append(startTime);
         sb.append(", endTime=").append(endTime);
         sb.append(", mediaItem=").append(mediaItem);
@@ -149,4 +149,6 @@ public class SchEmissionPT implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+
 }

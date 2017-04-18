@@ -12,6 +12,7 @@ import java.util.Objects;
 public class SchPlaylistPT implements Serializable {
 
     private Long id;
+
     @NotNull
     private LocalDate date;
 

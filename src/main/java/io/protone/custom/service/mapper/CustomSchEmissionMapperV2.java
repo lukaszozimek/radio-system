@@ -2,6 +2,7 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchEmissionPT;
+import io.protone.custom.service.dto.thin.SchLibItemThinPT;
 import io.protone.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,24 +16,22 @@ import java.util.List;
 public interface CustomSchEmissionMapperV2 {
 
     @Mapping(source = "block.id", target = "blockId")
-    @Mapping(source = "order.id", target = "campaingsId")
     SchEmissionPT DB2DTO(SchEmission schEmission);
 
     List<SchEmissionPT> DBs2DTOs(List<SchEmission> schEmissions);
 
     @Mapping(source = "blockId", target = "block")
-    @Mapping(source = "campaingsId", target = "order")
     SchEmission DTO2DB(SchEmissionPT schEmissionDTO);
 
     List<SchEmission> DTOs2DBs(List<SchEmissionPT> schEmissionDTOs);
 
-    default LibItemPT mapLibItemPT(LibMediaItem value) {
+    default SchLibItemThinPT mapLibItemPT(LibMediaItem value) {
 
         //TODO: Implement mapper
         return null;
     }
 
-    default LibMediaItem mapLibMediaItem(LibItemPT value) {
+    default LibMediaItem mapLibMediaItem(SchLibItemThinPT value) {
 
         //TODO: Implement mapper
         return null;

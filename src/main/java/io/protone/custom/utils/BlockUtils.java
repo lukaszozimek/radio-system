@@ -133,7 +133,6 @@ public class BlockUtils {
 
     public SchEmissionPT sampleEmission(Long length) {
         SchEmissionPT emission = new SchEmissionPT()
-            .name("SAMPLE_EMISSION")
             //.mediaItem(new LibItemPT())
             ;
         return emission;

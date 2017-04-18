@@ -16,9 +16,6 @@ public class SchPlaylistThinPT implements Serializable {
 
     private List<SchClockThinPT> clocks;
 
-    public List<SchClockThinPT> getClocks() {
-        return clocks;
-    }
     public Long getId() {
         return id;
     }
@@ -35,6 +32,10 @@ public class SchPlaylistThinPT implements Serializable {
         this.date = date;
     }
 
+    public List<SchClockThinPT> getClocks() {
+        return clocks;
+    }
+
     public void setClocks(List<SchClockThinPT> clocks) {
         this.clocks = clocks;
     }
@@ -48,7 +49,6 @@ public class SchPlaylistThinPT implements Serializable {
         this.date = date;
         return this;
     }
-
 
     public SchPlaylistThinPT blocks(List<SchClockThinPT> clocks) {
         this.clocks = clocks;

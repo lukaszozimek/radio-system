@@ -8,14 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A DTO for the SchPlaylist entity.
+ * A DTO for the SchClock entity.
  */
 public class SchClockThinPT implements Serializable {
 
     private Long id;
-    private String shortName;
-    private String name;
 
+    private String shortName;
+
+    private String name;
 
     public Long getId() {
         return id;
@@ -40,7 +41,6 @@ public class SchClockThinPT implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public SchClockThinPT id(Long id) {
         this.id = id;

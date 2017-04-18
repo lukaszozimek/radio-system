@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * LibItemPT
+ * SchLibItemThinPT
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class SchLibItemThinPT {
     @JsonProperty("id")
@@ -35,7 +34,6 @@ public class SchLibItemThinPT {
     @JsonProperty("name")
     private String name = null;
 
-
     public Long getId() {
         return id;
     }
@@ -43,7 +41,6 @@ public class SchLibItemThinPT {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     @JsonProperty("stream")
     private String stream = null;

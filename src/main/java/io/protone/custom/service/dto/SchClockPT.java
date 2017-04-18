@@ -10,10 +10,13 @@ import java.util.List;
 public class SchClockPT implements Serializable {
 
     private Long id;
+
     private String shortName;
+
     private String name;
-    private Integer seq;
+
     private List<SchBlockPT> blocks = new ArrayList<>();
+
     private List<SchEmissionPT> emissions = new ArrayList<>();
 
     public Long getId() {
@@ -40,13 +43,20 @@ public class SchClockPT implements Serializable {
         this.name = name;
     }
 
-
     public List<SchBlockPT> getBlocks() {
         return blocks;
     }
 
     public void setBlocks(List<SchBlockPT> blocks) {
         this.blocks = blocks;
+    }
+
+    public List<SchEmissionPT> getEmissions() {
+        return emissions;
+    }
+
+    public void setEmissions(List<SchEmissionPT> emissions) {
+        this.emissions = emissions;
     }
 
     public SchClockPT id(Long id) {
@@ -101,12 +111,15 @@ public class SchClockPT implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SchPlaylistPT{");
+        final StringBuilder sb = new StringBuilder("SchClockPT{");
         sb.append("id=").append(id);
         sb.append(", shortName=").append(shortName);
-        sb.append(", channelId=").append(name);
+        sb.append(", name=").append(name);
         sb.append(", blocks=").append(blocks);
+        sb.append(", emissions=").append(emissions);
         sb.append('}');
         return sb.toString();
     }
+
+
 }

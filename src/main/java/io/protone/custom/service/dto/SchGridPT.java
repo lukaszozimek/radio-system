@@ -4,11 +4,13 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.custom.service.dto.thin.SchClockThinPT;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A DTO for the SchGridPT entity.
@@ -69,8 +71,7 @@ public class SchGridPT implements Serializable {
         }
     }
 
-
-    private List<SchClockPT> clocks;
+    private Map<Integer,SchClockThinPT> clocks;
 
     public Long getId() {
         return id;
@@ -105,11 +106,11 @@ public class SchGridPT implements Serializable {
     }
 
 
-    public List<SchClockPT> getClocks() {
+    public Map<Integer,SchClockThinPT> getClocks() {
         return clocks;
     }
 
-    public void setClocks(List<SchClockPT> clocks) {
+    public void setClocks(Map<Integer,SchClockThinPT> clocks) {
         this.clocks = clocks;
     }
 
@@ -133,15 +134,11 @@ public class SchGridPT implements Serializable {
         return this;
     }
 
-    public SchGridPT clock(List<SchClockPT> schClockPT) {
+    public SchGridPT clock(Map<Integer,SchClockThinPT> schClockPT) {
         this.clocks = schClockPT;
         return this;
     }
 
-    public SchGridPT addClock(SchClockPT block) {
-        this.clocks.add(block);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

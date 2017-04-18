@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A DTO for the SchGridPT entity.
+ * A DTO for the SchGrid entity.
  */
 public class SchGridThinPT implements Serializable {
 
@@ -69,7 +69,6 @@ public class SchGridThinPT implements Serializable {
             return null;
         }
     }
-
 
     public Long getId() {
         return id;

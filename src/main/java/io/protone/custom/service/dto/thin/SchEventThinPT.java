@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A DTO for the SchTemplate entity.
+ * A DTO for the SchEvent entity.
  */
 public class SchEventThinPT implements Serializable {
 
@@ -68,7 +68,6 @@ public class SchEventThinPT implements Serializable {
         }
     }
 
-
     public Long getId() {
         return id;
     }
@@ -84,7 +83,6 @@ public class SchEventThinPT implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public SchStartTypeEnum getStartType() {
         return startType;
