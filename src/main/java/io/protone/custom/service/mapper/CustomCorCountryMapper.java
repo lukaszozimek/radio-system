@@ -16,22 +16,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorCountryMapper {
 
-    @Mapping(source = "networkId", target = "network")
     CorCountry DTO2DB(ConfCountryPt confCountryPt);
 
-    @Mapping(source = "network.id", target = "networkId")
     ConfCountryPt DB2DTO(CorCountry corCountry);
 
     List<ConfCountryPt> DBs2DTOs(List<CorCountry> corCountries);
 
     List<CorCountry> DTOs2DBs(List<ConfCountryPt> confCountryPts);
 
-    default CorNetwork cORNetworkFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
 }

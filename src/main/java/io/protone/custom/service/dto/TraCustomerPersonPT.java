@@ -25,9 +25,6 @@ public class TraCustomerPersonPT   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-  @JsonProperty("networkId")
-  private CoreNetworkPT networkId = null;
-
   @JsonProperty("contacts")
   private List<CoreContactPT> contacts = new ArrayList<CoreContactPT>();
 
@@ -103,24 +100,6 @@ public class TraCustomerPersonPT   {
     this.lastName = lastName;
   }
 
-  public TraCustomerPersonPT networkId(CoreNetworkPT networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public CoreNetworkPT getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(CoreNetworkPT networkId) {
-    this.networkId = networkId;
-  }
-
   public TraCustomerPersonPT contacts(List<CoreContactPT> contacts) {
     this.contacts = contacts;
     return this;
@@ -158,13 +137,12 @@ public class TraCustomerPersonPT   {
         Objects.equals(this.firstName, traCustomerPersonPT.firstName) &&
         Objects.equals(this.id, traCustomerPersonPT.id) &&
         Objects.equals(this.lastName, traCustomerPersonPT.lastName) &&
-        Objects.equals(this.networkId, traCustomerPersonPT.networkId) &&
         Objects.equals(this.contacts, traCustomerPersonPT.contacts);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, firstName, id, lastName, networkId, contacts);
+    return Objects.hash(description, firstName, id, lastName, contacts);
   }
 
   @Override
@@ -176,7 +154,6 @@ public class TraCustomerPersonPT   {
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    contacts: ").append(toIndentedString(contacts)).append("\n");
     sb.append("}");
     return sb.toString();

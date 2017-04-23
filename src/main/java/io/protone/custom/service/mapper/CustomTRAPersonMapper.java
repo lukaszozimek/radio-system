@@ -29,8 +29,7 @@ public class CustomTRAPersonMapper {
             lastName(person.getLastName())
             .firstName(person.getFirstName())
             .description(person.getDescription())
-            .contacts(corContactMapper.cORContactsToCorContactDTOs(person.getContacts()))
-            .networkId(corNetworkMapper.cORNetworkToCorNetworkDTO(person.getNetwork()));
+            .contacts(corContactMapper.cORContactsToCorContactDTOs(person.getContacts()));
     }
 
 

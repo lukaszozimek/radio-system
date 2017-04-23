@@ -18,9 +18,6 @@ public class ConfTaxPT {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("networkId")
-    private Long networkId = null;
-
     @JsonProperty("value")
     private Long value = null;
 
@@ -52,10 +49,6 @@ public class ConfTaxPT {
         this.id = id;
     }
 
-    public ConfTaxPT networkId(Long networkId) {
-        this.networkId = networkId;
-        return this;
-    }
 
     public LocalDate getValidFrom() {
         return validFrom;
@@ -78,14 +71,6 @@ public class ConfTaxPT {
      *
      * @return networkId
      **/
-    @ApiModelProperty(value = "")
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long networkId) {
-        this.networkId = networkId;
-    }
 
     public ConfTaxPT value(Long value) {
         this.value = value;
@@ -150,7 +135,6 @@ public class ConfTaxPT {
         }
         ConfTaxPT confTaxPT = (ConfTaxPT) o;
         return Objects.equals(this.id, confTaxPT.id) &&
-            Objects.equals(this.networkId, confTaxPT.networkId) &&
             Objects.equals(this.value, confTaxPT.value) &&
             Objects.equals(this.active, confTaxPT.active) &&
             Objects.equals(this.validFrom, confTaxPT.validFrom) &&
@@ -160,7 +144,7 @@ public class ConfTaxPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, networkId, value, active, validFrom, validTo, name);
+        return Objects.hash(id, value, active, validFrom, validTo, name);
     }
 
     @Override
@@ -170,7 +154,6 @@ public class ConfTaxPT {
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
         sb.append("    value: ").append(toIndentedString(value)).append("\n");
         sb.append("    active: ").append(toIndentedString(active)).append("\n");
         sb.append("    validFrom: ").append(toIndentedString(validFrom)).append("\n");

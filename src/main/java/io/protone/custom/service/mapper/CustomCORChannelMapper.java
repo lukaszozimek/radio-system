@@ -43,7 +43,6 @@ public class CustomCORChannelMapper {
 
         CoreChannelPT coreChannelPT = new CoreChannelPT();
 
-        coreChannelPT.setNetworkId(cORChannelNetworkId(cORChannel));
 
         coreChannelPT.setId(cORChannel.getId());
 
@@ -81,8 +80,6 @@ public class CustomCORChannelMapper {
         }
 
         CorChannel corChannel = new CorChannel();
-
-        corChannel.setNetwork(cORNetworkFromId(cORChannelDTO.getNetworkId()));
 
         corChannel.setId(cORChannelDTO.getId());
 

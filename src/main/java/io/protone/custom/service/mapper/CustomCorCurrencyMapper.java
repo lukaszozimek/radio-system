@@ -16,22 +16,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorCurrencyMapper {
 
-    @Mapping(source = "networkId", target = "network")
     CorCurrency DTO2DB(ConfCurrencyPT cORRangeDTO);
 
-    @Mapping(source = "network.id", target = "networkId")
     ConfCurrencyPT DB2DTO(CorCurrency cORRange);
 
     List<ConfCurrencyPT> DBs2DTOs(List<CorCurrency> cORRanges);
 
     List<CorCurrency> DTOs2DBs(List<ConfCurrencyPT> cORRangeDTOs);
 
-    default CorNetwork cORNetworkFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
 }

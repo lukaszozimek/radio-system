@@ -37,9 +37,6 @@ public class CrmAccountPT {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("networkId")
-    private Long networkId = null;
-
     @JsonProperty("paymentDate")
     private Integer paymentDate = null;
 
@@ -201,25 +198,6 @@ public class CrmAccountPT {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public CrmAccountPT networkId(Long networkId) {
-        this.networkId = networkId;
-        return this;
-    }
-
-    /**
-     * Get networkId
-     *
-     * @return networkId
-     **/
-    @ApiModelProperty(value = "")
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long networkId) {
-        this.networkId = networkId;
     }
 
     public CrmAccountPT paymentDate(Integer paymentDate) {
@@ -459,7 +437,6 @@ public class CrmAccountPT {
             Objects.equals(this.idNumber2, crmAccountPT.idNumber2) &&
             Objects.equals(this.industry, crmAccountPT.industry) &&
             Objects.equals(this.name, crmAccountPT.name) &&
-            Objects.equals(this.networkId, crmAccountPT.networkId) &&
             Objects.equals(this.paymentDate, crmAccountPT.paymentDate) &&
             Objects.equals(this.range, crmAccountPT.range) &&
             Objects.equals(this.size, crmAccountPT.size) &&
@@ -474,7 +451,7 @@ public class CrmAccountPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, shortName, area, idNumber1, idNumber2, industry, name, networkId, paymentDate, range, size, vatNumber, adress, account, persons, orders, campains, tasks);
+        return Objects.hash(id, shortName, area, idNumber1, idNumber2, industry, name, paymentDate, range, size, vatNumber, adress, account, persons, orders, campains, tasks);
     }
 
     @Override
@@ -489,7 +466,6 @@ public class CrmAccountPT {
         sb.append("    idNumber2: ").append(toIndentedString(idNumber2)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
         sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
         sb.append("    range: ").append(toIndentedString(range)).append("\n");
         sb.append("    size: ").append(toIndentedString(size)).append("\n");

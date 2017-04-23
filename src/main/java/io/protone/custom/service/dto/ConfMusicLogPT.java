@@ -21,10 +21,6 @@ public class ConfMusicLogPT implements Serializable {
 
     private CfgLogTypeEnum logColumn;
 
-    private Long networkId;
-
-    private Long channelId;
-
     public Long getId() {
         return id;
     }
@@ -55,22 +51,6 @@ public class ConfMusicLogPT implements Serializable {
 
     public void setLogColumn(CfgLogTypeEnum logColumn) {
         this.logColumn = logColumn;
-    }
-
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long corNetworkId) {
-        this.networkId = corNetworkId;
-    }
-
-    public Long getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Long corChannelId) {
-        this.channelId = corChannelId;
     }
 
     @Override

@@ -25,8 +25,6 @@ public class ConfCommercialLogPT implements Serializable {
 
     private Integer columnSequence;
 
-    private Long networkId;
-
     private Long channelId;
 
     public Long getId() {
@@ -75,14 +73,6 @@ public class ConfCommercialLogPT implements Serializable {
 
     public void setColumnSequence(Integer columnSequence) {
         this.columnSequence = columnSequence;
-    }
-
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long corNetworkId) {
-        this.networkId = corNetworkId;
     }
 
     public Long getChannelId() {

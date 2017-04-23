@@ -21,8 +21,6 @@ public class CorDictionaryPT implements Serializable {
 
     private String corModule;
 
-    private Long networkId;
-
     public Long getId() {
         return id;
     }
@@ -64,14 +62,6 @@ public class CorDictionaryPT implements Serializable {
 
     public void setCorModule(String corModule) {
         this.corModule = corModule;
-    }
-
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long corNetworkId) {
-        this.networkId = corNetworkId;
     }
 
     @Override

@@ -22,8 +22,6 @@ public class LibArtistPT   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
 
   /**
    * Gets or Sets type
@@ -117,24 +115,6 @@ public class LibArtistPT   {
     this.name = name;
   }
 
-  public LibArtistPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
-  }
-
   public LibArtistPT type(TypeEnum type) {
     this.type = type;
     return this;
@@ -166,13 +146,12 @@ public class LibArtistPT   {
     return Objects.equals(this.description, libArtistPT.description) &&
         Objects.equals(this.id, libArtistPT.id) &&
         Objects.equals(this.name, libArtistPT.name) &&
-        Objects.equals(this.networkId, libArtistPT.networkId) &&
         Objects.equals(this.type, libArtistPT.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, id, name, networkId, type);
+    return Objects.hash(description, id, name, type);
   }
 
   @Override
@@ -183,7 +162,6 @@ public class LibArtistPT   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();

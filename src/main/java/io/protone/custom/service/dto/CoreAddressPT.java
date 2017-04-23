@@ -20,9 +20,6 @@ public class CoreAddressPT   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
-
   @JsonProperty("number")
   private String number = null;
 
@@ -84,24 +81,6 @@ public class CoreAddressPT   {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public CoreAddressPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
   }
 
   public CoreAddressPT number(String number) {
@@ -171,7 +150,6 @@ public class CoreAddressPT   {
     return Objects.equals(this.city, coreAddressPT.city) &&
         Objects.equals(this.country, coreAddressPT.country) &&
         Objects.equals(this.id, coreAddressPT.id) &&
-        Objects.equals(this.networkId, coreAddressPT.networkId) &&
         Objects.equals(this.number, coreAddressPT.number) &&
         Objects.equals(this.postalCode, coreAddressPT.postalCode) &&
         Objects.equals(this.street, coreAddressPT.street);
@@ -179,7 +157,7 @@ public class CoreAddressPT   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(city, country, id, networkId, number, postalCode, street);
+    return Objects.hash(city, country, id, number, postalCode, street);
   }
 
   @Override
@@ -190,7 +168,6 @@ public class CoreAddressPT   {
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    number: ").append(toIndentedString(number)).append("\n");
     sb.append("    postalCode: ").append(toIndentedString(postalCode)).append("\n");
     sb.append("    street: ").append(toIndentedString(street)).append("\n");

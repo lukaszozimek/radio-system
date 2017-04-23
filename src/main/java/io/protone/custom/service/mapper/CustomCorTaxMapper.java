@@ -14,22 +14,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorTaxMapper {
 
-    @Mapping(source = "networkId", target = "network")
-    CorTax DTO2DB(ConfTaxPT cORRangeDTO);
+    CorTax DTO2DB(ConfTaxPT confTaxPT);
 
-    @Mapping(source = "network.id", target = "networkId")
-    ConfTaxPT DB2DTO(CorTax cORRange);
+    ConfTaxPT DB2DTO(CorTax corTax);
 
-    List<ConfTaxPT> DBs2DTOs(List<CorTax> cORRanges);
+    List<ConfTaxPT> DBs2DTOs(List<CorTax> corTaxes);
 
-    List<CorTax> DTOs2DBs(List<ConfTaxPT> cORRangeDTOs);
+    List<CorTax> DTOs2DBs(List<ConfTaxPT> confTaxPTList);
 
-    default CorNetwork cORNetworkFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
 }

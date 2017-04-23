@@ -14,22 +14,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorPersonMapperExt {
 
-    @Mapping(source = "network.id", target = "networkId")
     LibPersonPT DB2DTO(CorPerson db);
 
     List<LibPersonPT> DBs2DTOs(List<CorPerson> cORPeople);
 
-    @Mapping(source = "networkId", target = "network")
     CorPerson DTO2DB(LibPersonPT dto);
 
     List<CorPerson> DTOs2DBs(List<LibPersonPT> dtos);
 
-    default CorNetwork mapCorNetwork(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
 }

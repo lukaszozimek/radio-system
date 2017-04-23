@@ -23,9 +23,6 @@ public class LibPersonPT   {
   @JsonProperty("lastName")
   private String lastName = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
-
   public LibPersonPT description(String description) {
     this.description = description;
     return this;
@@ -98,23 +95,6 @@ public class LibPersonPT   {
     this.lastName = lastName;
   }
 
-  public LibPersonPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
-  }
 
 
   @Override
@@ -129,13 +109,12 @@ public class LibPersonPT   {
     return Objects.equals(this.description, libPersonPT.description) &&
         Objects.equals(this.firstName, libPersonPT.firstName) &&
         Objects.equals(this.id, libPersonPT.id) &&
-        Objects.equals(this.lastName, libPersonPT.lastName) &&
-        Objects.equals(this.networkId, libPersonPT.networkId);
+        Objects.equals(this.lastName, libPersonPT.lastName) ;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, firstName, id, lastName, networkId);
+    return Objects.hash(description, firstName, id, lastName);
   }
 
   @Override
@@ -147,7 +126,6 @@ public class LibPersonPT   {
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

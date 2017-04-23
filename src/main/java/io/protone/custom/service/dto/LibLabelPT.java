@@ -20,8 +20,6 @@ public class LibLabelPT   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
 
   public LibLabelPT description(String description) {
     this.description = description;
@@ -77,23 +75,6 @@ public class LibLabelPT   {
     this.name = name;
   }
 
-  public LibLabelPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
-  }
 
 
   @Override
@@ -107,13 +88,12 @@ public class LibLabelPT   {
     LibLabelPT libLabelPT = (LibLabelPT) o;
     return Objects.equals(this.description, libLabelPT.description) &&
         Objects.equals(this.id, libLabelPT.id) &&
-        Objects.equals(this.name, libLabelPT.name) &&
-        Objects.equals(this.networkId, libLabelPT.networkId);
+        Objects.equals(this.name, libLabelPT.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, id, name, networkId);
+    return Objects.hash(description, id, name);
   }
 
   @Override
@@ -124,7 +104,6 @@ public class LibLabelPT   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

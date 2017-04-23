@@ -32,8 +32,6 @@ public class LibTrackPT   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
 
   @JsonProperty("trackNo")
   private Integer trackNo = null;
@@ -164,24 +162,6 @@ public class LibTrackPT   {
     this.name = name;
   }
 
-  public LibTrackPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
-  }
-
   public LibTrackPT trackNo(Integer trackNo) {
     this.trackNo = trackNo;
     return this;
@@ -217,13 +197,12 @@ public class LibTrackPT   {
         Objects.equals(this.id, libTrackPT.id) &&
         Objects.equals(this.length, libTrackPT.length) &&
         Objects.equals(this.name, libTrackPT.name) &&
-        Objects.equals(this.networkId, libTrackPT.networkId) &&
         Objects.equals(this.trackNo, libTrackPT.trackNo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(albumId, artistId, description, discNo, id, length, name, networkId, trackNo);
+    return Objects.hash(albumId, artistId, description, discNo, id, length, name, trackNo);
   }
 
   @Override
@@ -238,7 +217,6 @@ public class LibTrackPT   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    length: ").append(toIndentedString(length)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    trackNo: ").append(toIndentedString(trackNo)).append("\n");
     sb.append("}");
     return sb.toString();

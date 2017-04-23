@@ -28,8 +28,6 @@ public class ConfMarkerConfigurationPT {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("networkId")
-    private Long networkId = null;
     @JsonProperty("type")
     private LibMarkerTypeEnum type = null;
 
@@ -143,25 +141,6 @@ public class ConfMarkerConfigurationPT {
         this.name = name;
     }
 
-    public ConfMarkerConfigurationPT networkId(Long networkId) {
-        this.networkId = networkId;
-        return this;
-    }
-
-    /**
-     * Get networkId
-     *
-     * @return networkId
-     **/
-    @ApiModelProperty(value = "")
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long networkId) {
-        this.networkId = networkId;
-    }
-
     public ConfMarkerConfigurationPT type(LibMarkerTypeEnum type) {
         this.type = type;
         return this;
@@ -196,13 +175,12 @@ public class ConfMarkerConfigurationPT {
             Objects.equals(this.id, confMarkerConfigurationPT.id) &&
             Objects.equals(this.keyboardShortcut, confMarkerConfigurationPT.keyboardShortcut) &&
             Objects.equals(this.name, confMarkerConfigurationPT.name) &&
-            Objects.equals(this.networkId, confMarkerConfigurationPT.networkId) &&
             Objects.equals(this.type, confMarkerConfigurationPT.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(color, displayName, id, keyboardShortcut, name, networkId, type);
+        return Objects.hash(color, displayName, id, keyboardShortcut, name, type);
     }
 
     @Override
@@ -215,7 +193,6 @@ public class ConfMarkerConfigurationPT {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    keyboardShortcut: ").append(toIndentedString(keyboardShortcut)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
         sb.append("    type: ").append(toIndentedString(type)).append("\n");
         sb.append("}");
         return sb.toString();

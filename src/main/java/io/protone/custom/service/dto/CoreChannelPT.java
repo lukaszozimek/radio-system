@@ -23,9 +23,6 @@ public class CoreChannelPT {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("networkId")
-    private Long networkId = null;
-
     @JsonProperty("description")
     private String description = null;
 
@@ -86,25 +83,6 @@ public class CoreChannelPT {
         this.name = name;
     }
 
-    public CoreChannelPT networkId(Long networkId) {
-        this.networkId = networkId;
-        return this;
-    }
-
-    /**
-     * Get networkId
-     *
-     * @return networkId
-     **/
-    @ApiModelProperty(value = "")
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long networkId) {
-        this.networkId = networkId;
-    }
-
     public CoreChannelPT description(String description) {
         this.description = description;
         return this;
@@ -137,13 +115,12 @@ public class CoreChannelPT {
         return Objects.equals(this.id, coreChannelPT.id) &&
             Objects.equals(this.shortcut, coreChannelPT.shortcut) &&
             Objects.equals(this.name, coreChannelPT.name) &&
-            Objects.equals(this.networkId, coreChannelPT.networkId) &&
             Objects.equals(this.description, coreChannelPT.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, shortcut, name, networkId, description);
+        return Objects.hash(id, shortcut, name, description);
     }
 
     @Override
@@ -154,7 +131,6 @@ public class CoreChannelPT {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    shortcut: ").append(toIndentedString(shortcut)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
 
         sb.append("}");

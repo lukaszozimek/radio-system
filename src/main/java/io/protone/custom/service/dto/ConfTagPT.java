@@ -14,9 +14,6 @@ public class ConfTagPT   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
-
   @JsonProperty("tag")
   private String tag = null;
 
@@ -36,24 +33,6 @@ public class ConfTagPT   {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public ConfTagPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
   }
 
   public ConfTagPT tag(String tag) {
@@ -85,13 +64,12 @@ public class ConfTagPT   {
     }
     ConfTagPT confTagPT = (ConfTagPT) o;
     return Objects.equals(this.id, confTagPT.id) &&
-        Objects.equals(this.networkId, confTagPT.networkId) &&
         Objects.equals(this.tag, confTagPT.tag);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, networkId, tag);
+    return Objects.hash(id, tag);
   }
 
   @Override
@@ -100,7 +78,6 @@ public class ConfTagPT   {
     sb.append("class ConfTagPT {\n");
 
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    tag: ").append(toIndentedString(tag)).append("\n");
     sb.append("}");
     return sb.toString();

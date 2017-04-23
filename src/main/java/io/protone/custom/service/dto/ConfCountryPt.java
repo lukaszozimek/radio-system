@@ -14,9 +14,6 @@ public class ConfCountryPt   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
-
   @JsonProperty("name")
   private String name = null;
 
@@ -39,24 +36,6 @@ public class ConfCountryPt   {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public ConfCountryPt networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
-
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
-
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
   }
 
   public ConfCountryPt name(String name) {
@@ -106,14 +85,13 @@ public class ConfCountryPt   {
     }
     ConfCountryPt confCountryPt = (ConfCountryPt) o;
     return Objects.equals(this.id, confCountryPt.id) &&
-        Objects.equals(this.networkId, confCountryPt.networkId) &&
         Objects.equals(this.name, confCountryPt.name) &&
         Objects.equals(this.shortName, confCountryPt.shortName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, networkId, name, shortName);
+    return Objects.hash(id, name, shortName);
   }
 
   @Override
@@ -122,7 +100,6 @@ public class ConfCountryPt   {
     sb.append("class ConfCountryPt {\n");
 
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
     sb.append("}");

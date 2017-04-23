@@ -18,14 +18,12 @@ public interface CustomLibTrackMapperExt {
 
     @Mapping(source = "album.id", target = "albumId")
     @Mapping(source = "artist.id", target = "artistId")
-    @Mapping(source = "network.id", target = "networkId")
     LibTrackPT DB2DTO(LibTrack lIBTrack);
 
     List<LibTrackPT> DBs2DTOs(List<LibTrack> lIBTracks);
 
     @Mapping(source = "albumId", target = "album")
     @Mapping(source = "artistId", target = "artist")
-    @Mapping(source = "networkId", target = "network")
     LibTrack DTO2DB(LibTrackPT lIBTrackDTO);
 
     List<LibTrack> DTOs2DBs(List<LibTrackPT> lIBTrackDTOs);
@@ -48,12 +46,5 @@ public interface CustomLibTrackMapperExt {
         return lIBArtist;
     }
 
-    default CorNetwork mapCorNetwork(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
+
 }

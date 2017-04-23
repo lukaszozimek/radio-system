@@ -16,24 +16,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorDictionaryMapper {
 
-    @Mapping(source = "network.id", target = "networkId")
     CorDictionaryPT corDictionaryToCorDictionaryDTO(CorDictionary corDictionary);
 
     List<CorDictionaryPT> corDictionariesToCorDictionaryDTOs(List<CorDictionary> corDictionaries);
 
-    @Mapping(source = "networkId", target = "network")
     CorDictionary corDictionaryDTOToCorDictionary(CorDictionaryPT corDictionaryDTO);
 
     List<CorDictionary> corDictionaryDTOsToCorDictionaries(List<CorDictionaryPT> corDictionaryDTOs);
-
-    default CorNetwork corNetworkFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork corNetwork = new CorNetwork();
-        corNetwork.setId(id);
-        return corNetwork;
-    }
-
 
 }

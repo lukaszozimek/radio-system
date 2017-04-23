@@ -15,24 +15,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomLibArtistMapper {
 
-    @Mapping(source = "network.id", target = "networkId")
     LibArtistPT DB2DTO(LibArtist db);
 
     List<LibArtistPT> DBs2DTOs(List<LibArtist> dbs);
 
-    @Mapping(source = "networkId", target = "network")
     LibArtist DTO2DB(LibArtistPT dto);
 
     List<LibArtist> DTOs2DBs(List<LibArtistPT> dtos);
 
-    default CorNetwork mapCorNetwork(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
 
     default LibArtistPT.TypeEnum mapLibArtistPT_TypeEnum(LibArtistTypeEnum value) {
 

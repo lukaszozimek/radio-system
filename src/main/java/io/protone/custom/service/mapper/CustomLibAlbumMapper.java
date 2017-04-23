@@ -17,7 +17,6 @@ public interface CustomLibAlbumMapper {
     @Mapping(source = "cover.id", target = "coverId")
     @Mapping(source = "label.id", target = "labelId")
     @Mapping(source = "artist.id", target = "artistId")
-    @Mapping(source = "network.id", target = "networkId")
     LibAlbumPT DB2DTO(LibAlbum db);
 
     List<LibAlbumPT> DBs2DTOs(List<LibAlbum> dbs);
@@ -25,7 +24,6 @@ public interface CustomLibAlbumMapper {
     @Mapping(source = "coverId", target = "cover")
     @Mapping(source = "labelId", target = "label")
     @Mapping(source = "artistId", target = "artist")
-    @Mapping(source = "networkId", target = "network")
     LibAlbum DTO2DB(LibAlbumPT dto);
 
     List<LibAlbum> DTOs2DBs(List<LibAlbumPT> dtos);
@@ -55,15 +53,6 @@ public interface CustomLibAlbumMapper {
         LibArtist lIBArtist = new LibArtist();
         lIBArtist.setId(id);
         return lIBArtist;
-    }
-
-    default CorNetwork mapCorNetwork(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
     }
 
     default LibAlbumPT.AlbumTypeEnum mapAlbumTypeEnum(LibAlbumTypeEnum value) {

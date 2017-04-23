@@ -22,9 +22,6 @@ public class ConfDiscountPT implements Serializable {
     @JsonProperty("discount")
     private Long discount;
 
-    @JsonProperty("networkId")
-    private Long networkId;
-
     public Long getId() {
         return id;
     }
@@ -57,13 +54,6 @@ public class ConfDiscountPT implements Serializable {
         this.discount = discount;
     }
 
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long corNetworkId) {
-        this.networkId = corNetworkId;
-    }
 
     @Override
     public boolean equals(Object o) {

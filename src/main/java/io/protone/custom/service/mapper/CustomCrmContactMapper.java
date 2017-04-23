@@ -74,8 +74,7 @@ public class CustomCrmContactMapper {
             .adress(corAddressMapper.cORAddressToCorAddressDTO(crmContact.getAddres()))
             .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
             .area(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getArea()))
-            .tasks(crmContact.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()))
-            .networkId(customCorNetworkMapper.cORNetworkToCorNetworkDTO(crmContact.getNetwork()));
+            .tasks(crmContact.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()));
 
     }
 
