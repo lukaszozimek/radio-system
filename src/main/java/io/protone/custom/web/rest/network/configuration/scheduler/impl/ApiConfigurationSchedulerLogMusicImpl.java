@@ -2,14 +2,11 @@ package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 
 
 import io.protone.custom.service.CorNetworkService;
-import io.protone.custom.service.dto.ConfCrmContactStatusPT;
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.protone.custom.service.mapper.CustomConfMusicLogMapper;
-import io.protone.custom.web.rest.network.configuration.crm.impl.ApiConfigurationCrmDictionaryContactStatusImpl;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogMusic;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContactStatus;
 import io.protone.domain.enumeration.CfgLogTypeEnum;
 import io.protone.repository.CfgExternalSystemLogRepository;
 import io.protone.web.rest.util.HeaderUtil;
