@@ -22,8 +22,11 @@ import static java.util.stream.Collectors.toSet;
 public class CustomCrmTaskMapper {
 
     public static final String CRM_TASK_STATUS = "CrmTaskStatus";
+
     @Inject
     private CustomCorUserMapperExt corUserMapper;
+    @Inject
+    private CustomCorDictionaryMapper customCorDictionaryMapper;
 
     public List<CrmTaskPT> createCrmTasks(Set<CrmTask> crmTask) {
         if (crmTask == null) {
@@ -44,7 +47,7 @@ public class CustomCrmTaskMapper {
             return new CrmTaskPT();
         }
         CrmTaskPT crmTaskPT = new CrmTaskPT().id(crmTask.getId()).activityLenght(crmTask.getActivityLength())
-            .crmTaskStatus(crmTask.getStatus())
+            .crmTaskStatus(customCorDictionaryMapper.corDictionaryToCorDictionaryDTO(crmTask.getStatus()))
             .assignedTo(corUserMapper.userToCoreUserPT(crmTask.getAssignedTo()))
             .comment(crmTask.getComment())
             .subject(crmTask.getSubject())

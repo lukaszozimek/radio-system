@@ -34,7 +34,6 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     @Override
     public ResponseEntity<CrmAccountPT> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerPT", required = true) @RequestBody CrmAccountPT customerPT) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-
         return ResponseEntity.ok().body(crmCustomerService.saveCustomer(customerPT, corNetwork));
     }
 

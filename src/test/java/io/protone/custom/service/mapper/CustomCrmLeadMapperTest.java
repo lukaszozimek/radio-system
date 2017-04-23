@@ -34,7 +34,7 @@ public class CustomCrmLeadMapperTest {
     private CrmLeadPT mockCrmLeadPT = null;
     private CorNetwork mockCorNetwork = null;
 
-    //@Before
+    /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockCrmLead = new CrmLead();
@@ -65,7 +65,7 @@ public class CustomCrmLeadMapperTest {
             .addTasksItem(new CrmTaskPT());
 
     }
-
+*/
   //  @Test
     public void createLeadEntity() throws Exception {
         //then

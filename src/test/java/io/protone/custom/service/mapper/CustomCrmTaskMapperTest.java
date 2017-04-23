@@ -37,7 +37,7 @@ public class CustomCrmTaskMapperTest {
     private List<CrmTaskPT> mockListCrmTaskPt = null;
     private List<CrmTask> mockListCrmTask = null;
 
-  //  @Before
+  /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockCrmTask = new CrmTask();
@@ -65,7 +65,7 @@ public class CustomCrmTaskMapperTest {
             .comment("test")
             .addRelatedTasksItem(new CrmTaskPT());
     }
-
+*/
  //   @Test
     public void createCrmTasks() throws Exception {
         //then

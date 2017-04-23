@@ -30,13 +30,18 @@ public class CustomTraOrderMapper {
 
     @Inject
     private CustomSchEmissionMapper customSchEmissionMapper;
+
     @Inject
     private CustomTraInvoiceMapper customTraInvoiceMapper;
+
     @Inject
     private TraCustomerService customerService;
 
     @Inject
     private CustomTRAAdvertismentMapper traAdvertismentMapper;
+
+    @Inject
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
     public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, CorNetwork corNetwork) {
         List<TraOrder> traOrdersList = new ArrayList<>();
@@ -125,7 +130,8 @@ public class CustomTraOrderMapper {
         if (traOrder.getCustomer() != null) {
             traOrderPt.customerId(customCrmAccountMapper.createCustomerTrafficDTO(traOrder.getCustomer()));
         }
-        traOrderPt.traPrice(traOrder.getPrice()).traOrderStatus(traOrder.getStatus());
+        traOrderPt.traPrice(traOrder.getPrice())
+            .traOrderStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traOrder.getStatus()));
         if (traOrder.getInvoice() != null) {
             traOrderPt.traInvoiceT(customTraInvoiceMapper.createDTOFromEnity(traOrder.getInvoice()));
         }

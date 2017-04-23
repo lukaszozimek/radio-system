@@ -25,7 +25,7 @@ public class CustomTRACampaignMapperTest {
     private TraCampaign mockTraCampaing = null;
     private TraCampaignPT mockTraCampaignPT = null;
 
-    //@Before
+    /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockTraCampaignPT = new TraCampaignPT();
@@ -50,7 +50,7 @@ public class CustomTRACampaignMapperTest {
         mockTraCampaing.setOrders(new HashSet<>());
 
     }
-
+*/
   //  @Test
     public void transfromDTOToEntity() throws Exception {
         // TODO: changes TRAPRice to long

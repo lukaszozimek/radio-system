@@ -20,6 +20,8 @@ public class CustomTraInvoiceMapper {
     private CustomCrmAccountMapper crmAccountMapper;
     @Inject
     private CustomTraOrderMapper traOrderMapper;
+    @Inject
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
     public TraInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
         if (traInvoicePT == null || corNetwork == null) {
@@ -33,7 +35,7 @@ public class CustomTraInvoiceMapper {
             .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
             .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
             .network(corNetwork)
-            .status(traInvoicePT.getTraStatus());
+            .status(corDictionaryMapper.corDictionaryDTOToCorDictionary(traInvoicePT.getTraStatus()));
     }
 
     public TraInvoicePT createDTOFromEnity(TraInvoice traInvoicePT) {
@@ -45,7 +47,7 @@ public class CustomTraInvoiceMapper {
             .paid(traInvoicePT.isPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
             .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCustomer()))
-            .traStatus(traInvoicePT.getStatus())
+            .traStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traInvoicePT.getStatus()))
             .price(traInvoicePT.getPrice());
     }
 

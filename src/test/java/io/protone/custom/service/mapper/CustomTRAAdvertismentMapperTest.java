@@ -30,29 +30,29 @@ public class CustomTRAAdvertismentMapperTest {
     private TraAdvertisement mockTraAdvertisment = null;
     private TraAdvertisementPT mockTraAdvertismentsPT = null;
 
-  //  @Before
-    public void initialize() {
-        mockCorNetwork = new CorNetwork();
-        mockTraAdvertisment = new TraAdvertisement();
-        mockTraAdvertisment.setId((long) 1);
-        mockTraAdvertisment.name("test")
-            .description("test")
-            .mediaItem(new LibMediaItem())
-            .libitem(new LibMediaItem())
-            .industry(new TraIndustry())
-            .type(new TraAdvertismentType())
-            .customer(new CrmAccount())
-            .network(mockCorNetwork);
-        mockTraAdvertismentsPT = new TraAdvertisementPT();
-        mockTraAdvertismentsPT.id((long) 1)
-            .description("test")
-            .industryId(new ConfIndustryPT())
-            .customerId(new TraCustomerPT())
-            .mediaItemId(new LibMediaItemPT())
-            .name("test");
-    }
-
- //   @Test
+    /*
+      public void initialize() {
+          mockCorNetwork = new CorNetwork();
+          mockTraAdvertisment = new TraAdvertisement();
+          mockTraAdvertisment.setId((long) 1);
+          mockTraAdvertisment.name("test")
+              .description("test")
+              .mediaItem(new LibMediaItem())
+              .libitem(new LibMediaItem())
+              .industry(new TraIndustry())
+              .type(new TraAdvertismentType())
+              .customer(new CrmAccount())
+              .network(mockCorNetwork);
+          mockTraAdvertismentsPT = new TraAdvertisementPT();
+          mockTraAdvertismentsPT.id((long) 1)
+              .description("test")
+              .industryId(new ConfIndustryPT())
+              .customerId(new TraCustomerPT())
+              .mediaItemId(new LibMediaItemPT())
+              .name("test");
+      }
+  */
+    //   @Test
     public void transformDTOToEntity() throws Exception {
         //then
         TraAdvertisement result = customTRAAdvertismentMapper.transformDTOToEntity(mockTraAdvertismentsPT, mockCorNetwork);
@@ -60,7 +60,7 @@ public class CustomTRAAdvertismentMapperTest {
         assertEquals(false, checkFiledsNotNull(result));
     }
 
-//    @Test
+    //    @Test
     public void transformEntityToDTO() throws Exception {
         //then
         TraAdvertisementPT result = customTRAAdvertismentMapper.transformEntityToDTO(mockTraAdvertisment);

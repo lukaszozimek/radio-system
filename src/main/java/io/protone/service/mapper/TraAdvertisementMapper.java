@@ -4,6 +4,7 @@ import io.protone.domain.*;
 import io.protone.service.dto.TraAdvertisementDTO;
 
 import org.mapstruct.*;
+
 import java.util.List;
 
 /**
@@ -13,9 +14,6 @@ import java.util.List;
 public interface TraAdvertisementMapper {
 
     @Mapping(source = "mediaItem.id", target = "mediaItemId")
-    @Mapping(source = "libitem.id", target = "libitemId")
-    @Mapping(source = "industry.id", target = "industryId")
-    @Mapping(source = "type.id", target = "typeId")
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "network.id", target = "networkId")
     TraAdvertisementDTO traAdvertisementToTraAdvertisementDTO(TraAdvertisement traAdvertisement);
@@ -23,9 +21,6 @@ public interface TraAdvertisementMapper {
     List<TraAdvertisementDTO> traAdvertisementsToTraAdvertisementDTOs(List<TraAdvertisement> traAdvertisements);
 
     @Mapping(source = "mediaItemId", target = "mediaItem")
-    @Mapping(source = "libitemId", target = "libitem")
-    @Mapping(source = "industryId", target = "industry")
-    @Mapping(source = "typeId", target = "type")
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "networkId", target = "network")
     TraAdvertisement traAdvertisementDTOToTraAdvertisement(TraAdvertisementDTO traAdvertisementDTO);
@@ -39,24 +34,6 @@ public interface TraAdvertisementMapper {
         LibMediaItem libMediaItem = new LibMediaItem();
         libMediaItem.setId(id);
         return libMediaItem;
-    }
-
-    default TraIndustry traIndustryFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        TraIndustry traIndustry = new TraIndustry();
-        traIndustry.setId(id);
-        return traIndustry;
-    }
-
-    default TraAdvertismentType traAdvertismentTypeFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        TraAdvertismentType traAdvertismentType = new TraAdvertismentType();
-        traAdvertismentType.setId(id);
-        return traAdvertismentType;
     }
 
     default CrmAccount crmAccountFromId(Long id) {

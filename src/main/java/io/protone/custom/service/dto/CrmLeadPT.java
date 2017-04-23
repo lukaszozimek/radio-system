@@ -26,19 +26,19 @@ public class CrmLeadPT {
     private String description = null;
 
     @JsonProperty("source")
-    private ConfLeadSourcePT source = null;
+    private CorDictionaryPT source = null;
 
     @JsonProperty("status")
-    private ConfLeadStatusPT status = null;
+    private CorDictionaryPT status = null;
 
     @JsonProperty("adress")
     private CoreAddressPT adress = null;
 
     @JsonProperty("area")
-    private CoreAreaPT area = null;
+    private CorDictionaryPT area = null;
 
     @JsonProperty("industry")
-    private ConfIndustryPT industry = null;
+    private CorDictionaryPT industry = null;
 
     @JsonProperty("leadOwner")
     private CoreUserPT leadOwner = null;
@@ -119,7 +119,7 @@ public class CrmLeadPT {
         this.description = description;
     }
 
-    public CrmLeadPT source(ConfLeadSourcePT source) {
+    public CrmLeadPT source(CorDictionaryPT source) {
         this.source = source;
         return this;
     }
@@ -143,15 +143,15 @@ public class CrmLeadPT {
      * @return source
      **/
     @ApiModelProperty(value = "")
-    public ConfLeadSourcePT getSource() {
+    public CorDictionaryPT getSource() {
         return source;
     }
 
-    public void setSource(ConfLeadSourcePT source) {
+    public void setSource(CorDictionaryPT source) {
         this.source = source;
     }
 
-    public CrmLeadPT status(ConfLeadStatusPT status) {
+    public CrmLeadPT status(CorDictionaryPT status) {
         this.status = status;
         return this;
     }
@@ -162,11 +162,11 @@ public class CrmLeadPT {
      * @return status
      **/
     @ApiModelProperty(value = "")
-    public ConfLeadStatusPT getStatus() {
+    public CorDictionaryPT getStatus() {
         return status;
     }
 
-    public void setStatus(ConfLeadStatusPT status) {
+    public void setStatus(CorDictionaryPT status) {
         this.status = status;
     }
 
@@ -189,7 +189,7 @@ public class CrmLeadPT {
         this.adress = adress;
     }
 
-    public CrmLeadPT area(CoreAreaPT area) {
+    public CrmLeadPT area(CorDictionaryPT area) {
         this.area = area;
         return this;
     }
@@ -200,15 +200,15 @@ public class CrmLeadPT {
      * @return area
      **/
     @ApiModelProperty(value = "")
-    public CoreAreaPT getArea() {
+    public CorDictionaryPT getArea() {
         return area;
     }
 
-    public void setArea(CoreAreaPT area) {
+    public void setArea(CorDictionaryPT area) {
         this.area = area;
     }
 
-    public CrmLeadPT industry(ConfIndustryPT industry) {
+    public CrmLeadPT industry(CorDictionaryPT industry) {
         this.industry = industry;
         return this;
     }
@@ -219,11 +219,11 @@ public class CrmLeadPT {
      * @return industry
      **/
     @ApiModelProperty(value = "")
-    public ConfIndustryPT getIndustry() {
+    public CorDictionaryPT getIndustry() {
         return industry;
     }
 
-    public void setIndustry(ConfIndustryPT industry) {
+    public void setIndustry(CorDictionaryPT industry) {
         this.industry = industry;
     }
 

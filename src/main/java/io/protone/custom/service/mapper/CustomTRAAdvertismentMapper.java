@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class CustomTRAAdvertismentMapper {
 
     @Inject
-    private CustomTraIndustryMapper customTraIndustryMapper;
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
     @Inject
     private CustomCrmAccountMapper customCrmAccountMapper;
@@ -29,8 +29,6 @@ public class CustomTRAAdvertismentMapper {
     @Inject
     private CustomLibMediaItemMapper customLibMediaItemMapper;
 
-    @Inject
-    private CustomTraAdvertismentTypeMapper traAdvertismentTypeMapper;
 
     public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
         if (traAdvertisementPT == null || corNetwork == null) {
@@ -42,7 +40,7 @@ public class CustomTRAAdvertismentMapper {
             .network(corNetwork)
             .description(traAdvertisementPT.getDescription());
         if (traAdvertisementPT.getIndustryId() != null) {
-            advertisement.industry(customTraIndustryMapper.tRAIndustryDTOToTraIndustry(traAdvertisementPT.getIndustryId()));
+            advertisement.industry(corDictionaryMapper.corDictionaryDTOToCorDictionary(traAdvertisementPT.getIndustryId()));
         }
         if (traAdvertisementPT.getMediaItemId() != null) {
             advertisement.mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(traAdvertisementPT.getMediaItemId()));
@@ -51,7 +49,7 @@ public class CustomTRAAdvertismentMapper {
             advertisement.customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
         }
         if (traAdvertisementPT.getTypePT() != null) {
-            advertisement.type(traAdvertismentTypeMapper.DTO2DB(traAdvertisementPT.getTypePT()));
+            advertisement.type(corDictionaryMapper.corDictionaryDTOToCorDictionary(traAdvertisementPT.getTypePT()));
         }
         return advertisement;
     }
@@ -64,9 +62,9 @@ public class CustomTRAAdvertismentMapper {
             .id(traAdvertisement.getId())
             .name(traAdvertisement.getName())
             .description(traAdvertisement.getDescription())
-            .industryId(customTraIndustryMapper.tRAIndustryToTraIndustryDTO(traAdvertisement.getIndustry()))
+            .industryId(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traAdvertisement.getIndustry()))
             .mediaItemId(customLibMediaItemMapper.lIBMediaItemToLibMediaItemPT(traAdvertisement.getMediaItem()))
-            .type(traAdvertismentTypeMapper.DB2DTO(traAdvertisement.getType()))
+            .type(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traAdvertisement.getType()))
             .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCustomer()));
 
     }

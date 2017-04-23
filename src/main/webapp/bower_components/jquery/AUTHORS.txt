@@ -111,7 +111,7 @@ Berker Peksag <berker.peksag@gmail.com>
 Toby Brain <tobyb@freshview.com>
 Matt Mueller <mattmuelle@gmail.com>
 Justin <drakefjustin@gmail.com>
-Daniel Herman <daniel.c.herman@gmail.com>
+Daniel Herman <daniel.corModule.herman@gmail.com>
 Oleg Gaidarenko <markelog@gmail.com>
 Richard Gibson <richard.gibson@gmail.com>
 Rafaël Blais Masson <rafbmasson@gmail.com>
@@ -152,7 +152,7 @@ Akintayo Akinwunmi <aakinwunmi@judge.com>
 MORGAN <morgan@morgangraphics.com>
 Ismail Khair <ismail.khair@gmail.com>
 Carl Danley <carldanley@gmail.com>
-Mike Petrovich <michael.c.petrovich@gmail.com>
+Mike Petrovich <michael.corModule.petrovich@gmail.com>
 Greg Lavallee <greglavallee@wapolabs.com>
 Daniel Gálvez <dgalvez@editablething.com>
 Sai Lung Wong <sai.wong@huffingtonpost.com>
@@ -197,7 +197,7 @@ Eddie Monge <eddie@eddiemonge.com>
 Terry Jones <terry@jon.es>
 Jason Merino <jasonmerino@gmail.com>
 Jeremy Dunck <jdunck@gmail.com>
-Chris Price <price.c@gmail.com>
+Chris Price <price.corModule@gmail.com>
 Guy Bedford <guybedford@gmail.com>
 Amey Sakhadeo <me@ameyms.com>
 Mike Sidorov <mikes.ekb@gmail.com>
@@ -266,7 +266,7 @@ Daniel Nill <daniellnill@gmail.com>
 Yongwoo Jeon <yongwoo.jeon@navercorp.com>
 Sean Henderson <seanh.za@gmail.com>
 Richard Kraaijenhagen <stdin+git@riichard.com>
-Connor Atherton <c.liam.atherton@gmail.com>
+Connor Atherton <corModule.liam.atherton@gmail.com>
 Gary Ye <garysye@gmail.com>
 Christian Grete <webmaster@christiangrete.com>
 Liza Ramo <liza.h.ramo@gmail.com>

@@ -23,6 +23,8 @@ public class CustomTRACampaignMapper {
     @Inject
     private CustomCrmAccountMapper crmAccountMapper;
     @Inject
+    private CustomCorDictionaryMapper corDictionaryMapper;
+    @Inject
     private CustomTraOrderMapper customTraOrderMapper;
 
     public TraCampaign transfromDTOToEntity(TraCampaignPT traCampaignPT, CorNetwork corNetwork) {
@@ -37,12 +39,12 @@ public class CustomTRACampaignMapper {
             .name(traCampaignPT.getName())
             .prize(traCampaignPT.getPrize())
             .customer(crmAccountMapper.createCrmAcountEntity(traCampaignPT.getCustomerId(), corNetwork))
-            .status(traCampaignPT.getStatsus());
-        if (traCampaign.getPrice()!=null) {
+            .status(corDictionaryMapper.corDictionaryDTOToCorDictionary(traCampaignPT.getStatsus()));
+        if (traCampaign.getPrice() != null) {
             traCampaign.price(new TraPrice());
         }
         if (traCampaignPT.getOrders() != null) {
-            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(),traCampaignPT.getId(), corNetwork).stream().collect(toSet()));
+            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(), traCampaignPT.getId(), corNetwork).stream().collect(toSet()));
         }
         traCampaign.network(corNetwork);
         return traCampaign;
@@ -60,7 +62,7 @@ public class CustomTRACampaignMapper {
                 .startDate(traCampaign.getStartDate())
                 .endDate(traCampaign.getEndDate())
                 .customerId(crmAccountMapper.createCustomerTrafficDTO(traCampaign.getCustomer()))
-                .status(traCampaign.getStatus())
+                .status(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traCampaign.getStatus()))
                 .orders(customTraOrderMapper.transfromEntitesToDTO(traCampaign.getOrders()).stream().collect(Collectors.toList()));
     }
 

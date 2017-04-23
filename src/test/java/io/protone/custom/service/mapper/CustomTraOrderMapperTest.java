@@ -35,7 +35,7 @@ public class CustomTraOrderMapperTest {
     private Set<TraOrder> mockListTraOrder = null;
     private List<TraOrderPT> mockListTraOrderPT = null;
 
-   // @Before
+   /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
 
@@ -63,7 +63,7 @@ public class CustomTraOrderMapperTest {
             .invoice(new TraInvoice());
 
     }
-
+*/
    // @Test
     public void trasnformDTOtoEntity() throws Exception {
         //then

@@ -2,7 +2,6 @@ package io.protone.custom.web.rest.network.configuration.library.impl;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CfgMarkerConfiguration;
-import io.protone.domain.CrmStage;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;

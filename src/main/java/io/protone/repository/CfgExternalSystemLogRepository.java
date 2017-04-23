@@ -2,7 +2,6 @@ package io.protone.repository;
 
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContactStatus;
 import io.protone.domain.enumeration.CfgLogTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -37,7 +37,7 @@ public class CustomCrmContactMapperTest {
     private CorNetwork mockCorNetwork = null;
     private CrmContactPT mockCrmContactPT = null;
 
-  //  @Before
+  /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockCrmContact = new CrmContact();
@@ -79,7 +79,7 @@ public class CustomCrmContactMapperTest {
             .persons(new TraCustomerPersonPT())
             .addTasksItem(new CrmTaskPT());
     }
-
+*/
    // @Test
     public void createCrmContactEntity() throws Exception {
         //then

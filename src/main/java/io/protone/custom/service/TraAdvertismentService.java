@@ -1,16 +1,15 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.custom.service.mapper.CustomCorDictionaryMapper;
 import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
-import io.protone.custom.service.mapper.CustomTraIndustryMapper;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;
 import io.protone.repository.LibMediaItemRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
-import io.protone.repository.TraIndustryRepository;
-import io.protone.domain.CrmAccount;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,7 @@ public class TraAdvertismentService {
     private CustomTraAdvertisementRepository traAdvertisementRepository;
 
     @Inject
-    private CustomTraIndustryMapper customTraIndustryMapper;
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
     @Inject
     private CustomCrmAccountMapper customCrmAccountMapper;
@@ -42,8 +41,6 @@ public class TraAdvertismentService {
     @Inject
     private LibMediaItemRepository libMediaItemRepository;
 
-    @Inject
-    private TraIndustryRepository traIndustryRepository;
 
     @Inject
     private CustomCrmAccountRepositoryEx crmAccountRepository;
@@ -61,7 +58,7 @@ public class TraAdvertismentService {
 
     public void deleteAdvertisement(Long idx, CorNetwork corNetwork) {
         TraAdvertisement traAdvertisement = traAdvertisementRepository.findOne(idx);
-        libMediaItemRepository.delete(traAdvertisement.getLibitem());
+        libMediaItemRepository.delete(traAdvertisement.getMediaItem());
         traAdvertisementRepository.delete(traAdvertisement);
     }
 

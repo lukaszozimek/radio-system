@@ -35,7 +35,7 @@ public class CustomCrmOpportunityMapperTest {
     private CrmOpportunity mockCrmOpportunity = null;
     private CrmOpportunityPT mockCrmOpportunityPT = null;
 
-    // @Before
+    /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockCrmOpportunity = new CrmOpportunity();
@@ -62,7 +62,7 @@ public class CustomCrmOpportunityMapperTest {
             .propability(1)
             .addTasksItem(new CrmTaskPT());
     }
-
+*/
     //@Test
     public void createOpportunity() throws Exception {
         //then

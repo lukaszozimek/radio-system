@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class CustomCrmOpportunityMapper {
 
     @Inject
-    private CustomCrmStageMapper stageMapper;
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
     @Inject
     private CustomCrmContactMapper customCrmContactMapper;
@@ -52,7 +52,7 @@ public class CustomCrmOpportunityMapper {
             .tasks(customCrmTaskMapper.createCrmTasks(opportunity.getTasks()))
             .contact(customCrmContactMapper.buildContactDTOFromEntities(opportunity.getContact()))
             .opportunityOwner(corUserMapper.userToCoreUserPT(opportunity.getKeeper()))
-            .stage(stageMapper.cRMStageToCrmStageDTO(opportunity.getStage()));
+            .stage(corDictionaryMapper.corDictionaryToCorDictionaryDTO(opportunity.getStage()));
     }
 
 

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,7 +21,7 @@ public class TraCustomerPT {
     private String shortName = null;
 
     @JsonProperty("area")
-    private CoreAreaPT area = null;
+    private CorDictionaryPT area = null;
 
     @JsonProperty("idNumber1")
     private String idNumber1 = null;
@@ -32,7 +33,7 @@ public class TraCustomerPT {
     private Integer paymentDelay = null;
 
     @JsonProperty("industry")
-    private ConfIndustryPT industry = null;
+    private CorDictionaryPT industry = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -44,10 +45,10 @@ public class TraCustomerPT {
     private Integer paymentDate = null;
 
     @JsonProperty("range")
-    private CoreRangePT range = null;
+    private CorDictionaryPT range = null;
 
     @JsonProperty("size")
-    private CoreSizePT size = null;
+    private CorDictionaryPT size = null;
 
     @JsonProperty("vatNumber")
     private String vatNumber = null;
@@ -102,7 +103,7 @@ public class TraCustomerPT {
         this.shortName = shortName;
     }
 
-    public TraCustomerPT area(CoreAreaPT area) {
+    public TraCustomerPT area(CorDictionaryPT area) {
         this.area = area;
         return this;
     }
@@ -132,11 +133,11 @@ public class TraCustomerPT {
      * @return area
      **/
     @ApiModelProperty(value = "")
-    public CoreAreaPT getArea() {
+    public CorDictionaryPT getArea() {
         return area;
     }
 
-    public void setArea(CoreAreaPT area) {
+    public void setArea(CorDictionaryPT area) {
         this.area = area;
     }
 
@@ -192,7 +193,7 @@ public class TraCustomerPT {
         this.idNumber2 = idNumber2;
     }
 
-    public TraCustomerPT industry(ConfIndustryPT industry) {
+    public TraCustomerPT industry(CorDictionaryPT industry) {
         this.industry = industry;
         return this;
     }
@@ -203,11 +204,11 @@ public class TraCustomerPT {
      * @return industry
      **/
     @ApiModelProperty(value = "")
-    public ConfIndustryPT getIndustry() {
+    public CorDictionaryPT getIndustry() {
         return industry;
     }
 
-    public void setIndustry(ConfIndustryPT industry) {
+    public void setIndustry(CorDictionaryPT industry) {
         this.industry = industry;
     }
 
@@ -268,7 +269,7 @@ public class TraCustomerPT {
         this.paymentDate = paymentDate;
     }
 
-    public TraCustomerPT range(CoreRangePT range) {
+    public TraCustomerPT range(CorDictionaryPT range) {
         this.range = range;
         return this;
     }
@@ -279,15 +280,15 @@ public class TraCustomerPT {
      * @return range
      **/
     @ApiModelProperty(value = "")
-    public CoreRangePT getRange() {
+    public CorDictionaryPT getRange() {
         return range;
     }
 
-    public void setRange(CoreRangePT range) {
+    public void setRange(CorDictionaryPT range) {
         this.range = range;
     }
 
-    public TraCustomerPT size(CoreSizePT size) {
+    public TraCustomerPT size(CorDictionaryPT size) {
         this.size = size;
         return this;
     }
@@ -298,11 +299,11 @@ public class TraCustomerPT {
      * @return size
      **/
     @ApiModelProperty(value = "")
-    public CoreSizePT getSize() {
+    public CorDictionaryPT getSize() {
         return size;
     }
 
-    public void setSize(CoreSizePT size) {
+    public void setSize(CorDictionaryPT size) {
         this.size = size;
     }
 

@@ -1,10 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.TraInvoiceStatus;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,7 +33,7 @@ public class TraInvoicePT {
     private TraCustomerPT customerPT = null;
 
     @JsonProperty("status")
-    private TraInvoiceStatus traStatus = null;
+    private CorDictionaryPT traStatus = null;
 
     public TraInvoicePT id(Long id) {
         this.id = id;
@@ -134,7 +132,7 @@ public class TraInvoicePT {
     }
 
 
-    public TraInvoicePT traStatus(TraInvoiceStatus traStatus) {
+    public TraInvoicePT traStatus(CorDictionaryPT traStatus) {
         this.traStatus = traStatus;
         return this;
     }
@@ -145,11 +143,11 @@ public class TraInvoicePT {
      * @return paymentDay
      **/
     @ApiModelProperty(value = "")
-    public TraInvoiceStatus getTraStatus() {
+    public CorDictionaryPT getTraStatus() {
         return traStatus;
     }
 
-    public void setTraStatus(TraInvoiceStatus traStatus) {
+    public void setTraStatus(CorDictionaryPT traStatus) {
         this.traStatus = traStatus;
     }
 

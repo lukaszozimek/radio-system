@@ -2,7 +2,6 @@ package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorTax;
-import io.protone.domain.TraIndustry;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;

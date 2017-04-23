@@ -22,16 +22,8 @@ public class CustomCrmAccountMapper {
     private CustomCorAddressMapper corAddressMapper;
 
     @Inject
-    private CustomTraIndustryMapper industryMapper;
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
-    @Inject
-    private CustomCorRangeMapper customCorRangeMapper;
-
-    @Inject
-    private CustomCorAreaMapper customCorAreaMapper;
-
-    @Inject
-    private CustomCorSizeMapper customCorSizeMapper;
 
     @Inject
     private CustomCrmTaskMapper customCrmTaskMapper;
@@ -59,13 +51,13 @@ public class CustomCrmAccountMapper {
             .shortName(crmAccountPT.getShortName())
             .vatNumber(crmAccountPT.getVatNumber())
             .paymentDelay(crmAccountPT.getPaymentDelay())
-            .industry(industryMapper.tRAIndustryDTOToTraIndustry(crmAccountPT.getIndustry()))
+            .industry(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmAccountPT.getIndustry()))
             .keeper(corUserMapper.coreUserPTToUser(crmAccountPT.getAccount()))
-            .size(customCorSizeMapper.cORSizeDTOToCorSize(crmAccountPT.getSize()))
-            .range(customCorRangeMapper.cORRangeDTOToCorRange(crmAccountPT.getRange()))
+            .size(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmAccountPT.getSize()))
+            .range(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmAccountPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmAccountPT.getAdress()))
             .person(customTRAPersonMapper.createPersonEntity(crmAccountPT.getPersons(), corNetwork))
-            .area(customCorAreaMapper.cORAreaDTOToCorArea(crmAccountPT.getArea()))
+            .area(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmAccountPT.getArea()))
             .network(corNetwork);
     }
 
@@ -85,17 +77,17 @@ public class CustomCrmAccountMapper {
             .paymentDelay(traCustomerPT.getPaymentDelay())
             .discount(traCustomerPT.getDiscount());
         if (traCustomerPT.getIndustry() != null) {
-            crmAccount.industry(industryMapper.tRAIndustryDTOToTraIndustry(traCustomerPT.getIndustry()));
+            crmAccount.industry(corDictionaryMapper.corDictionaryDTOToCorDictionary(traCustomerPT.getIndustry()));
         }
         if (traCustomerPT.getAccount() != null) {
             crmAccount.keeper(corUserMapper.coreUserPTToUser(traCustomerPT.getAccount()));
         }
         if (traCustomerPT.getSize() != null) {
 
-            crmAccount.size(customCorSizeMapper.cORSizeDTOToCorSize(traCustomerPT.getSize()));
+            crmAccount.size(corDictionaryMapper.corDictionaryDTOToCorDictionary(traCustomerPT.getSize()));
         }
         if (traCustomerPT.getRange() != null) {
-            crmAccount.range(customCorRangeMapper.cORRangeDTOToCorRange(traCustomerPT.getRange()));
+            crmAccount.range(corDictionaryMapper.corDictionaryDTOToCorDictionary(traCustomerPT.getRange()));
         }
         if (traCustomerPT.getAdress() != null) {
             crmAccount.addres(corAddressMapper.cORAddressDTOToCorAddress(traCustomerPT.getAdress()));
@@ -104,7 +96,7 @@ public class CustomCrmAccountMapper {
             crmAccount.person(customTRAPersonMapper.createPersonEntity(traCustomerPT.getPersons(), network));
         }
         if (traCustomerPT.getArea() != null) {
-            crmAccount.area(customCorAreaMapper.cORAreaDTOToCorArea(traCustomerPT.getArea()));
+            crmAccount.area(corDictionaryMapper.corDictionaryDTOToCorDictionary(traCustomerPT.getArea()));
         }
         crmAccount.network(network);
         return crmAccount;
@@ -127,17 +119,17 @@ public class CustomCrmAccountMapper {
             crmAccount.paymentDelay(Math.toIntExact(traCustomerPT.getPaymentDelay()));
         }
         if (traCustomerPT.getIndustry() != null) {
-            crmAccount.industry(industryMapper.tRAIndustryToTraIndustryDTO(traCustomerPT.getIndustry()));
+            crmAccount.industry(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traCustomerPT.getIndustry()));
         }
         if (traCustomerPT.getKeeper() != null) {
             crmAccount.account(corUserMapper.userToCoreUserPT(traCustomerPT.getKeeper()));
 
         }
         if (traCustomerPT.getSize() != null) {
-            crmAccount.size(customCorSizeMapper.cORSizeToCorSizeDTO(traCustomerPT.getSize()));
+            crmAccount.size(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traCustomerPT.getSize()));
         }
         if (traCustomerPT.getRange() != null) {
-            crmAccount.range(customCorRangeMapper.cORRangeToCorRangeDTO(traCustomerPT.getRange()));
+            crmAccount.range(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traCustomerPT.getRange()));
         }
         if (traCustomerPT.getAddres() != null) {
             crmAccount.adress(corAddressMapper.cORAddressToCorAddressDTO(traCustomerPT.getAddres()));
@@ -146,7 +138,7 @@ public class CustomCrmAccountMapper {
             crmAccount.persons(customTRAPersonMapper.createDTOObject(traCustomerPT.getPerson()));
         }
         if (traCustomerPT.getArea() != null) {
-            crmAccount.area(customCorAreaMapper.cORAreaToCorAreaDTO(traCustomerPT.getArea()));
+            crmAccount.area(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traCustomerPT.getArea()));
         }
         return crmAccount;
     }
@@ -167,17 +159,17 @@ public class CustomCrmAccountMapper {
             crmAccountPT = crmAccountPT.paymentDelay(Math.toIntExact(crmAccount.getPaymentDelay()));
         }
         if (crmAccount.getIndustry() != null) {
-            crmAccountPT = crmAccountPT.industry(industryMapper.tRAIndustryToTraIndustryDTO(crmAccount.getIndustry()));
+            crmAccountPT = crmAccountPT.industry(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmAccount.getIndustry()));
         }
         if (crmAccount.getKeeper() != null) {
             crmAccountPT = crmAccountPT.account(corUserMapper.userToCoreUserPT(crmAccount.getKeeper()));
         }
         if (crmAccount.getSize() != null) {
-            crmAccountPT = crmAccountPT.size(customCorSizeMapper.cORSizeToCorSizeDTO(crmAccount.getSize()));
+            crmAccountPT = crmAccountPT.size(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmAccount.getSize()));
         }
 
         if (crmAccount.getRange() != null) {
-            crmAccountPT = crmAccountPT.range(customCorRangeMapper.cORRangeToCorRangeDTO(crmAccount.getRange()));
+            crmAccountPT = crmAccountPT.range(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmAccount.getRange()));
         }
 
         if (crmAccount.getAddres() != null) {
@@ -188,7 +180,7 @@ public class CustomCrmAccountMapper {
         }
         if (crmAccount.getPerson() != null) {
 
-            crmAccountPT = crmAccountPT.area(customCorAreaMapper.cORAreaToCorAreaDTO(crmAccount.getArea()));
+            crmAccountPT = crmAccountPT.area(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmAccount.getArea()));
 
         }
         if (crmAccount.getTasks() != null) {

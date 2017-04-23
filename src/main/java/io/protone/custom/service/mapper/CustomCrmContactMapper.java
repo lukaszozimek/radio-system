@@ -21,16 +21,7 @@ public class CustomCrmContactMapper {
     private CustomCorAddressMapper corAddressMapper;
 
     @Inject
-    private CustomTraIndustryMapper industryMapper;
-
-    @Inject
-    private CustomCorRangeMapper customCorRangeMapper;
-
-    @Inject
-    private CustomCorAreaMapper customCorAreaMapper;
-
-    @Inject
-    private CustomCorSizeMapper customCorSizeMapper;
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
     @Inject
     private CustomCrmTaskMapper customCrmTaskMapper;
@@ -53,12 +44,12 @@ public class CustomCrmContactMapper {
             .shortName(crmContactPT.getShortName())
             .vatNumber(crmContactPT.getVatNumber())
             .paymentDelay(crmContactPT.getPaymentDelay())
-            .industry(industryMapper.tRAIndustryDTOToTraIndustry(crmContactPT.getIndustry()))
+            .industry(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getIndustry()))
             .keeper(corUserMapper.coreUserPTToUser(crmContactPT.getAccount()))
-            .size(customCorSizeMapper.cORSizeDTOToCorSize(crmContactPT.getSize()))
-            .range(customCorRangeMapper.cORRangeDTOToCorRange(crmContactPT.getRange()))
+            .size(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getSize()))
+            .range(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getRange()))
             .addres(corAddressMapper.cORAddressDTOToCorAddress(crmContactPT.getAdress()))
-            .area(customCorAreaMapper.cORAreaDTOToCorArea(crmContactPT.getArea()))
+            .area(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getArea()))
             .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons(), corNetwork))
             .network(corNetwork);
     }
@@ -76,13 +67,13 @@ public class CustomCrmContactMapper {
             .shortName(crmContact.getShortName())
             .vatNumber(crmContact.getVatNumber())
             .paymentDelay(crmContact.getPaymentDelay())
-            .industry(industryMapper.tRAIndustryToTraIndustryDTO(crmContact.getIndustry()))
+            .industry(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getIndustry()))
             //.account(corUserMapper.corUserMapper(crmContact.getKeeper()))
-            .size(customCorSizeMapper.cORSizeToCorSizeDTO(crmContact.getSize()))
-            .range(customCorRangeMapper.cORRangeToCorRangeDTO(crmContact.getRange()))
+            .size(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getSize()))
+            .range(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getRange()))
             .adress(corAddressMapper.cORAddressToCorAddressDTO(crmContact.getAddres()))
             .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
-            .area(customCorAreaMapper.cORAreaToCorAreaDTO(crmContact.getArea()))
+            .area(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getArea()))
             .tasks(crmContact.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()))
             .networkId(customCorNetworkMapper.cORNetworkToCorNetworkDTO(crmContact.getNetwork()));
 

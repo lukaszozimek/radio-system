@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class CrmContactPT {
     @JsonProperty("area")
-    private CoreAreaPT area = null;
+    private CorDictionaryPT area = null;
 
     @JsonProperty("id")
     private Long id = null;
@@ -26,7 +26,7 @@ public class CrmContactPT {
     private String idNumber2 = null;
 
     @JsonProperty("industry")
-    private ConfIndustryPT industry = null;
+    private CorDictionaryPT industry = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -41,10 +41,10 @@ public class CrmContactPT {
     private Integer paymentDelay = null;
 
     @JsonProperty("range")
-    private CoreRangePT range = null;
+    private CorDictionaryPT range = null;
 
     @JsonProperty("size")
-    private CoreSizePT size = null;
+    private CorDictionaryPT size = null;
 
     @JsonProperty("vatNumber")
     private String vatNumber = null;
@@ -64,7 +64,7 @@ public class CrmContactPT {
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
 
 
-    public CrmContactPT area(CoreAreaPT area) {
+    public CrmContactPT area(CorDictionaryPT area) {
         this.area = area;
         return this;
     }
@@ -81,11 +81,11 @@ public class CrmContactPT {
      * @return area
      **/
     @ApiModelProperty(value = "")
-    public CoreAreaPT getArea() {
+    public CorDictionaryPT getArea() {
         return area;
     }
 
-    public void setArea(CoreAreaPT area) {
+    public void setArea(CorDictionaryPT area) {
         this.area = area;
     }
 
@@ -174,7 +174,7 @@ public class CrmContactPT {
         this.idNumber2 = idNumber2;
     }
 
-    public CrmContactPT industry(ConfIndustryPT industry) {
+    public CrmContactPT industry(CorDictionaryPT industry) {
         this.industry = industry;
         return this;
     }
@@ -185,11 +185,11 @@ public class CrmContactPT {
      * @return industry
      **/
     @ApiModelProperty(value = "")
-    public ConfIndustryPT getIndustry() {
+    public CorDictionaryPT getIndustry() {
         return industry;
     }
 
-    public void setIndustry(ConfIndustryPT industry) {
+    public void setIndustry(CorDictionaryPT industry) {
         this.industry = industry;
     }
 
@@ -250,7 +250,7 @@ public class CrmContactPT {
         this.paymentDate = paymentDate;
     }
 
-    public CrmContactPT range(CoreRangePT range) {
+    public CrmContactPT range(CorDictionaryPT range) {
         this.range = range;
         return this;
     }
@@ -261,15 +261,15 @@ public class CrmContactPT {
      * @return range
      **/
     @ApiModelProperty(value = "")
-    public CoreRangePT getRange() {
+    public CorDictionaryPT getRange() {
         return range;
     }
 
-    public void setRange(CoreRangePT range) {
+    public void setRange(CorDictionaryPT range) {
         this.range = range;
     }
 
-    public CrmContactPT size(CoreSizePT size) {
+    public CrmContactPT size(CorDictionaryPT size) {
         this.size = size;
         return this;
     }
@@ -280,11 +280,11 @@ public class CrmContactPT {
      * @return size
      **/
     @ApiModelProperty(value = "")
-    public CoreSizePT getSize() {
+    public CorDictionaryPT getSize() {
         return size;
     }
 
-    public void setSize(CoreSizePT size) {
+    public void setSize(CorDictionaryPT size) {
         this.size = size;
     }
 

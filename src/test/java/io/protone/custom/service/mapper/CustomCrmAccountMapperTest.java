@@ -42,7 +42,7 @@ public class CustomCrmAccountMapperTest {
 
     private CorNetwork mockCorNetwork = null;
 
-//    @Before
+/*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockCorNetwork.setId((long) 1);
@@ -69,7 +69,7 @@ public class CustomCrmAccountMapperTest {
         mockTraCustomerPT.discount(new TraDiscount());
 
     }
-
+*/
    // @Test
     public void createCrmAcountEntity() throws Exception {
         //then

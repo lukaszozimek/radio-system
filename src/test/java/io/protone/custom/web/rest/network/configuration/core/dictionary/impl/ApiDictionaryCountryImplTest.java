@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorArea;
 import io.protone.domain.CorCountry;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;

@@ -1,10 +1,7 @@
 package io.protone.custom.web.rest.network.configuration.core.user;
 
-import io.protone.custom.service.dto.ConfCrmContactStatusPT;
-import io.protone.custom.service.dto.CoreKeyPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.swagger.annotations.*;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -33,7 +33,7 @@ public class CrmOpportunityPT {
     private LocalDate closeDate = null;
 
     @JsonProperty("stage")
-    private ConfCrmStagePT stage = null;
+    private CorDictionaryPT stage = null;
 
     @JsonProperty("propability")
     private Integer propability = null;
@@ -156,7 +156,7 @@ public class CrmOpportunityPT {
         this.closeDate = closeDate;
     }
 
-    public CrmOpportunityPT stage(ConfCrmStagePT stage) {
+    public CrmOpportunityPT stage(CorDictionaryPT stage) {
         this.stage = stage;
         return this;
     }
@@ -167,11 +167,11 @@ public class CrmOpportunityPT {
      * @return stage
      **/
     @ApiModelProperty(value = "")
-    public ConfCrmStagePT getStage() {
+    public CorDictionaryPT getStage() {
         return stage;
     }
 
-    public void setStage(ConfCrmStagePT stage) {
+    public void setStage(CorDictionaryPT stage) {
         this.stage = stage;
     }
 

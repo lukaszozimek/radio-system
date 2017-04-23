@@ -37,7 +37,7 @@ public class CustomTraInvoiceMapperTest {
 
     private TraInvoicePT mockTraInvoicePt = null;
 
-  //  @Before
+  /*
     public void initialize() {
         mockCorNetwork = new CorNetwork();
         mockTraInvoice = new TraInvoice();
@@ -61,7 +61,7 @@ public class CustomTraInvoiceMapperTest {
 
 
     }
-
+*/
  //   @Test
     public void createEntityFromDTO() throws Exception {
         //then

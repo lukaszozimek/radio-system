@@ -23,19 +23,8 @@ public class CustomCrmLeadMapper {
     private CustomTRAPersonMapper customTRAPersonMapper;
 
     @Inject
-    private CustomTraIndustryMapper customTraIndustryMapper;
+    private CustomCorDictionaryMapper corDictionaryMapper;
 
-    @Inject
-    private CustomCrmLeadSourceMapper customCrmLeadSourceMapper;
-
-    @Inject
-    private CustomCrmLeadStatusMapper customCrmLeadStatusMapper;
-
-    @Inject
-    private CustomCorAreaMapper corAreaMapper;
-
-    @Inject
-    private CustomTraIndustryMapper industryMapper;
     @Inject
     private CustomCorUserMapperExt corUserMapper;
 
@@ -48,13 +37,13 @@ public class CustomCrmLeadMapper {
         crmLead.setName(leadPT.getName());
         crmLead.setDescription(leadPT.getDescription());
         crmLead.setShortname(leadPT.getShortname());
-        crmLead.setIndustry(industryMapper.tRAIndustryDTOToTraIndustry(leadPT.getIndustry()));
-        crmLead.setArea(corAreaMapper.cORAreaDTOToCorArea(leadPT.getArea()));
+        crmLead.setIndustry(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getIndustry()));
+        crmLead.setArea(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getArea()));
         crmLead.setAddres(corAddressMapper.cORAddressDTOToCorAddress(leadPT.getAdress()));
-        crmLead.setLeadSource(customCrmLeadSourceMapper.cRMLeadSourceDTOToCrmLeadSource(leadPT.getSource()));
-        crmLead.setLeadStatus(customCrmLeadStatusMapper.cRMLeadStatusDTOToCrmLeadStatus(leadPT.getStatus()));
+        crmLead.setLeadSource(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getSource()));
+        crmLead.setLeadStatus(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getStatus()));
         crmLead.keeper(corUserMapper.coreUserPTToUser(leadPT.getOwner()));
-        crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson(),corNetwork));
+        crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson(), corNetwork));
         crmLead.setNetwork(corNetwork);
         return crmLead;
     }
@@ -68,11 +57,11 @@ public class CustomCrmLeadMapper {
         crmLeadPT.setName(lead.getName());
         crmLeadPT.setShortname(lead.getShortname());
         crmLeadPT.setDescription(lead.getDescription());
-        crmLeadPT.setIndustry(industryMapper.tRAIndustryToTraIndustryDTO(lead.getIndustry()));
-        crmLeadPT.setArea(corAreaMapper.cORAreaToCorAreaDTO(lead.getArea()));
+        crmLeadPT.setIndustry(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getIndustry()));
+        crmLeadPT.setArea(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getArea()));
         crmLeadPT.setAdress(corAddressMapper.cORAddressToCorAddressDTO(lead.getAddres()));
-        crmLeadPT.setSource(customCrmLeadSourceMapper.cRMLeadSourceToCrmLeadSourceDTO(lead.getLeadSource()));
-        crmLeadPT.setStatus(customCrmLeadStatusMapper.cRMLeadStatusToCrmLeadStatusDTO(lead.getLeadStatus()));
+        crmLeadPT.setSource(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getLeadSource()));
+        crmLeadPT.setStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getLeadStatus()));
         crmLeadPT.setTasks(customCrmTaskMapper.createCrmTasks(lead.getTasks()));
         crmLeadPT.setPerson(customTRAPersonMapper.createDTOObject(lead.getPerson()));
         crmLeadPT.setOwner(corUserMapper.userToCoreUserPT(lead.getKeeper()));
