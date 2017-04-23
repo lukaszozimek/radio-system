@@ -23,7 +23,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMusicLogPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMusicLogPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMusicLogPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/music",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMusicLogPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMusicLogPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMusicLogPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/music",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music/{id]",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/music/{id]",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteMusicLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -65,7 +65,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMusicLogPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMusicLogPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMusicLogPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/music",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -77,7 +77,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMusicLogPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMusicLogPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMusicLogPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/music/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/music/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfMusicLogPT> getMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

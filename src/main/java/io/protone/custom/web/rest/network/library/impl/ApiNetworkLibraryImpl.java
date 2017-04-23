@@ -1,8 +1,9 @@
-package io.protone.custom.web.rest.network.library;
+package io.protone.custom.web.rest.network.library.impl;
 
 import io.protone.custom.service.LibLibraryService;
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.custom.service.mapper.CustomLibLibraryMapperExt;
+import io.protone.custom.web.rest.network.library.ApiNetworkLibrary;
 import io.protone.domain.LibLibrary;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

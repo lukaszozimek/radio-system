@@ -23,7 +23,7 @@ public interface ApiPropertyValue {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreValuePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/value",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/value",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -36,7 +36,7 @@ public interface ApiPropertyValue {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreValuePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/value",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/value",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreValuePT>> getAllPropertyValuesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -48,7 +48,7 @@ public interface ApiPropertyValue {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreValuePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/property/value",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/value",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)

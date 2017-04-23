@@ -21,7 +21,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTaxPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTaxPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTaxPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/tax",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -33,7 +33,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTaxPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTaxPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTaxPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfTaxPT> getTaxUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -47,7 +47,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTaxPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTaxPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTaxPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/tax",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -62,7 +62,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTaxPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTaxPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTaxPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/tax",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -76,7 +76,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/tax/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteTaxUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

@@ -22,7 +22,7 @@ public interface ApiNetworkTrafficCustomerInvoice {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerOrdersPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerOrdersPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCustomerOrdersPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/invoice",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}/invoice",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraInvoicePT>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -35,7 +35,7 @@ public interface ApiNetworkTrafficCustomerInvoice {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/invoice/{id}/notify",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}/invoice/{id}/notify",
         produces = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<Void> notifyAboutUnpaidInvoiceCustomerUsingGET(@ApiParam(value = "cutomerId", required = true) @PathVariable("networkShortcut") String networkShortcut,

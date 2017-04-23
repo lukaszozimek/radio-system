@@ -24,7 +24,7 @@ public interface ApiDictionaryCoreDictionary {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -41,7 +41,7 @@ public interface ApiDictionaryCoreDictionary {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -57,7 +57,7 @@ public interface ApiDictionaryCoreDictionary {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteDictionaryValueUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -72,7 +72,7 @@ public interface ApiDictionaryCoreDictionary {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CorDictionaryPT>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -86,7 +86,7 @@ public interface ApiDictionaryCoreDictionary {
         @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CorDictionaryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CorDictionaryPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CorDictionaryPT> getDictionaryValueGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

@@ -32,7 +32,7 @@ import java.util.Optional;
  * REST controller for managing the current user's account.
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 public class ApiUserImpl implements ApiUser {
 
     private final Logger log = LoggerFactory.getLogger(ApiUserImpl.class);

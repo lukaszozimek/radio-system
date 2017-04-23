@@ -23,7 +23,7 @@ public interface ApiNetworkTrafficCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiNetworkTrafficCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiNetworkTrafficCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -64,7 +64,7 @@ public interface ApiNetworkTrafficCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCustomerPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraCustomerPT> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -77,7 +77,7 @@ public interface ApiNetworkTrafficCustomer {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

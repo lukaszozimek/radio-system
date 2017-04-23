@@ -23,7 +23,7 @@ public interface ApiNetworkTrafficOrder {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/order",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -37,7 +37,7 @@ public interface ApiNetworkTrafficOrder {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/order",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -50,7 +50,7 @@ public interface ApiNetworkTrafficOrder {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/order",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -62,7 +62,7 @@ public interface ApiNetworkTrafficOrder {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/order/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraOrderPT> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -75,7 +75,7 @@ public interface ApiNetworkTrafficOrder {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/order/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteAnOrderUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -89,7 +89,7 @@ public interface ApiNetworkTrafficOrder {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/order/{id}/notify",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/{id}/notify",
         produces = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraOrderPT> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

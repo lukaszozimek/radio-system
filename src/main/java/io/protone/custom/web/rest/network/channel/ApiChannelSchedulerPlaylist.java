@@ -19,7 +19,7 @@ public interface ApiChannelSchedulerPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -33,7 +33,7 @@ public interface ApiChannelSchedulerPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
@@ -49,7 +49,7 @@ public interface ApiChannelSchedulerPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -65,7 +65,7 @@ public interface ApiChannelSchedulerPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -78,7 +78,7 @@ public interface ApiChannelSchedulerPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchPlaylistPT> getSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

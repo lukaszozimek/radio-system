@@ -23,7 +23,7 @@ public interface ApiNetworkCrmCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmAccountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiNetworkCrmCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmAccountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiNetworkCrmCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmAccountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -64,7 +64,7 @@ public interface ApiNetworkCrmCustomer {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmAccountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmAccountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmAccountPT> getCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -77,7 +77,7 @@ public interface ApiNetworkCrmCustomer {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

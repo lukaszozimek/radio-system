@@ -19,7 +19,7 @@ public interface ApiChannelPlayoutPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/playlist/{date}/load",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/playlist/{date}/load",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -34,7 +34,7 @@ public interface ApiChannelPlayoutPlaylist {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/playlist/{date}/refresh",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/playlist/{date}/refresh",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)

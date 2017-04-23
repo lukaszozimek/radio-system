@@ -23,7 +23,7 @@ public interface ApiConfigurationSchedulerLogCommercial {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfCommercialLogPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCommercialLogPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCommercialLogPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/commercial",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/commercial",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiConfigurationSchedulerLogCommercial {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfCommercialLogPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCommercialLogPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCommercialLogPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/commercial",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/commercial",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiConfigurationSchedulerLogCommercial {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/commercial/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/commercial/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCommercialLogConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

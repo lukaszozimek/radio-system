@@ -1,6 +1,7 @@
 package io.protone.custom.web.rest.network.library;
 
 import io.protone.ProtoneApp;
+import io.protone.custom.web.rest.network.library.impl.ApiNetworkLibraryImpl;
 import io.protone.domain.LibLibrary;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;

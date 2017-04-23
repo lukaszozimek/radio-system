@@ -31,8 +31,10 @@ public class CustomCorUserMapperExt {
 
     @Inject
     private CustomCorUserRepository customCorUserRepository;
+
     @Inject
     private CustomCorNetworkMapper customCorNetworkMapper;
+
     @Inject
     private CustomCORChannelMapper customCORChannelMapper;
 

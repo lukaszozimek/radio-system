@@ -22,7 +22,7 @@ public interface ApiNetworkCrmCustomerTask {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}/task",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskPT>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -36,7 +36,7 @@ public interface ApiNetworkCrmCustomerTask {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}/task",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -52,7 +52,7 @@ public interface ApiNetworkCrmCustomerTask {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}/task",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -67,7 +67,7 @@ public interface ApiNetworkCrmCustomerTask {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}/task/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCustomerActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -81,7 +81,7 @@ public interface ApiNetworkCrmCustomerTask {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/customer/{shortName}/task/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmTaskPT> getCustomerActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

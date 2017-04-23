@@ -21,7 +21,7 @@ public interface ApiNetwork {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreNetworkPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreNetworkPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreNetworkPT.class)})
-    @RequestMapping(value = "/api/network",
+    @RequestMapping(value = "/api/v1/network",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreNetworkPT>> getAllNetworksUsingGET();
@@ -33,7 +33,7 @@ public interface ApiNetwork {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreNetworkPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreNetworkPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreNetworkPT.class)})
-    @RequestMapping(value = "/api/network",
+    @RequestMapping(value = "/api/v1/network",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -46,7 +46,7 @@ public interface ApiNetwork {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreNetworkPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreNetworkPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreNetworkPT.class)})
-    @RequestMapping(value = "/api/network",
+    @RequestMapping(value = "/api/v1/network",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -58,7 +58,7 @@ public interface ApiNetwork {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteNetworkUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -69,7 +69,7 @@ public interface ApiNetwork {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreNetworkPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreNetworkPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreNetworkPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreNetworkPT> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);

@@ -22,7 +22,7 @@ public interface ApiChannelLibrary {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibraryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/library",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
@@ -37,7 +37,7 @@ public interface ApiChannelLibrary {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibraryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/library",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
@@ -53,7 +53,7 @@ public interface ApiChannelLibrary {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibraryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/library",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -68,7 +68,7 @@ public interface ApiChannelLibrary {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
@@ -83,7 +83,7 @@ public interface ApiChannelLibrary {
         @ApiResponse(code = 401, message = "Unauthorized", response = LibraryPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = LibraryPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = LibraryPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)

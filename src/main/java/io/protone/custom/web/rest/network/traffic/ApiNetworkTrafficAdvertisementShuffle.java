@@ -24,7 +24,7 @@ public interface ApiNetworkTrafficAdvertisementShuffle {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement/shuffle",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/shuffle",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.GET)
@@ -39,7 +39,7 @@ public interface ApiNetworkTrafficAdvertisementShuffle {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement/shuffle/",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/shuffle/",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)

@@ -23,7 +23,7 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -64,7 +64,7 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement/{idx}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/{idx}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -77,7 +77,7 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/advertisement/{idx}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/{idx}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

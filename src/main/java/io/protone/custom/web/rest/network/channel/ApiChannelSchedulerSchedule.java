@@ -20,7 +20,7 @@ public interface ApiChannelSchedulerSchedule {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchSchedulePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchSchedulePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchSchedulePT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchSchedulePT>> getAllSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -34,7 +34,7 @@ public interface ApiChannelSchedulerSchedule {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchSchedulePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchSchedulePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchSchedulePT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
@@ -50,7 +50,7 @@ public interface ApiChannelSchedulerSchedule {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchSchedulePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchSchedulePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchSchedulePT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -66,7 +66,7 @@ public interface ApiChannelSchedulerSchedule {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -79,13 +79,11 @@ public interface ApiChannelSchedulerSchedule {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchSchedulePT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchSchedulePT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchSchedulePT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchSchedulePT> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") String date);
-
-
 
 }

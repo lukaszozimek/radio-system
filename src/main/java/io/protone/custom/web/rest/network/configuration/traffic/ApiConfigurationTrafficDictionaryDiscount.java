@@ -22,7 +22,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfDiscountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfDiscountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfDiscountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/discount",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfDiscountPT>> getAllDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -34,7 +34,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfDiscountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfDiscountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfDiscountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/discount/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfDiscountPT> getDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -48,7 +48,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfDiscountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfDiscountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfDiscountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/discount",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -63,7 +63,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfDiscountPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfDiscountPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfDiscountPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/discount",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -77,7 +77,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/discount/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/discount/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteDiscountUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

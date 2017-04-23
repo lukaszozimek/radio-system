@@ -23,7 +23,7 @@ public interface ApiChannel {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreChannelPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreChannelPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreChannelPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiChannel {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreChannelPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreChannelPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreChannelPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiChannel {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreChannelPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreChannelPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreChannelPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -63,7 +63,7 @@ public interface ApiChannel {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreChannelPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreChannelPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreChannelPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreChannelPT> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -75,7 +75,7 @@ public interface ApiChannel {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

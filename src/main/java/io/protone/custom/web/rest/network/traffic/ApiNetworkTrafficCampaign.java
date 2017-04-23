@@ -22,7 +22,7 @@ public interface ApiNetworkTrafficCampaign {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -35,7 +35,7 @@ public interface ApiNetworkTrafficCampaign {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -49,7 +49,7 @@ public interface ApiNetworkTrafficCampaign {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -63,7 +63,7 @@ public interface ApiNetworkTrafficCampaign {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCampaignUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -76,7 +76,7 @@ public interface ApiNetworkTrafficCampaign {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCampaignPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/campaign/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraCampaignPT> getCampaignUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

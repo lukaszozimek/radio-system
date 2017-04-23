@@ -21,7 +21,7 @@ public interface ApiNetworkTrafficCustomerOrder {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraOrderPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraOrderPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/order",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}/order",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraOrderPT>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

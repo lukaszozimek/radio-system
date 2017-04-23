@@ -22,7 +22,7 @@ public interface ApiChannelTrafficTemplate {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchEventPT>> getAllTrafficTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -35,7 +35,7 @@ public interface ApiChannelTrafficTemplate {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.PUT)
@@ -51,7 +51,7 @@ public interface ApiChannelTrafficTemplate {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates",
         produces = {"application/json"},
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -67,7 +67,7 @@ public interface ApiChannelTrafficTemplate {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates/{shortName}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteTrafficTemplateForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -80,7 +80,7 @@ public interface ApiChannelTrafficTemplate {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/templates/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchEventPT> getTrafficTemplateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

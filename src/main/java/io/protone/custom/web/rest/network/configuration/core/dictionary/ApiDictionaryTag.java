@@ -22,7 +22,7 @@ public interface ApiDictionaryTag {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTagPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTagPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTagPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/tag",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/tag",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -35,7 +35,7 @@ public interface ApiDictionaryTag {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTagPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTagPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTagPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/tag",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/tag",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -49,7 +49,7 @@ public interface ApiDictionaryTag {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfTagPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfTagPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfTagPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/network/dictionary/tag",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/tag",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfTagPT>> getAllTagsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);

@@ -23,7 +23,7 @@ public interface ApiNetworkCrmOpportunity {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmOpportunityPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/opportunity",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiNetworkCrmOpportunity {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmOpportunityPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/opportunity",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiNetworkCrmOpportunity {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmOpportunityPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/opportunity",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmOpportunityPT>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -64,7 +64,7 @@ public interface ApiNetworkCrmOpportunity {
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CrmOpportunityPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CrmOpportunityPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/opportunity/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmOpportunityPT> getOpportunityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -77,7 +77,7 @@ public interface ApiNetworkCrmOpportunity {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/crm/opportunity/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteOpportunityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

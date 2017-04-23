@@ -22,7 +22,7 @@ public interface ApiNetworkTrafficCustomerAdvertisement {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerAdvertismentsPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerAdvertismentsPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraCustomerAdvertismentsPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/traffic/customer/{customerShortcut}/advertisement",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}/advertisement",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraAdvertisementPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

@@ -23,7 +23,7 @@ public interface ApiConfigurationUser {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/user",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreUserPT>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -35,7 +35,7 @@ public interface ApiConfigurationUser {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/user/{login}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CoreUserPT> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -49,7 +49,7 @@ public interface ApiConfigurationUser {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/user",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -64,7 +64,7 @@ public interface ApiConfigurationUser {
         @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/user",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -78,7 +78,7 @@ public interface ApiConfigurationUser {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/user/{login}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

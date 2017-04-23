@@ -20,7 +20,7 @@ public interface ApiChannelSchedulerGrid {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchGridPT>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -34,7 +34,7 @@ public interface ApiChannelSchedulerGrid {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -50,7 +50,7 @@ public interface ApiChannelSchedulerGrid {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -66,7 +66,7 @@ public interface ApiChannelSchedulerGrid {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/{shortName}",
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerGridForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -79,7 +79,7 @@ public interface ApiChannelSchedulerGrid {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchGridPT> getSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

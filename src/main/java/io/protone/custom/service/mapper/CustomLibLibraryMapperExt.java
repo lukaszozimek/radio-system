@@ -17,28 +17,28 @@ import java.util.List;
 public class CustomLibLibraryMapperExt {
 
     @Inject
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Inject
-    CustomCorUserMapperExt userMapper;
+    private CustomCorUserMapperExt userMapper;
 
     @Inject
-    CorChannelRepository channelRepository;
+    private CorChannelRepository channelRepository;
 
     @Inject
-    CustomCORChannelMapper channelMapper;
+    private CustomCORChannelMapper channelMapper;
 
     public LibraryPT DB2DTO(LibLibrary libraryDB) {
 
-        if ( libraryDB == null )
+        if (libraryDB == null)
             return null;
 
         LibraryPT libraryDAO = new LibraryPT();
-        libraryDAO.setNetworkId( libraryDB.getNetwork().getId());
-        libraryDAO.setId( libraryDB.getId() );
-        libraryDAO.setPrefix( libraryDB.getPrefix() );
-        libraryDAO.setName( libraryDB.getName() );
-        libraryDAO.setDescription( libraryDB.getDescription());
+        libraryDAO.setNetworkId(libraryDB.getNetwork().getId());
+        libraryDAO.setId(libraryDB.getId());
+        libraryDAO.setPrefix(libraryDB.getPrefix());
+        libraryDAO.setName(libraryDB.getName());
+        libraryDAO.setDescription(libraryDB.getDescription());
         libraryDAO.setShortcut(libraryDB.getShortcut());
         libraryDAO.setPrefix(libraryDB.getPrefix());
         libraryDAO.setCounter(libraryDB.getCounter());
@@ -52,29 +52,29 @@ public class CustomLibLibraryMapperExt {
 
     public List<LibraryPT> DBs2DTOs(List<LibLibrary> libraries) {
 
-        if ( libraries == null )
+        if (libraries == null)
             return null;
 
         List<LibraryPT> list = new ArrayList<LibraryPT>();
-        for ( LibLibrary lIBLibrary : libraries )
-            list.add( DB2DTO( lIBLibrary ) );
+        for (LibLibrary lIBLibrary : libraries)
+            list.add(DB2DTO(lIBLibrary));
 
         return list;
     }
 
     public LibLibrary DTO2DB(LibraryPT libraryDAO) {
 
-        if ( libraryDAO == null ) {
+        if (libraryDAO == null) {
 
             return null;
         }
 
         LibLibrary libraryDB = new LibLibrary();
-        libraryDB.setNetwork( mapCorNetwork(libraryDAO.getNetworkId()));
-        libraryDB.setId( libraryDAO.getId() );
-        libraryDB.setPrefix( libraryDAO.getPrefix() );
-        libraryDB.setName( libraryDAO.getName() );
-        libraryDB.setDescription( libraryDAO.getDescription() );
+        libraryDB.setNetwork(mapCorNetwork(libraryDAO.getNetworkId()));
+        libraryDB.setId(libraryDAO.getId());
+        libraryDB.setPrefix(libraryDAO.getPrefix());
+        libraryDB.setName(libraryDAO.getName());
+        libraryDB.setDescription(libraryDAO.getDescription());
         libraryDB.setShortcut(libraryDAO.getShortcut());
         libraryDB.setPrefix(libraryDAO.getPrefix());
         libraryDB.setCounter(libraryDAO.getCounter());
@@ -87,12 +87,12 @@ public class CustomLibLibraryMapperExt {
 
     public List<LibLibrary> DTOs2DBs(List<LibraryPT> libraries) {
 
-        if ( libraries == null )
+        if (libraries == null)
             return null;
 
         List<LibLibrary> list = new ArrayList<LibLibrary>();
-        for ( LibraryPT libraryPT : libraries )
-            list.add( DTO2DB( libraryPT ) );
+        for (LibraryPT libraryPT : libraries)
+            list.add(DTO2DB(libraryPT));
 
         return list;
     }

@@ -23,7 +23,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMarkerConfigurationPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker",
         produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.PUT)
@@ -38,7 +38,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMarkerConfigurationPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker",
         produces = { "application/json" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker/{id}",
         produces = { "application/json" },
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -65,7 +65,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMarkerConfigurationPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker",
         produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
@@ -77,7 +77,7 @@ public interface ApiConfigurationLibraryMarker {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfMarkerConfigurationPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfMarkerConfigurationPT.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/library/marker/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/library/marker/{id}",
         produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<ConfMarkerConfigurationPT> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

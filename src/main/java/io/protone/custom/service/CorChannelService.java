@@ -30,13 +30,11 @@ public class CorChannelService {
         return findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
     }
 
-
     public void deleteChannel(String networkShortcut, String channelShortcut) {
         channelRepository.delete(findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut));
     }
 
     public CorChannel save(CorChannel channel) {
-
         return channelRepository.saveAndFlush(channel);
     }
 
@@ -46,7 +44,7 @@ public class CorChannelService {
             return null;
 
         CorChannel channel = channelRepository.findOneByNetworkAndShortcut(networkDB, channelShortcut);
-             return channel;
+        return channel;
     }
 
     public CorChannel getChannel(String networkShortcut, String channelShortcut) {

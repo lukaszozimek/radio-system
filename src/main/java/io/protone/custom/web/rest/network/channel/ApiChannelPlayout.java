@@ -19,7 +19,7 @@ public interface ApiChannelPlayout {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/play",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/play",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -35,7 +35,7 @@ public interface ApiChannelPlayout {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/stop",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/stop",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -50,7 +50,7 @@ public interface ApiChannelPlayout {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/pause",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/pause",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -65,7 +65,7 @@ public interface ApiChannelPlayout {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/unload",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/deck/{shortName}/unload",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -81,7 +81,7 @@ public interface ApiChannelPlayout {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/mode/{modeType}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/mode/{modeType}",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)

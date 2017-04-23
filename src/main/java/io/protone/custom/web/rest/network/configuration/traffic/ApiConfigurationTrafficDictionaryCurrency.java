@@ -21,7 +21,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfCurrencyPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCurrencyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCurrencyPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/currency",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency",
         produces = {"application/json"},
 
         method = RequestMethod.GET)
@@ -34,7 +34,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfCurrencyPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCurrencyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCurrencyPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<ConfCurrencyPT> getCurrencyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -48,7 +48,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfCurrencyPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCurrencyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCurrencyPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/currency",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -62,7 +62,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         @ApiResponse(code = 401, message = "Unauthorized", response = ConfCurrencyPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = ConfCurrencyPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = ConfCurrencyPT.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/currency",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -76,7 +76,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/currency/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteCurrencyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
