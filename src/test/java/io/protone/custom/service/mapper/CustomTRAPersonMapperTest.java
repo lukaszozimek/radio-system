@@ -51,7 +51,6 @@ public class CustomTRAPersonMapperTest {
         mockTraPersonPt.setDescription("test");
         mockTraPersonPt.setFirstName("test");
         mockTraPersonPt.setLastName("test");
-        mockTraPersonPt.setNetworkId(new CoreNetworkPT());
         mockTraPersonPt.setContacts(Lists.newArrayList(new CoreContactPT()));
 
     }
