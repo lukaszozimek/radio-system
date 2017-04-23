@@ -49,7 +49,7 @@ public class TraCampaign implements Serializable {
     private CorNetwork network;
 
     @ManyToOne
-    private TraCampaingStatus status;
+    private CorDictionary status;
 
     @ManyToOne
     private TraPrice price;
@@ -145,17 +145,17 @@ public class TraCampaign implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraCampaingStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public TraCampaign status(TraCampaingStatus traCampaingStatus) {
-        this.status = traCampaingStatus;
+    public TraCampaign status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(TraCampaingStatus traCampaingStatus) {
-        this.status = traCampaingStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraPrice getPrice() {

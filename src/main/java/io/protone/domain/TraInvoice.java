@@ -43,7 +43,7 @@ public class TraInvoice implements Serializable {
     private CorNetwork network;
 
     @ManyToOne
-    private TraInvoiceStatus status;
+    private CorDictionary status;
 
     @OneToMany(mappedBy = "invoice")
     @JsonIgnore
@@ -123,17 +123,17 @@ public class TraInvoice implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraInvoiceStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public TraInvoice status(TraInvoiceStatus traInvoiceStatus) {
-        this.status = traInvoiceStatus;
+    public TraInvoice status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(TraInvoiceStatus traInvoiceStatus) {
-        this.status = traInvoiceStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public Set<TraOrder> getOrders() {

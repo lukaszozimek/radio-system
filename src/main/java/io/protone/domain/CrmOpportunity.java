@@ -39,7 +39,7 @@ public class CrmOpportunity implements Serializable {
     private Integer probability;
 
     @ManyToOne
-    private CrmStage stage;
+    private CorDictionary stage;
 
     @ManyToOne
     private CorUser keeper;
@@ -121,17 +121,17 @@ public class CrmOpportunity implements Serializable {
         this.probability = probability;
     }
 
-    public CrmStage getStage() {
+    public CorDictionary getStage() {
         return stage;
     }
 
-    public CrmOpportunity stage(CrmStage crmStage) {
-        this.stage = crmStage;
+    public CrmOpportunity stage(CorDictionary corDictionary) {
+        this.stage = corDictionary;
         return this;
     }
 
-    public void setStage(CrmStage crmStage) {
-        this.stage = crmStage;
+    public void setStage(CorDictionary corDictionary) {
+        this.stage = corDictionary;
     }
 
     public CorUser getKeeper() {

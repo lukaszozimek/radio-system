@@ -45,7 +45,7 @@ public class CrmTask implements Serializable {
     private CorUser assignedTo;
 
     @ManyToOne
-    private CrmTaskStatus status;
+    private CorDictionary status;
 
     @ManyToOne
     private CorNetwork network;
@@ -156,17 +156,17 @@ public class CrmTask implements Serializable {
         this.assignedTo = corUser;
     }
 
-    public CrmTaskStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public CrmTask status(CrmTaskStatus crmTaskStatus) {
-        this.status = crmTaskStatus;
+    public CrmTask status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(CrmTaskStatus crmTaskStatus) {
-        this.status = crmTaskStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public CorNetwork getNetwork() {

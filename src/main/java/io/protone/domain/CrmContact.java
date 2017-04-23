@@ -63,22 +63,22 @@ public class CrmContact implements Serializable {
     private CorNetwork network;
 
     @ManyToOne
-    private CorRange range;
+    private CorDictionary range;
 
     @ManyToOne
-    private CorSize size;
+    private CorDictionary size;
 
     @ManyToOne
-    private TraIndustry industry;
+    private CorDictionary industry;
 
     @ManyToOne
-    private CorArea area;
+    private CorDictionary area;
 
     @ManyToOne
     private CorUser keeper;
 
     @ManyToOne
-    private CrmContactStatus status;
+    private CorDictionary status;
 
     @OneToMany(mappedBy = "contact")
     @JsonIgnore
@@ -236,55 +236,55 @@ public class CrmContact implements Serializable {
         this.network = corNetwork;
     }
 
-    public CorRange getRange() {
+    public CorDictionary getRange() {
         return range;
     }
 
-    public CrmContact range(CorRange corRange) {
+    public CrmContact range(CorDictionary corRange) {
         this.range = corRange;
         return this;
     }
 
-    public void setRange(CorRange corRange) {
+    public void setRange(CorDictionary corRange) {
         this.range = corRange;
     }
 
-    public CorSize getSize() {
+    public CorDictionary getSize() {
         return size;
     }
 
-    public CrmContact size(CorSize corSize) {
+    public CrmContact size(CorDictionary corSize) {
         this.size = corSize;
         return this;
     }
 
-    public void setSize(CorSize corSize) {
+    public void setSize(CorDictionary corSize) {
         this.size = corSize;
     }
 
-    public TraIndustry getIndustry() {
+    public CorDictionary getIndustry() {
         return industry;
     }
 
-    public CrmContact industry(TraIndustry traIndustry) {
+    public CrmContact industry(CorDictionary traIndustry) {
         this.industry = traIndustry;
         return this;
     }
 
-    public void setIndustry(TraIndustry traIndustry) {
+    public void setIndustry(CorDictionary traIndustry) {
         this.industry = traIndustry;
     }
 
-    public CorArea getArea() {
+    public CorDictionary getArea() {
         return area;
     }
 
-    public CrmContact area(CorArea corArea) {
+    public CrmContact area(CorDictionary corArea) {
         this.area = corArea;
         return this;
     }
 
-    public void setArea(CorArea corArea) {
+    public void setArea(CorDictionary corArea) {
         this.area = corArea;
     }
 
@@ -301,16 +301,16 @@ public class CrmContact implements Serializable {
         this.keeper = corUser;
     }
 
-    public CrmContactStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public CrmContact status(CrmContactStatus crmContactStatus) {
+    public CrmContact status(CorDictionary crmContactStatus) {
         this.status = crmContactStatus;
         return this;
     }
 
-    public void setStatus(CrmContactStatus crmContactStatus) {
+    public void setStatus(CorDictionary crmContactStatus) {
         this.status = crmContactStatus;
     }
 

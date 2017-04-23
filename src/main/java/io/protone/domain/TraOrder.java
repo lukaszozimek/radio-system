@@ -52,7 +52,7 @@ public class TraOrder implements Serializable {
     private CorNetwork network;
 
     @ManyToOne
-    private TraOrderStatus status;
+    private CorDictionary status;
 
     @ManyToOne
     private TraAdvertisement advertisment;
@@ -167,17 +167,17 @@ public class TraOrder implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraOrderStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public TraOrder status(TraOrderStatus traOrderStatus) {
-        this.status = traOrderStatus;
+    public TraOrder status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(TraOrderStatus traOrderStatus) {
-        this.status = traOrderStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraAdvertisement getAdvertisment() {

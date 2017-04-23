@@ -64,16 +64,16 @@ public class CrmAccount implements Serializable {
     private CorCountry country;
 
     @ManyToOne
-    private CorRange range;
+    private CorDictionary range;
 
     @ManyToOne
-    private CorSize size;
+    private CorDictionary size;
 
     @ManyToOne
-    private TraIndustry industry;
+    private CorDictionary industry;
 
     @ManyToOne
-    private CorArea area;
+    private CorDictionary area;
 
     @OneToMany(mappedBy = "account")
     @JsonIgnore
@@ -244,55 +244,55 @@ public class CrmAccount implements Serializable {
         this.country = corCountry;
     }
 
-    public CorRange getRange() {
+    public CorDictionary getRange() {
         return range;
     }
 
-    public CrmAccount range(CorRange corRange) {
+    public CrmAccount range(CorDictionary corRange) {
         this.range = corRange;
         return this;
     }
 
-    public void setRange(CorRange corRange) {
+    public void setRange(CorDictionary corRange) {
         this.range = corRange;
     }
 
-    public CorSize getSize() {
+    public CorDictionary getSize() {
         return size;
     }
 
-    public CrmAccount size(CorSize corSize) {
+    public CrmAccount size(CorDictionary corSize) {
         this.size = corSize;
         return this;
     }
 
-    public void setSize(CorSize corSize) {
+    public void setSize(CorDictionary corSize) {
         this.size = corSize;
     }
 
-    public TraIndustry getIndustry() {
+    public CorDictionary getIndustry() {
         return industry;
     }
 
-    public CrmAccount industry(TraIndustry traIndustry) {
+    public CrmAccount industry(CorDictionary traIndustry) {
         this.industry = traIndustry;
         return this;
     }
 
-    public void setIndustry(TraIndustry traIndustry) {
+    public void setIndustry(CorDictionary traIndustry) {
         this.industry = traIndustry;
     }
 
-    public CorArea getArea() {
+    public CorDictionary getArea() {
         return area;
     }
 
-    public CrmAccount area(CorArea corArea) {
+    public CrmAccount area(CorDictionary corArea) {
         this.area = corArea;
         return this;
     }
 
-    public void setArea(CorArea corArea) {
+    public void setArea(CorDictionary corArea) {
         this.area = corArea;
     }
 
