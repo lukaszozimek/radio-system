@@ -41,7 +41,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
 
     @Override
     public ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traOrderService.getAllOrder(corNetwork));
     }

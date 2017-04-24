@@ -25,7 +25,7 @@ public interface ApiChannelSchedulerPlaylist {
         method = RequestMethod.GET)
     ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                  @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                                  @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = SchPlaylistPT.class, tags = {"SCHEDULER",})

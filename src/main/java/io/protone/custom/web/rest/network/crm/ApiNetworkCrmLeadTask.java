@@ -28,7 +28,7 @@ public interface ApiNetworkCrmLeadTask {
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskPT>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                 @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                 @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
     @ApiOperation(value = "updateLeadActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {

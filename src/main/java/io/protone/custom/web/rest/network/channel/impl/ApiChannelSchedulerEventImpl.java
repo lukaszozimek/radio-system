@@ -29,7 +29,7 @@ public class ApiChannelSchedulerEventImpl implements ApiChannelSchedulerEvent {
     @Override
     public ResponseEntity<List<SchEventPT>> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all templates");
         List<SchEventPT> templates = templateService.getTemplates(networkShortcut, channelShortcut);
         return ResponseEntity.ok()

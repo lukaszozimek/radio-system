@@ -42,7 +42,7 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
 
     @Override
     public ResponseEntity<List<CrmLeadPT>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmLeadService.getAllLeads(corNetwork));
     }

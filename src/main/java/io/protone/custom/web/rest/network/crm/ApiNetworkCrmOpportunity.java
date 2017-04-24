@@ -57,7 +57,7 @@ public interface ApiNetworkCrmOpportunity {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmOpportunityPT>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getOpportunity", notes = "", response = CrmOpportunityPT.class, tags = {"TRAFFIC", "CRM",})

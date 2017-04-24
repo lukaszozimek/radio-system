@@ -25,7 +25,7 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllOpportunityActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmOpportunityService.getTasksAssociatedWithOpportunity(shortName,corNetwork));
     }

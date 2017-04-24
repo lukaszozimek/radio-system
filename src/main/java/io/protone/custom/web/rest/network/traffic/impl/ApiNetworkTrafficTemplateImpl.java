@@ -26,7 +26,7 @@ public class ApiNetworkTrafficTemplateImpl implements ApiNetworkTrafficTemplate 
 
     @Override
     public ResponseEntity<List<SchEventPT>> getAllTrafficTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                           @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         return null;
     }
 

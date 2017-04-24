@@ -45,7 +45,7 @@ public class ApiConfigurationTrafficDictionaryDiscountImpl implements ApiConfigu
 
     @Override
     public ResponseEntity<List<ConfDiscountPT>> getAllDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable) {
 
         log.debug("REST request to get TraDiscount : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);

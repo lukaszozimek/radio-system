@@ -27,7 +27,7 @@ public interface ApiNetworkTrafficInvoice {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                              @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "updateInvoice", notes = "", response = TraInvoicePT.class, tags = {"TRAFFIC",})

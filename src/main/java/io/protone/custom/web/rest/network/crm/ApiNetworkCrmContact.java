@@ -4,10 +4,7 @@ import io.protone.custom.service.dto.CrmContactPT;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,7 +53,7 @@ public interface ApiNetworkCrmContact {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                             @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
     @ApiOperation(value = "getContact", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {

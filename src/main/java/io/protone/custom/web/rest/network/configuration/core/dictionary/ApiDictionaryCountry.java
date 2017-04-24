@@ -70,7 +70,7 @@ public interface ApiDictionaryCountry {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfCountryPt>> getAllCountriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getPerson", notes = "", response = ConfCountryPt.class, tags = {"DICTIONARY", "CONFIGURATION",})

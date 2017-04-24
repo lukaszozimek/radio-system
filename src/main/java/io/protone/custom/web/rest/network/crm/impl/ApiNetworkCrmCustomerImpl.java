@@ -40,7 +40,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
 
     @Override
     public ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                      @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmCustomerService.getAllCustomer(corNetwork));
     }

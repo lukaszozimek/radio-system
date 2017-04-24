@@ -26,7 +26,7 @@ public interface ApiConfigurationTrafficDictionaryTax {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                        @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getTax", notes = "", response = ConfTaxPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

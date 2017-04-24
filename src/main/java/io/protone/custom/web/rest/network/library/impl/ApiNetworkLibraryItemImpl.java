@@ -45,7 +45,7 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
     @Override
     public ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get all LibraryPT");
         List<LibItemPT> items = itemService.getItem(networkShortcut, libraryPrefix);
         return ResponseEntity.ok()

@@ -70,7 +70,7 @@ public interface ApiConfigurationSchedulerLogCommercial {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfCommercialLogPT>> getAllCommercialLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getCommercialLogConfiguration", notes = "", response = ConfCommercialLogPT.class, tags = {"CONFIGURATION",})

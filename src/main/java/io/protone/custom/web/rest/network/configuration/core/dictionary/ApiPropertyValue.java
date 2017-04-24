@@ -41,7 +41,7 @@ public interface ApiPropertyValue {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreValuePT>> getAllPropertyValuesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "updatePropertyValue", notes = "", response = CoreValuePT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {

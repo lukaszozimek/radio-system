@@ -24,7 +24,7 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
 
     @Override
     public ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(campaignService.getAllCampaign(corNetwork));
     }

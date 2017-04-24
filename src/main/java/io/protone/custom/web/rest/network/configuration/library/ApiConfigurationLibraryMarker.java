@@ -70,7 +70,7 @@ public interface ApiConfigurationLibraryMarker {
         produces = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                                      @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getMarkerConfiguration", notes = "", response = ConfMarkerConfigurationPT.class, tags={ "CONFIGURATION","CORE", })

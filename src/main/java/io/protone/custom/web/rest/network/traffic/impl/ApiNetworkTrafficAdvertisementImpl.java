@@ -39,7 +39,7 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
 
     @Override
     public ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                 @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                 @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traAdvertismentService.getAllAdvertisement(corNetwork));
     }

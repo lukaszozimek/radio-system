@@ -57,7 +57,7 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
 
     @Override
     public ResponseEntity<List<CoreKeyPT>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                      @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get all CorPropertyKeys");
         List<CorPropertyKey> cORPropertyKeys = cORPropertyKeyRepository.findAll();
         return ResponseEntity.ok().body(corPropertyKeyMapper.cORPropertyKeysToCorPropertyKeyDTOs(cORPropertyKeys));

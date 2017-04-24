@@ -57,7 +57,7 @@ public interface ApiNetworkTrafficTemplate {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchEventPT>> getAllTrafficTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                    @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getTrafficTemplate", notes = "", response = SchEventPT.class, tags = {"TRAFFIC",})

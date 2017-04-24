@@ -36,7 +36,7 @@ public class ApiConfigurationTrafficDictionaryTaxImpl implements ApiConfiguratio
 
     @Override
     public ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get CorTax : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

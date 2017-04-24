@@ -27,7 +27,7 @@ public interface ApiChannelLibraryItem {
     ResponseEntity<Void> deleteItemsByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                            @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getItemsByNetworShortcutAndChannelShortcutAndLibrar", notes = "", response = LibItemPT.class, tags={ "LIBRARY", })

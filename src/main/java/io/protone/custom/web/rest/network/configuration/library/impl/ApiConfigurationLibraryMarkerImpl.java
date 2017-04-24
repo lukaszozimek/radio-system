@@ -64,7 +64,7 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
 
     @Override
     public ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                             @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                             @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         List<CfgMarkerConfiguration> cFGMarkerConfigurations = cFGMarkerConfigurationRepository.findAll();
         return ResponseEntity.ok().body(cFGMarkerConfigurationMapper.cFGMarkerConfigurationsToCfgMarkerConfigurationDTOs(cFGMarkerConfigurations));
 

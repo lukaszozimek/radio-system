@@ -30,7 +30,7 @@ public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlayl
     @Override
     public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                         @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                         @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get all playlists");
         List<SchPlaylistPT> playlists = playlistService.getAllPlaylistsByChannel(networkShortcut, channelShortcut);
         return ResponseEntity.ok()

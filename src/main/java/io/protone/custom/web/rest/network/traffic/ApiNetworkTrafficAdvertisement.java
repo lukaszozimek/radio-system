@@ -56,7 +56,8 @@ public interface ApiNetworkTrafficAdvertisement {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+    ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "deleteAdvertisement", notes = "", response = Void.class, tags = {"TRAFFIC",})

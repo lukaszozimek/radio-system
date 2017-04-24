@@ -54,7 +54,7 @@ public interface ApiDictionaryTag {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfTagPT>> getAllTagsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
 

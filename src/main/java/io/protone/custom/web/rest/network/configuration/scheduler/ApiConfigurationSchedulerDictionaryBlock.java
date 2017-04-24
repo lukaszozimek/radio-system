@@ -71,7 +71,7 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         consumes = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<ConfBlockPT>> getAllBlockTypesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getBlockType", notes = "", response = ConfBlockPT.class, tags={ "DICTIONARY","CONFIGURATION", })

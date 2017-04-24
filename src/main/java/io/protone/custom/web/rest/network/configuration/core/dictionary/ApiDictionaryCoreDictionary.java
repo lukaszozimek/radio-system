@@ -79,7 +79,7 @@ public interface ApiDictionaryCoreDictionary {
     ResponseEntity<List<CorDictionaryPT>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                         @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                        @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getDictionaryValue", notes = "", response = CorDictionaryPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

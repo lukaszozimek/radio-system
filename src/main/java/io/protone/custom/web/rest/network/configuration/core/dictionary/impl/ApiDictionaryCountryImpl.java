@@ -73,7 +73,7 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
 
     @Override
     public ResponseEntity<List<ConfCountryPt>> getAllCountriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get CorCountry : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

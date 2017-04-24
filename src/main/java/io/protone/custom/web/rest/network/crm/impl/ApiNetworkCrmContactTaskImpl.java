@@ -25,7 +25,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllContactActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                           @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                           @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(crmContactService.getTasksAssociatedWithContact(shortName, corNetwork));

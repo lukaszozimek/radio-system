@@ -71,7 +71,8 @@ public class ApiChannelImpl implements ApiChannel {
     }
 
     @Override
-    public ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,   @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+    public ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                      @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get all CORChannels");
         List<CorChannel> corChannels = channelService.findAllChannel();
         return ResponseEntity.ok()

@@ -29,7 +29,7 @@ public interface ApiChannelLibrary {
         method = RequestMethod.GET)
     ResponseEntity<List<LibraryPT>> getAllLibrariesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                      @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "updateLibraryForChannel", notes = "", response = LibraryPT.class, tags={ "LIBRARY", })

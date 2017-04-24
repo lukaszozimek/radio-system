@@ -27,7 +27,7 @@ public interface ApiNetworkCrmOpportunityTask {
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskPT>> getAllOpportunityActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                        @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "updateOpportunityActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})

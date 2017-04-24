@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
 
     @Override
     public ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                    @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(contactService.getAllContact(corNetwork));

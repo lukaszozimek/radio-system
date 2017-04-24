@@ -55,7 +55,7 @@ public interface ApiNetworkTrafficOrder {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                            @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                            @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getAnOrder", notes = "", response = TraOrderPT.class, tags = {"TRAFFIC",})

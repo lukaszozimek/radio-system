@@ -49,7 +49,8 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
     }
 
     @Override
-    public ResponseEntity<ConfPersonPT> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO) {
+    public ResponseEntity<ConfPersonPT> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                              @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO) {
         log.debug("REST request to save CorPerson : {}", personDTO);
         if (personDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPerson", "idexists", "A new cORPerson cannot already have an ID")).body(null);
@@ -61,7 +62,8 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
     }
 
     @Override
-    public ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true)
+    @PathVariable("id") Long id) {
         log.debug("REST request to delete CorPerson : {}", id);
         cORPersonRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORPerson", id.toString())).build();
@@ -70,7 +72,7 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
 
     @Override
     public ResponseEntity<List<ConfPersonPT>> getAllPeopleUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORPeople");
         List<CorPerson> cORPeople = cORPersonRepository.findAll();
         return ResponseEntity.ok().body(customCorPersonMapper.cORPeopleToCorPersonDTOs(cORPeople));

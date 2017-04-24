@@ -70,7 +70,7 @@ public interface ApiConfigurationSchedulerLogMusic {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                             @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                             @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getMusicLogConfiguration", notes = "", response = ConfMusicLogPT.class, tags = {"CONFIGURATION",})

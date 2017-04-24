@@ -25,7 +25,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
 
     @Override
     public ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                     @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traInvoiceService.getAllInvoice(corNetwork));
     }

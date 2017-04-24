@@ -16,7 +16,7 @@ public class ApiChannelSchedulerClockImpl implements ApiChannelSchedulerClock {
     @Override
     public ResponseEntity<List<SchClockPT>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                   @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                   @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         return null;
     }
 

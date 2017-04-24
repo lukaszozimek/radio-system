@@ -48,7 +48,7 @@ public interface ApiNetworkLibraryItem {
         method = RequestMethod.GET)
     ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                                        @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
     @ApiOperation(value = "uploadItemsByNetworShortcutAndLibraryPrefix", notes = "", response = LibItemPT.class, responseContainer = "List", tags = {"LIBRARY",})
     @ApiResponses(value = {

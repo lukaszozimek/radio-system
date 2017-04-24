@@ -27,7 +27,7 @@ public interface ApiConfigurationTrafficDictionaryDiscount {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<ConfDiscountPT>> getAllDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getDiscount", notes = "", response = ConfDiscountPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

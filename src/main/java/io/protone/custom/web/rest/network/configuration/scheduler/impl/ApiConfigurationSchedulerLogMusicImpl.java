@@ -81,7 +81,7 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
 
     @Override
     public ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                    @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CfgExternalSystemLog : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

@@ -26,7 +26,8 @@ public interface ApiNetworkTrafficCampaign {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+    ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "updateCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})

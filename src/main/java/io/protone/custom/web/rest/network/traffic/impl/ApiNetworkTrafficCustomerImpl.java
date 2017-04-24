@@ -41,7 +41,7 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
 
     @Override
     public ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                              @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
+                                                                              @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(customerService.getAllCustomers(corNetwork));
     }

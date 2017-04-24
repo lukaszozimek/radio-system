@@ -57,7 +57,7 @@ public interface ApiNetworkCrmCustomer {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getCustomer", notes = "", response = CrmAccountPT.class, tags = {"TRAFFIC", "CRM",})

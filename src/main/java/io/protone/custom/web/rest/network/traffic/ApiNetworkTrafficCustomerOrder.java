@@ -27,7 +27,7 @@ public interface ApiNetworkTrafficCustomerOrder {
         method = RequestMethod.GET)
     ResponseEntity<List<TraOrderPT>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                  @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                  @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
 }

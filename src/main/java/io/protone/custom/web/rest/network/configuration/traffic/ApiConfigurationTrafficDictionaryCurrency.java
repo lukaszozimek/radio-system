@@ -27,7 +27,7 @@ public interface ApiConfigurationTrafficDictionaryCurrency {
 
         method = RequestMethod.GET)
     ResponseEntity<List<ConfCurrencyPT>> getAllCurrencyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
     @ApiOperation(value = "getCurrency", notes = "", response = ConfCurrencyPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

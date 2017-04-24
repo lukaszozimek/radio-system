@@ -26,7 +26,7 @@ public interface ApiChannelSchedulerGrid {
         method = RequestMethod.GET)
     ResponseEntity<List<SchGridPT>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
+                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "updateSchedulerGridForChannel", notes = "", response = SchGridPT.class, tags = {"SCHEDULER",})
