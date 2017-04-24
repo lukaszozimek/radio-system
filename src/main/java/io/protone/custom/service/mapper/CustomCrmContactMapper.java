@@ -28,6 +28,7 @@ public class CustomCrmContactMapper {
 
     @Inject
     private CustomCorUserMapperExt corUserMapper;
+
     @Inject
     private CustomCorNetworkMapper customCorNetworkMapper;
 
