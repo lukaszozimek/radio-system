@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.channel;
 
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,7 +56,8 @@ public interface ApiChannel {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
     @ApiOperation(value = "getChannel", notes = "", response = CoreChannelPT.class, tags = {"CHANNEL", "CORE",})
     @ApiResponses(value = {

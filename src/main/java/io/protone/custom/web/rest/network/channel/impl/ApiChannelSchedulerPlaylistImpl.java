@@ -6,6 +6,7 @@ import io.protone.custom.web.rest.network.channel.ApiChannelSchedulerPlaylist;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,9 @@ public class ApiChannelSchedulerPlaylistImpl implements ApiChannelSchedulerPlayl
     private SchPlaylistService playlistService;
 
     @Override
-    public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
+    public ResponseEntity<List<SchPlaylistPT>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                         @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         log.debug("REST request to get all playlists");
         List<SchPlaylistPT> playlists = playlistService.getAllPlaylistsByChannel(networkShortcut, channelShortcut);
         return ResponseEntity.ok()

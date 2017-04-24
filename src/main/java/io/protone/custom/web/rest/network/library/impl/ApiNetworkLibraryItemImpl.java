@@ -8,6 +8,7 @@ import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,9 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
     }
 
     @Override
-    public ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
+    public ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                               @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         log.debug("REST request to get all LibraryPT");
         List<LibItemPT> items = itemService.getItem(networkShortcut, libraryPrefix);
         return ResponseEntity.ok()

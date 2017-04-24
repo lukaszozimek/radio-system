@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary;
 
 import io.protone.custom.service.dto.ConfTagPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +53,8 @@ public interface ApiDictionaryTag {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/tag",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfTagPT>> getAllTagsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfTagPT>> getAllTagsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
 

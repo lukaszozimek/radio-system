@@ -6,6 +6,7 @@ import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLeadTask;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,9 @@ public class ApiNetworkCrmLeadTaskImpl implements ApiNetworkCrmLeadTask {
     private CorNetworkService networkService;
 
     @Override
-    public ResponseEntity<List<CrmTaskPT>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<List<CrmTaskPT>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmLeadService.getTasksAssociatedWithLead(shortName, corNetwork));
     }

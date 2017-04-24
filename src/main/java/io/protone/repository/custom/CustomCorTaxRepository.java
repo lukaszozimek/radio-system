@@ -4,6 +4,7 @@ import java.util.*;
 
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,6 +13,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @SuppressWarnings("unused")
 public interface CustomCorTaxRepository extends JpaRepository<CorTax, Long> {
     List<CorTax> findByNetwork(CorNetwork corNetwork);
+
+    List<CorTax> findAllByNetwork(CorNetwork network, Pageable pageable);
+
     CorTax findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
 
 }

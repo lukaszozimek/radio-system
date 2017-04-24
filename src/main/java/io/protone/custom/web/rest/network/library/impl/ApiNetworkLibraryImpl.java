@@ -8,6 +8,7 @@ import io.protone.domain.LibLibrary;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +45,8 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     }
 
     @Override
-    public ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                   @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         log.debug("REST request to get all LibraryPT");
         List<LibLibrary> libraries = libraryService.findLibrary(networkShortcut);
         return ResponseEntity.ok()

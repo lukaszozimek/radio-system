@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.library;
 
 import io.protone.custom.service.dto.LibraryPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,8 @@ public interface ApiNetworkLibrary {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                            @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
 

@@ -2,6 +2,7 @@ package io.protone.repository.custom;
 
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public interface CustomCrmOpportunityRepository extends JpaRepository<CrmOpportu
     List<CrmOpportunity> findByNetwork(CorNetwork network);
 
     void deleteByNameAndNetwork(String name, CorNetwork network);
+    List<CrmOpportunity> findAllByNetwork(CorNetwork network, Pageable pageable);
     CrmOpportunity findOneByNameAndNetwork(String name, CorNetwork network);
 }

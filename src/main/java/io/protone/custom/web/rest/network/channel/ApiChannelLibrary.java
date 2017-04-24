@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.channel;
 
 import io.protone.custom.service.dto.LibraryPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,8 @@ public interface ApiChannelLibrary {
         consumes = { "application/json" },
         method = RequestMethod.GET)
     ResponseEntity<List<LibraryPT>> getAllLibrariesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "updateLibraryForChannel", notes = "", response = LibraryPT.class, tags={ "LIBRARY", })

@@ -3,6 +3,7 @@ package io.protone.custom.web.rest.network.traffic.impl;
 import io.protone.custom.service.dto.SchEventPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficTemplate;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,8 @@ public class ApiNetworkTrafficTemplateImpl implements ApiNetworkTrafficTemplate 
     }
 
     @Override
-    public ResponseEntity<List<SchEventPT>> getAllTrafficTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<SchEventPT>> getAllTrafficTemplatesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         return null;
     }
 

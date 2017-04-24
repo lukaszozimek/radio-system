@@ -5,6 +5,7 @@ import io.protone.custom.service.CrmCustomerService;
 import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,8 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     }
 
     @Override
-    public ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(crmCustomerService.getAllCustomer(corNetwork));
     }

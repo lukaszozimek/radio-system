@@ -6,6 +6,7 @@ import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficInvoice;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,8 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
     private CorNetworkService networkService;
 
     @Override
-    public ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                     @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traInvoiceService.getAllInvoice(corNetwork));
     }

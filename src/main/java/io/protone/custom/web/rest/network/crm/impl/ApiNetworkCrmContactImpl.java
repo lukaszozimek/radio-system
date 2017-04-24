@@ -6,6 +6,7 @@ import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmContact;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,8 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
     }
 
     @Override
-    public ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
 
         return ResponseEntity.ok().body(contactService.getAllContact(corNetwork));

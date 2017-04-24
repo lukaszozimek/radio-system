@@ -6,6 +6,7 @@ import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficAdvertisement;
 import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +38,8 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     }
 
     @Override
-    public ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<TraAdvertisementPT>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                 @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         return ResponseEntity.ok().body(traAdvertismentService.getAllAdvertisement(corNetwork));
     }

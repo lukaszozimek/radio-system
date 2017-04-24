@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,7 +69,8 @@ public interface ApiConfigurationSchedulerLogMusic {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/scheduler/log/music",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                             @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "getMusicLogConfiguration", notes = "", response = ConfMusicLogPT.class, tags = {"CONFIGURATION",})

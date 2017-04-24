@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.configuration.scheduler;
 
 import io.protone.custom.service.dto.ConfBlockPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,7 +70,8 @@ public interface ApiConfigurationSchedulerDictionaryBlock {
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfBlockPT>> getAllBlockTypesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfBlockPT>> getAllBlockTypesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "getBlockType", notes = "", response = ConfBlockPT.class, tags={ "DICTIONARY","CONFIGURATION", })

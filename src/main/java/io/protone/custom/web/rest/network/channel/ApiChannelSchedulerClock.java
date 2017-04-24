@@ -3,6 +3,7 @@ package io.protone.custom.web.rest.network.channel;
 import io.protone.custom.service.dto.SchClockPT;
 import io.protone.custom.service.dto.SchPlaylistPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,8 @@ public interface ApiChannelSchedulerClock {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchClockPT>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
+                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                            @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "updateSchedulerClockForChannel", notes = "", response = SchClockPT.class, tags={ "SCHEDULER", })
@@ -55,8 +57,8 @@ public interface ApiChannelSchedulerClock {
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<SchClockPT> creatSchedulerClockForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                            @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchClockPT schdeulerTemplate);
+                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                      @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchClockPT schdeulerTemplate);
 
 
     @ApiOperation(value = "deleteSchedulerClockForChannel", notes = "", response = Void.class, tags={ "SCHEDULER", })

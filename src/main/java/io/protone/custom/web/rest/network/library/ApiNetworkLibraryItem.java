@@ -3,6 +3,7 @@ package io.protone.custom.web.rest.network.library;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.LibResponseEntity;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +47,8 @@ public interface ApiNetworkLibraryItem {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
+                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
     @ApiOperation(value = "uploadItemsByNetworShortcutAndLibraryPrefix", notes = "", response = LibItemPT.class, responseContainer = "List", tags = {"LIBRARY",})
     @ApiResponses(value = {

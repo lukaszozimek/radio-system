@@ -1,7 +1,9 @@
 package io.protone.repository.custom;
 
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmTask;
 import io.protone.domain.LibLibrary;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,4 +16,6 @@ public interface CustomLibLibraryRepository extends JpaRepository<LibLibrary, Lo
     LibLibrary findOneByNetworkAndShortcut(CorNetwork network, String shortcut);
 
     List<LibLibrary> findByNetwork(CorNetwork network);
+
+    List<LibLibrary> findAllByNetwork(CorNetwork network, Pageable pageable);
 }

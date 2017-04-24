@@ -3,6 +3,7 @@ package io.protone.repository.custom;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraOrder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CustomTraOrderRepository extends JpaRepository<TraOrder, Long> {
     List<TraOrder> findByNetwork(CorNetwork network);
+
+    List<TraOrder> findByNetwork(CorNetwork network, Pageable pageable);
 
     List<TraOrder> findByCustomerAndNetwork(CrmAccount crmAccount, CorNetwork corNetwork);
 }

@@ -5,6 +5,7 @@ import io.protone.custom.service.dto.ConfTagPT;
 import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.domain.CorDictionary;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,7 +78,8 @@ public interface ApiDictionaryCoreDictionary {
         method = RequestMethod.GET)
     ResponseEntity<List<CorDictionaryPT>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "module", required = true) @PathVariable("module") String module,
-                                                                        @ApiParam(value = "type", required = true) @PathVariable("type") String type);
+                                                                        @ApiParam(value = "type", required = true) @PathVariable("type") String type,
+                                                                        @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "getDictionaryValue", notes = "", response = CorDictionaryPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

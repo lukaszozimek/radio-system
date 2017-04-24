@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.protone.custom.service.dto.ConfCommercialLogPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,7 +69,8 @@ public interface ApiConfigurationSchedulerLogCommercial {
     @RequestMapping(value = "/api/network/{networkShortcut}/configuration/scheduler/log/commercial",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<ConfCommercialLogPT>> getAllCommercialLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<ConfCommercialLogPT>> getAllCommercialLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                       @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "getCommercialLogConfiguration", notes = "", response = ConfCommercialLogPT.class, tags = {"CONFIGURATION",})

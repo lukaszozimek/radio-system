@@ -10,6 +10,7 @@ import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +56,8 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
     }
 
     @Override
-    public ResponseEntity<List<CoreKeyPT>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<CoreKeyPT>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                      @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         log.debug("REST request to get all CorPropertyKeys");
         List<CorPropertyKey> cORPropertyKeys = cORPropertyKeyRepository.findAll();
         return ResponseEntity.ok().body(corPropertyKeyMapper.cORPropertyKeysToCorPropertyKeyDTOs(cORPropertyKeys));

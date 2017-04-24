@@ -13,6 +13,7 @@ import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,7 +82,8 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
     @Override
     public ResponseEntity<List<CorDictionaryPT>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "module", required = true) @PathVariable("module") String module,
-                                                                               @ApiParam(value = "type", required = true) @PathVariable("type") String type) {
+                                                                               @ApiParam(value = "type", required = true) @PathVariable("type") String type,
+                                                                               @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         log.debug("REST request to get CorDictionary : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

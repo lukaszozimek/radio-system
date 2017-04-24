@@ -2,6 +2,7 @@ package io.protone.custom.web.rest.network.traffic;
 
 import io.protone.custom.service.dto.TraOrderPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +54,8 @@ public interface ApiNetworkTrafficOrder {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                            @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "getAnOrder", notes = "", response = TraOrderPT.class, tags = {"TRAFFIC",})

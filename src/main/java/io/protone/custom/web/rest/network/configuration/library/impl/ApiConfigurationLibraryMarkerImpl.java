@@ -8,6 +8,7 @@ import io.protone.repository.CfgMarkerConfigurationRepository;
 import io.protone.repository.CorNetworkRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +63,8 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
     }
 
     @Override
-    public ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<ConfMarkerConfigurationPT>> getAllMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                             @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable) {
         List<CfgMarkerConfiguration> cFGMarkerConfigurations = cFGMarkerConfigurationRepository.findAll();
         return ResponseEntity.ok().body(cFGMarkerConfigurationMapper.cFGMarkerConfigurationsToCfgMarkerConfigurationDTOs(cFGMarkerConfigurations));
 

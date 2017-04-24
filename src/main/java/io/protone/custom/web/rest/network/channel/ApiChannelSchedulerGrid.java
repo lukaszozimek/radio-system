@@ -3,6 +3,7 @@ package io.protone.custom.web.rest.network.channel;
 import io.protone.custom.service.dto.SchGridPT;
 import io.protone.custom.service.dto.SchPlaylistPT;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,8 @@ public interface ApiChannelSchedulerGrid {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchGridPT>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                          @ApiParam(value = "pagable", required = true) @PathVariable("pagable") Pageable pagable);
 
 
     @ApiOperation(value = "updateSchedulerGridForChannel", notes = "", response = SchGridPT.class, tags = {"SCHEDULER",})
@@ -40,7 +42,7 @@ public interface ApiChannelSchedulerGrid {
         method = RequestMethod.PUT)
     ResponseEntity<SchGridPT> updateSchedulerGridForChanneltUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                     @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchPlaylistPT schdeulerTemplate);
+                                                                     @ApiParam(value = "schdeulerTemplate", required = true) @RequestBody SchGridPT schdeulerTemplate);
 
 
     @ApiOperation(value = "createSchedulerGridForChannel", notes = "", response = SchGridPT.class, tags = {"SCHEDULER",})

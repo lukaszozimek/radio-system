@@ -4,6 +4,7 @@ import io.protone.domain.CorCountry;
 
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -14,5 +15,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CustomCorCountryRepository extends JpaRepository<CorCountry, Long> {
     List<CorCountry> findByNetwork(CorNetwork corNetwork);
+
+    List<CorCountry> findByNetwork(CorNetwork corNetwork, Pageable pageable);
+
     CorCountry findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
 }
