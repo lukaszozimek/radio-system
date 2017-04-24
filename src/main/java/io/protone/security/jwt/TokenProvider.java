@@ -53,6 +53,7 @@ public class TokenProvider {
         this.tokenValidityInMillisecondsForRememberMe =
             1000 * jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe();
     }
+
     @Transactional
     public String createToken(Authentication authentication, Boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream()
@@ -84,7 +85,6 @@ public class TokenProvider {
             .setSigningKey(secretKey)
             .parseClaimsJws(token)
             .getBody();
-
         Collection<? extends GrantedAuthority> authorities =
             Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -93,6 +93,14 @@ public class TokenProvider {
         User principal = new User(claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    public JwsHeader getUserAuthorizationAccess(String token) {
+        return Jwts.parser()
+            .setSigningKey(secretKey)
+            .parseClaimsJws(token)
+            .getHeader();
+
     }
 
     public boolean validateToken(String authToken) {

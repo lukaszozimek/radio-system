@@ -1,9 +1,3 @@
-
-entity CrmContactStatus{
-	name String,
-    description String
-}
-
 entity CrmAccount {
  	shortName String
     externalId1 String
@@ -23,20 +17,26 @@ entity CrmContact{
     paymentDelay Integer
     vatNumber String
 }
+entity CorDictionary {
+    name String
+    description String
+    seqNumber Long
+
+}
+entity CorDictionaryType{
+  name String
+}
+
+entity CorModule{
+  name String
+}
 
 entity CrmLead {
  	name String
     shortname String
     description String
-   }
-
-entity CrmLeadSource{
-	name String
 }
 
-entity CrmLeadStatus{
-	name String
-}
 
 entity CrmOpportunity{
     name String
@@ -52,15 +52,6 @@ entity CrmTask{
   	comment String
 }
 
-entity CrmTaskStatus{
-	name String
-}
-
-entity CrmStage{
-	name String
-    description String
-}
-
 entity CrmTaskComment{
 	comment String,
 }
@@ -72,16 +63,6 @@ entity CorAddress {
 	city String required maxlength(100)
 	country String required maxlength(100)
 }
-
-entity CorArea{
-	name String
-    description String
-}
-entity CorStatus{
-	name String
-    description String
-}
-
 
 entity CorChannel {
 	shortcut String required maxlength(3)
@@ -115,18 +96,6 @@ entity CorNetwork {
 		active Boolean
     description String
 }
-
-entity CorRange{
-	name String
-    description String
-
-}
-
-entity CorSize {
-	name String
-    description String
-}
-
 
 entity CorPerson {
 	firstName String required maxlength(100)
@@ -455,10 +424,6 @@ entity TraDiscount {
 	discount Long
 }
 
-entity TraIndustry {
-	name String required maxlength(100)
-    description String
-}
 
 entity TraInvoice {
     paid Boolean
@@ -489,22 +454,8 @@ entity TraPrice {
     priceAlternative BigDecimal required
 }
 
-entity TraAdvertismentType {
-  name String
-  description String
-}
-entity TraCampaingStatus{
-	name String
-    description String
-}
-entity TraInvoiceStatus{
-	name String
-    description String
-}
-entity TraOrderStatus{
-    name String
-    description String
-}
+
+
 entity CorUser{
   login String
   password_hash  String
@@ -530,17 +481,6 @@ entity CorUserAuthority{
 
 }
 
-entity CorSubscription{
-	name String
-    price Long
-    subscription CorSubscriptionTypeEnum
-}
-enum CorSubscriptionTypeEnum {
-    ST_TRAFFIC,
-    ST_CRM,
-    ST_PLAYOUT,
-    ST_LIBRARY
-}
 
 relationship OneToOne {
 
@@ -557,9 +497,6 @@ relationship OneToOne {
     CrmContact{person} to CorPerson ,
     TraPrice {currency} to CorCurrency,
 
-    TraAdvertisement{Libitem} to LibMediaItem,
-
-
     CrmAccount{person} to CorPerson,
     CrmAccount{addres} to CorAddress,
     CrmLead{person} to CorPerson,
@@ -567,7 +504,8 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-
+    CorDictionary {dictionaryType}  to CorDictionaryType,
+    CorDictionary {module} to CorModule,
     CorUserAuthority{user} to CorUser{authorities},
     CorUserAuthority{authority} to CorAuthority,
     SchTemplate{channel} to CorChannel,
@@ -596,9 +534,6 @@ relationship ManyToOne {
     LibTrack{artist} to LibArtist,
     LibAlbum{artist} to LibArtist,
     LibLabel{network} to CorNetwork,
-    TraCampaingStatus{network} to CorNetwork,
-    TraInvoiceStatus{network} to CorNetwork,
-    TraOrderStatus{network} to CorNetwork,
     LibArtist{network} to CorNetwork,
     LibAlbum{network} to CorNetwork,
     LibTrack{network} to CorNetwork,
@@ -635,73 +570,63 @@ relationship ManyToOne {
     LibCloudObject{createdBy} to CorUser,
 
 
-    CorArea{network} to CorNetwork,
-    CorSize{network} to CorNetwork,
-    CorRange{network} to CorNetwork,
-    CorCurrency {network} to CorNetwork,
+    CorDictionary{network} to CorNetwork,
+     CorCurrency {network} to CorNetwork,
 
     CrmContact {network} to CorNetwork,
-    CrmContactStatus {network} to CorNetwork,
 
     CorCountry {network} to CorNetwork,
-    CorStatus {network} to CorNetwork,
-    CorSubscription {network} to CorNetwork,
-    CrmLeadStatus {network} to CorNetwork,
-    CrmLeadSource {network} to CorNetwork,
-    TraIndustry{network} to CorNetwork,
-    CrmStage{network} to CorNetwork,
-    CrmTaskStatus{network} to CorNetwork,
     CorTax{network} to CorNetwork,
-    TraAdvertismentType {network} to CorNetwork,
 
-
-    CrmContact{range} to CorRange,
-    CrmContact{size} to CorSize,
-    CrmContact{industry} to  TraIndustry,
-    CrmContact{area} to CorArea,
+    CrmContact{range} to CorDictionary,
+    CrmContact{size} to CorDictionary,
+    CrmContact{industry} to  CorDictionary,
+    CrmContact{area} to CorDictionary,
 
     CrmContact {keeper} to CorUser,
-    CrmContact{status} to CrmContactStatus,
+    CrmContact{status} to CorDictionary,
 
 
     TraDiscount {network} to CorNetwork,
     TraPrice {network} to CorNetwork,
     TraAdvertisement{customer} to CrmAccount,
     TraAdvertisement{network} to CorNetwork,
-    TraAdvertisement{industry} to TraIndustry,
-    TraAdvertisement {type} to TraAdvertismentType,
+
+    TraAdvertisement{industry} to CorDictionary,
+    TraAdvertisement {type} to CorDictionary,
     TraAdvertisement{customer} to CrmAccount,
+
     TraCampaign{customer} to CrmAccount,
     TraCampaign{network} to CorNetwork,
-    TraCampaign{status} to TraCampaingStatus,
+    TraCampaign{status} to CorDictionary,
     TraCampaign{price} to TraPrice,
 
     TraInvoice {customer} to CrmAccount,
     TraInvoice{network} to CorNetwork,
-    TraInvoice{status} to TraInvoiceStatus,
+    TraInvoice{status} to CorDictionary,
 
     TraOrder{customer} to CrmAccount,
     TraOrder{price} to TraPrice,
     TraOrder{network} to CorNetwork,
-    TraOrder{status} to TraOrderStatus,
+    TraOrder{status} to CorDictionary,
 
     CrmAccount{network} to CorNetwork,
     CrmAccount{discount} to TraDiscount,
     CrmAccount {keeper} to CorUser,
     CrmAccount{country} to CorCountry,
-    CrmAccount{range} to CorRange,
-    CrmAccount{size} to CorSize,
-    CrmAccount{industry} to  TraIndustry,
-    CrmAccount{area} to CorArea,
+    CrmAccount{range} to CorDictionary,
+    CrmAccount{size} to CorDictionary,
+    CrmAccount{industry} to  CorDictionary,
+    CrmAccount{area} to CorDictionary,
 
-    CrmLead{leadStatus} to CrmLeadStatus,
-    CrmLead{leadSource} to CrmLeadSource,
+    CrmLead{leadStatus} to CorDictionary,
+    CrmLead{leadSource} to CorDictionary,
     CrmLead {keeper} to CorUser,
-    CrmLead{industry} to TraIndustry,
-    CrmLead{area} to CorArea,
+    CrmLead{industry} to CorDictionary,
+    CrmLead{area} to CorDictionary,
     CrmLead{network} to CorNetwork,
 
-    CrmOpportunity {stage} to CrmStage,
+    CrmOpportunity {stage} to CorDictionary,
     CrmOpportunity {keeper} to CorUser,
     CrmOpportunity {contact} to CrmContact,
     CrmOpportunity {account} to CrmAccount,
@@ -710,7 +635,7 @@ relationship ManyToOne {
 
     CrmTask{createdBy} to CorUser,
     CrmTask{assignedTo} to CorUser,
-    CrmTask{status} to CrmTaskStatus,
+    CrmTask{status} to CorDictionary,
     CrmTask{network} to CorNetwork,
     TraOrder{advertisment}to TraAdvertisement,
     SchEmission {order} to TraOrder {emissions},
@@ -731,7 +656,7 @@ relationship ManyToOne {
 }
 relationship ManyToMany {
 
-      CorUser{channel} to CorChannel{channelUsers},
+     CorUser{channel} to CorChannel{channelUsers},
      CorUser{network} to CorNetwork{networkUsers}
 }
 dto * with mapstruct except LibCloudObject
