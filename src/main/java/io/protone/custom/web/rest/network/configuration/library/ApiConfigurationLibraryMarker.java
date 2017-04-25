@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiConfigurationLibraryMarker {
 
 
@@ -29,7 +27,7 @@ public interface ApiConfigurationLibraryMarker {
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<ConfMarkerConfigurationPT> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                @ApiParam(value = "markerConfigurationDTO", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationDTO);
+                                                                                @ApiParam(value = "markerConfigurationDTO", required = true) @RequestBody ConfMarkerConfigurationPT markerConfigurationPT);
 
 
     @ApiOperation(value = "createMarkerConfiguration", notes = "", response = ConfMarkerConfigurationPT.class, tags={ "CONFIGURATION","CORE", })

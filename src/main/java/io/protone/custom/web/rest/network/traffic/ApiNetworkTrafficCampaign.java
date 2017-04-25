@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetworkTrafficCampaign {
 
 
@@ -27,7 +25,7 @@ public interface ApiNetworkTrafficCampaign {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraCampaignPT>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "updateCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})
@@ -42,7 +40,7 @@ public interface ApiNetworkTrafficCampaign {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO);
+                                                         @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT);
 
     @ApiOperation(value = "createCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
@@ -56,7 +54,7 @@ public interface ApiNetworkTrafficCampaign {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "campaignDTO", required = true) @RequestBody TraCampaignPT campaignDTO);
+                                                          @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT);
 
 
     @ApiOperation(value = "deleteCampaign", notes = "", response = Void.class, tags = {"TRAFFIC",})

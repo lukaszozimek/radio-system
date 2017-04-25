@@ -34,6 +34,7 @@ public class ApiChannelImpl implements ApiChannel {
 
     @Inject
     private CustomCORChannelMapper customCORChannelMapper;
+
     @Inject
     private CorNetworkService networkService;
 

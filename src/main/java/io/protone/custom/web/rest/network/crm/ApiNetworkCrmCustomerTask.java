@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetworkCrmCustomerTask {
 
 
@@ -44,7 +43,7 @@ public interface ApiNetworkCrmCustomerTask {
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskPT> updateCustomerActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                             @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT);
+                                                             @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
 
 
     @ApiOperation(value = "createCustomerActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
@@ -60,7 +59,7 @@ public interface ApiNetworkCrmCustomerTask {
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskPT> createCustomerActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                              @ApiParam(value = "crmActivityPT", required = true) @RequestBody CrmTaskPT crmActivityPT);
+                                                              @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
 
 
     @ApiOperation(value = "deleteCustomerActivityActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})

@@ -15,9 +15,7 @@ import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetworkLibraryItem {
 
 
@@ -48,7 +46,7 @@ public interface ApiNetworkLibraryItem {
         method = RequestMethod.GET)
     ResponseEntity<List<LibItemPT>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                        @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "uploadItemsByNetworShortcutAndLibraryPrefix", notes = "", response = LibItemPT.class, responseContainer = "List", tags = {"LIBRARY",})
     @ApiResponses(value = {
@@ -63,6 +61,9 @@ public interface ApiNetworkLibraryItem {
         @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
         @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws Exception;
+
+
+
 
     @ApiOperation(value = "getItemByNetworShortcutAndLibrar", notes = "", response = LibItemPT.class, tags = {"LIBRARY",})
     @ApiResponses(value = {

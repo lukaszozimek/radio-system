@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetwork {
 
     @ApiOperation(value = "getAllNetworks", notes = "", response = CoreNetworkPT.class, responseContainer = "List", tags = {"NETWORK", "CORE",})

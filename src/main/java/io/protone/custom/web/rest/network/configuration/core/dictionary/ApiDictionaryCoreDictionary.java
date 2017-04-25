@@ -1,9 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary;
 
-import io.protone.custom.service.dto.ConfCountryPt;
-import io.protone.custom.service.dto.ConfTagPT;
 import io.protone.custom.service.dto.CorDictionaryPT;
-import io.protone.domain.CorDictionary;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiDictionaryCoreDictionary {
     @ApiOperation(value = "updateDictionaryValue", notes = "", response = CorDictionaryPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {

@@ -25,10 +25,10 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkLibraryImpl.class);
 
     @Inject
-    CustomLibLibraryMapperExt libraryMapper;
+    private CustomLibLibraryMapperExt libraryMapper;
 
     @Inject
-    LibLibraryService libraryService;
+    private LibLibraryService libraryService;
 
     @Override
     public ResponseEntity<LibraryPT> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @RequestBody LibraryPT library) {
@@ -46,7 +46,7 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
 
     @Override
     public ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "pagable", required = true)  Pageable pagable) {
+                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibraryPT");
         List<LibLibrary> libraries = libraryService.findLibrary(networkShortcut);
         return ResponseEntity.ok()

@@ -38,7 +38,7 @@ public class ApiConfigurationTrafficDictionaryCurrencyImpl implements ApiConfigu
     @Override
     public ResponseEntity<List<ConfCurrencyPT>> getAllCurrencyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        log.debug("REST request to get CorCurrency : {}", networkShortcut);
+        log.debug("REST request to get all CorCurrency");
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         List<CorCurrency> corCurrencies = corCurrencyRepository.findByNetwork(corNetwork);

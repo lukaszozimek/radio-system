@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetworkCrmCustomer {
 
 
@@ -29,7 +27,7 @@ public interface ApiNetworkCrmCustomer {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "customerPT", required = true) @RequestBody CrmAccountPT customeryPT);
+                                                        @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT);
 
 
     @ApiOperation(value = "createCustomer", notes = "", response = CrmAccountPT.class, tags = {"TRAFFIC", "CRM",})
@@ -44,7 +42,7 @@ public interface ApiNetworkCrmCustomer {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmAccountPT> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "customerPT", required = true) @RequestBody CrmAccountPT customerPT);
+                                                         @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT);
 
 
     @ApiOperation(value = "getAllCustomers", notes = "", response = CrmAccountPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})

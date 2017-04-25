@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.net.URISyntaxException;
 import java.util.List;
 
-/**
- * Created by lukaszozimek on 27/02/2017.
- */
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiConfigurationUser {
 
     @ApiOperation(value = "getAllUsers", notes = "", response = CoreUserPT.class, tags = {"DICTIONARY", "CONFIGURATION",})

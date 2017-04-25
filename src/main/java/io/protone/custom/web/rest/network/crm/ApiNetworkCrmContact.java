@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetworkCrmContact {
 
     @ApiOperation(value = "updateContact", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
@@ -25,7 +23,7 @@ public interface ApiNetworkCrmContact {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customeryPT);
+                                                       @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT);
 
 
     @ApiOperation(value = "createContact", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
@@ -40,7 +38,7 @@ public interface ApiNetworkCrmContact {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmContactPT> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "customerPT", required = true) @RequestBody CrmContactPT customerPT);
+                                                        @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT);
 
 
     @ApiOperation(value = "getAllContact", notes = "", response = CrmContactPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
@@ -53,7 +51,7 @@ public interface ApiNetworkCrmContact {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getContact", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {

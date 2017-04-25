@@ -82,6 +82,7 @@ public class LibItemService {
 
     @Inject
     private LibTrackRepository libTrackRepository;
+
     @Inject
     private LibLabelRepository libLabelRepository;
 

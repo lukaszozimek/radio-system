@@ -32,6 +32,7 @@ public class ApiNetworkLibraryItemImpl implements ApiNetworkLibraryItem {
 
     @Inject
     private LibItemService itemService;
+
     @Inject
     private CorNetworkService corNetworkService;
 

@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiNetworkTrafficOrder {
 
 
@@ -29,7 +27,7 @@ public interface ApiNetworkTrafficOrder {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO);
+                                                     @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT);
 
     @ApiOperation(value = "createAnOrder", notes = "", response = TraOrderPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
@@ -43,7 +41,7 @@ public interface ApiNetworkTrafficOrder {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraOrderPT> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                      @ApiParam(value = "anOrderDTO", required = true) @RequestBody TraOrderPT anOrderDTO);
+                                                      @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT);
 
     @ApiOperation(value = "getAllAnOrders", notes = "", response = TraOrderPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
