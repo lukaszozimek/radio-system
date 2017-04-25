@@ -4,8 +4,11 @@ import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.custom.service.mapper.CustomCrmTaskMapper;
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class CrmCustomerService {
+
+    private final Logger log = LoggerFactory.getLogger(CrmCustomerService.class);
 
     @Inject
     private CustomCrmAccountRepositoryEx accountRepository;
@@ -49,13 +54,23 @@ public class CrmCustomerService {
 
     public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
         CrmAccount crmAccount = crmAccountMapper.createCrmAcountEntity(crmAccountPT, corNetwork);
+
+        log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         CorAddress address = addressRepository.saveAndFlush(crmAccount.getAddres());
+
+        log.debug("Persisting CorPerson: {}", crmAccount.getPerson());
+        CorPerson person = personRepository.saveAndFlush(crmAccount.getPerson());
+
+        log.debug("Persisting CorContact: {}", crmAccount.getPerson().getContacts());
         List<CorContact> corContact = corContactRepository.save(crmAccount.getPerson().getContacts());
         crmAccount.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
-        CorPerson person = personRepository.saveAndFlush(crmAccount.getPerson());
+
+        log.debug("Persisting Contact With Person");
         corContact.stream().forEach(corContact1 -> corContactRepository.save(corContact1.person(person)));
         crmAccount.setAddres(address);
         crmAccount.person(person);
+
+        log.debug("Persisting CrmAccount: {}", crmAccount);
         crmAccount = accountRepository.saveAndFlush(crmAccount);
         return crmAccountMapper.buildContactDTOFromEntities(crmAccount);
     }
@@ -72,6 +87,7 @@ public class CrmCustomerService {
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CorNetwork corNetwork) {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
         CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.createTaskEntity(taskPT));
+        log.debug("Persisting CrmTask: {}, for CrmAccount: ", crmTask);
         crmAccount.addTasks(crmTask);
         accountRepository.save(crmAccount);
         return customCrmTaskMapper.createCrmTask(crmTask);

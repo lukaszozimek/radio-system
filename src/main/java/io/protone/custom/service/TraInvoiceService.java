@@ -6,6 +6,8 @@ import io.protone.custom.service.mapper.CustomTraInvoiceMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,8 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class TraInvoiceService {
 
+    private final Logger log = LoggerFactory.getLogger(TraInvoiceService.class);
+
     @Inject
     private CustomTraInvoiceRepository traInvoiceRepository;
 
@@ -34,6 +38,7 @@ public class TraInvoiceService {
 
     public TraInvoicePT saveInvoice(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
         TraInvoice invoice = customTraInvoiceMapper.createEntityFromDTO(traInvoicePT, corNetwork);
+        log.debug("Persisting TraInvoice: {}", invoice);
         invoice = traInvoiceRepository.save(invoice);
         return customTraInvoiceMapper.createDTOFromEnity(invoice);
     }
@@ -46,7 +51,6 @@ public class TraInvoiceService {
         TraInvoice traInvoice = traInvoiceRepository.findOne(id);
         return customTraInvoiceMapper.createDTOFromEnity(traInvoice);
     }
-
 
     public List<TraInvoicePT> getCustomerInvoice(String customerShortcut, CorNetwork corNetwork) {
         return null;

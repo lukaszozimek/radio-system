@@ -9,6 +9,8 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,8 @@ import java.util.Optional;
 @Service
 @Transactional
 public class SchPlaylistService {
+
+    private final Logger log = LoggerFactory.getLogger(SchPlaylistService.class);
 
     @Inject
     private CorNetworkService networkService;

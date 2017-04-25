@@ -48,21 +48,28 @@ import static java.util.stream.Collectors.toSet;
 public class CustomCorUserService {
 
     private final Logger log = LoggerFactory.getLogger(CustomCorUserService.class);
+
     @Autowired
     private CustomCorUserRepository userRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private CustomAuthorityRepository authorityRepository;
+
     @Autowired
     private CustomCorChannelRepository customCorChannelRepository;
 
     @Autowired
     private CustomCorNetworkRepository customCorNetworkRepository;
+
     @Autowired
     private CustomCorUserMapperExt customCorUserMapperExt;
+
     @Autowired
     private CustomCorNetworkMapper customCorNetworkMapper;
+
     @Autowired
     private CustomCORChannelMapper customCORChannelMapper;
 

@@ -4,8 +4,11 @@ import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmLeadMapper;
 import io.protone.custom.service.mapper.CustomCrmTaskMapper;
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class CrmLeadService {
+
+    private final Logger log = LoggerFactory.getLogger(CrmLeadService.class);
 
     @Inject
     private CustomCrmLeadMapper customCrmLeadMapper;
@@ -49,17 +54,27 @@ public class CrmLeadService {
         return crmLeadRepository.findByNetwork(corNetwork).stream().map(crmLead -> customCrmLeadMapper.createDTOFromEntites(crmLead)).collect(toList());
     }
 
-    public CrmLeadPT saveLead(CrmLeadPT lead, CorNetwork corNetwork) {
-        CrmLead lead1 = customCrmLeadMapper.createLeadEntity(lead, corNetwork);
-        CorAddress address = addressRepository.save(lead1.getAddres());
-        List<CorContact> corContact = corContactRepository.save(lead1.getPerson().getContacts());
-        lead1.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
-        CorPerson person = personRepository.save(lead1.getPerson());
+    public CrmLeadPT saveLead(CrmLeadPT crmLeadPT, CorNetwork corNetwork) {
+        CrmLead lead = customCrmLeadMapper.createLeadEntity(crmLeadPT, corNetwork);
+
+        log.debug("Persisting CorAddress: {}", lead.getAddres());
+        CorAddress address = addressRepository.save(lead.getAddres());
+
+        log.debug("Persisting CorContact: {}", lead.getPerson().getContacts());
+        List<CorContact> corContact = corContactRepository.save(lead.getPerson().getContacts());
+        lead.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
+
+        log.debug("Persisting CorPerson: {}", lead.getPerson());
+        CorPerson person = personRepository.save(lead.getPerson());
+
+        log.debug("Persisting CorPerson with Contact", lead.getPerson());
         corContact.stream().forEach(corContact1 -> corContactRepository.save(corContact1.person(person)));
-        lead1.setAddres(address);
-        lead1.person(person);
-        lead1 = crmLeadRepository.save(lead1);
-        return customCrmLeadMapper.createDTOFromEntites(lead1);
+        lead.setAddres(address);
+        lead.person(person);
+
+        log.debug("Persisting CrmLead", lead);
+        lead = crmLeadRepository.save(lead);
+        return customCrmLeadMapper.createDTOFromEntites(lead);
     }
 
     public void deleteLead(String shortcut, CorNetwork corNetwork) {
@@ -92,6 +107,7 @@ public class CrmLeadService {
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CorNetwork corNetwork) {
         CrmLead crmLead = crmLeadRepository.findOneByShortnameAndNetwork(shortcut, corNetwork);
         CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.createTaskEntity(taskPT));
+        log.debug("Persisting CrmTask: {}, for CrmLead: ", crmTask);
         crmLead.addTasks(crmTask);
         crmLeadRepository.save(crmLead);
         return customCrmTaskMapper.createCrmTask(crmTask);

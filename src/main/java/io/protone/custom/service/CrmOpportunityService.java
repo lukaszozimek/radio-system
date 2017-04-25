@@ -4,11 +4,14 @@ import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmOpportunityMapper;
 import io.protone.custom.service.mapper.CustomCrmTaskMapper;
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
 import io.protone.repository.custom.CustomCrmOpportunityRepository;
 import io.protone.repository.CrmTaskRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class CrmOpportunityService {
+
+    private final Logger log = LoggerFactory.getLogger(CrmOpportunityService.class);
 
     @Inject
     private CustomCrmOpportunityRepository opportunityRepository;
@@ -42,7 +47,11 @@ public class CrmOpportunityService {
     }
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
-        CrmOpportunity opportunity = opportunityRepository.save(customCrmOpportunityMapper.createOpportunity(opportunityPT, corNetwork));
+        CrmOpportunity crmOpportunity = customCrmOpportunityMapper.createOpportunity(opportunityPT, corNetwork);
+
+        log.debug("Persisting CrmOpportunity: {}", crmOpportunity);
+        CrmOpportunity opportunity = opportunityRepository.save(crmOpportunity);
+
         return customCrmOpportunityMapper.buildDTOFromEntites(opportunity);
     }
 
@@ -79,6 +88,7 @@ public class CrmOpportunityService {
     public CrmTaskPT saveTasksAssociatedWithOpportunity(String shortName, CrmTaskPT crmActivityPT, CorNetwork corNetwork) {
         CrmOpportunity crmOpportunity = opportunityRepository.findOneByNameAndNetwork(shortName, corNetwork);
         CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.createTaskEntity(crmActivityPT));
+        log.debug("Persisting Task: {}, for CrmOpportunity: {}", crmTask);
         crmOpportunity.addTasks(crmTask);
         opportunityRepository.save(crmOpportunity);
         return customCrmTaskMapper.createCrmTask(crmTask);

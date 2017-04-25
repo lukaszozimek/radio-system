@@ -11,6 +11,8 @@ import io.protone.repository.SchEmissionRepository;
 import io.protone.repository.TraOrderRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraCampaignRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class TraCampaignService {
+
+    private final Logger log = LoggerFactory.getLogger(TraCampaignService.class);
 
     @Inject
     private CustomTRACampaignMapper customTRACampaignMapper;
@@ -60,6 +64,7 @@ public class TraCampaignService {
         if (!traCampaign.getOrders().isEmpty() && traCampaign.getOrders() != null) {
             traCampaign.setOrders(traCampaign.getOrders().stream().map(traOrder -> traOrderRepository.saveAndFlush(traOrder)).collect(Collectors.toSet()));
         }
+        log.debug("Persisting TraCampaign: {}", traCampaign);
         traCampaign = traCampaignRepository.saveAndFlush(traCampaign);
 
         return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);

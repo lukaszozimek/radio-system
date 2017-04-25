@@ -1,7 +1,10 @@
 package io.protone.custom.service;
 
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.custom.CustomCorNetworkRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,7 @@ import java.util.List;
  */
 @Service
 public class CorNetworkService {
+    private final Logger log = LoggerFactory.getLogger(CorNetworkService.class);
 
     @Inject
     private CustomCorNetworkRepository ccorNetworkRepository;
@@ -31,6 +35,7 @@ public class CorNetworkService {
     }
 
     public CorNetwork save(CorNetwork network) {
+        log.debug("Persisting CorNetwork: {}", network);
         return ccorNetworkRepository.save(network);
     }
 

@@ -41,6 +41,7 @@ import static io.protone.custom.consts.ServiceConstants.NO_DATA;
 @Service
 @Transactional
 public class LibMetadataService {
+
     private final Logger log = LoggerFactory.getLogger(LibMetadataService.class);
 
     @Inject
@@ -48,9 +49,6 @@ public class LibMetadataService {
 
     @Inject
     private LibArtistService libArtistService;
-
-    @Inject
-    private LibLabelService libLabelService;
 
     @Inject
     private LibAlbumService libAlbumService;
@@ -122,6 +120,7 @@ public class LibMetadataService {
         metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
+        log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;
 
@@ -151,10 +150,14 @@ public class LibMetadataService {
             } else {
                 corPropertyKey = new CorPropertyKey().key(metadataName).network(corNetwork);
             }
+
+            log.debug("Persisting CorKey: {}", corPropertyKey);
             corPropertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey);
+            log.debug("Persisting CorValues: {}", metadata.get(metadataName));
             corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(finalMediaItem).propertyKey(corPropertyKey));
         });
 
+        log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);
         return mediaItem;
     }
 

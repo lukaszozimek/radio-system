@@ -4,10 +4,13 @@ import io.protone.custom.service.dto.LibraryPT;
 import io.protone.custom.service.mapper.CustomCORChannelMapper;
 import io.protone.custom.service.mapper.CustomCorUserMapperExt;
 import io.protone.custom.service.mapper.CustomLibLibraryMapperExt;
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomLibLibraryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,8 @@ import java.util.List;
 @Service
 @Transactional
 public class LibLibraryService {
+
+    private final Logger log = LoggerFactory.getLogger(LibLibraryService.class);
 
     @Inject
     private CustomCorNetworkRepository networkRepository;
@@ -64,6 +69,7 @@ public class LibLibraryService {
         CorNetwork network = getNetworkByShortcut(networkShortcut);
         LibLibrary result = customLibLibraryMapper.DTO2DB(library);
         result.setNetwork(network);
+        log.debug("Persisting LibLibrary: {}", result);
         result = libraryRepository.saveAndFlush(result);
 
         return result;

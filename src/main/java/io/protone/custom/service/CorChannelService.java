@@ -1,8 +1,11 @@
 package io.protone.custom.service;
 
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.domain.CorChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @Service
 @Transactional
 public class CorChannelService {
+
+    private final Logger log = LoggerFactory.getLogger(CorChannelService.class);
 
     @Inject
     private CustomCorChannelRepository channelRepository;
@@ -35,6 +40,8 @@ public class CorChannelService {
     }
 
     public CorChannel save(CorChannel channel) {
+
+        log.debug("Persisting CorChannel: {}", channel);
         return channelRepository.saveAndFlush(channel);
     }
 

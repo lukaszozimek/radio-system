@@ -3,6 +3,7 @@ package io.protone.custom.service;
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
 import io.protone.custom.consts.ServiceConstants;
+import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
@@ -21,6 +22,8 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.AutoDetectParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +43,8 @@ import java.util.UUID;
 @Service
 @Transactional
 public class LibItemService {
+
+    private final Logger log = LoggerFactory.getLogger(LibItemService.class);
 
     @Inject
     private S3Client s3Client;
@@ -181,6 +186,8 @@ public class LibItemService {
             String contentType = mediaType.toString();
 
             try {
+
+                log.debug("Uploading Media Item: {} ", fileUUID);
                 s3Client.upload(fileUUID, bais, contentType);
                 LibCloudObject cloudObject = new LibCloudObject();
                 cloudObject.setUuid(fileUUID);
@@ -197,15 +204,17 @@ public class LibItemService {
                 cloudObject.setNetwork(libraryDB.getNetwork());
                 cloudObject.setHash(ServiceConstants.NO_HASH);
                 cloudObject.network(corNetwork);
+
+                log.debug("Persisting LibCloudObject: {}", cloudObject);
                 cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
                 LibMediaItem libMediaItem = new LibMediaItem();
                 LibAudioObject audioObject = new LibAudioObject();
                 libMediaItem = libMetadataService.resolveMetadata(file, libraryDB, corNetwork, libMediaItem, audioObject);
 
-
                 audioObject.setCloudObject(cloudObject);
                 audioObject.setMediaItem(libMediaItem);
 
+                log.debug("Persisting LibAudioObject: {}", audioObject);
                 audioObjectRepository.saveAndFlush(audioObject);
 
                 result.add(itemMapper.DB2DTO(libMediaItem));

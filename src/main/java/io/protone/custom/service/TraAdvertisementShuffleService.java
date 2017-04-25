@@ -21,6 +21,7 @@ import java.util.List;
  */
 @Service
 public class TraAdvertisementShuffleService {
+
     private final Logger log = LoggerFactory.getLogger(TraAdvertisementShuffleService.class);
 
     @Inject

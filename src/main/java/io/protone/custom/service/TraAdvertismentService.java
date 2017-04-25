@@ -10,6 +10,8 @@ import io.protone.domain.TraAdvertisement;
 import io.protone.repository.LibMediaItemRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class TraAdvertismentService {
+
+    private final Logger log = LoggerFactory.getLogger(TraAdvertismentService.class);
 
     @Inject
     private CustomTRAAdvertismentMapper traAdvertismentMapper;
@@ -46,12 +50,13 @@ public class TraAdvertismentService {
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     public List<TraAdvertisementPT> getAllAdvertisement(CorNetwork corNetwork) {
-        System.out.println("test");
         return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.transformEntityToDTO(traAdvertisement)).collect(toList());
     }
 
     public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
         TraAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT, corNetwork);
+
+        log.debug("Persisting TraAdvertisement: {}", traAdvertisement);
         traAdvertisementRepository.save(traAdvertisement);
         return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
     }

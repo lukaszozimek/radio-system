@@ -70,7 +70,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
     public ResponseEntity<Void> deleteAnOrderUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraOrder : {}, for Network: {}", id, networkShortcut);
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        traOrderService.getOrder(id, corNetwork);
+        traOrderService.deleteOrder(id, corNetwork);
         return ResponseEntity.ok().build();
     }
 

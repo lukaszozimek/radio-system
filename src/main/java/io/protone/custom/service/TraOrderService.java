@@ -7,6 +7,8 @@ import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.service.mapper.CustomTraOrderMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +25,15 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class TraOrderService {
 
+    private final Logger log = LoggerFactory.getLogger(TraOrderService.class);
+
     @Inject
     private CustomTraOrderMapper customTraOrderMapper;
 
     @Inject
     private CustomTraOrderRepository traOrderRepository;
+
+    @Inject
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     public List<TraOrderPT> getAllOrder(CorNetwork corNetwork) {
@@ -36,6 +42,7 @@ public class TraOrderService {
 
     public TraOrderPT saveOrder(TraOrderPT orderPT, CorNetwork corNetwork) {
         TraOrder traOrder = customTraOrderMapper.trasnformDTOtoEntity(orderPT, corNetwork);
+        log.debug("Persisting TraOrder: {}", traOrder);
         traOrderRepository.save(traOrder);
         return customTraOrderMapper.transfromEntiteToDTO(traOrder);
     }
@@ -48,10 +55,6 @@ public class TraOrderService {
     public TraOrderPT getOrder(Long id, CorNetwork corNetwork) {
         TraOrder traOrder = traOrderRepository.findOne(id);
         return getOrdersByEntitie(traOrder, corNetwork);
-    }
-
-    public List<TraOrderPT> getOrdersByEntitie(List<TraOrder> traOrders, CorNetwork corNetwork) {
-        return traOrders.stream().map(traOrder -> getOrdersByEntitie(traOrder, corNetwork)).collect(toList());
     }
 
     public TraOrderPT getOrdersByEntitie(TraOrder traOrders, CorNetwork corNetwork) {
