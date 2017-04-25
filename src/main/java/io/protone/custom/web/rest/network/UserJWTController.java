@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 public class UserJWTController {
 
     private final TokenProvider tokenProvider;

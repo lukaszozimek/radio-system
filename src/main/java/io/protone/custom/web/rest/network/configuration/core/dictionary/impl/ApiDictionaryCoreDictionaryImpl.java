@@ -73,7 +73,10 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
     }
 
     @Override
-    public ResponseEntity<Void> deleteDictionaryValueUsingDELETE(String networkShortcut, String module, String type, Long id) {
+    public ResponseEntity<Void> deleteDictionaryValueUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                 @ApiParam(value = "module", required = true) @PathVariable("module") String module,
+                                                                 @ApiParam(value = "type", required = true) @PathVariable("type") String type,
+                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorDictionary : {}", id);
         corDictionaryRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CorDictionary", id.toString())).build();
@@ -83,7 +86,7 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
     public ResponseEntity<List<CorDictionaryPT>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                                @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable) {
+                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CorDictionary : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
