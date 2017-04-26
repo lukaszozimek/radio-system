@@ -1,6 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
+import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.protone.domain.TraPrice;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,10 +21,10 @@ public class TraOrderPT {
     private Long calculatedPrize = null;
 
     @JsonProperty("campaign")
-    private TraCampaignPT traCampaignPT = null;
+    private Long campaignId = null;
 
     @JsonProperty("customer")
-    private TraCustomerPT customerPT = null;
+    private TraCustomerThinPT customerId = null;
 
     @JsonProperty("endDate")
     private LocalDate endDate = null;
@@ -36,20 +38,17 @@ public class TraOrderPT {
     @JsonProperty("startDate")
     private LocalDate startDate = null;
 
-    @JsonProperty("price")
-    private TraPrice traPrice = null;
-
     @JsonProperty("advertisment")
-    private TraAdvertisementPT traAdvertisementPT = null;
+    private TraAdvertisementThinPT advertismentId = null;
 
     @JsonProperty("status")
-    private CorDictionaryPT traOrderStatus = null;
+    private CorDictionaryPT statusId = null;
 
     @JsonProperty("emission")
     private List<SchEmissionPT> schEmissionPT = new ArrayList<SchEmissionPT>();
 
     @JsonProperty
-    private TraInvoicePT traInvoicePT = null;
+    private Long invoiceId = null;
 
     public TraOrderPT calculatedPrize(Long calculatedPrize) {
         this.calculatedPrize = calculatedPrize;
@@ -70,61 +69,43 @@ public class TraOrderPT {
         this.calculatedPrize = calculatedPrize;
     }
 
-    public TraOrderPT traCampaign(TraCampaignPT campaignId) {
-        this.traCampaignPT = campaignId;
+    public TraOrderPT traCampaign(Long campaignId) {
+        this.campaignId = campaignId;
         return this;
     }
 
     /**
-     * Get traCampaignPT
+     * Get campaignId
      *
-     * @return traCampaignPT
+     * @return campaignId
      **/
     @ApiModelProperty(value = "")
-    public TraCampaignPT getTraCampaignPT() {
-        return traCampaignPT;
+    public Long getCampaignId() {
+        return campaignId;
     }
 
-    public void setTraCampaignPT(TraCampaignPT traCampaignPT) {
-        this.traCampaignPT = traCampaignPT;
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
     }
 
-    public TraOrderPT traPrice(TraPrice price) {
-        this.traPrice = price;
+
+    public TraOrderPT customerId(TraCustomerThinPT customerId) {
+        this.customerId = customerId;
         return this;
     }
 
     /**
-     * Get traCampaignPT
+     * Get customerId
      *
-     * @return traCampaignPT
+     * @return customerId
      **/
     @ApiModelProperty(value = "")
-    public TraPrice getTraPrice() {
-        return traPrice;
+    public TraCustomerThinPT getCustomerId() {
+        return customerId;
     }
 
-    public void setTraPrice(TraPrice traPrice) {
-        this.traPrice = traPrice;
-    }
-
-    public TraOrderPT customerId(TraCustomerPT customerId) {
-        this.customerPT = customerId;
-        return this;
-    }
-
-    /**
-     * Get customerPT
-     *
-     * @return customerPT
-     **/
-    @ApiModelProperty(value = "")
-    public TraCustomerPT getCustomerPT() {
-        return customerPT;
-    }
-
-    public void setCustomerPT(TraCustomerPT customerPT) {
-        this.customerPT = customerPT;
+    public void setCustomerId(TraCustomerThinPT customerId) {
+        this.customerId = customerId;
     }
 
     public TraOrderPT endDate(LocalDate endDate) {
@@ -195,16 +176,16 @@ public class TraOrderPT {
      * @return status
      **/
     @ApiModelProperty(required = true, value = "")
-    public TraInvoicePT getTraInvoice() {
-        return traInvoicePT;
+    public Long getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setTraInvoice(TraInvoicePT traInvoicePT) {
-        this.traInvoicePT = traInvoicePT;
+    public void setInvoiceId(Long traInvoicePT) {
+        this.invoiceId = traInvoicePT;
     }
 
-    public TraOrderPT traInvoiceT(TraInvoicePT traInvoicePT) {
-        this.traInvoicePT = traInvoicePT;
+    public TraOrderPT invoiceId(Long traInvoicePT) {
+        this.invoiceId = traInvoicePT;
         return this;
     }
 
@@ -214,16 +195,16 @@ public class TraOrderPT {
      * @return status
      **/
     @ApiModelProperty(required = true, value = "")
-    public CorDictionaryPT getTraOrderStatus() {
-        return traOrderStatus;
+    public CorDictionaryPT getStatusId() {
+        return statusId;
     }
 
-    public void setTraOrderStatus(CorDictionaryPT traOrderStatus) {
-        this.traOrderStatus = traOrderStatus;
+    public void setStatusId(CorDictionaryPT traOrderStatus) {
+        this.statusId = traOrderStatus;
     }
 
-    public TraOrderPT traOrderStatus(CorDictionaryPT traOrderStatus) {
-        this.traOrderStatus = traOrderStatus;
+    public TraOrderPT statusId(CorDictionaryPT traOrderStatus) {
+        this.statusId = traOrderStatus;
         return this;
     }
 
@@ -233,16 +214,16 @@ public class TraOrderPT {
      * @return status
      **/
     @ApiModelProperty(required = true, value = "")
-    public TraAdvertisementPT getAdvertisment() {
-        return traAdvertisementPT;
+    public TraAdvertisementThinPT getAdvertismentId() {
+        return advertismentId;
     }
 
-    public void setAdvertisment(TraAdvertisementPT advertisment) {
-        this.traAdvertisementPT = advertisment;
+    public void setAdvertismentId(TraAdvertisementThinPT advertisment) {
+        this.advertismentId = advertisment;
     }
 
-    public TraOrderPT advertimsnet(TraAdvertisementPT advertisment) {
-        this.traAdvertisementPT = advertisment;
+    public TraOrderPT advertismentId(TraAdvertisementThinPT advertisment) {
+        this.advertismentId = advertisment;
         return this;
     }
 
@@ -300,20 +281,19 @@ public class TraOrderPT {
         }
         TraOrderPT traOrderPT = (TraOrderPT) o;
         return Objects.equals(this.calculatedPrize, traOrderPT.calculatedPrize) &&
-            Objects.equals(this.traCampaignPT, traOrderPT.traCampaignPT) &&
-            Objects.equals(this.customerPT, traOrderPT.customerPT) &&
+            Objects.equals(this.campaignId, traOrderPT.campaignId) &&
+            Objects.equals(this.customerId, traOrderPT.customerId) &&
             Objects.equals(this.endDate, traOrderPT.endDate) &&
             Objects.equals(this.id, traOrderPT.id) &&
             Objects.equals(this.name, traOrderPT.name) &&
             Objects.equals(this.startDate, traOrderPT.startDate) &&
             Objects.equals(this.schEmissionPT, traOrderPT.schEmissionPT) &&
-            Objects.equals(this.traAdvertisementPT, traOrderPT.traAdvertisementPT) &&
-            Objects.equals(this.traPrice, traOrderPT.traPrice);
+            Objects.equals(this.advertismentId, traOrderPT.advertismentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, traCampaignPT, customerPT, endDate, id, name, startDate, traPrice, schEmissionPT, traAdvertisementPT);
+        return Objects.hash(calculatedPrize, campaignId, customerId, endDate, id, name, startDate, schEmissionPT, advertismentId);
     }
 
     @Override
@@ -322,15 +302,14 @@ public class TraOrderPT {
         sb.append("class TraOrderPT {\n");
 
         sb.append("    calculatedPrize: ").append(toIndentedString(calculatedPrize)).append("\n");
-        sb.append("    traCampaignPT: ").append(toIndentedString(traCampaignPT)).append("\n");
-        sb.append("    customerPT: ").append(toIndentedString(customerPT)).append("\n");
+        sb.append("    campaignId: ").append(toIndentedString(campaignId)).append("\n");
+        sb.append("    customerId: ").append(toIndentedString(customerId)).append("\n");
         sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-        sb.append("    price: ").append(toIndentedString(traPrice)).append("\n");
         sb.append("    emissions: ").append(toIndentedString(schEmissionPT)).append("\n");
-        sb.append("    advertisment: ").append(toIndentedString(traAdvertisementPT)).append("\n");
+        sb.append("    advertisment: ").append(toIndentedString(advertismentId)).append("\n");
 
         sb.append("}");
         return sb.toString();

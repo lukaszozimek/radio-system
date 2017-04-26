@@ -1,8 +1,7 @@
-package io.protone.custom.service.dto;
+package io.protone.custom.service.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.LibMediaItemThinPt;
-import io.protone.custom.service.dto.thin.TraCustomerThinPT;
+import io.protone.custom.service.dto.CorDictionaryPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -12,12 +11,9 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraAdvertisementPT {
+public class TraAdvertisementThinPT {
     @JsonProperty("id")
     private Long id = null;
-
-    @JsonProperty("customerId")
-    private TraCustomerThinPT customerId = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -35,7 +31,7 @@ public class TraAdvertisementPT {
     private CorDictionaryPT typeId;
 
 
-    public TraAdvertisementPT type(CorDictionaryPT typePT) {
+    public TraAdvertisementThinPT type(CorDictionaryPT typePT) {
         this.typeId = typePT;
         return this;
     }
@@ -49,26 +45,7 @@ public class TraAdvertisementPT {
         this.typeId = typeId;
     }
 
-    public TraAdvertisementPT customerId(TraCustomerThinPT customerId) {
-        this.customerId = customerId;
-        return this;
-    }
-
-    /**
-     * Get customerId
-     *
-     * @return customerId
-     **/
-    @ApiModelProperty(value = "")
-    public TraCustomerThinPT getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(TraCustomerThinPT customerId) {
-        this.customerId = customerId;
-    }
-
-    public TraAdvertisementPT description(String description) {
+    public TraAdvertisementThinPT description(String description) {
         this.description = description;
         return this;
     }
@@ -87,7 +64,7 @@ public class TraAdvertisementPT {
         this.description = description;
     }
 
-    public TraAdvertisementPT id(Long id) {
+    public TraAdvertisementThinPT id(Long id) {
         this.id = id;
         return this;
     }
@@ -106,7 +83,7 @@ public class TraAdvertisementPT {
         this.id = id;
     }
 
-    public TraAdvertisementPT industryId(CorDictionaryPT industryId) {
+    public TraAdvertisementThinPT industryId(CorDictionaryPT industryId) {
         this.industryId = industryId;
         return this;
     }
@@ -125,7 +102,7 @@ public class TraAdvertisementPT {
         this.industryId = industryId;
     }
 
-    public TraAdvertisementPT mediaItemId(LibMediaItemThinPt mediaItemId) {
+    public TraAdvertisementThinPT mediaItemId(LibMediaItemThinPt mediaItemId) {
         this.mediaItemId = mediaItemId;
         return this;
     }
@@ -144,7 +121,7 @@ public class TraAdvertisementPT {
         this.mediaItemId = mediaItemId;
     }
 
-    public TraAdvertisementPT name(String name) {
+    public TraAdvertisementThinPT name(String name) {
         this.name = name;
         return this;
     }
@@ -172,26 +149,24 @@ public class TraAdvertisementPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraAdvertisementPT traAdvertisementPT = (TraAdvertisementPT) o;
-        return Objects.equals(this.customerId, traAdvertisementPT.customerId) &&
+        TraAdvertisementThinPT traAdvertisementPT = (TraAdvertisementThinPT) o;
+        return
             Objects.equals(this.description, traAdvertisementPT.description) &&
-            Objects.equals(this.id, traAdvertisementPT.id) &&
-            Objects.equals(this.industryId, traAdvertisementPT.industryId) &&
-            Objects.equals(this.mediaItemId, traAdvertisementPT.mediaItemId) &&
-            Objects.equals(this.name, traAdvertisementPT.name);
+                Objects.equals(this.id, traAdvertisementPT.id) &&
+                Objects.equals(this.industryId, traAdvertisementPT.industryId) &&
+                Objects.equals(this.mediaItemId, traAdvertisementPT.mediaItemId) &&
+                Objects.equals(this.name, traAdvertisementPT.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, description, id, industryId, mediaItemId, name);
+        return Objects.hash(description, id, industryId, mediaItemId, name);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TraAdvertisementPT {\n");
-
-        sb.append("    customerId: ").append(toIndentedString(customerId)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    industryId: ").append(toIndentedString(industryId)).append("\n");

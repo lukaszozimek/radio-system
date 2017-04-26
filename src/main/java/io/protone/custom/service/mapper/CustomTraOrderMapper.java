@@ -1,9 +1,17 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.TraCustomerService;
+import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.dto.TraOrderPT;
+import io.protone.custom.service.dto.thin.SchLibItemThinPT;
+import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
+import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.protone.domain.*;
+import io.protone.service.dto.TraOrderDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -16,133 +24,54 @@ import static java.util.stream.Collectors.toList;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Service
-public class CustomTraOrderMapper {
+@Mapper(componentModel = "spring", uses = {})
+public interface CustomTraOrderMapper {
+    @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "status", target = "statusId")
+    @Mapping(source = "advertisment", target = "advertismentId")
+    @Mapping(source = "campaign.id", target = "campaignId")
+    @Mapping(source = "invoice.id", target = "invoiceId")
+    @Mapping(target = "emissions", ignore = true)
+    TraOrderPT DB2DTO(TraOrder traOrder);
 
-    @Inject
-    private CustomSchEmissionMapper schEmissionMapper;
+    List<TraOrderPT> DBs2DTOs(List<TraOrder> traOrders);
 
-    @Inject
-    private CustomCrmAccountMapper customCrmAccountMapper;
+    @Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "statusId", target = "status")
+    @Mapping(source = "advertismentId", target = "advertisment")
+    @Mapping(source = "campaignId", target = "campaign")
+    @Mapping(target = "emissions", ignore = true)
+    TraOrder DTO2DB(TraOrderPT traOrderDTO);
 
-    @Inject
-    private CustomTRACampaignMapper customTRACampaignMapper;
+    List<TraOrder> DTOs2DBs(List<TraOrderPT> traOrderDTOs);
 
-    @Inject
-    private CustomSchEmissionMapper customSchEmissionMapper;
+    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
 
-    @Inject
-    private CustomTraInvoiceMapper customTraInvoiceMapper;
+    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
 
-    @Inject
-    private TraCustomerService customerService;
+    TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinPT coreUserThinPT);
 
-    @Inject
-    private CustomTRAAdvertismentMapper traAdvertismentMapper;
+    TraAdvertisementThinPT traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
 
-    @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
+    CrmAccount crmAccountFromTraCustomerThinPT(TraCustomerThinPT coreUserThinPT);
 
-    public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, CorNetwork corNetwork) {
-        List<TraOrder> traOrdersList = new ArrayList<>();
-        traOrderPT.stream().forEach(traOrderPT1 -> {
-            traOrdersList.add(trasnformDTOtoEntity(traOrderPT1, corNetwork));
-        });
-        return traOrdersList;
-    }
+    TraCustomerThinPT traCustomerThinPTFromCrmAccount(CrmAccount coreUserThinPT);
 
-    public List<TraOrder> trasnformDTOtoEntity(List<TraOrderPT> traOrderPT, Long traCampaign, CorNetwork corNetwork) {
-        List<TraOrder> traOrdersList = new ArrayList<>();
-        traOrderPT.stream().forEach(traOrderPT1 -> {
-            traOrdersList.add(trasnformDTOtoEntity(traOrderPT1, traCampaign, corNetwork));
-        });
-        return traOrdersList;
-    }
-
-    public TraOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, Long traCampaign, CorNetwork corNetwork) {
-        if (traOrderPT == null || corNetwork == null) {
+    default TraCampaign traCampaignFromId(Long id) {
+        if (id == null) {
             return null;
         }
-        TraOrder traOrder = new TraOrder();
-        traOrder.setId(traOrderPT.getId());
-        traOrder.name(traOrderPT.getName())
-            .calculatedPrize(traOrderPT.getCalculatedPrize())
-            .startDate(traOrderPT.getStartDate())
-            .endDate(traOrderPT.getEndDate());
-        traOrder.campaign(new TraCampaign()).getCampaign().setId(traCampaign);
-        if (traOrderPT.getTraCampaignPT() != null) {
-            traOrder.customer(customCrmAccountMapper.traDTO2DB(traOrderPT.getCustomerPT()));
-        }
-        if (traOrderPT.getTraInvoice() != null) {
-            traOrder.invoice(customTraInvoiceMapper.createEntityFromDTO(traOrderPT.getTraInvoice(), corNetwork));
-        }
-        if (traOrderPT.getAdvertisment() != null) {
-            traOrder.advertisment(traAdvertismentMapper.transformDTOToEntity(traOrderPT.getAdvertisment(), corNetwork));
-        }
-        traOrder.price(traOrderPT.getTraPrice()).status(traOrder.getStatus())
-            .startDate(traOrderPT.getStartDate())
-            .endDate(traOrderPT.getEndDate())
-            .network(corNetwork);
-        return traOrder;
+        TraCampaign traCampaign = new TraCampaign();
+        traCampaign.setId(id);
+        return traCampaign;
     }
 
-    public TraOrder trasnformDTOtoEntity(TraOrderPT traOrderPT, CorNetwork corNetwork) {
-        if (traOrderPT == null || corNetwork == null) {
+    default TraInvoice traInvoiceFromId(Long id) {
+        if (id == null) {
             return null;
         }
-        TraOrder traOrder = new TraOrder();
-        traOrder.setId(traOrderPT.getId());
-        traOrder.name(traOrderPT.getName())
-            .calculatedPrize(traOrderPT.getCalculatedPrize())
-            .startDate(traOrderPT.getStartDate())
-            .endDate(traOrderPT.getEndDate());
-        if (traOrderPT.getTraCampaignPT() != null) {
-            traOrder.campaign(customTRACampaignMapper.transfromDTOToEntity(traOrderPT.getTraCampaignPT(), corNetwork));
-        }
-        if (traOrderPT.getTraCampaignPT() != null) {
-            traOrder.customer(customCrmAccountMapper.traDTO2DB(traOrderPT.getCustomerPT()));
-        }
-        if (traOrderPT.getTraInvoice() != null) {
-            traOrder.invoice(customTraInvoiceMapper.createEntityFromDTO(traOrderPT.getTraInvoice(), corNetwork));
-        }
-        if (traOrderPT.getAdvertisment() != null) {
-            traOrder.advertisment(traAdvertismentMapper.transformDTOToEntity(traOrderPT.getAdvertisment(), corNetwork));
-        }
-        traOrder.price(traOrderPT.getTraPrice()).status(traOrder.getStatus())
-            .startDate(traOrderPT.getStartDate())
-            .endDate(traOrderPT.getEndDate())
-            .network(corNetwork);
-        return traOrder;
+        TraInvoice traInvoice = new TraInvoice();
+        traInvoice.setId(id);
+        return traInvoice;
     }
-
-    public List<TraOrderPT> transfromEntitesToDTO(Set<TraOrder> traOrder) {
-        return traOrder.stream().map(this::transfromEntiteToDTO).collect(toList());
-    }
-
-    public TraOrderPT transfromEntiteToDTO(TraOrder traOrder) {
-        TraOrderPT traOrderPt = new TraOrderPT().id(traOrder.getId()).name(traOrder.getName())
-            .calculatedPrize(traOrder.getCalculatedPrize())
-            .startDate(traOrder.getStartDate())
-            .endDate(traOrder.getEndDate());
-        if (traOrder.getCampaign() != null) {
-//            traOrderPt.traCampaign(customTRACampaignMapper.transfromEntitytoDTO(traOrder.getCampaign()));
-        }
-        if (traOrder.getCustomer() != null) {
-            traOrderPt.customerId(customCrmAccountMapper.traDB2DTO(traOrder.getCustomer()));
-        }
-        traOrderPt.traPrice(traOrder.getPrice())
-            .traOrderStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traOrder.getStatus()));
-        if (traOrder.getInvoice() != null) {
-            traOrderPt.traInvoiceT(customTraInvoiceMapper.createDTOFromEnity(traOrder.getInvoice()));
-        }
-        if (traOrder.getEmissions() != null) {
-            traOrderPt.emissions(customSchEmissionMapper.createDTOFromListEntites(traOrder.getEmissions()));
-        }
-        if (traOrder.getAdvertisment() != null) {
-            traOrderPt.advertimsnet(traAdvertismentMapper.transformEntityToDTO(traOrder.getAdvertisment()));
-        }
-        return traOrderPt;
-    }
-
-
 }

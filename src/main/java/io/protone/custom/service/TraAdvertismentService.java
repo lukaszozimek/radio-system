@@ -50,15 +50,15 @@ public class TraAdvertismentService {
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     public List<TraAdvertisementPT> getAllAdvertisement(CorNetwork corNetwork) {
-        return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.transformEntityToDTO(traAdvertisement)).collect(toList());
+        return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.DBToDTO(traAdvertisement)).collect(toList());
     }
 
     public TraAdvertisementPT saveAdvertisement(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
-        TraAdvertisement traAdvertisement = traAdvertismentMapper.transformDTOToEntity(traAdvertisementPT, corNetwork);
-
+        TraAdvertisement traAdvertisement = traAdvertismentMapper.DTOToDB(traAdvertisementPT);
+        traAdvertisement.setNetwork(corNetwork);
         log.debug("Persisting TraAdvertisement: {}", traAdvertisement);
         traAdvertisementRepository.save(traAdvertisement);
-        return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
+        return traAdvertismentMapper.DBToDTO(traAdvertisement);
     }
 
     public void deleteAdvertisement(Long idx, CorNetwork corNetwork) {
@@ -69,13 +69,13 @@ public class TraAdvertismentService {
 
     public TraAdvertisementPT getAdvertisement(Long id, CorNetwork corNetwork) {
         TraAdvertisement traAdvertisement = traAdvertisementRepository.findOne(id);
-        return traAdvertismentMapper.transformEntityToDTO(traAdvertisement);
+        return traAdvertismentMapper.DBToDTO(traAdvertisement);
     }
 
 
     public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CorNetwork corNetwork) {
         CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return traAdvertisementRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traAdvertisment -> traAdvertismentMapper.transformEntityToDTO(traAdvertisment)).collect(toList());
+        return traAdvertisementRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traAdvertisment -> traAdvertismentMapper.DBToDTO(traAdvertisment)).collect(toList());
     }
 
 

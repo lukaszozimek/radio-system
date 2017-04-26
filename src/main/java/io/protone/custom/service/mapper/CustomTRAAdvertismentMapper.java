@@ -1,73 +1,52 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.TraCustomerService;
+import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.LibMediaItemPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.LibMediaItem;
-import io.protone.domain.TraAdvertisement;
+import io.protone.custom.service.dto.thin.LibMediaItemThinPt;
+import io.protone.custom.service.dto.thin.TraCustomerThinPT;
+import io.protone.domain.*;
+import io.protone.service.dto.TraAdvertisementDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Service
-public class CustomTRAAdvertismentMapper {
+@Mapper(componentModel = "spring", uses = {})
+public interface CustomTRAAdvertismentMapper {
+    @Mapping(source = "mediaItem", target = "mediaItemId")
+    @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "type", target = "typeId")
+    TraAdvertisementPT DBToDTO(TraAdvertisement traAdvertisement);
 
-    @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
+    List<TraAdvertisementPT> DBsToDTOs(List<TraAdvertisement> traAdvertisements);
 
-    @Inject
-    private CustomCrmAccountMapper customCrmAccountMapper;
+    @Mapping(source = "mediaItemId", target = "mediaItem")
+    @Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "industryId", target = "industry")
+    @Mapping(source = "typeId", target = "type")
+    TraAdvertisement DTOToDB(TraAdvertisementPT traAdvertisementDTO);
 
-    @Inject
-    private TraCustomerService customerService;
+    List<TraAdvertisement> DTOsToDBs(List<TraAdvertisementPT> traAdvertisementDTOs);
 
-    @Inject
-    private CustomLibMediaItemMapper customLibMediaItemMapper;
+    LibMediaItem libMediaItemFromLibMediaItemThinPt(LibMediaItemThinPt id);
+
+    LibMediaItemThinPt libMediaItemThinPtFromLibMediaItem(LibMediaItem id);
 
 
-    public TraAdvertisement transformDTOToEntity(TraAdvertisementPT traAdvertisementPT, CorNetwork corNetwork) {
-        if (traAdvertisementPT == null || corNetwork == null) {
-            return new TraAdvertisement();
-        }
-        TraAdvertisement advertisement = new TraAdvertisement();
-        advertisement.setId(traAdvertisementPT.getId());
-        advertisement.name(traAdvertisementPT.getName())
-            .network(corNetwork)
-            .description(traAdvertisementPT.getDescription());
-        if (traAdvertisementPT.getIndustryId() != null) {
-            advertisement.industry(corDictionaryMapper.corDictionaryDTOToCorDictionary(traAdvertisementPT.getIndustryId()));
-        }
-        if (traAdvertisementPT.getMediaItemId() != null) {
-            advertisement.mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(traAdvertisementPT.getMediaItemId()));
-        }
-        if (traAdvertisementPT.getCustomerId() != null) {
-            advertisement.customer(customCrmAccountMapper.traDTO2DB(traAdvertisementPT.getCustomerId()));
-        }
-        if (traAdvertisementPT.getTypePT() != null) {
-            advertisement.type(corDictionaryMapper.corDictionaryDTOToCorDictionary(traAdvertisementPT.getTypePT()));
-        }
-        return advertisement;
-    }
+    CrmAccount crmAccountFromTraCustomerThinPT(TraCustomerThinPT id);
 
-    public TraAdvertisementPT transformEntityToDTO(TraAdvertisement traAdvertisement) {
-        if (traAdvertisement == null) {
-            return new TraAdvertisementPT();
-        }
-        return new TraAdvertisementPT()
-            .id(traAdvertisement.getId())
-            .name(traAdvertisement.getName())
-            .description(traAdvertisement.getDescription())
-            .industryId(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traAdvertisement.getIndustry()))
-            .mediaItemId(customLibMediaItemMapper.lIBMediaItemToLibMediaItemPT(traAdvertisement.getMediaItem()))
-            .type(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traAdvertisement.getType()))
-            .customerId(customCrmAccountMapper.traDB2DTO(traAdvertisement.getCustomer()));
+    TraCustomerThinPT traCustomerThinPTFromCrmAccount(CrmAccount id);
 
-    }
+    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
 
+    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
 
 }

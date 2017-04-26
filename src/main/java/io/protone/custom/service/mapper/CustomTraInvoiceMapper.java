@@ -1,54 +1,65 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.domain.TraInvoice;
+import io.protone.service.dto.TraInvoiceDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Service
-public class CustomTraInvoiceMapper {
+@Mapper(componentModel = "spring", uses = {})
+public interface CustomTraInvoiceMapper {
 
-    @Inject
-    private CustomTraOrderMapper customTraOrderMapper;
-    @Inject
-    private CustomCrmAccountMapper crmAccountMapper;
-    @Inject
-    private CustomTraOrderMapper traOrderMapper;
-    @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
 
-    public TraInvoice createEntityFromDTO(TraInvoicePT traInvoicePT, CorNetwork corNetwork) {
-        if (traInvoicePT == null || corNetwork == null) {
-            return new TraInvoice();
+    @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "status.id", target = "statusId")
+    @Mapping(source = "orders", target = "orders")
+    TraInvoicePT traInvoiceToTraInvoiceDTO(TraInvoice traInvoice);
+
+    List<TraInvoicePT> traInvoicesToTraInvoiceDTOs(List<TraInvoice> traInvoices);
+
+    @Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "statusId", target = "status")
+    @Mapping(source = "orders", target = "orders")
+    TraInvoice traInvoiceDTOToTraInvoice(TraInvoicePT traInvoiceDTO);
+
+    List<TraInvoice> traInvoiceDTOsToTraInvoices(List<TraInvoicePT> traInvoiceDTOs);
+
+    default CrmAccount crmAccountFromId(Long id) {
+        if (id == null) {
+            return null;
         }
-        TraInvoice traInvoice = new TraInvoice();
-        traInvoice.setId(traInvoicePT.getId());
-        return traInvoice.paid(traInvoicePT.getPaid())
-            .paymentDay(traInvoicePT.getPaymentDay())
-            .price(traInvoicePT.getPrice())
-            .customer(crmAccountMapper.traDTO2DB(traInvoicePT.getCustomerPT()))
-            .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
-            .network(corNetwork)
-            .status(corDictionaryMapper.corDictionaryDTOToCorDictionary(traInvoicePT.getTraStatus()));
+        CrmAccount crmAccount = new CrmAccount();
+        crmAccount.setId(id);
+        return crmAccount;
     }
 
-    public TraInvoicePT createDTOFromEnity(TraInvoice traInvoicePT) {
-        if (traInvoicePT == null) {
-            return new TraInvoicePT();
+    default CorNetwork corNetworkFromId(Long id) {
+        if (id == null) {
+            return null;
         }
-        return new TraInvoicePT().id(traInvoicePT.getId())
-            .order(customTraOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrders()))
-            .paid(traInvoicePT.isPaid())
-            .paymentDay(traInvoicePT.getPaymentDay())
-            .customerId(crmAccountMapper.traDB2DTO(traInvoicePT.getCustomer()))
-            .traStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traInvoicePT.getStatus()))
-            .price(traInvoicePT.getPrice());
+        CorNetwork corNetwork = new CorNetwork();
+        corNetwork.setId(id);
+        return corNetwork;
+    }
+
+    default CorDictionary corDictionaryFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(id);
+        return corDictionary;
     }
 
 

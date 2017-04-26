@@ -41,10 +41,11 @@ public class TraOrderService {
     }
 
     public TraOrderPT saveOrder(TraOrderPT orderPT, CorNetwork corNetwork) {
-        TraOrder traOrder = customTraOrderMapper.trasnformDTOtoEntity(orderPT, corNetwork);
+        TraOrder traOrder = customTraOrderMapper.DTO2DB(orderPT);
+        traOrder.setNetwork(corNetwork);
         log.debug("Persisting TraOrder: {}", traOrder);
         traOrderRepository.save(traOrder);
-        return customTraOrderMapper.transfromEntiteToDTO(traOrder);
+        return customTraOrderMapper.DB2DTO(traOrder);
     }
 
     public void deleteOrder(Long id, CorNetwork corNetwork) {
@@ -58,12 +59,12 @@ public class TraOrderService {
     }
 
     public TraOrderPT getOrdersByEntitie(TraOrder traOrders, CorNetwork corNetwork) {
-        return customTraOrderMapper.transfromEntiteToDTO(traOrders);
+        return customTraOrderMapper.DB2DTO(traOrders);
     }
 
     public List<TraOrderPT> getCustomerOrders(String shortcut, CorNetwork corNetwork) {
         CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return traOrderRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traOrder -> customTraOrderMapper.transfromEntiteToDTO(traOrder)).collect(toList());
+        return traOrderRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traOrder -> customTraOrderMapper.DB2DTO(traOrder)).collect(toList());
     }
 
 }
