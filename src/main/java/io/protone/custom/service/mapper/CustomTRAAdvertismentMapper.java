@@ -46,7 +46,7 @@ public class CustomTRAAdvertismentMapper {
             advertisement.mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(traAdvertisementPT.getMediaItemId()));
         }
         if (traAdvertisementPT.getCustomerId() != null) {
-            advertisement.customer(customCrmAccountMapper.createCrmAcountEntity(traAdvertisementPT.getCustomerId(), corNetwork));
+            advertisement.customer(customCrmAccountMapper.traDTO2DB(traAdvertisementPT.getCustomerId()));
         }
         if (traAdvertisementPT.getTypePT() != null) {
             advertisement.type(corDictionaryMapper.corDictionaryDTOToCorDictionary(traAdvertisementPT.getTypePT()));
@@ -65,7 +65,7 @@ public class CustomTRAAdvertismentMapper {
             .industryId(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traAdvertisement.getIndustry()))
             .mediaItemId(customLibMediaItemMapper.lIBMediaItemToLibMediaItemPT(traAdvertisement.getMediaItem()))
             .type(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traAdvertisement.getType()))
-            .customerId(customCrmAccountMapper.createCustomerTrafficDTO(traAdvertisement.getCustomer()));
+            .customerId(customCrmAccountMapper.traDB2DTO(traAdvertisement.getCustomer()));
 
     }
 

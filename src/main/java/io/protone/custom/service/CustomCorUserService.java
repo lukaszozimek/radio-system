@@ -167,7 +167,7 @@ public class CustomCorUserService {
             user.addNetwork(network);
         });
         userDTO.getChannel().stream().forEach(coreChannelPT -> {
-            user.addChannel(customCORChannelMapper.cORChannelDTOToCORChannel(coreChannelPT));
+            user.addChannel(customCORChannelMapper.DTO2DB(coreChannelPT));
 
         });
         if (userDTO.getLangKey() == null) {

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class CrmLeadPT {
     @JsonProperty("status")
     private CorDictionaryPT status = null;
 
-    @JsonProperty("adress")
-    private CoreAddressPT adress = null;
+    @JsonProperty("addres")
+    private CoreAddressPT addres = null;
 
     @JsonProperty("area")
     private CorDictionaryPT area = null;
@@ -41,7 +42,7 @@ public class CrmLeadPT {
     private CorDictionaryPT industry = null;
 
     @JsonProperty("leadOwner")
-    private CoreUserPT leadOwner = null;
+    private CoreUserThinPT leadOwner = null;
 
     @JsonProperty("person")
     private TraCustomerPersonPT person = null;
@@ -123,16 +124,17 @@ public class CrmLeadPT {
         this.source = source;
         return this;
     }
+
     @ApiModelProperty(value = "")
-    public CoreUserPT getOwner() {
+    public CoreUserThinPT getOwner() {
         return leadOwner;
     }
 
-    public void setOwner(CoreUserPT leadOwner) {
+    public void setOwner(CoreUserThinPT leadOwner) {
         this.leadOwner = leadOwner;
     }
 
-    public CrmLeadPT owner(CoreUserPT leadOwner) {
+    public CrmLeadPT owner(CoreUserThinPT leadOwner) {
         this.leadOwner = leadOwner;
         return this;
     }
@@ -170,23 +172,23 @@ public class CrmLeadPT {
         this.status = status;
     }
 
-    public CrmLeadPT adress(CoreAddressPT adress) {
-        this.adress = adress;
+    public CrmLeadPT addres(CoreAddressPT addres) {
+        this.addres = addres;
         return this;
     }
 
     /**
-     * Get adress
+     * Get addres
      *
-     * @return adress
+     * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAdress() {
-        return adress;
+    public CoreAddressPT getAddres() {
+        return addres;
     }
 
-    public void setAdress(CoreAddressPT adress) {
-        this.adress = adress;
+    public void setAddres(CoreAddressPT addres) {
+        this.addres = addres;
     }
 
     public CrmLeadPT area(CorDictionaryPT area) {
@@ -286,7 +288,7 @@ public class CrmLeadPT {
             Objects.equals(this.description, crmLeadPT.description) &&
             Objects.equals(this.source, crmLeadPT.source) &&
             Objects.equals(this.status, crmLeadPT.status) &&
-            Objects.equals(this.adress, crmLeadPT.adress) &&
+            Objects.equals(this.addres, crmLeadPT.addres) &&
             Objects.equals(this.area, crmLeadPT.area) &&
             Objects.equals(this.industry, crmLeadPT.industry) &&
             Objects.equals(this.person, crmLeadPT.person) &&
@@ -296,7 +298,7 @@ public class CrmLeadPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, source, status, adress, area, industry, person, tasks, shortname);
+        return Objects.hash(id, name, description, source, status, addres, area, industry, person, tasks, shortname);
     }
 
     @Override
@@ -309,7 +311,7 @@ public class CrmLeadPT {
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    source: ").append(toIndentedString(source)).append("\n");
         sb.append("    status: ").append(toIndentedString(status)).append("\n");
-        sb.append("    adress: ").append(toIndentedString(adress)).append("\n");
+        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
         sb.append("    area: ").append(toIndentedString(area)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    person: ").append(toIndentedString(person)).append("\n");

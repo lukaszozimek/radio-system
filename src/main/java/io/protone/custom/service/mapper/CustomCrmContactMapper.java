@@ -1,82 +1,82 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CrmContactPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContact;
+import io.protone.custom.service.dto.*;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.domain.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+
+import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
 /**
  * Mapper for the entity CrmContact and its DTO CrmContactDTO.
  */
-@Service
-public class CustomCrmContactMapper {
-    @Inject
-    private CustomTRAPersonMapper customTRAPersonMapper;
 
-    @Inject
-    private CustomCorAddressMapper corAddressMapper;
+@Mapper(componentModel = "spring", uses = {})
+public interface CustomCrmContactMapper {
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "keeper", target = "account")
+    @Mapping(source = "range", target = "range")
+    @Mapping(source = "size", target = "size")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmContactPT DB2DTO(CrmContact crmAccount);
 
-    @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
+    List<CrmContactPT> DBs2DTOs(List<CrmContact> crmAccounts);
 
-    @Inject
-    private CustomCrmTaskMapper customCrmTaskMapper;
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "account", target = "keeper")
+    @Mapping(source = "range", target = "range")
+    @Mapping(source = "size", target = "size")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmContact DTO2DB(CrmContactPT crmAccountDTO);
 
-    @Inject
-    private CustomCorUserMapperExt corUserMapper;
+    List<CrmContact> DTOs2DBs(List<CrmContactPT> crmAccountDTOs);
+    
+    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
 
-    @Inject
-    private CustomCorNetworkMapper customCorNetworkMapper;
+    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
 
-    public CrmContact createCrmContactEntity(CrmContactPT crmContactPT, CorNetwork corNetwork) {
-        if (crmContactPT == null || corNetwork == null) {
-            return new CrmContact();
-        }
-        CrmContact crmContact = new CrmContact();
-        crmContact.setId(crmContactPT.getId());
-        return crmContact
-            .name(crmContactPT.getName())
-            .externalId1(crmContactPT.getIdNumber1())
-            .externalId2(crmContactPT.getIdNumber2())
-            .shortName(crmContactPT.getShortName())
-            .vatNumber(crmContactPT.getVatNumber())
-            .paymentDelay(crmContactPT.getPaymentDelay())
-            .industry(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getIndustry()))
-            .keeper(corUserMapper.coreUserPTToUser(crmContactPT.getAccount()))
-            .size(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getSize()))
-            .range(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getRange()))
-            .addres(corAddressMapper.cORAddressDTOToCorAddress(crmContactPT.getAdress()))
-            .area(corDictionaryMapper.corDictionaryDTOToCorDictionary(crmContactPT.getArea()))
-            .person(customTRAPersonMapper.createPersonEntity(crmContactPT.getPersons(), corNetwork))
-            .network(corNetwork);
-    }
+    CorUser corUserFromCoreUserThinPT(CoreUserThinPT coreUserThinPT);
+
+    CoreUserThinPT coreUserThinPTFromCorUser(CorUser coreUserThinPT);
+
+    CorAddress corAddressFromCoreAddressPT(CoreAddressPT coreUserThinPT);
+
+    CoreAddressPT coreAddressPTFromCorAddress(CorAddress coreUserThinPT);
+
+    CorPerson corPersonFromTraCustomerPersonPT(TraCustomerPersonPT coreUserThinPT);
+
+    TraCustomerPersonPT traCustomerPersonPTFromCorPerson(CorPerson coreUserThinPT);
+
+    CorContact corContactFromCoreContactPT(CoreContactPT coreUserThinPT);
+
+    CoreContactPT coreContactPTFromCorContact(CorContact coreUserThinPT);
+
+    Set<CorContact> corContactFromCoreContactPT(List<CoreContactPT> coreUserThinPT);
+
+    List<CoreContactPT> coreContactPTFromCorContact(Set<CorContact> coreUserThinPT);
 
 
-    public CrmContactPT buildContactDTOFromEntities(CrmContact crmContact) {
-        if (crmContact == null) {
-            return new CrmContactPT();
-        }
-        return new CrmContactPT()
-            .id(crmContact.getId())
-            .name(crmContact.getName())
-            .idNumber1(crmContact.getExternalId1())
-            .idNumber2(crmContact.getExternalId2())
-            .shortName(crmContact.getShortName())
-            .vatNumber(crmContact.getVatNumber())
-            .paymentDelay(crmContact.getPaymentDelay())
-            .industry(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getIndustry()))
-            //.account(corUserMapper.corUserMapper(crmContact.getKeeper()))
-            .size(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getSize()))
-            .range(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getRange()))
-            .adress(corAddressMapper.cORAddressToCorAddressDTO(crmContact.getAddres()))
-            .persons(customTRAPersonMapper.createDTOObject(crmContact.getPerson()))
-            .area(corDictionaryMapper.corDictionaryToCorDictionaryDTO(crmContact.getArea()))
-            .tasks(crmContact.getTasks().stream().map(crmTask -> customCrmTaskMapper.createCrmTask(crmTask)).collect(toList()));
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTaskPT crmTaskPTFromCrmTask(CrmTask cORAddress);
 
-    }
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTask crmTaskFromCrmTaskPT(CrmTaskPT cORAddressDTO);
 
+
+    Set<CrmTask> crmTaskFromCrmTaskPT(List<CrmTaskPT> coreUserThinPT);
+
+    List<CrmTaskPT> crmTaskPTFromCrmTask(Set<CrmTask> coreUserThinPT);
 }

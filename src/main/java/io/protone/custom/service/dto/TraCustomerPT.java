@@ -1,8 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.CorDictionary;
-import io.protone.domain.CorNetwork;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -38,9 +37,6 @@ public class TraCustomerPT {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("networkId")
-    private CoreNetworkPT networkId = null;
-
     @JsonProperty("paymentDate")
     private Integer paymentDate = null;
 
@@ -53,14 +49,14 @@ public class TraCustomerPT {
     @JsonProperty("vatNumber")
     private String vatNumber = null;
 
-    @JsonProperty("adress")
-    private CoreAddressPT adress = null;
+    @JsonProperty("addres")
+    private CoreAddressPT addres = null;
 
     @JsonProperty("account")
-    private CoreUserPT account = null;
+    private CoreUserThinPT account = null;
 
-    @JsonProperty("persons")
-    private TraCustomerPersonPT persons = null;
+    @JsonProperty("person")
+    private TraCustomerPersonPT person = null;
 
     @JsonProperty("discount")
     private TraDiscount traDiscount = null;
@@ -231,24 +227,6 @@ public class TraCustomerPT {
         this.name = name;
     }
 
-    public TraCustomerPT networkId(CoreNetworkPT networkId) {
-        this.networkId = networkId;
-        return this;
-    }
-
-    /**
-     * Get networkId
-     *
-     * @return networkId
-     **/
-    @ApiModelProperty(value = "")
-    public CoreNetworkPT getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(CoreNetworkPT networkId) {
-        this.networkId = networkId;
-    }
 
     public TraCustomerPT paymentDate(Integer paymentDate) {
         this.paymentDate = paymentDate;
@@ -326,26 +304,26 @@ public class TraCustomerPT {
         this.vatNumber = vatNumber;
     }
 
-    public TraCustomerPT adress(CoreAddressPT adress) {
-        this.adress = adress;
+    public TraCustomerPT addres(CoreAddressPT adress) {
+        this.addres = adress;
         return this;
     }
 
     /**
-     * Get adress
+     * Get addres
      *
-     * @return adress
+     * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAdress() {
-        return adress;
+    public CoreAddressPT getAddres() {
+        return addres;
     }
 
-    public void setAdress(CoreAddressPT adress) {
-        this.adress = adress;
+    public void setAddres(CoreAddressPT addres) {
+        this.addres = addres;
     }
 
-    public TraCustomerPT account(CoreUserPT account) {
+    public TraCustomerPT account(CoreUserThinPT account) {
         this.account = account;
         return this;
     }
@@ -356,32 +334,32 @@ public class TraCustomerPT {
      * @return account
      **/
     @ApiModelProperty(value = "")
-    public CoreUserPT getAccount() {
+    public CoreUserThinPT getAccount() {
         return account;
     }
 
-    public void setAccount(CoreUserPT account) {
+    public void setAccount(CoreUserThinPT account) {
         this.account = account;
     }
 
-    public TraCustomerPT persons(TraCustomerPersonPT persons) {
-        this.persons = persons;
+    public TraCustomerPT persons(TraCustomerPersonPT person) {
+        this.person = person;
         return this;
     }
 
 
     /**
-     * Get persons
+     * Get person
      *
-     * @return persons
+     * @return person
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPersonPT getPersons() {
-        return persons;
+    public TraCustomerPersonPT getPerson() {
+        return person;
     }
 
-    public void setPersons(TraCustomerPersonPT persons) {
-        this.persons = persons;
+    public void setPerson(TraCustomerPersonPT person) {
+        this.person = person;
     }
 
 
@@ -401,19 +379,18 @@ public class TraCustomerPT {
             Objects.equals(this.idNumber2, traCustomerPT.idNumber2) &&
             Objects.equals(this.industry, traCustomerPT.industry) &&
             Objects.equals(this.name, traCustomerPT.name) &&
-            Objects.equals(this.networkId, traCustomerPT.networkId) &&
             Objects.equals(this.paymentDate, traCustomerPT.paymentDate) &&
             Objects.equals(this.range, traCustomerPT.range) &&
             Objects.equals(this.size, traCustomerPT.size) &&
             Objects.equals(this.vatNumber, traCustomerPT.vatNumber) &&
-            Objects.equals(this.adress, traCustomerPT.adress) &&
+            Objects.equals(this.addres, traCustomerPT.addres) &&
             Objects.equals(this.account, traCustomerPT.account) &&
-            Objects.equals(this.persons, traCustomerPT.persons);
+            Objects.equals(this.person, traCustomerPT.person);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, shortName, area, idNumber1, idNumber2, industry, name, networkId, paymentDate, range, size, vatNumber, adress, account, persons);
+        return Objects.hash(id, shortName, area, idNumber1, idNumber2, industry, name, paymentDate, range, size, vatNumber, addres, account, person);
     }
 
     @Override
@@ -428,14 +405,13 @@ public class TraCustomerPT {
         sb.append("    idNumber2: ").append(toIndentedString(idNumber2)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    networkId: ").append(toIndentedString(networkId)).append("\n");
         sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
         sb.append("    range: ").append(toIndentedString(range)).append("\n");
         sb.append("    size: ").append(toIndentedString(size)).append("\n");
         sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
-        sb.append("    adress: ").append(toIndentedString(adress)).append("\n");
+        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
         sb.append("    account: ").append(toIndentedString(account)).append("\n");
-        sb.append("    persons: ").append(toIndentedString(persons)).append("\n");
+        sb.append("    person: ").append(toIndentedString(person)).append("\n");
         sb.append("}");
         return sb.toString();
     }

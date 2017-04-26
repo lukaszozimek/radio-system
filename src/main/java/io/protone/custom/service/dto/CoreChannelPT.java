@@ -1,12 +1,9 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.service.dto.CorUserDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * CoreChannelPT

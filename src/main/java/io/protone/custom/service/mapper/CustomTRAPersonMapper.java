@@ -17,8 +17,10 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CustomTRAPersonMapper {
+
     @Inject
     private CustomCorContactMapper corContactMapper;
+
     @Inject
     private CustomCorNetworkMapper corNetworkMapper;
 

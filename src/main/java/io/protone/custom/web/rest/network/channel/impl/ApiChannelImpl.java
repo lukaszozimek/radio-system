@@ -45,11 +45,11 @@ public class ApiChannelImpl implements ApiChannel {
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(networkShortcut, channelDTO);
         }
-        CorChannel corChannel = customCORChannelMapper.cORChannelDTOToCORChannel(channelDTO);
+        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO);
         CorNetwork network = networkService.findNetwork(networkShortcut);
         corChannel.setNetwork(network);
         corChannel = channelService.save(corChannel);
-        CoreChannelPT result = customCORChannelMapper.cORChannelToCORChannelDTO(corChannel);
+        CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORChannel", channelDTO.getId().toString()))
             .body(result);
@@ -62,29 +62,29 @@ public class ApiChannelImpl implements ApiChannel {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
         }
 
-        CorChannel corChannel = customCORChannelMapper.cORChannelDTOToCORChannel(channelDTO);
+        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO);
         CorNetwork network = networkService.findNetwork(networkShortcut);
         corChannel.setNetwork(network);
         corChannel = channelService.save(corChannel);
-        CoreChannelPT result = customCORChannelMapper.cORChannelToCORChannelDTO(corChannel);
+        CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
             .body(result);
     }
 
     @Override
     public ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "pagable", required = true)  Pageable pagable) {
+                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORChannels");
         List<CorChannel> corChannels = channelService.findAllChannel();
         return ResponseEntity.ok()
-            .body(customCORChannelMapper.cORChannelsToCORChannelDTOs(corChannels));
+            .body(customCORChannelMapper.DBs2DTOs(corChannels));
     }
 
     @Override
     public ResponseEntity<CoreChannelPT> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get CORChannel : {}", channelShortcut);
         CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
-        CoreChannelPT corChannelDTO = customCORChannelMapper.cORChannelToCORChannelDTO(corChannel);
+        CoreChannelPT corChannelDTO = customCORChannelMapper.DB2DTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
             .map(result -> new ResponseEntity<>(
                 result,

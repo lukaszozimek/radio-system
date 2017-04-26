@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -18,13 +19,19 @@ public class CrmOpportunityPT {
     private Long id = null;
 
     @JsonProperty("opportunityOwner")
-    private CoreUserPT opportunityOwner = null;
+    private CoreUserThinPT opportunityOwner = null;
 
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("contact")
-    private CrmContactPT contact = null;
+    @JsonProperty("contactId")
+    private Long contactId = null;
+
+    @JsonProperty("leadId")
+    private Long leadId = null;
+
+    @JsonProperty("accountId")
+    private Long accountId = null;
 
     @JsonProperty("lastTry")
     private LocalDate lastTry = null;
@@ -61,7 +68,7 @@ public class CrmOpportunityPT {
         this.id = id;
     }
 
-    public CrmOpportunityPT opportunityOwner(CoreUserPT opportunityOwner) {
+    public CrmOpportunityPT opportunityOwner(CoreUserThinPT opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
         return this;
     }
@@ -72,11 +79,11 @@ public class CrmOpportunityPT {
      * @return opportunityOwner
      **/
     @ApiModelProperty(value = "")
-    public CoreUserPT getOpportunityOwner() {
+    public CoreUserThinPT getOpportunityOwner() {
         return opportunityOwner;
     }
 
-    public void setOpportunityOwner(CoreUserPT opportunityOwner) {
+    public void setOpportunityOwner(CoreUserThinPT opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
     }
 
@@ -99,28 +106,66 @@ public class CrmOpportunityPT {
         this.name = name;
     }
 
-    public CrmOpportunityPT contact(CrmContactPT contact) {
-        this.contact = contact;
+    public CrmOpportunityPT contactId(Long contact) {
+        this.contactId = contact;
         return this;
     }
 
     /**
-     * Get contact
+     * Get contactId
      *
-     * @return contact
+     * @return contactId
      **/
     @ApiModelProperty(value = "")
-    public CrmContactPT getContact() {
-        return contact;
+    public Long getContactId() {
+        return contactId;
     }
 
-    public void setContact(CrmContactPT contact) {
-        this.contact = contact;
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     public CrmOpportunityPT lastTry(LocalDate lastTry) {
         this.lastTry = lastTry;
         return this;
+    }
+
+    public CrmOpportunityPT LeadId(Long Lead) {
+        this.leadId = leadId;
+        return this;
+    }
+
+    /**
+     * Get contactId
+     *
+     * @return contactId
+     **/
+    @ApiModelProperty(value = "")
+    public Long getLeadId() {
+        return leadId;
+    }
+
+    public void setLeadId(Long leadId) {
+        this.leadId = leadId;
+    }
+
+    public CrmOpportunityPT accountId(Long account) {
+        this.accountId = account;
+        return this;
+    }
+
+    /**
+     * Get contactId
+     *
+     * @return contactId
+     **/
+    @ApiModelProperty(value = "")
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long account) {
+        this.accountId = account;
     }
 
     /**
@@ -231,7 +276,7 @@ public class CrmOpportunityPT {
         return Objects.equals(this.id, crmOpportunityPT.id) &&
             Objects.equals(this.opportunityOwner, crmOpportunityPT.opportunityOwner) &&
             Objects.equals(this.name, crmOpportunityPT.name) &&
-            Objects.equals(this.contact, crmOpportunityPT.contact) &&
+            Objects.equals(this.contactId, crmOpportunityPT.contactId) &&
             Objects.equals(this.lastTry, crmOpportunityPT.lastTry) &&
             Objects.equals(this.closeDate, crmOpportunityPT.closeDate) &&
             Objects.equals(this.stage, crmOpportunityPT.stage) &&
@@ -241,7 +286,7 @@ public class CrmOpportunityPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, opportunityOwner, name, contact, lastTry, closeDate, stage, propability, tasks);
+        return Objects.hash(id, opportunityOwner, name, contactId, lastTry, closeDate, stage, propability, tasks);
     }
 
     @Override
@@ -252,7 +297,9 @@ public class CrmOpportunityPT {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    opportunityOwner: ").append(toIndentedString(opportunityOwner)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    contact: ").append(toIndentedString(contact)).append("\n");
+        sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
+        sb.append("    leadId: ").append(toIndentedString(leadId)).append("\n");
+        sb.append("    accountId: ").append(toIndentedString(accountId)).append("\n");
         sb.append("    lastTry: ").append(toIndentedString(lastTry)).append("\n");
         sb.append("    closeDate: ").append(toIndentedString(closeDate)).append("\n");
         sb.append("    stage: ").append(toIndentedString(stage)).append("\n");

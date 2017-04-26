@@ -1,85 +1,39 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.domain.CorUser;
 import io.protone.domain.CrmTask;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 19.01.2017.
  */
-@Service
-public class CustomCrmTaskMapper {
+@Mapper(componentModel = "spring", uses = {})
+public interface CustomCrmTaskMapper {
 
-    public static final String CRM_TASK_STATUS = "CrmTaskStatus";
+    CustomCrmTaskMapper INSTANCE = Mappers.getMapper(CustomCrmTaskMapper.class);
 
-    @Inject
-    private CustomCorUserMapperExt corUserMapper;
-    @Inject
-    private CustomCorDictionaryMapper customCorDictionaryMapper;
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTaskPT DB2DTO(CrmTask cORAddress);
 
-    public List<CrmTaskPT> createCrmTasks(Set<CrmTask> crmTask) {
-        if (crmTask == null) {
-            return new ArrayList<>();
-        }
-        return crmTask.stream().map(this::createCrmTask).collect(toList());
-    }
+    List<CrmTaskPT> DBs2DTOs(Set<CrmTask> cORAddresses);
 
-    public List<CrmTaskPT> createCrmTasks(List<CrmTask> crmTask) {
-        if (crmTask == null) {
-            return new ArrayList<>();
-        }
-        return crmTask.stream().map(this::createCrmTask).collect(toList());
-    }
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTask DTO2DB(CrmTaskPT cORAddressDTO);
 
-    public CrmTaskPT createCrmTask(CrmTask crmTask) {
-        if (crmTask == null) {
-            return new CrmTaskPT();
-        }
-        CrmTaskPT crmTaskPT = new CrmTaskPT().id(crmTask.getId()).activityLenght(crmTask.getActivityLength())
-            .crmTaskStatus(customCorDictionaryMapper.corDictionaryToCorDictionaryDTO(crmTask.getStatus()))
-            .assignedTo(corUserMapper.userToCoreUserPT(crmTask.getAssignedTo()))
-            .comment(crmTask.getComment())
-            .subject(crmTask.getSubject())
-            .createdBy(corUserMapper.userToCoreUserPT(crmTask.getCreatedBy()));
-        if (crmTask.getActivityDate() != null) {
-            crmTaskPT.activityDate(crmTask.getActivityDate());
-        }
-        return crmTaskPT;
+    Set<CrmTask> DTOs2DBs(List<CrmTaskPT> cORAddressDTOs);
 
-    }
+    CorUser corUserFromCoreUserThinPT(CoreUserThinPT coreUserThinPT);
 
-    public Set<CrmTask> createTasksEntity(List<CrmTaskPT> crmTaskPTS) {
-        if (crmTaskPTS == null) {
-            return new HashSet<>();
-        }
-        return crmTaskPTS.stream().map(this::createTaskEntity).collect(toSet());
-    }
-
-    public CrmTask createTaskEntity(CrmTaskPT taskPT) {
-        if (taskPT == null) {
-            return new CrmTask();
-        }
-        CrmTask crmTask = new CrmTask();
-        crmTask.setId(taskPT.getId());
-        crmTask.setSubject(taskPT.getSubject());
-        crmTask.setActivityDate(taskPT.getActivityDate());
-        crmTask.setActivityLength(taskPT.getActivityLenght());
-        crmTask.setComment(taskPT.getComment());
-        crmTask.assignedTo(corUserMapper.coreUserPTToUser(taskPT.getAssignedTo()));
-        crmTask.createdBy(corUserMapper.coreUserPTToUser(taskPT.getCreatedBy()));
-        return crmTask;
-    }
-
+    CoreUserThinPT coreUserThinPTFromCorUser(CorUser coreUserThinPT);
 
 }
+

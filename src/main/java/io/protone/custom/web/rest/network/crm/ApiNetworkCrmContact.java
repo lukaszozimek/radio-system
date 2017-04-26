@@ -53,7 +53,7 @@ public interface ApiNetworkCrmContact {
     ResponseEntity<List<CrmContactPT>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "pagable", required = true) Pageable pagable);
 
-    @ApiOperation(value = "getContact", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getContactId", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmContactPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmContactPT.class),

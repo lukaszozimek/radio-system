@@ -1,4 +1,3 @@
-
 package io.protone.custom.service.mapper;
 
 import com.google.common.collect.Sets;
@@ -64,7 +63,7 @@ public class CustomCorUserMapperExt {
             coreUserPT.setAuthorities(user.getAuthorities().stream().map(corAuthority -> corAuthority.getName()).collect(toList()));
         }
         if (!user.getChannels().isEmpty()) {
-            coreUserPT.setChannel(user.getChannels().stream().map(customCORChannelMapper::cORChannelToCORChannelDTO).collect(toList()));
+            coreUserPT.setChannel(user.getChannels().stream().map(customCORChannelMapper::DB2DTO).collect(toList()));
 
         }
         if (!user.getNetworks().isEmpty()) {
@@ -102,7 +101,7 @@ public class CustomCorUserMapperExt {
         user.setLastname(userPT.getLastName());
         user.setEmail(userPT.getEmail());
         user.setNetworks(Sets.newHashSet(customCorNetworkMapper.cORNetworkDTOToCorNetwork(userPT.getNetwork())));
-        user.channels(userPT.getChannel().stream().map(customCORChannelMapper::cORChannelDTOToCORChannel).collect(toSet()));
+        user.channels(userPT.getChannel().stream().map(customCORChannelMapper::DTO2DB).collect(toSet()));
         if (userPT.getActivated() != null) {
 
             user.setActivated(userPT.getActivated());

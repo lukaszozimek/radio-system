@@ -32,7 +32,7 @@ public class CustomTraInvoiceMapper {
         return traInvoice.paid(traInvoicePT.getPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
             .price(traInvoicePT.getPrice())
-            .customer(crmAccountMapper.createCrmAcountEntity(traInvoicePT.getCustomerPT(), corNetwork))
+            .customer(crmAccountMapper.traDTO2DB(traInvoicePT.getCustomerPT()))
             .orders(traInvoicePT.getOrder().stream().map(traOrderPT -> traOrderMapper.trasnformDTOtoEntity(traOrderPT, corNetwork)).collect(Collectors.toSet()))
             .network(corNetwork)
             .status(corDictionaryMapper.corDictionaryDTOToCorDictionary(traInvoicePT.getTraStatus()));
@@ -46,7 +46,7 @@ public class CustomTraInvoiceMapper {
             .order(customTraOrderMapper.transfromEntitesToDTO(traInvoicePT.getOrders()))
             .paid(traInvoicePT.isPaid())
             .paymentDay(traInvoicePT.getPaymentDay())
-            .customerId(crmAccountMapper.createCustomerTrafficDTO(traInvoicePT.getCustomer()))
+            .customerId(crmAccountMapper.traDB2DTO(traInvoicePT.getCustomer()))
             .traStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traInvoicePT.getStatus()))
             .price(traInvoicePT.getPrice());
     }

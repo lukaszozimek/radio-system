@@ -74,7 +74,7 @@ public interface ApiNetworkCrmLeadTask {
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "getLead", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getLeadId", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),

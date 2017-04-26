@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -21,10 +22,10 @@ public class CrmTaskPT {
     private CorDictionaryPT crmTaskStatus = null;
 
     @JsonProperty("createdBy")
-    private CoreUserPT createdBy = null;
+    private CoreUserThinPT createdBy = null;
 
     @JsonProperty("assignedTo")
-    private CoreUserPT assignedTo = null;
+    private CoreUserThinPT assignedTo = null;
 
     @JsonProperty("subject")
     private String subject = null;
@@ -60,7 +61,7 @@ public class CrmTaskPT {
         this.id = id;
     }
 
-    public CrmTaskPT createdBy(CoreUserPT createdBy) {
+    public CrmTaskPT createdBy(CoreUserThinPT createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -71,15 +72,15 @@ public class CrmTaskPT {
      * @return createdBy
      **/
     @ApiModelProperty(value = "")
-    public CoreUserPT getCreatedBy() {
+    public CoreUserThinPT getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(CoreUserPT createdBy) {
+    public void setCreatedBy(CoreUserThinPT createdBy) {
         this.createdBy = createdBy;
     }
 
-    public CrmTaskPT assignedTo(CoreUserPT assignedTo) {
+    public CrmTaskPT assignedTo(CoreUserThinPT assignedTo) {
         this.assignedTo = assignedTo;
         return this;
     }
@@ -90,11 +91,11 @@ public class CrmTaskPT {
      * @return assignedTo
      **/
     @ApiModelProperty(value = "")
-    public CoreUserPT getAssignedTo() {
+    public CoreUserThinPT getAssignedTo() {
         return assignedTo;
     }
 
-    public void setAssignedTo(CoreUserPT assignedTo) {
+    public void setAssignedTo(CoreUserThinPT assignedTo) {
         this.assignedTo = assignedTo;
     }
 

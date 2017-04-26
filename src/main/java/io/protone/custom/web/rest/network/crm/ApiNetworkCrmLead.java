@@ -56,7 +56,7 @@ public interface ApiNetworkCrmLead {
                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getLead", notes = "", response = CrmLeadPT.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getLeadId", notes = "", response = CrmLeadPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmLeadPT.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadPT.class),

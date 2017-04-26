@@ -49,11 +49,12 @@ public class CrmContactService {
     private CustomCorAddressRepository addressRepository;
 
     public List<CrmContactPT> getAllContact(CorNetwork corNetwork) {
-        return crmContactRepository.findByNetwork(corNetwork).stream().map(crmContact -> customCrmContactMapper.buildContactDTOFromEntities(crmContact)).collect(toList());
+        return crmContactRepository.findByNetwork(corNetwork).stream().map(crmContact -> customCrmContactMapper.DB2DTO(crmContact)).collect(toList());
     }
 
     public CrmContactPT saveContact(CrmContactPT crmContactPT, CorNetwork corNetwork) {
-        CrmContact contact = customCrmContactMapper.createCrmContactEntity(crmContactPT, corNetwork);
+        CrmContact contact = customCrmContactMapper.DTO2DB(crmContactPT);
+        contact.setNetwork(corNetwork);
         log.debug("Persisting CorAddress: {}", contact.getAddres());
         CorAddress address = addressRepository.save(contact.getAddres());
         log.debug("Persisting CorContact: {}", contact.getPerson().getContacts());
@@ -67,7 +68,7 @@ public class CrmContactService {
         contact.person(person);
         log.debug("Persisting CrmContact: {}", contact);
         contact = crmContactRepository.save(contact);
-        return customCrmContactMapper.buildContactDTOFromEntities(contact);
+        return customCrmContactMapper.DB2DTO(contact);
     }
 
     public void deleteContact(String shortcut, CorNetwork corNetwork) {
@@ -75,17 +76,17 @@ public class CrmContactService {
     }
 
     public CrmContactPT getContact(String shortcut, CorNetwork corNetwork) {
-        return customCrmContactMapper.buildContactDTOFromEntities(crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork));
+        return customCrmContactMapper.DB2DTO(crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork));
     }
 
     public List<CrmTaskPT> getTasksAssociatedWithContact(String shortcut, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTasks(crmContact.getTasks());
+        return customCrmTaskMapper.DBs2DTOs(crmContact.getTasks());
     }
 
     public CrmTaskPT getTaskAssociatedWithContact(String shortcut, Long taskId, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTask(crmTaskRepository.findOneByIdAndNetwork(taskId, corNetwork));
+        return customCrmTaskMapper.DB2DTO(crmTaskRepository.findOneByIdAndNetwork(taskId, corNetwork));
     }
 
 
@@ -96,11 +97,11 @@ public class CrmContactService {
 
     public CrmTaskPT updateLeadTask(String shortcut, CrmTaskPT crmTask, CorNetwork corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        CrmTask task = crmTaskRepository.save(customCrmTaskMapper.createTaskEntity(crmTask));
+        CrmTask task = crmTaskRepository.save(customCrmTaskMapper.DTO2DB(crmTask));
 
         log.debug("Persisting CrmTask: {}, for CrmContact: ", task);
         crmContact.addTasks(task);
         crmContactRepository.save(crmContact);
-        return customCrmTaskMapper.createCrmTask(task);
+        return customCrmTaskMapper.DB2DTO(task);
     }
 }

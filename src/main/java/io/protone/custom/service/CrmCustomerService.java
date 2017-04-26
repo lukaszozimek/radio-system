@@ -49,12 +49,12 @@ public class CrmCustomerService {
     private CustomCrmTaskMapper customCrmTaskMapper;
 
     public List<CrmAccountPT> getAllCustomer(CorNetwork corNetwork) {
-        return accountRepository.findByNetwork(corNetwork).stream().map(crmAccount1 -> crmAccountMapper.buildContactDTOFromEntities(crmAccount1)).collect(toList());
+        return accountRepository.findByNetwork(corNetwork).stream().map(crmAccount1 -> crmAccountMapper.DB2DTO(crmAccount1)).collect(toList());
     }
 
     public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountMapper.createCrmAcountEntity(crmAccountPT, corNetwork);
-
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT);
+        crmAccount.setNetwork(corNetwork);
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         CorAddress address = addressRepository.saveAndFlush(crmAccount.getAddres());
 
@@ -72,7 +72,7 @@ public class CrmCustomerService {
 
         log.debug("Persisting CrmAccount: {}", crmAccount);
         crmAccount = accountRepository.saveAndFlush(crmAccount);
-        return crmAccountMapper.buildContactDTOFromEntities(crmAccount);
+        return crmAccountMapper.DB2DTO(crmAccount);
     }
 
     public void deleteCustomer(String shorName, CorNetwork corNetwork) {
@@ -81,26 +81,26 @@ public class CrmCustomerService {
 
 
     public CrmAccountPT getCustomer(String shortcut, CorNetwork corNetwork) {
-        return crmAccountMapper.buildContactDTOFromEntities(accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork));
+        return crmAccountMapper.DB2DTO(accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork));
     }
 
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CorNetwork corNetwork) {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.createTaskEntity(taskPT));
+        CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.DTO2DB(taskPT));
         log.debug("Persisting CrmTask: {}, for CrmAccount: ", crmTask);
         crmAccount.addTasks(crmTask);
         accountRepository.save(crmAccount);
-        return customCrmTaskMapper.createCrmTask(crmTask);
+        return customCrmTaskMapper.DB2DTO(crmTask);
     }
 
     public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut, CorNetwork corNetwork) {
         CrmAccount crmLead = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTasks(crmLead.getTasks());
+        return customCrmTaskMapper.DBs2DTOs(crmLead.getTasks());
     }
 
     public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId, CorNetwork corNetwork) {
         CrmAccount crmLead = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTask(crmLead.getTasks().stream().filter(crmTask -> crmTask.getId().equals(taskId)).findFirst().get());
+        return customCrmTaskMapper.DB2DTO(crmLead.getTasks().stream().filter(crmTask -> crmTask.getId().equals(taskId)).findFirst().get());
     }
 
     public void deleteLeadTask(String shortcut, Long taskId, CorNetwork corNetwork) {

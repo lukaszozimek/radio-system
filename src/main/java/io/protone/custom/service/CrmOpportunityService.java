@@ -43,16 +43,17 @@ public class CrmOpportunityService {
     private CrmTaskRepository crmTaskRepository;
 
     public List<CrmOpportunityPT> getAllOpportunity(CorNetwork corNetwork) {
-        return opportunityRepository.findByNetwork(corNetwork).stream().map(opportunity -> customCrmOpportunityMapper.buildDTOFromEntites(opportunity)).collect(toList());
+        return opportunityRepository.findByNetwork(corNetwork).stream().map(opportunity -> customCrmOpportunityMapper.DB2DTO(opportunity)).collect(toList());
     }
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
-        CrmOpportunity crmOpportunity = customCrmOpportunityMapper.createOpportunity(opportunityPT, corNetwork);
+        CrmOpportunity crmOpportunity = customCrmOpportunityMapper.DTO2DB(opportunityPT);
+        crmOpportunity.setNetwork(corNetwork);
 
         log.debug("Persisting CrmOpportunity: {}", crmOpportunity);
         CrmOpportunity opportunity = opportunityRepository.save(crmOpportunity);
 
-        return customCrmOpportunityMapper.buildDTOFromEntites(opportunity);
+        return customCrmOpportunityMapper.DB2DTO(opportunity);
     }
 
     public void deleteOpportunity(String shortcut, CorNetwork corNetwork) {
@@ -61,18 +62,18 @@ public class CrmOpportunityService {
 
     public CrmOpportunityPT getOpportunity(String shortcut, CorNetwork corNetwork) {
         CrmOpportunity opportunity = opportunityRepository.findOneByNameAndNetwork(shortcut, corNetwork);
-        return customCrmOpportunityMapper.buildDTOFromEntites(opportunity);
+        return customCrmOpportunityMapper.DB2DTO(opportunity);
     }
 
 
     public List<CrmTaskPT> getTasksAssociatedWithOpportunity(String shortcut, CorNetwork corNetwork) {
         CrmOpportunity opportunity = opportunityRepository.findOneByNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTasks(opportunity.getTasks());
+        return customCrmTaskMapper.DBs2DTOs(opportunity.getTasks());
     }
 
     public CrmTaskPT getTaskAssociatedWithOpportunity(String shortcut, Long taskId, CorNetwork corNetwork) {
         CrmOpportunity opportunity = opportunityRepository.findOneByNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.createCrmTask(opportunity.getTasks().stream().filter(crmTask -> crmTask.getId().equals(taskId)).findFirst().get());
+        return customCrmTaskMapper.DB2DTO(opportunity.getTasks().stream().filter(crmTask -> crmTask.getId().equals(taskId)).findFirst().get());
     }
 
 
@@ -87,10 +88,10 @@ public class CrmOpportunityService {
 
     public CrmTaskPT saveTasksAssociatedWithOpportunity(String shortName, CrmTaskPT crmActivityPT, CorNetwork corNetwork) {
         CrmOpportunity crmOpportunity = opportunityRepository.findOneByNameAndNetwork(shortName, corNetwork);
-        CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.createTaskEntity(crmActivityPT));
+        CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.DTO2DB(crmActivityPT));
         log.debug("Persisting Task: {}, for CrmOpportunity: {}", crmTask);
         crmOpportunity.addTasks(crmTask);
         opportunityRepository.save(crmOpportunity);
-        return customCrmTaskMapper.createCrmTask(crmTask);
+        return customCrmTaskMapper.DB2DTO(crmTask);
     }
 }

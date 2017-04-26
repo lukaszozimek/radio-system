@@ -1,8 +1,10 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,8 +33,6 @@ public class CrmContactPT {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("paymentDate")
-    private Integer paymentDate = null;
 
     @JsonProperty("paymentDelay")
     private Integer paymentDelay = null;
@@ -45,16 +45,18 @@ public class CrmContactPT {
 
     @JsonProperty("vatNumber")
     private String vatNumber = null;
+
     @JsonProperty("shortName")
     private String shortName = null;
-    @JsonProperty("adress")
-    private CoreAddressPT adress = null;
+
+    @JsonProperty("addres")
+    private CoreAddressPT addres = null;
 
     @JsonProperty("account")
-    private CoreUserPT account = null;
+    private CoreUserThinPT account = null;
 
     @JsonProperty("person")
-    private TraCustomerPersonPT persons;
+    private TraCustomerPersonPT person;
 
 
     @JsonProperty("tasks")
@@ -209,25 +211,6 @@ public class CrmContactPT {
         this.name = name;
     }
 
-    public CrmContactPT paymentDate(Integer paymentDate) {
-        this.paymentDate = paymentDate;
-        return this;
-    }
-
-    /**
-     * Get paymentDate
-     *
-     * @return paymentDate
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(Integer paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
     public CrmContactPT range(CorDictionaryPT range) {
         this.range = range;
         return this;
@@ -285,26 +268,26 @@ public class CrmContactPT {
         this.vatNumber = vatNumber;
     }
 
-    public CrmContactPT adress(CoreAddressPT adress) {
-        this.adress = adress;
+    public CrmContactPT addres(CoreAddressPT adress) {
+        this.addres = adress;
         return this;
     }
 
     /**
-     * Get adress
+     * Get addres
      *
-     * @return adress
+     * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAdress() {
-        return adress;
+    public CoreAddressPT getAddres() {
+        return addres;
     }
 
-    public void setAdress(CoreAddressPT adress) {
-        this.adress = adress;
+    public void setAddres(CoreAddressPT addres) {
+        this.addres = addres;
     }
 
-    public CrmContactPT account(CoreUserPT account) {
+    public CrmContactPT account(CoreUserThinPT account) {
         this.account = account;
         return this;
     }
@@ -315,32 +298,32 @@ public class CrmContactPT {
      * @return account
      **/
     @ApiModelProperty(value = "")
-    public CoreUserPT getAccount() {
+    public CoreUserThinPT getAccount() {
         return account;
     }
 
-    public void setAccount(CoreUserPT account) {
+    public void setAccount(CoreUserThinPT account) {
         this.account = account;
     }
 
-    public CrmContactPT persons(TraCustomerPersonPT persons) {
-        this.persons = persons;
+    public CrmContactPT person(TraCustomerPersonPT person) {
+        this.person = person;
         return this;
     }
 
 
     /**
-     * Get persons
+     * Get person
      *
-     * @return persons
+     * @return person
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPersonPT getPersons() {
-        return persons;
+    public TraCustomerPersonPT getPerson() {
+        return person;
     }
 
-    public void setPersons(TraCustomerPersonPT persons) {
-        this.persons = persons;
+    public void setPerson(TraCustomerPersonPT person) {
+        this.person = person;
     }
 
     public CrmContactPT tasks(List<CrmTaskPT> tasks) {
@@ -378,20 +361,19 @@ public class CrmContactPT {
             Objects.equals(this.idNumber2, crmContactPT.idNumber2) &&
             Objects.equals(this.industry, crmContactPT.industry) &&
             Objects.equals(this.name, crmContactPT.name) &&
-            Objects.equals(this.paymentDate, crmContactPT.paymentDate) &&
             Objects.equals(this.range, crmContactPT.range) &&
             Objects.equals(this.size, crmContactPT.size) &&
             Objects.equals(this.vatNumber, crmContactPT.vatNumber) &&
-            Objects.equals(this.adress, crmContactPT.adress) &&
+            Objects.equals(this.addres, crmContactPT.addres) &&
             Objects.equals(this.account, crmContactPT.account) &&
-            Objects.equals(this.persons, crmContactPT.persons) &&
+            Objects.equals(this.person, crmContactPT.person) &&
             Objects.equals(this.tasks, crmContactPT.tasks) &&
             Objects.equals(this.shortName, crmContactPT.shortName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(area, id, idNumber1, idNumber2, industry, name, paymentDate, range, size, vatNumber, adress, account, persons, tasks, shortName);
+        return Objects.hash(area, id, idNumber1, idNumber2, industry, name, range, size, vatNumber, addres, account, person, tasks, shortName);
     }
 
     @Override
@@ -405,13 +387,12 @@ public class CrmContactPT {
         sb.append("    idNumber2: ").append(toIndentedString(idNumber2)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
         sb.append("    range: ").append(toIndentedString(range)).append("\n");
         sb.append("    size: ").append(toIndentedString(size)).append("\n");
         sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
-        sb.append("    adress: ").append(toIndentedString(adress)).append("\n");
+        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
         sb.append("    account: ").append(toIndentedString(account)).append("\n");
-        sb.append("    persons: ").append(toIndentedString(persons)).append("\n");
+        sb.append("    person: ").append(toIndentedString(person)).append("\n");
         sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
         sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
         sb.append("}");

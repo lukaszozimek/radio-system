@@ -1,72 +1,83 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CrmLeadPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmLead;
+import io.protone.custom.service.dto.*;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.domain.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by lukaszozimek on 18.01.2017.
  */
-@Service
-public class CustomCrmLeadMapper {
+@Mapper(componentModel = "spring", uses = {})
+public interface CustomCrmLeadMapper {
 
-    @Inject
-    private CustomCrmTaskMapper customCrmTaskMapper;
+    @Mapping(source = "leadStatus", target = "status")
+    @Mapping(source = "leadSource", target = "source")
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "keeper", target = "owner")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmLeadPT DB2DTO(CrmLead crmLead);
 
-    @Inject
-    private CustomCorAddressMapper corAddressMapper;
+    List<CrmLeadPT> DBs2DTOs(List<CrmLead> crmLeads);
 
-    @Inject
-    private CustomTRAPersonMapper customTRAPersonMapper;
+    @Mapping(source = "status", target = "leadStatus")
+    @Mapping(source = "source", target = "leadSource")
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "owner", target = "keeper")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmLead DTO2DB(CrmLeadPT crmLeadDTO);
 
-    @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
+    List<CrmLead> DTOs2DBs(List<CrmLeadPT> crmLeadDTOs);
 
-    @Inject
-    private CustomCorUserMapperExt corUserMapper;
+    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
 
-    public CrmLead createLeadEntity(CrmLeadPT leadPT, CorNetwork corNetwork) {
-        if (leadPT == null || corNetwork == null) {
-            return new CrmLead();
-        }
-        CrmLead crmLead = new CrmLead();
-        crmLead.setId(leadPT.getId());
-        crmLead.setName(leadPT.getName());
-        crmLead.setDescription(leadPT.getDescription());
-        crmLead.setShortname(leadPT.getShortname());
-        crmLead.setIndustry(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getIndustry()));
-        crmLead.setArea(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getArea()));
-        crmLead.setAddres(corAddressMapper.cORAddressDTOToCorAddress(leadPT.getAdress()));
-        crmLead.setLeadSource(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getSource()));
-        crmLead.setLeadStatus(corDictionaryMapper.corDictionaryDTOToCorDictionary(leadPT.getStatus()));
-        crmLead.keeper(corUserMapper.coreUserPTToUser(leadPT.getOwner()));
-        crmLead.setPerson(customTRAPersonMapper.createPersonEntity(leadPT.getPerson(), corNetwork));
-        crmLead.setNetwork(corNetwork);
-        return crmLead;
-    }
+    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
 
-    public CrmLeadPT createDTOFromEntites(CrmLead lead) {
-        if (lead == null) {
-            return new CrmLeadPT();
-        }
-        CrmLeadPT crmLeadPT = new CrmLeadPT();
-        crmLeadPT.setId(lead.getId());
-        crmLeadPT.setName(lead.getName());
-        crmLeadPT.setShortname(lead.getShortname());
-        crmLeadPT.setDescription(lead.getDescription());
-        crmLeadPT.setIndustry(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getIndustry()));
-        crmLeadPT.setArea(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getArea()));
-        crmLeadPT.setAdress(corAddressMapper.cORAddressToCorAddressDTO(lead.getAddres()));
-        crmLeadPT.setSource(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getLeadSource()));
-        crmLeadPT.setStatus(corDictionaryMapper.corDictionaryToCorDictionaryDTO(lead.getLeadStatus()));
-        crmLeadPT.setTasks(customCrmTaskMapper.createCrmTasks(lead.getTasks()));
-        crmLeadPT.setPerson(customTRAPersonMapper.createDTOObject(lead.getPerson()));
-        crmLeadPT.setOwner(corUserMapper.userToCoreUserPT(lead.getKeeper()));
-        return crmLeadPT;
-    }
+
+    CorUser corUserFromCoreUserThinPT(CoreUserThinPT coreUserThinPT);
+
+    CoreUserThinPT coreUserThinPTFromCorUser(CorUser coreUserThinPT);
+
+
+    CorAddress corAddressFromCoreAddressPT(CoreAddressPT coreUserThinPT);
+
+    CoreAddressPT coreAddressPTFromCorAddress(CorAddress coreUserThinPT);
+
+    CorPerson corPersonFromTraCustomerPersonPT(TraCustomerPersonPT coreUserThinPT);
+
+    TraCustomerPersonPT traCustomerPersonPTFromCorPerson(CorPerson coreUserThinPT);
+
+    CorContact corContactFromCoreContactPT(CoreContactPT coreUserThinPT);
+
+    CoreContactPT coreContactPTFromCorContact(CorContact coreUserThinPT);
+
+    Set<CorContact> corContactFromCoreContactPT(List<CoreContactPT> coreUserThinPT);
+
+    List<CoreContactPT> coreContactPTFromCorContact(Set<CorContact> coreUserThinPT);
+
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTaskPT crmTaskPTFromCrmTask(CrmTask cORAddress);
+
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTask crmTaskFromCrmTaskPT(CrmTaskPT cORAddressDTO);
+
+
+    Set<CrmTask> crmTaskFromCrmTaskPT(List<CrmTaskPT> coreUserThinPT);
+
+    List<CrmTaskPT> crmTaskPTFromCrmTask(Set<CrmTask> coreUserThinPT);
+
 }
 
 
