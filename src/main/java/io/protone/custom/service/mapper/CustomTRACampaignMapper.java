@@ -3,6 +3,7 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.domain.*;
 import io.protone.service.dto.TraCampaignDTO;
+import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import static java.util.stream.Collectors.toSet;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = CustomTraOrderMapper.class)
+@Mapper(componentModel = "spring", uses = {CustomTraOrderMapper.class, CorDictionaryMapper.class})
 public interface CustomTRACampaignMapper {
 
     @Mapping(source = "customer", target = "customerId")

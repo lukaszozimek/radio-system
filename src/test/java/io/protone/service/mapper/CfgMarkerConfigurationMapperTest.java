@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
@@ -75,32 +75,32 @@ public class CfgMarkerConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgMarkerConfiguration mappedDto = customCfgMarkerConfigurationMapper.DTO2DB(confMarkerConfigurationPT);
-        assertNotNull(mappedDto.getColor());
-        assertNotNull(mappedDto.getDisplayName());
-        assertNotNull(mappedDto.getId());
-        assertNotNull(mappedDto.getKeyboardShortcut());
-        assertNotNull(mappedDto.getName());
-        assertNotNull(mappedDto.getType());
+        CfgMarkerConfiguration entity = customCfgMarkerConfigurationMapper.DTO2DB(confMarkerConfigurationPT);
+        assertNotNull(entity.getColor());
+        assertNotNull(entity.getDisplayName());
+        assertNotNull(entity.getId());
+        assertNotNull(entity.getKeyboardShortcut());
+        assertNotNull(entity.getName());
+        assertNotNull(entity.getType());
 
-        assertNull(mappedDto.getNetwork());
+        assertNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
 
-        List<CfgMarkerConfiguration> mappedDtos = customCfgMarkerConfigurationMapper.DTOs2DBs(confMarkerConfigurationPTList);
-        assertNotNull(mappedDtos);
-        assertEquals(mappedDtos.size(), 1);
-        mappedDtos.stream().forEach(dto -> {
-            assertNotNull(dto.getColor());
-            assertNotNull(dto.getDisplayName());
-            assertNotNull(dto.getId());
-            assertNotNull(dto.getKeyboardShortcut());
-            assertNotNull(dto.getName());
-            assertNotNull(dto.getType());
+        List<CfgMarkerConfiguration> entities = customCfgMarkerConfigurationMapper.DTOs2DBs(confMarkerConfigurationPTList);
+        assertNotNull(entities);
+        assertEquals(entities.size(), 1);
+        entities.stream().forEach(entity -> {
+            assertNotNull(entity.getColor());
+            assertNotNull(entity.getDisplayName());
+            assertNotNull(entity.getId());
+            assertNotNull(entity.getKeyboardShortcut());
+            assertNotNull(entity.getName());
+            assertNotNull(entity.getType());
 
-            assertNull(dto.getNetwork());
+            assertNull(entity.getNetwork());
         });
     }
 

@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfCountryPt;
-import io.protone.custom.service.mapper.CustomCorCountryMapper;
+import io.protone.service.mapper.CorCountryMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryCountry;
 import io.protone.domain.CorCountry;
 import io.protone.domain.CorNetwork;
@@ -32,7 +32,7 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
     @Inject
     private CorNetworkService corNetworkService;
     @Inject
-    private CustomCorCountryMapper customCorCurrencyMapper;
+    private CorCountryMapper customCorCurrencyMapper;
 
     @Override
     public ResponseEntity<ConfCountryPt> updateCountryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @RequestBody ConfCountryPt confCountryPt) {

@@ -40,9 +40,9 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
         if (personDTO.getId() == null) {
             return createPersonUsingPOST(networkShortcut, personDTO);
         }
-        CorPerson cORPerson = customCorPersonMapper.cORPersonDTOToCorPerson(personDTO);
+        CorPerson cORPerson = customCorPersonMapper.DTO2DB(personDTO);
         cORPerson = cORPersonRepository.save(cORPerson);
-        ConfPersonPT result = customCorPersonMapper.cORPersonToCorPersonDTO(cORPerson);
+        ConfPersonPT result = customCorPersonMapper.DB2DTO(cORPerson);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORPerson", personDTO.getId().toString()))
             .body(result);
@@ -55,9 +55,9 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
         if (personDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPerson", "idexists", "A new cORPerson cannot already have an ID")).body(null);
         }
-        CorPerson cORPerson = customCorPersonMapper.cORPersonDTOToCorPerson(personDTO);
+        CorPerson cORPerson = customCorPersonMapper.DTO2DB(personDTO);
         cORPerson = cORPersonRepository.save(cORPerson);
-        ConfPersonPT result = customCorPersonMapper.cORPersonToCorPersonDTO(cORPerson);
+        ConfPersonPT result = customCorPersonMapper.DB2DTO(cORPerson);
         return ResponseEntity.ok().body(result);
     }
 
@@ -75,14 +75,14 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORPeople");
         List<CorPerson> cORPeople = cORPersonRepository.findAll();
-        return ResponseEntity.ok().body(customCorPersonMapper.cORPeopleToCorPersonDTOs(cORPeople));
+        return ResponseEntity.ok().body(customCorPersonMapper.DBs2DTOs(cORPeople));
     }
 
     @Override
     public ResponseEntity<ConfPersonPT> getPersonUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorPerson : {}", id);
         CorPerson cORPerson = cORPersonRepository.findOne(id);
-        ConfPersonPT cORPersonDTO = customCorPersonMapper.cORPersonToCorPersonDTO(cORPerson);
+        ConfPersonPT cORPersonDTO = customCorPersonMapper.DB2DTO(cORPerson);
         return Optional.ofNullable(cORPersonDTO)
             .map(result -> new ResponseEntity<>(
                 result,

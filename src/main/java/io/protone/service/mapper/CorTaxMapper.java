@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.ConfTaxPT;
 import io.protone.domain.CorNetwork;
@@ -12,7 +12,7 @@ import java.util.List;
  * Mapper for the entity CorRange and its DTO CorRangeDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomCorTaxMapper {
+public interface CorTaxMapper {
 
     CorTax DTO2DB(ConfTaxPT confTaxPT);
 

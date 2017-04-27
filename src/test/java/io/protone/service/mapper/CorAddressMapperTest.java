@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreAddressPT;
@@ -79,34 +79,34 @@ public class CorAddressMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorAddress corAddress = customCorAddressMapper.DTO2DB(coreAddressPT);
+        CorAddress entity = customCorAddressMapper.DTO2DB(coreAddressPT);
 
-        assertNotNull(corAddress.getId());
-        assertNotNull(corAddress.getStreet());
-        assertNotNull(corAddress.getNumber());
-        assertNotNull(corAddress.getPostalCode());
-        assertNotNull(corAddress.getCity());
-        assertNotNull(corAddress.getCountry());
+        assertNotNull(entity.getId());
+        assertNotNull(entity.getStreet());
+        assertNotNull(entity.getNumber());
+        assertNotNull(entity.getPostalCode());
+        assertNotNull(entity.getCity());
+        assertNotNull(entity.getCountry());
 
-        assertNull(corAddress.getNetwork());
+        assertNull(entity.getNetwork());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorAddress> addresses = customCorAddressMapper.DTOs2DBs(coreAddressPTS);
+        List<CorAddress> entities = customCorAddressMapper.DTOs2DBs(coreAddressPTS);
 
-        assertNotNull(addresses);
-        assertEquals(addresses.size(), 1);
-        addresses.stream().forEach(dto -> {
-            assertNotNull(dto.getId());
-            assertNotNull(dto.getStreet());
-            assertNotNull(dto.getNumber());
-            assertNotNull(dto.getPostalCode());
-            assertNotNull(dto.getCity());
-            assertNotNull(dto.getCountry());
+        assertNotNull(entities);
+        assertEquals(entities.size(), 1);
+        entities.stream().forEach(entity -> {
+            assertNotNull(entity.getId());
+            assertNotNull(entity.getStreet());
+            assertNotNull(entity.getNumber());
+            assertNotNull(entity.getPostalCode());
+            assertNotNull(entity.getCity());
+            assertNotNull(entity.getCountry());
 
-            assertNull(dto.getNetwork());
+            assertNull(entity.getNetwork());
         });
     }
 

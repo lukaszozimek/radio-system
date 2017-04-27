@@ -3,7 +3,7 @@ package io.protone.custom.web.rest.network.channel.impl;
 import io.protone.custom.service.CorChannelService;
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreChannelPT;
-import io.protone.custom.service.mapper.CustomCORChannelMapper;
+import io.protone.service.mapper.CorChannelMapper;
 import io.protone.custom.web.rest.network.channel.ApiChannel;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
@@ -33,7 +33,7 @@ public class ApiChannelImpl implements ApiChannel {
     private CorChannelService channelService;
 
     @Inject
-    private CustomCORChannelMapper customCORChannelMapper;
+    private CorChannelMapper customCORChannelMapper;
 
     @Inject
     private CorNetworkService networkService;

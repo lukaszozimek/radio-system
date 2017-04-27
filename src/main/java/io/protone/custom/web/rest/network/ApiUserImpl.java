@@ -6,7 +6,7 @@ import io.protone.custom.service.CustomMailService;
 import io.protone.custom.service.CustomCorUserService;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.custom.service.mapper.CustomCorNetworkMapper;
+import io.protone.service.mapper.CorNetworkMapper;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
@@ -41,14 +41,14 @@ public class ApiUserImpl implements ApiUser {
 
     private final CustomCorNetworkRepository customCorNetworkRepository;
 
-    private final CustomCorNetworkMapper customCorNetworkMapper;
+    private final CorNetworkMapper customCorNetworkMapper;
 
     private final CustomCorUserService userService;
 
     private final CustomMailService mailService;
 
     public ApiUserImpl(CustomCorUserRepository userRepository, CustomCorUserService userService,
-                       CustomMailService mailService, CustomCorNetworkRepository customCorNetworkRepository, CustomCorNetworkMapper customCorNetworkMapper) {
+                       CustomMailService mailService, CustomCorNetworkRepository customCorNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;

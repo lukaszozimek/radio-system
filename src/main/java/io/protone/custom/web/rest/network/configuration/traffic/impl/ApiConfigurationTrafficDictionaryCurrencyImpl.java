@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfCurrencyPT;
-import io.protone.custom.service.mapper.CustomCorCurrencyMapper;
+import io.protone.service.mapper.CorCurrencyMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryCurrency;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
@@ -32,7 +32,7 @@ public class ApiConfigurationTrafficDictionaryCurrencyImpl implements ApiConfigu
     @Inject
     private CorNetworkService corNetworkService;
     @Inject
-    private CustomCorCurrencyMapper customCorCurrencyMapper;
+    private CorCurrencyMapper customCorCurrencyMapper;
 
 
     @Override

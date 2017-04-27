@@ -2,11 +2,10 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CorDictionaryPT;
-import io.protone.custom.service.mapper.CustomCorDictionaryMapper;
+import io.protone.service.mapper.CorDictionaryMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryCoreDictionary;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorDictionaryType;
-import io.protone.domain.CorModule;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.CorDictionaryRepository;
 import io.protone.web.rest.util.HeaderUtil;
@@ -32,7 +31,7 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
     @Inject
     private CorNetworkService corNetworkService;
     @Inject
-    private CustomCorDictionaryMapper customCorDictionaryMapper;
+    private CorDictionaryMapper customCorDictionaryMapper;
     @Inject
     private CorDictionaryRepository corDictionaryRepository;
 
@@ -46,10 +45,10 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
             return createDictionaryValueUsingPOST(networkShortcut, module, type, corDictionaryPT);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDictionary corDictionary = customCorDictionaryMapper.corDictionaryDTOToCorDictionary(corDictionaryPT);
+        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryPT);
         corDictionary.setNetwork(corNetwork);
         corDictionary = corDictionaryRepository.save(corDictionary);
-        CorDictionaryPT result = customCorDictionaryMapper.corDictionaryToCorDictionaryDTO(corDictionary);
+        CorDictionaryPT result = customCorDictionaryMapper.DB2DTO(corDictionary);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("CorDictionary", result.getId().toString()))
             .body(result);
@@ -65,10 +64,10 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorDictionary", "idexists", "A new CorDictionary cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDictionary corDictionary = customCorDictionaryMapper.corDictionaryDTOToCorDictionary(corDictionaryPT);
+        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryPT);
         corDictionary.setNetwork(corNetwork);
         corDictionary = corDictionaryRepository.save(corDictionary);
-        CorDictionaryPT result = customCorDictionaryMapper.corDictionaryToCorDictionaryDTO(corDictionary);
+        CorDictionaryPT result = customCorDictionaryMapper.DB2DTO(corDictionary);
         return ResponseEntity.ok().body(result);
     }
 
@@ -91,7 +90,7 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         List<CorDictionary> corDictionaries = corDictionaryRepository.findAllByCorDictionaryTypeAndNetwork(type, corNetwork);
-        List<CorDictionaryPT> dictionaryPTS = customCorDictionaryMapper.corDictionariesToCorDictionaryDTOs(corDictionaries);
+        List<CorDictionaryPT> dictionaryPTS = customCorDictionaryMapper.DBs2DTOs(corDictionaries);
         return Optional.ofNullable(dictionaryPTS)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -105,7 +104,7 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CorDictionary corDictionary = corDictionaryRepository.findByIdAndCorDictionaryTypeAndNetwork(id, new CorDictionaryType().name(type), corNetwork);
-        CorDictionaryPT corDictionaryPT = customCorDictionaryMapper.corDictionaryToCorDictionaryDTO(corDictionary);
+        CorDictionaryPT corDictionaryPT = customCorDictionaryMapper.DB2DTO(corDictionary);
         return Optional.ofNullable(corDictionaryPT)
             .map(result -> new ResponseEntity<>(
                 result,

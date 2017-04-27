@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfTaxPT;
-import io.protone.custom.service.mapper.CustomCorTaxMapper;
+import io.protone.service.mapper.CorTaxMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryTax;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
@@ -32,7 +32,7 @@ public class ApiConfigurationTrafficDictionaryTaxImpl implements ApiConfiguratio
     @Inject
     private CorNetworkService corNetworkService;
     @Inject
-    private CustomCorTaxMapper customCorTaxMapper;
+    private CorTaxMapper customCorTaxMapper;
 
     @Override
     public ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

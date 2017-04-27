@@ -9,6 +9,7 @@ import io.protone.custom.service.dto.thin.LibMediaItemThinPt;
 import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.protone.domain.*;
 import io.protone.service.dto.TraAdvertisementDTO;
+import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class})
 public interface CustomTRAAdvertismentMapper {
     @Mapping(source = "mediaItem", target = "mediaItemId")
     @Mapping(source = "customer", target = "customerId")
@@ -45,8 +46,5 @@ public interface CustomTRAAdvertismentMapper {
 
     TraCustomerThinPT traCustomerThinPTFromCrmAccount(CrmAccount id);
 
-    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
-
-    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
 
 }

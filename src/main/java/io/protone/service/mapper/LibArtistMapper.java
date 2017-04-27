@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.LibArtistPT;
 import io.protone.domain.CorNetwork;
@@ -13,7 +13,7 @@ import java.util.List;
  * Mapper for the entity LibArtist and its DTO LibArtistPT.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomLibArtistMapper {
+public interface LibArtistMapper {
 
     LibArtistPT DB2DTO(LibArtist db);
 

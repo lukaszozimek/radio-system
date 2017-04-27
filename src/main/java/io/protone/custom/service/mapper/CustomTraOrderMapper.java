@@ -10,6 +10,7 @@ import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
 import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.protone.domain.*;
 import io.protone.service.dto.TraOrderDTO;
+import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class})
 public interface CustomTraOrderMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")
@@ -44,10 +45,6 @@ public interface CustomTraOrderMapper {
     TraOrder DTO2DB(TraOrderPT traOrderDTO);
 
     List<TraOrder> DTOs2DBs(List<TraOrderPT> traOrderDTOs);
-
-    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
-
-    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
 
     TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinPT coreUserThinPT);
 

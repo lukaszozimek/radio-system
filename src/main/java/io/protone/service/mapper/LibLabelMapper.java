@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.LibLabelPT;
 import io.protone.domain.CorNetwork;
@@ -12,7 +12,7 @@ import java.util.List;
  * Mapper for the entity LibLabel and its DTO LibLabelDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomLibLabelMapperExt {
+public interface LibLabelMapper {
 
     LibLabelPT DB2DTO(LibLabel lIBLabel);
 

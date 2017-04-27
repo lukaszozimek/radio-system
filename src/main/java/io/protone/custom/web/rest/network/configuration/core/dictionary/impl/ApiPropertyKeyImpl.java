@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreKeyPT;
-import io.protone.custom.service.mapper.CustomCorPropertyKeyMapper;
+import io.protone.service.mapper.CorPropertyKeyMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiPropertyKey;
 import io.protone.domain.CorPropertyKey;
 import io.protone.repository.CorPropertyKeyRepository;
@@ -33,13 +33,13 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
     private CorNetworkService networkService;
 
     @Inject
-    private CustomCorPropertyKeyMapper corPropertyKeyMapper;
+    private CorPropertyKeyMapper corPropertyKeyMapper;
 
     @Override
     public ResponseEntity<CoreKeyPT> getPropertyKeyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "keyName", required = true) @PathVariable("id") String id) {
         log.debug("REST request to get CorPropertyKey : {}", id);
         CorPropertyKey cORPropertyKey = cORPropertyKeyRepository.findOne(Long.parseLong(id));
-        CoreKeyPT cORPropertyKeyDTO = corPropertyKeyMapper.cORPropertyKeyToCorPropertyKeyDTO(cORPropertyKey);
+        CoreKeyPT cORPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return Optional.ofNullable(cORPropertyKeyDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -60,7 +60,7 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable) {
         log.debug("REST request to get all CorPropertyKeys");
         List<CorPropertyKey> cORPropertyKeys = cORPropertyKeyRepository.findAll();
-        return ResponseEntity.ok().body(corPropertyKeyMapper.cORPropertyKeysToCorPropertyKeyDTOs(cORPropertyKeys));
+        return ResponseEntity.ok().body(corPropertyKeyMapper.DBs2DTOs(cORPropertyKeys));
     }
 
     @Override
@@ -69,9 +69,9 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
         if (propertyKeyDTO.getId() == null) {
             return createPropertyKeyUsingPOST(networkShortcut, propertyKeyDTO);
         }
-        CorPropertyKey cORPropertyKey = corPropertyKeyMapper.cORPropertyKeyDTOToCorPropertyKey(propertyKeyDTO);
+        CorPropertyKey cORPropertyKey = corPropertyKeyMapper.DTO2DB(propertyKeyDTO);
         cORPropertyKey = cORPropertyKeyRepository.save(cORPropertyKey);
-        CoreKeyPT result = corPropertyKeyMapper.cORPropertyKeyToCorPropertyKeyDTO(cORPropertyKey);
+        CoreKeyPT result = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORPropertyKey", propertyKeyDTO.getId().toString()))
             .body(result);
@@ -83,9 +83,9 @@ public class ApiPropertyKeyImpl implements ApiPropertyKey {
         if (propertyKeyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPropertyKey", "idexists", "A new cORPropertyKey cannot already have an ID")).body(null);
         }
-        CorPropertyKey cORPropertyKey = corPropertyKeyMapper.cORPropertyKeyDTOToCorPropertyKey(propertyKeyDTO);
+        CorPropertyKey cORPropertyKey = corPropertyKeyMapper.DTO2DB(propertyKeyDTO);
         cORPropertyKey = cORPropertyKeyRepository.save(cORPropertyKey);
-        CoreKeyPT result = corPropertyKeyMapper.cORPropertyKeyToCorPropertyKeyDTO(cORPropertyKey);
+        CoreKeyPT result = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return ResponseEntity.ok().body(result);
     }
 }

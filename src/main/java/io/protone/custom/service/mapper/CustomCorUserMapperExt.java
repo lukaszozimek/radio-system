@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorUserRepository;
+import io.protone.service.mapper.CorChannelMapper;
+import io.protone.service.mapper.CorNetworkMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Generated;
@@ -32,10 +34,10 @@ public class CustomCorUserMapperExt {
     private CustomCorUserRepository customCorUserRepository;
 
     @Inject
-    private CustomCorNetworkMapper customCorNetworkMapper;
+    private CorNetworkMapper customCorNetworkMapper;
 
     @Inject
-    private CustomCORChannelMapper customCORChannelMapper;
+    private CorChannelMapper customCORChannelMapper;
 
     public CoreUserPT userToCoreUserPT(CorUser user) {
 
@@ -67,7 +69,7 @@ public class CustomCorUserMapperExt {
 
         }
         if (!user.getNetworks().isEmpty()) {
-            coreUserPT.network(customCorNetworkMapper.cORNetworkToCorNetworkDTO(user.getNetworks().stream().findFirst().get()));
+            coreUserPT.network(customCorNetworkMapper.DB2DTO(user.getNetworks().stream().findFirst().get()));
         }
         return coreUserPT;
     }
@@ -100,7 +102,7 @@ public class CustomCorUserMapperExt {
         user.setFirstname(userPT.getFirstName());
         user.setLastname(userPT.getLastName());
         user.setEmail(userPT.getEmail());
-        user.setNetworks(Sets.newHashSet(customCorNetworkMapper.cORNetworkDTOToCorNetwork(userPT.getNetwork())));
+        user.setNetworks(Sets.newHashSet(customCorNetworkMapper.DTO2DB(userPT.getNetwork())));
         user.channels(userPT.getChannel().stream().map(customCORChannelMapper::DTO2DB).collect(toSet()));
         if (userPT.getActivated() != null) {
 

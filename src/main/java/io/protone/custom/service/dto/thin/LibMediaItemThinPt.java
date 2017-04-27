@@ -43,6 +43,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getIdx() {
         return idx;
     }
@@ -50,6 +51,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setIdx(String idx) {
         this.idx = idx;
     }
+
     public String getName() {
         return name;
     }
@@ -57,6 +59,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public LibItemTypeEnum getItemType() {
         return itemType;
     }
@@ -64,6 +67,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setItemType(LibItemTypeEnum itemType) {
         this.itemType = itemType;
     }
+
     public Long getLength() {
         return length;
     }
@@ -71,6 +75,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setLength(Long length) {
         this.length = length;
     }
+
     public LibItemStateEnum getState() {
         return state;
     }
@@ -78,6 +83,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setState(LibItemStateEnum state) {
         this.state = state;
     }
+
     public String getCommand() {
         return command;
     }
@@ -85,6 +91,7 @@ public class LibMediaItemThinPt implements Serializable {
     public void setCommand(String command) {
         this.command = command;
     }
+
     public String getDescription() {
         return description;
     }

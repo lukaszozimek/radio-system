@@ -4,8 +4,8 @@ import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.custom.service.mapper.CustomCORChannelMapper;
-import io.protone.custom.service.mapper.CustomCorNetworkMapper;
+import io.protone.service.mapper.CorChannelMapper;
+import io.protone.service.mapper.CorNetworkMapper;
 import io.protone.custom.service.mapper.CustomCorUserMapperExt;
 import io.protone.domain.CorAuthority;
 import io.protone.domain.CorChannel;
@@ -21,8 +21,6 @@ import io.protone.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,12 +31,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Service class for managing users.
@@ -68,10 +63,10 @@ public class CustomCorUserService {
     private CustomCorUserMapperExt customCorUserMapperExt;
 
     @Autowired
-    private CustomCorNetworkMapper customCorNetworkMapper;
+    private CorNetworkMapper customCorNetworkMapper;
 
     @Autowired
-    private CustomCORChannelMapper customCORChannelMapper;
+    private CorChannelMapper customCORChannelMapper;
 
 
     public Optional<CorUser> activateRegistration(String key) {
@@ -121,7 +116,7 @@ public class CustomCorUserService {
                               String imageUrl, String langKey, CoreNetworkPT networkPt) {
 
         CorUser newUser = new CorUser();
-        CorNetwork network = customCorNetworkRepository.save(customCorNetworkMapper.cORNetworkDTOToCorNetwork(networkPt));
+        CorNetwork network = customCorNetworkRepository.save(customCorNetworkMapper.DTO2DB(networkPt));
         CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<CorAuthority> authorities = new HashSet<>();
 

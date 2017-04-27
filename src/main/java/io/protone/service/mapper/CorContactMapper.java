@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.CoreContactPT;
 import io.protone.domain.CorContact;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Mapper for the entity CorContact and its DTO CorContactDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomCorContactMapper {
+public interface CorContactMapper {
 
     CoreContactPT DB2DTO(CorContact cORContact);
 

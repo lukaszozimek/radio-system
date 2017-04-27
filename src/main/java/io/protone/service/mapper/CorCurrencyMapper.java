@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.ConfCurrencyPT;
 import io.protone.custom.service.dto.ConfTaxPT;
@@ -14,7 +14,7 @@ import java.util.List;
  * Mapper for the entity CorRange and its DTO CorRangeDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomCorCurrencyMapper {
+public interface CorCurrencyMapper {
 
     CorCurrency DTO2DB(ConfCurrencyPT cORRangeDTO);
 

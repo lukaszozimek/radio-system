@@ -1,6 +1,7 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.ConfPersonPT;
+import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPerson;
 import org.mapstruct.Mapper;
@@ -14,12 +15,20 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorPersonMapper {
 
-    ConfPersonPT cORPersonToCorPersonDTO(CorPerson cORPerson);
+    ConfPersonPT DB2DTO(CorPerson cORPerson);
 
-    List<ConfPersonPT> cORPeopleToCorPersonDTOs(List<CorPerson> cORPeople);
+    List<ConfPersonPT> DBs2DTOs(List<CorPerson> cORPeople);
 
-    CorPerson cORPersonDTOToCorPerson(ConfPersonPT cORPersonDTO);
+    CorPerson DTO2DB(ConfPersonPT cORPersonDTO);
 
-    List<CorPerson> cORPersonDTOsToCORPeople(List<ConfPersonPT> cORPersonDTOs);
+    List<CorPerson> DTOs2DBs(List<ConfPersonPT> cORPersonDTOs);
+
+    LibPersonPT db2Dto(CorPerson db);
+
+    List<LibPersonPT> dBs2DTOs(List<CorPerson> cORPeople);
+
+    CorPerson dto2Db(LibPersonPT dto);
+
+    List<CorPerson> dtos2Dbs(List<LibPersonPT> dtos);
 
 }

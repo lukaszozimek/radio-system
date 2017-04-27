@@ -7,6 +7,8 @@ import io.protone.custom.service.dto.LibItemPT;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.service.mapper.LibArtistMapper;
+import io.protone.service.mapper.LibLabelMapper;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -23,13 +25,13 @@ public class CustomItemMapperExt {
     private CustomLibAlbumMapper albumMapper;
 
     @Inject
-    private CustomLibArtistMapper artistMapper;
+    private LibArtistMapper artistMapper;
 
     @Inject
-    private CustomCorPersonMapperExt personMapper;
+    private CustomCorPersonMapper personMapper;
 
     @Inject
-    private CustomLibLabelMapperExt labelMapper;
+    private LibLabelMapper labelMapper;
 
     @Inject
     private CustomLibLibraryMapperExt libraryMapper;
@@ -59,8 +61,8 @@ public class CustomItemMapperExt {
             .artist(artistMapper.DB2DTO(db.getArtist()))
             .library(libraryMapper.DB2DTO(db.getLibrary()))
             .track(trackMapper.DB2DTO(db.getTrack()))
-            .author(db.getAuthors().stream().map(corPerson -> personMapper.DB2DTO(corPerson)).collect(toList()))
-            .composer(db.getComposers().stream().map(corPerson -> personMapper.DB2DTO(corPerson)).collect(toList()))
+            .author(db.getAuthors().stream().map(corPerson -> personMapper.db2Dto(corPerson)).collect(toList()))
+            .composer(db.getComposers().stream().map(corPerson -> personMapper.db2Dto(corPerson)).collect(toList()))
             .markers(db.getMarkers().stream().map(libMarker -> markerMapper.DB2DTO(libMarker)).collect(toList()))
             .properties(db.getProperites().stream().map(corPropertyValue -> {
                 return new CoreKeyValuePT()
@@ -132,8 +134,8 @@ public class CustomItemMapperExt {
             .artist(artistMapper.DTO2DB(dto.getArtist()))
             .library(libraryMapper.DTO2DB(dto.getLibrary()))
             .track(trackMapper.DTO2DB(dto.getTrack()))
-            .authors(dto.getAuthors().stream().map(corPerson -> personMapper.DTO2DB(corPerson)).collect(toSet()))
-            .composers(dto.getComposers().stream().map(corPerson -> personMapper.DTO2DB(corPerson)).collect(toSet()))
+            .authors(dto.getAuthors().stream().map(corPerson -> personMapper.dto2Db(corPerson)).collect(toSet()))
+            .composers(dto.getComposers().stream().map(corPerson -> personMapper.dto2Db(corPerson)).collect(toSet()))
             .markers(dto.getMarkers().stream().map(libMarkerPT -> markerMapper.DTO2DB(libMarkerPT)).collect(toSet()));
         db.setId(dto.getId());
         return db;

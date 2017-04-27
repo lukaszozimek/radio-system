@@ -3,6 +3,8 @@ package io.protone.custom.service.mapper;
 import io.protone.custom.service.dto.*;
 import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.protone.domain.*;
+import io.protone.service.mapper.CorAddressMapper;
+import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import java.util.Set;
 /**
  * Created by lukaszozimek on 18.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CustomCrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
 public interface CustomCrmLeadMapper {
 
     @Mapping(source = "leadStatus", target = "status")
@@ -39,20 +41,6 @@ public interface CustomCrmLeadMapper {
 
     List<CrmLead> DTOs2DBs(List<CrmLeadPT> crmLeadDTOs);
 
-    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
-
-    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
-
-
-    CorUser corUserFromCoreUserThinPT(CoreUserThinPT coreUserThinPT);
-
-    CoreUserThinPT coreUserThinPTFromCorUser(CorUser coreUserThinPT);
-
-
-    CorAddress corAddressFromCoreAddressPT(CoreAddressPT coreUserThinPT);
-
-    CoreAddressPT coreAddressPTFromCorAddress(CorAddress coreUserThinPT);
-
     CorPerson corPersonFromTraCustomerPersonPT(TraCustomerPersonPT coreUserThinPT);
 
     TraCustomerPersonPT traCustomerPersonPTFromCorPerson(CorPerson coreUserThinPT);
@@ -64,19 +52,6 @@ public interface CustomCrmLeadMapper {
     Set<CorContact> corContactFromCoreContactPT(List<CoreContactPT> coreUserThinPT);
 
     List<CoreContactPT> coreContactPTFromCorContact(Set<CorContact> coreUserThinPT);
-
-    @Mapping(source = "createdBy", target = "createdBy")
-    @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTaskPT crmTaskPTFromCrmTask(CrmTask cORAddress);
-
-    @Mapping(source = "createdBy", target = "createdBy")
-    @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTask crmTaskFromCrmTaskPT(CrmTaskPT cORAddressDTO);
-
-
-    Set<CrmTask> crmTaskFromCrmTaskPT(List<CrmTaskPT> coreUserThinPT);
-
-    List<CrmTaskPT> crmTaskPTFromCrmTask(Set<CrmTask> coreUserThinPT);
 
 }
 

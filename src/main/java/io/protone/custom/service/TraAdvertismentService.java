@@ -1,7 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.service.mapper.CustomCorDictionaryMapper;
+import io.protone.service.mapper.CorDictionaryMapper;
 import io.protone.custom.service.mapper.CustomCrmAccountMapper;
 import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.domain.CorNetwork;
@@ -37,7 +37,7 @@ public class TraAdvertismentService {
     private CustomTraAdvertisementRepository traAdvertisementRepository;
 
     @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
+    private CorDictionaryMapper corDictionaryMapper;
 
     @Inject
     private CustomCrmAccountMapper customCrmAccountMapper;

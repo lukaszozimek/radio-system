@@ -5,6 +5,8 @@ import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.protone.domain.*;
+import io.protone.service.mapper.CorAddressMapper;
+import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import java.util.Set;
 /**
  * Created by lukaszozimek on 18.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CustomCrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
 public interface CustomCrmOpportunityMapper {
 
 
@@ -39,14 +41,6 @@ public interface CustomCrmOpportunityMapper {
 
     List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityPT> crmOpportunityDTOs);
 
-    CorDictionary corDictionaryFromCorDictionaryPT(CorDictionaryPT coreUserThinPT);
-
-    CorDictionaryPT corDictionaryPTFromCorDictionary(CorDictionary coreUserThinPT);
-
-
-    CorUser corUserFromCoreUserThinPT(CoreUserThinPT coreUserThinPT);
-
-    CoreUserThinPT coreUserThinPTFromCorUser(CorUser coreUserThinPT);
 
     default CrmContact crmContactFromId(Long id) {
         if (id == null) {
@@ -74,14 +68,6 @@ public interface CustomCrmOpportunityMapper {
         crmLead.setId(id);
         return crmLead;
     }
-
-    @Mapping(source = "createdBy", target = "createdBy")
-    @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTaskPT crmTaskPTFromCrmTask(CrmTask cORAddress);
-
-    @Mapping(source = "createdBy", target = "createdBy")
-    @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTask crmTaskFromCrmTaskPT(CrmTaskPT cORAddressDTO);
 
 
 }

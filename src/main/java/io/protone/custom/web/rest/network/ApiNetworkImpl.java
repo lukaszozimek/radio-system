@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreNetworkPT;
-import io.protone.custom.service.mapper.CustomCorNetworkMapper;
+import io.protone.service.mapper.CorNetworkMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -23,7 +23,7 @@ public class ApiNetworkImpl implements ApiNetwork {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkImpl.class);
 
     @Inject
-    private CustomCorNetworkMapper customCorNetworkMapper;
+    private CorNetworkMapper customCorNetworkMapper;
 
     @Inject
     private CorNetworkService networkService;
@@ -33,7 +33,7 @@ public class ApiNetworkImpl implements ApiNetwork {
         log.debug("REST request to get all CorNetworks");
         List<CorNetwork> cORNetworks = networkService.findAllNetworks();
         return ResponseEntity.ok()
-            .body(customCorNetworkMapper.cORNetworksToCorNetworkDTOs(cORNetworks));
+            .body(customCorNetworkMapper.DBs2DTOs(cORNetworks));
 
     }
 
@@ -43,9 +43,9 @@ public class ApiNetworkImpl implements ApiNetwork {
         if (network.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORNetwork", "idexists", "A new cORNetwork cannot already have an ID")).body(null);
         }
-        CorNetwork cORNetwork = customCorNetworkMapper.cORNetworkDTOToCorNetwork(network);
+        CorNetwork cORNetwork = customCorNetworkMapper.DTO2DB(network);
         cORNetwork = networkService.save(cORNetwork);
-        CoreNetworkPT result = customCorNetworkMapper.cORNetworkToCorNetworkDTO(cORNetwork);
+        CoreNetworkPT result = customCorNetworkMapper.DB2DTO(cORNetwork);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert("cORNetwork", result.getId().toString()))
             .body(result);
@@ -57,9 +57,9 @@ public class ApiNetworkImpl implements ApiNetwork {
         if (network.getId() == null) {
             return createNetworkUsingPOST(network);
         }
-        CorNetwork cORNetwork = customCorNetworkMapper.cORNetworkDTOToCorNetwork(network);
+        CorNetwork cORNetwork = customCorNetworkMapper.DTO2DB(network);
         cORNetwork = networkService.save(cORNetwork);
-        CoreNetworkPT result = customCorNetworkMapper.cORNetworkToCorNetworkDTO(cORNetwork);
+        CoreNetworkPT result = customCorNetworkMapper.DB2DTO(cORNetwork);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORNetwork", network.getId().toString()))
             .body(result);
@@ -77,7 +77,7 @@ public class ApiNetworkImpl implements ApiNetwork {
     public ResponseEntity<CoreNetworkPT> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get CorNetwork : {}", networkShortcut);
         CorNetwork cORNetwork = networkService.findNetwork(networkShortcut);
-        CoreNetworkPT cORNetworkDTO = customCorNetworkMapper.cORNetworkToCorNetworkDTO(cORNetwork);
+        CoreNetworkPT cORNetworkDTO = customCorNetworkMapper.DB2DTO(cORNetwork);
         return Optional.ofNullable(cORNetworkDTO)
             .map(result -> new ResponseEntity<>(
                 result,

@@ -1,10 +1,9 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.LibraryPT;
-import io.protone.custom.service.mapper.CustomCORChannelMapper;
+import io.protone.service.mapper.CorChannelMapper;
 import io.protone.custom.service.mapper.CustomCorUserMapperExt;
 import io.protone.custom.service.mapper.CustomLibLibraryMapperExt;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import io.protone.repository.custom.CustomCorNetworkRepository;
@@ -34,7 +33,7 @@ public class LibLibraryService {
     private CustomLibLibraryMapperExt customLibLibraryMapper;
 
     @Inject
-    private CustomCORChannelMapper customCorChannelMapper;
+    private CorChannelMapper customCorChannelMapper;
 
     @Inject
     private CustomCorUserMapperExt userMapper;

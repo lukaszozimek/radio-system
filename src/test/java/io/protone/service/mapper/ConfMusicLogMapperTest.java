@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfMusicLogPT;
@@ -80,34 +80,34 @@ public class ConfMusicLogMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgExternalSystemLog mappedDto = customConfMusicLogMapper.DTO2DB(confMusicLogPT);
+        CfgExternalSystemLog entity = customConfMusicLogMapper.DTO2DB(confMusicLogPT);
 
-        assertNotNull(mappedDto.getId());
-        assertNotNull(mappedDto.getName());
-        assertNotNull(mappedDto.getLenght());
-        assertNotNull(mappedDto.getLogColumn());
-        assertNotNull(mappedDto.getDelimiter());
-        assertNotNull(mappedDto.getColumnSequence());
+        assertNotNull(entity.getId());
+        assertNotNull(entity.getName());
+        assertNotNull(entity.getLenght());
+        assertNotNull(entity.getLogColumn());
+        assertNotNull(entity.getDelimiter());
+        assertNotNull(entity.getColumnSequence());
 
-        assertNull(mappedDto.getNetwork());
-        assertNull(mappedDto.getChannel());
+        assertNull(entity.getNetwork());
+        assertNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CfgExternalSystemLog> mappedDto = customConfMusicLogMapper.DTOs2DBs(confMusicLogPTS);
-        assertNotNull(mappedDto);
-        assertEquals(mappedDto.size(), 1);
-        mappedDto.stream().forEach(dto -> {
-            assertNotNull(dto.getId());
-            assertNotNull(dto.getName());
-            assertNotNull(dto.getLenght());
-            assertNotNull(dto.getLogColumn());
-            assertNotNull(dto.getDelimiter());
-            assertNotNull(dto.getColumnSequence());
+        List<CfgExternalSystemLog> entities = customConfMusicLogMapper.DTOs2DBs(confMusicLogPTS);
+        assertNotNull(entities);
+        assertEquals(entities.size(), 1);
+        entities.stream().forEach(entity -> {
+            assertNotNull(entity.getId());
+            assertNotNull(entity.getName());
+            assertNotNull(entity.getLenght());
+            assertNotNull(entity.getLogColumn());
+            assertNotNull(entity.getDelimiter());
+            assertNotNull(entity.getColumnSequence());
 
-            assertNull(dto.getNetwork());
-            assertNull(dto.getChannel());
+            assertNull(entity.getNetwork());
+            assertNull(entity.getChannel());
         });
     }
 }

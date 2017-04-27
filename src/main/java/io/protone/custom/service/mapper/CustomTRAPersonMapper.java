@@ -4,11 +4,12 @@ import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.domain.CorContact;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPerson;
+import io.protone.service.mapper.CorContactMapper;
+import io.protone.service.mapper.CorNetworkMapper;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -19,10 +20,10 @@ import static java.util.stream.Collectors.toSet;
 public class CustomTRAPersonMapper {
 
     @Inject
-    private CustomCorContactMapper corContactMapper;
+    private CorContactMapper corContactMapper;
 
     @Inject
-    private CustomCorNetworkMapper corNetworkMapper;
+    private CorNetworkMapper corNetworkMapper;
 
 
     public TraCustomerPersonPT createDTOObject(CorPerson person) {

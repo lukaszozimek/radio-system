@@ -2,23 +2,20 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.CoreAddressPT;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.protone.custom.service.dto.thin.TraInvoiceCustomerThinPT;
-import io.protone.domain.*;
-import io.protone.service.dto.TraInvoiceDTO;
+import io.protone.domain.CorAddress;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.TraInvoice;
+import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = CustomTraOrderMapper.class)
+@Mapper(componentModel = "spring", uses = {CustomTraOrderMapper.class, CorDictionaryMapper.class})
 public interface CustomTraInvoiceMapper {
 
 
