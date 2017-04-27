@@ -1,12 +1,9 @@
 package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.custom.service.CorNetworkService;
-import io.protone.custom.service.dto.ConfCurrencyPT;
 import io.protone.custom.service.dto.ConfDiscountPT;
-import io.protone.custom.service.dto.ConfTaxPT;
 import io.protone.custom.service.mapper.CustomTraDiscountMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryDiscount;
-import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
 import io.protone.repository.TraDiscountRepository;
@@ -51,7 +48,7 @@ public class ApiConfigurationTrafficDictionaryDiscountImpl implements ApiConfigu
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         List<TraDiscount> traDiscount = traDiscountRepository.findByNetwork(corNetwork);
-        List<ConfDiscountPT> traDiscountPT = customTraDiscountMapper.traDiscountsToTraDiscountDTOs(traDiscount);
+        List<ConfDiscountPT> traDiscountPT = customTraDiscountMapper.DBs2DTOs(traDiscount);
         return Optional.ofNullable(traDiscountPT)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -67,7 +64,7 @@ public class ApiConfigurationTrafficDictionaryDiscountImpl implements ApiConfigu
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         TraDiscount traDiscount = traDiscountRepository.findOneByIdAndNetwork(id, corNetwork);
-        ConfDiscountPT traDiscountPt = customTraDiscountMapper.traDiscountToTraDiscountDTO(traDiscount);
+        ConfDiscountPT traDiscountPt = customTraDiscountMapper.DB2DTO(traDiscount);
         return Optional.ofNullable(traDiscountPt)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -84,10 +81,10 @@ public class ApiConfigurationTrafficDictionaryDiscountImpl implements ApiConfigu
             return createDiscountUsingPOST(networkShortcut, discountPT);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        TraDiscount traDiscount = customTraDiscountMapper.traDiscountDTOToTraDiscount(discountPT);
+        TraDiscount traDiscount = customTraDiscountMapper.DTO2DB(discountPT);
         traDiscount.setNetwork(corNetwork);
         traDiscount = traDiscountRepository.save(traDiscount);
-        ConfDiscountPT result = customTraDiscountMapper.traDiscountToTraDiscountDTO(traDiscount);
+        ConfDiscountPT result = customTraDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("TraDiscount", result.getId().toString()))
             .body(result);
@@ -101,11 +98,11 @@ public class ApiConfigurationTrafficDictionaryDiscountImpl implements ApiConfigu
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraDiscount", "idexists", "A new TraDiscount cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        TraDiscount traDiscount = customTraDiscountMapper.traDiscountDTOToTraDiscount(discountPT);
+        TraDiscount traDiscount = customTraDiscountMapper.DTO2DB(discountPT);
         traDiscount.setNetwork(corNetwork);
 
         traDiscount = traDiscountRepository.save(traDiscount);
-        ConfDiscountPT result = customTraDiscountMapper.traDiscountToTraDiscountDTO(traDiscount);
+        ConfDiscountPT result = customTraDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.ok().body(result);
     }
 

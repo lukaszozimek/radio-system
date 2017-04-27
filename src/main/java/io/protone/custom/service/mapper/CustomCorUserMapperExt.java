@@ -1,11 +1,16 @@
 package io.protone.custom.service.mapper;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.custom.service.dto.TraCustomerPersonPT;
+import io.protone.domain.CorAuthority;
+import io.protone.domain.CorPerson;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.service.mapper.CorChannelMapper;
 import io.protone.service.mapper.CorNetworkMapper;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Generated;
@@ -13,121 +18,36 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
-@Generated(
+@Mapper(componentModel = "spring", uses = {CorNetworkMapper.class, CorChannelMapper.class})
+public interface CustomCorUserMapperExt {
 
-    value = "org.mapstruct.ap.MappingProcessor",
+    CoreUserPT DB2DTO(CorUser user);
 
-    date = "2017-01-26T21:11:21+0100",
+    List<CoreUserPT> DBs2DTOs(List<CorUser> users);
 
-    comments = "version: 1.1.0.Final, compiler: javac, environment: Java 1.8.0_71 (Oracle Corporation)"
+    CorUser DTO2DB(CoreUserPT userPT);
 
-)
+    List<CorUser> DTOs2DBs(List<CoreUserPT> userPTs);
 
-@Component
+    default CorAuthority corAuthorityFromString(String authorinty) {
 
-public class CustomCorUserMapperExt {
-
-    @Inject
-    private CustomCorUserRepository customCorUserRepository;
-
-    @Inject
-    private CorNetworkMapper customCorNetworkMapper;
-
-    @Inject
-    private CorChannelMapper customCORChannelMapper;
-
-    public CoreUserPT userToCoreUserPT(CorUser user) {
-
-        if (user == null) {
-
+        if (isNullOrEmpty(authorinty)) {
             return null;
         }
-
-        CoreUserPT coreUserPT = new CoreUserPT();
-
-        coreUserPT.setActivated(user.isActivated());
-
-        coreUserPT.setEmail(user.getEmail());
-
-        coreUserPT.setFirstName(user.getFirstname());
-
-        coreUserPT.setLangKey(user.getLangkey());
-
-        coreUserPT.setLastName(user.getLastname());
-
-        coreUserPT.setLogin(user.getLogin());
-
-        coreUserPT.setId(user.getId());
-        if (user.getAuthorities() != null) {
-            coreUserPT.setAuthorities(user.getAuthorities().stream().map(corAuthority -> corAuthority.getName()).collect(toList()));
-        }
-        if (!user.getChannels().isEmpty()) {
-            coreUserPT.setChannel(user.getChannels().stream().map(customCORChannelMapper::DB2DTO).collect(toList()));
-
-        }
-        if (!user.getNetworks().isEmpty()) {
-            coreUserPT.network(customCorNetworkMapper.DB2DTO(user.getNetworks().stream().findFirst().get()));
-        }
-        return coreUserPT;
+        return new CorAuthority().name(authorinty);
     }
 
-    public List<CoreUserPT> usersToCoreUserPTs(List<CorUser> users) {
+    default String stringFromCorAuthority(CorAuthority authorinty) {
 
-        if (users == null) {
-
+        if (authorinty == null) {
             return null;
         }
-
-        List<CoreUserPT> list = new ArrayList<CoreUserPT>();
-
-        for (CorUser user : users) {
-
-            list.add(userToCoreUserPT(user));
-        }
-
-        return list;
+        return authorinty.getName();
     }
 
-    public CorUser coreUserPTToUser(CoreUserPT userPT) {
 
-        if (userPT == null) {
-
-            return null;
-        }
-
-        CorUser user = customCorUserRepository.findOneByLogin(userPT.getLogin()).get();
-        user.setFirstname(userPT.getFirstName());
-        user.setLastname(userPT.getLastName());
-        user.setEmail(userPT.getEmail());
-        user.setNetworks(Sets.newHashSet(customCorNetworkMapper.DTO2DB(userPT.getNetwork())));
-        user.channels(userPT.getChannel().stream().map(customCORChannelMapper::DTO2DB).collect(toSet()));
-        if (userPT.getActivated() != null) {
-
-            user.setActivated(userPT.getActivated());
-        }
-
-        user.setLangkey(userPT.getLangKey());
-
-        return user;
-    }
-
-    public List<CorUser> coreUserPTsToUsers(List<CoreUserPT> userPTs) {
-
-        if (userPTs == null) {
-
-            return null;
-        }
-
-        List<CorUser> list = new ArrayList<CorUser>();
-
-        for (CoreUserPT coreUserPT : userPTs) {
-
-            list.add(coreUserPTToUser(coreUserPT));
-        }
-
-        return list;
-    }
 }

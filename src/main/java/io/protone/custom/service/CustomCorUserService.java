@@ -230,7 +230,7 @@ public class CustomCorUserService {
                 return user;
             }).get();
         corUser = userRepository.saveAndFlush(corUser);
-        return customCorUserMapperExt.userToCoreUserPT(corUser);
+        return customCorUserMapperExt.DB2DTO(corUser);
     }
 
     public void deleteUser(String login) {
@@ -250,7 +250,7 @@ public class CustomCorUserService {
 
     @Transactional(readOnly = true)
     public List<CoreUserPT> getAllManagedUsers(CorNetwork corNetwork) {
-        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(customCorUserMapperExt::userToCoreUserPT).collect(toList());
+        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(customCorUserMapperExt::DB2DTO).collect(toList());
     }
 
     @Transactional(readOnly = true)
@@ -266,7 +266,7 @@ public class CustomCorUserService {
     @Transactional(readOnly = true)
     public CoreUserPT getUserWithAuthorities() {
         CorUser corUser = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
-        return customCorUserMapperExt.userToCoreUserPT(corUser);
+        return customCorUserMapperExt.DB2DTO(corUser);
     }
 
 

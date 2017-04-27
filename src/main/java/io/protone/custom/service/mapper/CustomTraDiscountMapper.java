@@ -15,11 +15,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomTraDiscountMapper {
 
-    ConfDiscountPT traDiscountToTraDiscountDTO(TraDiscount traDiscount);
+    ConfDiscountPT DB2DTO(TraDiscount traDiscount);
 
-    List<ConfDiscountPT> traDiscountsToTraDiscountDTOs(List<TraDiscount> traDiscounts);
+    List<ConfDiscountPT> DBs2DTOs(List<TraDiscount> traDiscounts);
 
-    TraDiscount traDiscountDTOToTraDiscount(ConfDiscountPT traDiscountDTO);
+    TraDiscount DTO2DB(ConfDiscountPT traDiscountDTO);
 
-    List<TraDiscount> traDiscountDTOsToTraDiscounts(List<ConfDiscountPT> traDiscountDTOs);
+    List<TraDiscount> DTOs2DBs(List<ConfDiscountPT> traDiscountDTOs);
 }
