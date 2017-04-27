@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.TraInvoiceCustomerThinPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ public class TraInvoicePT {
     private Long id = null;
 
     @JsonProperty("order")
-    private List<TraOrderPT> order = null;
+    private List<TraOrderPT> orders = null;
 
     @JsonProperty("paid")
     private Boolean paid = null;
@@ -29,11 +30,11 @@ public class TraInvoicePT {
     @JsonProperty("price")
     private BigDecimal price = null;
 
-    @JsonProperty("customer")
-    private TraCustomerPT customerPT = null;
+    @JsonProperty("customerId")
+    private TraInvoiceCustomerThinPT customerId = null;
 
     @JsonProperty("status")
-    private CorDictionaryPT traStatus = null;
+    private CorDictionaryPT statusId = null;
 
     public TraInvoicePT id(Long id) {
         this.id = id;
@@ -55,22 +56,22 @@ public class TraInvoicePT {
     }
 
     public TraInvoicePT order(List<TraOrderPT> order) {
-        this.order = order;
+        this.orders = order;
         return this;
     }
 
     /**
-     * Get order
+     * Get orders
      *
-     * @return order
+     * @return orders
      **/
     @ApiModelProperty(value = "")
-    public List<TraOrderPT> getOrder() {
-        return order;
+    public List<TraOrderPT> getOrders() {
+        return orders;
     }
 
-    public void setOrder(List<TraOrderPT> order) {
-        this.order = order;
+    public void setOrders(List<TraOrderPT> orders) {
+        this.orders = orders;
     }
 
     public TraInvoicePT paid(Boolean paid) {
@@ -132,8 +133,8 @@ public class TraInvoicePT {
     }
 
 
-    public TraInvoicePT traStatus(CorDictionaryPT traStatus) {
-        this.traStatus = traStatus;
+    public TraInvoicePT statusId(CorDictionaryPT traStatus) {
+        this.statusId = traStatus;
         return this;
     }
 
@@ -143,17 +144,17 @@ public class TraInvoicePT {
      * @return paymentDay
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getTraStatus() {
-        return traStatus;
+    public CorDictionaryPT getStatusId() {
+        return statusId;
     }
 
-    public void setTraStatus(CorDictionaryPT traStatus) {
-        this.traStatus = traStatus;
+    public void setStatusId(CorDictionaryPT statusId) {
+        this.statusId = statusId;
     }
 
 
-    public TraInvoicePT customerId(TraCustomerPT customerId) {
-        this.customerPT = customerId;
+    public TraInvoicePT customerId(TraInvoiceCustomerThinPT customerId) {
+        this.customerId = customerId;
         return this;
     }
 
@@ -163,12 +164,12 @@ public class TraInvoicePT {
      * @return customerPT
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPT getCustomerPT() {
-        return customerPT;
+    public TraInvoiceCustomerThinPT getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerPT(TraCustomerPT customerPT) {
-        this.customerPT = customerPT;
+    public void setCustomerId(TraInvoiceCustomerThinPT customerPT) {
+        this.customerId = customerPT;
     }
 
 
@@ -182,15 +183,15 @@ public class TraInvoicePT {
         }
         TraInvoicePT traInvoicePT = (TraInvoicePT) o;
         return Objects.equals(this.id, traInvoicePT.id) &&
-            Objects.equals(this.order, traInvoicePT.order) &&
+            Objects.equals(this.orders, traInvoicePT.orders) &&
             Objects.equals(this.paid, traInvoicePT.paid) &&
             Objects.equals(this.paymentDay, traInvoicePT.paymentDay) &&
-            Objects.equals(this.customerPT, traInvoicePT.customerPT);
+            Objects.equals(this.customerId, traInvoicePT.customerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, order, paid, paymentDay);
+        return Objects.hash(id, orders, paid, paymentDay);
     }
 
     @Override
@@ -199,11 +200,11 @@ public class TraInvoicePT {
         sb.append("class TraInvoicePT {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    order: ").append(toIndentedString(order)).append("\n");
+        sb.append("    order: ").append(toIndentedString(orders)).append("\n");
         sb.append("    paid: ").append(toIndentedString(paid)).append("\n");
         sb.append("    paymentDay: ").append(toIndentedString(paymentDay)).append("\n");
-        sb.append("    customer: ").append(toIndentedString(customerPT)).append("\n");
-        sb.append("    status: ").append(toIndentedString(traStatus)).append("\n");
+        sb.append("    customer: ").append(toIndentedString(customerId)).append("\n");
+        sb.append("    status: ").append(toIndentedString(statusId)).append("\n");
         sb.append("    price: ").append(toIndentedString(price)).append("\n");
         sb.append("}");
         return sb.toString();

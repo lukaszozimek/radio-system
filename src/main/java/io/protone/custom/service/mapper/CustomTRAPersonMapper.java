@@ -7,10 +7,10 @@ import io.protone.domain.CorPerson;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 19.01.2017.
@@ -31,7 +31,7 @@ public class CustomTRAPersonMapper {
             lastName(person.getLastName())
             .firstName(person.getFirstName())
             .description(person.getDescription())
-            .contacts(corContactMapper.cORContactsToCorContactDTOs(person.getContacts()));
+            .contacts(corContactMapper.DBs2DTOs(person.getContacts()));
     }
 
 
@@ -41,11 +41,15 @@ public class CustomTRAPersonMapper {
         return corPerson.lastName(personPT.getLastName())
             .firstName(personPT.getFirstName())
             .description(personPT.getDescription())
-            .contacts(personPT.getContacts().stream().map(coreContactPT -> corContactMapper.cORContactDTOToCorContact(coreContactPT.network(network.getId()))).collect(Collectors.toSet()))
+            .contacts(personPT.getContacts().stream().map(coreContactPT -> {
+                CorContact corContact = corContactMapper.DTO2DB(coreContactPT);
+                corContact.network(network);
+                return corContact;
+            }).collect(toSet()))
             .network(network);
     }
 
     private List<CorContact> createContactEntities(TraCustomerPersonPT personPT) {
-        return corContactMapper.cORContactDTOsToCorContacts(personPT.getContacts());
+        return corContactMapper.DTOs2DBs(personPT.getContacts());
     }
 }

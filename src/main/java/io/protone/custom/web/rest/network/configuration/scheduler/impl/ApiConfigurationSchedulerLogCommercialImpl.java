@@ -5,9 +5,7 @@ import java.util.Optional;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfCommercialLogPT;
-import io.protone.custom.service.dto.ConfMusicLogPT;
-import io.protone.custom.service.mapper.CustomConfCommercialLogMapper;
-import io.protone.custom.service.mapper.CustomConfMusicLogMapper;
+import io.protone.service.mapper.ConfCommercialLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogCommercial;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
@@ -34,7 +32,7 @@ public class ApiConfigurationSchedulerLogCommercialImpl implements ApiConfigurat
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CustomConfCommercialLogMapper confCommercialLogMapper;
+    private ConfCommercialLogMapper confCommercialLogMapper;
 
     @Inject
     private CfgExternalSystemLogRepository cfgExternalSystemLogRepository;

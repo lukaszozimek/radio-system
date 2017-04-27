@@ -1,10 +1,11 @@
 package io.protone.custom.service.mapper;
 
+import io.protone.custom.service.dto.CoreAddressPT;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.domain.CorDictionary;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.TraInvoice;
+import io.protone.custom.service.dto.TraOrderPT;
+import io.protone.custom.service.dto.thin.TraCustomerThinPT;
+import io.protone.custom.service.dto.thin.TraInvoiceCustomerThinPT;
+import io.protone.domain.*;
 import io.protone.service.dto.TraInvoiceDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,50 +18,31 @@ import java.util.stream.Collectors;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = CustomTraOrderMapper.class)
 public interface CustomTraInvoiceMapper {
 
 
     @Mapping(source = "customer", target = "customerId")
-    @Mapping(source = "status.id", target = "statusId")
+    @Mapping(source = "status", target = "statusId")
     @Mapping(source = "orders", target = "orders")
-    TraInvoicePT traInvoiceToTraInvoiceDTO(TraInvoice traInvoice);
+    TraInvoicePT DB2DTO(TraInvoice traInvoice);
 
-    List<TraInvoicePT> traInvoicesToTraInvoiceDTOs(List<TraInvoice> traInvoices);
+    List<TraInvoicePT> DBs2DTOs(List<TraInvoice> traInvoices);
 
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraInvoice traInvoiceDTOToTraInvoice(TraInvoicePT traInvoiceDTO);
+    TraInvoice DTO2DB(TraInvoicePT traInvoiceDTO);
 
-    List<TraInvoice> traInvoiceDTOsToTraInvoices(List<TraInvoicePT> traInvoiceDTOs);
+    List<TraInvoice> DTOs2DBs(List<TraInvoicePT> traInvoiceDTOs);
 
-    default CrmAccount crmAccountFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CrmAccount crmAccount = new CrmAccount();
-        crmAccount.setId(id);
-        return crmAccount;
-    }
+    CrmAccount crmAccountFromTraInvoiceCustomerThinPT(TraInvoiceCustomerThinPT coreUserThinPT);
 
-    default CorNetwork corNetworkFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork corNetwork = new CorNetwork();
-        corNetwork.setId(id);
-        return corNetwork;
-    }
+    TraInvoiceCustomerThinPT traInvoiceCustomerThinPTFromCrmAccount(CrmAccount coreUserThinPT);
 
-    default CorDictionary corDictionaryFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorDictionary corDictionary = new CorDictionary();
-        corDictionary.setId(id);
-        return corDictionary;
-    }
+    CorAddress corAddressFromCoreAddressPT(CoreAddressPT coreUserThinPT);
+
+    CoreAddressPT coreAddressPTFromCorAddress(CorAddress coreUserThinPT);
 
 
 }

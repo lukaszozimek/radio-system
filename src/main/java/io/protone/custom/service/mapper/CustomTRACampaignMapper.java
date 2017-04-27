@@ -1,13 +1,15 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraCampaign;
-import io.protone.domain.TraPrice;
+import io.protone.domain.*;
+import io.protone.service.dto.TraCampaignDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
@@ -15,56 +17,22 @@ import static java.util.stream.Collectors.toSet;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Service
-public class CustomTRACampaignMapper {
+@Mapper(componentModel = "spring", uses = CustomTraOrderMapper.class)
+public interface CustomTRACampaignMapper {
 
-    @Inject
-    private CustomSchEmissionMapper emissionMapper;
-    @Inject
-    private CustomCrmAccountMapper crmAccountMapper;
-    @Inject
-    private CustomCorDictionaryMapper corDictionaryMapper;
-    @Inject
-    private CustomTraOrderMapper customTraOrderMapper;
+    @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "orders", target = "orders")
+    TraCampaignPT DB2DTO(TraCampaign traCampaign);
 
-    public TraCampaign transfromDTOToEntity(TraCampaignPT traCampaignPT, CorNetwork corNetwork) {
-        if (traCampaignPT == null || corNetwork == null) {
-            return null;
-        }
-        TraCampaign traCampaign = new TraCampaign();
-        traCampaign.setId(traCampaignPT.getId());
-        traCampaign
-            .startDate(traCampaignPT.getStartDate())
-            .endDate(traCampaignPT.getEndDate())
-            .name(traCampaignPT.getName())
-            .prize(traCampaignPT.getPrize())
-            .customer(crmAccountMapper.traDTO2DB(traCampaignPT.getCustomerId()))
-            .status(corDictionaryMapper.corDictionaryDTOToCorDictionary(traCampaignPT.getStatsus()));
-        if (traCampaign.getPrice() != null) {
-            traCampaign.price(new TraPrice());
-        }
-        if (traCampaignPT.getOrders() != null) {
-            traCampaign.orders(customTraOrderMapper.trasnformDTOtoEntity(traCampaignPT.getOrders(), traCampaignPT.getId(), corNetwork).stream().collect(toSet()));
-        }
-        traCampaign.network(corNetwork);
-        return traCampaign;
-    }
+    List<TraCampaignPT> DBs2DTOs(List<TraCampaign> traCampaigns);
 
-    public TraCampaignPT transfromEntitytoDTO(TraCampaign traCampaign) {
-        if (traCampaign == null) {
-            return null;
-        }
-        TraCampaignPT traCampaignPT = new TraCampaignPT();
-        traCampaignPT.setId(traCampaign.getId());
-        return
-            traCampaignPT.name(traCampaign.getName())
-                .prize(traCampaign.getPrize())
-                .startDate(traCampaign.getStartDate())
-                .endDate(traCampaign.getEndDate())
-                .customerId(crmAccountMapper.traDB2DTO(traCampaign.getCustomer()))
-                .status(corDictionaryMapper.corDictionaryToCorDictionaryDTO(traCampaign.getStatus()))
-                .orders(customTraOrderMapper.transfromEntitesToDTO(traCampaign.getOrders()).stream().collect(Collectors.toList()));
-    }
+    @Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "orders", target = "orders")
+    TraCampaign DTO2DB(TraCampaignPT traCampaignDTO);
+
+    List<TraCampaign> DTOs2DBs(List<TraCampaignPT> traCampaignDTOs);
 
 
 }

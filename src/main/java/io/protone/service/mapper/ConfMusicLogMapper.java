@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.protone.domain.CfgExternalSystemLog;
@@ -13,7 +13,7 @@ import java.util.List;
  * Mapper for the entity CfgExternalSystemLog and its DTO CfgExternalSystemLogDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomConfMusicLogMapper {
+public interface ConfMusicLogMapper {
 
     ConfMusicLogPT DB2DTO(CfgExternalSystemLog cfgExternalSystemLog);
 

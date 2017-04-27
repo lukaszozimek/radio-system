@@ -3,7 +3,7 @@ package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfMusicLogPT;
-import io.protone.custom.service.mapper.CustomConfMusicLogMapper;
+import io.protone.service.mapper.ConfMusicLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogMusic;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
@@ -32,7 +32,7 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CustomConfMusicLogMapper confCommercialLogMapper;
+    private ConfMusicLogMapper confCommercialLogMapper;
 
     @Inject
     private CfgExternalSystemLogRepository cfgExternalSystemLogRepository;

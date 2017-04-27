@@ -61,6 +61,7 @@
 
         <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/bower_components/**/*.*,
             src/main/webapp/i18n/*.js, target/www/**/*.*</sonar.exclusions>
+        <sonar.host.url>http://sonar.protone.io</sonar.host.url>
 
         <sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
 
@@ -87,7 +88,6 @@
         <sonar.sources>${project.basedir}/src/main/</sonar.sources>
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
-        <sonar.host.url>http://sonar.protone.io</sonar.host.url>
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
         <!-- Spring properties -->
         <springfox.version>2.6.1</springfox.version>
@@ -421,7 +421,11 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>7.0.5.RELEASE</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
@@ -603,7 +607,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <!-- Force alphabetical order to have a reproducible build -->
+                    <!-- Force alphabetiordersrder to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
                 </configuration>
             </plugin>

@@ -15,23 +15,12 @@ import java.util.Set;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomCorContactMapper {
 
+    CoreContactPT DB2DTO(CorContact cORContact);
 
-    @Mapping(source = "network.id", target = "networkId")
-    CoreContactPT cORContactToCorContactDTO(CorContact cORContact);
+    List<CoreContactPT> DBs2DTOs(Set<CorContact> cORContacts);
 
-    List<CoreContactPT> cORContactsToCorContactDTOs(Set<CorContact> cORContacts);
+    CorContact DTO2DB(CoreContactPT cORContactDTO);
 
-    @Mapping(source = "networkId", target = "network")
-    CorContact cORContactDTOToCorContact(CoreContactPT cORContactDTO);
+    List<CorContact> DTOs2DBs(List<CoreContactPT> cORContactDTOs);
 
-    List<CorContact> cORContactDTOsToCorContacts(List<CoreContactPT> cORContactDTOs);
-
-    default CorNetwork cORNetworkFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        CorNetwork cORNetwork = new CorNetwork();
-        cORNetwork.setId(id);
-        return cORNetwork;
-    }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreContactPT   {
+public class CoreContactPT {
     private Long id;
 
     @NotNull
@@ -21,9 +21,6 @@ public class CoreContactPT   {
     @NotNull
     private CorContactTypeEnum contactType;
 
-
-    private Long networkId;
-
     public Long getId() {
         return id;
     }
@@ -31,6 +28,7 @@ public class CoreContactPT   {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getContact() {
         return contact;
     }
@@ -47,18 +45,6 @@ public class CoreContactPT   {
         this.contactType = contactType;
     }
 
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long cORNetworkId) {
-        this.networkId = cORNetworkId;
-    }
-
-    public CoreContactPT network(Long networkId){
-        this.networkId = networkId;
-        return this;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -70,7 +56,7 @@ public class CoreContactPT   {
 
         CoreContactPT cORContactDTO = (CoreContactPT) o;
 
-        if ( ! Objects.equals(id, cORContactDTO.id)) return false;
+        if (!Objects.equals(id, cORContactDTO.id)) return false;
 
         return true;
     }

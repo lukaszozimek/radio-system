@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import java.util.Objects;
 
 public class TraCampaignPT {
     @JsonProperty("customerPT")
-    private TraCustomerPT customerPT = null;
+    private TraCustomerThinPT customerPT = null;
 
     @JsonProperty("endDate")
     private LocalDate endDate = null;
@@ -38,7 +39,7 @@ public class TraCampaignPT {
     @JsonProperty("orders")
     private List<TraOrderPT> orders = new ArrayList<TraOrderPT>();
 
-    public TraCampaignPT customerId(TraCustomerPT customerId) {
+    public TraCampaignPT customerId(TraCustomerThinPT customerId) {
         this.customerPT = customerId;
         return this;
     }
@@ -50,11 +51,11 @@ public class TraCampaignPT {
      * @return customerId
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPT getCustomerId() {
+    public TraCustomerThinPT getCustomerId() {
         return customerPT;
     }
 
-    public void setCustomerId(TraCustomerPT customerId) {
+    public void setCustomerId(TraCustomerThinPT customerId) {
         this.customerPT = customerId;
     }
 
@@ -70,7 +71,7 @@ public class TraCampaignPT {
      * @return status
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getStatsus() {
+    public CorDictionaryPT getStatus() {
         return status;
     }
 

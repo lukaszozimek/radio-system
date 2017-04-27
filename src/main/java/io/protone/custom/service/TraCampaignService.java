@@ -39,19 +39,11 @@ public class TraCampaignService {
     private CustomTraCampaignRepository traCampaignRepository;
 
     @Inject
-    private CustomSchEmissionMapper customSchEmissionMapper;
-
-    @Inject
-    private CustomCrmAccountMapper customCrmAccountMapper;
-
-    @Inject
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     @Inject
-    private SchEmissionRepository schEmissionRepository;
-
-    @Inject
     private TraCustomerService traCustomerService;
+
     @Inject
     private TraOrderRepository traOrderRepository;
 
@@ -60,14 +52,15 @@ public class TraCampaignService {
     }
 
     public TraCampaignPT saveCampaign(TraCampaignPT campaignPT, CorNetwork corNetwork) {
-        TraCampaign traCampaign = customTRACampaignMapper.transfromDTOToEntity(campaignPT, corNetwork);
+        TraCampaign traCampaign = customTRACampaignMapper.DTO2DB(campaignPT);
+        traCampaign.network(corNetwork);
         if (!traCampaign.getOrders().isEmpty() && traCampaign.getOrders() != null) {
             traCampaign.setOrders(traCampaign.getOrders().stream().map(traOrder -> traOrderRepository.saveAndFlush(traOrder)).collect(Collectors.toSet()));
         }
         log.debug("Persisting TraCampaign: {}", traCampaign);
         traCampaign = traCampaignRepository.saveAndFlush(traCampaign);
 
-        return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
+        return customTRACampaignMapper.DB2DTO(traCampaign);
     }
 
     public void deleteCampaign(String shortcut, CorNetwork corNetwork) {
@@ -75,7 +68,7 @@ public class TraCampaignService {
     }
 
     public TraCampaignPT getCampaign(TraCampaign traCampaign, CorNetwork corNetwork) {
-        return customTRACampaignMapper.transfromEntitytoDTO(traCampaign);
+        return customTRACampaignMapper.DB2DTO(traCampaign);
     }
 
     public TraCampaignPT getCampaign(String shortcut, CorNetwork corNetwork) {
@@ -88,7 +81,7 @@ public class TraCampaignService {
 
     public List<TraCampaignPT> getCustomerCampaing(String shortcut, CorNetwork corNetwork) {
         CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return traCampaignRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traCampaign -> customTRACampaignMapper.transfromEntitytoDTO(traCampaign)).collect(toList());
+        return traCampaignRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traCampaign -> customTRACampaignMapper.DB2DTO(traCampaign)).collect(toList());
     }
 
 }
