@@ -3,7 +3,6 @@ package io.protone.service.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.protone.domain.CfgMarkerConfiguration;
-import io.protone.service.mapper.CfgMarkerConfigurationMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 public class CfgMarkerConfigurationMapperTest {
 
     @Autowired
-    private CfgMarkerConfigurationMapper customCfgMarkerConfigurationMapper;
+    private CfgMarkerConfigurationMapper cfgMarkerConfigurationMapper;
 
     private CfgMarkerConfiguration cfgMarkerConfiguration;
 
@@ -49,7 +48,7 @@ public class CfgMarkerConfigurationMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfMarkerConfigurationPT mappedDto = customCfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
+        ConfMarkerConfigurationPT mappedDto = cfgMarkerConfigurationMapper.DB2DTO(cfgMarkerConfiguration);
         assertNotNull(mappedDto.getId());
         assertNotNull(mappedDto.getName());
         assertNotNull(mappedDto.getDisplayName());
@@ -60,7 +59,7 @@ public class CfgMarkerConfigurationMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfMarkerConfigurationPT> mappedDtos = customCfgMarkerConfigurationMapper.DBs2DTOs(cfgMarkerConfigurations);
+        List<ConfMarkerConfigurationPT> mappedDtos = cfgMarkerConfigurationMapper.DBs2DTOs(cfgMarkerConfigurations);
         assertNotNull(mappedDtos);
         assertEquals(mappedDtos.size(), 1);
         mappedDtos.stream().forEach(dto -> {
@@ -75,7 +74,7 @@ public class CfgMarkerConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgMarkerConfiguration entity = customCfgMarkerConfigurationMapper.DTO2DB(confMarkerConfigurationPT);
+        CfgMarkerConfiguration entity = cfgMarkerConfigurationMapper.DTO2DB(confMarkerConfigurationPT);
         assertNotNull(entity.getColor());
         assertNotNull(entity.getDisplayName());
         assertNotNull(entity.getId());
@@ -89,7 +88,7 @@ public class CfgMarkerConfigurationMapperTest {
     @Test
     public void DTOs2DBs() throws Exception {
 
-        List<CfgMarkerConfiguration> entities = customCfgMarkerConfigurationMapper.DTOs2DBs(confMarkerConfigurationPTList);
+        List<CfgMarkerConfiguration> entities = cfgMarkerConfigurationMapper.DTOs2DBs(confMarkerConfigurationPTList);
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {

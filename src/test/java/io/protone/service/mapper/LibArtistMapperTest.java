@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest(classes = ProtoneApp.class)
 public class LibArtistMapperTest {
     @Autowired
-    private LibArtistMapper customLibArtistMapper;
+    private LibArtistMapper libArtistMapper;
 
     private LibArtist libArtist;
 
@@ -49,7 +49,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        LibArtistPT dto = customLibArtistMapper.DB2DTO(libArtist);
+        LibArtistPT dto = libArtistMapper.DB2DTO(libArtist);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
@@ -60,7 +60,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibArtist> entities = customLibArtistMapper.DTOs2DBs(libArtistPTS);
+        List<LibArtist> entities = libArtistMapper.DTOs2DBs(libArtistPTS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -78,7 +78,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibArtist entity = customLibArtistMapper.DTO2DB(libArtistPT);
+        LibArtist entity = libArtistMapper.DTO2DB(libArtistPT);
 
 
         assertNotNull(entity.getDescription());
@@ -91,7 +91,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibArtistPT> dtos = customLibArtistMapper.DBs2DTOs(libArtists);
+        List<LibArtistPT> dtos = libArtistMapper.DBs2DTOs(libArtists);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);

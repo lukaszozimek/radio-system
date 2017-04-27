@@ -3,7 +3,6 @@ package io.protone.service.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfCommercialLogPT;
 import io.protone.domain.CfgExternalSystemLog;
-import io.protone.service.mapper.ConfCommercialLogMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertNull;
 public class ConfCommercialLogMapperTest {
 
     @Autowired
-    private ConfCommercialLogMapper customConfCommercialLogMapper;
+    private ConfCommercialLogMapper confCommercialLogMapper;
 
     private CfgExternalSystemLog cfgMarkerConfiguration;
 
@@ -50,7 +49,7 @@ public class ConfCommercialLogMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfCommercialLogPT mappedDto = customConfCommercialLogMapper.DB2DTO(cfgMarkerConfiguration);
+        ConfCommercialLogPT mappedDto = confCommercialLogMapper.DB2DTO(cfgMarkerConfiguration);
 
         assertNotNull(mappedDto.getId());
         assertNotNull(mappedDto.getName());
@@ -63,7 +62,7 @@ public class ConfCommercialLogMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfCommercialLogPT> mappedDto = customConfCommercialLogMapper.DBs2DTOs(cfgExternalSystemLogs);
+        List<ConfCommercialLogPT> mappedDto = confCommercialLogMapper.DBs2DTOs(cfgExternalSystemLogs);
         assertNotNull(mappedDto);
         assertEquals(mappedDto.size(), 1);
         mappedDto.stream().forEach(dto -> {
@@ -79,7 +78,7 @@ public class ConfCommercialLogMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgExternalSystemLog entity = customConfCommercialLogMapper.DTO2DB(commercialLogPT);
+        CfgExternalSystemLog entity = confCommercialLogMapper.DTO2DB(commercialLogPT);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
@@ -94,7 +93,7 @@ public class ConfCommercialLogMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CfgExternalSystemLog> entities = customConfCommercialLogMapper.DTOs2DBs(confCommercialLogPTS);
+        List<CfgExternalSystemLog> entities = confCommercialLogMapper.DTOs2DBs(confCommercialLogPTS);
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {

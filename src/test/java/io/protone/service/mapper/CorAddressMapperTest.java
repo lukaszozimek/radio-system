@@ -3,7 +3,6 @@ package io.protone.service.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreAddressPT;
 import io.protone.domain.CorAddress;
-import io.protone.service.mapper.CorAddressMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 public class CorAddressMapperTest {
 
     @Autowired
-    private CorAddressMapper customCorAddressMapper;
+    private CorAddressMapper corAddressMapper;
 
     private CorAddress corAddress;
 
@@ -50,7 +49,7 @@ public class CorAddressMapperTest {
     @Test
     public void DB2DTO() throws Exception {
 
-        CoreAddressPT coreAddressPT = customCorAddressMapper.DB2DTO(corAddress);
+        CoreAddressPT coreAddressPT = corAddressMapper.DB2DTO(corAddress);
 
         assertNotNull(coreAddressPT.getCity());
         assertNotNull(coreAddressPT.getCountry());
@@ -62,7 +61,7 @@ public class CorAddressMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreAddressPT> addressPTS = customCorAddressMapper.DBs2DTOs(corAddresses);
+        List<CoreAddressPT> addressPTS = corAddressMapper.DBs2DTOs(corAddresses);
 
         assertNotNull(addressPTS);
         assertEquals(addressPTS.size(), 1);
@@ -79,7 +78,7 @@ public class CorAddressMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorAddress entity = customCorAddressMapper.DTO2DB(coreAddressPT);
+        CorAddress entity = corAddressMapper.DTO2DB(coreAddressPT);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getStreet());
@@ -94,7 +93,7 @@ public class CorAddressMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorAddress> entities = customCorAddressMapper.DTOs2DBs(coreAddressPTS);
+        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressPTS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

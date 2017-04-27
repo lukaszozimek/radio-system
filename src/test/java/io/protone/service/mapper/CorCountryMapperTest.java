@@ -3,7 +3,6 @@ package io.protone.service.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfCountryPt;
 import io.protone.domain.CorCountry;
-import io.protone.service.mapper.CorCountryMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertNull;
 public class CorCountryMapperTest {
 
     @Autowired
-    private CorCountryMapper customCorCountryMapper;
+    private CorCountryMapper corCountryMapper;
 
     private CorCountry corCountry;
 
@@ -50,7 +49,7 @@ public class CorCountryMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorCountry entity = customCorCountryMapper.DTO2DB(confCountryPt);
+        CorCountry entity = corCountryMapper.DTO2DB(confCountryPt);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
@@ -62,7 +61,7 @@ public class CorCountryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorCountry> entities = customCorCountryMapper.DTOs2DBs(confCountryPts);
+        List<CorCountry> entities = corCountryMapper.DTOs2DBs(confCountryPts);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -79,7 +78,7 @@ public class CorCountryMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfCountryPt dto = customCorCountryMapper.DB2DTO(corCountry);
+        ConfCountryPt dto = corCountryMapper.DB2DTO(corCountry);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
@@ -90,7 +89,7 @@ public class CorCountryMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfCountryPt> dtos = customCorCountryMapper.DBs2DTOs(corCountries);
+        List<ConfCountryPt> dtos = corCountryMapper.DBs2DTOs(corCountries);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);

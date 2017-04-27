@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 public class CorTaxMapperTest {
 
     @Autowired
-    private CorTaxMapper customCorTaxMapper;
+    private CorTaxMapper corTaxMapper;
 
     private CorTax corTax;
 
@@ -48,7 +48,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorTax entity = customCorTaxMapper.DTO2DB(confTaxPT);
+        CorTax entity = corTaxMapper.DTO2DB(confTaxPT);
 
 
         assertNotNull(entity.getId());
@@ -63,7 +63,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfTaxPT dto = customCorTaxMapper.DB2DTO(corTax);
+        ConfTaxPT dto = corTaxMapper.DB2DTO(corTax);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
@@ -75,7 +75,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfTaxPT> dtos = customCorTaxMapper.DBs2DTOs(corTaxes);
+        List<ConfTaxPT> dtos = corTaxMapper.DBs2DTOs(corTaxes);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -91,7 +91,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorTax> entities = customCorTaxMapper.DTOs2DBs(confTaxPTS);
+        List<CorTax> entities = corTaxMapper.DTOs2DBs(confTaxPTS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

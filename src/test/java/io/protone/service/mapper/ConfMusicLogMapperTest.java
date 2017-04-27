@@ -3,7 +3,6 @@ package io.protone.service.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.protone.domain.CfgExternalSystemLog;
-import io.protone.service.mapper.ConfMusicLogMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +28,7 @@ import static org.junit.Assert.assertNull;
 public class ConfMusicLogMapperTest {
 
     @Autowired
-    private ConfMusicLogMapper customConfMusicLogMapper;
+    private ConfMusicLogMapper confMusicLogMapper;
 
     private CfgExternalSystemLog cfgExternalSystemLog;
 
@@ -51,7 +50,7 @@ public class ConfMusicLogMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfMusicLogPT mappedDto = customConfMusicLogMapper.DB2DTO(cfgExternalSystemLog);
+        ConfMusicLogPT mappedDto = confMusicLogMapper.DB2DTO(cfgExternalSystemLog);
 
         assertNotNull(mappedDto.getId());
         assertNotNull(mappedDto.getName());
@@ -64,7 +63,7 @@ public class ConfMusicLogMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfMusicLogPT> mappedDto = customConfMusicLogMapper.DBs2DTOs(cfgExternalSystemLogs);
+        List<ConfMusicLogPT> mappedDto = confMusicLogMapper.DBs2DTOs(cfgExternalSystemLogs);
         assertNotNull(mappedDto);
         assertEquals(mappedDto.size(), 1);
         mappedDto.stream().forEach(dto -> {
@@ -80,7 +79,7 @@ public class ConfMusicLogMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgExternalSystemLog entity = customConfMusicLogMapper.DTO2DB(confMusicLogPT);
+        CfgExternalSystemLog entity = confMusicLogMapper.DTO2DB(confMusicLogPT);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
@@ -95,7 +94,7 @@ public class ConfMusicLogMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CfgExternalSystemLog> entities = customConfMusicLogMapper.DTOs2DBs(confMusicLogPTS);
+        List<CfgExternalSystemLog> entities = confMusicLogMapper.DTOs2DBs(confMusicLogPTS);
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
