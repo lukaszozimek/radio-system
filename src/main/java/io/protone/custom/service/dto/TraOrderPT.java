@@ -1,9 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
-import io.protone.custom.service.dto.thin.TraCustomerThinPT;
-import io.protone.domain.TraPrice;
+import io.protone.service.dto.thin.TraAdvertisementThinDTO;
+import io.protone.service.dto.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -24,7 +23,7 @@ public class TraOrderPT {
     private Long campaignId = null;
 
     @JsonProperty("customer")
-    private TraCustomerThinPT customerId = null;
+    private TraCustomerThinDTO customerId = null;
 
     @JsonProperty("endDate")
     private LocalDate endDate = null;
@@ -39,7 +38,7 @@ public class TraOrderPT {
     private LocalDate startDate = null;
 
     @JsonProperty("advertisment")
-    private TraAdvertisementThinPT advertismentId = null;
+    private TraAdvertisementThinDTO advertismentId = null;
 
     @JsonProperty("status")
     private CorDictionaryPT statusId = null;
@@ -89,7 +88,7 @@ public class TraOrderPT {
     }
 
 
-    public TraOrderPT customerId(TraCustomerThinPT customerId) {
+    public TraOrderPT customerId(TraCustomerThinDTO customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -100,11 +99,11 @@ public class TraOrderPT {
      * @return customerId
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerThinPT getCustomerId() {
+    public TraCustomerThinDTO getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(TraCustomerThinPT customerId) {
+    public void setCustomerId(TraCustomerThinDTO customerId) {
         this.customerId = customerId;
     }
 
@@ -214,15 +213,15 @@ public class TraOrderPT {
      * @return status
      **/
     @ApiModelProperty(required = true, value = "")
-    public TraAdvertisementThinPT getAdvertismentId() {
+    public TraAdvertisementThinDTO getAdvertismentId() {
         return advertismentId;
     }
 
-    public void setAdvertismentId(TraAdvertisementThinPT advertisment) {
+    public void setAdvertismentId(TraAdvertisementThinDTO advertisment) {
         this.advertismentId = advertisment;
     }
 
-    public TraOrderPT advertismentId(TraAdvertisementThinPT advertisment) {
+    public TraOrderPT advertismentId(TraAdvertisementThinDTO advertisment) {
         this.advertismentId = advertisment;
         return this;
     }

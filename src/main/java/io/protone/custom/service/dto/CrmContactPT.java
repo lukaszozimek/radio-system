@@ -1,10 +1,9 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.service.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +52,7 @@ public class CrmContactPT {
     private CoreAddressPT addres = null;
 
     @JsonProperty("account")
-    private CoreUserThinPT account = null;
+    private CoreUserThinDTO account = null;
 
     @JsonProperty("person")
     private TraCustomerPersonPT person;
@@ -287,7 +286,7 @@ public class CrmContactPT {
         this.addres = addres;
     }
 
-    public CrmContactPT account(CoreUserThinPT account) {
+    public CrmContactPT account(CoreUserThinDTO account) {
         this.account = account;
         return this;
     }
@@ -298,11 +297,11 @@ public class CrmContactPT {
      * @return account
      **/
     @ApiModelProperty(value = "")
-    public CoreUserThinPT getAccount() {
+    public CoreUserThinDTO getAccount() {
         return account;
     }
 
-    public void setAccount(CoreUserThinPT account) {
+    public void setAccount(CoreUserThinDTO account) {
         this.account = account;
     }
 

@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto.thin;
+package io.protone.service.dto.thin;
 
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * A DTO for the LibMediaItem entity.
  */
-public class LibMediaItemThinPt implements Serializable {
+public class LibMediaItemThinDTO implements Serializable {
 
     private Long id;
 
@@ -109,7 +109,7 @@ public class LibMediaItemThinPt implements Serializable {
             return false;
         }
 
-        LibMediaItemThinPt lIBMediaItemDTO = (LibMediaItemThinPt) o;
+        LibMediaItemThinDTO lIBMediaItemDTO = (LibMediaItemThinDTO) o;
 
         if ( ! Objects.equals(id, lIBMediaItemDTO.id)) return false;
 

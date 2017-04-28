@@ -1,24 +1,19 @@
-package io.protone.custom.service.dto.thin;
+package io.protone.service.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.CoreChannelPT;
-import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.domain.CorUser;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * CoreUserPT
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreUserThinPT {
+public class CoreUserThinDTO {
 
     @JsonProperty("id")
     private Long id = null;
@@ -26,6 +21,7 @@ public class CoreUserThinPT {
     @JsonProperty("imageurl")
     private String imageurl = null;
 
+    @NotNull
     @JsonProperty("email")
     private String email = null;
 
@@ -38,18 +34,19 @@ public class CoreUserThinPT {
     @JsonProperty("lastName")
     private String lastName = null;
 
+    @NotNull
     @JsonProperty("login")
     private String login = null;
 
 
-    public CoreUserThinPT(Long id) {
+    public CoreUserThinDTO(Long id) {
         this.id = id;
     }
 
-    public CoreUserThinPT() {
+    public CoreUserThinDTO() {
     }
 
-    public CoreUserThinPT(CorUser corUser) {
+    public CoreUserThinDTO(CorUser corUser) {
         this.id = corUser.getId();
         this.imageurl = corUser.getImageurl();
         this.email = corUser.getEmail();
@@ -61,7 +58,7 @@ public class CoreUserThinPT {
 
     }
 
-    public CoreUserThinPT(Long id, String login, String firstName, String lastName, String email, boolean activated, String imageUrl, String langKey, String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities) {
+    public CoreUserThinDTO(Long id, String login, String firstName, String lastName, String email, boolean activated, String imageUrl, String langKey, String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities) {
         this.id = id;
         this.imageurl = imageUrl;
         this.email = email;
@@ -72,7 +69,7 @@ public class CoreUserThinPT {
 
     }
 
-    public CoreUserThinPT email(String email) {
+    public CoreUserThinDTO email(String email) {
         this.email = email;
         return this;
     }
@@ -91,7 +88,7 @@ public class CoreUserThinPT {
         this.email = email;
     }
 
-    public CoreUserThinPT firstName(String firstName) {
+    public CoreUserThinDTO firstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -110,7 +107,7 @@ public class CoreUserThinPT {
         this.firstName = firstName;
     }
 
-    public CoreUserThinPT langKey(String langKey) {
+    public CoreUserThinDTO langKey(String langKey) {
         this.langKey = langKey;
         return this;
     }
@@ -129,7 +126,7 @@ public class CoreUserThinPT {
         this.langKey = langKey;
     }
 
-    public CoreUserThinPT lastName(String lastName) {
+    public CoreUserThinDTO lastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -148,7 +145,7 @@ public class CoreUserThinPT {
         this.lastName = lastName;
     }
 
-    public CoreUserThinPT login(String login) {
+    public CoreUserThinDTO login(String login) {
         this.login = login;
         return this;
     }
@@ -162,7 +159,7 @@ public class CoreUserThinPT {
         this.imageurl = imageurl;
     }
 
-    public CoreUserThinPT imageUrl(String imageurl) {
+    public CoreUserThinDTO imageUrl(String imageurl) {
         this.imageurl = imageurl;
         return this;
     }
@@ -194,9 +191,9 @@ public class CoreUserThinPT {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CoreUserThinPT)) return false;
+        if (!(o instanceof CoreUserThinDTO)) return false;
 
-        CoreUserThinPT that = (CoreUserThinPT) o;
+        CoreUserThinDTO that = (CoreUserThinDTO) o;
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getEmail() != null ? !getEmail().equals(that.getEmail()) : that.getEmail() != null) return false;

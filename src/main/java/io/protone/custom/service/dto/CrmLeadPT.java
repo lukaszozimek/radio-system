@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.service.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class CrmLeadPT {
     private CorDictionaryPT industry = null;
 
     @JsonProperty("leadOwner")
-    private CoreUserThinPT leadOwner = null;
+    private CoreUserThinDTO leadOwner = null;
 
     @JsonProperty("person")
     private TraCustomerPersonPT person = null;
@@ -126,15 +126,15 @@ public class CrmLeadPT {
     }
 
     @ApiModelProperty(value = "")
-    public CoreUserThinPT getOwner() {
+    public CoreUserThinDTO getOwner() {
         return leadOwner;
     }
 
-    public void setOwner(CoreUserThinPT leadOwner) {
+    public void setOwner(CoreUserThinDTO leadOwner) {
         this.leadOwner = leadOwner;
     }
 
-    public CrmLeadPT owner(CoreUserThinPT leadOwner) {
+    public CrmLeadPT owner(CoreUserThinDTO leadOwner) {
         this.leadOwner = leadOwner;
         return this;
     }

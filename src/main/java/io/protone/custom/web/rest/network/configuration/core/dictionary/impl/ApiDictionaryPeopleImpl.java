@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfPersonPT;
-import io.protone.custom.service.mapper.CustomCorPersonMapper;
+import io.protone.service.mapper.CorPersonMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryPeople;
 import io.protone.domain.CorPerson;
 import io.protone.repository.CorPersonRepository;
@@ -32,7 +32,7 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
     private CorNetworkService networkService;
 
     @Inject
-    private CustomCorPersonMapper customCorPersonMapper;
+    private CorPersonMapper customCorPersonMapper;
 
     @Override
     public ResponseEntity<ConfPersonPT> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO) {

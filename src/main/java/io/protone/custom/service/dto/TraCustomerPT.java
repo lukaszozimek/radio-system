@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.service.dto.thin.CoreUserThinDTO;
 import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -53,7 +53,7 @@ public class TraCustomerPT {
     private CoreAddressPT addres = null;
 
     @JsonProperty("account")
-    private CoreUserThinPT account = null;
+    private CoreUserThinDTO account = null;
 
     @JsonProperty("person")
     private TraCustomerPersonPT person = null;
@@ -323,7 +323,7 @@ public class TraCustomerPT {
         this.addres = addres;
     }
 
-    public TraCustomerPT account(CoreUserThinPT account) {
+    public TraCustomerPT account(CoreUserThinDTO account) {
         this.account = account;
         return this;
     }
@@ -334,11 +334,11 @@ public class TraCustomerPT {
      * @return account
      **/
     @ApiModelProperty(value = "")
-    public CoreUserThinPT getAccount() {
+    public CoreUserThinDTO getAccount() {
         return account;
     }
 
-    public void setAccount(CoreUserThinPT account) {
+    public void setAccount(CoreUserThinDTO account) {
         this.account = account;
     }
 

@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.TraInvoiceCustomerThinPT;
+import io.protone.service.dto.thin.TraInvoiceCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ public class TraInvoicePT {
     private BigDecimal price = null;
 
     @JsonProperty("customerId")
-    private TraInvoiceCustomerThinPT customerId = null;
+    private TraInvoiceCustomerThinDTO customerId = null;
 
     @JsonProperty("status")
     private CorDictionaryPT statusId = null;
@@ -153,7 +153,7 @@ public class TraInvoicePT {
     }
 
 
-    public TraInvoicePT customerId(TraInvoiceCustomerThinPT customerId) {
+    public TraInvoicePT customerId(TraInvoiceCustomerThinDTO customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -164,11 +164,11 @@ public class TraInvoicePT {
      * @return customerPT
      **/
     @ApiModelProperty(value = "")
-    public TraInvoiceCustomerThinPT getCustomerId() {
+    public TraInvoiceCustomerThinDTO getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(TraInvoiceCustomerThinPT customerPT) {
+    public void setCustomerId(TraInvoiceCustomerThinDTO customerPT) {
         this.customerId = customerPT;
     }
 

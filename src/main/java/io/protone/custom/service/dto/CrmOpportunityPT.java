@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.service.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class CrmOpportunityPT {
     private Long id = null;
 
     @JsonProperty("opportunityOwner")
-    private CoreUserThinPT opportunityOwner = null;
+    private CoreUserThinDTO opportunityOwner = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -68,7 +68,7 @@ public class CrmOpportunityPT {
         this.id = id;
     }
 
-    public CrmOpportunityPT opportunityOwner(CoreUserThinPT opportunityOwner) {
+    public CrmOpportunityPT opportunityOwner(CoreUserThinDTO opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
         return this;
     }
@@ -79,11 +79,11 @@ public class CrmOpportunityPT {
      * @return opportunityOwner
      **/
     @ApiModelProperty(value = "")
-    public CoreUserThinPT getOpportunityOwner() {
+    public CoreUserThinDTO getOpportunityOwner() {
         return opportunityOwner;
     }
 
-    public void setOpportunityOwner(CoreUserThinPT opportunityOwner) {
+    public void setOpportunityOwner(CoreUserThinDTO opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
     }
 

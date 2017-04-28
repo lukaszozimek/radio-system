@@ -1,7 +1,7 @@
 package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
+import io.protone.service.dto.thin.TraAdvertisementThinDTO;
 import io.protone.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -28,9 +28,9 @@ public interface TraAdvertismentMapper {
 
     List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementPT> traAdvertisementDTOs);
 
-    TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinPT coreUserThinPT);
+    TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinDTO coreUserThinPT);
 
-    TraAdvertisementThinPT traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
+    TraAdvertisementThinDTO traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
 
 
 

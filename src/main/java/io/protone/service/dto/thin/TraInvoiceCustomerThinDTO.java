@@ -1,12 +1,10 @@
-package io.protone.custom.service.dto.thin;
+package io.protone.service.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.custom.service.dto.CoreAddressPT;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
-import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -14,33 +12,38 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraCustomerThinPT {
+public class TraInvoiceCustomerThinDTO {
     @JsonProperty("id")
     private Long id = null;
 
+    @NotNull
     @JsonProperty("shortName")
     private String shortName = null;
 
-    @JsonProperty("area")
-    private CorDictionaryPT area = null;
+    @JsonProperty("idNumber1")
+    private String idNumber1 = null;
 
-    @JsonProperty("industry")
-    private CorDictionaryPT industry = null;
+    @JsonProperty("idNumber2")
+    private String idNumber2 = null;
 
+    @JsonProperty("paymentDelay")
+    private Integer paymentDelay = null;
+
+    @NotNull
     @JsonProperty("name")
     private String name = null;
 
     @JsonProperty("paymentDate")
     private Integer paymentDate = null;
 
-    @JsonProperty("range")
-    private CorDictionaryPT range = null;
+    @JsonProperty("vatNumber")
+    private String vatNumber = null;
 
-    @JsonProperty("size")
-    private CorDictionaryPT size = null;
+    @JsonProperty("addres")
+    private CoreAddressPT addres = null;
 
 
-    public TraCustomerThinPT id(Long id) {
+    public TraInvoiceCustomerThinDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -59,7 +62,7 @@ public class TraCustomerThinPT {
         this.id = id;
     }
 
-    public TraCustomerThinPT shortName(String shortName) {
+    public TraInvoiceCustomerThinDTO shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -78,27 +81,61 @@ public class TraCustomerThinPT {
         this.shortName = shortName;
     }
 
-    public TraCustomerThinPT area(CorDictionaryPT area) {
-        this.area = area;
+
+    public TraInvoiceCustomerThinDTO idNumber1(String idNumber1) {
+        this.idNumber1 = idNumber1;
         return this;
     }
 
-
     /**
-     * Get industry
+     * Get idNumber1
      *
-     * @return industry
+     * @return idNumber1
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getIndustry() {
-        return industry;
+    public String getIdNumber1() {
+        return idNumber1;
     }
 
-    public void setIndustry(CorDictionaryPT industry) {
-        this.industry = industry;
+    public void setIdNumber1(String idNumber1) {
+        this.idNumber1 = idNumber1;
     }
 
-    public TraCustomerThinPT name(String name) {
+    public TraInvoiceCustomerThinDTO idNumber2(String idNumber2) {
+        this.idNumber2 = idNumber2;
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public Integer getPaymentDelay() {
+        return paymentDelay;
+    }
+
+    public void setPaymentDelay(Integer paymentDelay) {
+        this.paymentDelay = paymentDelay;
+    }
+
+    public TraInvoiceCustomerThinDTO paymentDelay(Integer paymentDelay) {
+        this.paymentDelay = paymentDelay;
+        return this;
+    }
+
+    /**
+     * Get idNumber2
+     *
+     * @return idNumber2
+     **/
+    @ApiModelProperty(value = "")
+    public String getIdNumber2() {
+        return idNumber2;
+    }
+
+    public void setIdNumber2(String idNumber2) {
+        this.idNumber2 = idNumber2;
+    }
+
+
+    public TraInvoiceCustomerThinDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -118,7 +155,7 @@ public class TraCustomerThinPT {
     }
 
 
-    public TraCustomerThinPT paymentDate(Integer paymentDate) {
+    public TraInvoiceCustomerThinDTO paymentDate(Integer paymentDate) {
         this.paymentDate = paymentDate;
         return this;
     }
@@ -137,42 +174,38 @@ public class TraCustomerThinPT {
         this.paymentDate = paymentDate;
     }
 
-    public TraCustomerThinPT range(CorDictionaryPT range) {
-        this.range = range;
+
+    /**
+     * Get vatNumber
+     *
+     * @return vatNumber
+     **/
+    @ApiModelProperty(value = "")
+    public String getVatNumber() {
+        return vatNumber;
+    }
+
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
+    }
+
+    public TraInvoiceCustomerThinDTO addres(CoreAddressPT adress) {
+        this.addres = adress;
         return this;
     }
 
     /**
-     * Get range
+     * Get addres
      *
-     * @return range
+     * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getRange() {
-        return range;
+    public CoreAddressPT getAddres() {
+        return addres;
     }
 
-    public void setRange(CorDictionaryPT range) {
-        this.range = range;
-    }
-
-    public TraCustomerThinPT size(CorDictionaryPT size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Get size
-     *
-     * @return size
-     **/
-    @ApiModelProperty(value = "")
-    public CorDictionaryPT getSize() {
-        return size;
-    }
-
-    public void setSize(CorDictionaryPT size) {
-        this.size = size;
+    public void setAddres(CoreAddressPT addres) {
+        this.addres = addres;
     }
 
     @Override
@@ -183,35 +216,35 @@ public class TraCustomerThinPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraCustomerThinPT traCustomerPT = (TraCustomerThinPT) o;
+        TraInvoiceCustomerThinDTO traCustomerPT = (TraInvoiceCustomerThinDTO) o;
         return Objects.equals(this.id, traCustomerPT.id) &&
             Objects.equals(this.shortName, traCustomerPT.shortName) &&
-            Objects.equals(this.area, traCustomerPT.area) &&
-            Objects.equals(this.industry, traCustomerPT.industry) &&
+            Objects.equals(this.idNumber1, traCustomerPT.idNumber1) &&
+            Objects.equals(this.idNumber2, traCustomerPT.idNumber2) &&
             Objects.equals(this.name, traCustomerPT.name) &&
             Objects.equals(this.paymentDate, traCustomerPT.paymentDate) &&
-            Objects.equals(this.range, traCustomerPT.range) &&
-            Objects.equals(this.size, traCustomerPT.size);
+            Objects.equals(this.vatNumber, traCustomerPT.vatNumber) &&
+            Objects.equals(this.addres, traCustomerPT.addres);
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, shortName, area,  industry, name, paymentDate, range, size);
+        return Objects.hash(id, shortName, idNumber1, idNumber2, name, paymentDate, vatNumber, addres);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TraCustomerPT {\n");
-
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("    area: ").append(toIndentedString(area)).append("\n");
-        sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
+        sb.append("    idNumber1: ").append(toIndentedString(idNumber1)).append("\n");
+        sb.append("    idNumber2: ").append(toIndentedString(idNumber2)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
-        sb.append("    range: ").append(toIndentedString(range)).append("\n");
-        sb.append("    size: ").append(toIndentedString(size)).append("\n");
+        sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
+        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
         sb.append("}");
         return sb.toString();
     }

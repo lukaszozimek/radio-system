@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto.thin;
+package io.protone.service.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.custom.service.dto.CorDictionaryPT;
@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraAdvertisementThinPT {
+public class TraAdvertisementThinDTO {
     @JsonProperty("id")
     private Long id = null;
 
@@ -25,13 +25,13 @@ public class TraAdvertisementThinPT {
     private CorDictionaryPT industryId = null;
 
     @JsonProperty("mediaItemId")
-    private LibMediaItemThinPt mediaItemId = null;
+    private LibMediaItemThinDTO mediaItemId = null;
 
     @JsonProperty("typeId")
     private CorDictionaryPT typeId;
 
 
-    public TraAdvertisementThinPT type(CorDictionaryPT typePT) {
+    public TraAdvertisementThinDTO type(CorDictionaryPT typePT) {
         this.typeId = typePT;
         return this;
     }
@@ -45,7 +45,7 @@ public class TraAdvertisementThinPT {
         this.typeId = typeId;
     }
 
-    public TraAdvertisementThinPT description(String description) {
+    public TraAdvertisementThinDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -64,7 +64,7 @@ public class TraAdvertisementThinPT {
         this.description = description;
     }
 
-    public TraAdvertisementThinPT id(Long id) {
+    public TraAdvertisementThinDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -83,7 +83,7 @@ public class TraAdvertisementThinPT {
         this.id = id;
     }
 
-    public TraAdvertisementThinPT industryId(CorDictionaryPT industryId) {
+    public TraAdvertisementThinDTO industryId(CorDictionaryPT industryId) {
         this.industryId = industryId;
         return this;
     }
@@ -102,7 +102,7 @@ public class TraAdvertisementThinPT {
         this.industryId = industryId;
     }
 
-    public TraAdvertisementThinPT mediaItemId(LibMediaItemThinPt mediaItemId) {
+    public TraAdvertisementThinDTO mediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
         return this;
     }
@@ -113,15 +113,15 @@ public class TraAdvertisementThinPT {
      * @return mediaItemId
      **/
     @ApiModelProperty(value = "")
-    public LibMediaItemThinPt getMediaItemId() {
+    public LibMediaItemThinDTO getMediaItemId() {
         return mediaItemId;
     }
 
-    public void setMediaItemId(LibMediaItemThinPt mediaItemId) {
+    public void setMediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
     }
 
-    public TraAdvertisementThinPT name(String name) {
+    public TraAdvertisementThinDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -149,7 +149,7 @@ public class TraAdvertisementThinPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraAdvertisementThinPT traAdvertisementPT = (TraAdvertisementThinPT) o;
+        TraAdvertisementThinDTO traAdvertisementPT = (TraAdvertisementThinDTO) o;
         return
             Objects.equals(this.description, traAdvertisementPT.description) &&
                 Objects.equals(this.id, traAdvertisementPT.id) &&

@@ -2,8 +2,7 @@ package io.protone.service.mapper;
 
 import com.google.common.base.Strings;
 import io.protone.custom.service.dto.LibItemPT;
-import io.protone.custom.service.dto.thin.LibMediaItemThinPt;
-import io.protone.custom.service.mapper.CustomCorPersonMapper;
+import io.protone.service.dto.thin.LibMediaItemThinDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTag;
 import io.protone.domain.LibMediaItem;
@@ -18,7 +17,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {
     LibAlbumMapper.class,
     LibArtistMapper.class,
-    CustomCorPersonMapper.class,
+    CorPersonMapper.class,
     LibLabelMapper.class,
     LibLibraryMapper.class,
     LibMarkerMapper.class,
@@ -42,9 +41,9 @@ public interface LibItemMapper {
         return libMediaItems;
     }
 
-    LibMediaItem libMediaItemFromLibMediaItemThinPt(LibMediaItemThinPt id);
+    LibMediaItem libMediaItemFromLibMediaItemThinPt(LibMediaItemThinDTO id);
 
-    LibMediaItemThinPt libMediaItemThinPtFromLibMediaItem(LibMediaItem id);
+    LibMediaItemThinDTO libMediaItemThinPtFromLibMediaItem(LibMediaItem id);
 
 
 

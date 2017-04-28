@@ -1,8 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.thin.LibMediaItemThinPt;
-import io.protone.custom.service.dto.thin.TraCustomerThinPT;
+import io.protone.service.dto.thin.LibMediaItemThinDTO;
+import io.protone.service.dto.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -17,7 +17,7 @@ public class TraAdvertisementPT {
     private Long id = null;
 
     @JsonProperty("customerId")
-    private TraCustomerThinPT customerId = null;
+    private TraCustomerThinDTO customerId = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -29,7 +29,7 @@ public class TraAdvertisementPT {
     private CorDictionaryPT industryId = null;
 
     @JsonProperty("mediaItemId")
-    private LibMediaItemThinPt mediaItemId = null;
+    private LibMediaItemThinDTO mediaItemId = null;
 
     @JsonProperty("typeId")
     private CorDictionaryPT typeId;
@@ -49,7 +49,7 @@ public class TraAdvertisementPT {
         this.typeId = typeId;
     }
 
-    public TraAdvertisementPT customerId(TraCustomerThinPT customerId) {
+    public TraAdvertisementPT customerId(TraCustomerThinDTO customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -60,11 +60,11 @@ public class TraAdvertisementPT {
      * @return customerId
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerThinPT getCustomerId() {
+    public TraCustomerThinDTO getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(TraCustomerThinPT customerId) {
+    public void setCustomerId(TraCustomerThinDTO customerId) {
         this.customerId = customerId;
     }
 
@@ -125,7 +125,7 @@ public class TraAdvertisementPT {
         this.industryId = industryId;
     }
 
-    public TraAdvertisementPT mediaItemId(LibMediaItemThinPt mediaItemId) {
+    public TraAdvertisementPT mediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
         return this;
     }
@@ -136,11 +136,11 @@ public class TraAdvertisementPT {
      * @return mediaItemId
      **/
     @ApiModelProperty(value = "")
-    public LibMediaItemThinPt getMediaItemId() {
+    public LibMediaItemThinDTO getMediaItemId() {
         return mediaItemId;
     }
 
-    public void setMediaItemId(LibMediaItemThinPt mediaItemId) {
+    public void setMediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
     }
 
