@@ -2,7 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
-import io.protone.custom.consts.ServiceConstants;
+import io.protone.service.constans.ServiceConstants;
 import io.protone.service.mapper.LibItemMapper;
 import io.protone.domain.*;
 import io.protone.repository.*;

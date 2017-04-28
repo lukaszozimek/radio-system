@@ -1,4 +1,4 @@
-package io.protone.custom.consts;
+package io.protone.service.constans;
 
 /**
  * Created by lukaszozimek on 28/03/2017.
@@ -12,4 +12,8 @@ public final class MarkerConstans {
     public static final String AUDs = "AUDs";
     public static final String AUDe = "AUDe";
     public static final String EMPTY_TIMER = "EMPTY_TIMER";
+
+    private MarkerConstans() {
+    }
+
 }

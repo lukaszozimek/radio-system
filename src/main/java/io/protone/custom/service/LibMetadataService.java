@@ -4,7 +4,7 @@ import com.google.api.client.repackaged.com.google.common.base.Strings;
 
 import java.util.*;
 
-import io.protone.custom.consts.MarkerConstans;
+import io.protone.service.constans.MarkerConstans;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.domain.*;
@@ -33,7 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static io.protone.custom.consts.ServiceConstants.NO_DATA;
+import static io.protone.service.constans.ServiceConstants.NO_DATA;
 
 /**
  * Created by lukaszozimek on 14/03/2017.

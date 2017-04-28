@@ -1,7 +1,6 @@
 package io.protone.custom.service;
 
 import com.google.common.base.Strings;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import io.protone.domain.LibArtist;
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
-import static io.protone.custom.consts.ServiceConstants.NO_DATA;
+import static io.protone.service.constans.ServiceConstants.NO_DATA;
 
 /**
  * Created by lukaszozimek on 14/03/2017.

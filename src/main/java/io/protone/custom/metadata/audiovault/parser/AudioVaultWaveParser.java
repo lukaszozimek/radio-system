@@ -1,8 +1,6 @@
 package io.protone.custom.metadata.audiovault.parser;
 
-import com.google.common.base.Strings;
-import com.google.common.primitives.UnsignedInteger;
-import io.protone.custom.consts.MarkerConstans;
+import io.protone.service.constans.MarkerConstans;
 import io.protone.custom.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -15,14 +13,11 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static io.protone.custom.consts.MarkerConstans.EMPTY_TIMER;
 import static io.protone.custom.metadata.ProtoneMetadataProperty.*;
 
 /**
