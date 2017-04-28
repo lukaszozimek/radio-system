@@ -1,10 +1,10 @@
 package io.protone.custom.service;
 
+import io.protone.service.mapper.TraOrderMapper;
 import io.protone.domain.CrmAccount;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraOrderRepository;
 import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.custom.service.mapper.CustomTraOrderMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraOrder;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class TraOrderService {
     private final Logger log = LoggerFactory.getLogger(TraOrderService.class);
 
     @Inject
-    private CustomTraOrderMapper customTraOrderMapper;
+    private TraOrderMapper customTraOrderMapper;
 
     @Inject
     private CustomTraOrderRepository traOrderRepository;

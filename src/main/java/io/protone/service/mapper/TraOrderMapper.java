@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.TraCustomerService;
 import io.protone.custom.service.dto.CorDictionaryPT;
@@ -8,6 +8,8 @@ import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.service.dto.thin.SchLibItemThinPT;
 import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
 import io.protone.custom.service.dto.thin.TraCustomerThinPT;
+import io.protone.custom.service.mapper.CustomCrmAccountMapper;
+import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.domain.*;
 import io.protone.service.dto.TraOrderDTO;
 import io.protone.service.mapper.CorDictionaryMapper;
@@ -25,8 +27,8 @@ import static java.util.stream.Collectors.toList;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class})
-public interface CustomTraOrderMapper {
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, CustomTRAAdvertismentMapper.class, CustomCrmAccountMapper.class})
+public interface TraOrderMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")
     @Mapping(source = "advertisment", target = "advertismentId")
@@ -46,13 +48,6 @@ public interface CustomTraOrderMapper {
 
     List<TraOrder> DTOs2DBs(List<TraOrderPT> traOrderDTOs);
 
-    TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinPT coreUserThinPT);
-
-    TraAdvertisementThinPT traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
-
-    CrmAccount crmAccountFromTraCustomerThinPT(TraCustomerThinPT coreUserThinPT);
-
-    TraCustomerThinPT traCustomerThinPTFromCrmAccount(CrmAccount coreUserThinPT);
 
     default TraCampaign traCampaignFromId(Long id) {
         if (id == null) {

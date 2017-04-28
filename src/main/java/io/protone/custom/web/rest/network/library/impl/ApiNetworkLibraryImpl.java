@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.library.impl;
 
 import io.protone.custom.service.LibLibraryService;
 import io.protone.custom.service.dto.LibraryPT;
-import io.protone.custom.service.mapper.CustomLibLibraryMapperExt;
+import io.protone.service.mapper.LibLibraryMapper;
 import io.protone.custom.web.rest.network.library.ApiNetworkLibrary;
 import io.protone.domain.LibLibrary;
 import io.swagger.annotations.ApiParam;
@@ -25,7 +25,7 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkLibraryImpl.class);
 
     @Inject
-    private CustomLibLibraryMapperExt libraryMapper;
+    private LibLibraryMapper libraryMapper;
 
     @Inject
     private LibLibraryService libraryService;

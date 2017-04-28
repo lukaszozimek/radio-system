@@ -16,6 +16,10 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 /**
  * Created by lukaszozimek on 27/04/2017.
  */
@@ -23,6 +27,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CustomCorPersonMapperTest {
+
 
     @Autowired
     private CustomCorPersonMapper corPersonMapper;
@@ -51,36 +56,110 @@ public class CustomCorPersonMapperTest {
         libPersonPTS.add(libPersonPT);
     }
 
+
     @Test
     public void DB2DTO() throws Exception {
-    }
+        ConfPersonPT dto = corPersonMapper.DB2DTO(corPerson);
 
-    @Test
-    public void DBs2DTOs() throws Exception {
-    }
+        assertNotNull(dto.getId());
 
-    @Test
-    public void DTO2DB() throws Exception {
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
+        List<ConfPersonPT> dtos = corPersonMapper.DBs2DTOs(corPeople);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+
+            assertNotNull(dto.getId());
+
+        });
     }
 
     @Test
-    public void db2Dto() throws Exception {
+    public void DBs2DTOs() throws Exception {
+        List<CorPerson> entities = corPersonMapper.DTOs2DBs(confPersonPTS);
+
+        assertNotNull(entities);
+        assertEquals(entities.size(), 1);
+        entities.stream().forEach(entity -> {
+            assertNotNull(entity.getId());
+
+            assertNull(entity.getNetwork());
+
+
+        });
     }
 
     @Test
-    public void dBs2DTOs() throws Exception {
+    public void DTO2DB() throws Exception {
+        CorPerson entity = corPersonMapper.DTO2DB(confPersonPT);
+
+
+        assertNotNull(entity.getId());
+
+        assertNull(entity.getNetwork());
     }
 
     @Test
-    public void dto2Db() throws Exception {
+    public void corPerson2LibPersonPT() throws Exception {
+        LibPersonPT dto = corPersonMapper.corPerson2LibPersonPT(corPerson);
+
+        assertNotNull(dto.getId());
+
     }
 
     @Test
-    public void dtos2Dbs() throws Exception {
+    public void corPersons2LibPersonPTs() throws Exception {
+        List<LibPersonPT> dtos = corPersonMapper.corPersons2LibPersonPTs(corPeople);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+
+            assertNotNull(dto.getId());
+
+        });
+    }
+
+    @Test
+    public void libPersonPT2CorPerson() throws Exception {
+        CorPerson entity = corPersonMapper.libPersonPT2CorPerson(libPersonPT);
+
+
+        assertNotNull(entity.getId());
+
+        assertNull(entity.getNetwork());
+    }
+
+    @Test
+    public void libPersonPTs2corPersons() throws Exception {
+        List<CorPerson> entities = corPersonMapper.libPersonPTs2corPersons(libPersonPTS);
+
+        assertNotNull(entities);
+        assertEquals(entities.size(), 1);
+        entities.stream().forEach(entity -> {
+            assertNotNull(entity.getId());
+
+            assertNull(entity.getNetwork());
+        });
+    }
+
+    @Test
+    public void corPerson2TraCustomerPersonPT() throws Exception {
+
+    }
+
+    @Test
+    public void traCustomerPersonPT2CorPerson() throws Exception {
+
+    }
+
+    @Test
+    public void traCustomerPersonPTs2CorPersons() throws Exception {
+
     }
 
 }

@@ -1,9 +1,10 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
+import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.protone.domain.CorAuthority;
 import io.protone.domain.CorPerson;
 import io.protone.domain.CorUser;
@@ -23,7 +24,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 @Mapper(componentModel = "spring", uses = {CorNetworkMapper.class, CorChannelMapper.class})
-public interface CustomCorUserMapperExt {
+public interface CorUserMapper {
 
     CoreUserPT DB2DTO(CorUser user);
 
@@ -32,6 +33,10 @@ public interface CustomCorUserMapperExt {
     CorUser DTO2DB(CoreUserPT userPT);
 
     List<CorUser> DTOs2DBs(List<CoreUserPT> userPTs);
+
+    CorUser corUserFromCoreUserThinPT(CoreUserThinPT coreUserThinPT);
+
+    CoreUserThinPT coreUserThinPTFromCorUser(CorUser coreUserThinPT);
 
     default CorAuthority corAuthorityFromString(String authorinty) {
 

@@ -2,9 +2,8 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.custom.service.mapper.CustomCrmContactMapper;
-import io.protone.custom.service.mapper.CustomCrmTaskMapper;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
@@ -37,7 +36,7 @@ public class CrmContactService {
     private CustomCrmTaskRepository crmTaskRepository;
 
     @Inject
-    private CustomCrmTaskMapper customCrmTaskMapper;
+    private CrmTaskMapper customCrmTaskMapper;
 
     @Inject
     private CustomCorPersonRepository personRepository;
@@ -53,8 +52,7 @@ public class CrmContactService {
     }
 
     public CrmContactPT saveContact(CrmContactPT crmContactPT, CorNetwork corNetwork) {
-        CrmContact contact = customCrmContactMapper.DTO2DB(crmContactPT);
-        contact.setNetwork(corNetwork);
+        CrmContact contact = customCrmContactMapper.DTO2DB(crmContactPT, corNetwork);
         log.debug("Persisting CorAddress: {}", contact.getAddres());
         CorAddress address = addressRepository.save(contact.getAddres());
         log.debug("Persisting CorContact: {}", contact.getPerson().getContacts());

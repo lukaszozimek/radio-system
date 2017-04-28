@@ -1,25 +1,19 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.custom.service.dto.CrmOpportunityPT;
-import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.protone.domain.*;
 import io.protone.service.mapper.CorAddressMapper;
 import io.protone.service.mapper.CorDictionaryMapper;
+import io.protone.service.mapper.CrmTaskMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by lukaszozimek on 18.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CustomCrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
 public interface CustomCrmOpportunityMapper {
 
 

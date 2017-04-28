@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.channel.impl;
 
 import io.protone.custom.service.LibLibraryService;
 import io.protone.custom.service.dto.LibraryPT;
-import io.protone.custom.service.mapper.CustomLibLibraryMapperExt;
+import io.protone.service.mapper.LibLibraryMapper;
 import io.protone.custom.web.rest.network.channel.ApiChannelLibrary;
 import io.protone.domain.LibLibrary;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
     private final Logger log = LoggerFactory.getLogger(ApiChannelLibraryImpl.class);
 
     @Inject
-    private CustomLibLibraryMapperExt libraryMapper;
+    private LibLibraryMapper libraryMapper;
 
     @Inject
     private LibLibraryService libraryService;

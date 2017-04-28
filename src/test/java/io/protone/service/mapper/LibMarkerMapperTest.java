@@ -1,8 +1,7 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibMarkerPT;
-import io.protone.domain.CorPropertyKey;
 import io.protone.domain.LibMarker;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +23,9 @@ import static org.junit.Assert.*;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class CustomLibMarkerMapperExtTest {
+public class LibMarkerMapperTest {
     @Autowired
-    private CustomLibMarkerMapperExt customLibMarkerMapperExt;
+    private LibMarkerMapper customLibMarkerMapperExt;
 
     private LibMarker libMarker;
 
@@ -50,37 +49,58 @@ public class CustomLibMarkerMapperExtTest {
     public void DB2DTO() throws Exception {
         LibMarkerPT dto = customLibMarkerMapperExt.DB2DTO(libMarker);
 
+
+        assertNotNull(dto.getMediaItemId());
         assertNotNull(dto.getId());
+        assertNotNull(dto.getMarkerType());
         assertNotNull(dto.getName());
+        assertNotNull(dto.getStartTime());
+
 
     }
 
     @Test
     public void DBs2DTOs() throws Exception {
+        List<LibMarkerPT> dtos = customLibMarkerMapperExt.DBs2DTOs(libMarkers);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+            assertNotNull(dto.getMediaItemId());
+            assertNotNull(dto.getId());
+            assertNotNull(dto.getMarkerType());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getStartTime());
+        });
     }
 
     @Test
     public void DTO2DB() throws Exception {
+        //TODO: add Network
         LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerPT);
 
+
+        assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getId());
+        assertNotNull(entity.getMarkerType());
+        assertNotNull(entity.getName());
+        assertNotNull(entity.getStartTime());
+
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-    }
+        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerPTS);
 
-    @Test
-    public void mapLibMediaItem() throws Exception {
+        assertNotNull(entities);
+        assertEquals(entities.size(), 1);
+        entities.stream().forEach(entity -> {
+            assertNotNull(entity.getMediaItem());
+            assertNotNull(entity.getId());
+            assertNotNull(entity.getMarkerType());
+            assertNotNull(entity.getName());
+            assertNotNull(entity.getStartTime());
+        });
     }
-
-    @Test
-    public void mapLibMarkerPT_MarkerTypeEnum() throws Exception {
-    }
-
-    @Test
-    public void mapLibMarkerTypeEnum() throws Exception {
-    }
-
 }

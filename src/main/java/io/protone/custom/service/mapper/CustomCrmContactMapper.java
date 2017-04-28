@@ -1,26 +1,23 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.*;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
 import io.protone.domain.*;
 import io.protone.service.mapper.CorAddressMapper;
+import io.protone.service.mapper.CorContactMapper;
 import io.protone.service.mapper.CorDictionaryMapper;
+import io.protone.service.mapper.CrmTaskMapper;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Mapper for the entity CrmContact and its DTO CrmContactDTO.
  */
 
-@Mapper(componentModel = "spring", uses = {CustomCrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CustomCorPersonMapper.class})
 public interface CustomCrmContactMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
@@ -40,20 +37,18 @@ public interface CustomCrmContactMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmContact DTO2DB(CrmContactPT crmAccountDTO);
+    CrmContact DTO2DB(CrmContactPT crmAccountDTO, @Context CorNetwork networkId);
 
-    List<CrmContact> DTOs2DBs(List<CrmContactPT> crmAccountDTOs);
+    default List<CrmContact> DTOs2DBs(List<CrmContactPT> crmAccountDTOs, CorNetwork networkId) {
+        List<CrmContact> crmContacts = new ArrayList<>();
+        if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
+            return null;
+        }
+        for (CrmContactPT dto : crmAccountDTOs) {
+            crmContacts.add(DTO2DB(dto, networkId));
+        }
+        return crmContacts;
+    }
 
-    CorPerson corPersonFromTraCustomerPersonPT(TraCustomerPersonPT coreUserThinPT);
-
-    TraCustomerPersonPT traCustomerPersonPTFromCorPerson(CorPerson coreUserThinPT);
-
-    CorContact corContactFromCoreContactPT(CoreContactPT coreUserThinPT);
-
-    CoreContactPT coreContactPTFromCorContact(CorContact coreUserThinPT);
-
-    Set<CorContact> corContactFromCoreContactPT(List<CoreContactPT> coreUserThinPT);
-
-    List<CoreContactPT> coreContactPTFromCorContact(Set<CorContact> coreUserThinPT);
 
 }

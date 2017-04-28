@@ -3,8 +3,7 @@ package io.protone.custom.service;
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmLeadMapper;
-import io.protone.custom.service.mapper.CustomCrmTaskMapper;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
+import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
@@ -47,7 +46,7 @@ public class CrmLeadService {
     private CustomCrmTaskRepository crmTaskRepository;
 
     @Inject
-    private CustomCrmTaskMapper customCrmTaskMapper;
+    private CrmTaskMapper customCrmTaskMapper;
 
     @Transactional
     public List<CrmLeadPT> getAllLeads(CorNetwork corNetwork) {
@@ -55,8 +54,8 @@ public class CrmLeadService {
     }
 
     public CrmLeadPT saveLead(CrmLeadPT crmLeadPT, CorNetwork corNetwork) {
-        CrmLead lead = customCrmLeadMapper.DTO2DB(crmLeadPT);
-        lead.network(corNetwork);
+        CrmLead lead = customCrmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
+
         log.debug("Persisting CorAddress: {}", lead.getAddres());
         CorAddress address = addressRepository.save(lead.getAddres());
 

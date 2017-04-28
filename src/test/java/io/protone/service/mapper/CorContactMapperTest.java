@@ -3,6 +3,7 @@ package io.protone.service.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreContactPT;
 import io.protone.domain.CorContact;
+import io.protone.domain.CorNetwork;
 import io.protone.service.mapper.CorContactMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,8 @@ public class CorContactMapperTest {
 
     private Set<CorContact> corContacts = new HashSet<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -47,6 +50,8 @@ public class CorContactMapperTest {
         corContacts.add(corContact);
         coreContactPT = factory.manufacturePojo(CoreContactPT.class);
         coreContactPTS.add(coreContactPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
+
     }
 
     @Test
@@ -75,19 +80,19 @@ public class CorContactMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorContact corContact = corContactMapper.DTO2DB(coreContactPT);
+        CorContact corContact = corContactMapper.DTO2DB(coreContactPT, corNetwork);
 
         assertNotNull(corContact.getId());
         assertNotNull(corContact.getContact());
         assertNotNull(corContact.getContactType());
 
-        assertNull(corContact.getNetwork());
+        assertNotNull(corContact.getNetwork());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorContact> entities = corContactMapper.DTOs2DBs(coreContactPTS);
+        List<CorContact> entities = corContactMapper.DTOs2DBs(coreContactPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -96,7 +101,7 @@ public class CorContactMapperTest {
             assertNotNull(entity.getContact());
             assertNotNull(entity.getContactType());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

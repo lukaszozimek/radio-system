@@ -1,13 +1,10 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.custom.service.mapper.CustomCrmAccountMapper;
-import io.protone.custom.service.mapper.CustomSchEmissionMapper;
-import io.protone.custom.service.mapper.CustomTRACampaignMapper;
+import io.protone.service.mapper.TraCampaignMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
-import io.protone.repository.SchEmissionRepository;
 import io.protone.repository.TraOrderRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraCampaignRepository;
@@ -33,7 +30,7 @@ public class TraCampaignService {
     private final Logger log = LoggerFactory.getLogger(TraCampaignService.class);
 
     @Inject
-    private CustomTRACampaignMapper customTRACampaignMapper;
+    private TraCampaignMapper customTRACampaignMapper;
 
     @Inject
     private CustomTraCampaignRepository traCampaignRepository;

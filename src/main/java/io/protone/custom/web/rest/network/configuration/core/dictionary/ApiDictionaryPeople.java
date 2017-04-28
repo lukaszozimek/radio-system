@@ -28,7 +28,7 @@ public interface ApiDictionaryPeople {
     ResponseEntity<ConfPersonPT> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                       @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO);
 
-    @ApiOperation(value = "createPersonEntity", notes = "", response = ConfPersonPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "DTO2DB", notes = "", response = ConfPersonPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = ConfPersonPT.class),
         @ApiResponse(code = 201, message = "Created", response = ConfPersonPT.class),

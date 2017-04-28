@@ -51,8 +51,8 @@ public class TraCustomerService {
     }
 
     public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CorNetwork corNetwork) {
-        CrmAccount crmAccount = customCrmAccountMapper.traDTO2DB(traCustomerPT);
-        crmAccount.setNetwork(corNetwork);
+
+        CrmAccount crmAccount = customCrmAccountMapper.traDTO2DB(traCustomerPT, corNetwork);
 
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         CorAddress address = addressRepository.saveAndFlush(crmAccount.getAddres());

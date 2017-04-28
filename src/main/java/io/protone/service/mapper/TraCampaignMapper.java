@@ -1,25 +1,17 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.TraCampaignPT;
 import io.protone.domain.*;
-import io.protone.service.dto.TraCampaignDTO;
-import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CustomTraOrderMapper.class, CorDictionaryMapper.class})
-public interface CustomTRACampaignMapper {
+@Mapper(componentModel = "spring", uses = {TraOrderMapper.class, CorDictionaryMapper.class})
+public interface TraCampaignMapper {
 
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "status")

@@ -6,7 +6,7 @@ import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.service.mapper.CorChannelMapper;
 import io.protone.service.mapper.CorNetworkMapper;
-import io.protone.custom.service.mapper.CustomCorUserMapperExt;
+import io.protone.service.mapper.CorUserMapper;
 import io.protone.domain.CorAuthority;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
@@ -60,7 +60,7 @@ public class CustomCorUserService {
     private CustomCorNetworkRepository customCorNetworkRepository;
 
     @Autowired
-    private CustomCorUserMapperExt customCorUserMapperExt;
+    private CorUserMapper customCorUserMapperExt;
 
     @Autowired
     private CorNetworkMapper customCorNetworkMapper;

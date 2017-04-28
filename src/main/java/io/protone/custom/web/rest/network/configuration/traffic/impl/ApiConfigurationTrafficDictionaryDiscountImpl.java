@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.ConfDiscountPT;
-import io.protone.custom.service.mapper.CustomTraDiscountMapper;
+import io.protone.service.mapper.TraDiscountMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryDiscount;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
@@ -32,7 +32,7 @@ public class ApiConfigurationTrafficDictionaryDiscountImpl implements ApiConfigu
     private final Logger log = LoggerFactory.getLogger(ApiConfigurationTrafficDictionaryDiscountImpl.class);
 
     @Autowired
-    private CustomTraDiscountMapper customTraDiscountMapper;
+    private TraDiscountMapper customTraDiscountMapper;
 
     @Autowired
     private CorNetworkService corNetworkService;

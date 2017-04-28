@@ -2,9 +2,8 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.custom.service.mapper.CustomCrmOpportunityMapper;
-import io.protone.custom.service.mapper.CustomCrmTaskMapper;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
@@ -37,7 +36,7 @@ public class CrmOpportunityService {
     private CustomCrmOpportunityMapper customCrmOpportunityMapper;
 
     @Inject
-    private CustomCrmTaskMapper customCrmTaskMapper;
+    private CrmTaskMapper customCrmTaskMapper;
 
     @Inject
     private CrmTaskRepository crmTaskRepository;

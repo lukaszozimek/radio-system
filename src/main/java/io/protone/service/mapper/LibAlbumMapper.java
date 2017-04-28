@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.LibAlbumPT;
 import io.protone.domain.*;
@@ -12,7 +12,7 @@ import java.util.List;
  * Mapper for the entity LibAlbum and its DTO LibAlbumPT.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomLibAlbumMapper {
+public interface LibAlbumMapper {
 
     @Mapping(source = "cover.id", target = "coverId")
     @Mapping(source = "label.id", target = "labelId")

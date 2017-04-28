@@ -3,8 +3,7 @@ package io.protone.custom.service;
 import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.service.mapper.CustomCrmAccountMapper;
-import io.protone.custom.service.mapper.CustomCrmTaskMapper;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
+import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
@@ -46,15 +45,14 @@ public class CrmCustomerService {
     private CustomCrmTaskRepository crmTaskRepository;
 
     @Inject
-    private CustomCrmTaskMapper customCrmTaskMapper;
+    private CrmTaskMapper customCrmTaskMapper;
 
     public List<CrmAccountPT> getAllCustomer(CorNetwork corNetwork) {
         return accountRepository.findByNetwork(corNetwork).stream().map(crmAccount1 -> crmAccountMapper.DB2DTO(crmAccount1)).collect(toList());
     }
 
     public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT);
-        crmAccount.setNetwork(corNetwork);
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         CorAddress address = addressRepository.saveAndFlush(crmAccount.getAddres());
 

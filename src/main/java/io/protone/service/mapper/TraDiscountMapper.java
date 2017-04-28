@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.ConfDiscountPT;
 import io.protone.domain.CorNetwork;
@@ -13,7 +13,7 @@ import java.util.List;
  * Mapper for the entity TraDiscount and its DTO TraDiscountDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomTraDiscountMapper {
+public interface TraDiscountMapper {
 
     ConfDiscountPT DB2DTO(TraDiscount traDiscount);
 

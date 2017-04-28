@@ -3,17 +3,13 @@ package io.protone.custom.service;
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
 import io.protone.custom.consts.ServiceConstants;
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
+import io.protone.service.mapper.LibItemMapper;
 import io.protone.domain.*;
-import io.protone.domain.enumeration.LibAudioQualityEnum;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.*;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.repository.custom.CustomLibAudioObjectRepository;
 import io.protone.repository.custom.CustomLibMediaItemRepository;
 import io.protone.custom.service.dto.LibItemPT;
-import io.protone.custom.service.mapper.CustomItemMapperExt;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.security.SecurityUtils;
 import org.apache.commons.io.IOUtils;
@@ -56,7 +52,7 @@ public class LibItemService {
     private CustomLibMediaItemRepository itemRepository;
 
     @Inject
-    private CustomItemMapperExt itemMapper;
+    private LibItemMapper itemMapper;
 
     @Inject
     private LibCloudObjectRepository cloudObjectRepository;
@@ -142,7 +138,7 @@ public class LibItemService {
     }
 
     public LibItemPT update(LibItemPT libItemPT, CorNetwork corNetwork) {
-        LibMediaItem libItem = itemMapper.DTO2DB(libItemPT);
+        LibMediaItem libItem = itemMapper.DTO2DB(libItemPT, corNetwork);
         LibArtist artist = libArtistRepository.findOrSaveOne(libItem.getArtist().getName(), corNetwork);
         libItem.setArtist(artist);
         LibAlbum album = libAlbumRepository.findOrSaveOne(libItem.getAlbum(), artist, corNetwork);

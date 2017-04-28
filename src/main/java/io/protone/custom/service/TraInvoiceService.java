@@ -1,8 +1,8 @@
 package io.protone.custom.service;
 
+import io.protone.service.mapper.TraInvoiceMapper;
 import io.protone.repository.custom.CustomTraInvoiceRepository;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.custom.service.mapper.CustomTraInvoiceMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
 
@@ -30,7 +30,7 @@ public class TraInvoiceService {
     private CustomTraInvoiceRepository traInvoiceRepository;
 
     @Inject
-    private CustomTraInvoiceMapper customTraInvoiceMapper;
+    private TraInvoiceMapper customTraInvoiceMapper;
 
     public List<TraInvoicePT> getAllInvoice(CorNetwork corNetwork) {
         return traInvoiceRepository.findByNetwork(corNetwork).stream().map(traInvoicePTS -> customTraInvoiceMapper.DB2DTO(traInvoicePTS)).collect(toList());

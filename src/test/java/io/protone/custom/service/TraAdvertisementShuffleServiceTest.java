@@ -1,33 +1,5 @@
 package io.protone.custom.service;
 
-import com.google.common.collect.Lists;
-import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibMediaItemPT;
-import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.service.dto.TraShuffleAdvertisementPT;
-import io.protone.custom.service.mapper.CustomLibMediaItemMapper;
-import io.protone.domain.LibMediaItem;
-import io.protone.domain.SchBlock;
-import io.protone.domain.SchEmission;
-import io.protone.domain.TraAdvertisement;
-import io.protone.repository.custom.CustomSchBlockRepository;
-import io.protone.repository.custom.CustomSchEmissionRepository;
-import io.protone.repository.custom.CustomTraAdvertisementRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.ZonedDateTime;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-
 /**
  * Created by lukaszozimek on 06/03/2017.
  */
@@ -62,7 +34,7 @@ public class TraAdvertisementShuffleServiceTest {/*
         when(customTraAdvertisementRepository.findOne((long) 1)).thenReturn(new TraAdvertisement());
         when(customSchBlockRepository.findByScheduledStartTimeBetweenAndType(any(ZonedDateTime.class), any(ZonedDateTime.class), any())).thenReturn(Lists.newArrayList(schBlock, schBlock1));
         when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
-        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem());
+        when(customLibMediaItemMapper.DTO2DB(any())).thenReturn(new LibMediaItem());
     }
 
     @Test
@@ -103,7 +75,7 @@ public class TraAdvertisementShuffleServiceTest {/*
         schEmission1.block(new SchBlock().scheduledLength(3L));
         schEmission1.setMediaItem(new LibMediaItem().idx("2").length(2.0));
         when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
-        when(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(any())).thenReturn(new LibMediaItem().idx("1").length(2.0));
+        when(customLibMediaItemMapper.DTO2DB(any())).thenReturn(new LibMediaItem().idx("1").length(2.0));
         //given
         TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));

@@ -1,12 +1,10 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
-import io.protone.custom.service.dto.CoreAddressPT;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.custom.service.dto.thin.TraInvoiceCustomerThinPT;
-import io.protone.domain.CorAddress;
-import io.protone.domain.CrmAccount;
 import io.protone.domain.TraInvoice;
+import io.protone.service.mapper.CorAddressMapper;
 import io.protone.service.mapper.CorDictionaryMapper;
+import io.protone.service.mapper.TraOrderMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -15,8 +13,8 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CustomTraOrderMapper.class, CorDictionaryMapper.class})
-public interface CustomTraInvoiceMapper {
+@Mapper(componentModel = "spring", uses = {TraOrderMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
+public interface TraInvoiceMapper {
 
 
     @Mapping(source = "customer", target = "customerId")
@@ -32,14 +30,5 @@ public interface CustomTraInvoiceMapper {
     TraInvoice DTO2DB(TraInvoicePT traInvoiceDTO);
 
     List<TraInvoice> DTOs2DBs(List<TraInvoicePT> traInvoiceDTOs);
-
-    CrmAccount crmAccountFromTraInvoiceCustomerThinPT(TraInvoiceCustomerThinPT coreUserThinPT);
-
-    TraInvoiceCustomerThinPT traInvoiceCustomerThinPTFromCrmAccount(CrmAccount coreUserThinPT);
-
-    CorAddress corAddressFromCoreAddressPT(CoreAddressPT coreUserThinPT);
-
-    CoreAddressPT coreAddressPTFromCorAddress(CorAddress coreUserThinPT);
-
 
 }

@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
 import io.protone.domain.LibMarker;
@@ -13,7 +13,7 @@ import java.util.List;
  * Mapper for the entity LibMarker and its DTO LibMarkerDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomLibMarkerMapperExt {
+public interface LibMarkerMapper {
 
     @Mapping(source = "mediaItem.id", target = "mediaItemId")
     LibMarkerPT DB2DTO(LibMarker lIBMarker);

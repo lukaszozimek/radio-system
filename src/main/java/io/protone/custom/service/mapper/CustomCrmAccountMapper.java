@@ -1,25 +1,23 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.*;
-import io.protone.custom.service.dto.thin.CoreUserThinPT;
+import io.protone.custom.service.dto.thin.TraCustomerThinPT;
 import io.protone.domain.*;
 import io.protone.service.mapper.CorAddressMapper;
+import io.protone.service.mapper.CorContactMapper;
 import io.protone.service.mapper.CorDictionaryMapper;
+import io.protone.service.mapper.CrmTaskMapper;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CustomCrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CustomCorPersonMapper.class})
 public interface CustomCrmAccountMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
@@ -39,9 +37,18 @@ public interface CustomCrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmAccount DTO2DB(CrmAccountPT crmAccountDTO);
+    CrmAccount DTO2DB(CrmAccountPT crmAccountDTO, @Context CorNetwork networkId);
 
-    List<CrmAccount> DTOs2DBs(List<CrmAccountPT> crmAccountDTOs);
+    default List<CrmAccount> DTOs2DBs(List<CrmAccountPT> crmAccountDTOs, CorNetwork networkId) {
+        List<CrmAccount> crmAccounts = new ArrayList<>();
+        if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
+            return null;
+        }
+        for (CrmAccountPT dto : crmAccountDTOs) {
+            crmAccounts.add(DTO2DB(dto, networkId));
+        }
+        return crmAccounts;
+    }
 
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
@@ -61,20 +68,21 @@ public interface CustomCrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmAccount traDTO2DB(TraCustomerPT crmAccountDTO);
+    CrmAccount traDTO2DB(TraCustomerPT crmAccountDTO, @Context CorNetwork networkId);
 
-    List<CrmAccount> traDTOs2DBs(List<TraCustomerPT> crmAccountDTOs);
+    default List<CrmAccount> traDTOs2DBs(List<TraCustomerPT> crmAccountDTOs, CorNetwork networkId) {
+        List<CrmAccount> crmAccounts = new ArrayList<>();
+        if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
+            return null;
+        }
+        for (TraCustomerPT dto : crmAccountDTOs) {
+            crmAccounts.add(traDTO2DB(dto, networkId));
+        }
+        return crmAccounts;
+    }
 
-    CorPerson corPersonFromTraCustomerPersonPT(TraCustomerPersonPT coreUserThinPT);
+    CrmAccount crmAccountFromTraCustomerThinPT(TraCustomerThinPT id);
 
-    TraCustomerPersonPT traCustomerPersonPTFromCorPerson(CorPerson coreUserThinPT);
-
-    CorContact corContactFromCoreContactPT(CoreContactPT coreUserThinPT);
-
-    CoreContactPT coreContactPTFromCorContact(CorContact coreUserThinPT);
-
-    Set<CorContact> corContactFromCoreContactPT(List<CoreContactPT> coreUserThinPT);
-
-    List<CoreContactPT> coreContactPTFromCorContact(Set<CorContact> coreUserThinPT);
+    TraCustomerThinPT traCustomerThinPTFromCrmAccount(CrmAccount id);
 
 }

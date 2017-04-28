@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.domain.CorNetwork;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {})
-public interface CustomLibLibraryMapperExt {
+public interface LibLibraryMapper {
 
     LibraryPT DB2DTO(LibLibrary libLibrary);
 

@@ -52,6 +52,16 @@ public class LibItemPT {
 
     @JsonProperty("properties")
     private List<CoreKeyValuePT> properties = new ArrayList<CoreKeyValuePT>();
+    @JsonProperty("resourceType")
+    private ResourceTypeEnum resourceType = null;
+    @JsonProperty("state")
+    private StateEnum state = null;
+    @JsonProperty("stream")
+    private String stream = null;
+    @JsonProperty("tags")
+    private List<String> tags = new ArrayList<String>();
+    @JsonProperty("track")
+    private LibTrackPT track = null;
 
     public Long getId() {
         return id;
@@ -60,99 +70,6 @@ public class LibItemPT {
     public void setId(Long id) {
         this.id = id;
     }
-
-    /**
-     * Gets or Sets resourceType
-     */
-    public enum ResourceTypeEnum {
-        AUDIO("IT_AUDIO"),
-
-        VIDEO("IT_VIDEO"),
-
-        COMMAND("IT_COMMAND"),
-
-        OTHER("IT_OTHER");
-
-        private String value;
-
-        ResourceTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        @JsonCreator
-        public static ResourceTypeEnum fromValue(String text) {
-            for (ResourceTypeEnum b : ResourceTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-    }
-
-    @JsonProperty("resourceType")
-    private ResourceTypeEnum resourceType = null;
-
-    /**
-     * Gets or Sets state
-     */
-    public enum StateEnum {
-        NEW("IS_NEW"),
-
-        POSTPROCESS("IS_POSTPROCESS"),
-
-        ENABLED("IS_ENABLED"),
-
-        DISABLED("IS_DISABLED"),
-
-        ARCHIVED("IS_ARCHIVED"),
-
-        DELETED("IS_DELETED"),
-
-        ERROR("IS_ERROR"),
-
-        OTHER("IS_OTHER");
-
-        private String value;
-
-        StateEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        @JsonCreator
-        public static StateEnum fromValue(String text) {
-            for (StateEnum b : StateEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-    }
-
-    @JsonProperty("state")
-    private StateEnum state = null;
-
-    @JsonProperty("stream")
-    private String stream = null;
-
-    @JsonProperty("tags")
-    private List<String> tags = new ArrayList<String>();
-
-    @JsonProperty("track")
-    private LibTrackPT track = null;
 
     public LibItemPT album(LibAlbumPT album) {
         this.album = album;
@@ -483,7 +400,6 @@ public class LibItemPT {
         this.track = track;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -514,7 +430,7 @@ public class LibItemPT {
 
     @Override
     public int hashCode() {
-        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, resourceType, state, stream, tags, track,id);
+        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, resourceType, state, stream, tags, track, id);
     }
 
     @Override
@@ -551,6 +467,84 @@ public class LibItemPT {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    /**
+     * Gets or Sets resourceType
+     */
+    public enum ResourceTypeEnum {
+        AUDIO("IT_AUDIO"),
+
+        VIDEO("IT_VIDEO"),
+
+        COMMAND("IT_COMMAND"),
+
+        OTHER("IT_OTHER");
+
+        private String value;
+
+        ResourceTypeEnum(String value) {
+            this.value = value;
+        }
+
+        @JsonCreator
+        public static ResourceTypeEnum fromValue(String text) {
+            for (ResourceTypeEnum b : ResourceTypeEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
+    }
+
+    /**
+     * Gets or Sets state
+     */
+    public enum StateEnum {
+        NEW("IS_NEW"),
+
+        POSTPROCESS("IS_POSTPROCESS"),
+
+        ENABLED("IS_ENABLED"),
+
+        DISABLED("IS_DISABLED"),
+
+        ARCHIVED("IS_ARCHIVED"),
+
+        DELETED("IS_DELETED"),
+
+        ERROR("IS_ERROR"),
+
+        OTHER("IS_OTHER");
+
+        private String value;
+
+        StateEnum(String value) {
+            this.value = value;
+        }
+
+        @JsonCreator
+        public static StateEnum fromValue(String text) {
+            for (StateEnum b : StateEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
     }
 }
 
