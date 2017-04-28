@@ -1,11 +1,12 @@
-package io.protone.custom.service;
+package io.protone.service.cor;
 
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
+import io.protone.custom.service.CorNetworkService;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.domain.CorChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +28,8 @@ public class CorChannelService {
     @Inject
     private CorNetworkService networkService;
 
-    public List<CorChannel> findAllChannel() {
-        return channelRepository.findAll();
+    public List<CorChannel> findAllChannel(CorNetwork network, Pageable pageable) {
+        return channelRepository.findAllByNetwork(network, pageable);
     }
 
     public CorChannel findChannel(String networkShortcut, String channelShortcut) {
@@ -44,7 +45,7 @@ public class CorChannelService {
         return channelRepository.saveAndFlush(channel);
     }
 
-    public CorChannel findChannelByNetworkShortcutAndChannelShortcut(String networkShortcut, String channelShortcut) {
+    private CorChannel findChannelByNetworkShortcutAndChannelShortcut(String networkShortcut, String channelShortcut) {
         CorNetwork networkDB = networkService.findNetwork(networkShortcut);
         if (networkDB == null)
             return null;
@@ -53,8 +54,5 @@ public class CorChannelService {
         return channel;
     }
 
-    public CorChannel getChannel(String networkShortcut, String channelShortcut) {
-        return findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
-    }
 
 }

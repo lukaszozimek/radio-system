@@ -47,6 +47,7 @@ public class CorChannel implements Serializable {
 
     @ManyToMany(mappedBy = "channels")
     @JsonIgnore
+    @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorUser> channelUsers = new HashSet<>();
 

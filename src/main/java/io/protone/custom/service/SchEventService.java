@@ -8,6 +8,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.SchTemplate;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomSchTemplateRepository;
+import io.protone.service.cor.CorChannelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class SchEventService {
     private BlockUtils blockUtils;
 
     public SchEventPT randomTemplate(String networkShortcut, String channelShortcut, String templateName) {
-        CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
 
         return new SchEventPT()
           //  .channelId(channelDB.getId())
@@ -54,7 +55,7 @@ public class SchEventService {
 
     public SchEventPT getTemplateByChannelAndShortcut(String networkShortcut, String channelShortcut, String templateName) {
         SchEventPT result = null;
-        CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         Optional<SchTemplate> optionalTemplateDB = templateRepository.findByChannelAndName(channelDB, templateName);
 
         if (optionalTemplateDB.isPresent()) {
@@ -65,7 +66,7 @@ public class SchEventService {
     }
 
     public List<SchEventPT> getTemplates(String networkShortcut, String channelShortcut) {
-        CorChannel channelDB = channelService.findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         List<SchTemplate> resultsDB = templateRepository.findByChannel(channelDB);
         return templateMapper.DBsToDTOs(resultsDB);
     }

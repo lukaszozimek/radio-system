@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.channel.impl;
 
-import io.protone.custom.service.CorChannelService;
+import io.protone.service.cor.CorChannelService;
 import io.protone.custom.service.CorNetworkService;
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.service.mapper.CorChannelMapper;
@@ -75,7 +75,7 @@ public class ApiChannelImpl implements ApiChannel {
     public ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORChannels");
-        List<CorChannel> corChannels = channelService.findAllChannel();
+        List<CorChannel> corChannels = channelService.findAllChannel(networkService.findNetwork(networkShortcut), pagable);
         return ResponseEntity.ok()
             .body(customCORChannelMapper.DBs2DTOs(corChannels));
     }

@@ -9,6 +9,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
+import io.protone.service.cor.CorChannelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class SchPlaylistService {
     private BlockUtils blockUtils;
 
     public SchPlaylistPT randomPlaylist(String networkShortcut, String channelShortcut, String date) {
-        CorChannel channelDB = channelService.getChannel(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         LocalDate localDate = LocalDate.parse(date);
 
         return new SchPlaylistPT()
@@ -103,7 +103,7 @@ public class SchPlaylistService {
     public SchPlaylistPT getPlaylistByChannelAndDate(String networkShortcut, String channelShortcut, String date) {
 
         SchPlaylistPT result = null;
-        CorChannel channelDB = channelService.getChannel(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         Optional<SchPlaylist> optionalPlaylist = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
         if (optionalPlaylist.isPresent()) {
             result = playlistMapper.DBToDTO(optionalPlaylist.get());
