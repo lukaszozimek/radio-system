@@ -1,6 +1,7 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.*;
+import io.protone.custom.service.mapper.CustomCorPersonMapper;
 import io.protone.domain.*;
 import io.protone.service.mapper.CorAddressMapper;
 import io.protone.service.mapper.CorContactMapper;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 
 @Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CustomCorPersonMapper.class})
-public interface CustomCrmContactMapper {
+public interface CrmContactMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
     @Mapping(source = "keeper", target = "account")

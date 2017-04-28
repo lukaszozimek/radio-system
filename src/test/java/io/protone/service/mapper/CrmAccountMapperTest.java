@@ -1,13 +1,8 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.service.dto.LibMarkerPT;
-import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.LibMarker;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +25,9 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class CustomCrmAccountMapperTest {
+public class CrmAccountMapperTest {
     @Autowired
-    private CustomCrmAccountMapper customCrmAccountMapper;
+    private CrmAccountMapper customCrmAccountMapper;
 
     private CrmAccount crmAccount;
 
@@ -60,9 +55,19 @@ public class CustomCrmAccountMapperTest {
     public void DB2DTO() throws Exception {
         CrmAccountPT dto = customCrmAccountMapper.DB2DTO(crmAccount);
 
+        assertNotNull(dto.getArea());
+        assertNotNull(dto.getSize());
+        assertNotNull(dto.getPerson());
+        assertNotNull(dto.getAccount());
+        assertNotNull(dto.getAddres());
+        assertNotNull(dto.getRange());
+        assertNotNull(dto.getIndustry());
         assertNotNull(dto.getId());
+        assertNotNull(dto.getShortName());
         assertNotNull(dto.getName());
-
+        assertNotNull(dto.getPaymentDelay());
+        assertNotNull(dto.getVatNumber());
+        assertNotNull(dto.getTasks());
     }
 
     @Test
@@ -73,8 +78,19 @@ public class CustomCrmAccountMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
 
+            assertNotNull(dto.getArea());
+            assertNotNull(dto.getSize());
+            assertNotNull(dto.getPerson());
+            assertNotNull(dto.getAccount());
+            assertNotNull(dto.getAddres());
+            assertNotNull(dto.getRange());
+            assertNotNull(dto.getIndustry());
             assertNotNull(dto.getId());
+            assertNotNull(dto.getShortName());
             assertNotNull(dto.getName());
+            assertNotNull(dto.getPaymentDelay());
+            assertNotNull(dto.getVatNumber());
+            assertNotNull(dto.getTasks());
 
         });
     }
@@ -86,10 +102,21 @@ public class CustomCrmAccountMapperTest {
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
-            assertNotNull(entity.getId());
-            assertNotNull(entity.getName());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getArea());
+            assertNotNull(entity.getSize());
+            assertNotNull(entity.getPerson());
+            assertNotNull(entity.getAddres());
+            assertNotNull(entity.getRange());
+            assertNotNull(entity.getIndustry());
+            assertNotNull(entity.getKeeper());
+            assertNotNull(entity.getId());
+            assertNotNull(entity.getShortName());
+            assertNotNull(entity.getName());
+            assertNotNull(entity.getVatNumber());
+            assertNotNull(entity.getPaymentDelay());
+            assertNotNull(entity.getTasks());
+            assertNotNull(entity.getNetwork());
 
 
         });
@@ -100,26 +127,21 @@ public class CustomCrmAccountMapperTest {
         CrmAccount entity = customCrmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
 
 
+        assertNotNull(entity.getArea());
+        assertNotNull(entity.getSize());
+        assertNotNull(entity.getPerson());
+        assertNotNull(entity.getAddres());
+        assertNotNull(entity.getRange());
+        assertNotNull(entity.getIndustry());
+        assertNotNull(entity.getKeeper());
         assertNotNull(entity.getId());
+        assertNotNull(entity.getShortName());
         assertNotNull(entity.getName());
-
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getVatNumber());
+        assertNotNull(entity.getPaymentDelay());
+        assertNotNull(entity.getTasks());
+        assertNotNull(entity.getNetwork());
     }
 
-    @Test
-    public void traDB2DTO() throws Exception {
-    }
-
-    @Test
-    public void traDBs2DTOs() throws Exception {
-    }
-
-    @Test
-    public void traDTO2DB() throws Exception {
-    }
-
-    @Test
-    public void traDTOs2DBs() throws Exception {
-    }
 
 }

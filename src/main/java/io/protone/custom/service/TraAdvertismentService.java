@@ -2,8 +2,8 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.service.mapper.CorDictionaryMapper;
-import io.protone.custom.service.mapper.CustomCrmAccountMapper;
-import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
+import io.protone.service.mapper.CrmAccountMapper;
+import io.protone.service.mapper.TraAdvertismentMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;
@@ -31,7 +31,7 @@ public class TraAdvertismentService {
     private final Logger log = LoggerFactory.getLogger(TraAdvertismentService.class);
 
     @Inject
-    private CustomTRAAdvertismentMapper traAdvertismentMapper;
+    private TraAdvertismentMapper traAdvertismentMapper;
 
     @Inject
     private CustomTraAdvertisementRepository traAdvertisementRepository;
@@ -40,7 +40,7 @@ public class TraAdvertismentService {
     private CorDictionaryMapper corDictionaryMapper;
 
     @Inject
-    private CustomCrmAccountMapper customCrmAccountMapper;
+    private CrmAccountMapper customCrmAccountMapper;
 
     @Inject
     private LibMediaItemRepository libMediaItemRepository;

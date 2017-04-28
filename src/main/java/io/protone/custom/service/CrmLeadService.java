@@ -2,7 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.custom.service.mapper.CustomCrmLeadMapper;
+import io.protone.service.mapper.CrmLeadMapper;
 import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
@@ -28,7 +28,7 @@ public class CrmLeadService {
     private final Logger log = LoggerFactory.getLogger(CrmLeadService.class);
 
     @Inject
-    private CustomCrmLeadMapper customCrmLeadMapper;
+    private CrmLeadMapper customCrmLeadMapper;
 
     @Inject
     private CustomCrmLeadRepository crmLeadRepository;

@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.TraCustomerService;
 import io.protone.custom.service.dto.CorDictionaryPT;
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by lukaszozimek on 21.01.2017.
  */
 @Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, LibItemMapper.class})
-public interface CustomTRAAdvertismentMapper {
+public interface TraAdvertismentMapper {
     @Mapping(source = "mediaItem", target = "mediaItemId")
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "type", target = "typeId")

@@ -1,33 +1,16 @@
 package io.protone.service.mapper;
 
-import io.protone.custom.service.TraCustomerService;
-import io.protone.custom.service.dto.CorDictionaryPT;
-import io.protone.custom.service.dto.SchEmissionPT;
-import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.custom.service.dto.thin.SchLibItemThinPT;
-import io.protone.custom.service.dto.thin.TraAdvertisementThinPT;
-import io.protone.custom.service.dto.thin.TraCustomerThinPT;
-import io.protone.custom.service.mapper.CustomCrmAccountMapper;
-import io.protone.custom.service.mapper.CustomTRAAdvertismentMapper;
 import io.protone.domain.*;
-import io.protone.service.dto.TraOrderDTO;
-import io.protone.service.mapper.CorDictionaryMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, CustomTRAAdvertismentMapper.class, CustomCrmAccountMapper.class})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertismentMapper.class, CrmAccountMapper.class})
 public interface TraOrderMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")

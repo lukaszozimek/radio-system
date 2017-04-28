@@ -2,7 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.custom.service.mapper.CustomCrmAccountMapper;
+import io.protone.service.mapper.CrmAccountMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.CustomCorAddressRepository;
 import io.protone.repository.custom.CustomCorContactRepository;
@@ -34,7 +34,7 @@ public class TraCustomerService {
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     @Inject
-    private CustomCrmAccountMapper customCrmAccountMapper;
+    private CrmAccountMapper customCrmAccountMapper;
 
     @Inject
     private CustomCorContactRepository corContactRepository;

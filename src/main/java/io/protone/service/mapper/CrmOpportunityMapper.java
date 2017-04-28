@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.domain.*;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by lukaszozimek on 18.01.2017.
  */
 @Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class})
-public interface CustomCrmOpportunityMapper {
+public interface CrmOpportunityMapper {
 
 
     @Mapping(source = "stage", target = "stage")

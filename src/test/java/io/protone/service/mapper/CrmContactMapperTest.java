@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.domain.CorNetwork;
@@ -18,9 +18,9 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by lukaszozimek on 28.04.2017.
  */
-public class CustomCrmContactMapperTest {
+public class CrmContactMapperTest {
     @Autowired
-    private CustomCrmContactMapper customCrmContactMapper;
+    private CrmContactMapper customCrmContactMapper;
 
     private CrmContact crmContact;
 
@@ -47,7 +47,19 @@ public class CustomCrmContactMapperTest {
         CrmContactPT dto = customCrmContactMapper.DB2DTO(crmContact);
 
         assertNotNull(dto.getId());
+
+        assertNotNull(dto.getArea());
+        assertNotNull(dto.getSize());
+        assertNotNull(dto.getPerson());
+        assertNotNull(dto.getAccount());
+        assertNotNull(dto.getAddres());
+        assertNotNull(dto.getRange());
+        assertNotNull(dto.getIndustry());
+        assertNotNull(dto.getShortName());
         assertNotNull(dto.getName());
+        assertNotNull(dto.getPaymentDelay());
+        assertNotNull(dto.getVatNumber());
+        assertNotNull(dto.getTasks());
 
     }
 
@@ -58,9 +70,20 @@ public class CustomCrmContactMapperTest {
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-
             assertNotNull(dto.getId());
+
+            assertNotNull(dto.getArea());
+            assertNotNull(dto.getSize());
+            assertNotNull(dto.getPerson());
+            assertNotNull(dto.getAccount());
+            assertNotNull(dto.getAddres());
+            assertNotNull(dto.getRange());
+            assertNotNull(dto.getIndustry());
+            assertNotNull(dto.getShortName());
             assertNotNull(dto.getName());
+            assertNotNull(dto.getPaymentDelay());
+            assertNotNull(dto.getVatNumber());
+            assertNotNull(dto.getTasks());
 
         });
     }
@@ -72,12 +95,21 @@ public class CustomCrmContactMapperTest {
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
+
             assertNotNull(entity.getId());
+            assertNotNull(entity.getArea());
+            assertNotNull(entity.getSize());
+            assertNotNull(entity.getPerson());
+            assertNotNull(entity.getAddres());
+            assertNotNull(entity.getRange());
+            assertNotNull(entity.getIndustry());
+            assertNotNull(entity.getKeeper());
+            assertNotNull(entity.getShortName());
+            assertNotNull(entity.getPaymentDelay());
             assertNotNull(entity.getName());
-
+            assertNotNull(entity.getVatNumber());
+            assertNotNull(entity.getTasks());
             assertNotNull(entity.getNetwork());
-
-
         });
     }
 
@@ -86,7 +118,18 @@ public class CustomCrmContactMapperTest {
         CrmContact entity = customCrmContactMapper.DTO2DB(crmContactPT, corNetwork);
 
         assertNotNull(entity.getId());
+        assertNotNull(entity.getArea());
+        assertNotNull(entity.getSize());
+        assertNotNull(entity.getPerson());
+        assertNotNull(entity.getAddres());
+        assertNotNull(entity.getRange());
+        assertNotNull(entity.getIndustry());
+        assertNotNull(entity.getKeeper());
+        assertNotNull(entity.getShortName());
+        assertNotNull(entity.getPaymentDelay());
         assertNotNull(entity.getName());
+        assertNotNull(entity.getVatNumber());
+        assertNotNull(entity.getTasks());
         assertNotNull(entity.getNetwork());
     }
 

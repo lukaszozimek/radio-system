@@ -1,4 +1,4 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmOpportunityPT;
@@ -25,9 +25,9 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class CustomCrmOpportunityMapperTest {
+public class CrmOpportunityMapperTest {
     @Autowired
-    private CustomCrmOpportunityMapper customCrmOpportunityMapper;
+    private CrmOpportunityMapper customCrmOpportunityMapper;
 
     private CrmOpportunity crmOpportunity;
 
@@ -52,8 +52,15 @@ public class CustomCrmOpportunityMapperTest {
         CrmOpportunityPT dto = customCrmOpportunityMapper.DB2DTO(crmOpportunity);
 
         assertNotNull(dto.getId());
+        assertNotNull(dto.getStage());
+        assertNotNull(dto.getAccountId());
+        assertNotNull(dto.getLeadId());
+        assertNotNull(dto.getOpportunityOwner());
+        assertNotNull(dto.getContactId());
         assertNotNull(dto.getName());
-
+        assertNotNull(dto.getLastTry());
+        assertNotNull(dto.getCloseDate());
+        assertNotNull(dto.getTasks());
     }
 
     @Test
@@ -65,8 +72,15 @@ public class CustomCrmOpportunityMapperTest {
         dtos.stream().forEach(dto -> {
 
             assertNotNull(dto.getId());
+            assertNotNull(dto.getStage());
+            assertNotNull(dto.getAccountId());
+            assertNotNull(dto.getLeadId());
+            assertNotNull(dto.getOpportunityOwner());
+            assertNotNull(dto.getContactId());
             assertNotNull(dto.getName());
-
+            assertNotNull(dto.getLastTry());
+            assertNotNull(dto.getCloseDate());
+            assertNotNull(dto.getTasks());
         });
     }
 
@@ -77,11 +91,19 @@ public class CustomCrmOpportunityMapperTest {
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
+
             assertNotNull(entity.getId());
+            assertNotNull(entity.getAccount());
+            assertNotNull(entity.getStage());
+            assertNotNull(entity.getKeeper());
+            assertNotNull(entity.getContact());
+            assertNotNull(entity.getLead());
             assertNotNull(entity.getName());
+            assertNotNull(entity.getLastTry());
+            assertNotNull(entity.getCloseDate());
+            assertNotNull(entity.getTasks());
 
             assertNull(entity.getNetwork());
-
 
         });
     }
@@ -92,21 +114,18 @@ public class CustomCrmOpportunityMapperTest {
 
 
         assertNotNull(entity.getId());
+        assertNotNull(entity.getAccount());
+        assertNotNull(entity.getStage());
+        assertNotNull(entity.getKeeper());
+        assertNotNull(entity.getContact());
+        assertNotNull(entity.getLead());
         assertNotNull(entity.getName());
+        assertNotNull(entity.getLastTry());
+        assertNotNull(entity.getCloseDate());
+        assertNotNull(entity.getTasks());
 
         assertNull(entity.getNetwork());
     }
 
-    @Test
-    public void crmContactFromId() throws Exception {
-    }
-
-    @Test
-    public void crmAccountFromId() throws Exception {
-    }
-
-    @Test
-    public void crmLeadFromId() throws Exception {
-    }
 
 }

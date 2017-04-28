@@ -40,7 +40,6 @@ public class CorChannelService {
     }
 
     public CorChannel save(CorChannel channel) {
-
         log.debug("Persisting CorChannel: {}", channel);
         return channelRepository.saveAndFlush(channel);
     }

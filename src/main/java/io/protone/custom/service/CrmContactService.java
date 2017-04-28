@@ -2,8 +2,8 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.service.mapper.CrmContactMapper;
 import io.protone.service.mapper.CrmTaskMapper;
-import io.protone.custom.service.mapper.CustomCrmContactMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class CrmContactService {
     private final Logger log = LoggerFactory.getLogger(CrmContactService.class);
 
     @Inject
-    private CustomCrmContactMapper customCrmContactMapper;
+    private CrmContactMapper customCrmContactMapper;
 
     @Inject
     private CustomCrmContactRepository crmContactRepository;

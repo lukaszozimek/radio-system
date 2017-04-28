@@ -2,7 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.custom.service.mapper.CustomCrmAccountMapper;
+import io.protone.service.mapper.CrmAccountMapper;
 import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
@@ -30,7 +30,7 @@ public class CrmCustomerService {
     private CustomCrmAccountRepositoryEx accountRepository;
 
     @Inject
-    private CustomCrmAccountMapper crmAccountMapper;
+    private CrmAccountMapper crmAccountMapper;
 
     @Inject
     private CustomCorAddressRepository addressRepository;

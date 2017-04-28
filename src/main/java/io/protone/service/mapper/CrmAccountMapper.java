@@ -1,7 +1,8 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.*;
 import io.protone.custom.service.dto.thin.TraCustomerThinPT;
+import io.protone.custom.service.mapper.CustomCorPersonMapper;
 import io.protone.domain.*;
 import io.protone.service.mapper.CorAddressMapper;
 import io.protone.service.mapper.CorContactMapper;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by lukaszozimek on 21.01.2017.
  */
 @Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CustomCorPersonMapper.class})
-public interface CustomCrmAccountMapper {
+public interface CrmAccountMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
     @Mapping(source = "keeper", target = "account")

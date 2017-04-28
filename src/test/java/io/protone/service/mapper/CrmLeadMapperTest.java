@@ -1,13 +1,8 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmLeadPT;
-import io.protone.custom.service.dto.LibMarkerPT;
-import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmLead;
-import io.protone.domain.LibMarker;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +25,9 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class CustomCrmLeadMapperTest {
+public class CrmLeadMapperTest {
     @Autowired
-    private CustomCrmLeadMapper customCrmLeadMapper;
+    private CrmLeadMapper customCrmLeadMapper;
 
     private CrmLead crmLead;
 
@@ -59,7 +54,19 @@ public class CustomCrmLeadMapperTest {
     public void DB2DTO() throws Exception {
         CrmLeadPT dto = customCrmLeadMapper.DB2DTO(crmLead);
 
+
+        assertNotNull(dto.getArea());
+        assertNotNull(dto.getStatus());
+        assertNotNull(dto.getSource());
+        assertNotNull(dto.getPerson());
+        assertNotNull(dto.getOwner());
+        assertNotNull(dto.getAddres());
+        assertNotNull(dto.getIndustry());
         assertNotNull(dto.getId());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getShortname());
+        assertNotNull(dto.getDescription());
+        assertNotNull(dto.getTasks());
         assertNotNull(dto.getName());
 
     }
@@ -72,7 +79,18 @@ public class CustomCrmLeadMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
 
+            assertNotNull(dto.getArea());
+            assertNotNull(dto.getStatus());
+            assertNotNull(dto.getSource());
+            assertNotNull(dto.getPerson());
+            assertNotNull(dto.getOwner());
+            assertNotNull(dto.getAddres());
+            assertNotNull(dto.getIndustry());
             assertNotNull(dto.getId());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getShortname());
+            assertNotNull(dto.getDescription());
+            assertNotNull(dto.getTasks());
             assertNotNull(dto.getName());
 
         });
@@ -85,11 +103,22 @@ public class CustomCrmLeadMapperTest {
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
+
             assertNotNull(entity.getId());
+            assertNotNull(entity.getKeeper());
+            assertNotNull(entity.getArea());
+            assertNotNull(entity.getPerson());
+            assertNotNull(entity.getAddres());
+            assertNotNull(entity.getIndustry());
+            assertNotNull(entity.getLeadSource());
+            assertNotNull(entity.getLeadStatus());
+            assertNotNull(entity.getShortname());
             assertNotNull(entity.getName());
+            assertNotNull(entity.getDescription());
+            assertNotNull(entity.getTasks());
 
-            assertNull(entity.getNetwork());
 
+            assertNotNull(entity.getNetwork());
 
         });
     }
@@ -100,9 +129,21 @@ public class CustomCrmLeadMapperTest {
 
 
         assertNotNull(entity.getId());
-        assertNotNull(entity.getName());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getKeeper());
+        assertNotNull(entity.getArea());
+        assertNotNull(entity.getPerson());
+        assertNotNull(entity.getAddres());
+        assertNotNull(entity.getIndustry());
+        assertNotNull(entity.getLeadSource());
+        assertNotNull(entity.getLeadStatus());
+        assertNotNull(entity.getShortname());
+        assertNotNull(entity.getName());
+        assertNotNull(entity.getDescription());
+        assertNotNull(entity.getTasks());
+
+
+        assertNotNull(entity.getNetwork());
     }
 
 }

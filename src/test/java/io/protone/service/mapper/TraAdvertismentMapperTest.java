@@ -1,12 +1,8 @@
-package io.protone.custom.service.mapper;
+package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibMarkerPT;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.domain.LibMarker;
 import io.protone.domain.TraAdvertisement;
-import io.protone.domain.TraOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,11 +25,11 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class CustomTRAAdvertismentMapperTest {
+public class TraAdvertismentMapperTest {
 
 
     @Autowired
-    private CustomTRAAdvertismentMapper customTRAAdvertismentMapper;
+    private TraAdvertismentMapper customTRAAdvertismentMapper;
 
     private TraAdvertisement traAdvertisement;
 
@@ -58,8 +54,12 @@ public class CustomTRAAdvertismentMapperTest {
         TraAdvertisementPT dto = customTRAAdvertismentMapper.DB2DTO(traAdvertisement);
 
         assertNotNull(dto.getId());
+        assertNotNull(dto.getMediaItemId());
+        assertNotNull(dto.getIndustryId());
+        assertNotNull(dto.getTypeId());
+        assertNotNull(dto.getCustomerId());
         assertNotNull(dto.getName());
-
+        assertNotNull(dto.getDescription());
     }
 
     @Test
@@ -71,8 +71,12 @@ public class CustomTRAAdvertismentMapperTest {
         dtos.stream().forEach(dto -> {
 
             assertNotNull(dto.getId());
+            assertNotNull(dto.getMediaItemId());
+            assertNotNull(dto.getIndustryId());
+            assertNotNull(dto.getTypeId());
+            assertNotNull(dto.getCustomerId());
             assertNotNull(dto.getName());
-
+            assertNotNull(dto.getDescription());
         });
     }
 
@@ -83,12 +87,16 @@ public class CustomTRAAdvertismentMapperTest {
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
+
+            assertNotNull(entity.getId());
+            assertNotNull(entity.getCustomer());
+            assertNotNull(entity.getMediaItem());
+            assertNotNull(entity.getType());
+            assertNotNull(entity.getDescription());
             assertNotNull(entity.getId());
             assertNotNull(entity.getName());
 
             assertNull(entity.getNetwork());
-
-
         });
     }
 
@@ -98,16 +106,13 @@ public class CustomTRAAdvertismentMapperTest {
 
 
         assertNotNull(entity.getId());
+        assertNotNull(entity.getCustomer());
+        assertNotNull(entity.getMediaItem());
+        assertNotNull(entity.getType());
+        assertNotNull(entity.getDescription());
+        assertNotNull(entity.getId());
         assertNotNull(entity.getName());
 
         assertNull(entity.getNetwork());
-    }
-
-    @Test
-    public void traAdvertisementFromTraAdvertisementThinPT() throws Exception {
-    }
-
-    @Test
-    public void traAdvertisementThinPTFromTraAdvertisement() throws Exception {
     }
 }
