@@ -3,9 +3,7 @@ package io.protone.service.mapper;
 import io.protone.custom.service.dto.*;
 import io.protone.service.dto.thin.TraCustomerThinDTO;
 import io.protone.domain.*;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +44,11 @@ public interface CrmAccountMapper {
         return crmAccounts;
     }
 
+    @AfterMapping
+    default void crmAccountPTToCrmAccountAfterMapping(CrmAccountPT dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
+
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
     @Mapping(source = "keeper", target = "account")
@@ -75,6 +78,11 @@ public interface CrmAccountMapper {
             crmAccounts.add(traDTO2DB(dto, networkId));
         }
         return crmAccounts;
+    }
+
+    @AfterMapping
+    default void traCustomerPTToCrmAccountAfterMapping(TraCustomerPT dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
     }
 
     CrmAccount crmAccountFromTraCustomerThinPT(TraCustomerThinDTO id);

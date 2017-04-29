@@ -46,7 +46,7 @@ public class CrmOpportunityService {
     }
 
     public CrmOpportunityPT saveOpportunity(CrmOpportunityPT opportunityPT, CorNetwork corNetwork) {
-        CrmOpportunity crmOpportunity = customCrmOpportunityMapper.DTO2DB(opportunityPT);
+        CrmOpportunity crmOpportunity = customCrmOpportunityMapper.DTO2DB(opportunityPT, corNetwork);
         crmOpportunity.setNetwork(corNetwork);
 
         log.debug("Persisting CrmOpportunity: {}", crmOpportunity);

@@ -2,9 +2,7 @@ package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.*;
 import io.protone.domain.*;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +44,10 @@ public interface CrmLeadMapper {
         return crmLeads;
     }
 
+    @AfterMapping
+    default void crmLeadPTToCrmLeadAfterMapping(CrmLeadPT dto, @MappingTarget CrmLead entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
 }
 

@@ -1,13 +1,14 @@
 package io.protone.service.mapper;
 
+import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.domain.*;
 import io.protone.service.mapper.CorAddressMapper;
 import io.protone.service.mapper.CorDictionaryMapper;
 import io.protone.service.mapper.CrmTaskMapper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,10 +32,23 @@ public interface CrmOpportunityMapper {
     @Mapping(source = "contactId", target = "contact")
     @Mapping(source = "accountId", target = "account")
     @Mapping(source = "leadId", target = "lead")
-    CrmOpportunity DTO2DB(CrmOpportunityPT crmOpportunityDTO);
+    CrmOpportunity DTO2DB(CrmOpportunityPT crmOpportunityDTO, @Context CorNetwork corNetwork);
 
-    List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityPT> crmOpportunityDTOs);
+    @AfterMapping
+    default void crmOpportunityPTToCrmOpportunityAfterMapping(CrmOpportunityPT dto, @MappingTarget CrmOpportunity entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
+    default List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityPT> crmOpportunityDTO, CorNetwork corNetwork) {
+        List<CrmOpportunity> crmOpportunities = new ArrayList<>();
+        if (crmOpportunityDTO.isEmpty() || crmOpportunityDTO == null) {
+            return null;
+        }
+        for (CrmOpportunityPT dto : crmOpportunityDTO) {
+            crmOpportunities.add(DTO2DB(dto, corNetwork));
+        }
+        return crmOpportunities;
+    }
 
     default CrmContact crmContactFromId(Long id) {
         if (id == null) {
