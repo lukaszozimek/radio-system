@@ -1,6 +1,5 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;

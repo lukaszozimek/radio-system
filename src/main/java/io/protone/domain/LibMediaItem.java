@@ -5,6 +5,7 @@ import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ public class LibMediaItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @NotNull
@@ -60,43 +62,53 @@ public class LibMediaItem implements Serializable {
     private String description;
 
     @ManyToOne
+    @PodamExclude
     private LibLibrary library;
 
     @ManyToOne
+    @PodamExclude
     private LibLabel label;
 
     @ManyToOne
+    @PodamExclude
     private LibArtist artist;
 
     @ManyToOne
+    @PodamExclude
     private LibAlbum album;
 
     @ManyToOne
+    @PodamExclude
     private LibTrack track;
 
     @OneToMany(mappedBy = "author")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CorPerson> authors = new HashSet<>();
 
     @OneToMany(mappedBy = "composer")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CorPerson> composers = new HashSet<>();
 
     @OneToMany(mappedBy = "mediaItem")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<LibMarker> markers = new HashSet<>();
 
     @OneToMany(mappedBy = "tags")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CorTag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "libItemPropertyValue")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CorPropertyValue> properites = new HashSet<>();
 
     public Long getId() {

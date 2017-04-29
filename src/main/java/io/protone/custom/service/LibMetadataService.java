@@ -14,6 +14,7 @@ import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.CorPropertyKeyRepository;
 import io.protone.repository.CorPropertyValueRepository;
 import io.protone.repository.custom.CustomLibMediaItemRepository;
+import io.protone.service.library.LibMarkerService;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.XMPDM;
