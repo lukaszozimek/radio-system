@@ -1,4 +1,4 @@
-package io.protone.repository.custom;
+package io.protone.repository.crm;
 
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLead;

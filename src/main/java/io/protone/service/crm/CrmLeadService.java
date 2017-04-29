@@ -1,6 +1,8 @@
 package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
+import io.protone.repository.crm.CustomCrmLeadRepository;
+import io.protone.repository.crm.CustomCrmTaskRepository;
 import io.protone.web.rest.mapper.CrmLeadMapper;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.domain.*;

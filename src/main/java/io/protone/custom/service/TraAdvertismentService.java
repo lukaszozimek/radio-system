@@ -8,7 +8,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;
 import io.protone.repository.LibMediaItemRepository;
-import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
+import io.protone.repository.crm.CustomCrmAccountRepositoryEx;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

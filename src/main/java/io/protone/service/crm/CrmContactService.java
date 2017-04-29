@@ -2,6 +2,8 @@ package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
 import io.protone.domain.*;
+import io.protone.repository.crm.CustomCrmContactRepository;
+import io.protone.repository.crm.CustomCrmTaskRepository;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 17.01.2017.

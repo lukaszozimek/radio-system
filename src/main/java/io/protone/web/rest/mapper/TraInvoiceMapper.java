@@ -2,11 +2,14 @@ package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
 import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.custom.service.dto.TraOrderPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
+import io.protone.domain.TraOrder;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +29,24 @@ public interface TraInvoiceMapper {
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraInvoice DTO2DB(TraInvoicePT traInvoiceDTO);
+    TraInvoice DTO2DB(TraInvoicePT traInvoiceDTO, @Context CorNetwork corNetwork);
 
-    List<TraInvoice> DTOs2DBs(List<TraInvoicePT> traInvoiceDTOs);
+    default List<TraInvoice> DTOs2DBs(List<TraInvoicePT> traInvoiceDTOs, CorNetwork networkId) {
+        List<TraInvoice> traOrders = new ArrayList<>();
+        if (traInvoiceDTOs.isEmpty() || traInvoiceDTOs == null) {
+            return null;
+        }
+        for (TraInvoicePT dto : traInvoiceDTOs) {
+            traOrders.add(DTO2DB(dto, networkId));
+        }
+        return traOrders;
+    }
+
+    @AfterMapping
+    default void traInvoicePTToTraInvoiceAfterMapping(TraInvoicePT dto, @MappingTarget TraInvoice entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
+
     default LibMarkerPT.MarkerTypeEnum mapLibMarkerPT_MarkerTypeEnum(LibMarkerTypeEnum value) {
 
         if (value.compareTo(LibMarkerTypeEnum.MT_BASIC) == 0) {

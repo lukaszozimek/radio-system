@@ -14,5 +14,12 @@ import java.util.List;
 public interface CustomTraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
     List<TraInvoice> findByNetwork(CorNetwork network);
 
-    List<TraInvoice> findAllByNetwork(CorNetwork network, Pageable pageable);
+    List<TraInvoice> findAllByNetwork_Shortcut(String network, Pageable pageable);
+
+    void deleteByIdAndNetwork_Shortcut(Long id, String network);
+
+    TraInvoice findByIdAndNetwork_Shortcut(Long id, String network);
+
+    List<TraInvoice> findAllByCustomer_ShortAndNetwork_Shortcut(String customer, String network, Pageable pageable);
+
 }
