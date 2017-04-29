@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,26 +40,33 @@ public class CrmOpportunity implements Serializable {
     private Integer probability;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary stage;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
+    @PodamExclude
     private CrmContact contact;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount account;
 
     @ManyToOne
+    @PodamExclude
     private CrmLead lead;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @OneToMany(mappedBy = "opportunity")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CrmTask> tasks = new HashSet<>();
 
     public Long getId() {

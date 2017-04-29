@@ -2,6 +2,7 @@ package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmOpportunityPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,8 @@ public class CrmOpportunityMapperTest {
 
     private List<CrmOpportunity> crmOpportunities = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -44,6 +47,8 @@ public class CrmOpportunityMapperTest {
         crmOpportunities.add(crmOpportunity);
         crmOpportunityPT = factory.manufacturePojo(CrmOpportunityPT.class);
         crmOpportunityPTS.add(crmOpportunityPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
+
 
     }
 
@@ -86,7 +91,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityPTS);
+        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -110,7 +115,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityPT);
+        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityPT,corNetwork);
 
 
         assertNotNull(entity.getId());

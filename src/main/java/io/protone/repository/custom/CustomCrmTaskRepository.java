@@ -23,6 +23,8 @@ public interface CustomCrmTaskRepository extends JpaRepository<CrmTask, Long> {
 
     List<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork, Pageable pageable);
 
+    List<CrmTask> findAllByOpportunity_NameAndNetwork_Shortcut(String accountShortName, String corNetwork, Pageable pageable);
+
     //  List<CrmTask> findAllByLead_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 
 ///    List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);

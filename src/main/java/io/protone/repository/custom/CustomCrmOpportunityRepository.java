@@ -15,6 +15,12 @@ public interface CustomCrmOpportunityRepository extends JpaRepository<CrmOpportu
     List<CrmOpportunity> findByNetwork(CorNetwork network);
 
     void deleteByNameAndNetwork(String name, CorNetwork network);
-    List<CrmOpportunity> findAllByNetwork(CorNetwork network, Pageable pageable);
+
+    List<CrmOpportunity> findAllByNetwork_Shortcut(String network, Pageable pageable);
+
     CrmOpportunity findOneByNameAndNetwork(String name, CorNetwork network);
+
+    CrmOpportunity findOneByNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+
+    void deleteByNameAndNetwork_Shortcut(String shortcut, String corNetwork);
 }
