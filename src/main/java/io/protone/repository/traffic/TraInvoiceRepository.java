@@ -1,4 +1,4 @@
-package io.protone.repository.custom;
+package io.protone.repository.traffic;
 
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
@@ -11,7 +11,7 @@ import java.util.List;
  * Spring Data JPA repository for the TraInvoice entity.
  */
 @SuppressWarnings("unused")
-public interface CustomTraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
+public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
     List<TraInvoice> findByNetwork(CorNetwork network);
 
     List<TraInvoice> findAllByNetwork_Shortcut(String network, Pageable pageable);

@@ -1,4 +1,4 @@
-package io.protone.repository.custom;
+package io.protone.repository.traffic;
 
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
@@ -12,7 +12,7 @@ import java.util.List;
  * Spring Data JPA repository for the TraOrder entity.
  */
 @SuppressWarnings("unused")
-public interface CustomTraOrderRepository extends JpaRepository<TraOrder, Long> {
+public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
     List<TraOrder> findByNetwork(CorNetwork network);
 
     List<TraOrder> findByNetwork_Shortcut(String network, Pageable pageable);

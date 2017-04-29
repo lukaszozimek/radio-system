@@ -11,7 +11,7 @@ import java.util.List;
  * Spring Data JPA repository for the CrmContact entity.
  */
 @SuppressWarnings("unused")
-public interface CustomCrmContactRepository extends JpaRepository<CrmContact, Long> {
+public interface CrmContactRepository extends JpaRepository<CrmContact, Long> {
     CrmContact findOneByShortNameAndNetwork_Shortcut(String shortname, String network);
 
     List<CrmContact> findAllByNetwork_Shortcut(String network, Pageable pagable);

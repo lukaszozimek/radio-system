@@ -2,8 +2,8 @@ package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
 import io.protone.domain.*;
-import io.protone.repository.crm.CustomCrmContactRepository;
-import io.protone.repository.crm.CustomCrmTaskRepository;
+import io.protone.repository.crm.CrmContactRepository;
+import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +25,10 @@ public class CrmContactService {
 
 
     @Inject
-    private CustomCrmContactRepository crmContactRepository;
+    private CrmContactRepository crmContactRepository;
 
     @Inject
-    private CustomCrmTaskRepository crmTaskRepository;
+    private CrmTaskRepository crmTaskRepository;
 
     @Inject
     private CorPersonService corPersonService;

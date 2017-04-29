@@ -7,7 +7,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
 import io.protone.repository.TraOrderRepository;
-import io.protone.repository.crm.CustomCrmAccountRepositoryEx;
+import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.custom.CustomTraCampaignRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class TraCampaignService {
     private CustomTraCampaignRepository traCampaignRepository;
 
     @Inject
-    private CustomCrmAccountRepositoryEx crmAccountRepository;
+    private CrmAccountRepository crmAccountRepository;
 
     @Inject
     private CrmCustomerService traCustomerService;

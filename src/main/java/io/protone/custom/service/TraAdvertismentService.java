@@ -8,7 +8,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;
 import io.protone.repository.LibMediaItemRepository;
-import io.protone.repository.crm.CustomCrmAccountRepositoryEx;
+import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class TraAdvertismentService {
 
 
     @Inject
-    private CustomCrmAccountRepositoryEx crmAccountRepository;
+    private CrmAccountRepository crmAccountRepository;
 
     public List<TraAdvertisementPT> getAllAdvertisement(CorNetwork corNetwork) {
         return traAdvertisementRepository.findByNetwork(corNetwork).stream().map(traAdvertisement -> traAdvertismentMapper.DB2DTO(traAdvertisement)).collect(toList());

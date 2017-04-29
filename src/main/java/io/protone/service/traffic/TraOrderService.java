@@ -1,6 +1,6 @@
 package io.protone.service.traffic;
 
-import io.protone.repository.custom.CustomTraOrderRepository;
+import io.protone.repository.traffic.TraOrderRepository;
 import io.protone.domain.TraOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class TraOrderService {
     private final Logger log = LoggerFactory.getLogger(TraOrderService.class);
 
     @Inject
-    private CustomTraOrderRepository traOrderRepository;
+    private TraOrderRepository traOrderRepository;
 
     public List<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
         return traOrderRepository.findByNetwork_Shortcut(corNetwork, pageable);

@@ -1,11 +1,11 @@
 package io.protone.service.crm;
 
-import io.protone.repository.crm.CustomCrmTaskRepository;
+import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.web.rest.mapper.CrmOpportunityMapper;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
-import io.protone.repository.crm.CustomCrmOpportunityRepository;
+import io.protone.repository.crm.CrmOpportunityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ public class CrmOpportunityService {
     private final Logger log = LoggerFactory.getLogger(CrmOpportunityService.class);
 
     @Inject
-    private CustomCrmOpportunityRepository opportunityRepository;
+    private CrmOpportunityRepository opportunityRepository;
 
     @Inject
     private CrmOpportunityMapper customCrmOpportunityMapper;
@@ -35,7 +35,7 @@ public class CrmOpportunityService {
     private CrmTaskMapper customCrmTaskMapper;
 
     @Inject
-    private CustomCrmTaskRepository crmTaskRepository;
+    private CrmTaskRepository crmTaskRepository;
 
     public List<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
         return opportunityRepository.findAllByNetwork_Shortcut(corNetwork, pageable);

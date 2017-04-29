@@ -26,11 +26,11 @@ public class ApiNetworkTrafficCustomerInvoiceImpl implements ApiNetworkTrafficCu
 
     @Inject
     private TraInvoiceService traInvoiceService;
-    @Inject
-    private TraInvoiceMapper customTraInvoiceMapper;
 
     @Inject
     private CorNetworkService networkService;
+
+    @Inject
     private TraInvoiceMapper traInvoiceMapper;
 
     @Override

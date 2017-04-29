@@ -1,8 +1,8 @@
 package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
-import io.protone.repository.crm.CustomCrmLeadRepository;
-import io.protone.repository.crm.CustomCrmTaskRepository;
+import io.protone.repository.crm.CrmLeadRepository;
+import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.web.rest.mapper.CrmLeadMapper;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.domain.*;
@@ -30,13 +30,13 @@ public class CrmLeadService {
     private CrmLeadMapper customCrmLeadMapper;
 
     @Inject
-    private CustomCrmLeadRepository crmLeadRepository;
+    private CrmLeadRepository crmLeadRepository;
 
     @Inject
     private CustomCorAddressRepository addressRepository;
 
     @Inject
-    private CustomCrmTaskRepository crmTaskRepository;
+    private CrmTaskRepository crmTaskRepository;
 
     @Inject
     private CrmTaskMapper customCrmTaskMapper;

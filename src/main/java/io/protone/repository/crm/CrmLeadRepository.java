@@ -11,7 +11,7 @@ import java.util.List;
  * Spring Data JPA repository for the CrmLead entity.
  */
 @SuppressWarnings("unused")
-public interface CustomCrmLeadRepository extends JpaRepository<CrmLead, Long> {
+public interface CrmLeadRepository extends JpaRepository<CrmLead, Long> {
     void deleteByShortnameAndNetwork(String shortName, CorNetwork network);
 
     List<CrmLead> findByNetwork(CorNetwork network);

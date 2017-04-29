@@ -1,8 +1,8 @@
 package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
-import io.protone.repository.crm.CustomCrmAccountRepositoryEx;
-import io.protone.repository.crm.CustomCrmTaskRepository;
+import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
@@ -25,7 +25,7 @@ public class CrmCustomerService {
     private final Logger log = LoggerFactory.getLogger(CrmCustomerService.class);
 
     @Inject
-    private CustomCrmAccountRepositoryEx accountRepository;
+    private CrmAccountRepository accountRepository;
 
 
     @Inject
@@ -35,7 +35,7 @@ public class CrmCustomerService {
     private CorPersonService personService;
 
     @Inject
-    private CustomCrmTaskRepository crmTaskRepository;
+    private CrmTaskRepository crmTaskRepository;
 
     @Inject
     private CrmTaskMapper customCrmTaskMapper;

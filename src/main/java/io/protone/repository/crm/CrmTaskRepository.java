@@ -12,7 +12,7 @@ import java.util.List;
  * Spring Data JPA repository for the CrmTask entity.
  */
 @SuppressWarnings("unused")
-public interface CustomCrmTaskRepository extends JpaRepository<CrmTask, Long> {
+public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
     CrmTask findOneByIdAndNetwork(Long id, CorNetwork network);
 
     CrmTask findOneByIdAndNetwork_Shortcut(Long id, String network);

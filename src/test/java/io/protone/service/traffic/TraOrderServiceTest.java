@@ -5,8 +5,8 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraOrder;
 import io.protone.repository.CorNetworkRepository;
-import io.protone.repository.CrmAccountRepository;
-import io.protone.repository.custom.CustomTraOrderRepository;
+import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.traffic.TraOrderRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +20,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by lukaszozimek on 29/04/2017.
@@ -35,10 +33,11 @@ public class TraOrderServiceTest {
     private TraOrderService traOrderService;
 
     @Autowired
-    private CustomTraOrderRepository customTraOrderRepository;
+    private TraOrderRepository customTraOrderRepository;
 
     @Autowired
     private CorNetworkRepository corNetworkRepository;
+
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
