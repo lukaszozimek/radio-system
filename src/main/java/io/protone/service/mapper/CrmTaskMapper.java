@@ -15,13 +15,13 @@ import java.util.Set;
 @Mapper(componentModel = "spring", uses = {CorUserMapper.class})
 public interface CrmTaskMapper {
 
-    CrmTaskMapper INSTANCE = Mappers.getMapper(CrmTaskMapper.class);
-
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
     CrmTaskPT DB2DTO(CrmTask cORAddress);
 
     List<CrmTaskPT> DBs2DTOs(Set<CrmTask> cORAddresses);
+
+    List<CrmTaskPT> DBs2DTOs(List<CrmTask> cORAddresses);
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")

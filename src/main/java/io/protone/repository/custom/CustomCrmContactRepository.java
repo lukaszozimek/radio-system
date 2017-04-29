@@ -12,11 +12,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CustomCrmContactRepository extends JpaRepository<CrmContact, Long> {
-    CrmContact findOneByShortNameAndNetwork(String shortname, CorNetwork network);
+    CrmContact findOneByShortNameAndNetwork_Shortcut(String shortname, String network);
 
-    List<CrmContact> findByNetwork(CorNetwork network);
+    List<CrmContact> findAllByNetwork_Shortcut(String network, Pageable pagable);
 
-    List<CrmContact> findAllByNetwork(CorNetwork network, Pageable pagable);
-
-    void deleteByShortNameAndNetwork(String shortname, CorNetwork network);
+    void deleteByShortNameAndNetwork_Shortcut(String shortname, String network);
 }
