@@ -1,4 +1,4 @@
-package io.protone.service.mapper;
+package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfDiscountPT;
@@ -52,7 +52,7 @@ public class TraDiscountMapperTest {
     @Test
     public void DB2DTO() throws Exception {
         ConfDiscountPT dto = customTraDiscountMapper.DB2DTO(traDiscount);
-        
+
         assertNotNull(dto.getId());
         assertNotNull(dto.getValidFrom());
         assertNotNull(dto.getValidTo());
