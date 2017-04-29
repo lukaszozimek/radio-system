@@ -54,7 +54,6 @@ public class LibAlbumService {
 
         return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
     }
-
     public LibAlbum findOrSaveOne(LibAlbum libAlbum, LibArtist artist, CorNetwork network) {
         if (libAlbum == null) {
             libAlbum = new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_OTHER).network(network);

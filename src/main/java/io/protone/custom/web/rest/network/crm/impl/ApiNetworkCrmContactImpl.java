@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CrmContactService;
+import io.protone.service.crm.CrmContactService;
 import io.protone.domain.CrmContact;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmContactPT;

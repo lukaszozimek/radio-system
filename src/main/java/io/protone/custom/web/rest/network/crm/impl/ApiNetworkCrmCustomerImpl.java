@@ -1,10 +1,12 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
+import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.CrmCustomerService;
 import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.domain.CorNetwork;
+import io.protone.service.mapper.CrmAccountMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -28,6 +30,9 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     @Inject
     private CorNetworkService networkService;
 
+    @Inject
+    private CrmAccountMapper crmAccountMapper;
+
     @Override
     public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountPT, networkShortcut);
@@ -36,7 +41,10 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
         if (crmAccountPT.getId() == null) {
             return createCustomerUsingPOST(networkShortcut, crmAccountPT);
         }
-        return ResponseEntity.ok().body(crmCustomerService.saveCustomer(crmAccountPT, corNetwork));
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
+        CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
+        CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
@@ -46,7 +54,10 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.saveCustomer(crmAccountPT, corNetwork));
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
+        CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
+        CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
@@ -54,14 +65,19 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount, for Network: {}", networkShortcut);
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.getAllCustomer(corNetwork));
+        List<CrmAccount> entity = crmCustomerService.getAllCustomer(corNetwork);
+        List<CrmAccountPT> response = crmAccountMapper.DBs2DTOs(entity);
+
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<CrmAccountPT> getCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmAccount : {}, for Network: {}", shortName, networkShortcut);
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.getCustomer(shortName, corNetwork));
+        CrmAccount entity = crmCustomerService.getCustomer(shortName, corNetwork);
+        CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override

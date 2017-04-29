@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CrmContactService;
+import io.protone.service.crm.CrmContactService;
 import io.protone.domain.CrmTask;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
@@ -53,7 +53,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT);
-        CrmTask reposesEntity = crmContactService.updateContactTask(shortName, crmTask, networkShortcut);
+        CrmTask reposesEntity = crmContactService.updateContactTask(crmTask, shortName, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.ok().body(response);
 
@@ -69,7 +69,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT);
-        CrmTask reposesEntity = crmContactService.updateContactTask(shortName, crmTask, corNetwork.getShortcut());
+        CrmTask reposesEntity = crmContactService.updateContactTask(crmTask, shortName, corNetwork.getShortcut());
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.ok().body(response);
     }
@@ -79,8 +79,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", id, shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmContactService.deleteContactTask(shortName, id, corNetwork);
+        crmContactService.deleteContactTask(shortName, id, networkShortcut);
         return ResponseEntity.ok().build();
 
     }
@@ -90,7 +89,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
                                                                 @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", id, shortName, networkShortcut);
-        CrmTask reposesEntity = crmContactService.getTaskAssociatedWithContact(shortName, id, networkShortcut);
+        CrmTask reposesEntity = crmContactService.getTaskAssociatedWithContact(id, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.ok().body(response);
     }

@@ -17,12 +17,12 @@ public interface CustomCrmTaskRepository extends JpaRepository<CrmTask, Long> {
 
     CrmTask findOneByIdAndNetwork_Shortcut(Long id, String network);
 
-    List<CrmTask> findAllByContact_ShortNameAndNetwork(String crmContact, String corNetwork, Pageable pageable);
+    List<CrmTask> findAllByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 
 
     List<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 
-  //  List<CrmTask> findAllByLead_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
+    //  List<CrmTask> findAllByLead_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 
 ///    List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 
@@ -30,5 +30,5 @@ public interface CustomCrmTaskRepository extends JpaRepository<CrmTask, Long> {
 
     List<CrmTask> findByNetwork(CorNetwork network);
 
-    void deleteByIdAndNetwork(Long id, CorNetwork network);
+    void deleteByIdAndNetwork_Shortcut(Long id, String network);
 }

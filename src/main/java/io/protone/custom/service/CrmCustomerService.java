@@ -29,17 +29,12 @@ public class CrmCustomerService {
     @Inject
     private CustomCrmAccountRepositoryEx accountRepository;
 
-    @Inject
-    private CrmAccountMapper crmAccountMapper;
 
     @Inject
     private CustomCorAddressRepository addressRepository;
 
     @Inject
-    private CustomCorContactRepository corContactRepository;
-
-    @Inject
-    private CustomCorPersonRepository personRepository;
+    private CorPersonService personService;
 
     @Inject
     private CustomCrmTaskRepository crmTaskRepository;
@@ -47,30 +42,23 @@ public class CrmCustomerService {
     @Inject
     private CrmTaskMapper customCrmTaskMapper;
 
-    public List<CrmAccountPT> getAllCustomer(CorNetwork corNetwork) {
-        return accountRepository.findByNetwork(corNetwork).stream().map(crmAccount1 -> crmAccountMapper.DB2DTO(crmAccount1)).collect(toList());
+    public List<CrmAccount> getAllCustomer(CorNetwork corNetwork) {
+        return accountRepository.findByNetwork(corNetwork);
     }
 
-    public CrmAccountPT saveCustomer(CrmAccountPT crmAccountPT, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
+    public CrmAccount saveCustomer(CrmAccount crmAccount) {
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
-        CorAddress address = addressRepository.saveAndFlush(crmAccount.getAddres());
-
-        log.debug("Persisting CorPerson: {}", crmAccount.getPerson());
-        CorPerson person = personRepository.saveAndFlush(crmAccount.getPerson());
-
-        log.debug("Persisting CorContact: {}", crmAccount.getPerson().getContacts());
-        List<CorContact> corContact = corContactRepository.save(crmAccount.getPerson().getContacts());
-        crmAccount.getPerson().setContacts(corContact.stream().collect(Collectors.toSet()));
-
-        log.debug("Persisting Contact With Person");
-        corContact.stream().forEach(corContact1 -> corContactRepository.save(corContact1.person(person)));
-        crmAccount.setAddres(address);
-        crmAccount.person(person);
-
+        if (crmAccount.getAddres() != null) {
+            CorAddress address = addressRepository.save(crmAccount.getAddres());
+            crmAccount.setAddres(address);
+        }
+        if (crmAccount.getPerson() != null) {
+            CorPerson corPerson = personService.savePerson(crmAccount.getPerson());
+            crmAccount.person(corPerson);
+        }
         log.debug("Persisting CrmAccount: {}", crmAccount);
-        crmAccount = accountRepository.saveAndFlush(crmAccount);
-        return crmAccountMapper.DB2DTO(crmAccount);
+        crmAccount = accountRepository.save(crmAccount);
+        return crmAccount;
     }
 
     public void deleteCustomer(String shorName, CorNetwork corNetwork) {
@@ -78,8 +66,8 @@ public class CrmCustomerService {
     }
 
 
-    public CrmAccountPT getCustomer(String shortcut, CorNetwork corNetwork) {
-        return crmAccountMapper.DB2DTO(accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork));
+    public CrmAccount getCustomer(String shortcut, CorNetwork corNetwork) {
+        return accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
     }
 
     public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CorNetwork corNetwork) {
