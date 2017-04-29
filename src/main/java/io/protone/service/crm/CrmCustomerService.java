@@ -1,8 +1,6 @@
-package io.protone.custom.service;
+package io.protone.service.crm;
 
-import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.service.mapper.CrmAccountMapper;
+import io.protone.custom.service.CorPersonService;
 import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
@@ -14,9 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 17.01.2017.

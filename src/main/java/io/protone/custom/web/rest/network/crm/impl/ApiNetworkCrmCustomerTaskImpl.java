@@ -1,11 +1,10 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CrmCustomerService;
+import io.protone.service.crm.CrmCustomerService;
 import io.protone.domain.CrmTask;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmCustomerTask;
-import io.protone.domain.CorNetwork;
 import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
