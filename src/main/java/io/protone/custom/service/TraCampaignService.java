@@ -1,6 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.service.crm.CrmCustomerService;
 import io.protone.web.rest.mapper.TraCampaignMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
@@ -39,7 +40,7 @@ public class TraCampaignService {
     private CustomCrmAccountRepositoryEx crmAccountRepository;
 
     @Inject
-    private TraCustomerService traCustomerService;
+    private CrmCustomerService traCustomerService;
 
     @Inject
     private TraOrderRepository traOrderRepository;
