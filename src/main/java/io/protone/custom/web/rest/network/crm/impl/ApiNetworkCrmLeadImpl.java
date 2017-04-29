@@ -1,11 +1,13 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
-import io.protone.custom.service.CrmLeadService;
+import io.protone.service.crm.CrmLeadService;
+import io.protone.domain.CrmLead;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLead;
 import io.protone.domain.CorNetwork;
+import io.protone.service.mapper.CrmLeadMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -29,15 +31,20 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
     @Inject
     private CorNetworkService networkService;
 
+    @Inject
+    private CrmLeadMapper crmLeadMapper;
+
     @Override
     public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {
         log.debug("REST request to update CrmLead : {}, for Network: {}", crmLeadPT);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-
         if (crmLeadPT.getId() == null) {
             return createLeadUsingPOST(networkShortcut, crmLeadPT);
         }
-        return ResponseEntity.ok().body(crmLeadService.saveLead(crmLeadPT, corNetwork));
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CrmLead crmLead = crmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
+        CrmLead entity = crmLeadService.saveLead(crmLead);
+        CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
@@ -47,29 +54,35 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmLead", "idexists", "A new CrmLead cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.saveLead(crmLeadPT, corNetwork));
+        CrmLead crmLead = crmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
+        CrmLead entity = crmLeadService.saveLead(crmLead);
+        CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<List<CrmLeadPT>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmLead, for Network: {}", networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.getAllLeads(corNetwork));
+        List<CrmLead> entity = crmLeadService.getAllLeads(networkShortcut, pagable);
+        List<CrmLeadPT> response = crmLeadMapper.DBs2DTOs(entity);
+
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<CrmLeadPT> getLeadUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmLead : {}, for Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmLeadService.getLead(shortName, corNetwork));
+        CrmLead entity = crmLeadService.getLead(networkShortcut, shortName);
+        CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
+
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmLead : {}, for Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmLeadService.deleteLead(shortName, corNetwork);
+        crmLeadService.deleteLead(shortName, shortName);
         return ResponseEntity.ok().build();
     }
 }

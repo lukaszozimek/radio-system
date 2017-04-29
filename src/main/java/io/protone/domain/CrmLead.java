@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class CrmLead implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @Column(name = "name")
@@ -36,33 +38,42 @@ public class CrmLead implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorPerson person;
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorAddress addres;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary leadStatus;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary leadSource;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary industry;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary area;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @OneToMany(mappedBy = "lead")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CrmTask> tasks = new HashSet<>();
 
     public Long getId() {
