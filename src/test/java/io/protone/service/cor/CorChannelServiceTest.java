@@ -1,4 +1,4 @@
-package io.protone.service;
+package io.protone.service.cor;
 
 import io.protone.ProtoneApp;
 import io.protone.service.cor.CorChannelService;

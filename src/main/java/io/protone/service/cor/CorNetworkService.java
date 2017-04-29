@@ -1,6 +1,5 @@
-package io.protone.custom.service;
+package io.protone.service.cor;
 
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import org.slf4j.Logger;

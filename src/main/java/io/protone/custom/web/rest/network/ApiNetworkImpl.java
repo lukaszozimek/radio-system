@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.service.mapper.CorNetworkMapper;
 import io.protone.domain.CorNetwork;

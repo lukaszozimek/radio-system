@@ -1,6 +1,5 @@
 package io.protone.service.cor;
 
-import io.protone.custom.service.CorNetworkService;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.domain.CorChannel;

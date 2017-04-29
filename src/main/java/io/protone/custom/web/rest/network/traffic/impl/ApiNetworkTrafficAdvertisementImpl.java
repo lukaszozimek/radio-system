@@ -1,9 +1,8 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.TraAdvertismentService;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficAdvertisement;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.util.HeaderUtil;

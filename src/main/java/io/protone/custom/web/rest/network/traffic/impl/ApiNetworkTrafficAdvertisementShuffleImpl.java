@@ -1,10 +1,8 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.TraAdvertisementShuffleService;
-import io.protone.custom.service.dto.TraAdvertisementPT;
 import io.protone.custom.service.dto.TraShuffleAdvertisementPT;
-import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficAdvertisementShuffle;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

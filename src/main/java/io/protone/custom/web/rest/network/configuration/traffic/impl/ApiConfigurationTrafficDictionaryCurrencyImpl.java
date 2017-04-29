@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfCurrencyPT;
 import io.protone.service.mapper.CorCurrencyMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryCurrency;

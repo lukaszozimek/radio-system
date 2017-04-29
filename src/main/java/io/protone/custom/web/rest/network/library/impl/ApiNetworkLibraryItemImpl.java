@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.library.impl;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.LibItemService;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.web.rest.network.library.ApiNetworkLibraryItem;

@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.protone.service.mapper.ConfMusicLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogMusic;

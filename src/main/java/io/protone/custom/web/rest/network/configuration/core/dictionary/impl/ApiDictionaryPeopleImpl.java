@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfPersonPT;
 import io.protone.service.mapper.CorPersonMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryPeople;

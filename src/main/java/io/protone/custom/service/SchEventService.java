@@ -9,6 +9,7 @@ import io.protone.domain.SchTemplate;
 import io.protone.repository.custom.CustomCorChannelRepository;
 import io.protone.repository.custom.CustomSchTemplateRepository;
 import io.protone.service.cor.CorChannelService;
+import io.protone.service.cor.CorNetworkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

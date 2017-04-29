@@ -3,7 +3,7 @@ package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 import java.util.List;
 import java.util.Optional;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfCommercialLogPT;
 import io.protone.service.mapper.ConfCommercialLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogCommercial;

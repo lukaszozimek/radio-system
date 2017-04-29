@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.library.impl;
 
-import io.protone.custom.service.CorNetworkService;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.protone.service.mapper.CfgMarkerConfigurationMapper;
 import io.protone.custom.web.rest.network.configuration.library.ApiConfigurationLibraryMarker;
