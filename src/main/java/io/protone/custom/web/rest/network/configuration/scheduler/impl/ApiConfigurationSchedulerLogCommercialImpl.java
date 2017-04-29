@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfCommercialLogPT;
-import io.protone.service.mapper.ConfCommercialLogMapper;
+import io.protone.web.rest.mapper.ConfCommercialLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogCommercial;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;

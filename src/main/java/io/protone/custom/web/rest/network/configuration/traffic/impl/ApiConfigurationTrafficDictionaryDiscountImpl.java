@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfDiscountPT;
-import io.protone.service.mapper.TraDiscountMapper;
+import io.protone.web.rest.mapper.TraDiscountMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryDiscount;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;

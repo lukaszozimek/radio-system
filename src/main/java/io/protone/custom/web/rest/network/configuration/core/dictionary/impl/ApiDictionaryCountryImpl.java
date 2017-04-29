@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfCountryPt;
-import io.protone.service.mapper.CorCountryMapper;
+import io.protone.web.rest.mapper.CorCountryMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryCountry;
 import io.protone.domain.CorCountry;
 import io.protone.domain.CorNetwork;

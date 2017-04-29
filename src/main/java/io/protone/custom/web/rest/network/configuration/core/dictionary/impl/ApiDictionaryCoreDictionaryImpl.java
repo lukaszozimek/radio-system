@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CorDictionaryPT;
-import io.protone.service.mapper.CorDictionaryMapper;
+import io.protone.web.rest.mapper.CorDictionaryMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryCoreDictionary;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorDictionaryType;

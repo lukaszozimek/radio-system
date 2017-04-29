@@ -1,8 +1,8 @@
 package io.protone.service.crm;
 
 import io.protone.repository.custom.CustomCrmTaskRepository;
-import io.protone.service.mapper.CrmTaskMapper;
-import io.protone.service.mapper.CrmOpportunityMapper;
+import io.protone.web.rest.mapper.CrmTaskMapper;
+import io.protone.web.rest.mapper.CrmOpportunityMapper;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
 import io.protone.repository.custom.CustomCrmOpportunityRepository;

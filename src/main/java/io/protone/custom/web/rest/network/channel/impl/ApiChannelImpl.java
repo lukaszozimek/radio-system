@@ -3,7 +3,7 @@ package io.protone.custom.web.rest.network.channel.impl;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CoreChannelPT;
-import io.protone.service.mapper.CorChannelMapper;
+import io.protone.web.rest.mapper.CorChannelMapper;
 import io.protone.custom.web.rest.network.channel.ApiChannel;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;

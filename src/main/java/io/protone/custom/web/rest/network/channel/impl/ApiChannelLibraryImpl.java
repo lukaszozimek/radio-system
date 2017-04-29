@@ -4,7 +4,7 @@ import io.protone.service.library.LibLibraryService;
 import io.protone.custom.service.dto.LibraryPT;
 import io.protone.domain.CorNetwork;
 import io.protone.service.cor.CorNetworkService;
-import io.protone.service.mapper.LibLibraryMapper;
+import io.protone.web.rest.mapper.LibLibraryMapper;
 import io.protone.custom.web.rest.network.channel.ApiChannelLibrary;
 import io.protone.domain.LibLibrary;
 import org.slf4j.Logger;

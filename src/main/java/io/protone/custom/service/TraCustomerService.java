@@ -2,7 +2,7 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.service.mapper.CrmAccountMapper;
+import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.CustomCorAddressRepository;
 import io.protone.repository.custom.CustomCorContactRepository;

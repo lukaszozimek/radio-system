@@ -1,8 +1,8 @@
 package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
-import io.protone.service.mapper.CrmLeadMapper;
-import io.protone.service.mapper.CrmTaskMapper;
+import io.protone.web.rest.mapper.CrmLeadMapper;
+import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.domain.*;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;

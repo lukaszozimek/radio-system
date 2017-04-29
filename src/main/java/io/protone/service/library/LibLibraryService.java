@@ -1,6 +1,6 @@
 package io.protone.service.library;
 
-import io.protone.service.mapper.LibLibraryMapper;
+import io.protone.web.rest.mapper.LibLibraryMapper;
 import io.protone.domain.LibLibrary;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomLibLibraryRepository;

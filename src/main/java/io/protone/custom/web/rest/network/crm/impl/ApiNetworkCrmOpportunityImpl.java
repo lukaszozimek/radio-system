@@ -7,7 +7,7 @@ import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmOpportunity;
 import io.protone.domain.CorNetwork;
-import io.protone.service.mapper.CrmOpportunityMapper;
+import io.protone.web.rest.mapper.CrmOpportunityMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -85,7 +85,6 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
     @Override
     public ResponseEntity<Void> deleteOpportunityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmOpportunity : {}, for Network: {}", shortName, networkShortcut);
-        log.debug("REST request to delete CrmLead : {}, for Network: {}", shortName, networkShortcut);
         opportunityService.deleteOpportunity(shortName, shortName);
         return ResponseEntity.ok().build();
     }

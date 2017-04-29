@@ -15,7 +15,11 @@ import java.util.List;
 public interface CustomTraOrderRepository extends JpaRepository<TraOrder, Long> {
     List<TraOrder> findByNetwork(CorNetwork network);
 
-    List<TraOrder> findByNetwork(CorNetwork network, Pageable pageable);
+    List<TraOrder> findByNetwork_Shortcut(String network, Pageable pageable);
 
-    List<TraOrder> findByCustomerAndNetwork(CrmAccount crmAccount, CorNetwork corNetwork);
+    List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
+
+    TraOrder findByIdAndNetwork_Shortcut(Long id, String corNetwork);
+
+    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
 }

@@ -7,7 +7,7 @@ import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLead;
 import io.protone.domain.CorNetwork;
-import io.protone.service.mapper.CrmLeadMapper;
+import io.protone.web.rest.mapper.CrmLeadMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

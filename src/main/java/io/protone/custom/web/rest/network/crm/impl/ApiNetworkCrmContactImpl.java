@@ -7,8 +7,8 @@ import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmContact;
 import io.protone.domain.CorNetwork;
-import io.protone.service.mapper.CrmContactMapper;
-import io.protone.service.mapper.CrmTaskMapper;
+import io.protone.web.rest.mapper.CrmContactMapper;
+import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -85,8 +85,7 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
     @Override
     public ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmContact : {}, for Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        contactService.deleteContact(shortName, corNetwork.getShortcut());
+        contactService.deleteContact(shortName, networkShortcut);
         return ResponseEntity.ok().build();
     }
 }

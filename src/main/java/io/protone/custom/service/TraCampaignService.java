@@ -1,7 +1,7 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.service.mapper.TraCampaignMapper;
+import io.protone.web.rest.mapper.TraCampaignMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;

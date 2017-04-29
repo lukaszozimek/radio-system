@@ -1,6 +1,6 @@
 package io.protone.custom.service;
 
-import io.protone.service.mapper.TraInvoiceMapper;
+import io.protone.web.rest.mapper.TraInvoiceMapper;
 import io.protone.repository.custom.CustomTraInvoiceRepository;
 import io.protone.custom.service.dto.TraInvoicePT;
 import io.protone.domain.CorNetwork;

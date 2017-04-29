@@ -1,9 +1,9 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.service.mapper.CorDictionaryMapper;
-import io.protone.service.mapper.CrmAccountMapper;
-import io.protone.service.mapper.TraAdvertismentMapper;
+import io.protone.web.rest.mapper.CorDictionaryMapper;
+import io.protone.web.rest.mapper.CrmAccountMapper;
+import io.protone.web.rest.mapper.TraAdvertismentMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;

@@ -8,7 +8,7 @@ import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
 import io.protone.repository.custom.CustomTraAdvertisementRepository;
-import io.protone.service.mapper.LibItemMapper;
+import io.protone.web.rest.mapper.LibItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

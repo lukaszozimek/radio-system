@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CoreKeyPT;
-import io.protone.service.mapper.CorPropertyKeyMapper;
+import io.protone.web.rest.mapper.CorPropertyKeyMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiPropertyKey;
 import io.protone.domain.CorPropertyKey;
 import io.protone.repository.CorPropertyKeyRepository;

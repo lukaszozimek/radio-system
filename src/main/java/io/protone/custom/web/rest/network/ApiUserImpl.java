@@ -6,7 +6,7 @@ import io.protone.custom.service.CustomMailService;
 import io.protone.custom.service.CustomCorUserService;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.service.mapper.CorNetworkMapper;
+import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;

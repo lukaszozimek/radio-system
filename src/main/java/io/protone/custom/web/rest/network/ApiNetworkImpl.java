@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CoreNetworkPT;
-import io.protone.service.mapper.CorNetworkMapper;
+import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;

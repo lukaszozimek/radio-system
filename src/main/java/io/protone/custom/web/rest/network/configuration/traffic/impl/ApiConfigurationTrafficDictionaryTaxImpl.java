@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfTaxPT;
-import io.protone.service.mapper.CorTaxMapper;
+import io.protone.web.rest.mapper.CorTaxMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryTax;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
