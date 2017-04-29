@@ -64,8 +64,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     public ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount, for Network: {}", networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        List<CrmAccount> entity = crmCustomerService.getAllCustomer(corNetwork);
+        List<CrmAccount> entity = crmCustomerService.getAllCustomers(networkShortcut, pagable);
         List<CrmAccountPT> response = crmAccountMapper.DBs2DTOs(entity);
 
         return ResponseEntity.ok().body(response);
@@ -74,8 +73,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     @Override
     public ResponseEntity<CrmAccountPT> getCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmAccount : {}, for Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CrmAccount entity = crmCustomerService.getCustomer(shortName, corNetwork);
+        CrmAccount entity = crmCustomerService.getCustomer(shortName, networkShortcut);
         CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
@@ -83,8 +81,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     @Override
     public ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmAccount : {}, for Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmCustomerService.deleteCustomer(shortName, corNetwork);
+        crmCustomerService.deleteCustomer(shortName, networkShortcut);
         return ResponseEntity.ok().build();
     }
 }

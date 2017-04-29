@@ -64,6 +64,7 @@ public class CrmContactService {
     }
 
     public void deleteContact(String shortcut, String corNetwork) {
+        crmTaskRepository.deleteByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         crmContactRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
@@ -88,7 +89,7 @@ public class CrmContactService {
 
     }
 
-    public CrmTask updateContactTask(CrmTask crmTask, String shortcut, String corNetwork) {
+    public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmContact != null) {
             crmTask.setContact(crmContact);

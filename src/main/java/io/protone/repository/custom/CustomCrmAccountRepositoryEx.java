@@ -12,11 +12,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CustomCrmAccountRepositoryEx extends JpaRepository<CrmAccount, Long> {
-    CrmAccount findOneByShortNameAndNetwork(String shortName, CorNetwork network);
+    CrmAccount findOneByShortNameAndNetwork_Shortcut(String shortName, String network);
 
-    List<CrmAccount> findByNetwork(CorNetwork network);
+    List<CrmAccount> findByNetwork_Shortcut(String network);
 
-    List<CrmAccount> findAllByNetwork(CorNetwork network, Pageable pageable);
+    List<CrmAccount> findAllByNetwork_Shortcut(String network, Pageable pageable);
 
-    void deleteByShortNameAndNetwork(String shortName, CorNetwork network);
+    void deleteByShortNameAndNetwork_Shortcut(String shortName, String network);
 }

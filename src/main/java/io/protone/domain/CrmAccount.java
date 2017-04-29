@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class CrmAccount implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @PodamExclude
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
@@ -44,39 +46,50 @@ public class CrmAccount implements Serializable {
     private String vatNumber;
 
     @OneToOne
+    @PodamExclude
     @JoinColumn(unique = true)
     private CorPerson person;
 
     @OneToOne
+    @PodamExclude
     @JoinColumn(unique = true)
     private CorAddress addres;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private TraDiscount discount;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
+    @PodamExclude
     private CorCountry country;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary range;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary size;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary industry;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary area;
 
     @OneToMany(mappedBy = "account")
     @JsonIgnore
+    @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CrmTask> tasks = new HashSet<>();
 

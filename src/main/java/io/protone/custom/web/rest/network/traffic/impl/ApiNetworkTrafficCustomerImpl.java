@@ -55,7 +55,7 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCustomer, for Network: {}", networkShortcut);
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(customerService.getAllCustomers(corNetwork));
+        return ResponseEntity.ok().body(customerService.getAllCustomers(corNetwork, pagable));
     }
 
     @Override

@@ -63,7 +63,7 @@ public class TraOrderService {
     }
 
     public List<TraOrderPT> getCustomerOrders(String shortcut, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork.getShortcut());
         return traOrderRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traOrder -> customTraOrderMapper.DB2DTO(traOrder)).collect(toList());
     }
 

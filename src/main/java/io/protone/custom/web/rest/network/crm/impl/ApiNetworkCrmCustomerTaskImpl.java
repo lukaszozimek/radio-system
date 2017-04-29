@@ -1,10 +1,12 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.custom.service.CrmCustomerService;
+import io.protone.domain.CrmTask;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmCustomerTask;
 import io.protone.domain.CorNetwork;
+import io.protone.service.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -27,14 +29,17 @@ public class ApiNetworkCrmCustomerTaskImpl implements ApiNetworkCrmCustomerTask 
 
     @Inject
     private CorNetworkService networkService;
+    @Inject
+    private CrmTaskMapper crmTaskMapper;
 
     @Override
     public ResponseEntity<List<CrmTaskPT>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount CrmTask, for CrmAccount: {} and Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.getTasksAssociatedWithLead(shortName, corNetwork));
+        List<CrmTask> entities = crmCustomerService.getTasksAssociatedWithContact(shortName, networkShortcut, pagable);
+        List<CrmTaskPT> response = crmTaskMapper.DBs2DTOs(entities);
+        return ResponseEntity.ok().body(response);
 
     }
 
@@ -44,8 +49,10 @@ public class ApiNetworkCrmCustomerTaskImpl implements ApiNetworkCrmCustomerTask 
         if (crmTaskPT.getId() == null) {
             return createCustomerActivityUsingPOST(networkShortcut, shortName, crmTaskPT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.createTasksAssociatedWithLead(shortName, crmTaskPT, corNetwork));
+        CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskPT);
+        CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, networkShortcut);
+        CrmTaskPT response = crmTaskMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
@@ -54,24 +61,27 @@ public class ApiNetworkCrmCustomerTaskImpl implements ApiNetworkCrmCustomerTask 
         if (crmTaskPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.createTasksAssociatedWithLead(shortName, crmTaskPT, corNetwork));
+        CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskPT);
+        CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, networkShortcut);
+        CrmTaskPT response = crmTaskMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
 
     }
 
     @Override
     public ResponseEntity<Void> deleteCustomerActivityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", id, shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        crmCustomerService.deleteLeadTask(shortName, id, corNetwork);
+        crmCustomerService.deleteCustomerTask(shortName, id, networkShortcut);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> getCustomerActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CrmAccount CrmTask : {}, for CrmAccount: {} and Network: {}", id, shortName, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        return ResponseEntity.ok().body(crmCustomerService.getTaskAssociatedWithLead(shortName, id, corNetwork));
+
+        CrmTask entity = crmCustomerService.getTaskAssociatedWithContact(id, networkShortcut);
+        CrmTaskPT response = crmTaskMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
 
     }
 }

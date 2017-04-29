@@ -8,6 +8,7 @@ import io.protone.domain.*;
 import io.protone.repository.custom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +43,8 @@ public class CrmCustomerService {
     @Inject
     private CrmTaskMapper customCrmTaskMapper;
 
-    public List<CrmAccount> getAllCustomer(CorNetwork corNetwork) {
-        return accountRepository.findByNetwork(corNetwork);
+    public List<CrmAccount> getAllCustomers(String corNetwork, Pageable pageable) {
+        return accountRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public CrmAccount saveCustomer(CrmAccount crmAccount) {
@@ -61,39 +62,43 @@ public class CrmCustomerService {
         return crmAccount;
     }
 
-    public void deleteCustomer(String shorName, CorNetwork corNetwork) {
-        accountRepository.deleteByShortNameAndNetwork(shorName, corNetwork);
+    public void deleteCustomer(String shortName, String corNetwork) {
+        crmTaskRepository.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
+        accountRepository.deleteByShortNameAndNetwork_Shortcut(shortName, corNetwork);
     }
 
 
-    public CrmAccount getCustomer(String shortcut, CorNetwork corNetwork) {
-        return accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+    public CrmAccount getCustomer(String shortcut, String corNetwork) {
+        return accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
-    public CrmTaskPT createTasksAssociatedWithLead(String shortcut, CrmTaskPT taskPT, CorNetwork corNetwork) {
-        CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        CrmTask crmTask = crmTaskRepository.save(customCrmTaskMapper.DTO2DB(taskPT));
-        log.debug("Persisting CrmTask: {}, for CrmAccount: ", crmTask);
-        crmAccount.addTasks(crmTask);
+    public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {
+        CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        if (crmAccount != null) {
+            crmTask.setAccount(crmAccount);
+            crmTask.setNetwork(crmAccount.getNetwork());
+            CrmTask task = crmTaskRepository.save(crmTask);
+            log.debug("Persisting CrmTask: {}, for CrmAccount: ", task);
+            crmAccount.addTasks(task);
+            accountRepository.save(crmAccount);
+            return task;
+        }
+        return null;
+    }
+
+    public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
+        return crmTaskRepository.findAllByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    }
+
+    public CrmTask getTaskAssociatedWithContact(Long taskId, String corNetwork) {
+        return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+    }
+
+
+    public void deleteCustomerTask(String shortcut, Long taskId, String corNetwork) {
+        CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmAccount.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         accountRepository.save(crmAccount);
-        return customCrmTaskMapper.DB2DTO(crmTask);
-    }
-
-    public List<CrmTaskPT> getTasksAssociatedWithLead(String shortcut, CorNetwork corNetwork) {
-        CrmAccount crmLead = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.DBs2DTOs(crmLead.getTasks());
-    }
-
-    public CrmTaskPT getTaskAssociatedWithLead(String shortcut, Long taskId, CorNetwork corNetwork) {
-        CrmAccount crmLead = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        return customCrmTaskMapper.DB2DTO(crmLead.getTasks().stream().filter(crmTask -> crmTask.getId().equals(taskId)).findFirst().get());
-    }
-
-    public void deleteLeadTask(String shortcut, Long taskId, CorNetwork corNetwork) {
-        CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
-        CrmTask crmTask = crmTaskRepository.findOne(taskId);
-        crmAccount.removeTasks(crmTask);
-        accountRepository.save(crmAccount);
-        crmTaskRepository.delete(crmTask);
+        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 }

@@ -74,7 +74,7 @@ public class TraAdvertismentService {
 
 
     public List<TraAdvertisementPT> getCustomerAdvertisments(String shortcut, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork.getShortcut());
         return traAdvertisementRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traAdvertisment -> traAdvertismentMapper.DB2DTO(traAdvertisment)).collect(toList());
     }
 

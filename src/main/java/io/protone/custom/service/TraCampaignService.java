@@ -77,7 +77,7 @@ public class TraCampaignService {
     }
 
     public List<TraCampaignPT> getCustomerCampaing(String shortcut, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork.getShortcut());
         return traCampaignRepository.findByCustomerAndNetwork(crmAccount, corNetwork).stream().map(traCampaign -> customTRACampaignMapper.DB2DTO(traCampaign)).collect(toList());
     }
 

@@ -31,4 +31,8 @@ public interface CustomCrmTaskRepository extends JpaRepository<CrmTask, Long> {
     List<CrmTask> findByNetwork(CorNetwork network);
 
     void deleteByIdAndNetwork_Shortcut(Long id, String network);
+
+    void deleteByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork);
+
+    void deleteByAccount_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork);
 }

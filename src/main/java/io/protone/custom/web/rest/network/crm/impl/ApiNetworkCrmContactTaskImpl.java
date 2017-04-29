@@ -53,7 +53,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT);
-        CrmTask reposesEntity = crmContactService.updateContactTask(crmTask, shortName, networkShortcut);
+        CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.ok().body(response);
 
@@ -69,7 +69,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT);
-        CrmTask reposesEntity = crmContactService.updateContactTask(crmTask, shortName, corNetwork.getShortcut());
+        CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, corNetwork.getShortcut());
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.ok().body(response);
     }

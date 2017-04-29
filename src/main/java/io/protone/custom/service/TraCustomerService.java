@@ -10,6 +10,7 @@ import io.protone.repository.custom.CustomCorPersonRepository;
 import io.protone.repository.custom.CustomCrmAccountRepositoryEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +47,8 @@ public class TraCustomerService {
     private CustomCorAddressRepository addressRepository;
 
 
-    public List<TraCustomerPT> getAllCustomers(CorNetwork corNetwork) {
-        return crmAccountRepository.findByNetwork(corNetwork).stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
+    public List<TraCustomerPT> getAllCustomers(CorNetwork corNetwork, Pageable pageable) {
+        return crmAccountRepository.findAllByNetwork_Shortcut(corNetwork.getShortcut(), pageable).stream().map(customers -> getCustomer(customers, corNetwork)).collect(toList());
     }
 
     public TraCustomerPT saveCustomers(TraCustomerPT traCustomerPT, CorNetwork corNetwork) {
@@ -76,11 +77,11 @@ public class TraCustomerService {
     }
 
     public void deleteCustomer(String shortcut, CorNetwork corNetwork) {
-        crmAccountRepository.deleteByShortNameAndNetwork(shortcut, corNetwork);
+        crmAccountRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork.getShortcut());
     }
 
     public TraCustomerPT getCustomer(String shortcut, CorNetwork corNetwork) {
-        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork(shortcut, corNetwork);
+        CrmAccount crmAccount = crmAccountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork.getShortcut());
         return getCustomer(crmAccount, corNetwork);
     }
 

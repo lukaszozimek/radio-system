@@ -188,7 +188,7 @@ public class CrmContactServiceTest {
         crmTask.setNetwork(corNetwork);
 
         //then
-        CrmTask crmTask1 = crmContactService.updateContactTask(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
         CrmContact localContact = crmContactService.getContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut());
 
         //assert
@@ -210,7 +210,7 @@ public class CrmContactServiceTest {
         crmTask.setNetwork(corNetwork);
 
         //then
-        CrmTask crmTask1 = crmContactService.updateContactTask(crmTask, "", corNetwork.getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, "", corNetwork.getShortcut());
 
         //assert
         assertNull(crmTask1);
@@ -228,7 +228,7 @@ public class CrmContactServiceTest {
         crmTask.setNetwork(corNetwork);
 
         crmContact = crmContactRepository.saveAndFlush(crmContact);
-        CrmTask crmTask1 = crmContactService.updateContactTask(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
 
         //then
         List<CrmTask> localTask = crmContactService.getTasksAssociatedWithContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut(), new PageRequest(0, 10));
@@ -251,7 +251,7 @@ public class CrmContactServiceTest {
         crmTask.setNetwork(corNetwork);
 
         crmContact = crmContactRepository.saveAndFlush(crmContact);
-        CrmTask crmTask1 = crmContactService.updateContactTask(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
 
         //then
         CrmTask localTask = crmContactService.getTaskAssociatedWithContact(crmTask1.getId(), crmContact.getNetwork().getShortcut());
@@ -274,7 +274,7 @@ public class CrmContactServiceTest {
         crmTask.setNetwork(corNetwork);
 
         crmContact = crmContactRepository.saveAndFlush(crmContact);
-        CrmTask crmTask1 = crmContactService.updateContactTask(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
 
         // then
         crmContactService.deleteContactTask(crmContact.getShortName(), crmTask1.getId(), crmContact.getNetwork().getShortcut());
