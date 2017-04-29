@@ -2,7 +2,7 @@ package io.protone.service.mapper;
 
 import com.google.common.base.Strings;
 import io.protone.custom.service.dto.LibItemPT;
-import io.protone.service.dto.thin.LibMediaItemThinDTO;
+import io.protone.web.rest.dto.thin.LibMediaItemThinDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTag;
 import io.protone.domain.LibMediaItem;

@@ -11,7 +11,7 @@ import io.protone.domain.CorUser;
 import io.protone.repository.custom.CustomCorNetworkRepository;
 import io.protone.repository.custom.CustomCorUserRepository;
 import io.protone.security.SecurityUtils;
-import io.protone.service.dto.UserDTO;
+import io.protone.web.rest.dto.UserDTO;
 import io.protone.web.rest.util.HeaderUtil;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
 import io.protone.web.rest.vm.ManagedUserVM;

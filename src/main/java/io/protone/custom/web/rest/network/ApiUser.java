@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network;
 
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.service.dto.UserDTO;
+import io.protone.web.rest.dto.UserDTO;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;

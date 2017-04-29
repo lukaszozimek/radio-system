@@ -1,7 +1,7 @@
 package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.service.dto.thin.CoreUserThinDTO;
+import io.protone.web.rest.dto.thin.CoreUserThinDTO;
 import io.protone.domain.CorAuthority;
 import io.protone.domain.CorUser;
 import org.mapstruct.Mapper;

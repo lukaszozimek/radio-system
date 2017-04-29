@@ -7,7 +7,7 @@ import io.protone.repository.UserRepository;
 import io.protone.security.AuthoritiesConstants;
 import io.protone.security.SecurityUtils;
 import io.protone.service.util.RandomUtil;
-import io.protone.service.dto.UserDTO;
+import io.protone.web.rest.dto.UserDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,7 +188,7 @@ public class UserService {
         });
     }
 
-    @Transactional(readOnly = true)    
+    @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(UserDTO::new);
     }

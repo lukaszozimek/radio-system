@@ -1,7 +1,7 @@
 package io.protone.service.mapper;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.service.dto.thin.TraAdvertisementThinDTO;
+import io.protone.web.rest.dto.thin.TraAdvertisementThinDTO;
 import io.protone.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

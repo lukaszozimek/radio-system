@@ -1,4 +1,4 @@
-package io.protone.service.dto.thin;
+package io.protone.web.rest.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.custom.service.dto.CoreAddressPT;

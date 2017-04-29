@@ -2,6 +2,7 @@ package io.protone.service.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibraryPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,8 @@ public class LibLibraryMapperTest {
 
     private List<LibLibrary> libLibraries = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -44,6 +47,7 @@ public class LibLibraryMapperTest {
         libLibraries.add(libLibrary);
         libraryPT = factory.manufacturePojo(LibraryPT.class);
         libraryPTS.add(libraryPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
@@ -84,7 +88,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibLibrary entity = libLibraryMapper.DTO2DB(libraryPT);
+        LibLibrary entity = libLibraryMapper.DTO2DB(libraryPT, corNetwork);
 
 
         LibLibrary libLibrary = new LibLibrary();
@@ -103,7 +107,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibLibrary> entities = libLibraryMapper.DTOs2DBs(libraryPTS);
+        List<LibLibrary> entities = libLibraryMapper.DTOs2DBs(libraryPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -13,9 +13,11 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CustomLibLibraryRepository extends JpaRepository<LibLibrary, Long> {
-    LibLibrary findOneByNetworkAndShortcut(CorNetwork network, String shortcut);
+    LibLibrary findOneByNetwork_ShortcutAndShortcut(String network, String shortcut);
 
     List<LibLibrary> findByNetwork(CorNetwork network);
 
-    List<LibLibrary> findAllByNetwork(CorNetwork network, Pageable pageable);
+    List<LibLibrary> findAllByNetwork_Shortcut(String network, Pageable pageable);
+
+    void deleteByShortcutAndNetwork_Shortcut(String shortcut, String network);
 }

@@ -1,4 +1,4 @@
-package io.protone.service.dto;
+package io.protone.web.rest.dto;
 
 import io.protone.config.Constants;
 

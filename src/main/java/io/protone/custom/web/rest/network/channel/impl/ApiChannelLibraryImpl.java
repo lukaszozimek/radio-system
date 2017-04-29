@@ -1,7 +1,9 @@
 package io.protone.custom.web.rest.network.channel.impl;
 
-import io.protone.custom.service.LibLibraryService;
+import io.protone.service.library.LibLibraryService;
 import io.protone.custom.service.dto.LibraryPT;
+import io.protone.domain.CorNetwork;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.service.mapper.LibLibraryMapper;
 import io.protone.custom.web.rest.network.channel.ApiChannelLibrary;
 import io.protone.domain.LibLibrary;
@@ -25,11 +27,13 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
 
     @Inject
     private LibLibraryService libraryService;
+    @Inject
+    private CorNetworkService networkService;
 
     @Override
     public ResponseEntity<List<LibraryPT>> getAllLibrariesForChannelUsingGET(String networkShortcut, String channelShortcut, Pageable pagable) {
         log.debug("REST request to get all LibraryPT");
-        List<LibLibrary> libraries = libraryService.findLibrary(networkShortcut);
+        List<LibLibrary> libraries = libraryService.findLibraries(networkShortcut, pagable);
         return ResponseEntity.ok()
             .body(libraryMapper.DBs2DTOs(libraries));
     }
@@ -40,9 +44,9 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
 
         if (library.getId() == null)
             return createLibraryForChannelUsingPOST(networkShortcut, channelShortcut, library);
-
-        libraryMapper.DTO2DB(library);
-        LibLibrary resultDB = libraryService.createOrUpdateLibrary(networkShortcut, library);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        LibLibrary entity = libraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary resultDB = libraryService.createOrUpdateLibrary(entity);
         LibraryPT libraryDAO = libraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
@@ -51,7 +55,9 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
     @Override
     public ResponseEntity<LibraryPT> createLibraryForChannelUsingPOST(String networkShortcut, String channelShortcut, LibraryPT library) {
         log.debug("REST request to create library: {}", library);
-        LibLibrary resultDB = libraryService.createOrUpdateLibrary(networkShortcut, library);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        LibLibrary entity = libraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary resultDB = libraryService.createOrUpdateLibrary(entity);
         LibraryPT libraryDAO = libraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);

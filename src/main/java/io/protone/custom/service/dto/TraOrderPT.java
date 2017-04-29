@@ -1,8 +1,8 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.service.dto.thin.TraAdvertisementThinDTO;
-import io.protone.service.dto.thin.TraCustomerThinDTO;
+import io.protone.web.rest.dto.thin.TraAdvertisementThinDTO;
+import io.protone.web.rest.dto.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDate;
