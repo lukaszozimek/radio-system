@@ -20,6 +20,6 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
 
     TraInvoice findByIdAndNetwork_Shortcut(Long id, String network);
 
-    List<TraInvoice> findAllByCustomer_ShortAndNetwork_Shortcut(String customer, String network, Pageable pageable);
+    List<TraInvoice> findAllByCustomer_ShortNameAndNetwork_Shortcut(String customer, String network, Pageable pageable);
 
 }

@@ -1,4 +1,4 @@
-package io.protone.custom.service;
+package io.protone.service.traffic;
 
 import io.protone.repository.traffic.TraInvoiceRepository;
 import io.protone.domain.TraInvoice;
@@ -44,7 +44,7 @@ public class TraInvoiceService {
     }
 
     public List<TraInvoice> getCustomerInvoice(String customerShortcut, String corNetwork, Pageable pageable) {
-        return traInvoiceRepository.findAllByCustomer_ShortAndNetwork_Shortcut(customerShortcut, corNetwork, pageable);
+        return traInvoiceRepository.findAllByCustomer_ShortNameAndNetwork_Shortcut(customerShortcut, corNetwork, pageable);
     }
 
 }

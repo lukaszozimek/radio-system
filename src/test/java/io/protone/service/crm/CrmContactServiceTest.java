@@ -3,7 +3,7 @@ package io.protone.service.crm;
 import io.protone.ProtoneApp;
 import io.protone.domain.*;
 import io.protone.repository.CorNetworkRepository;
-import io.protone.repository.CrmContactRepository;
+import io.protone.repository.crm.CrmContactRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

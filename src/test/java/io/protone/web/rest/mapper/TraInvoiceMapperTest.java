@@ -1,6 +1,7 @@
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.TraInvoiceMapper;
 import io.protone.domain.TraInvoice;
 import org.junit.Before;
@@ -34,6 +35,7 @@ public class TraInvoiceMapperTest {
     private List<TraInvoicePT> traInvoicePTS = new ArrayList<>();
 
     private List<TraInvoice> traInvoices = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -42,7 +44,7 @@ public class TraInvoiceMapperTest {
         traInvoices.add(traInvoice);
         traInvoicePT = factory.manufacturePojo(TraInvoicePT.class);
         traInvoicePTS.add(traInvoicePT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
@@ -82,7 +84,7 @@ public class TraInvoiceMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraInvoice> entities = customTraInvoiceMapper.DTOs2DBs(traInvoicePTS);
+        List<TraInvoice> entities = customTraInvoiceMapper.DTOs2DBs(traInvoicePTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -103,7 +105,7 @@ public class TraInvoiceMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraInvoice entity = customTraInvoiceMapper.DTO2DB(traInvoicePT);
+        TraInvoice entity = customTraInvoiceMapper.DTO2DB(traInvoicePT, corNetwork);
 
 
         assertNotNull(entity.getCustomer());
