@@ -2,6 +2,7 @@ package io.protone.service.crm;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.*;
+import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import org.junit.Before;
 import org.junit.Test;

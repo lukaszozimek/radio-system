@@ -3,6 +3,7 @@ package io.protone.service.library;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
+import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.library.LibLibraryRepository;
 import org.junit.Before;
 import org.junit.Test;

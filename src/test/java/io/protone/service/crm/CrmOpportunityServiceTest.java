@@ -3,6 +3,7 @@ package io.protone.service.crm;
 import io.protone.ProtoneApp;
 import io.protone.domain.*;
 import io.protone.repository.*;
+import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.crm.CrmContactRepository;
 import io.protone.repository.crm.CrmLeadRepository;
