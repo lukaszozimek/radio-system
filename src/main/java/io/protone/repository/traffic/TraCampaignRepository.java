@@ -12,14 +12,15 @@ import java.util.List;
  * Spring Data JPA repository for the TraCampaign entity.
  */
 @SuppressWarnings("unused")
-public interface CustomTraCampaignRepository extends JpaRepository<TraCampaign, Long> {
+public interface TraCampaignRepository extends JpaRepository<TraCampaign, Long> {
     List<TraCampaign> findByNetwork(CorNetwork network);
 
-    List<TraCampaign> findAllByNetwork(CorNetwork network, Pageable pageable);
+    List<TraCampaign> findAllByNetwork_Shortcut(String network, Pageable pageable);
 
-    TraCampaign findByNameAndNetwork(String name, CorNetwork network);
+    TraCampaign findByNameAndNetwork_Shortcut(String name, String network);
 
-    List<TraCampaign> findByCustomerAndNetwork(CrmAccount crmAccount, CorNetwork corNetwork);
+    List<TraCampaign> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
 
-    void deleteByNameAndNetwork(String shortcut, CorNetwork corNetwork);
+    void deleteByNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+
 }

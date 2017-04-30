@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraAdvertisement;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +26,11 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class TraAdvertismentMapperTest {
+public class TraAdvertisementMapperTest {
 
 
     @Autowired
-    private TraAdvertismentMapper customTRAAdvertismentMapper;
+    private TraAdvertisementMapper customTRAAdvertisementMapper;
 
     private TraAdvertisement traAdvertisement;
 
@@ -39,6 +40,8 @@ public class TraAdvertismentMapperTest {
 
     private List<TraAdvertisement> traAdvertisements = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -46,12 +49,13 @@ public class TraAdvertismentMapperTest {
         traAdvertisements.add(traAdvertisement);
         traAdvertisementPT = factory.manufacturePojo(TraAdvertisementPT.class);
         traAdvertisementPTS.add(traAdvertisementPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        TraAdvertisementPT dto = customTRAAdvertismentMapper.DB2DTO(traAdvertisement);
+        TraAdvertisementPT dto = customTRAAdvertisementMapper.DB2DTO(traAdvertisement);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getMediaItemId());
@@ -64,7 +68,7 @@ public class TraAdvertismentMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraAdvertisementPT> dtos = customTRAAdvertismentMapper.DBs2DTOs(traAdvertisements);
+        List<TraAdvertisementPT> dtos = customTRAAdvertisementMapper.DBs2DTOs(traAdvertisements);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -82,7 +86,7 @@ public class TraAdvertismentMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraAdvertisement> entities = customTRAAdvertismentMapper.DTOs2DBs(traAdvertisementPTS);
+        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -102,7 +106,7 @@ public class TraAdvertismentMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraAdvertisement entity = customTRAAdvertismentMapper.DTO2DB(traAdvertisementPT);
+        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementPT,corNetwork);
 
 
         assertNotNull(entity.getId());

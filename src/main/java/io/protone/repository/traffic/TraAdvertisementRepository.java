@@ -12,8 +12,12 @@ import java.util.List;
  * Spring Data JPA repository for the TraAdvertisement entity.
  */
 @SuppressWarnings("unused")
-public interface CustomTraAdvertisementRepository extends JpaRepository<TraAdvertisement, Long> {
+public interface TraAdvertisementRepository extends JpaRepository<TraAdvertisement, Long> {
     List<TraAdvertisement> findByNetwork(CorNetwork network);
-    List<TraAdvertisement>  findAllByNetwork(CorNetwork network, Pageable pageable);
-    List<TraAdvertisement> findByCustomerAndNetwork(CrmAccount crmAccount, CorNetwork network);
+
+    List<TraAdvertisement> findAllByNetwork_Shortcut(String network, Pageable pageable);
+
+    TraAdvertisement findByIdAndNetwork_Shortcut(Long id, String network);
+
+    List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String network, Pageable pageable);
 }

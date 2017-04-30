@@ -111,12 +111,22 @@ public class LibItemService {
 
     @Transactional
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-
         LibMediaItem itemToDelete = getItemFromDB(networkShortcut, libraryShortcut, idx);
-        if (itemToDelete != null) {
+        deleteItemFromMinio(itemToDelete);
+        itemRepository.delete(itemToDelete);
+    }
 
-            List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemToDelete);
-            if (audioObjects != null || audioObjects.size() > 0) {
+    @Transactional
+    public void deleteItem(LibMediaItem libMediaItem) {
+        deleteItemFromMinio(libMediaItem);
+        itemRepository.delete(libMediaItem);
+    }
+
+    private void deleteItemFromMinio(LibMediaItem libMediaItem) {
+        if (libMediaItem != null) {
+
+            List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
+            if (audioObjects != null || !audioObjects.isEmpty() ) {
                 for (LibAudioObject audioObject : audioObjects) {
                     LibCloudObject cloudObject = audioObject.getCloudObject();
                     try {
@@ -132,9 +142,7 @@ public class LibItemService {
                     }
                 }
             }
-            itemRepository.delete(itemToDelete);
         }
-
     }
 
     public LibItemPT update(LibItemPT libItemPT, CorNetwork corNetwork) {

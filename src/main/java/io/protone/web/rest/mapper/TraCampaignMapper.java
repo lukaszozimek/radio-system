@@ -2,11 +2,12 @@ package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
 import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,9 +26,23 @@ public interface TraCampaignMapper {
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraCampaign DTO2DB(TraCampaignPT traCampaignDTO);
+    TraCampaign DTO2DB(TraCampaignPT traCampaignDTO, @Context CorNetwork corNetwork);
 
-    List<TraCampaign> DTOs2DBs(List<TraCampaignPT> traCampaignDTOs);
+    default List<TraCampaign> DTOs2DBs(List<TraCampaignPT> traCampaignPT, CorNetwork networkId) {
+        List<TraCampaign> traCampaigns = new ArrayList<>();
+        if (traCampaignPT.isEmpty() || traCampaignPT == null) {
+            return null;
+        }
+        for (TraCampaignPT dto : traCampaignPT) {
+            traCampaigns.add(DTO2DB(dto, networkId));
+        }
+        return traCampaigns;
+    }
+
+    @AfterMapping
+    default void traCampaignPTToTraCampaignAfterMapping(TraOrderPT dto, @MappingTarget TraOrder entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
     default LibMarkerPT.MarkerTypeEnum mapLibMarkerPT_MarkerTypeEnum(LibMarkerTypeEnum value) {
 

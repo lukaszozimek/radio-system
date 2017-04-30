@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertismentMapper.class, CrmAccountMapper.class})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertisementMapper.class, CrmAccountMapper.class})
 public interface TraOrderMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")

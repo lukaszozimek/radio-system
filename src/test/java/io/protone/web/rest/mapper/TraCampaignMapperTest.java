@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraCampaign;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,8 @@ public class TraCampaignMapperTest {
 
     private List<TraCampaign> traCampaigns = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -44,6 +47,7 @@ public class TraCampaignMapperTest {
         traCampaigns.add(traCampaign);
         campaignPT = factory.manufacturePojo(TraCampaignPT.class);
         traCampaignPTS.add(campaignPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
@@ -83,7 +87,7 @@ public class TraCampaignMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraCampaign entity = customLibMarkerMapperExt.DTO2DB(campaignPT);
+        TraCampaign entity = customLibMarkerMapperExt.DTO2DB(campaignPT, corNetwork);
 
 
         assertNotNull(entity.getCustomer());
@@ -95,12 +99,12 @@ public class TraCampaignMapperTest {
         assertNotNull(entity.getPrize());
         assertNotNull(entity.getStartDate());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraCampaign> entities = customLibMarkerMapperExt.DTOs2DBs(traCampaignPTS);
+        List<TraCampaign> entities = customLibMarkerMapperExt.DTOs2DBs(traCampaignPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -114,7 +118,7 @@ public class TraCampaignMapperTest {
             assertNotNull(entity.getPrize());
             assertNotNull(entity.getStartDate());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
 
     }

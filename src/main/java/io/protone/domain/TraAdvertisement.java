@@ -2,6 +2,7 @@ package io.protone.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,18 +35,23 @@ public class TraAdvertisement implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private LibMediaItem mediaItem;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount customer;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary industry;
 
     @ManyToOne
+    @PodamExclude
     private CorDictionary type;
 
     public Long getId() {

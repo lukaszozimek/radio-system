@@ -7,7 +7,7 @@ import io.protone.domain.TraAdvertisement;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
-import io.protone.repository.traffic.CustomTraAdvertisementRepository;
+import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.web.rest.mapper.LibItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class TraAdvertisementShuffleService {
     private CustomSchEmissionRepository schEmissionRepository;
 
     @Inject
-    private CustomTraAdvertisementRepository customTraAdvertisementRepository;
+    private TraAdvertisementRepository traAdvertisementRepository;
 
     @Inject
     private LibItemMapper libItemMapper;
@@ -39,7 +39,7 @@ public class TraAdvertisementShuffleService {
     public void shuffleCommercials(TraShuffleAdvertisementPT tarShuffleAdvertisementPT) {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
-        TraAdvertisement traAdvertisement = customTraAdvertisementRepository.findOne(tarShuffleAdvertisementPT.getTraAdvertisementPT().getId());
+        TraAdvertisement traAdvertisement = traAdvertisementRepository.findOne(tarShuffleAdvertisementPT.getTraAdvertisementPT().getId());
         log.debug("Found advertisment {}", traAdvertisement.getId());
         List<SchBlock> schBlockList = customSchBlockRepository.findByScheduledStartTimeBetweenAndType(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), SchBlockTypeEnum.BT_COMMERCIAL);
         log.debug("Found number of blocks in range : {}", schBlockList.size());

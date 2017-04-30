@@ -14,7 +14,7 @@ public class TraAdvertisementShuffleServiceTest {/*
     private CustomSchEmissionRepository schEmissionRepository;
 
     @Mock
-    private CustomTraAdvertisementRepository customTraAdvertisementRepository;
+    private TraAdvertisementRepository customTraAdvertisementRepository;
 
     @Mock
     private CustomLibMediaItemMapper customLibMediaItemMapper;
