@@ -71,8 +71,7 @@ public class ApiConfigurationTrafficDictionaryCurrencyImpl implements ApiConfigu
             return createCurrencyUsingPOST(networkShortcut, taxDTO);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorCurrency corCurrency = customCorCurrencyMapper.DTO2DB(taxDTO);
-        corCurrency.setNetwork(corNetwork);
+        CorCurrency corCurrency = customCorCurrencyMapper.DTO2DB(taxDTO, corNetwork);
         corCurrency = corCurrencyRepository.save(corCurrency);
         ConfCurrencyPT result = customCorCurrencyMapper.DB2DTO(corCurrency);
         return ResponseEntity.ok()
@@ -87,8 +86,7 @@ public class ApiConfigurationTrafficDictionaryCurrencyImpl implements ApiConfigu
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORArea", "idexists", "A new cORArea cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorCurrency corCurrency = customCorCurrencyMapper.DTO2DB(taxDTO);
-        corCurrency.setNetwork(corNetwork);
+        CorCurrency corCurrency = customCorCurrencyMapper.DTO2DB(taxDTO, corNetwork);
         corCurrency = corCurrencyRepository.save(corCurrency);
         ConfCurrencyPT result = customCorCurrencyMapper.DB2DTO(corCurrency);
         return ResponseEntity.ok().body(result);

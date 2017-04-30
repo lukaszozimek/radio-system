@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.protone.domain.CfgMarkerConfiguration;
+import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,8 @@ public class CfgMarkerConfigurationMapperTest {
 
     private List<CfgMarkerConfiguration> cfgMarkerConfigurations = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -43,6 +46,8 @@ public class CfgMarkerConfigurationMapperTest {
         cfgMarkerConfigurations.add(cfgMarkerConfiguration);
         confMarkerConfigurationPT = factory.manufacturePojo(ConfMarkerConfigurationPT.class);
         confMarkerConfigurationPTList.add(confMarkerConfigurationPT);
+
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
@@ -74,7 +79,7 @@ public class CfgMarkerConfigurationMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgMarkerConfiguration entity = cfgMarkerConfigurationMapper.DTO2DB(confMarkerConfigurationPT);
+        CfgMarkerConfiguration entity = cfgMarkerConfigurationMapper.DTO2DB(confMarkerConfigurationPT, corNetwork);
         assertNotNull(entity.getColor());
         assertNotNull(entity.getDisplayName());
         assertNotNull(entity.getId());
@@ -82,13 +87,15 @@ public class CfgMarkerConfigurationMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getType());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
+
+        assertEquals(entity.getNetwork().getShortcut(), corNetwork.getShortcut());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
 
-        List<CfgMarkerConfiguration> entities = cfgMarkerConfigurationMapper.DTOs2DBs(confMarkerConfigurationPTList);
+        List<CfgMarkerConfiguration> entities = cfgMarkerConfigurationMapper.DTOs2DBs(confMarkerConfigurationPTList, corNetwork);
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
@@ -98,8 +105,8 @@ public class CfgMarkerConfigurationMapperTest {
             assertNotNull(entity.getKeyboardShortcut());
             assertNotNull(entity.getName());
             assertNotNull(entity.getType());
-
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
+            assertEquals(entity.getNetwork().getShortcut(), corNetwork.getShortcut());
         });
     }
 

@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmTask;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,9 @@ public class CrmTaskMapperTest {
 
     private Set<CrmTask> crmTasks = new HashSet<>();
 
+    private CorNetwork corNetwork;
+
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -46,7 +50,7 @@ public class CrmTaskMapperTest {
         crmTasks.add(crmTask);
         crmTaskPT = factory.manufacturePojo(CrmTaskPT.class);
         crmTaskPTS.add(crmTaskPT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test

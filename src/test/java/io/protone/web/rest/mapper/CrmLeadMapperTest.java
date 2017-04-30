@@ -3,6 +3,8 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.domain.*;
+import io.protone.web.rest.dto.thin.CoreUserThinDTO;
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +19,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28.04.2017.
@@ -43,8 +44,22 @@ public class CrmLeadMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         crmLead = factory.manufacturePojo(CrmLead.class);
+        crmLead.setId(1L);
+        crmLead.setArea(factory.manufacturePojo(CorDictionary.class));
+        crmLead.setLeadSource(factory.manufacturePojo(CorDictionary.class));
+        crmLead.setLeadStatus(factory.manufacturePojo(CorDictionary.class));
+        crmLead.setPerson(factory.manufacturePojo(CorPerson.class));
+        crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
+        crmLead.setIndustry(factory.manufacturePojo(CorDictionary.class));
+        crmLead.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmLead.setShortname("fefe");
+        crmLead.setName("fwafwafwa");
+        crmLead.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
+        crmLead.setNetwork(factory.manufacturePojo(CorNetwork.class));
+        crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
         crmLeads.add(crmLead);
         crmLeadPT = factory.manufacturePojo(CrmLeadPT.class);
+        crmLeadPT.setOwner(factory.manufacturePojo(CoreUserThinDTO.class));
         crmLeadPTS.add(crmLeadPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
@@ -53,7 +68,6 @@ public class CrmLeadMapperTest {
     @Test
     public void DB2DTO() throws Exception {
         CrmLeadPT dto = customCrmLeadMapper.DB2DTO(crmLead);
-
 
         assertNotNull(dto.getArea());
         assertNotNull(dto.getStatus());
@@ -116,8 +130,6 @@ public class CrmLeadMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getTasks());
-
-
             assertNotNull(entity.getNetwork());
 
         });
@@ -127,9 +139,7 @@ public class CrmLeadMapperTest {
     public void DTO2DB() throws Exception {
         CrmLead entity = customCrmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
 
-
         assertNotNull(entity.getId());
-
         assertNotNull(entity.getKeeper());
         assertNotNull(entity.getArea());
         assertNotNull(entity.getPerson());
@@ -141,8 +151,6 @@ public class CrmLeadMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getTasks());
-
-
         assertNotNull(entity.getNetwork());
     }
 

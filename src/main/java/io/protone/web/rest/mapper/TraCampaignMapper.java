@@ -40,7 +40,7 @@ public interface TraCampaignMapper {
     }
 
     @AfterMapping
-    default void traCampaignPTToTraCampaignAfterMapping(TraOrderPT dto, @MappingTarget TraOrder entity, @Context CorNetwork corNetwork) {
+    default void traCampaignPTToTraCampaignAfterMapping(TraCampaignPT dto, @MappingTarget TraCampaign entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

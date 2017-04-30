@@ -25,6 +25,7 @@ public interface TraOrderMapper {
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "advertismentId", target = "advertisment")
+    @Mapping(source = "invoiceId", target = "invoice")
     @Mapping(source = "campaignId", target = "campaign")
     @Mapping(target = "emissions", ignore = true)
     TraOrder DTO2DB(TraOrderPT traOrderDTO, @Context CorNetwork corNetwork);

@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreKeyPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPropertyKey;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,7 @@ public class CorPropertyKeyMapperTest {
     private List<CoreKeyPT> coreKeyPTS = new ArrayList<>();
 
     private List<CorPropertyKey> corPropertyKeys = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -45,6 +47,7 @@ public class CorPropertyKeyMapperTest {
         corPropertyKeys.add(corPropertyKey);
         coreKeyPT = factory.manufacturePojo(CoreKeyPT.class);
         coreKeyPTS.add(coreKeyPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 

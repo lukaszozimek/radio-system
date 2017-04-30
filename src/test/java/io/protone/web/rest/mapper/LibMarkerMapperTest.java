@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibMarkerPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibMarker;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +35,7 @@ public class LibMarkerMapperTest {
     private List<LibMarkerPT> libMarkerPTS = new ArrayList<>();
 
     private List<LibMarker> libMarkers = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -43,6 +45,7 @@ public class LibMarkerMapperTest {
         libMarkerPT = factory.manufacturePojo(LibMarkerPT.class);
         libMarkerPTS.add(libMarkerPT);
 
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test

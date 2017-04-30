@@ -1,5 +1,12 @@
 package io.protone.custom.service;
 
+import io.protone.ProtoneApp;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.transaction.Transactional;
+
 /**
  * Created by lukaszozimek on 06/03/2017.
  */

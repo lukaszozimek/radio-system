@@ -1,9 +1,9 @@
 package io.protone.web.rest.mapper;
 
+import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmOpportunityPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmOpportunity;
+import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +44,18 @@ public class CrmOpportunityMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity.setId(1L);
+        crmOpportunity.setAccount(factory.manufacturePojo(CrmAccount.class));
+        crmOpportunity.getAccount().setId(1L);
+        crmOpportunity.setStage(factory.manufacturePojo(CorDictionary.class));
+        crmOpportunity.getStage().setId(1L);
+        crmOpportunity.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmOpportunity.getKeeper().setId(1L);
+        crmOpportunity.setContact(factory.manufacturePojo(CrmContact.class));
+        crmOpportunity.getContact().setId(1L);
+        crmOpportunity.setLead(factory.manufacturePojo(CrmLead.class));
+        crmOpportunity.getLead().setId(1L);
+        crmOpportunity.setTasks(Sets.newHashSet(factory.manufacturePojo(CrmTask.class)));
         crmOpportunities.add(crmOpportunity);
         crmOpportunityPT = factory.manufacturePojo(CrmOpportunityPT.class);
         crmOpportunityPTS.add(crmOpportunityPT);
@@ -91,7 +103,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityPTS,corNetwork);
+        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -107,15 +119,14 @@ public class CrmOpportunityMapperTest {
             assertNotNull(entity.getLastTry());
             assertNotNull(entity.getCloseDate());
             assertNotNull(entity.getTasks());
-
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityPT,corNetwork);
+        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityPT, corNetwork);
 
 
         assertNotNull(entity.getId());
@@ -128,8 +139,7 @@ public class CrmOpportunityMapperTest {
         assertNotNull(entity.getLastTry());
         assertNotNull(entity.getCloseDate());
         assertNotNull(entity.getTasks());
-
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
 

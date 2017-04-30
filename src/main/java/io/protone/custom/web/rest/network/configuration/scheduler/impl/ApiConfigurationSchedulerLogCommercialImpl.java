@@ -44,9 +44,7 @@ public class ApiConfigurationSchedulerLogCommercialImpl implements ApiConfigurat
             return createCommercialLogConfigurationUsingPOST(networkShortcut, confMusicLogPT);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT);
-        cfgExternalSystemLog.setNetwork(corNetwork);
-
+        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT,corNetwork);
         cfgExternalSystemLog.setLogColumn(CfgLogTypeEnum.LT_MUSIC);
         cfgExternalSystemLog = cfgExternalSystemLogRepository.save(cfgExternalSystemLog);
         ConfCommercialLogPT result = confCommercialLogMapper.DB2DTO(cfgExternalSystemLog);
@@ -63,7 +61,7 @@ public class ApiConfigurationSchedulerLogCommercialImpl implements ApiConfigurat
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CfgExternalSystemLog", "idexists", "A new CfgExternalSystemLog cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT);
+        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT,corNetwork);
 
         cfgExternalSystemLog.setNetwork(corNetwork);
         cfgExternalSystemLog.setLogColumn(CfgLogTypeEnum.LT_COMMERCIAL);

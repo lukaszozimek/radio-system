@@ -2,7 +2,9 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmAccountPT;
+import io.protone.custom.service.dto.CrmContactPT;
 import io.protone.domain.*;
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +19,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28.04.2017.
@@ -43,6 +44,19 @@ public class CrmAccountMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setId(1L);
+        crmAccount.setArea(factory.manufacturePojo(CorDictionary.class));
+        crmAccount.setPerson(factory.manufacturePojo(CorPerson.class));
+        crmAccount.setSize(factory.manufacturePojo(CorDictionary.class));
+        crmAccount.setAddres(factory.manufacturePojo(CorAddress.class));
+        crmAccount.setRange(factory.manufacturePojo(CorDictionary.class));
+        crmAccount.setIndustry(factory.manufacturePojo(CorDictionary.class));
+        crmAccount.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmAccount.setShortName("fefe");
+        crmAccount.setName("fwafwafwa");
+        crmAccount.setVatNumber("fwafwa");
+        crmAccount.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
+        crmAccount.setNetwork(factory.manufacturePojo(CorNetwork.class));
         crmAccounts.add(crmAccount);
         crmAccountPT = factory.manufacturePojo(CrmAccountPT.class);
         crmAccountPTS.add(crmAccountPT);

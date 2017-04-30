@@ -100,7 +100,7 @@ public class TraAdvertisementMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getName());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
     }
 
@@ -117,6 +117,6 @@ public class TraAdvertisementMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 }

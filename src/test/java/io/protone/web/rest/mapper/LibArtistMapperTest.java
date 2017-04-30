@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibArtistPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibArtist;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class LibArtistMapperTest {
     private List<LibArtistPT> libArtistPTS = new ArrayList<>();
 
     private List<LibArtist> libArtists = new ArrayList<>();
-
+    private CorNetwork corNetwork;
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -45,6 +46,8 @@ public class LibArtistMapperTest {
         libArtistPT = factory.manufacturePojo(LibArtistPT.class);
         libArtistPTS.add(libArtistPT);
 
+
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
@@ -105,12 +108,5 @@ public class LibArtistMapperTest {
         });
     }
 
-    @Test
-    public void mapLibArtistPT_TypeEnum() throws Exception {
-    }
-
-    @Test
-    public void mapLibArtistTypeEnum() throws Exception {
-    }
 
 }

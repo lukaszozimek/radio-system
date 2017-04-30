@@ -45,9 +45,9 @@ public class ApiChannelImpl implements ApiChannel {
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(networkShortcut, channelDTO);
         }
-        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO);
         CorNetwork network = networkService.findNetwork(networkShortcut);
-        corChannel.setNetwork(network);
+
+        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
         CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
@@ -62,9 +62,8 @@ public class ApiChannelImpl implements ApiChannel {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
         }
 
-        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO);
         CorNetwork network = networkService.findNetwork(networkShortcut);
-        corChannel.setNetwork(network);
+        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
         CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()

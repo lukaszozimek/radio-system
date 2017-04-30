@@ -56,12 +56,17 @@ public class CorPersonMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corPerson = factory.manufacturePojo(CorPerson.class);
+        corPerson.setId(1L);
         corPeople.add(corPerson);
         confPersonPT = factory.manufacturePojo(ConfPersonPT.class);
+        confPersonPT.setId(1L);
         confPersonPTS.add(confPersonPT);
         libPersonPT = factory.manufacturePojo(LibPersonPT.class);
+        libPersonPT.setId(1L);
+
         libPersonPTS.add(libPersonPT);
         traCustomerPersonPT = factory.manufacturePojo(TraCustomerPersonPT.class);
+        traCustomerPersonPT.setId(1L);
         traCustomerPersonPTList.add(traCustomerPersonPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
@@ -153,19 +158,19 @@ public class CorPersonMapperTest {
 
     @Test
     public void libPersonPT2CorPerson() throws Exception {
-        CorPerson entity = corPersonMapper.libPersonPT2CorPerson(libPersonPT);
+        CorPerson entity = corPersonMapper.libPersonPT2CorPerson(libPersonPT, corNetwork);
 
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getFirstName());
         assertNotNull(entity.getId());
         assertNotNull(entity.getLastName());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void libPersonPTs2corPersons() throws Exception {
-        List<CorPerson> entities = corPersonMapper.libPersonPTs2corPersons(libPersonPTS);
+        List<CorPerson> entities = corPersonMapper.libPersonPTs2corPersons(libPersonPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -176,7 +181,7 @@ public class CorPersonMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getLastName());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
     }
 

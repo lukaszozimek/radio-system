@@ -1,11 +1,15 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmContactPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContact;
+import io.protone.domain.*;
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -18,6 +22,9 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by lukaszozimek on 28.04.2017.
  */
+@SuppressWarnings("ALL")
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ProtoneApp.class)
 public class CrmContactMapperTest {
     @Autowired
     private CrmContactMapper customCrmContactMapper;
@@ -36,6 +43,19 @@ public class CrmContactMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         crmContact = factory.manufacturePojo(CrmContact.class);
+        crmContact.setId(1L);
+        crmContact.setArea(factory.manufacturePojo(CorDictionary.class));
+        crmContact.setPerson(factory.manufacturePojo(CorPerson.class));
+        crmContact.setSize(factory.manufacturePojo(CorDictionary.class));
+        crmContact.setAddres(factory.manufacturePojo(CorAddress.class));
+        crmContact.setRange(factory.manufacturePojo(CorDictionary.class));
+        crmContact.setIndustry(factory.manufacturePojo(CorDictionary.class));
+        crmContact.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmContact.setShortName("fefe");
+        crmContact.setName("fwafwafwa");
+        crmContact.setVatNumber("fwafwa");
+        crmContact.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
+        crmContact.setNetwork(factory.manufacturePojo(CorNetwork.class));
         crmContacts.add(crmContact);
         crmContactPT = factory.manufacturePojo(CrmContactPT.class);
         crmContactPTS.add(crmContactPT);

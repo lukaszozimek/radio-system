@@ -19,7 +19,6 @@ import static io.protone.service.constans.ServiceConstants.NO_DATA;
  * Created by lukaszozimek on 14/03/2017.
  */
 @Service
-
 @Transactional
 public class LibAlbumService {
 
@@ -51,7 +50,6 @@ public class LibAlbumService {
         }
 
         log.debug("Persisting LibAlbum new empty album");
-
         return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
     }
 

@@ -98,7 +98,7 @@ public class TraInvoiceMapperTest {
             assertNotNull(entity.getPrice());
             assertNotNull(entity.getPaymentDay());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }
@@ -116,6 +116,6 @@ public class TraInvoiceMapperTest {
         assertNotNull(entity.getPrice());
         assertNotNull(entity.getPaymentDay());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 }

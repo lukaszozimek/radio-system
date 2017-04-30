@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.domain.CorChannel;
+import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,8 @@ public class CorChannelMapperTest {
     private List<CoreChannelPT> coreChannelPTS = new ArrayList<>();
 
     private List<CorChannel> channels = new ArrayList<>();
+    private CorNetwork corNetwork;
+
 
     @Before
     public void initPojos() {
@@ -44,6 +47,7 @@ public class CorChannelMapperTest {
         channels.add(channel);
         coreChannelPT = factory.manufacturePojo(CoreChannelPT.class);
         coreChannelPTS.add(coreChannelPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
@@ -72,19 +76,19 @@ public class CorChannelMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorChannel entity = corChannelMapper.DTO2DB(coreChannelPT);
+        CorChannel entity = corChannelMapper.DTO2DB(coreChannelPT,corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortcut());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorChannel> entities = corChannelMapper.DTOs2DBs(coreChannelPTS);
+        List<CorChannel> entities = corChannelMapper.DTOs2DBs(coreChannelPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -94,7 +98,7 @@ public class CorChannelMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
     }
 

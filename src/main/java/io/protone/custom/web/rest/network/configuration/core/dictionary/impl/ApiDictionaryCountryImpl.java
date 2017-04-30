@@ -41,8 +41,7 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
             return createCountryUsingPOST(networkShortcut, confCountryPt);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorCountry corCountry = customCorCurrencyMapper.DTO2DB(confCountryPt);
-        corCountry.setNetwork(corNetwork);
+        CorCountry corCountry = customCorCurrencyMapper.DTO2DB(confCountryPt, corNetwork);
         corCountry = customCorCountryRepository.save(corCountry);
         ConfCountryPt result = customCorCurrencyMapper.DB2DTO(corCountry);
         return ResponseEntity.ok()
@@ -57,8 +56,7 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorCountry", "idexists", "A new CorCountry cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorCountry corCountry = customCorCurrencyMapper.DTO2DB(confCountryPt);
-        corCountry.setNetwork(corNetwork);
+        CorCountry corCountry = customCorCurrencyMapper.DTO2DB(confCountryPt, corNetwork);
         corCountry = customCorCountryRepository.save(corCountry);
         ConfCountryPt result = customCorCurrencyMapper.DB2DTO(corCountry);
         return ResponseEntity.ok().body(result);
@@ -73,7 +71,7 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
 
     @Override
     public ResponseEntity<List<ConfCountryPt>> getAllCountriesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "pagable", required = true)  Pageable pagable) {
+                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CorCountry : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

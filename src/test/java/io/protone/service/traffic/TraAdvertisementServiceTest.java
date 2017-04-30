@@ -94,6 +94,7 @@ public class TraAdvertisementServiceTest {
     @Test
     public void saveAdvertisement() throws Exception {
         //when
+        //TODO: Provide network constraint for LibMediaItem
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);

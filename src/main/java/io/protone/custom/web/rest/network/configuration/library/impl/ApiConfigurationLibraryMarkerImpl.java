@@ -41,8 +41,9 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
         if (markerConfigurationPT.getId() == null) {
             return createMarkerConfigurationUsingPOST(networkShortcut, markerConfigurationPT);
         }
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.DTO2DB(markerConfigurationPT);
+        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.DTO2DB(markerConfigurationPT,corNetwork);
         cFGMarkerConfiguration = cFGMarkerConfigurationRepository.save(cFGMarkerConfiguration);
         ConfMarkerConfigurationPT result = cFGMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
         return ResponseEntity.ok()
@@ -56,7 +57,9 @@ public class ApiConfigurationLibraryMarkerImpl implements ApiConfigurationLibrar
         if (markerConfigurationPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cFGMarkerConfiguration", "idexists", "A new cFGMarkerConfiguration cannot already have an ID")).body(null);
         }
-        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.DTO2DB(markerConfigurationPT);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+
+        CfgMarkerConfiguration cFGMarkerConfiguration = cFGMarkerConfigurationMapper.DTO2DB(markerConfigurationPT,corNetwork);
         cFGMarkerConfiguration = cFGMarkerConfigurationRepository.save(cFGMarkerConfiguration);
         ConfMarkerConfigurationPT result = cFGMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
         return ResponseEntity.ok()

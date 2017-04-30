@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfMusicLogPT;
 import io.protone.domain.CfgExternalSystemLog;
+import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,9 @@ public class ConfMusicLogMapperTest {
 
     private List<CfgExternalSystemLog> cfgExternalSystemLogs = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -45,7 +49,7 @@ public class ConfMusicLogMapperTest {
         cfgExternalSystemLogs.add(cfgExternalSystemLog);
         confMusicLogPT = factory.manufacturePojo(ConfMusicLogPT.class);
         confMusicLogPTS.add(confMusicLogPT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
@@ -79,7 +83,7 @@ public class ConfMusicLogMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CfgExternalSystemLog entity = confMusicLogMapper.DTO2DB(confMusicLogPT);
+        CfgExternalSystemLog entity = confMusicLogMapper.DTO2DB(confMusicLogPT, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
@@ -88,13 +92,13 @@ public class ConfMusicLogMapperTest {
         assertNotNull(entity.getDelimiter());
         assertNotNull(entity.getColumnSequence());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
         assertNull(entity.getChannel());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CfgExternalSystemLog> entities = confMusicLogMapper.DTOs2DBs(confMusicLogPTS);
+        List<CfgExternalSystemLog> entities = confMusicLogMapper.DTOs2DBs(confMusicLogPTS, corNetwork);
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
@@ -105,7 +109,7 @@ public class ConfMusicLogMapperTest {
             assertNotNull(entity.getDelimiter());
             assertNotNull(entity.getColumnSequence());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
             assertNull(entity.getChannel());
         });
     }

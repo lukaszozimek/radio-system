@@ -102,7 +102,7 @@ public class LibLibraryMapperTest {
         assertNotNull(entity.getLibraryType());
         assertNotNull(entity.getDescription());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
@@ -121,7 +121,7 @@ public class LibLibraryMapperTest {
             assertNotNull(entity.getLibraryType());
             assertNotNull(entity.getDescription());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

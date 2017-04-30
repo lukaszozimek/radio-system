@@ -3,6 +3,7 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class CrmLeadPT {
     private TraCustomerPersonPT person = null;
 
     @JsonProperty("tasks")
+    @PodamExclude
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
 
     public CrmLeadPT id(Long id) {

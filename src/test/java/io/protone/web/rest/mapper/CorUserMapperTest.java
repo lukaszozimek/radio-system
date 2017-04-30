@@ -37,20 +37,25 @@ public class CorUserMapperTest {
     private List<CoreUserPT> coreUserPTS = new ArrayList<>();
 
     private List<CorUser> corUsers = new ArrayList<>();
+    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corUser = factory.manufacturePojo(CorUser.class);
+        corUser.addChannel(factory.manufacturePojo(CorChannel.class));
+        corUser.addNetwork(factory.manufacturePojo(CorNetwork.class));
+
         corUsers.add(corUser);
         coreUserPT = factory.manufacturePojo(CoreUserPT.class);
         coreUserPTS.add(coreUserPT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        //TODO:Mapping Channel
         CoreUserPT dto = customCorUserMapperExt.DB2DTO(corUser);
 
         assertNotNull(dto.getActivated());
@@ -59,6 +64,9 @@ public class CorUserMapperTest {
         assertNotNull(dto.getImageurl());
         assertNotNull(dto.getLogin());
         assertNotNull(dto.getId());
+
+        assertNotNull(dto.getChannel());
+        assertNotNull(dto.getNetwork());
     }
 
     @Test
@@ -75,14 +83,16 @@ public class CorUserMapperTest {
             assertNotNull(dto.getLogin());
             assertNotNull(dto.getId());
 
+            assertNotNull(dto.getChannel());
+            assertNotNull(dto.getNetwork());
+
         });
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        //TODO:Mapping channels and Networks
-        CorUser entity = customCorUserMapperExt.DTO2DB(coreUserPT);
+        CorUser entity = customCorUserMapperExt.DTO2DB(coreUserPT, corChannel, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getLogin());
@@ -91,13 +101,13 @@ public class CorUserMapperTest {
         assertNotNull(entity.isActivated());
         assertNotNull(entity.getAuthorities());
 
-        assertNull(entity.getNetworks());
-        assertNull(entity.getChannels());
+        assertNotNull(entity.getNetworks());
+        assertNotNull(entity.getChannels());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorUser> entities = customCorUserMapperExt.DTOs2DBs(coreUserPTS);
+        List<CorUser> entities = customCorUserMapperExt.DTOs2DBs(coreUserPTS, corChannel, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -110,15 +120,15 @@ public class CorUserMapperTest {
             assertNotNull(entity.isActivated());
             assertNotNull(entity.getAuthorities());
 
-            assertNull(entity.getNetworks());
-            assertNull(entity.getChannels());
+            assertNotNull(entity.getNetworks());
+            assertNotNull(entity.getChannels());
         });
     }
 
     @Test
     public void corAuthorityFromString() throws Exception {
         CorAuthority corAuthority = customCorUserMapperExt.corAuthorityFromString(TEST_AUTHORIRT);
-        assertNull(corAuthority);
+        assertNotNull(corAuthority);
         assertEquals(corAuthority.getName(), TEST_AUTHORIRT);
     }
 
@@ -126,7 +136,7 @@ public class CorUserMapperTest {
     public void stringFromCorAuthority() throws Exception {
 
         String authority = customCorUserMapperExt.stringFromCorAuthority(new CorAuthority().name(TEST_AUTHORIRT));
-        assertNull(authority);
+        assertNotNull(authority);
         assertEquals(authority, TEST_AUTHORIRT);
     }
 

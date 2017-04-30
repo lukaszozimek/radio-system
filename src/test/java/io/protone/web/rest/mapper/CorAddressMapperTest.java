@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreAddressPT;
 import io.protone.domain.CorAddress;
+import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,7 @@ public class CorAddressMapperTest {
     private List<CoreAddressPT> coreAddressPTS = new ArrayList<>();
 
     private List<CorAddress> corAddresses = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -44,6 +46,7 @@ public class CorAddressMapperTest {
         coreAddressPT = factory.manufacturePojo(CoreAddressPT.class);
         coreAddressPTS.add(coreAddressPT);
 
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
@@ -78,7 +81,7 @@ public class CorAddressMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorAddress entity = corAddressMapper.DTO2DB(coreAddressPT);
+        CorAddress entity = corAddressMapper.DTO2DB(coreAddressPT, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getStreet());
@@ -87,13 +90,13 @@ public class CorAddressMapperTest {
         assertNotNull(entity.getCity());
         assertNotNull(entity.getCountry());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
 
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressPTS);
+        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -105,7 +108,7 @@ public class CorAddressMapperTest {
             assertNotNull(entity.getCity());
             assertNotNull(entity.getCountry());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
     }
 

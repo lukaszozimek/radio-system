@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibLabelPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLabel;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,7 @@ public class LibLabelMapperTest {
     private List<LibLabelPT> libLabelPTS = new ArrayList<>();
 
     private List<LibLabel> libLabels = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -45,6 +47,7 @@ public class LibLabelMapperTest {
         libLabelPT = factory.manufacturePojo(LibLabelPT.class);
         libLabelPTS.add(libLabelPT);
 
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test

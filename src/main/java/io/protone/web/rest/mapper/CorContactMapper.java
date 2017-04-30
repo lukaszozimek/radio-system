@@ -1,10 +1,14 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.custom.service.dto.CoreContactPT;
+import io.protone.domain.CorChannel;
 import io.protone.domain.CorContact;
 import io.protone.domain.CorNetwork;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +28,18 @@ public interface CorContactMapper {
     CorContact DTO2DB(CoreContactPT cORContactDTO, @Context CorNetwork network);
 
     default List<CorContact> DTOs2DBs(List<CoreContactPT> cORContactDTOs, CorNetwork networkId) {
-        List<CorContact> libMediaItems = new ArrayList<>();
+        List<CorContact> corContacts = new ArrayList<>();
         if (cORContactDTOs.isEmpty() || cORContactDTOs == null) {
             return null;
         }
         for (CoreContactPT dto : cORContactDTOs) {
-            libMediaItems.add(DTO2DB(dto, networkId));
+            corContacts.add(DTO2DB(dto, networkId));
         }
-        return libMediaItems;
+        return corContacts;
     }
-
+    @AfterMapping
+    default void coreContactPTToCorContactAfterMapping(CoreContactPT dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
 }

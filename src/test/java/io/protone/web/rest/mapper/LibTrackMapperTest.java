@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibTrackPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibTrack;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,8 @@ public class LibTrackMapperTest {
     private List<LibTrackPT> libTrackPTS = new ArrayList<>();
 
     private List<LibTrack> libTracks = new ArrayList<>();
+    private CorNetwork corNetwork;
+
 
     @Before
     public void initPojos() {
@@ -43,7 +46,7 @@ public class LibTrackMapperTest {
         libTracks.add(libTrack);
         libTrackPT = factory.manufacturePojo(LibTrackPT.class);
         libTrackPTS.add(libTrackPT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 

@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfCurrencyPT;
 import io.protone.domain.CorCurrency;
+import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,9 @@ public class CorCurrencyMapperTest {
 
     private List<CorCurrency> corCurrencies = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -45,21 +49,19 @@ public class CorCurrencyMapperTest {
         corCurrencies.add(corCurrency);
         confCurrencyPT = factory.manufacturePojo(ConfCurrencyPT.class);
         confCurrencyPTS.add(confCurrencyPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorCurrency entity = corCurrencyMapper.DTO2DB(confCurrencyPT);
-
+        CorCurrency entity = corCurrencyMapper.DTO2DB(confCurrencyPT, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getSymbol());
         assertNotNull(entity.getDelimiter());
         assertNotNull(entity.getShortName());
-
-
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
@@ -91,7 +93,7 @@ public class CorCurrencyMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorCurrency> entities = corCurrencyMapper.DTOs2DBs(confCurrencyPTS);
+        List<CorCurrency> entities = corCurrencyMapper.DTOs2DBs(confCurrencyPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -101,9 +103,7 @@ public class CorCurrencyMapperTest {
             assertNotNull(entity.getSymbol());
             assertNotNull(entity.getDelimiter());
             assertNotNull(entity.getShortName());
-
-
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

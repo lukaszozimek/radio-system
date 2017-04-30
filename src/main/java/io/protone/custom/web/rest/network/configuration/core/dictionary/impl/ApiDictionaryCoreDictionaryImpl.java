@@ -45,8 +45,7 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
             return createDictionaryValueUsingPOST(networkShortcut, module, type, corDictionaryPT);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryPT);
-        corDictionary.setNetwork(corNetwork);
+        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryPT, corNetwork);
         corDictionary = corDictionaryRepository.save(corDictionary);
         CorDictionaryPT result = customCorDictionaryMapper.DB2DTO(corDictionary);
         return ResponseEntity.ok()
@@ -64,8 +63,7 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorDictionary", "idexists", "A new CorDictionary cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryPT);
-        corDictionary.setNetwork(corNetwork);
+        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryPT, corNetwork);
         corDictionary = corDictionaryRepository.save(corDictionary);
         CorDictionaryPT result = customCorDictionaryMapper.DB2DTO(corDictionary);
         return ResponseEntity.ok().body(result);

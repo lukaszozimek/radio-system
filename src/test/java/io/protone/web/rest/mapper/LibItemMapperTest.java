@@ -43,6 +43,7 @@ public class LibItemMapperTest {
 
     private List<LibMediaItem> libMediaItems = new ArrayList<>();
 
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -52,6 +53,7 @@ public class LibItemMapperTest {
         libItemPTS.add(libItemPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corTag = factory.manufacturePojo(CorTag.class);
+
     }
 
     @Test
@@ -193,12 +195,5 @@ public class LibItemMapperTest {
         assertEquals(TEST_TAG, tag);
     }
 
-    @Test
-    public void mapResourceType() throws Exception {
-    }
-
-    @Test
-    public void mapItemType() throws Exception {
-    }
 
 }

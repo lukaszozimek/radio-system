@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.domain.CorDictionary;
+import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +33,10 @@ public class CorDictionaryMapperTest {
 
     private CorDictionaryPT corDictionaryPT;
 
-    private List<CorDictionaryPT> coreChannelPTS = new ArrayList<>();
+    private List<CorDictionaryPT> corDictionaryPTS = new ArrayList<>();
 
     private List<CorDictionary> corDictionaries = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -42,12 +44,14 @@ public class CorDictionaryMapperTest {
         corDictionary = factory.manufacturePojo(CorDictionary.class);
         corDictionaries.add(corDictionary);
         corDictionaryPT = factory.manufacturePojo(CorDictionaryPT.class);
-        coreChannelPTS.add(corDictionaryPT);
+        corDictionaryPTS.add(corDictionaryPT);
+
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorDictionary entity = corDictionaryMapper.DTO2DB(corDictionaryPT);
+        CorDictionary entity = corDictionaryMapper.DTO2DB(corDictionaryPT, corNetwork);
 
 
         assertNotNull(entity.getId());
@@ -58,7 +62,7 @@ public class CorDictionaryMapperTest {
         assertNotNull(entity.getCorModule());
 
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
@@ -93,7 +97,7 @@ public class CorDictionaryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorDictionary> entities = corDictionaryMapper.DTOs2DBs(coreChannelPTS);
+        List<CorDictionary> entities = corDictionaryMapper.DTOs2DBs(corDictionaryPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -106,7 +110,7 @@ public class CorDictionaryMapperTest {
             assertNotNull(entity.getCorModule());
 
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

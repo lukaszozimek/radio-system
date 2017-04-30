@@ -158,11 +158,9 @@ public class CustomCorUserService {
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setImageurl(userDTO.getImageurl());
-        userCreator.getNetworks().stream().forEach(network -> {
-            user.addNetwork(network);
-        });
+        user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
         userDTO.getChannel().stream().forEach(coreChannelPT -> {
-            user.addChannel(customCORChannelMapper.DTO2DB(coreChannelPT));
+            user.addChannel(customCORChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
 
         });
         if (userDTO.getLangKey() == null) {

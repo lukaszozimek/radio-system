@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfTaxPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +36,7 @@ public class CorTaxMapperTest {
     private List<ConfTaxPT> confTaxPTS = new ArrayList<>();
 
     private List<CorTax> corTaxes = new ArrayList<>();
+    private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
@@ -43,6 +45,7 @@ public class CorTaxMapperTest {
         corTaxes.add(corTax);
         confTaxPT = factory.manufacturePojo(ConfTaxPT.class);
         confTaxPTS.add(confTaxPT);
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 

@@ -1,9 +1,11 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
+import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
+import io.protone.web.rest.dto.thin.TraAdvertisementThinDTO;
+import io.protone.web.rest.dto.thin.TraCustomerThinDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +20,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28.04.2017.
@@ -26,7 +27,7 @@ import static org.junit.Assert.assertNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class TraOrderMapper {
+public class TraOrderMapperTest {
     @Autowired
     private TraOrderMapper customTraOrderMapper;
 
@@ -40,17 +41,35 @@ public class TraOrderMapper {
 
     private CorNetwork corNetwork;
 
+    private PodamFactory factory;
+
     @Before
     public void initPojos() {
-        PodamFactory factory = new PodamFactoryImpl();
+        factory = new PodamFactoryImpl();
         traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setId(1L);
+        traOrder.setAdvertisment(factory.manufacturePojo(TraAdvertisement.class));
+        traOrder.getAdvertisment().setId(1L);
+        traOrder.setStatus(factory.manufacturePojo(CorDictionary.class));
+        traOrder.getStatus().setId(1L);
+        traOrder.setCampaign(factory.manufacturePojo(TraCampaign.class));
+        traOrder.getCampaign().setId(1L);
+        traOrder.setCustomer(factory.manufacturePojo(CrmAccount.class));
+        traOrder.getCustomer().setId(1L);
+        traOrder.setInvoice(factory.manufacturePojo(TraInvoice.class));
+        traOrder.getInvoice().setId(1L);
         traOrders.add(traOrder);
         traOrderPT = factory.manufacturePojo(TraOrderPT.class);
+        traOrderPT.getId();
+        traOrderPT.setAdvertismentId(factory.manufacturePojo(TraAdvertisementThinDTO.class));
+        traOrderPT.setCampaignId(1L);
+        traOrderPT.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
+        traOrderPT.setStatusId(factory.manufacturePojo(CorDictionaryPT.class));
+        traOrderPT.setInvoiceId(1L);
         orderPTS.add(traOrderPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
-
 
     @Test
     public void DB2DTO() throws Exception {
@@ -108,7 +127,7 @@ public class TraOrderMapper {
             assertNotNull(entity.getName());
             assertNotNull(entity.getStartDate());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }
@@ -116,7 +135,6 @@ public class TraOrderMapper {
     @Test
     public void DTO2DB() throws Exception {
         TraOrder entity = customTraOrderMapper.DTO2DB(traOrderPT, corNetwork);
-
 
         assertNotNull(entity.getAdvertisment());
         assertNotNull(entity.getStatus());
@@ -129,7 +147,7 @@ public class TraOrderMapper {
         assertNotNull(entity.getName());
         assertNotNull(entity.getStartDate());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
 
 
     }

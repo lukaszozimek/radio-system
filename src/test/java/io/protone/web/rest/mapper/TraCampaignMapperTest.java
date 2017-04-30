@@ -1,9 +1,14 @@
 package io.protone.web.rest.mapper;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
+import io.protone.custom.service.dto.CorDictionaryPT;
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraCampaign;
+import io.protone.custom.service.dto.TraCustomerPT;
+import io.protone.custom.service.dto.TraOrderPT;
+import io.protone.domain.*;
+import io.protone.web.rest.dto.thin.TraCustomerThinDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,8 +49,16 @@ public class TraCampaignMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traCampaign = factory.manufacturePojo(TraCampaign.class);
+        traCampaign.setId(1L);
+        traCampaign.setCustomer(factory.manufacturePojo(CrmAccount.class));
+        traCampaign.getCustomer().setId(1L);
+        traCampaign.setOrders(Sets.newHashSet(factory.manufacturePojo(TraOrder.class)));
+        traCampaign.setStatus(factory.manufacturePojo(CorDictionary.class));
         traCampaigns.add(traCampaign);
         campaignPT = factory.manufacturePojo(TraCampaignPT.class);
+        campaignPT.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
+        campaignPT.setOrders(Lists.newArrayList(factory.manufacturePojo(TraOrderPT.class)));
+        campaignPT.setStatus(factory.manufacturePojo(CorDictionaryPT.class));
         traCampaignPTS.add(campaignPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 

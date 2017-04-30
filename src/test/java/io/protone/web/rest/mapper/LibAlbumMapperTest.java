@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibAlbumPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +35,8 @@ public class LibAlbumMapperTest {
     private List<LibAlbumPT> libAlbumPTS = new ArrayList<>();
 
     private List<LibAlbum> libAlbums = new ArrayList<>();
+    private CorNetwork corNetwork;
+
 
     @Before
     public void initPojos() {
@@ -42,7 +45,7 @@ public class LibAlbumMapperTest {
         libAlbums.add(libAlbum);
         libAlbumPT = factory.manufacturePojo(LibAlbumPT.class);
         libAlbumPTS.add(libAlbumPT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
@@ -120,27 +123,6 @@ public class LibAlbumMapperTest {
 
             assertNull(entity.getNetwork());
         });
-    }
-
-
-    @Test
-    public void mapLIBImage() throws Exception {
-    }
-
-    @Test
-    public void mapLibLabel() throws Exception {
-    }
-
-    @Test
-    public void mapLibArtist() throws Exception {
-    }
-
-    @Test
-    public void mapAlbumTypeEnum() throws Exception {
-    }
-
-    @Test
-    public void mapLibAlbumTypeEnum() throws Exception {
     }
 
 }

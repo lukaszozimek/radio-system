@@ -46,6 +46,7 @@ public class CorContactMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corContact = factory.manufacturePojo(CorContact.class);
+        corContact.setId(1L);
         corContacts.add(corContact);
         coreContactPT = factory.manufacturePojo(CoreContactPT.class);
         coreContactPTS.add(coreContactPT);

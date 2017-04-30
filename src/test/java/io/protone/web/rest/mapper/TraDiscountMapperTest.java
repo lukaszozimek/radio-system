@@ -2,6 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfDiscountPT;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +39,8 @@ public class TraDiscountMapperTest {
 
     private List<TraDiscount> traDiscounts = new ArrayList<>();
 
+    private CorNetwork corNetwork;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -45,7 +48,7 @@ public class TraDiscountMapperTest {
         traDiscounts.add(traDiscount);
         confDiscountPT = factory.manufacturePojo(ConfDiscountPT.class);
         confDiscountPTS.add(confDiscountPT);
-
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
