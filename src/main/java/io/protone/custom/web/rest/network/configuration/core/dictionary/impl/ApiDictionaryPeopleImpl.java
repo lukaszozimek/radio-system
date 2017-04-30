@@ -1,11 +1,11 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 
+import io.protone.repository.cor.CorPersonRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfPersonPT;
 import io.protone.web.rest.mapper.CorPersonMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryPeople;
 import io.protone.domain.CorPerson;
-import io.protone.repository.CorPersonRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

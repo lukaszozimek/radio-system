@@ -7,7 +7,7 @@ import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDicti
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorDictionaryType;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.CorDictionaryRepository;
+import io.protone.repository.cor.CorDictionaryRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

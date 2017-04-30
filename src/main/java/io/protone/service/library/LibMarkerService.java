@@ -3,7 +3,7 @@ package io.protone.service.library;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import io.protone.repository.LibMarkerRepository;
+import io.protone.repository.library.LibMarkerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

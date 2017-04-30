@@ -11,10 +11,10 @@ import io.protone.domain.CorAuthority;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
-import io.protone.repository.custom.CustomAuthorityRepository;
-import io.protone.repository.custom.CustomCorChannelRepository;
-import io.protone.repository.custom.CustomCorNetworkRepository;
-import io.protone.repository.custom.CustomCorUserRepository;
+import io.protone.repository.cor.CorAuthorityRepository;
+import io.protone.repository.cor.CorChannelRepository;
+import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.repository.cor.CorUserRepository;
 import io.protone.security.AuthoritiesConstants;
 import io.protone.security.SecurityUtils;
 import io.protone.service.util.RandomUtil;
@@ -45,19 +45,19 @@ public class CustomCorUserService {
     private final Logger log = LoggerFactory.getLogger(CustomCorUserService.class);
 
     @Autowired
-    private CustomCorUserRepository userRepository;
+    private CorUserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private CustomAuthorityRepository authorityRepository;
+    private CorAuthorityRepository authorityRepository;
 
     @Autowired
-    private CustomCorChannelRepository customCorChannelRepository;
+    private CorChannelRepository corChannelRepository;
 
     @Autowired
-    private CustomCorNetworkRepository customCorNetworkRepository;
+    private CorNetworkRepository corNetworkRepository;
 
     @Autowired
     private CorUserMapper customCorUserMapperExt;
@@ -80,7 +80,7 @@ public class CustomCorUserService {
                 return user;
             });
         if (corUser.isPresent()) {
-            CorNetwork network = customCorNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
+            CorNetwork network = corNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
 
         }
         return corUser;
@@ -116,7 +116,7 @@ public class CustomCorUserService {
                               String imageUrl, String langKey, CoreNetworkPT networkPt) {
 
         CorUser newUser = new CorUser();
-        CorNetwork network = customCorNetworkRepository.save(customCorNetworkMapper.DTO2DB(networkPt));
+        CorNetwork network = corNetworkRepository.save(customCorNetworkMapper.DTO2DB(networkPt));
         CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<CorAuthority> authorities = new HashSet<>();
 
@@ -144,7 +144,7 @@ public class CustomCorUserService {
         newUser.setNetworks(newHashSet(network));
         userRepository.save(newUser);
         network.addNetworkUsers(newUser);
-        customCorNetworkRepository.save(network);
+        corNetworkRepository.save(network);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -219,7 +219,7 @@ public class CustomCorUserService {
                 Set<CorChannel> corChannels = user.getChannels();
                 corChannels.clear();
                 userDTO.getChannel().stream()
-                    .map(channelPT -> customCorChannelRepository.findOne(channelPT.getId()))
+                    .map(channelPT -> corChannelRepository.findOne(channelPT.getId()))
                     .forEach(corChannels::add);
                 Set<CorAuthority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();

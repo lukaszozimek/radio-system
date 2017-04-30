@@ -1,7 +1,7 @@
 package io.protone.service.cor;
 
 import io.protone.domain.CorNetwork;
-import io.protone.repository.custom.CustomCorChannelRepository;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.domain.CorChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class CorChannelService {
     private final Logger log = LoggerFactory.getLogger(CorChannelService.class);
 
     @Inject
-    private CustomCorChannelRepository channelRepository;
+    private CorChannelRepository channelRepository;
 
     @Inject
     private CorNetworkService networkService;

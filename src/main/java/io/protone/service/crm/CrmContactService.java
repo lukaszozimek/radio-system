@@ -2,9 +2,11 @@ package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
 import io.protone.domain.*;
+import io.protone.repository.cor.CorAddressRepository;
+import io.protone.repository.cor.CorContactRepository;
+import io.protone.repository.cor.CorPersonRepository;
 import io.protone.repository.crm.CrmContactRepository;
 import io.protone.repository.crm.CrmTaskRepository;
-import io.protone.repository.custom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -34,13 +36,13 @@ public class CrmContactService {
     private CorPersonService corPersonService;
 
     @Inject
-    private CustomCorPersonRepository personRepository;
+    private CorPersonRepository personRepository;
 
     @Inject
-    private CustomCorContactRepository corContactRepository;
+    private CorContactRepository corContactRepository;
 
     @Inject
-    private CustomCorAddressRepository addressRepository;
+    private CorAddressRepository addressRepository;
 
 
     public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {

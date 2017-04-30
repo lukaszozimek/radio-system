@@ -6,7 +6,7 @@ import io.protone.web.rest.mapper.TraDiscountMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryDiscount;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
-import io.protone.repository.TraDiscountRepository;
+import io.protone.repository.traffic.TraDiscountRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

@@ -11,9 +11,9 @@ import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.repository.CorPropertyKeyRepository;
-import io.protone.repository.CorPropertyValueRepository;
-import io.protone.repository.custom.CustomLibMediaItemRepository;
+import io.protone.repository.cor.CorPropertyKeyRepository;
+import io.protone.repository.cor.CorPropertyValueRepository;
+import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.library.LibMarkerService;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -64,7 +64,7 @@ public class LibMetadataService {
     private CorPropertyValueRepository corPropertyValueRepository;
 
     @Inject
-    private CustomLibMediaItemRepository mediaItemRepository;
+    private LibMediaItemRepository mediaItemRepository;
 
     private Map<String, String> metadataMap;
 

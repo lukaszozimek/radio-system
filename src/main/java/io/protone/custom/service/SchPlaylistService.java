@@ -7,7 +7,7 @@ import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
-import io.protone.repository.custom.CustomCorChannelRepository;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
@@ -41,7 +41,7 @@ public class SchPlaylistService {
     private CustomSchPlaylistMapper playlistMapper;
 
     @Inject
-    private CustomCorChannelRepository channelRepository;
+    private CorChannelRepository channelRepository;
 
     @Inject
     private SchBlockService blockService;

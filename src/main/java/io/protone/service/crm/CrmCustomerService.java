@@ -1,11 +1,11 @@
 package io.protone.service.crm;
 
 import io.protone.custom.service.CorPersonService;
+import io.protone.repository.cor.CorAddressRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.domain.*;
-import io.protone.repository.custom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class CrmCustomerService {
 
 
     @Inject
-    private CustomCorAddressRepository addressRepository;
+    private CorAddressRepository addressRepository;
 
     @Inject
     private CorPersonService personService;

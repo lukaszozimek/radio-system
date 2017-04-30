@@ -6,7 +6,7 @@ import io.protone.web.rest.mapper.CorCountryMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiDictionaryCountry;
 import io.protone.domain.CorCountry;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.custom.CustomCorCountryRepository;
+import io.protone.repository.cor.CorCountryRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
     private final Logger log = LoggerFactory.getLogger(ApiDictionaryCountryImpl.class);
 
     @Inject
-    private CustomCorCountryRepository customCorCountryRepository;
+    private CorCountryRepository customCorCountryRepository;
     @Inject
     private CorNetworkService corNetworkService;
     @Inject

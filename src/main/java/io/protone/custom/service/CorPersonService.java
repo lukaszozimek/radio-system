@@ -2,8 +2,8 @@ package io.protone.custom.service;
 
 import io.protone.domain.CorContact;
 import io.protone.domain.CorPerson;
-import io.protone.repository.custom.CustomCorContactRepository;
-import io.protone.repository.custom.CustomCorPersonRepository;
+import io.protone.repository.cor.CorContactRepository;
+import io.protone.repository.cor.CorPersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,10 @@ public class CorPersonService {
     private final Logger log = LoggerFactory.getLogger(CorPersonService.class);
 
     @Inject
-    private CustomCorContactRepository corContactRepository;
+    private CorContactRepository corContactRepository;
 
     @Inject
-    private CustomCorPersonRepository personRepository;
+    private CorPersonRepository personRepository;
 
     public CorPerson savePerson(CorPerson corPerson) {
         log.debug("Persisting CorPerson: {}", corPerson);

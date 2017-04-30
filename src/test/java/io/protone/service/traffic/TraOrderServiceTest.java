@@ -4,7 +4,6 @@ import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraOrder;
-import io.protone.repository.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraOrderRepository;
 import org.junit.Before;

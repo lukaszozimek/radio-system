@@ -1,12 +1,12 @@
 package io.protone.custom.web.rest.network.configuration.traffic.impl;
 
+import io.protone.repository.cor.CorTaxRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfTaxPT;
 import io.protone.web.rest.mapper.CorTaxMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryTax;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
-import io.protone.repository.custom.CustomCorTaxRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ApiConfigurationTrafficDictionaryTaxImpl implements ApiConfiguratio
 
     private final Logger log = LoggerFactory.getLogger(ApiConfigurationTrafficDictionaryTaxImpl.class);
     @Inject
-    private CustomCorTaxRepository corTaxRepository;
+    private CorTaxRepository corTaxRepository;
     @Inject
     private CorNetworkService corNetworkService;
     @Inject
@@ -36,7 +36,7 @@ public class ApiConfigurationTrafficDictionaryTaxImpl implements ApiConfiguratio
 
     @Override
     public ResponseEntity<List<ConfTaxPT>> getAllTaxesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable) {
+                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorTax");
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

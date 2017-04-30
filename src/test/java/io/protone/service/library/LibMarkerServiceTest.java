@@ -5,7 +5,6 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import io.protone.repository.CorNetworkRepository;
 import io.protone.repository.LibMediaItemRepository;
 import org.junit.Before;
 import org.junit.Test;

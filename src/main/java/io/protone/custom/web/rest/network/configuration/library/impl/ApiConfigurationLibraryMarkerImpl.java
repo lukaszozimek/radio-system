@@ -6,7 +6,7 @@ import io.protone.web.rest.mapper.CfgMarkerConfigurationMapper;
 import io.protone.custom.web.rest.network.configuration.library.ApiConfigurationLibraryMarker;
 import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.custom.CustomCfgMarkerConfigurationRepository;
+import io.protone.repository.cfg.CustomCfgMarkerConfigurationRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

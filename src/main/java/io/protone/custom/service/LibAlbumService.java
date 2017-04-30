@@ -5,7 +5,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import io.protone.domain.LibArtist;
 import io.protone.domain.enumeration.LibAlbumTypeEnum;
-import io.protone.repository.LibAlbumRepository;
+import io.protone.repository.library.LibAlbumRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -54,6 +54,7 @@ public class LibAlbumService {
 
         return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
     }
+
     public LibAlbum findOrSaveOne(LibAlbum libAlbum, LibArtist artist, CorNetwork network) {
         if (libAlbum == null) {
             libAlbum = new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_OTHER).network(network);

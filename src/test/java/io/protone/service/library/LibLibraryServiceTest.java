@@ -3,8 +3,7 @@ package io.protone.service.library;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
-import io.protone.repository.CorNetworkRepository;
-import io.protone.repository.custom.CustomLibLibraryRepository;
+import io.protone.repository.library.LibLibraryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,7 @@ public class LibLibraryServiceTest {
     private LibLibraryService libLibraryService;
 
     @Autowired
-    private CustomLibLibraryRepository libLibraryRepository;
+    private LibLibraryRepository libLibraryRepository;
 
     @Autowired
     private CorNetworkRepository corNetworkRepository;

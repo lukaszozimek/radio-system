@@ -12,7 +12,7 @@ import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.web.rest.network.configuration.core.user.ApiConfigurationUser;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
-import io.protone.repository.custom.CustomCorUserRepository;
+import io.protone.repository.cor.CorUserRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
 
     private static final String ENTITY_NAME = "userManagement";
 
-    private final CustomCorUserRepository userRepository;
+    private final CorUserRepository userRepository;
 
     private final CustomMailService mailService;
 
@@ -64,7 +64,7 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
 
     private final CorNetworkService corNetworkService;
 
-    public ApiUserConfigurationImpl(CustomCorUserRepository userRepository, CustomMailService mailService,
+    public ApiUserConfigurationImpl(CorUserRepository userRepository, CustomMailService mailService,
                                     CustomCorUserService userService, CorNetworkService corNetworkService) {
 
         this.userRepository = userRepository;

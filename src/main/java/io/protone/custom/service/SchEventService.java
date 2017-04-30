@@ -6,7 +6,7 @@ import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchTemplate;
-import io.protone.repository.custom.CustomCorChannelRepository;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.custom.CustomSchTemplateRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
@@ -38,7 +38,7 @@ public class SchEventService {
     private CustomSchTemplateMapper templateMapper;
 
     @Inject
-    private CustomCorChannelRepository channelRepository;
+    private CorChannelRepository channelRepository;
 
     @Inject
     private SchBlockService blockService;

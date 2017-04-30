@@ -8,7 +8,7 @@ import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurati
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.enumeration.CfgLogTypeEnum;
-import io.protone.repository.CfgExternalSystemLogRepository;
+import io.protone.repository.cfg.CfgExternalSystemLogRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

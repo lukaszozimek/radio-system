@@ -1,16 +1,11 @@
 package io.protone.custom.utils;
 
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
-import io.protone.domain.LibLibrary;
-import io.protone.domain.SchBlock;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.domain.enumeration.SchStartTypeEnum;
-import io.protone.repository.LibLibraryRepository;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;

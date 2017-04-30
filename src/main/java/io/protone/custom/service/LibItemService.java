@@ -2,15 +2,13 @@ package io.protone.custom.service;
 
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
+import io.protone.repository.library.*;
 import io.protone.service.constans.ServiceConstants;
 import io.protone.service.library.LibLibraryService;
 import io.protone.service.library.LibMarkerService;
 import io.protone.web.rest.mapper.LibItemMapper;
 import io.protone.domain.*;
-import io.protone.repository.*;
-import io.protone.repository.custom.CustomCorUserRepository;
-import io.protone.repository.custom.CustomLibAudioObjectRepository;
-import io.protone.repository.custom.CustomLibMediaItemRepository;
+import io.protone.repository.cor.CorUserRepository;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.security.SecurityUtils;
@@ -51,7 +49,7 @@ public class LibItemService {
     private LibLibraryService libraryService;
 
     @Inject
-    private CustomLibMediaItemRepository itemRepository;
+    private LibMediaItemRepository itemRepository;
 
     @Inject
     private LibItemMapper itemMapper;
@@ -63,13 +61,13 @@ public class LibItemService {
     private MediaUtils mediaUtils;
 
     @Inject
-    private CustomLibMediaItemRepository mediaItemRepository;
+    private LibMediaItemRepository mediaItemRepository;
 
     @Inject
-    private CustomLibAudioObjectRepository audioObjectRepository;
+    private LibAudioObjectRepository audioObjectRepository;
 
     @Inject
-    private CustomCorUserRepository userRepository;
+    private CorUserRepository userRepository;
 
     @Inject
     private LibMetadataService libMetadataService;

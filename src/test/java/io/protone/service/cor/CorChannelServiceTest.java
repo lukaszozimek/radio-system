@@ -1,11 +1,10 @@
 package io.protone.service.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.service.cor.CorChannelService;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.CorNetworkRepository;
-import io.protone.repository.custom.CustomCorChannelRepository;
+import io.protone.repository.cor.CorChannelRepository;
+import io.protone.repository.cor.CorNetworkRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,7 @@ public class CorChannelServiceTest {
     @Autowired
     private CorChannelService corChannelService;
     @Autowired
-    private CustomCorChannelRepository customCorChannelRepository;
+    private CorChannelRepository corChannelRepository;
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
@@ -53,7 +52,7 @@ public class CorChannelServiceTest {
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
 
         corChannel.setNetwork(corNetwork);
-        corChannel = customCorChannelRepository.saveAndFlush(corChannel);
+        corChannel = corChannelRepository.saveAndFlush(corChannel);
     }
 
     @Test

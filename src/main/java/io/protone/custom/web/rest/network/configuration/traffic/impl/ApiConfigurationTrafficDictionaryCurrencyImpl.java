@@ -6,7 +6,7 @@ import io.protone.web.rest.mapper.CorCurrencyMapper;
 import io.protone.custom.web.rest.network.configuration.traffic.ApiConfigurationTrafficDictionaryCurrency;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.custom.CustomCorCurrencyRepository;
+import io.protone.repository.cor.CorCurrencyRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ApiConfigurationTrafficDictionaryCurrencyImpl implements ApiConfigu
     private final Logger log = LoggerFactory.getLogger(ApiConfigurationTrafficDictionaryCurrencyImpl.class);
 
     @Inject
-    private CustomCorCurrencyRepository corCurrencyRepository;
+    private CorCurrencyRepository corCurrencyRepository;
     @Inject
     private CorNetworkService corNetworkService;
     @Inject

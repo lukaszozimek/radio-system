@@ -1,10 +1,9 @@
 package io.protone.custom.service;
 
-import io.protone.custom.web.rest.network.ApiNetworkImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibArtist;
 import io.protone.domain.enumeration.LibArtistTypeEnum;
-import io.protone.repository.LibArtistRepository;
+import io.protone.repository.library.LibArtistRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

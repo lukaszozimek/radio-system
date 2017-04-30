@@ -5,7 +5,7 @@ import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
 import io.protone.repository.crm.CrmAccountRepository;
-import io.protone.repository.custom.CustomTraCampaignRepository;
+import io.protone.repository.traffic.CustomTraCampaignRepository;
 import io.protone.repository.traffic.TraOrderRepository;
 import io.protone.service.crm.CrmCustomerService;
 import io.protone.web.rest.mapper.TraCampaignMapper;

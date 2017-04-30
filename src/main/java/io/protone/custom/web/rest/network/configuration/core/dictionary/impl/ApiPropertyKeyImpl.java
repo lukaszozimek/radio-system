@@ -5,7 +5,7 @@ import io.protone.custom.service.dto.CoreKeyPT;
 import io.protone.web.rest.mapper.CorPropertyKeyMapper;
 import io.protone.custom.web.rest.network.configuration.core.dictionary.ApiPropertyKey;
 import io.protone.domain.CorPropertyKey;
-import io.protone.repository.CorPropertyKeyRepository;
+import io.protone.repository.cor.CorPropertyKeyRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

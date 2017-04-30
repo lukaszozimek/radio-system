@@ -2,8 +2,8 @@ package io.protone.service.library;
 
 import io.protone.web.rest.mapper.LibLibraryMapper;
 import io.protone.domain.LibLibrary;
-import io.protone.repository.custom.CustomCorNetworkRepository;
-import io.protone.repository.custom.CustomLibLibraryRepository;
+import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.repository.library.LibLibraryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +20,10 @@ public class LibLibraryService {
     private final Logger log = LoggerFactory.getLogger(LibLibraryService.class);
 
     @Inject
-    private CustomCorNetworkRepository networkRepository;
+    private CorNetworkRepository networkRepository;
 
     @Inject
-    private CustomLibLibraryRepository libraryRepository;
+    private LibLibraryRepository libraryRepository;
 
     @Inject
     private LibLibraryMapper customLibLibraryMapper;

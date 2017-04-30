@@ -8,8 +8,8 @@ import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.domain.CorUser;
-import io.protone.repository.custom.CustomCorNetworkRepository;
-import io.protone.repository.custom.CustomCorUserRepository;
+import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.repository.cor.CorUserRepository;
 import io.protone.security.SecurityUtils;
 import io.protone.web.rest.dto.UserDTO;
 import io.protone.web.rest.util.HeaderUtil;
@@ -37,9 +37,9 @@ public class ApiUserImpl implements ApiUser {
 
     private final Logger log = LoggerFactory.getLogger(ApiUserImpl.class);
 
-    private final CustomCorUserRepository userRepository;
+    private final CorUserRepository userRepository;
 
-    private final CustomCorNetworkRepository customCorNetworkRepository;
+    private final CorNetworkRepository corNetworkRepository;
 
     private final CorNetworkMapper customCorNetworkMapper;
 
@@ -47,13 +47,13 @@ public class ApiUserImpl implements ApiUser {
 
     private final CustomMailService mailService;
 
-    public ApiUserImpl(CustomCorUserRepository userRepository, CustomCorUserService userService,
-                       CustomMailService mailService, CustomCorNetworkRepository customCorNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
+    public ApiUserImpl(CorUserRepository userRepository, CustomCorUserService userService,
+                       CustomMailService mailService, CorNetworkRepository corNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.customCorNetworkRepository = customCorNetworkRepository;
+        this.corNetworkRepository = corNetworkRepository;
         this.customCorNetworkMapper = customCorNetworkMapper;
     }
 
@@ -76,7 +76,7 @@ public class ApiUserImpl implements ApiUser {
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
                 .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> customCorNetworkRepository.findOneByShortcutOrName(managedUserVM.getNetwork().getShortcut(), managedUserVM.getNetwork().getName())
+                .orElseGet(() -> corNetworkRepository.findOneByShortcutOrName(managedUserVM.getNetwork().getShortcut(), managedUserVM.getNetwork().getName())
                     .map(user -> new ResponseEntity<>("network with this name and shortcut is already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                     .orElseGet(() -> {
 

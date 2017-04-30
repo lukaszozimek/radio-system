@@ -1,15 +1,15 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.web.rest.mapper.CorDictionaryMapper;
 import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.web.rest.mapper.TraAdvertismentMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;
-import io.protone.repository.LibMediaItemRepository;
 import io.protone.repository.crm.CrmAccountRepository;
-import io.protone.repository.custom.CustomTraAdvertisementRepository;
+import io.protone.repository.traffic.CustomTraAdvertisementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
