@@ -1,9 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
-import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CorPerson;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
@@ -42,13 +40,20 @@ public interface LibMarkerMapper {
         // entity.setNetwork(corNetwork);
     }
 
-    default LibMediaItem mapLibMediaItem(Long id) {
+    default LibMediaItem libMediaItemFromId(Long id) {
         if (id == null) {
             return null;
         }
         LibMediaItem lIBMediaItem = new LibMediaItem();
         lIBMediaItem.setId(id);
         return lIBMediaItem;
+    }
+
+    default Long idFromLibMediaItem(LibMediaItem libMediaItem) {
+        if (libMediaItem == null) {
+            return null;
+        }
+        return libMediaItem.getId();
     }
 
     default LibMarkerPT.MarkerTypeEnum mapLibMarkerPT_MarkerTypeEnum(LibMarkerTypeEnum value) {

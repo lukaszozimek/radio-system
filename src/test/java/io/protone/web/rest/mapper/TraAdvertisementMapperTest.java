@@ -2,8 +2,7 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.TraAdvertisementPT;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraAdvertisement;
+import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +45,11 @@ public class TraAdvertisementMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
+        traAdvertisement.setId(1L);
+        traAdvertisement.setCustomer(factory.manufacturePojo(CrmAccount.class));
+        traAdvertisement.setIndustry(factory.manufacturePojo(CorDictionary.class));
+        traAdvertisement.setType(factory.manufacturePojo(CorDictionary.class));
+        traAdvertisement.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
         traAdvertisements.add(traAdvertisement);
         traAdvertisementPT = factory.manufacturePojo(TraAdvertisementPT.class);
         traAdvertisementPTS.add(traAdvertisementPT);
@@ -86,7 +90,7 @@ public class TraAdvertisementMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementPTS,corNetwork);
+        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -95,6 +99,7 @@ public class TraAdvertisementMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getCustomer());
             assertNotNull(entity.getMediaItem());
+            assertNotNull(entity.getIndustry());
             assertNotNull(entity.getType());
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getId());
@@ -106,12 +111,13 @@ public class TraAdvertisementMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementPT,corNetwork);
+        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementPT, corNetwork);
 
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getCustomer());
         assertNotNull(entity.getMediaItem());
+        assertNotNull(entity.getIndustry());
         assertNotNull(entity.getType());
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getId());

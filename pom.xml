@@ -61,6 +61,7 @@
 
         <sonar.exclusions>src/main/webapp/**/*.*, target/www/**/*.*</sonar.exclusions>
         <sonar.host.url>http://sonar.protone.io</sonar.host.url>
+        <sonar.login>701901be63904cddb4ac2ab244ae754de847935a</sonar.login>
 
         <sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
 

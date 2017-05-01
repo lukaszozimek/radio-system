@@ -16,6 +16,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, LibItemMapper.class})
 public interface TraAdvertisementMapper {
     @Mapping(source = "mediaItem", target = "mediaItemId")
+    @Mapping(source = "industry", target = "industryId")
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "type", target = "typeId")
     TraAdvertisementPT DB2DTO(TraAdvertisement traAdvertisement);
