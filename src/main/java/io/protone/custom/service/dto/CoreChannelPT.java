@@ -3,24 +3,22 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * CoreChannelPT
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-public class CoreChannelPT {
-    @JsonProperty("id")
+public class CoreChannelPT implements Serializable {
     private Long id = null;
 
-    @JsonProperty("shortcut")
+    @NotNull
     private String shortcut = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("description")
     private String description = null;
 
     public CoreChannelPT id(Long id) {

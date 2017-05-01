@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.channel;
+package io.protone.web.rest.cor;
 
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.swagger.annotations.*;
@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
-public interface ApiChannel {
+public interface CorChannelResource {
 
 
     @ApiOperation(value = "updateChannel", notes = "", response = CoreChannelPT.class, tags = {"CHANNEL", "CORE",})
@@ -28,7 +29,7 @@ public interface ApiChannel {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreChannelPT> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) throws URISyntaxException;
+                                                        @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CoreChannelPT channelDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createChannel", notes = "", response = CoreChannelPT.class, tags = {"CHANNEL", "CORE",})
@@ -43,7 +44,7 @@ public interface ApiChannel {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreChannelPT> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) throws URISyntaxException;
+                                                         @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CoreChannelPT channelDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "getAllChannels", notes = "", response = CoreChannelPT.class, responseContainer = "List", tags = {"CHANNEL", "CORE",})
@@ -56,7 +57,7 @@ public interface ApiChannel {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getChannel", notes = "", response = CoreChannelPT.class, tags = {"CHANNEL", "CORE",})
     @ApiResponses(value = {

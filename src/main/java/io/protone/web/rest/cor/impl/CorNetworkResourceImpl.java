@@ -1,5 +1,6 @@
-package io.protone.custom.web.rest.network;
+package io.protone.web.rest.cor.impl;
 
+import io.protone.web.rest.cor.CorNetworkResource;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CoreNetworkPT;
 import io.protone.web.rest.mapper.CorNetworkMapper;
@@ -15,60 +16,63 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ApiNetworkImpl implements ApiNetwork {
-    private final Logger log = LoggerFactory.getLogger(ApiNetworkImpl.class);
+public class CorNetworkResourceImpl implements CorNetworkResource {
+    private final Logger log = LoggerFactory.getLogger(CorNetworkResourceImpl.class);
 
     @Inject
-    private CorNetworkMapper customCorNetworkMapper;
+    private CorNetworkMapper corNetworkMapper;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Override
     public ResponseEntity<List<CoreNetworkPT>> getAllNetworksUsingGET() {
         log.debug("REST request to get all CorNetworks");
-        List<CorNetwork> cORNetworks = networkService.findAllNetworks();
+        List<CorNetwork> networks = corNetworkService.findAllNetworks();
         return ResponseEntity.ok()
-            .body(customCorNetworkMapper.DBs2DTOs(cORNetworks));
+            .body(corNetworkMapper.DBs2DTOs(networks));
 
     }
 
     @Override
-    public ResponseEntity<CoreNetworkPT> createNetworkUsingPOST(@ApiParam(value = "network", required = true) @RequestBody CoreNetworkPT network) {
+    public ResponseEntity<CoreNetworkPT> createNetworkUsingPOST(@ApiParam(value = "network", required = true) @Valid @RequestBody CoreNetworkPT network) throws URISyntaxException {
         log.debug("REST request to save CorNetwork : {}", network);
         if (network.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORNetwork", "idexists", "A new cORNetwork cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("corNetwork", "idexists", "A new corNetwork cannot already have an ID")).body(null);
         }
-        CorNetwork cORNetwork = customCorNetworkMapper.DTO2DB(network);
-        cORNetwork = networkService.save(cORNetwork);
-        CoreNetworkPT result = customCorNetworkMapper.DB2DTO(cORNetwork);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityCreationAlert("cORNetwork", result.getId().toString()))
+        CorNetwork corNetwork = corNetworkMapper.DTO2DB(network);
+        corNetwork = corNetworkService.save(corNetwork);
+        CoreNetworkPT result = corNetworkMapper.DB2DTO(corNetwork);
+        return ResponseEntity.created(new URI("/api/v1/network/" + result.getShortcut()))
+            .headers(HeaderUtil.createEntityCreationAlert("corNetwork", result.getId().toString()))
             .body(result);
     }
 
     @Override
-    public ResponseEntity<CoreNetworkPT> updateNetworkUsingPUT(@ApiParam(value = "network", required = true) @RequestBody CoreNetworkPT network) {
+    public ResponseEntity<CoreNetworkPT> updateNetworkUsingPUT(@ApiParam(value = "network", required = true) @Valid @RequestBody CoreNetworkPT network) throws URISyntaxException {
         log.debug("REST request to update CorNetwork : {}", network);
         if (network.getId() == null) {
             return createNetworkUsingPOST(network);
         }
-        CorNetwork cORNetwork = customCorNetworkMapper.DTO2DB(network);
-        cORNetwork = networkService.save(cORNetwork);
-        CoreNetworkPT result = customCorNetworkMapper.DB2DTO(cORNetwork);
+        CorNetwork corNetwork = corNetworkMapper.DTO2DB(network);
+        corNetwork = corNetworkService.save(corNetwork);
+        CoreNetworkPT result = corNetworkMapper.DB2DTO(corNetwork);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("cORNetwork", network.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("corNetwork", network.getId().toString()))
             .body(result);
     }
 
     @Override
     public ResponseEntity<Void> deleteNetworkUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to delete CorNetwork : {}", networkShortcut);
-        networkService.deleteNetwork(networkShortcut);
+        corNetworkService.deleteNetwork(networkShortcut);
         return ResponseEntity.ok().build();
 
     }
@@ -76,8 +80,8 @@ public class ApiNetworkImpl implements ApiNetwork {
     @Override
     public ResponseEntity<CoreNetworkPT> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get CorNetwork : {}", networkShortcut);
-        CorNetwork cORNetwork = networkService.findNetwork(networkShortcut);
-        CoreNetworkPT cORNetworkDTO = customCorNetworkMapper.DB2DTO(cORNetwork);
+        CorNetwork cORNetwork = corNetworkService.findNetwork(networkShortcut);
+        CoreNetworkPT cORNetworkDTO = corNetworkMapper.DB2DTO(cORNetwork);
         return Optional.ofNullable(cORNetworkDTO)
             .map(result -> new ResponseEntity<>(
                 result,

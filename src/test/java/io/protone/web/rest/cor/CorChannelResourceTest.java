@@ -1,8 +1,9 @@
-package io.protone.custom.web.rest.network.channel.impl;
+package io.protone.web.rest.cor;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.cor.impl.CorChannelResourceImpl;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorChannelRepository;
@@ -20,10 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -40,7 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class ApiChannelImplTest {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class CorChannelResourceTest {
 
     private static final String DEFAULT_SHORTCUT = "AAA";
     private static final String UPDATED_SHORTCUT = "BBB";
@@ -84,17 +86,6 @@ public class ApiChannelImplTest {
 
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        corNetwork = corNetworkRepository.save(new CorNetwork().active(true).name(NETWORK_TEST).shortcut(NETWORK_TEST));
-        MockitoAnnotations.initMocks(this);
-        ApiChannelImpl corChannelResource = new ApiChannelImpl(corChannelService, corChannelMapper, networkService);
-        this.restCorChannelMockMvc = MockMvcBuilders.standaloneSetup(corChannelResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
      * <p>
@@ -109,13 +100,24 @@ public class ApiChannelImplTest {
         return corChannel;
     }
 
+
+    @Before
+    public void setup() {
+        corNetwork = corNetworkRepository.save(new CorNetwork().active(true).name(NETWORK_TEST).shortcut(NETWORK_TEST));
+        MockitoAnnotations.initMocks(this);
+        CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(corChannelService, corChannelMapper, networkService);
+        this.restCorChannelMockMvc = MockMvcBuilders.standaloneSetup(corChannelResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
     @Before
     public void initTest() {
         corChannel = createEntity(em).network(corNetwork);
     }
 
     @Test
-    @Transactional
     public void createCorChannel() throws Exception {
         int databaseSizeBeforeCreate = corChannelRepository.findAll().size();
 
@@ -137,7 +139,6 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void createCorChannelWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = corChannelRepository.findAll().size();
 
@@ -158,7 +159,6 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void checkShortcutIsRequired() throws Exception {
         int databaseSizeBeforeTest = corChannelRepository.findAll().size();
         // set the field null
@@ -177,7 +177,6 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = corChannelRepository.findAll().size();
         // set the field null
@@ -186,7 +185,7 @@ public class ApiChannelImplTest {
         // Create the CorChannel, which fails.
         CoreChannelPT corChannelDTO = corChannelMapper.DB2DTO(corChannel);
 
-        restCorChannelMockMvc.perform(post("/api/cor-channels")
+        restCorChannelMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
             .andExpect(status().isBadRequest());
@@ -196,10 +195,9 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void getAllCorChannels() throws Exception {
         // Initialize the database
-        corChannelRepository.saveAndFlush(corChannel);
+        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
         // Get all the corChannelList
         restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
@@ -212,10 +210,9 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void getCorChannel() throws Exception {
         // Initialize the database
-        corChannelRepository.saveAndFlush(corChannel);
+        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
         // Get the corChannel
         restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -228,7 +225,6 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void getNonExistingCorChannel() throws Exception {
         // Get the corChannel
         restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), Long.MAX_VALUE))
@@ -236,10 +232,10 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void updateCorChannel() throws Exception {
+
         // Initialize the database
-        corChannelRepository.saveAndFlush(corChannel);
+        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 
         // Update the corChannel
@@ -265,7 +261,6 @@ public class ApiChannelImplTest {
     }
 
     @Test
-    @Transactional
     public void updateNonExistingCorChannel() throws Exception {
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 
@@ -283,11 +278,10 @@ public class ApiChannelImplTest {
         assertThat(corChannelList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
-
-    @Transactional
+    @Test
     public void deleteCorChannel() throws Exception {
         // Initialize the database
-        corChannelRepository.saveAndFlush(corChannel);
+        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
         int databaseSizeBeforeDelete = corChannelRepository.findAll().size();
 
         // Get the corChannel

@@ -57,7 +57,7 @@ public class CorChannelServiceTest {
 
     @Test
     public void findAllChannel() throws Exception {
-        List<CorChannel> corChannels = corChannelService.findAllChannel(corNetwork, new PageRequest(0, 10));
+        List<CorChannel> corChannels = corChannelService.findAllChannel(corNetwork.getShortcut(), new PageRequest(0, 10));
         assertNotNull(corChannels);
         assertEquals(corChannels.size(), 1);
         assertEquals(corChannels.get(0).getId(), corChannel.getId());

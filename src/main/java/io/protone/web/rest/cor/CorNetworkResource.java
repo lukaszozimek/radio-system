@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network;
+package io.protone.web.rest.cor;
 
 import io.protone.custom.service.dto.CoreNetworkPT;
 
@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.List;
 
 
 @Api(value = "protone", description = "Protone backend API documentation")
-public interface ApiNetwork {
+public interface CorNetworkResource {
 
     @ApiOperation(value = "getAllNetworks", notes = "", response = CoreNetworkPT.class, responseContainer = "List", tags = {"NETWORK", "CORE",})
     @ApiResponses(value = {
@@ -37,7 +39,7 @@ public interface ApiNetwork {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CoreNetworkPT> createNetworkUsingPOST(@ApiParam(value = "network", required = true) @RequestBody CoreNetworkPT network);
+    ResponseEntity<CoreNetworkPT> createNetworkUsingPOST(@ApiParam(value = "network", required = true) @Valid @RequestBody CoreNetworkPT network) throws URISyntaxException;
 
     @ApiOperation(value = "updateNetwork", notes = "", response = CoreNetworkPT.class, tags = {"NETWORK", "CORE",})
     @ApiResponses(value = {
@@ -50,7 +52,7 @@ public interface ApiNetwork {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CoreNetworkPT> updateNetworkUsingPUT(@ApiParam(value = "network", required = true) @RequestBody CoreNetworkPT network);
+    ResponseEntity<CoreNetworkPT> updateNetworkUsingPUT(@ApiParam(value = "network", required = true) @Valid @RequestBody CoreNetworkPT network) throws URISyntaxException;
 
     @ApiOperation(value = "deleteNetwork", notes = "", response = Void.class, tags = {"NETWORK", "CORE",})
     @ApiResponses(value = {

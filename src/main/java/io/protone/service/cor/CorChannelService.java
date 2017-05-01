@@ -24,19 +24,17 @@ public class CorChannelService {
     @Inject
     private CorChannelRepository channelRepository;
 
-    @Inject
-    private CorNetworkService networkService;
-
-    public List<CorChannel> findAllChannel(CorNetwork network, Pageable pageable) {
-        return channelRepository.findAllByNetwork(network, pageable);
+    public List<CorChannel> findAllChannel(String network, Pageable pageable) {
+        return channelRepository.findAllByNetwork_Shortcut(network, pageable);
     }
 
     public CorChannel findChannel(String networkShortcut, String channelShortcut) {
-        return findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut);
+        CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, channelShortcut);
+        return channel;
     }
 
     public void deleteChannel(String networkShortcut, String channelShortcut) {
-        channelRepository.delete(findChannelByNetworkShortcutAndChannelShortcut(networkShortcut, channelShortcut));
+        channelRepository.deleteByShortcutAndNetwork_Shortcut(channelShortcut, networkShortcut);
     }
 
     public CorChannel save(CorChannel channel) {
@@ -44,14 +42,6 @@ public class CorChannelService {
         return channelRepository.saveAndFlush(channel);
     }
 
-    private CorChannel findChannelByNetworkShortcutAndChannelShortcut(String networkShortcut, String channelShortcut) {
-        CorNetwork networkDB = networkService.findNetwork(networkShortcut);
-        if (networkDB == null)
-            return null;
-
-        CorChannel channel = channelRepository.findOneByNetworkAndShortcut(networkDB, channelShortcut);
-        return channel;
-    }
 
 
 }
