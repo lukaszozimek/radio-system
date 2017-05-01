@@ -1,9 +1,9 @@
 
+import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.domain.CorNetwork;
+import io.protone.domain.*;
 import io.protone.web.rest.mapper.TraInvoiceMapper;
-import io.protone.domain.TraInvoice;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,11 @@ public class TraInvoiceMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traInvoice = factory.manufacturePojo(TraInvoice.class);
+        traInvoice.setCustomer(factory.manufacturePojo(CrmAccount.class));
+        traInvoice.setOrders(Sets.newHashSet(factory.manufacturePojo(TraOrder.class)));
+        traInvoice.setStatus(factory.manufacturePojo(CorDictionary.class));
+        traInvoice.setPrice(new BigDecimal(1));
+        traInvoice.setId(1L);
         traInvoices.add(traInvoice);
         traInvoicePT = factory.manufacturePojo(TraInvoicePT.class);
         traInvoicePTS.add(traInvoicePT);
