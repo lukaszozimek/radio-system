@@ -3,6 +3,8 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.LibCounterTypeEnum;
+import io.protone.domain.enumeration.LibObjectTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -13,234 +15,202 @@ import java.util.List;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibraryPT   {
-  @JsonProperty("id")
-  private Long id = null;
+public class LibraryPT {
+    @JsonProperty("id")
+    private Long id = null;
 
-  @JsonProperty("name")
-  private String name = null;
+    @JsonProperty("name")
+    private String name = null;
 
-  @JsonProperty("counter")
-  private Long counter = 0L;
+    @JsonProperty("counter")
+    private Long counter = 0L;
 
-  @JsonProperty("counterType")
-  private String counterType = null;
+    @JsonProperty("counterType")
+    private LibCounterTypeEnum counterType;
 
-  @JsonProperty("libraryType")
-  private String libraryType = null;
+    @JsonProperty("libraryType")
+    private LibObjectTypeEnum libraryType;
 
-  @JsonProperty("indexLength")
-  private Integer indexLength = 8;
+    @JsonProperty("indexLength")
+    private Integer indexLength = 8;
 
-  @JsonProperty("shortcut")
-  private String shortcut = null;
+    @JsonProperty("shortcut")
+    private String shortcut = null;
 
-  @JsonProperty("prefix")
-  private String prefix = null;
+    @JsonProperty("prefix")
+    private String prefix = null;
+    @JsonProperty("type")
+    private TypeEnum type = null;
+    @JsonProperty("networkId")
+    private Long networkId = null;
+    @JsonProperty("channels")
+    private List<CoreChannelPT> channels = new ArrayList<CoreChannelPT>();
+    @JsonProperty("users")
+    private List<CoreUserPT> users = new ArrayList<CoreUserPT>();
+    @JsonProperty("description")
+    private String description = null;
+
+    public LibraryPT id(Long id) {
+        this.id = id;
+        return this;
+    }
 
     /**
-   * Gets or Sets type
-   */
-  public enum TypeEnum {
-    IMAGE("LT_IMAGE"),
-
-    AUDIO("LT_AUDIO"),
-
-    VIDEO("LT_VIDEO"),
-
-    FILE("LT_FILE");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
+     * Get id
+     *
+     * @return id
+     **/
+    @ApiModelProperty(value = "")
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @JsonCreator
-    public static TypeEnum fromValue(String text) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
+    public LibraryPT prefix(String prefix) {
+        this.prefix = prefix;
+        return this;
     }
-  }
 
-  @JsonProperty("type")
-  private TypeEnum type = null;
+    /**
+     * Get prefix
+     *
+     * @return prefix
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public String getPrefix() {
+        return prefix;
+    }
 
-  @JsonProperty("networkId")
-  private Long networkId = null;
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
 
-  @JsonProperty("channels")
-  private List<CoreChannelPT> channels = new ArrayList<CoreChannelPT>();
+    public LibraryPT name(String name) {
+        this.name = name;
+        return this;
+    }
 
-  @JsonProperty("users")
-  private List<CoreUserPT> users = new ArrayList<CoreUserPT>();
+    /**
+     * Get name
+     *
+     * @return name
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public String getName() {
+        return name;
+    }
 
-  @JsonProperty("description")
-  private String description = null;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public LibraryPT id(Long id) {
-    this.id = id;
-    return this;
-  }
+    public LibraryPT type(TypeEnum type) {
+        this.type = type;
+        return this;
+    }
 
-   /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(value = "")
-  public Long getId() {
-    return id;
-  }
+    /**
+     * Get type
+     *
+     * @return type
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public TypeEnum getType() {
+        return type;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public void setType(TypeEnum type) {
+        this.type = type;
+    }
 
-  public LibraryPT prefix(String prefix) {
-    this.prefix = prefix;
-    return this;
-  }
+    public LibraryPT networkId(Long networkId) {
+        this.networkId = networkId;
+        return this;
+    }
 
-   /**
-   * Get prefix
-   * @return prefix
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getPrefix() {
-    return prefix;
-  }
+    /**
+     * Get networkId
+     *
+     * @return networkId
+     **/
+    @ApiModelProperty(value = "")
+    public Long getNetworkId() {
+        return networkId;
+    }
 
-  public void setPrefix(String prefix) {
-    this.prefix = prefix;
-  }
+    public void setNetworkId(Long networkId) {
+        this.networkId = networkId;
+    }
 
-  public LibraryPT name(String name) {
-    this.name = name;
-    return this;
-  }
+    public LibraryPT channels(List<CoreChannelPT> channels) {
+        this.channels = channels;
+        return this;
+    }
 
-   /**
-   * Get name
-   * @return name
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getName() {
-    return name;
-  }
+    public LibraryPT addChannelsItem(CoreChannelPT channelsItem) {
+        this.channels.add(channelsItem);
+        return this;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    /**
+     * Get channels
+     *
+     * @return channels
+     **/
+    @ApiModelProperty(value = "")
+    public List<CoreChannelPT> getChannels() {
+        return channels;
+    }
 
-  public LibraryPT type(TypeEnum type) {
-    this.type = type;
-    return this;
-  }
+    public void setChannels(List<CoreChannelPT> channels) {
+        this.channels = channels;
+    }
 
-   /**
-   * Get type
-   * @return type
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public TypeEnum getType() {
-    return type;
-  }
+    public LibraryPT users(List<CoreUserPT> users) {
+        this.users = users;
+        return this;
+    }
 
-  public void setType(TypeEnum type) {
-    this.type = type;
-  }
+    public LibraryPT addUsersItem(CoreUserPT usersItem) {
+        this.users.add(usersItem);
+        return this;
+    }
 
-  public LibraryPT networkId(Long networkId) {
-    this.networkId = networkId;
-    return this;
-  }
+    /**
+     * Get users
+     *
+     * @return users
+     **/
+    @ApiModelProperty(value = "")
+    public List<CoreUserPT> getUsers() {
+        return users;
+    }
 
-   /**
-   * Get networkId
-   * @return networkId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getNetworkId() {
-    return networkId;
-  }
+    public void setUsers(List<CoreUserPT> users) {
+        this.users = users;
+    }
 
-  public void setNetworkId(Long networkId) {
-    this.networkId = networkId;
-  }
+    public LibraryPT description(String description) {
+        this.description = description;
+        return this;
+    }
 
-  public LibraryPT channels(List<CoreChannelPT> channels) {
-    this.channels = channels;
-    return this;
-  }
+    /**
+     * Get description
+     *
+     * @return description
+     **/
+    @ApiModelProperty(value = "")
+    public String getDescription() {
+        return description;
+    }
 
-  public LibraryPT addChannelsItem(CoreChannelPT channelsItem) {
-    this.channels.add(channelsItem);
-    return this;
-  }
-
-   /**
-   * Get channels
-   * @return channels
-  **/
-  @ApiModelProperty(value = "")
-  public List<CoreChannelPT> getChannels() {
-    return channels;
-  }
-
-  public void setChannels(List<CoreChannelPT> channels) {
-    this.channels = channels;
-  }
-
-  public LibraryPT users(List<CoreUserPT> users) {
-    this.users = users;
-    return this;
-  }
-
-  public LibraryPT addUsersItem(CoreUserPT usersItem) {
-    this.users.add(usersItem);
-    return this;
-  }
-
-   /**
-   * Get users
-   * @return users
-  **/
-  @ApiModelProperty(value = "")
-  public List<CoreUserPT> getUsers() {
-    return users;
-  }
-
-  public void setUsers(List<CoreUserPT> users) {
-    this.users = users;
-  }
-
-  public LibraryPT description(String description) {
-    this.description = description;
-    return this;
-  }
-
-   /**
-   * Get description
-   * @return description
-  **/
-  @ApiModelProperty(value = "")
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Long getCounter() {
         return counter;
@@ -250,19 +220,19 @@ public class LibraryPT   {
         this.counter = counter;
     }
 
-    public String getCounterType() {
+    public LibCounterTypeEnum getCounterType() {
         return counterType;
     }
 
-    public void setCounterType(String counterType) {
+    public void setCounterType(LibCounterTypeEnum counterType) {
         this.counterType = counterType;
     }
 
-    public String getLibraryType() {
+    public LibObjectTypeEnum getLibraryType() {
         return libraryType;
     }
 
-    public void setLibraryType(String libraryType) {
+    public void setLibraryType(LibObjectTypeEnum libraryType) {
         this.libraryType = libraryType;
     }
 
@@ -354,5 +324,40 @@ public class LibraryPT   {
             ", users=" + users +
             ", description='" + description + '\'' +
             '}';
+    }
+
+    /**
+     * Gets or Sets type
+     */
+    public enum TypeEnum {
+        IMAGE("LT_IMAGE"),
+
+        AUDIO("LT_AUDIO"),
+
+        VIDEO("LT_VIDEO"),
+
+        FILE("LT_FILE");
+
+        private String value;
+
+        TypeEnum(String value) {
+            this.value = value;
+        }
+
+        @JsonCreator
+        public static TypeEnum fromValue(String text) {
+            for (TypeEnum b : TypeEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
     }
 }

@@ -29,7 +29,7 @@ public interface LibLibraryMapper {
     }
 
     @AfterMapping
-    default void crmLeadPTToCrmLeadAfterMapping(LibraryPT dto, @MappingTarget LibLibrary entity, @Context CorNetwork corNetwork) {
+    default void libraryPTToLibLibraryAfterMapping(LibraryPT dto, @MappingTarget LibLibrary entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

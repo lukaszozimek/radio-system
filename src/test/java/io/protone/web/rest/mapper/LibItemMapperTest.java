@@ -4,6 +4,7 @@ import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.LibItemPT;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibItemStateEnum;
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import javax.sound.midi.Track;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ import static org.junit.Assert.assertNotNull;
 public class LibItemMapperTest {
 
     private static final String TEST_TAG = "SimpleTag";
+
     @Autowired
     private LibItemMapper customItemMapperExt;
 
@@ -48,6 +51,17 @@ public class LibItemMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setId(1L);
+
+        libMediaItem.setAlbum(factory.manufacturePojo(LibAlbum.class));
+        libMediaItem.setArtist(factory.manufacturePojo(LibArtist.class));
+        libMediaItem.setAuthors(Sets.newLinkedHashSet(factory.manufacturePojo(CorPerson.class)));
+        libMediaItem.setComposers(Sets.newLinkedHashSet(factory.manufacturePojo(CorPerson.class)));
+        libMediaItem.setLabel(factory.manufacturePojo(LibLabel.class));
+        libMediaItem.setLibrary(factory.manufacturePojo(LibLibrary.class));
+        libMediaItem.setMarkers(Sets.newLinkedHashSet(factory.manufacturePojo(LibMarker.class)));
+        libMediaItem.setTags(Sets.newLinkedHashSet(factory.manufacturePojo(CorTag.class)));
+        libMediaItem.setTrack(factory.manufacturePojo(LibTrack.class));
         libMediaItems.add(libMediaItem);
         libItemPT = factory.manufacturePojo(LibItemPT.class);
         libItemPTS.add(libItemPT);
@@ -150,7 +164,6 @@ public class LibItemMapperTest {
             assertNotNull(entity.getState());
             assertNotNull(entity.getTags());
             assertNotNull(entity.getTrack());
-            assertNotNull(entity.getId());
         });
     }
 

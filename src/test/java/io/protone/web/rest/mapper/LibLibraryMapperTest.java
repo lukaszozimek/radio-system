@@ -44,6 +44,7 @@ public class LibLibraryMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setId(1L);
         libLibraries.add(libLibrary);
         libraryPT = factory.manufacturePojo(LibraryPT.class);
         libraryPTS.add(libraryPT);

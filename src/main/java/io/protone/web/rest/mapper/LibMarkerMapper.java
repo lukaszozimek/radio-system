@@ -38,7 +38,7 @@ public interface LibMarkerMapper {
     }
 
     @AfterMapping
-    default void libPersonPTToCorPersonAfterMapping(LibMarkerPT dto, @MappingTarget LibMarker entity, @Context CorNetwork corNetwork) {
+    default void libMarkerPTToLibMarkerAfterMapping(LibMarkerPT dto, @MappingTarget LibMarker entity, @Context CorNetwork corNetwork) {
         // entity.setNetwork(corNetwork);
     }
 

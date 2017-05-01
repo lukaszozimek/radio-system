@@ -37,7 +37,7 @@ public interface LibLabelMapper {
     }
 
     @AfterMapping
-    default void libLabelPTToLibLabelAfterMapping(LibPersonPT dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+    default void libLabelPTToLibLabelAfterMapping(LibLabelPT dto, @MappingTarget LibLabel entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 
