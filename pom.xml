@@ -61,7 +61,6 @@
 
         <sonar.exclusions>src/main/webapp/**/*.*, target/www/**/*.*</sonar.exclusions>
         <sonar.host.url>http://sonar.protone.io</sonar.host.url>
-        <sonar.login>701901be63904cddb4ac2ab244ae754de847935a</sonar.login>
 
         <sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
 
@@ -84,6 +83,7 @@
         <sonar.javascript.lcov.reportPath>${project.testresult.directory}/coverage/report-lcov/lcov.info</sonar.javascript.lcov.reportPath>
         <!-- For Sonar >= 6.2 -->
         <sonar.javascript.lcov.reportPaths>${project.testresult.directory}/coverage/report-lcov/lcov.info</sonar.javascript.lcov.reportPaths>
+        <sonar.login>701901be63904cddb4ac2ab244ae754de847935a</sonar.login>
 
         <sonar.sources>${project.basedir}/src/main/</sonar.sources>
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +28,7 @@ public interface ApiChannel {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreChannelPT> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO);
+                                                        @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createChannel", notes = "", response = CoreChannelPT.class, tags = {"CHANNEL", "CORE",})
@@ -42,7 +43,7 @@ public interface ApiChannel {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreChannelPT> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO);
+                                                         @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "getAllChannels", notes = "", response = CoreChannelPT.class, responseContainer = "List", tags = {"CHANNEL", "CORE",})

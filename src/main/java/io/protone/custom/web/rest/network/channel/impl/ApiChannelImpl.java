@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,18 +31,23 @@ import java.util.Optional;
 public class ApiChannelImpl implements ApiChannel {
     private final Logger log = LoggerFactory.getLogger(ApiChannelImpl.class);
 
-    @Inject
+    private static final String ENTITY_NAME = "corChannel";
+
     private CorChannelService channelService;
 
-    @Inject
     private CorChannelMapper customCORChannelMapper;
 
-    @Inject
     private CorNetworkService networkService;
+
+    public ApiChannelImpl(CorChannelService channelService, CorChannelMapper customCORChannelMapper, CorNetworkService networkService) {
+        this.channelService = channelService;
+        this.customCORChannelMapper = customCORChannelMapper;
+        this.networkService = networkService;
+    }
 
     @Override
     public ResponseEntity<CoreChannelPT> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) {
+                                                               @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) throws URISyntaxException {
         log.debug("REST request to update CORChannel : {}", channelDTO);
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(networkShortcut, channelDTO);
@@ -51,12 +58,12 @@ public class ApiChannelImpl implements ApiChannel {
         corChannel = channelService.save(corChannel);
         CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("cORChannel", channelDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getShortcut().toString()))
             .body(result);
     }
 
     @Override
-    public ResponseEntity<CoreChannelPT> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) {
+    public ResponseEntity<CoreChannelPT> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @RequestBody CoreChannelPT channelDTO) throws URISyntaxException {
         log.debug("REST request to save CORChannel : {}", channelDTO);
         if (channelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
@@ -66,7 +73,8 @@ public class ApiChannelImpl implements ApiChannel {
         CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
         CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
-        return ResponseEntity.ok()
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel" + result.getShortcut()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))
             .body(result);
     }
 
