@@ -29,8 +29,10 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
 
     @Inject
     private CorCountryRepository customCorCountryRepository;
+
     @Inject
     private CorNetworkService corNetworkService;
+
     @Inject
     private CorCountryMapper customCorCurrencyMapper;
 

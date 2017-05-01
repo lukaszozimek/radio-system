@@ -30,8 +30,10 @@ public class ApiDictionaryCoreDictionaryImpl implements ApiDictionaryCoreDiction
 
     @Inject
     private CorNetworkService corNetworkService;
+
     @Inject
     private CorDictionaryMapper customCorDictionaryMapper;
+
     @Inject
     private CorDictionaryRepository corDictionaryRepository;
 
