@@ -75,18 +75,18 @@ public class LibLabelMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibLabel entity = customLibLabelMapperExt.DTO2DB(libLabelPT);
+        LibLabel entity = customLibLabelMapperExt.DTO2DB(libLabelPT,corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibLabel> entities = customLibLabelMapperExt.DTOs2DBs(libLabelPTS);
+        List<LibLabel> entities = customLibLabelMapperExt.DTOs2DBs(libLabelPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -95,7 +95,7 @@ public class LibLabelMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
 
     }

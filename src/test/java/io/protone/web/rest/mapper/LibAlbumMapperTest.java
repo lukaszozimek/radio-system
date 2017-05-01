@@ -35,6 +35,7 @@ public class LibAlbumMapperTest {
     private List<LibAlbumPT> libAlbumPTS = new ArrayList<>();
 
     private List<LibAlbum> libAlbums = new ArrayList<>();
+
     private CorNetwork corNetwork;
 
 
@@ -88,7 +89,7 @@ public class LibAlbumMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumPT);
+        LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumPT,corNetwork);
 
         assertNotNull(entity.getCover());
         assertNotNull(entity.getLabel());
@@ -100,12 +101,12 @@ public class LibAlbumMapperTest {
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getId());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibAlbum> entities = customLibAlbumMapper.DTOs2DBs(libAlbumPTS);
+        List<LibAlbum> entities = customLibAlbumMapper.DTOs2DBs(libAlbumPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -121,7 +122,7 @@ public class LibAlbumMapperTest {
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getId());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
     }
 

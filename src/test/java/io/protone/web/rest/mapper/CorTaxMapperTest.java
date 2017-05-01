@@ -36,6 +36,7 @@ public class CorTaxMapperTest {
     private List<ConfTaxPT> confTaxPTS = new ArrayList<>();
 
     private List<CorTax> corTaxes = new ArrayList<>();
+
     private CorNetwork corNetwork;
 
     @Before
@@ -51,7 +52,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorTax entity = corTaxMapper.DTO2DB(confTaxPT);
+        CorTax entity = corTaxMapper.DTO2DB(confTaxPT, corNetwork);
 
 
         assertNotNull(entity.getId());
@@ -61,7 +62,7 @@ public class CorTaxMapperTest {
         assertNotNull(entity.getValue());
         assertNotNull(entity.isActive());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
@@ -94,7 +95,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorTax> entities = corTaxMapper.DTOs2DBs(confTaxPTS);
+        List<CorTax> entities = corTaxMapper.DTOs2DBs(confTaxPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -106,7 +107,7 @@ public class CorTaxMapperTest {
             assertNotNull(entity.getValue());
             assertNotNull(entity.isActive());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
 
         });

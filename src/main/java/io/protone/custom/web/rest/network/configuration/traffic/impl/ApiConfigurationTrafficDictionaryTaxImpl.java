@@ -70,8 +70,7 @@ public class ApiConfigurationTrafficDictionaryTaxImpl implements ApiConfiguratio
             return createTaxUsingPOST(networkShortcut, taxDTO);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorTax corTax = customCorTaxMapper.DTO2DB(taxDTO);
-        corTax.setNetwork(corNetwork);
+        CorTax corTax = customCorTaxMapper.DTO2DB(taxDTO, corNetwork);
         corTax = corTaxRepository.save(corTax);
         ConfTaxPT result = customCorTaxMapper.DB2DTO(corTax);
         return ResponseEntity.ok()
@@ -86,8 +85,7 @@ public class ApiConfigurationTrafficDictionaryTaxImpl implements ApiConfiguratio
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORArea", "idexists", "A new cORArea cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorTax corTax = customCorTaxMapper.DTO2DB(taxDTO);
-        corTax.setNetwork(corNetwork);
+        CorTax corTax = customCorTaxMapper.DTO2DB(taxDTO, corNetwork);
         corTax = corTaxRepository.save(corTax);
         ConfTaxPT result = customCorTaxMapper.DB2DTO(corTax);
         return ResponseEntity.ok().body(result);

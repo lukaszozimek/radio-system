@@ -1,10 +1,17 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibArtistPT;
+import io.protone.custom.service.dto.LibPersonPT;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CorPerson;
 import io.protone.domain.LibArtist;
 import io.protone.domain.enumeration.LibArtistTypeEnum;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +24,23 @@ public interface LibArtistMapper {
 
     List<LibArtistPT> DBs2DTOs(List<LibArtist> dbs);
 
-    LibArtist DTO2DB(LibArtistPT dto);
+    LibArtist DTO2DB(LibArtistPT dto, @Context CorNetwork network);
 
-    List<LibArtist> DTOs2DBs(List<LibArtistPT> dtos);
+    default List<LibArtist> DTOs2DBs(List<LibArtistPT> dtos, @Context CorNetwork network) {
+        List<LibArtist> corPeople = new ArrayList<>();
+        if (dtos.isEmpty() || dtos == null) {
+            return null;
+        }
+        for (LibArtistPT dto : dtos) {
+            corPeople.add(DTO2DB(dto, network));
+        }
+        return corPeople;
+    }
+
+    @AfterMapping
+    default void libArtistPTToLibArtistAfterMapping(LibArtistPT dto, @MappingTarget LibArtist entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
 
     default LibArtistPT.TypeEnum mapLibArtistPT_TypeEnum(LibArtistTypeEnum value) {

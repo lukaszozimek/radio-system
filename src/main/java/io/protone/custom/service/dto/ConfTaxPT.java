@@ -19,7 +19,7 @@ public class ConfTaxPT {
     private String name = null;
 
     @JsonProperty("value")
-    private Long value = null;
+    private String value = null;
 
     @JsonProperty("validFrom")
     private LocalDate validFrom;
@@ -72,7 +72,7 @@ public class ConfTaxPT {
      * @return networkId
      **/
 
-    public ConfTaxPT value(Long value) {
+    public ConfTaxPT value(String value) {
         this.value = value;
         return this;
     }
@@ -97,11 +97,11 @@ public class ConfTaxPT {
      * @return value
      **/
     @ApiModelProperty(required = true, value = "")
-    public Long getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Long value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

@@ -1,10 +1,14 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,10 +28,22 @@ public interface CrmTaskMapper {
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTask DTO2DB(CrmTaskPT cORAddressDTO);
+    CrmTask DTO2DB(CrmTaskPT cORAddressDTO, @Context CorNetwork corNetwork);
 
-    Set<CrmTask> DTOs2DBs(List<CrmTaskPT> cORAddressDTOs);
+    default Set<CrmTask> DTOs2DBs(List<CrmTaskPT> crmTaskPTS, CorNetwork corNetwork) {
+        Set<CrmTask> crmTasks = new HashSet<>();
+        if (crmTaskPTS.isEmpty() || crmTaskPTS == null) {
+            return null;
+        }
+        for (CrmTaskPT dto : crmTaskPTS) {
+            crmTasks.add(DTO2DB(dto, corNetwork));
+        }
+        return crmTasks;
+    }
 
-
+    @AfterMapping
+    default void crmTaskPTToCrmTaskAfterMapping(CrmTaskPT dto, @MappingTarget CrmTask entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 }
 

@@ -1,11 +1,12 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibAlbumPT;
+import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAlbumTypeEnum;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,9 +25,23 @@ public interface LibAlbumMapper {
     @Mapping(source = "coverId", target = "cover")
     @Mapping(source = "labelId", target = "label")
     @Mapping(source = "artistId", target = "artist")
-    LibAlbum DTO2DB(LibAlbumPT dto);
+    LibAlbum DTO2DB(LibAlbumPT dto, @Context CorNetwork network);
 
-    List<LibAlbum> DTOs2DBs(List<LibAlbumPT> dtos);
+    default List<LibAlbum> DTOs2DBs(List<LibAlbumPT> dtos, @Context CorNetwork network) {
+        List<LibAlbum> libAlbums = new ArrayList<>();
+        if (dtos.isEmpty() || dtos == null) {
+            return null;
+        }
+        for (LibAlbumPT dto : dtos) {
+            libAlbums.add(DTO2DB(dto, network));
+        }
+        return libAlbums;
+    }
+
+    @AfterMapping
+    default void libAlbumPTToLibAlbumAfterMapping(LibAlbumPT dto, @MappingTarget LibAlbum entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
     default LibImageItem mapLIBImage(Long id) {
         if (id == null) {

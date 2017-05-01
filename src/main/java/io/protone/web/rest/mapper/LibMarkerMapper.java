@@ -1,12 +1,15 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
+import io.protone.custom.service.dto.LibPersonPT;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CorPerson;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +24,23 @@ public interface LibMarkerMapper {
     List<LibMarkerPT> DBs2DTOs(List<LibMarker> lIBMarkers);
 
     @Mapping(source = "mediaItemId", target = "mediaItem")
-    LibMarker DTO2DB(LibMarkerPT lIBMarkerDTO);
+    LibMarker DTO2DB(LibMarkerPT lIBMarkerDTO, @Context CorNetwork network);
 
-    List<LibMarker> DTOs2DBs(List<LibMarkerPT> lIBMarkerDTOs);
+    default List<LibMarker> DTOs2DBs(List<LibMarkerPT> lIBMarkerDTOs, @Context CorNetwork network) {
+        List<LibMarker> corPeople = new ArrayList<>();
+        if (lIBMarkerDTOs.isEmpty() || lIBMarkerDTOs == null) {
+            return null;
+        }
+        for (LibMarkerPT dto : lIBMarkerDTOs) {
+            corPeople.add(DTO2DB(dto, network));
+        }
+        return corPeople;
+    }
+
+    @AfterMapping
+    default void libPersonPTToCorPersonAfterMapping(LibMarkerPT dto, @MappingTarget LibMarker entity, @Context CorNetwork corNetwork) {
+        // entity.setNetwork(corNetwork);
+    }
 
     default LibMediaItem mapLibMediaItem(Long id) {
         if (id == null) {

@@ -83,18 +83,18 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraDiscount entity = customTraDiscountMapper.DTO2DB(confDiscountPT);
+        TraDiscount entity = customTraDiscountMapper.DTO2DB(confDiscountPT,corNetwork);
         assertNotNull(entity.getId());
         assertNotNull(entity.getValidFrom());
         assertNotNull(entity.getValidTo());
         assertNotNull(entity.getDiscount());
         assertNotNull(entity.getId());
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraDiscount> entities = customTraDiscountMapper.DTOs2DBs(confDiscountPTS);
+        List<TraDiscount> entities = customTraDiscountMapper.DTOs2DBs(confDiscountPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -104,7 +104,7 @@ public class TraDiscountMapperTest {
             assertNotNull(entity.getValidTo());
             assertNotNull(entity.getDiscount());
             assertNotNull(entity.getId());
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

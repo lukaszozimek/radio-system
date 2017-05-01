@@ -3,6 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CorUser;
 import io.protone.domain.CrmTask;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,9 @@ public class CrmTaskMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         crmTask = factory.manufacturePojo(CrmTask.class);
+        crmTask.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmTask.setAssignedTo(factory.manufacturePojo(CorUser.class));
+        crmTask.setId(1L);
         crmTasks.add(crmTask);
         crmTaskPT = factory.manufacturePojo(CrmTaskPT.class);
         crmTaskPTS.add(crmTaskPT);
@@ -73,7 +77,6 @@ public class CrmTaskMapperTest {
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-
             assertNotNull(dto.getCreatedBy());
             assertNotNull(dto.getAssignedTo());
             assertNotNull(dto.getId());
@@ -87,7 +90,7 @@ public class CrmTaskMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmTask entity = customCrmTaskMapper.DTO2DB(crmTaskPT);
+        CrmTask entity = customCrmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
 
 
         assertNotNull(entity.getCreatedBy());
@@ -97,13 +100,12 @@ public class CrmTaskMapperTest {
         assertNotNull(entity.getActivityDate());
         assertNotNull(entity.getComment());
         assertNotNull(entity.getId());
-
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        Set<CrmTask> entities = customCrmTaskMapper.DTOs2DBs(crmTaskPTS);
+        Set<CrmTask> entities = customCrmTaskMapper.DTOs2DBs(crmTaskPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -116,8 +118,7 @@ public class CrmTaskMapperTest {
             assertNotNull(entity.getActivityDate());
             assertNotNull(entity.getComment());
             assertNotNull(entity.getId());
-
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

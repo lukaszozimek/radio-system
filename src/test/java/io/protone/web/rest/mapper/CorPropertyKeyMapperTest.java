@@ -53,11 +53,11 @@ public class CorPropertyKeyMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorPropertyKey entity = corPropertyKeyMapper.DTO2DB(coreKeyPT);
+        CorPropertyKey entity = corPropertyKeyMapper.DTO2DB(coreKeyPT, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getKey());
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class CorPropertyKeyMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorPropertyKey> entities = corPropertyKeyMapper.DTOs2DBs(coreKeyPTS);
+        List<CorPropertyKey> entities = corPropertyKeyMapper.DTOs2DBs(coreKeyPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -90,7 +90,7 @@ public class CorPropertyKeyMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getKey());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
         });
     }

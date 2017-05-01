@@ -80,7 +80,7 @@ public class LibMarkerMapperTest {
     @Test
     public void DTO2DB() throws Exception {
         //TODO: add Network
-        LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerPT);
+        LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerPT,corNetwork);
 
 
         assertNotNull(entity.getMediaItem());
@@ -94,7 +94,7 @@ public class LibMarkerMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerPTS);
+        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

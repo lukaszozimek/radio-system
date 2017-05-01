@@ -1,12 +1,11 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.custom.service.dto.LibTrackPT;
-import io.protone.domain.LibAlbum;
-import io.protone.domain.LibArtist;
-import io.protone.domain.LibTrack;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import io.protone.domain.*;
+import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,9 +22,23 @@ public interface LibTrackMapper {
 
     @Mapping(source = "albumId", target = "album")
     @Mapping(source = "artistId", target = "artist")
-    LibTrack DTO2DB(LibTrackPT lIBTrackDTO);
+    LibTrack DTO2DB(LibTrackPT lIBTrackDTO, @Context CorNetwork network);
 
-    List<LibTrack> DTOs2DBs(List<LibTrackPT> lIBTrackDTOs);
+    default List<LibTrack> DTOs2DBs(List<LibTrackPT> lIBTrackDTOs, @Context CorNetwork network) {
+        List<LibTrack> libTracks = new ArrayList<>();
+        if (lIBTrackDTOs.isEmpty() || lIBTrackDTOs == null) {
+            return null;
+        }
+        for (LibTrackPT dto : lIBTrackDTOs) {
+            libTracks.add(DTO2DB(dto, network));
+        }
+        return libTracks;
+    }
+
+    @AfterMapping
+    default void libTrackPTToLibTrackAfterMapping(LibTrackPT dto, @MappingTarget LibTrack entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
     default LibAlbum mapLibAlbum(Long id) {
         if (id == null) {

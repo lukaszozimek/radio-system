@@ -91,7 +91,7 @@ public class LibTrackMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibTrack entity = customLibTrackMapperExt.DTO2DB(libTrackPT);
+        LibTrack entity = customLibTrackMapperExt.DTO2DB(libTrackPT, corNetwork);
 
         assertNotNull(entity.getAlbum());
         assertNotNull(entity.getArtist());
@@ -101,12 +101,12 @@ public class LibTrackMapperTest {
         assertNotNull(entity.getLength());
         assertNotNull(entity.getName());
         assertNotNull(entity.getTrackNo());
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibTrack> entities = customLibTrackMapperExt.DTOs2DBs(libTrackPTS);
+        List<LibTrack> entities = customLibTrackMapperExt.DTOs2DBs(libTrackPTS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -119,7 +119,7 @@ public class LibTrackMapperTest {
             assertNotNull(entity.getLength());
             assertNotNull(entity.getName());
             assertNotNull(entity.getTrackNo());
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
         });
     }
 

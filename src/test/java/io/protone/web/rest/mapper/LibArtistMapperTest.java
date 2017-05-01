@@ -63,7 +63,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibArtist> entities = libArtistMapper.DTOs2DBs(libArtistPTS);
+        List<LibArtist> entities = libArtistMapper.DTOs2DBs(libArtistPTS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -73,7 +73,7 @@ public class LibArtistMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getType());
 
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
 
         });
@@ -81,7 +81,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibArtist entity = libArtistMapper.DTO2DB(libArtistPT);
+        LibArtist entity = libArtistMapper.DTO2DB(libArtistPT,corNetwork);
 
 
         assertNotNull(entity.getDescription());
@@ -89,7 +89,7 @@ public class LibArtistMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getType());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test
