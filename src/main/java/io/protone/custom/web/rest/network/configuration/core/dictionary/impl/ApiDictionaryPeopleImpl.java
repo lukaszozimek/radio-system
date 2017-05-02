@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,23 +29,23 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
     private final Logger log = LoggerFactory.getLogger(ApiDictionaryPeopleImpl.class);
 
     @Inject
-    private CorPersonRepository cORPersonRepository;
+    private CorPersonRepository corPersonRepository;
 
     @Inject
     private CorNetworkService networkService;
 
     @Inject
-    private CorPersonMapper customCorPersonMapper;
+    private CorPersonMapper corPersonMapper;
 
     @Override
-    public ResponseEntity<ConfPersonPT> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO) {
+    public ResponseEntity<ConfPersonPT> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true)@Valid @RequestBody ConfPersonPT personDTO) throws URISyntaxException {
         log.debug("REST request to update CorPerson : {}", personDTO);
         if (personDTO.getId() == null) {
             return createPersonUsingPOST(networkShortcut, personDTO);
         }
-        CorPerson cORPerson = customCorPersonMapper.DTO2DB(personDTO);
-        cORPerson = cORPersonRepository.save(cORPerson);
-        ConfPersonPT result = customCorPersonMapper.DB2DTO(cORPerson);
+        CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO);
+        cORPerson = corPersonRepository.save(cORPerson);
+        ConfPersonPT result = corPersonMapper.DB2DTO(cORPerson);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cORPerson", personDTO.getId().toString()))
             .body(result);
@@ -50,22 +53,23 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
 
     @Override
     public ResponseEntity<ConfPersonPT> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO) {
+                                                              @ApiParam(value = "personDTO", required = true)@Valid @RequestBody ConfPersonPT personDTO) throws URISyntaxException {
         log.debug("REST request to save CorPerson : {}", personDTO);
         if (personDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPerson", "idexists", "A new cORPerson cannot already have an ID")).body(null);
         }
-        CorPerson cORPerson = customCorPersonMapper.DTO2DB(personDTO);
-        cORPerson = cORPersonRepository.save(cORPerson);
-        ConfPersonPT result = customCorPersonMapper.DB2DTO(cORPerson);
-        return ResponseEntity.ok().body(result);
+        CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO);
+        cORPerson = corPersonRepository.save(cORPerson);
+        ConfPersonPT result = corPersonMapper.DB2DTO(cORPerson);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))
+            .body(result);
     }
 
     @Override
     public ResponseEntity<Void> deletePersonUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true)
     @PathVariable("id") Long id) {
         log.debug("REST request to delete CorPerson : {}", id);
-        cORPersonRepository.delete(id);
+        corPersonRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cORPerson", id.toString())).build();
 
     }
@@ -74,15 +78,15 @@ public class ApiDictionaryPeopleImpl implements ApiDictionaryPeople {
     public ResponseEntity<List<ConfPersonPT>> getAllPeopleUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORPeople");
-        List<CorPerson> cORPeople = cORPersonRepository.findAll();
-        return ResponseEntity.ok().body(customCorPersonMapper.DBs2DTOs(cORPeople));
+        List<CorPerson> cORPeople = corPersonRepository.findAll();
+        return ResponseEntity.ok().body(corPersonMapper.DBs2DTOs(cORPeople));
     }
 
     @Override
     public ResponseEntity<ConfPersonPT> getPersonUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorPerson : {}", id);
-        CorPerson cORPerson = cORPersonRepository.findOne(id);
-        ConfPersonPT cORPersonDTO = customCorPersonMapper.DB2DTO(cORPerson);
+        CorPerson cORPerson = corPersonRepository.findOne(id);
+        ConfPersonPT cORPersonDTO = corPersonMapper.DB2DTO(cORPerson);
         return Optional.ofNullable(cORPersonDTO)
             .map(result -> new ResponseEntity<>(
                 result,

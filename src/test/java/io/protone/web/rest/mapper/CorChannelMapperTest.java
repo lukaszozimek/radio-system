@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreChannelPT;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import org.junit.Before;
@@ -32,9 +32,9 @@ public class CorChannelMapperTest {
 
     private CorChannel channel;
 
-    private CoreChannelPT coreChannelPT;
+    private CorChannelDTO corChannelDTO;
 
-    private List<CoreChannelPT> coreChannelPTS = new ArrayList<>();
+    private List<CorChannelDTO> corChannelDTOS = new ArrayList<>();
 
     private List<CorChannel> channels = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -45,14 +45,14 @@ public class CorChannelMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         channel = factory.manufacturePojo(CorChannel.class);
         channels.add(channel);
-        coreChannelPT = factory.manufacturePojo(CoreChannelPT.class);
-        coreChannelPTS.add(coreChannelPT);
+        corChannelDTO = factory.manufacturePojo(CorChannelDTO.class);
+        corChannelDTOS.add(corChannelDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        CoreChannelPT channelPT = corChannelMapper.DB2DTO(channel);
+        CorChannelDTO channelPT = corChannelMapper.DB2DTO(channel);
 
         assertNotNull(channelPT.getId());
         assertNotNull(channelPT.getShortcut());
@@ -62,7 +62,7 @@ public class CorChannelMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreChannelPT> channelPTS = corChannelMapper.DBs2DTOs(channels);
+        List<CorChannelDTO> channelPTS = corChannelMapper.DBs2DTOs(channels);
 
         assertNotNull(channelPTS);
         assertEquals(channelPTS.size(), 1);
@@ -76,7 +76,7 @@ public class CorChannelMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorChannel entity = corChannelMapper.DTO2DB(coreChannelPT,corNetwork);
+        CorChannel entity = corChannelMapper.DTO2DB(corChannelDTO,corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortcut());
@@ -88,7 +88,7 @@ public class CorChannelMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorChannel> entities = corChannelMapper.DTOs2DBs(coreChannelPTS,corNetwork);
+        List<CorChannel> entities = corChannelMapper.DTOs2DBs(corChannelDTOS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

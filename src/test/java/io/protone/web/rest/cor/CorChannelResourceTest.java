@@ -1,15 +1,15 @@
 package io.protone.web.rest.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.custom.web.rest.network.TestUtil;
-import io.protone.web.rest.cor.impl.CorChannelResourceImpl;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.web.rest.cor.impl.CorChannelResourceImpl;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.CorChannelMapper;
 import org.junit.Before;
@@ -29,20 +29,19 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.web.rest.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 01/05/2017.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CorChannelResourceTest {
+    private static final String NETWORK_TEST = "aa";
 
     private static final String DEFAULT_SHORTCUT = "AAA";
     private static final String UPDATED_SHORTCUT = "BBB";
@@ -52,7 +51,6 @@ public class CorChannelResourceTest {
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
-    private static final String NETWORK_TEST = "BBBBBBBBBB";
     @Autowired
     private CorChannelRepository corChannelRepository;
 
@@ -103,7 +101,8 @@ public class CorChannelResourceTest {
 
     @Before
     public void setup() {
-        corNetwork = corNetworkRepository.save(new CorNetwork().active(true).name(NETWORK_TEST).shortcut(NETWORK_TEST));
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
         MockitoAnnotations.initMocks(this);
         CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(corChannelService, corChannelMapper, networkService);
         this.restCorChannelMockMvc = MockMvcBuilders.standaloneSetup(corChannelResource)
@@ -122,7 +121,7 @@ public class CorChannelResourceTest {
         int databaseSizeBeforeCreate = corChannelRepository.findAll().size();
 
         // Create the CorChannel
-        CoreChannelPT corChannelDTO = corChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
 
         restCorChannelMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -145,7 +144,7 @@ public class CorChannelResourceTest {
         // Create the CorChannel with an existing ID
         CorChannel existingCorChannel = new CorChannel();
         existingCorChannel.setId(1L);
-        CoreChannelPT existingCorChannelDTO = corChannelMapper.DB2DTO(existingCorChannel);
+        CorChannelDTO existingCorChannelDTO = corChannelMapper.DB2DTO(existingCorChannel);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCorChannelMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
@@ -165,7 +164,7 @@ public class CorChannelResourceTest {
         corChannel.setShortcut(null);
 
         // Create the CorChannel, which fails.
-        CoreChannelPT corChannelDTO = corChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
 
         restCorChannelMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -183,7 +182,7 @@ public class CorChannelResourceTest {
         corChannel.setName(null);
 
         // Create the CorChannel, which fails.
-        CoreChannelPT corChannelDTO = corChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
 
         restCorChannelMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,7 +243,7 @@ public class CorChannelResourceTest {
             .shortcut(UPDATED_SHORTCUT)
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION);
-        CoreChannelPT corChannelDTO = corChannelMapper.DB2DTO(updatedCorChannel);
+        CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(updatedCorChannel);
 
         restCorChannelMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -265,7 +264,7 @@ public class CorChannelResourceTest {
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 
         // Create the CorChannel
-        CoreChannelPT corChannelDTO = corChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCorChannelMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
@@ -281,11 +280,11 @@ public class CorChannelResourceTest {
     @Test
     public void deleteCorChannel() throws Exception {
         // Initialize the database
-        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
+        CorChannel localcorChannel = corChannelRepository.saveAndFlush(corChannel.shortcut("ops").network(corNetwork));
         int databaseSizeBeforeDelete = corChannelRepository.findAll().size();
 
         // Get the corChannel
-        restCorChannelMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut())
+        restCorChannelMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), localcorChannel.getShortcut())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

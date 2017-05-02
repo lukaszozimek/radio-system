@@ -2,13 +2,14 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CorUser;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
+import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -47,10 +48,10 @@ public class CoreUserPT {
     private String login = null;
 
     @JsonProperty("network")
-    private CoreNetworkPT networkPT;
+    private CorNetworkDTO networkPT;
 
     @JsonProperty("channel")
-    private List<CoreChannelPT> channelPT = null;
+    private List<CorChannelDTO> channelPT = null;
 
     public CoreUserPT(Long id) {
         this.id = id;
@@ -226,29 +227,29 @@ public class CoreUserPT {
     }
 
     @ApiModelProperty(value = "")
-    public CoreNetworkPT getNetwork() {
+    public CorNetworkDTO getNetwork() {
         return this.networkPT;
     }
 
-    public void setNetwork(CoreNetworkPT networkPt) {
+    public void setNetwork(CorNetworkDTO networkPt) {
         this.networkPT = networkPt;
     }
 
-    public CoreUserPT network(CoreNetworkPT networkPt) {
+    public CoreUserPT network(CorNetworkDTO networkPt) {
         this.networkPT = networkPt;
         return this;
     }
 
     @ApiModelProperty(value = "")
-    public List<CoreChannelPT> getChannel() {
+    public List<CorChannelDTO> getChannel() {
         return this.channelPT;
     }
 
-    public void setChannel(List<CoreChannelPT> channelId) {
+    public void setChannel(List<CorChannelDTO> channelId) {
         this.channelPT = channelId;
     }
 
-    public CoreUserPT channel(List<CoreChannelPT> channelId) {
+    public CoreUserPT channel(List<CorChannelDTO> channelId) {
         this.channelPT = channelId;
         return this;
     }

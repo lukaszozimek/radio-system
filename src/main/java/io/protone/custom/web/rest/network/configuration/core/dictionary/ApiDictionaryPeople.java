@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -26,7 +28,7 @@ public interface ApiDictionaryPeople {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<ConfPersonPT> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                      @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO);
+                                                      @ApiParam(value = "personDTO", required = true) @Valid @RequestBody ConfPersonPT personDTO) throws URISyntaxException;
 
     @ApiOperation(value = "DTO2DB", notes = "", response = ConfPersonPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
@@ -40,7 +42,7 @@ public interface ApiDictionaryPeople {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<ConfPersonPT> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "personDTO", required = true) @RequestBody ConfPersonPT personDTO);
+                                                       @ApiParam(value = "personDTO", required = true) @Valid @RequestBody ConfPersonPT personDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deletePerson", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})

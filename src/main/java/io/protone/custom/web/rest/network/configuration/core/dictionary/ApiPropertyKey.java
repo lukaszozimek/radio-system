@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -50,7 +52,7 @@ public interface ApiPropertyKey {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CoreKeyPT>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "updatePropertyKey", notes = "", response = CoreKeyPT.class, tags = {"CONFIGURATION", "DICTIONARY",})
@@ -65,7 +67,7 @@ public interface ApiPropertyKey {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CoreKeyPT> updatePropertyKeyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "propertyKeyDTO", required = true) @RequestBody CoreKeyPT propertyKeyDTO);
+                                                        @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CoreKeyPT propertyKeyDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createPropertyKey", notes = "", response = CoreKeyPT.class, tags = {"CONFIGURATION", "DICTIONARY",})
@@ -80,7 +82,7 @@ public interface ApiPropertyKey {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CoreKeyPT> createPropertyKeyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "propertyKeyDTO", required = true) @RequestBody CoreKeyPT propertyKeyDTO);
+                                                         @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CoreKeyPT propertyKeyDTO) throws URISyntaxException;
 
 
 }

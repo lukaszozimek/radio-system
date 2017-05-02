@@ -1,6 +1,5 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -8,9 +7,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * CoreChannelPT
+ * CorChannelDTO
  */
-public class CoreChannelPT implements Serializable {
+public class CorChannelDTO implements Serializable {
     private Long id = null;
 
     @NotNull
@@ -21,7 +20,7 @@ public class CoreChannelPT implements Serializable {
 
     private String description = null;
 
-    public CoreChannelPT id(Long id) {
+    public CorChannelDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -40,7 +39,7 @@ public class CoreChannelPT implements Serializable {
         this.id = id;
     }
 
-    public CoreChannelPT shortcut(String shortcut) {
+    public CorChannelDTO shortcut(String shortcut) {
         this.shortcut = shortcut;
         return this;
     }
@@ -59,7 +58,7 @@ public class CoreChannelPT implements Serializable {
         this.shortcut = shortcut;
     }
 
-    public CoreChannelPT name(String name) {
+    public CorChannelDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -78,7 +77,7 @@ public class CoreChannelPT implements Serializable {
         this.name = name;
     }
 
-    public CoreChannelPT description(String description) {
+    public CorChannelDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -106,11 +105,11 @@ public class CoreChannelPT implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CoreChannelPT coreChannelPT = (CoreChannelPT) o;
-        return Objects.equals(this.id, coreChannelPT.id) &&
-            Objects.equals(this.shortcut, coreChannelPT.shortcut) &&
-            Objects.equals(this.name, coreChannelPT.name) &&
-            Objects.equals(this.description, coreChannelPT.description);
+        CorChannelDTO corChannelDTO = (CorChannelDTO) o;
+        return Objects.equals(this.id, corChannelDTO.id) &&
+            Objects.equals(this.shortcut, corChannelDTO.shortcut) &&
+            Objects.equals(this.name, corChannelDTO.name) &&
+            Objects.equals(this.description, corChannelDTO.description);
     }
 
     @Override
@@ -121,7 +120,7 @@ public class CoreChannelPT implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CoreChannelPT {\n");
+        sb.append("class CorChannelDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    shortcut: ").append(toIndentedString(shortcut)).append("\n");

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.domain.enumeration.LibCounterTypeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class LibraryPT {
     @JsonProperty("networkId")
     private Long networkId = null;
     @JsonProperty("channels")
-    private List<CoreChannelPT> channels = new ArrayList<CoreChannelPT>();
+    private List<CorChannelDTO> channels = new ArrayList<CorChannelDTO>();
     @JsonProperty("users")
     private List<CoreUserPT> users = new ArrayList<CoreUserPT>();
     @JsonProperty("description")
@@ -145,12 +146,12 @@ public class LibraryPT {
         this.networkId = networkId;
     }
 
-    public LibraryPT channels(List<CoreChannelPT> channels) {
+    public LibraryPT channels(List<CorChannelDTO> channels) {
         this.channels = channels;
         return this;
     }
 
-    public LibraryPT addChannelsItem(CoreChannelPT channelsItem) {
+    public LibraryPT addChannelsItem(CorChannelDTO channelsItem) {
         this.channels.add(channelsItem);
         return this;
     }
@@ -161,11 +162,11 @@ public class LibraryPT {
      * @return channels
      **/
     @ApiModelProperty(value = "")
-    public List<CoreChannelPT> getChannels() {
+    public List<CorChannelDTO> getChannels() {
         return channels;
     }
 
-    public void setChannels(List<CoreChannelPT> channels) {
+    public void setChannels(List<CorChannelDTO> channels) {
         this.channels = channels;
     }
 

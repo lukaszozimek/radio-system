@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CoreNetworkPT;
+import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.protone.domain.CorNetwork;
 import org.mapstruct.Mapper;
 
@@ -12,11 +12,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CorNetworkMapper {
 
-    CoreNetworkPT DB2DTO(CorNetwork cORNetwork);
+    CorNetworkDTO DB2DTO(CorNetwork cORNetwork);
 
-    List<CoreNetworkPT> DBs2DTOs(List<CorNetwork> cORNetworks);
+    List<CorNetworkDTO> DBs2DTOs(List<CorNetwork> cORNetworks);
 
-    CorNetwork DTO2DB(CoreNetworkPT cORNetworkDTO);
+    CorNetwork DTO2DB(CorNetworkDTO cORNetworkDTO);
 
-    List<CorNetwork> DTOs2DBs(List<CoreNetworkPT> cORNetworkDTOs);
+    List<CorNetwork> DTOs2DBs(List<CorNetworkDTO> cORNetworkDTOs);
 }

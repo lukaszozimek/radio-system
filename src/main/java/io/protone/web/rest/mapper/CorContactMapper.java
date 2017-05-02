@@ -1,8 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CoreChannelPT;
 import io.protone.custom.service.dto.CoreContactPT;
-import io.protone.domain.CorChannel;
 import io.protone.domain.CorContact;
 import io.protone.domain.CorNetwork;
 import org.mapstruct.AfterMapping;

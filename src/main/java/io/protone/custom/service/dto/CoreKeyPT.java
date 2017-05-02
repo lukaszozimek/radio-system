@@ -3,18 +3,18 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * CoreKeyPT
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreKeyPT {
-    @JsonProperty("id")
+public class CoreKeyPT implements Serializable {
     private Long id = null;
 
-    @JsonProperty("key")
+    @NotNull
     private String key = null;
 
     public CoreKeyPT id(Long id) {

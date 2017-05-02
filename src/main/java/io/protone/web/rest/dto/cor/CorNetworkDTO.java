@@ -1,7 +1,5 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.domain.CorNetwork;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -9,10 +7,10 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * CoreNetworkPT
+ * CorNetworkDTO
  */
 
-public class CoreNetworkPT implements Serializable {
+public class CorNetworkDTO implements Serializable {
 
     private Long id = null;
 
@@ -24,7 +22,7 @@ public class CoreNetworkPT implements Serializable {
 
     private String description = null;
 
-    public CoreNetworkPT id(Long id) {
+    public CorNetworkDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -43,7 +41,7 @@ public class CoreNetworkPT implements Serializable {
         this.id = id;
     }
 
-    public CoreNetworkPT shortcut(String shortcut) {
+    public CorNetworkDTO shortcut(String shortcut) {
         this.shortcut = shortcut;
         return this;
     }
@@ -62,7 +60,7 @@ public class CoreNetworkPT implements Serializable {
         this.shortcut = shortcut;
     }
 
-    public CoreNetworkPT name(String name) {
+    public CorNetworkDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -81,7 +79,7 @@ public class CoreNetworkPT implements Serializable {
         this.name = name;
     }
 
-    public CoreNetworkPT description(String description) {
+    public CorNetworkDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -110,7 +108,7 @@ public class CoreNetworkPT implements Serializable {
             return false;
         }
 
-        CoreNetworkPT corNetworkDTO = (CoreNetworkPT) o;
+        CorNetworkDTO corNetworkDTO = (CorNetworkDTO) o;
 
         if (!Objects.equals(id, corNetworkDTO.id)) return false;
 
@@ -125,7 +123,7 @@ public class CoreNetworkPT implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CoreNetworkPT {\n");
+        sb.append("class CorNetworkDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    shortcut: ").append(toIndentedString(shortcut)).append("\n");

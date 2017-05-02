@@ -3,6 +3,8 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,17 +12,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class ConfPersonPT {
-    @JsonProperty("description")
-    private String description = null;
+public class ConfPersonPT implements Serializable {
 
-    @JsonProperty("firstName")
+    private String description = null;
+    @NotNull
     private String firstName = null;
 
-    @JsonProperty("id")
     private Long id = null;
-
-    @JsonProperty("lastName")
+    @NotNull
     private String lastName = null;
 
     public ConfPersonPT description(String description) {

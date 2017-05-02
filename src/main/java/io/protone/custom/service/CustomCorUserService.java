@@ -2,7 +2,7 @@ package io.protone.custom.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.Sets;
-import io.protone.custom.service.dto.CoreNetworkPT;
+import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.web.rest.mapper.CorChannelMapper;
 import io.protone.web.rest.mapper.CorNetworkMapper;
@@ -60,13 +60,13 @@ public class CustomCorUserService {
     private CorNetworkRepository corNetworkRepository;
 
     @Autowired
-    private CorUserMapper customCorUserMapperExt;
+    private CorUserMapper corUserMapper;
 
     @Autowired
-    private CorNetworkMapper customCorNetworkMapper;
+    private CorNetworkMapper corNetworkMapper;
 
     @Autowired
-    private CorChannelMapper customCORChannelMapper;
+    private CorChannelMapper corChannelMapper;
 
 
     public Optional<CorUser> activateRegistration(String key) {
@@ -113,10 +113,10 @@ public class CustomCorUserService {
     }
 
     public CorUser createUser(String login, String password, String firstName, String lastName, String email,
-                              String imageUrl, String langKey, CoreNetworkPT networkPt) {
+                              String imageUrl, String langKey, CorNetworkDTO networkPt) {
 
         CorUser newUser = new CorUser();
-        CorNetwork network = corNetworkRepository.save(customCorNetworkMapper.DTO2DB(networkPt));
+        CorNetwork network = corNetworkRepository.save(corNetworkMapper.DTO2DB(networkPt));
         CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<CorAuthority> authorities = new HashSet<>();
 
@@ -160,7 +160,7 @@ public class CustomCorUserService {
         user.setImageurl(userDTO.getImageurl());
         user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
         userDTO.getChannel().stream().forEach(coreChannelPT -> {
-            user.addChannel(customCORChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
+            user.addChannel(corChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
 
         });
         if (userDTO.getLangKey() == null) {
@@ -228,7 +228,7 @@ public class CustomCorUserService {
                 return user;
             }).get();
         corUser = userRepository.saveAndFlush(corUser);
-        return customCorUserMapperExt.DB2DTO(corUser);
+        return corUserMapper.DB2DTO(corUser);
     }
 
     public void deleteUser(String login) {
@@ -248,7 +248,7 @@ public class CustomCorUserService {
 
     @Transactional(readOnly = true)
     public List<CoreUserPT> getAllManagedUsers(CorNetwork corNetwork) {
-        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(customCorUserMapperExt::DB2DTO).collect(toList());
+        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(corUserMapper::DB2DTO).collect(toList());
     }
 
     @Transactional(readOnly = true)
@@ -264,7 +264,7 @@ public class CustomCorUserService {
     @Transactional(readOnly = true)
     public CoreUserPT getUserWithAuthorities() {
         CorUser corUser = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
-        return customCorUserMapperExt.DB2DTO(corUser);
+        return corUserMapper.DB2DTO(corUser);
     }
 
 

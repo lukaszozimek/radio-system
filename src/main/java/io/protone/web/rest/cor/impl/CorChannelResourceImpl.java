@@ -2,7 +2,7 @@ package io.protone.web.rest.cor.impl;
 
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
-import io.protone.custom.service.dto.CoreChannelPT;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.protone.web.rest.mapper.CorChannelMapper;
 import io.protone.web.rest.cor.CorChannelResource;
 import io.protone.domain.CorChannel;
@@ -44,8 +44,8 @@ public class CorChannelResourceImpl implements CorChannelResource {
     }
 
     @Override
-    public ResponseEntity<CoreChannelPT> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CoreChannelPT channelDTO) throws URISyntaxException {
+    public ResponseEntity<CorChannelDTO> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                               @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException {
         log.debug("REST request to update CORChannel : {}", channelDTO);
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(networkShortcut, channelDTO);
@@ -54,14 +54,14 @@ public class CorChannelResourceImpl implements CorChannelResource {
 
         CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
-        CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getShortcut().toString()))
             .body(result);
     }
 
     @Override
-    public ResponseEntity<CoreChannelPT> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CoreChannelPT channelDTO) throws URISyntaxException {
+    public ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException {
         log.debug("REST request to save CORChannel : {}", channelDTO);
         if (channelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
@@ -70,14 +70,14 @@ public class CorChannelResourceImpl implements CorChannelResource {
         CorNetwork network = networkService.findNetwork(networkShortcut);
         CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
-        CoreChannelPT result = customCORChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO result = customCORChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel" + result.getShortcut()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))
             .body(result);
     }
 
     @Override
-    public ResponseEntity<List<CoreChannelPT>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<CorChannelDTO>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORChannels");
         List<CorChannel> corChannels = channelService.findAllChannel(networkShortcut, pagable);
@@ -86,10 +86,10 @@ public class CorChannelResourceImpl implements CorChannelResource {
     }
 
     @Override
-    public ResponseEntity<CoreChannelPT> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
+    public ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get CORChannel : {}", channelShortcut);
         CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
-        CoreChannelPT corChannelDTO = customCORChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO corChannelDTO = customCORChannelMapper.DB2DTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
             .map(result -> new ResponseEntity<>(
                 result,

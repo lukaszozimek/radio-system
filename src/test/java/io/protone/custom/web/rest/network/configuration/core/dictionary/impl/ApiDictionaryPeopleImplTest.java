@@ -3,9 +3,13 @@ package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.ConfPersonPT;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPerson;
+import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.cor.CorPersonRepository;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.mapper.CorPersonMapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +29,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.web.rest.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,9 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ApiDictionaryPeopleImplTest {
-
+    private static final String NETWORK_TEST = "ccc";
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
 
@@ -55,6 +59,9 @@ public class ApiDictionaryPeopleImplTest {
     private CorPersonMapper corPersonMapper;
 
     @Inject
+    private CorNetworkRepository corNetworkRepository;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -63,9 +70,13 @@ public class ApiDictionaryPeopleImplTest {
     @Inject
     private EntityManager em;
 
+    @Inject
+    private CorNetworkService networkService;
     private MockMvc restCorPersonMockMvc;
 
     private CorPerson corPerson;
+
+    private CorNetwork corNetwork;
 
     /**
      * Create an entity for this test.
@@ -83,19 +94,24 @@ public class ApiDictionaryPeopleImplTest {
 
     @Before
     public void setup() {
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
         MockitoAnnotations.initMocks(this);
         ApiDictionaryPeopleImpl corPersonResource = new ApiDictionaryPeopleImpl();
         ReflectionTestUtils.setField(corPersonResource, "corPersonRepository", corPersonRepository);
         ReflectionTestUtils.setField(corPersonResource, "corPersonMapper", corPersonMapper);
+        ReflectionTestUtils.setField(corPersonResource, "networkService", networkService);
         this.restCorPersonMockMvc = MockMvcBuilders.standaloneSetup(corPersonResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
+    @Transactional
     public void initTest() {
-        corPerson = createEntity(em);
+        corPerson = createEntity(em).network(corNetwork);
     }
+
 
     @Test
     @Transactional
@@ -105,7 +121,7 @@ public class ApiDictionaryPeopleImplTest {
         // Create the CorPerson
         ConfPersonPT corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
-        restCorPersonMockMvc.perform(post("/api/cor-people")
+        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isCreated());
@@ -130,7 +146,7 @@ public class ApiDictionaryPeopleImplTest {
         ConfPersonPT existingCorPersonDTO = corPersonMapper.DB2DTO(existingCorPerson);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCorPersonMockMvc.perform(post("/api/cor-people")
+        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCorPersonDTO)))
             .andExpect(status().isBadRequest());
@@ -150,7 +166,7 @@ public class ApiDictionaryPeopleImplTest {
         // Create the CorPerson, which fails.
         ConfPersonPT corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
-        restCorPersonMockMvc.perform(post("/api/cor-people")
+        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isBadRequest());
@@ -169,7 +185,7 @@ public class ApiDictionaryPeopleImplTest {
         // Create the CorPerson, which fails.
         ConfPersonPT corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
-        restCorPersonMockMvc.perform(post("/api/cor-people")
+        restCorPersonMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isBadRequest());
@@ -182,10 +198,10 @@ public class ApiDictionaryPeopleImplTest {
     @Transactional
     public void getAllCorPeople() throws Exception {
         // Initialize the database
-        corPersonRepository.saveAndFlush(corPerson);
+        corPersonRepository.saveAndFlush(corPerson.network(corNetwork));
 
         // Get all the corPersonList
-        restCorPersonMockMvc.perform(get("/api/cor-people?sort=id,desc"))
+        restCorPersonMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(corPerson.getId().intValue())))
@@ -198,10 +214,10 @@ public class ApiDictionaryPeopleImplTest {
     @Transactional
     public void getCorPerson() throws Exception {
         // Initialize the database
-        corPersonRepository.saveAndFlush(corPerson);
+        corPersonRepository.saveAndFlush(corPerson.network(corNetwork));
 
         // Get the corPerson
-        restCorPersonMockMvc.perform(get("/api/cor-people/{id}", corPerson.getId()))
+        restCorPersonMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}", corNetwork.getShortcut(), corPerson.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(corPerson.getId().intValue()))
@@ -214,7 +230,7 @@ public class ApiDictionaryPeopleImplTest {
     @Transactional
     public void getNonExistingCorPerson() throws Exception {
         // Get the corPerson
-        restCorPersonMockMvc.perform(get("/api/cor-people/{id}", Long.MAX_VALUE))
+        restCorPersonMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -222,7 +238,7 @@ public class ApiDictionaryPeopleImplTest {
     @Transactional
     public void updateCorPerson() throws Exception {
         // Initialize the database
-        corPersonRepository.saveAndFlush(corPerson);
+        corPersonRepository.saveAndFlush(corPerson.network(corNetwork));
         int databaseSizeBeforeUpdate = corPersonRepository.findAll().size();
 
         // Update the corPerson
@@ -233,7 +249,7 @@ public class ApiDictionaryPeopleImplTest {
             .description(UPDATED_DESCRIPTION);
         ConfPersonPT corPersonDTO = corPersonMapper.DB2DTO(updatedCorPerson);
 
-        restCorPersonMockMvc.perform(put("/api/cor-people")
+        restCorPersonMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isOk());
@@ -256,7 +272,7 @@ public class ApiDictionaryPeopleImplTest {
         ConfPersonPT corPersonDTO = corPersonMapper.DB2DTO(corPerson);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCorPersonMockMvc.perform(put("/api/cor-people")
+        restCorPersonMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(corPersonDTO)))
             .andExpect(status().isCreated());
@@ -270,11 +286,11 @@ public class ApiDictionaryPeopleImplTest {
     @Transactional
     public void deleteCorPerson() throws Exception {
         // Initialize the database
-        corPersonRepository.saveAndFlush(corPerson);
+        corPersonRepository.saveAndFlush(corPerson.network(corNetwork));
         int databaseSizeBeforeDelete = corPersonRepository.findAll().size();
 
         // Get the corPerson
-        restCorPersonMockMvc.perform(delete("/api/cor-people/{id}", corPerson.getId())
+        restCorPersonMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/network/dictionary/people/{id}", corNetwork.getShortcut(), corPerson.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

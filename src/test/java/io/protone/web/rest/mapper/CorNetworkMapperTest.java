@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreNetworkPT;
+import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.protone.domain.CorNetwork;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,9 +31,9 @@ public class CorNetworkMapperTest {
 
     private CorNetwork corNetwork;
 
-    private CoreNetworkPT coreNetworkPT;
+    private CorNetworkDTO corNetworkDTO;
 
-    private List<CoreNetworkPT> coreNetworkPTS = new ArrayList<>();
+    private List<CorNetworkDTO> corNetworkDTOS = new ArrayList<>();
 
     private List<CorNetwork> corNetworks = new ArrayList<>();
 
@@ -42,14 +42,14 @@ public class CorNetworkMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetworks.add(corNetwork);
-        coreNetworkPT = factory.manufacturePojo(CoreNetworkPT.class);
-        coreNetworkPTS.add(coreNetworkPT);
+        corNetworkDTO = factory.manufacturePojo(CorNetworkDTO.class);
+        corNetworkDTOS.add(corNetworkDTO);
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        CorNetwork entity = corNetworkMapper.DTO2DB(coreNetworkPT);
+        CorNetwork entity = corNetworkMapper.DTO2DB(corNetworkDTO);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortcut());
@@ -60,7 +60,7 @@ public class CorNetworkMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        CoreNetworkPT dto = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO dto = corNetworkMapper.DB2DTO(corNetwork);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getShortcut());
@@ -71,7 +71,7 @@ public class CorNetworkMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreNetworkPT> dtos = corNetworkMapper.DBs2DTOs(corNetworks);
+        List<CorNetworkDTO> dtos = corNetworkMapper.DBs2DTOs(corNetworks);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -85,7 +85,7 @@ public class CorNetworkMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorNetwork> entities = corNetworkMapper.DTOs2DBs(coreNetworkPTS);
+        List<CorNetwork> entities = corNetworkMapper.DTOs2DBs(corNetworkDTOS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

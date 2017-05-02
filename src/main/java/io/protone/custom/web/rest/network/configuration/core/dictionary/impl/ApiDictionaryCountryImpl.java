@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,47 +31,48 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
     private final Logger log = LoggerFactory.getLogger(ApiDictionaryCountryImpl.class);
 
     @Inject
-    private CorCountryRepository customCorCountryRepository;
+    private CorCountryRepository corCountryRepository;
 
     @Inject
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CorCountryMapper customCorCurrencyMapper;
+    private CorCountryMapper corCountryMapper;
 
     @Override
-    public ResponseEntity<ConfCountryPt> updateCountryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @RequestBody ConfCountryPt confCountryPt) {
-        log.debug("REST request to update CorTax : {}", confCountryPt);
-        if (confCountryPt.getId() == null) {
-            return createCountryUsingPOST(networkShortcut, confCountryPt);
+    public ResponseEntity<ConfCountryPt> updateCountryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody ConfCountryPt countryPt) throws URISyntaxException {
+        log.debug("REST request to update CorTax : {}", countryPt);
+        if (countryPt.getId() == null) {
+            return createCountryUsingPOST(networkShortcut, countryPt);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorCountry corCountry = customCorCurrencyMapper.DTO2DB(confCountryPt, corNetwork);
-        corCountry = customCorCountryRepository.save(corCountry);
-        ConfCountryPt result = customCorCurrencyMapper.DB2DTO(corCountry);
+        CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corNetwork);
+        corCountry = corCountryRepository.save(corCountry);
+        ConfCountryPt result = corCountryMapper.DB2DTO(corCountry);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("cORArea", result.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("corCountry", result.getId().toString()))
             .body(result);
     }
 
     @Override
-    public ResponseEntity<ConfCountryPt> createCountryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @RequestBody ConfCountryPt confCountryPt) {
-        log.debug("REST request to save CorCountry : {}", confCountryPt);
-        if (confCountryPt.getId() != null) {
+    public ResponseEntity<ConfCountryPt> createCountryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody ConfCountryPt countryPt) throws URISyntaxException {
+        log.debug("REST request to save CorCountry : {}", countryPt);
+        if (countryPt.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorCountry", "idexists", "A new CorCountry cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorCountry corCountry = customCorCurrencyMapper.DTO2DB(confCountryPt, corNetwork);
-        corCountry = customCorCountryRepository.save(corCountry);
-        ConfCountryPt result = customCorCurrencyMapper.DB2DTO(corCountry);
-        return ResponseEntity.ok().body(result);
+        CorCountry corCountry = corCountryMapper.DTO2DB(countryPt, corNetwork);
+        corCountry = corCountryRepository.save(corCountry);
+        ConfCountryPt result = corCountryMapper.DB2DTO(corCountry);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))
+            .body(result);
     }
 
     @Override
     public ResponseEntity<Void> deleteCountryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorCountry : {}", id);
-        customCorCountryRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CorTax", id.toString())).build();
+        corCountryRepository.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("corCountry", id.toString())).build();
     }
 
     @Override
@@ -77,8 +81,8 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
         log.debug("REST request to get CorCountry : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        List<CorCountry> corCurrencies = customCorCountryRepository.findByNetwork(corNetwork);
-        List<ConfCountryPt> confCurrencyPTS = customCorCurrencyMapper.DBs2DTOs(corCurrencies);
+        List<CorCountry> corCurrencies = corCountryRepository.findByNetwork(corNetwork);
+        List<ConfCountryPt> confCurrencyPTS = corCountryMapper.DBs2DTOs(corCurrencies);
         return Optional.ofNullable(confCurrencyPTS)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -91,8 +95,8 @@ public class ApiDictionaryCountryImpl implements ApiDictionaryCountry {
         log.debug("REST request to get CorCountry : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        CorCountry corTax = customCorCountryRepository.findOneByIdAndNetwork(id, corNetwork);
-        ConfCountryPt confTaxPTS = customCorCurrencyMapper.DB2DTO(corTax);
+        CorCountry corTax = corCountryRepository.findOneByIdAndNetwork(id, corNetwork);
+        ConfCountryPt confTaxPTS = corCountryMapper.DB2DTO(corTax);
         return Optional.ofNullable(confTaxPTS)
             .map(result -> new ResponseEntity<>(
                 result,

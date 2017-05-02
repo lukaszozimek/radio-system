@@ -1,7 +1,7 @@
 package io.protone.web.rest.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreNetworkPT;
+import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.protone.web.rest.cor.impl.CorNetworkResourceImpl;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,9 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CorNetworkResourceIntTest {
-
+    public static final String TEST_NETWORK="test";
     private static final String DEFAULT_SHORTCUT = "AAAAAAAAAA";
     private static final String UPDATED_SHORTCUT = "BBBBBBBBBB";
 
@@ -111,7 +111,7 @@ public class CorNetworkResourceIntTest {
         int databaseSizeBeforeCreate = corNetworkRepository.findAll().size();
 
         // Create the CorNetwork
-        CoreNetworkPT corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
         restCorNetworkMockMvc.perform(post("/api/v1/network")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -136,7 +136,7 @@ public class CorNetworkResourceIntTest {
         CorNetwork existingCorNetwork = new CorNetwork();
         existingCorNetwork.setId(1L);
         // Create the CorNetwork
-        CoreNetworkPT existingCorNetworkDTO = corNetworkMapper.DB2DTO(existingCorNetwork);
+        CorNetworkDTO existingCorNetworkDTO = corNetworkMapper.DB2DTO(existingCorNetwork);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCorNetworkMockMvc.perform(post("/api/v1/network")
@@ -157,7 +157,7 @@ public class CorNetworkResourceIntTest {
         corNetwork.setShortcut(null);
 
         // Create the CorNetwork
-        CoreNetworkPT corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
         restCorNetworkMockMvc.perform(post("/api/v1/network")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -176,7 +176,7 @@ public class CorNetworkResourceIntTest {
         corNetwork.setName(null);
 
         // Create the CorNetwork
-        CoreNetworkPT corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
         restCorNetworkMockMvc.perform(post("/api/v1/network")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -241,7 +241,7 @@ public class CorNetworkResourceIntTest {
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION);
         // Create the CorNetwork
-        CoreNetworkPT corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
         restCorNetworkMockMvc.perform(put("/api/v1/network")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -263,7 +263,7 @@ public class CorNetworkResourceIntTest {
         int databaseSizeBeforeUpdate = corNetworkRepository.findAll().size();
 
         // Create the CorNetwork
-        CoreNetworkPT corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
+        CorNetworkDTO corNetworkDTO = corNetworkMapper.DB2DTO(corNetwork);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCorNetworkMockMvc.perform(put("/api/v1/network")
