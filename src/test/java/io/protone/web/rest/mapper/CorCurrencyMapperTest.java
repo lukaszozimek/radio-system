@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.ConfCurrencyPT;
+import io.protone.web.rest.dto.cor.CorCurrencyDTO;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
 import org.junit.Before;
@@ -33,9 +33,9 @@ public class CorCurrencyMapperTest {
 
     private CorCurrency corCurrency;
 
-    private ConfCurrencyPT confCurrencyPT;
+    private CorCurrencyDTO corCurrencyDTO;
 
-    private List<ConfCurrencyPT> confCurrencyPTS = new ArrayList<>();
+    private List<CorCurrencyDTO> corCurrencyDTOS = new ArrayList<>();
 
     private List<CorCurrency> corCurrencies = new ArrayList<>();
 
@@ -47,14 +47,14 @@ public class CorCurrencyMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corCurrency = factory.manufacturePojo(CorCurrency.class);
         corCurrencies.add(corCurrency);
-        confCurrencyPT = factory.manufacturePojo(ConfCurrencyPT.class);
-        confCurrencyPTS.add(confCurrencyPT);
+        corCurrencyDTO = factory.manufacturePojo(CorCurrencyDTO.class);
+        corCurrencyDTOS.add(corCurrencyDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorCurrency entity = corCurrencyMapper.DTO2DB(confCurrencyPT, corNetwork);
+        CorCurrency entity = corCurrencyMapper.DTO2DB(corCurrencyDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
@@ -66,7 +66,7 @@ public class CorCurrencyMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfCurrencyPT dto = corCurrencyMapper.DB2DTO(corCurrency);
+        CorCurrencyDTO dto = corCurrencyMapper.DB2DTO(corCurrency);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
@@ -78,7 +78,7 @@ public class CorCurrencyMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfCurrencyPT> dtos = corCurrencyMapper.DBs2DTOs(corCurrencies);
+        List<CorCurrencyDTO> dtos = corCurrencyMapper.DBs2DTOs(corCurrencies);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -93,7 +93,7 @@ public class CorCurrencyMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorCurrency> entities = corCurrencyMapper.DTOs2DBs(confCurrencyPTS, corNetwork);
+        List<CorCurrency> entities = corCurrencyMapper.DTOs2DBs(corCurrencyDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

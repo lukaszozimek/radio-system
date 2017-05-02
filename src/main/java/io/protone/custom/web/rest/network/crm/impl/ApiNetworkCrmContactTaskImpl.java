@@ -4,7 +4,7 @@ import io.protone.service.crm.CrmContactService;
 import io.protone.domain.CrmTask;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
+import io.protone.web.rest.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmContactTask {
-    private final Logger log = LoggerFactory.getLogger(ApiConfigurationLibraryMarkerImpl.class);
+    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
     private CrmContactService crmContactService;

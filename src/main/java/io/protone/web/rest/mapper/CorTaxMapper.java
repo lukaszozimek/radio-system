@@ -1,9 +1,7 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.ConfTaxPT;
-import io.protone.custom.service.dto.LibPersonPT;
+import io.protone.web.rest.dto.cor.CorTaxDTO;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CorPerson;
 import io.protone.domain.CorTax;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
@@ -19,25 +17,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CorTaxMapper {
 
-    CorTax DTO2DB(ConfTaxPT confTaxPT, @Context CorNetwork network);
+    CorTax DTO2DB(CorTaxDTO corTaxDTO, @Context CorNetwork network);
 
-    ConfTaxPT DB2DTO(CorTax corTax);
+    CorTaxDTO DB2DTO(CorTax corTax);
 
-    List<ConfTaxPT> DBs2DTOs(List<CorTax> corTaxes);
+    List<CorTaxDTO> DBs2DTOs(List<CorTax> corTaxes);
 
-    default List<CorTax> DTOs2DBs(List<ConfTaxPT> confTaxPTList, @Context CorNetwork network) {
+    default List<CorTax> DTOs2DBs(List<CorTaxDTO> corTaxDTOList, @Context CorNetwork network) {
         List<CorTax> corTaxes = new ArrayList<>();
-        if (confTaxPTList.isEmpty() || confTaxPTList == null) {
+        if (corTaxDTOList.isEmpty() || corTaxDTOList == null) {
             return null;
         }
-        for (ConfTaxPT dto : confTaxPTList) {
+        for (CorTaxDTO dto : corTaxDTOList) {
             corTaxes.add(DTO2DB(dto, network));
         }
         return corTaxes;
     }
 
     @AfterMapping
-    default void confTaxPTToCorTaxAfterMapping(ConfTaxPT dto, @MappingTarget CorTax entity, @Context CorNetwork corNetwork) {
+    default void confTaxPTToCorTaxAfterMapping(CorTaxDTO dto, @MappingTarget CorTax entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

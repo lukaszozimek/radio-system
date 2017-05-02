@@ -16,7 +16,9 @@ import java.util.List;
 public interface CorCurrencyRepository extends JpaRepository<CorCurrency, Long> {
     List<CorCurrency> findByNetwork(CorNetwork corNetwork);
 
-    List<CorCurrency> findAllByNetwork(CorNetwork network, Pageable pageable);
+    List<CorCurrency> findAllByNetwork_Shortcut(String network, Pageable pageable);
 
-    CorCurrency findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
+    void deleteByIdAndNetwork_Shortcut(Long id, String network);
+
+    CorCurrency findOneByIdAndNetwork_Shortcut(Long id, String corNetwork);
 }

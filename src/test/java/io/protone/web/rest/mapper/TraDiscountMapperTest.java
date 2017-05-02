@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.ConfDiscountPT;
+import io.protone.web.rest.dto.traffic.TraDiscountDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
 import org.junit.Before;
@@ -33,9 +33,9 @@ public class TraDiscountMapperTest {
 
     private TraDiscount traDiscount;
 
-    private ConfDiscountPT confDiscountPT;
+    private TraDiscountDTO traDiscountDTO;
 
-    private List<ConfDiscountPT> confDiscountPTS = new ArrayList<>();
+    private List<TraDiscountDTO> traDiscountDTOS = new ArrayList<>();
 
     private List<TraDiscount> traDiscounts = new ArrayList<>();
 
@@ -46,15 +46,15 @@ public class TraDiscountMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         traDiscount = factory.manufacturePojo(TraDiscount.class);
         traDiscounts.add(traDiscount);
-        confDiscountPT = factory.manufacturePojo(ConfDiscountPT.class);
-        confDiscountPTS.add(confDiscountPT);
+        traDiscountDTO = factory.manufacturePojo(TraDiscountDTO.class);
+        traDiscountDTOS.add(traDiscountDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfDiscountPT dto = customTraDiscountMapper.DB2DTO(traDiscount);
+        TraDiscountDTO dto = customTraDiscountMapper.DB2DTO(traDiscount);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getValidFrom());
@@ -67,7 +67,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfDiscountPT> dtos = customTraDiscountMapper.DBs2DTOs(traDiscounts);
+        List<TraDiscountDTO> dtos = customTraDiscountMapper.DBs2DTOs(traDiscounts);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -83,7 +83,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraDiscount entity = customTraDiscountMapper.DTO2DB(confDiscountPT,corNetwork);
+        TraDiscount entity = customTraDiscountMapper.DTO2DB(traDiscountDTO,corNetwork);
         assertNotNull(entity.getId());
         assertNotNull(entity.getValidFrom());
         assertNotNull(entity.getValidTo());
@@ -94,7 +94,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraDiscount> entities = customTraDiscountMapper.DTOs2DBs(confDiscountPTS,corNetwork);
+        List<TraDiscount> entities = customTraDiscountMapper.DTOs2DBs(traDiscountDTOS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

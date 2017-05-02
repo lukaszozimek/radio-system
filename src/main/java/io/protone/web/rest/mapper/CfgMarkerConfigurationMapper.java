@@ -1,10 +1,8 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
-import io.protone.custom.service.dto.TraOrderPT;
+import io.protone.web.rest.dto.library.LibMarkerConfigurationDTO;
 import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.TraOrder;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -20,25 +18,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CfgMarkerConfigurationMapper {
 
-    ConfMarkerConfigurationPT DB2DTO(CfgMarkerConfiguration cFGMarkerConfiguration);
+    LibMarkerConfigurationDTO DB2DTO(CfgMarkerConfiguration cFGMarkerConfiguration);
 
-    List<ConfMarkerConfigurationPT> DBs2DTOs(List<CfgMarkerConfiguration> cFGMarkerConfigurations);
+    List<LibMarkerConfigurationDTO> DBs2DTOs(List<CfgMarkerConfiguration> cFGMarkerConfigurations);
 
-    CfgMarkerConfiguration DTO2DB(ConfMarkerConfigurationPT cFGMarkerConfigurationDTO, @Context CorNetwork corNetwork);
+    CfgMarkerConfiguration DTO2DB(LibMarkerConfigurationDTO cFGMarkerConfigurationDTO, @Context CorNetwork corNetwork);
 
-    default List<CfgMarkerConfiguration> DTOs2DBs(List<ConfMarkerConfigurationPT> confMarkerConfigurationPTS, CorNetwork networkId) {
+    default List<CfgMarkerConfiguration> DTOs2DBs(List<LibMarkerConfigurationDTO> libMarkerConfigurationDTOS, CorNetwork networkId) {
         List<CfgMarkerConfiguration> crmLeads = new ArrayList<>();
-        if (confMarkerConfigurationPTS.isEmpty() || confMarkerConfigurationPTS == null) {
+        if (libMarkerConfigurationDTOS.isEmpty() || libMarkerConfigurationDTOS == null) {
             return null;
         }
-        for (ConfMarkerConfigurationPT dto : confMarkerConfigurationPTS) {
+        for (LibMarkerConfigurationDTO dto : libMarkerConfigurationDTOS) {
             crmLeads.add(DTO2DB(dto, networkId));
         }
         return crmLeads;
     }
 
     @AfterMapping
-    default void confMarkerConfigurationPTToCfgMarkerConfigurationAfterMapping(ConfMarkerConfigurationPT dto, @MappingTarget CfgMarkerConfiguration entity, @Context CorNetwork corNetwork) {
+    default void confMarkerConfigurationPTToCfgMarkerConfigurationAfterMapping(LibMarkerConfigurationDTO dto, @MappingTarget CfgMarkerConfiguration entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

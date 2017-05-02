@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.ConfTaxPT;
+import io.protone.web.rest.dto.cor.CorTaxDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
 import org.junit.Before;
@@ -31,9 +31,9 @@ public class CorTaxMapperTest {
 
     private CorTax corTax;
 
-    private ConfTaxPT confTaxPT;
+    private CorTaxDTO corTaxDTO;
 
-    private List<ConfTaxPT> confTaxPTS = new ArrayList<>();
+    private List<CorTaxDTO> corTaxDTOS = new ArrayList<>();
 
     private List<CorTax> corTaxes = new ArrayList<>();
 
@@ -44,15 +44,15 @@ public class CorTaxMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corTax = factory.manufacturePojo(CorTax.class);
         corTaxes.add(corTax);
-        confTaxPT = factory.manufacturePojo(ConfTaxPT.class);
-        confTaxPTS.add(confTaxPT);
+        corTaxDTO = factory.manufacturePojo(CorTaxDTO.class);
+        corTaxDTOS.add(corTaxDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        CorTax entity = corTaxMapper.DTO2DB(confTaxPT, corNetwork);
+        CorTax entity = corTaxMapper.DTO2DB(corTaxDTO, corNetwork);
 
 
         assertNotNull(entity.getId());
@@ -67,7 +67,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfTaxPT dto = corTaxMapper.DB2DTO(corTax);
+        CorTaxDTO dto = corTaxMapper.DB2DTO(corTax);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
@@ -79,7 +79,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<ConfTaxPT> dtos = corTaxMapper.DBs2DTOs(corTaxes);
+        List<CorTaxDTO> dtos = corTaxMapper.DBs2DTOs(corTaxes);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -95,7 +95,7 @@ public class CorTaxMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorTax> entities = corTaxMapper.DTOs2DBs(confTaxPTS, corNetwork);
+        List<CorTax> entities = corTaxMapper.DTOs2DBs(corTaxDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

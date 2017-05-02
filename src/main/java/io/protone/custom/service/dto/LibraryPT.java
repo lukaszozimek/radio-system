@@ -1,54 +1,46 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.domain.enumeration.LibCounterTypeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
-import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * LibraryPT
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibraryPT {
-    @JsonProperty("id")
+public class LibraryPT implements Serializable {
+
     private Long id = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("counter")
+    @NotNull
     private Long counter = 0L;
 
-    @JsonProperty("counterType")
     private LibCounterTypeEnum counterType;
 
-    @JsonProperty("libraryType")
+
     private LibObjectTypeEnum libraryType;
 
-    @JsonProperty("indexLength")
-    private Integer indexLength = 8;
+    @NotNull
+    private Integer idxLength = 0;
 
-    @JsonProperty("shortcut")
+    @NotNull
     private String shortcut = null;
 
-    @JsonProperty("prefix")
+
     private String prefix = null;
-    @JsonProperty("type")
+    @NotNull
     private TypeEnum type = null;
-    @JsonProperty("networkId")
-    private Long networkId = null;
-    @JsonProperty("channels")
-    private List<CorChannelDTO> channels = new ArrayList<CorChannelDTO>();
-    @JsonProperty("users")
-    private List<CoreUserPT> users = new ArrayList<CoreUserPT>();
-    @JsonProperty("description")
+
+
     private String description = null;
 
     public LibraryPT id(Long id) {
@@ -127,72 +119,6 @@ public class LibraryPT {
         this.type = type;
     }
 
-    public LibraryPT networkId(Long networkId) {
-        this.networkId = networkId;
-        return this;
-    }
-
-    /**
-     * Get networkId
-     *
-     * @return networkId
-     **/
-    @ApiModelProperty(value = "")
-    public Long getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Long networkId) {
-        this.networkId = networkId;
-    }
-
-    public LibraryPT channels(List<CorChannelDTO> channels) {
-        this.channels = channels;
-        return this;
-    }
-
-    public LibraryPT addChannelsItem(CorChannelDTO channelsItem) {
-        this.channels.add(channelsItem);
-        return this;
-    }
-
-    /**
-     * Get channels
-     *
-     * @return channels
-     **/
-    @ApiModelProperty(value = "")
-    public List<CorChannelDTO> getChannels() {
-        return channels;
-    }
-
-    public void setChannels(List<CorChannelDTO> channels) {
-        this.channels = channels;
-    }
-
-    public LibraryPT users(List<CoreUserPT> users) {
-        this.users = users;
-        return this;
-    }
-
-    public LibraryPT addUsersItem(CoreUserPT usersItem) {
-        this.users.add(usersItem);
-        return this;
-    }
-
-    /**
-     * Get users
-     *
-     * @return users
-     **/
-    @ApiModelProperty(value = "")
-    public List<CoreUserPT> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<CoreUserPT> users) {
-        this.users = users;
-    }
 
     public LibraryPT description(String description) {
         this.description = description;
@@ -237,12 +163,12 @@ public class LibraryPT {
         this.libraryType = libraryType;
     }
 
-    public Integer getIndexLength() {
-        return indexLength;
+    public Integer getIdxLength() {
+        return idxLength;
     }
 
-    public void setIndexLength(Integer indexLength) {
-        this.indexLength = indexLength;
+    public void setIdxLength(Integer idxLength) {
+        this.idxLength = idxLength;
     }
 
     public String getShortcut() {
@@ -270,18 +196,13 @@ public class LibraryPT {
             return false;
         if (getLibraryType() != null ? !getLibraryType().equals(libraryPT.getLibraryType()) : libraryPT.getLibraryType() != null)
             return false;
-        if (getIndexLength() != null ? !getIndexLength().equals(libraryPT.getIndexLength()) : libraryPT.getIndexLength() != null)
+        if (getIdxLength() != null ? !getIdxLength().equals(libraryPT.getIdxLength()) : libraryPT.getIdxLength() != null)
             return false;
         if (getShortcut() != null ? !getShortcut().equals(libraryPT.getShortcut()) : libraryPT.getShortcut() != null)
             return false;
         if (getPrefix() != null ? !getPrefix().equals(libraryPT.getPrefix()) : libraryPT.getPrefix() != null)
             return false;
         if (getType() != libraryPT.getType()) return false;
-        if (getNetworkId() != null ? !getNetworkId().equals(libraryPT.getNetworkId()) : libraryPT.getNetworkId() != null)
-            return false;
-        if (getChannels() != null ? !getChannels().equals(libraryPT.getChannels()) : libraryPT.getChannels() != null)
-            return false;
-        if (getUsers() != null ? !getUsers().equals(libraryPT.getUsers()) : libraryPT.getUsers() != null) return false;
         if (getDescription() != null ? !getDescription().equals(libraryPT.getDescription()) : libraryPT.getDescription() != null)
             return false;
 
@@ -296,13 +217,10 @@ public class LibraryPT {
         result = 31 * result + (getCounter() != null ? getCounter().hashCode() : 0);
         result = 31 * result + (getCounterType() != null ? getCounterType().hashCode() : 0);
         result = 31 * result + (getLibraryType() != null ? getLibraryType().hashCode() : 0);
-        result = 31 * result + (getIndexLength() != null ? getIndexLength().hashCode() : 0);
+        result = 31 * result + (getIdxLength() != null ? getIdxLength().hashCode() : 0);
         result = 31 * result + (getShortcut() != null ? getShortcut().hashCode() : 0);
         result = 31 * result + (getPrefix() != null ? getPrefix().hashCode() : 0);
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        result = 31 * result + (getNetworkId() != null ? getNetworkId().hashCode() : 0);
-        result = 31 * result + (getChannels() != null ? getChannels().hashCode() : 0);
-        result = 31 * result + (getUsers() != null ? getUsers().hashCode() : 0);
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
     }
@@ -316,13 +234,10 @@ public class LibraryPT {
             ", counter=" + counter +
             ", counterType='" + counterType + '\'' +
             ", libraryType='" + libraryType + '\'' +
-            ", indexLength=" + indexLength +
+            ", idxLength=" + idxLength +
             ", shortcut='" + shortcut + '\'' +
             ", prefix='" + prefix + '\'' +
             ", type=" + type +
-            ", networkId=" + networkId +
-            ", channels=" + channels +
-            ", users=" + users +
             ", description='" + description + '\'' +
             '}';
     }

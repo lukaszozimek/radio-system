@@ -14,8 +14,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CorTaxRepository extends JpaRepository<CorTax, Long> {
     List<CorTax> findByNetwork(CorNetwork corNetwork);
 
-    List<CorTax> findAllByNetwork(CorNetwork network, Pageable pageable);
+    List<CorTax> findAllByNetwork_Shortcut(String network, Pageable pageable);
 
-    CorTax findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
+    CorTax findOneByIdAndNetwork_Shortcut(Long id, String corNetwork);
+
+    void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
 
 }

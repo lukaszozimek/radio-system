@@ -34,7 +34,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
     private TraOrderMapper traOrderMapper;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Override
     public ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT) {
@@ -42,7 +42,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
         if (traOrderPT.getId() == null) {
             return createAnOrderUsingPOST(networkShortcut, traOrderPT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         TraOrder traOrder = traOrderMapper.DTO2DB(traOrderPT, corNetwork);
         TraOrder entity = traOrderService.saveOrder(traOrder);
@@ -57,7 +57,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
         if (traOrderPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraOrder cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         TraOrder traOrder = traOrderMapper.DTO2DB(traOrderPT, corNetwork);
         TraOrder entity = traOrderService.saveOrder(traOrder);

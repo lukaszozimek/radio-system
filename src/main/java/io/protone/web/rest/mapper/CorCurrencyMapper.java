@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.ConfCurrencyPT;
+import io.protone.web.rest.dto.cor.CorCurrencyDTO;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
 import org.mapstruct.AfterMapping;
@@ -17,25 +17,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CorCurrencyMapper {
 
-    CorCurrency DTO2DB(ConfCurrencyPT cORRangeDTO, @Context CorNetwork corNetwork);
+    CorCurrency DTO2DB(CorCurrencyDTO cORRangeDTO, @Context CorNetwork corNetwork);
 
-    ConfCurrencyPT DB2DTO(CorCurrency cORRange);
+    CorCurrencyDTO DB2DTO(CorCurrency cORRange);
 
-    List<ConfCurrencyPT> DBs2DTOs(List<CorCurrency> cORRanges);
+    List<CorCurrencyDTO> DBs2DTOs(List<CorCurrency> cORRanges);
 
-    default List<CorCurrency> DTOs2DBs(List<ConfCurrencyPT> confCurrencyPTS, CorNetwork corNetwork) {
+    default List<CorCurrency> DTOs2DBs(List<CorCurrencyDTO> corCurrencyDTOS, CorNetwork corNetwork) {
         List<CorCurrency> corCurrencies = new ArrayList<>();
-        if (confCurrencyPTS.isEmpty() || confCurrencyPTS == null) {
+        if (corCurrencyDTOS.isEmpty() || corCurrencyDTOS == null) {
             return null;
         }
-        for (ConfCurrencyPT dto : confCurrencyPTS) {
+        for (CorCurrencyDTO dto : corCurrencyDTOS) {
             corCurrencies.add(DTO2DB(dto, corNetwork));
         }
         return corCurrencies;
     }
 
     @AfterMapping
-    default void confCurrencyPTToCorCurrencyAfterMapping(ConfCurrencyPT dto, @MappingTarget CorCurrency entity, @Context CorNetwork corNetwork) {
+    default void confCurrencyPTToCorCurrencyAfterMapping(CorCurrencyDTO dto, @MappingTarget CorCurrency entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

@@ -4,7 +4,7 @@ import io.protone.service.crm.CrmLeadService;
 import io.protone.domain.CrmLead;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmLeadPT;
-import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
+import io.protone.web.rest.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmLead;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.CrmLeadMapper;
@@ -23,13 +23,13 @@ import java.util.List;
 
 @RestController
 public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
-    private final Logger log = LoggerFactory.getLogger(ApiConfigurationLibraryMarkerImpl.class);
+    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
     private CrmLeadService crmLeadService;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Inject
     private CrmLeadMapper crmLeadMapper;
@@ -40,7 +40,7 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
         if (crmLeadPT.getId() == null) {
             return createLeadUsingPOST(networkShortcut, crmLeadPT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmLead crmLead = crmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
         CrmLead entity = crmLeadService.saveLead(crmLead);
         CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
@@ -53,7 +53,7 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
         if (crmLeadPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmLead", "idexists", "A new CrmLead cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmLead crmLead = crmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
         CrmLead entity = crmLeadService.saveLead(crmLead);
         CrmLeadPT response = crmLeadMapper.DB2DTO(entity);

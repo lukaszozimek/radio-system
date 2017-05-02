@@ -1,9 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.ConfCommercialLogPT;
-import io.protone.custom.service.dto.ConfMarkerConfigurationPT;
 import io.protone.domain.CfgExternalSystemLog;
-import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;

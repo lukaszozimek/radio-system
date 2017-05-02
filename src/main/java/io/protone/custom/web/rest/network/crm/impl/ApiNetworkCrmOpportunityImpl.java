@@ -4,7 +4,7 @@ import io.protone.service.crm.CrmOpportunityService;
 import io.protone.domain.CrmOpportunity;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.CrmOpportunityPT;
-import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
+import io.protone.web.rest.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.custom.web.rest.network.crm.ApiNetworkCrmOpportunity;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.CrmOpportunityMapper;
@@ -23,13 +23,13 @@ import java.util.List;
 
 @RestController
 public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
-    private final Logger log = LoggerFactory.getLogger(ApiConfigurationLibraryMarkerImpl.class);
+    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
-    private CrmOpportunityService opportunityService;
+    private CrmOpportunityService crmOpportunityService;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
     @Inject
     private CrmOpportunityMapper crmOpportunityMapper;
 
@@ -39,10 +39,10 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
         if (crmOpportunityPT.getId() == null) {
             return createOpportunityUsingPOST(networkShortcut, crmOpportunityPT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CrmOpportunity crmOpportunity = crmOpportunityMapper.DTO2DB(crmOpportunityPT, corNetwork);
-        CrmOpportunity entity = opportunityService.saveOpportunity(crmOpportunity);
+        CrmOpportunity entity = crmOpportunityService.saveOpportunity(crmOpportunity);
         CrmOpportunityPT response = crmOpportunityMapper.DB2DTO(entity);
 
         return ResponseEntity.ok().body(response);
@@ -54,10 +54,10 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
         if (crmOpportunityPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmOpportunity", "idexists", "A new CrmOpportunity cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CrmOpportunity crmOpportunity = crmOpportunityMapper.DTO2DB(crmOpportunityPT, corNetwork);
-        CrmOpportunity entity = opportunityService.saveOpportunity(crmOpportunity);
+        CrmOpportunity entity = crmOpportunityService.saveOpportunity(crmOpportunity);
         CrmOpportunityPT response = crmOpportunityMapper.DB2DTO(entity);
 
         return ResponseEntity.ok().body(response);
@@ -67,7 +67,7 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
     public ResponseEntity<List<CrmOpportunityPT>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmOpportunity, for Network: {}", networkShortcut);
-        List<CrmOpportunity> entity = opportunityService.getAllOpportunity(networkShortcut, pagable);
+        List<CrmOpportunity> entity = crmOpportunityService.getAllOpportunity(networkShortcut, pagable);
         List<CrmOpportunityPT> response = crmOpportunityMapper.DBs2DTOs(entity);
 
         return ResponseEntity.ok().body(response);
@@ -76,7 +76,7 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
     @Override
     public ResponseEntity<CrmOpportunityPT> getOpportunityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmOpportunity : {}, for Network: {}", shortName, networkShortcut);
-        CrmOpportunity entity = opportunityService.getOpportunity(shortName, networkShortcut);
+        CrmOpportunity entity = crmOpportunityService.getOpportunity(shortName, networkShortcut);
         CrmOpportunityPT response = crmOpportunityMapper.DB2DTO(entity);
 
         return ResponseEntity.ok().body(response);
@@ -85,7 +85,7 @@ public class ApiNetworkCrmOpportunityImpl implements ApiNetworkCrmOpportunity {
     @Override
     public ResponseEntity<Void> deleteOpportunityUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmOpportunity : {}, for Network: {}", shortName, networkShortcut);
-        opportunityService.deleteOpportunity(shortName, shortName);
+        crmOpportunityService.deleteOpportunity(shortName, shortName);
         return ResponseEntity.ok().build();
     }
 }

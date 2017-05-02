@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,24 +28,24 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkLibraryImpl.class);
 
     @Inject
-    private LibLibraryMapper libraryMapper;
+    private LibLibraryMapper libLibraryMapper;
 
     @Inject
-    private LibLibraryService libraryService;
+    private LibLibraryService libLibraryService;
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<LibraryPT> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @RequestBody LibraryPT library) {
+    public ResponseEntity<LibraryPT> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibraryPT library) {
         log.debug("REST request to update library: {}", library);
 
-        if (library.getId() == null)
+        if (library.getId() == null) {
             return createLibraryUsingPOST(networkShortcut, library);
-
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        LibLibrary entity = libraryMapper.DTO2DB(library, corNetwork);
-        LibLibrary resultDB = libraryService.createOrUpdateLibrary(entity);
-        LibraryPT libraryDAO = libraryMapper.DB2DTO(resultDB);
+        }
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        LibLibrary entity = libLibraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
+        LibraryPT libraryDAO = libLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
     }
@@ -53,18 +54,18 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     public ResponseEntity<List<LibraryPT>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibraryPT");
-        List<LibLibrary> libraries = libraryService.findLibraries(networkShortcut, pagable);
+        List<LibLibrary> libraries = libLibraryService.findLibraries(networkShortcut, pagable);
         return ResponseEntity.ok()
-            .body(libraryMapper.DBs2DTOs(libraries));
+            .body(libLibraryMapper.DBs2DTOs(libraries));
     }
 
     @Override
-    public ResponseEntity<LibraryPT> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @RequestBody LibraryPT library) {
+    public ResponseEntity<LibraryPT> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibraryPT library) {
         log.debug("REST request to create library: {}", library);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        LibLibrary entity = libraryMapper.DTO2DB(library, corNetwork);
-        LibLibrary resultDB = libraryService.createOrUpdateLibrary(entity);
-        LibraryPT libraryDAO = libraryMapper.DB2DTO(resultDB);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        LibLibrary entity = libLibraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
+        LibraryPT libraryDAO = libLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
     }
@@ -72,15 +73,15 @@ public class ApiNetworkLibraryImpl implements ApiNetworkLibrary {
     @Override
     public ResponseEntity<Void> deleteLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
         log.debug("REST request to delete LIBLibrary : {}", libraryPrefix);
-        libraryService.deleteLibrary(networkShortcut, libraryPrefix);
+        libLibraryService.deleteLibrary(networkShortcut, libraryPrefix);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<LibraryPT> getLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
         log.debug("REST request to get library: {}", libraryPrefix);
-        LibLibrary library = libraryService.findLibrary(networkShortcut, libraryPrefix);
-        LibraryPT dto = libraryMapper.DB2DTO(library);
+        LibLibrary library = libLibraryService.findLibrary(networkShortcut, libraryPrefix);
+        LibraryPT dto = libLibraryMapper.DB2DTO(library);
         return Optional.ofNullable(dto)
             .map(result -> new ResponseEntity<>(
                 result,

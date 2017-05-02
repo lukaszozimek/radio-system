@@ -34,7 +34,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
     private TraInvoiceMapper traInvoiceMapper;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Override
     public ResponseEntity<List<TraInvoicePT>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -55,7 +55,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
         if (traInvoicePT.getId() == null) {
             return createInvoiceUsingPOST(networkShortcut, traInvoicePT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoicePT, corNetwork);
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoicePT response = traInvoiceMapper.DB2DTO(entity);
@@ -74,7 +74,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
         if (traInvoicePT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraInvoice", "idexists", "A new TraInvoice cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoicePT, corNetwork);
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoicePT response = traInvoiceMapper.DB2DTO(entity);

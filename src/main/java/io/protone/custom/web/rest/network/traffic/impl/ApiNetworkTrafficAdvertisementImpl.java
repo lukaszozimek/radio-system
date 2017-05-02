@@ -33,12 +33,12 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     private TraAdvertisementMapper traAdvertisementMapper;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Override
     public ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) {
         log.debug("REST request to update TraAdvertisement : {}, for Network: {}", traAdvertisementPT, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (traAdvertisementPT.getId() == null) {
             return createAdvertisementUsingPOST(networkShortcut, traAdvertisementPT);
         }
@@ -58,7 +58,7 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
         if (traAdvertisementPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraAdvertisement", "idexists", "A new TraAdvertisement cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementPT, corNetwork);
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);
         TraAdvertisementPT response = traAdvertisementMapper.DB2DTO(entity);

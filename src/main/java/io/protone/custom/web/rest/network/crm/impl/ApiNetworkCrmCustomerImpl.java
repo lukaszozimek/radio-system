@@ -4,7 +4,7 @@ import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
 import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.web.rest.network.configuration.library.impl.ApiConfigurationLibraryMarkerImpl;
+import io.protone.web.rest.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.web.rest.util.HeaderUtil;
@@ -22,13 +22,13 @@ import java.util.List;
 
 @RestController
 public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmCustomer {
-    private final Logger log = LoggerFactory.getLogger(ApiConfigurationLibraryMarkerImpl.class);
+    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
     private CrmCustomerService crmCustomerService;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Inject
     private CrmAccountMapper crmAccountMapper;
@@ -37,7 +37,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountPT, networkShortcut);
 
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (crmAccountPT.getId() == null) {
             return createCustomerUsingPOST(networkShortcut, crmAccountPT);
         }
@@ -53,7 +53,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
         if (crmAccountPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
         CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
