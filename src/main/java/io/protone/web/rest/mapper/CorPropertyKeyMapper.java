@@ -1,9 +1,7 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CoreKeyPT;
-import io.protone.custom.service.dto.LibPersonPT;
+import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CorPerson;
 import io.protone.domain.CorPropertyKey;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
@@ -19,25 +17,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CorPropertyKeyMapper {
 
-    CoreKeyPT DB2DTO(CorPropertyKey cORPropertyKey);
+    CorKeyDTO DB2DTO(CorPropertyKey cORPropertyKey);
 
-    List<CoreKeyPT> DBs2DTOs(List<CorPropertyKey> cORPropertyKeys);
+    List<CorKeyDTO> DBs2DTOs(List<CorPropertyKey> cORPropertyKeys);
 
-    CorPropertyKey DTO2DB(CoreKeyPT cORPropertyKeyDTO, @Context CorNetwork network);
+    CorPropertyKey DTO2DB(CorKeyDTO cORPropertyKeyDTO, @Context CorNetwork network);
 
-    default List<CorPropertyKey> DTOs2DBs(List<CoreKeyPT> cORPropertyKeyDTOs, @Context CorNetwork network) {
+    default List<CorPropertyKey> DTOs2DBs(List<CorKeyDTO> cORPropertyKeyDTOs, @Context CorNetwork network) {
         List<CorPropertyKey> corPeople = new ArrayList<>();
         if (cORPropertyKeyDTOs.isEmpty() || cORPropertyKeyDTOs == null) {
             return null;
         }
-        for (CoreKeyPT dto : cORPropertyKeyDTOs) {
+        for (CorKeyDTO dto : cORPropertyKeyDTOs) {
             corPeople.add(DTO2DB(dto, network));
         }
         return corPeople;
     }
 
     @AfterMapping
-    default void coreKeyPTToCorPropertyKeyAfterMapping(CoreKeyPT dto, @MappingTarget CorPropertyKey entity, @Context CorNetwork corNetwork) {
+    default void coreKeyPTToCorPropertyKeyAfterMapping(CorKeyDTO dto, @MappingTarget CorPropertyKey entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

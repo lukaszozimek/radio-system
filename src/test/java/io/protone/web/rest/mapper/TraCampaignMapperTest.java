@@ -3,9 +3,8 @@ package io.protone.web.rest.mapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.custom.service.dto.TraCustomerPT;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.*;
 import io.protone.web.rest.dto.thin.TraCustomerThinDTO;
@@ -58,7 +57,7 @@ public class TraCampaignMapperTest {
         campaignPT = factory.manufacturePojo(TraCampaignPT.class);
         campaignPT.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
         campaignPT.setOrders(Lists.newArrayList(factory.manufacturePojo(TraOrderPT.class)));
-        campaignPT.setStatus(factory.manufacturePojo(CorDictionaryPT.class));
+        campaignPT.setStatus(factory.manufacturePojo(CorDictionaryDTO.class));
         traCampaignPTS.add(campaignPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 

@@ -1,6 +1,5 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -8,16 +7,16 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * CoreKeyPT
+ * CorKeyDTO
  */
 
-public class CoreKeyPT implements Serializable {
+public class CorKeyDTO implements Serializable {
     private Long id = null;
 
     @NotNull
     private String key = null;
 
-    public CoreKeyPT id(Long id) {
+    public CorKeyDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -36,7 +35,7 @@ public class CoreKeyPT implements Serializable {
         this.id = id;
     }
 
-    public CoreKeyPT key(String key) {
+    public CorKeyDTO key(String key) {
         this.key = key;
         return this;
     }
@@ -64,9 +63,9 @@ public class CoreKeyPT implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CoreKeyPT coreKeyPT = (CoreKeyPT) o;
-        return Objects.equals(this.id, coreKeyPT.id) &&
-            Objects.equals(this.key, coreKeyPT.key);
+        CorKeyDTO corKeyDTO = (CorKeyDTO) o;
+        return Objects.equals(this.id, corKeyDTO.id) &&
+            Objects.equals(this.key, corKeyDTO.key);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class CoreKeyPT implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CoreKeyPT {\n");
+        sb.append("class CorKeyDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    key: ").append(toIndentedString(key)).append("\n");

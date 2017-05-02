@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 
 import java.io.Serializable;
@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * A DTO for the CorDictionary entity.
  */
-public class CorDictionaryPT implements Serializable {
+public class CorDictionaryDTO implements Serializable {
 
     private Long id;
 
@@ -75,7 +75,7 @@ public class CorDictionaryPT implements Serializable {
             return false;
         }
 
-        CorDictionaryPT corDictionaryDTO = (CorDictionaryPT) o;
+        CorDictionaryDTO corDictionaryDTO = (CorDictionaryDTO) o;
 
         if ( ! Objects.equals(id, corDictionaryDTO.id)) { return false; }
 

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -40,7 +41,7 @@ public class CrmOpportunityPT {
     private LocalDate closeDate = null;
 
     @JsonProperty("stage")
-    private CorDictionaryPT stage = null;
+    private CorDictionaryDTO stage = null;
 
     @JsonProperty("propability")
     private Integer propability = null;
@@ -201,7 +202,7 @@ public class CrmOpportunityPT {
         this.closeDate = closeDate;
     }
 
-    public CrmOpportunityPT stage(CorDictionaryPT stage) {
+    public CrmOpportunityPT stage(CorDictionaryDTO stage) {
         this.stage = stage;
         return this;
     }
@@ -212,11 +213,11 @@ public class CrmOpportunityPT {
      * @return stage
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getStage() {
+    public CorDictionaryDTO getStage() {
         return stage;
     }
 
-    public void setStage(CorDictionaryPT stage) {
+    public void setStage(CorDictionaryDTO stage) {
         this.stage = stage;
     }
 

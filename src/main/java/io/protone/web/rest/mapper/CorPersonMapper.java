@@ -1,10 +1,8 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.ConfPersonPT;
-import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.web.rest.dto.cor.CorPersonDTO;
 import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
-import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPerson;
 import org.mapstruct.AfterMapping;
@@ -21,13 +19,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {CorContactMapper.class})
 public interface CorPersonMapper {
 
-    ConfPersonPT DB2DTO(CorPerson cORPerson);
+    CorPersonDTO DB2DTO(CorPerson cORPerson);
 
-    List<ConfPersonPT> DBs2DTOs(List<CorPerson> cORPeople);
+    List<CorPersonDTO> DBs2DTOs(List<CorPerson> cORPeople);
 
-    CorPerson DTO2DB(ConfPersonPT cORPersonDTO);
+    CorPerson DTO2DB(CorPersonDTO cORPersonDTO);
 
-    List<CorPerson> DTOs2DBs(List<ConfPersonPT> cORPersonDTOs);
+    List<CorPerson> DTOs2DBs(List<CorPersonDTO> cORPersonDTOs);
 
     LibPersonPT corPerson2LibPersonPT(CorPerson db);
 

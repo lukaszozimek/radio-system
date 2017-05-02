@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.thin.TraInvoiceCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -34,7 +35,7 @@ public class TraInvoicePT {
     private TraInvoiceCustomerThinDTO customerId = null;
 
     @JsonProperty("status")
-    private CorDictionaryPT statusId = null;
+    private CorDictionaryDTO statusId = null;
 
     public TraInvoicePT id(Long id) {
         this.id = id;
@@ -133,7 +134,7 @@ public class TraInvoicePT {
     }
 
 
-    public TraInvoicePT statusId(CorDictionaryPT traStatus) {
+    public TraInvoicePT statusId(CorDictionaryDTO traStatus) {
         this.statusId = traStatus;
         return this;
     }
@@ -144,11 +145,11 @@ public class TraInvoicePT {
      * @return paymentDay
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getStatusId() {
+    public CorDictionaryDTO getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(CorDictionaryPT statusId) {
+    public void setStatusId(CorDictionaryDTO statusId) {
         this.statusId = statusId;
     }
 

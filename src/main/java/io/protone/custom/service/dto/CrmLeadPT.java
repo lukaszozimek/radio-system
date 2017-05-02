@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -28,19 +29,19 @@ public class CrmLeadPT {
     private String description = null;
 
     @JsonProperty("source")
-    private CorDictionaryPT source = null;
+    private CorDictionaryDTO source = null;
 
     @JsonProperty("status")
-    private CorDictionaryPT status = null;
+    private CorDictionaryDTO status = null;
 
     @JsonProperty("addres")
     private CoreAddressPT addres = null;
 
     @JsonProperty("area")
-    private CorDictionaryPT area = null;
+    private CorDictionaryDTO area = null;
 
     @JsonProperty("industry")
-    private CorDictionaryPT industry = null;
+    private CorDictionaryDTO industry = null;
 
     @JsonProperty("leadOwner")
     private CoreUserThinDTO leadOwner = null;
@@ -122,7 +123,7 @@ public class CrmLeadPT {
         this.description = description;
     }
 
-    public CrmLeadPT source(CorDictionaryPT source) {
+    public CrmLeadPT source(CorDictionaryDTO source) {
         this.source = source;
         return this;
     }
@@ -147,15 +148,15 @@ public class CrmLeadPT {
      * @return source
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getSource() {
+    public CorDictionaryDTO getSource() {
         return source;
     }
 
-    public void setSource(CorDictionaryPT source) {
+    public void setSource(CorDictionaryDTO source) {
         this.source = source;
     }
 
-    public CrmLeadPT status(CorDictionaryPT status) {
+    public CrmLeadPT status(CorDictionaryDTO status) {
         this.status = status;
         return this;
     }
@@ -166,11 +167,11 @@ public class CrmLeadPT {
      * @return status
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getStatus() {
+    public CorDictionaryDTO getStatus() {
         return status;
     }
 
-    public void setStatus(CorDictionaryPT status) {
+    public void setStatus(CorDictionaryDTO status) {
         this.status = status;
     }
 
@@ -193,7 +194,7 @@ public class CrmLeadPT {
         this.addres = addres;
     }
 
-    public CrmLeadPT area(CorDictionaryPT area) {
+    public CrmLeadPT area(CorDictionaryDTO area) {
         this.area = area;
         return this;
     }
@@ -204,15 +205,15 @@ public class CrmLeadPT {
      * @return area
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getArea() {
+    public CorDictionaryDTO getArea() {
         return area;
     }
 
-    public void setArea(CorDictionaryPT area) {
+    public void setArea(CorDictionaryDTO area) {
         this.area = area;
     }
 
-    public CrmLeadPT industry(CorDictionaryPT industry) {
+    public CrmLeadPT industry(CorDictionaryDTO industry) {
         this.industry = industry;
         return this;
     }
@@ -223,11 +224,11 @@ public class CrmLeadPT {
      * @return industry
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getIndustry() {
+    public CorDictionaryDTO getIndustry() {
         return industry;
     }
 
-    public void setIndustry(CorDictionaryPT industry) {
+    public void setIndustry(CorDictionaryDTO industry) {
         this.industry = industry;
     }
 

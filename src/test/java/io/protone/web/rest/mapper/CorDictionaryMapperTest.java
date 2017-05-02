@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
 import org.junit.Before;
@@ -31,9 +31,9 @@ public class CorDictionaryMapperTest {
 
     private CorDictionary corDictionary;
 
-    private CorDictionaryPT corDictionaryPT;
+    private CorDictionaryDTO corDictionaryDTO;
 
-    private List<CorDictionaryPT> corDictionaryPTS = new ArrayList<>();
+    private List<CorDictionaryDTO> corDictionaryDTOS = new ArrayList<>();
 
     private List<CorDictionary> corDictionaries = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -43,15 +43,15 @@ public class CorDictionaryMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corDictionary = factory.manufacturePojo(CorDictionary.class);
         corDictionaries.add(corDictionary);
-        corDictionaryPT = factory.manufacturePojo(CorDictionaryPT.class);
-        corDictionaryPTS.add(corDictionaryPT);
+        corDictionaryDTO = factory.manufacturePojo(CorDictionaryDTO.class);
+        corDictionaryDTOS.add(corDictionaryDTO);
 
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorDictionary entity = corDictionaryMapper.DTO2DB(corDictionaryPT, corNetwork);
+        CorDictionary entity = corDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork);
 
 
         assertNotNull(entity.getId());
@@ -67,7 +67,7 @@ public class CorDictionaryMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        CorDictionaryPT dto = corDictionaryMapper.DB2DTO(corDictionary);
+        CorDictionaryDTO dto = corDictionaryMapper.DB2DTO(corDictionary);
 
 
         assertNotNull(dto.getId());
@@ -81,7 +81,7 @@ public class CorDictionaryMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CorDictionaryPT> dtos = corDictionaryMapper.DBs2DTOs(corDictionaries);
+        List<CorDictionaryDTO> dtos = corDictionaryMapper.DBs2DTOs(corDictionaries);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -97,7 +97,7 @@ public class CorDictionaryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorDictionary> entities = corDictionaryMapper.DTOs2DBs(corDictionaryPTS, corNetwork);
+        List<CorDictionary> entities = corDictionaryMapper.DTOs2DBs(corDictionaryDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

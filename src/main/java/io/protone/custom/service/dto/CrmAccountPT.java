@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,7 +22,7 @@ public class CrmAccountPT {
     private String shortName = null;
 
     @JsonProperty("area")
-    private CorDictionaryPT area = null;
+    private CorDictionaryDTO area = null;
 
     @JsonProperty("idNumber1")
     private String idNumber1 = null;
@@ -33,17 +34,17 @@ public class CrmAccountPT {
     private Integer paymentDelay = null;
 
     @JsonProperty("industry")
-    private CorDictionaryPT industry = null;
+    private CorDictionaryDTO industry = null;
 
     @JsonProperty("name")
     private String name = null;
 
 
     @JsonProperty("range")
-    private CorDictionaryPT range = null;
+    private CorDictionaryDTO range = null;
 
     @JsonProperty("size")
-    private CorDictionaryPT size = null;
+    private CorDictionaryDTO size = null;
 
     @JsonProperty("vatNumber")
     private String vatNumber = null;
@@ -104,7 +105,7 @@ public class CrmAccountPT {
         this.shortName = shortName;
     }
 
-    public CrmAccountPT area(CorDictionaryPT area) {
+    public CrmAccountPT area(CorDictionaryDTO area) {
         this.area = area;
         return this;
     }
@@ -115,11 +116,11 @@ public class CrmAccountPT {
      * @return area
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getArea() {
+    public CorDictionaryDTO getArea() {
         return area;
     }
 
-    public void setArea(CorDictionaryPT area) {
+    public void setArea(CorDictionaryDTO area) {
         this.area = area;
     }
 
@@ -161,7 +162,7 @@ public class CrmAccountPT {
         this.idNumber2 = idNumber2;
     }
 
-    public CrmAccountPT industry(CorDictionaryPT industry) {
+    public CrmAccountPT industry(CorDictionaryDTO industry) {
         this.industry = industry;
         return this;
     }
@@ -172,11 +173,11 @@ public class CrmAccountPT {
      * @return industry
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getIndustry() {
+    public CorDictionaryDTO getIndustry() {
         return industry;
     }
 
-    public void setIndustry(CorDictionaryPT industry) {
+    public void setIndustry(CorDictionaryDTO industry) {
         this.industry = industry;
     }
 
@@ -200,7 +201,7 @@ public class CrmAccountPT {
     }
 
 
-    public CrmAccountPT range(CorDictionaryPT range) {
+    public CrmAccountPT range(CorDictionaryDTO range) {
         this.range = range;
         return this;
     }
@@ -211,15 +212,15 @@ public class CrmAccountPT {
      * @return range
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getRange() {
+    public CorDictionaryDTO getRange() {
         return range;
     }
 
-    public void setRange(CorDictionaryPT range) {
+    public void setRange(CorDictionaryDTO range) {
         this.range = range;
     }
 
-    public CrmAccountPT size(CorDictionaryPT size) {
+    public CrmAccountPT size(CorDictionaryDTO size) {
         this.size = size;
         return this;
     }
@@ -230,11 +231,11 @@ public class CrmAccountPT {
      * @return size
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getSize() {
+    public CorDictionaryDTO getSize() {
         return size;
     }
 
-    public void setSize(CorDictionaryPT size) {
+    public void setSize(CorDictionaryDTO size) {
         this.size = size;
     }
 

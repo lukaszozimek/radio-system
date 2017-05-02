@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.ConfPersonPT;
+import io.protone.web.rest.dto.cor.CorPersonDTO;
 import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.domain.CorNetwork;
@@ -36,7 +36,7 @@ public class CorPersonMapperTest {
 
     private CorPerson corPerson;
 
-    private ConfPersonPT confPersonPT;
+    private CorPersonDTO corPersonDTO;
 
     private LibPersonPT libPersonPT;
 
@@ -44,7 +44,7 @@ public class CorPersonMapperTest {
 
     private CorNetwork corNetwork;
 
-    private List<ConfPersonPT> confPersonPTS = new ArrayList<>();
+    private List<CorPersonDTO> corPersonDTOS = new ArrayList<>();
 
     private List<CorPerson> corPeople = new ArrayList<>();
 
@@ -58,9 +58,9 @@ public class CorPersonMapperTest {
         corPerson = factory.manufacturePojo(CorPerson.class);
         corPerson.setId(1L);
         corPeople.add(corPerson);
-        confPersonPT = factory.manufacturePojo(ConfPersonPT.class);
-        confPersonPT.setId(1L);
-        confPersonPTS.add(confPersonPT);
+        corPersonDTO = factory.manufacturePojo(CorPersonDTO.class);
+        corPersonDTO.setId(1L);
+        corPersonDTOS.add(corPersonDTO);
         libPersonPT = factory.manufacturePojo(LibPersonPT.class);
         libPersonPT.setId(1L);
 
@@ -74,7 +74,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        ConfPersonPT dto = corPersonMapper.DB2DTO(corPerson);
+        CorPersonDTO dto = corPersonMapper.DB2DTO(corPerson);
         assertNotNull(dto.getId());
         assertNotNull(dto.getFirstName());
         assertNotNull(dto.getLastName());
@@ -86,7 +86,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<ConfPersonPT> dtos = corPersonMapper.DBs2DTOs(corPeople);
+        List<CorPersonDTO> dtos = corPersonMapper.DBs2DTOs(corPeople);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -102,7 +102,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CorPerson> entities = corPersonMapper.DTOs2DBs(confPersonPTS);
+        List<CorPerson> entities = corPersonMapper.DTOs2DBs(corPersonDTOS);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -119,7 +119,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorPerson entity = corPersonMapper.DTO2DB(confPersonPT);
+        CorPerson entity = corPersonMapper.DTO2DB(corPersonDTO);
 
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getFirstName());

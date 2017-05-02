@@ -1,10 +1,9 @@
-package io.protone.custom.web.rest.network.configuration.core.dictionary.impl;
+package io.protone.web.rest.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.ConfCountryPt;
-import io.protone.custom.service.dto.CoreKeyPT;
+import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.protone.custom.web.rest.network.TestUtil;
-import io.protone.domain.CorCountry;
+import io.protone.web.rest.cor.impl.CorPropertyKeyResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPropertyKey;
 import io.protone.repository.cor.CorNetworkRepository;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class ApiPropertyKeyImplTest {
+public class CorPropertyKeyResourceTest {
     private static final String DEFAULT_KEY = "AAAAAAAAAA";
     private static final String UPDATED_KEY = "BBBBBBBBBB";
     private static final String NETWORK_TEST = "bb";
@@ -86,7 +84,7 @@ public class ApiPropertyKeyImplTest {
         MockitoAnnotations.initMocks(this);
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
-        ApiPropertyKeyImpl corPropertyKeyResource = new ApiPropertyKeyImpl();
+        CorPropertyKeyResourceImpl corPropertyKeyResource = new CorPropertyKeyResourceImpl();
         ReflectionTestUtils.setField(corPropertyKeyResource, "corPropertyKeyRepository", corPropertyKeyRepository);
         ReflectionTestUtils.setField(corPropertyKeyResource, "corPropertyKeyMapper", corPropertyKeyMapper);
         ReflectionTestUtils.setField(corPropertyKeyResource, "corNetworkService", corNetworkService);
@@ -107,7 +105,7 @@ public class ApiPropertyKeyImplTest {
         int databaseSizeBeforeCreate = corPropertyKeyRepository.findAll().size();
 
         // Create the CorPropertyKey
-        CoreKeyPT corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
+        CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
         restCorPropertyKeyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -129,7 +127,7 @@ public class ApiPropertyKeyImplTest {
         // Create the CorPropertyKey with an existing ID
         CorPropertyKey existingCorPropertyKey = new CorPropertyKey();
         existingCorPropertyKey.setId(1L);
-        CoreKeyPT existingCorPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(existingCorPropertyKey);
+        CorKeyDTO existingCorPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(existingCorPropertyKey);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCorPropertyKeyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/", corNetwork.getShortcut())
@@ -150,7 +148,7 @@ public class ApiPropertyKeyImplTest {
         corPropertyKey.setKey(null);
 
         // Create the CorPropertyKey, which fails.
-        CoreKeyPT corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
+        CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
         restCorPropertyKeyMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key/", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -208,7 +206,7 @@ public class ApiPropertyKeyImplTest {
         CorPropertyKey updatedCorPropertyKey = corPropertyKeyRepository.findOne(corPropertyKey.getId());
         updatedCorPropertyKey
             .key(UPDATED_KEY);
-        CoreKeyPT corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(updatedCorPropertyKey);
+        CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(updatedCorPropertyKey);
 
         restCorPropertyKeyMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -228,7 +226,7 @@ public class ApiPropertyKeyImplTest {
         int databaseSizeBeforeUpdate = corPropertyKeyRepository.findAll().size();
 
         // Create the CorPropertyKey
-        CoreKeyPT corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
+        CorKeyDTO corPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCorPropertyKeyMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key", corNetwork.getShortcut())

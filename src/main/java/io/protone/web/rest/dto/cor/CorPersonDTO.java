@@ -1,6 +1,5 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -8,11 +7,11 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * ConfPersonPT
+ * CorPersonDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class ConfPersonPT implements Serializable {
+public class CorPersonDTO implements Serializable {
 
     private String description = null;
     @NotNull
@@ -22,7 +21,7 @@ public class ConfPersonPT implements Serializable {
     @NotNull
     private String lastName = null;
 
-    public ConfPersonPT description(String description) {
+    public CorPersonDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -41,7 +40,7 @@ public class ConfPersonPT implements Serializable {
         this.description = description;
     }
 
-    public ConfPersonPT firstName(String firstName) {
+    public CorPersonDTO firstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -60,7 +59,7 @@ public class ConfPersonPT implements Serializable {
         this.firstName = firstName;
     }
 
-    public ConfPersonPT id(Long id) {
+    public CorPersonDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -79,7 +78,7 @@ public class ConfPersonPT implements Serializable {
         this.id = id;
     }
 
-    public ConfPersonPT lastName(String lastName) {
+    public CorPersonDTO lastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -106,11 +105,11 @@ public class ConfPersonPT implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfPersonPT confPersonPT = (ConfPersonPT) o;
-        return Objects.equals(this.description, confPersonPT.description) &&
-            Objects.equals(this.firstName, confPersonPT.firstName) &&
-            Objects.equals(this.id, confPersonPT.id) &&
-            Objects.equals(this.lastName, confPersonPT.lastName);
+        CorPersonDTO corPersonDTO = (CorPersonDTO) o;
+        return Objects.equals(this.description, corPersonDTO.description) &&
+            Objects.equals(this.firstName, corPersonDTO.firstName) &&
+            Objects.equals(this.id, corPersonDTO.id) &&
+            Objects.equals(this.lastName, corPersonDTO.lastName);
     }
 
     @Override
@@ -121,7 +120,7 @@ public class ConfPersonPT implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ConfPersonPT {\n");
+        sb.append("class CorPersonDTO {\n");
 
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");

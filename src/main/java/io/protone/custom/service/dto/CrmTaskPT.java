@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -20,7 +21,7 @@ public class CrmTaskPT {
     private Long id = null;
 
     @JsonProperty("status")
-    private CorDictionaryPT crmTaskStatus = null;
+    private CorDictionaryDTO crmTaskStatus = null;
 
     @JsonProperty("createdBy")
     private CoreUserThinDTO createdBy = null;
@@ -107,15 +108,15 @@ public class CrmTaskPT {
     }
 
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getCrmTaskStatus() {
+    public CorDictionaryDTO getCrmTaskStatus() {
         return crmTaskStatus;
     }
 
-    public void setCrmTaskStatus(CorDictionaryPT crmTaskStatus) {
+    public void setCrmTaskStatus(CorDictionaryDTO crmTaskStatus) {
         this.crmTaskStatus = crmTaskStatus;
     }
 
-    public CrmTaskPT crmTaskStatus(CorDictionaryPT crmTaskStatus) {
+    public CrmTaskPT crmTaskStatus(CorDictionaryDTO crmTaskStatus) {
         this.crmTaskStatus = crmTaskStatus;
         return this;
     }

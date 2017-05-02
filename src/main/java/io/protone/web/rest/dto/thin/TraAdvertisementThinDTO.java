@@ -1,7 +1,7 @@
 package io.protone.web.rest.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -22,26 +22,26 @@ public class TraAdvertisementThinDTO {
     private String description = null;
 
     @JsonProperty("industryId")
-    private CorDictionaryPT industryId = null;
+    private CorDictionaryDTO industryId = null;
 
     @JsonProperty("mediaItemId")
     private LibMediaItemThinDTO mediaItemId = null;
 
     @JsonProperty("typeId")
-    private CorDictionaryPT typeId;
+    private CorDictionaryDTO typeId;
 
 
-    public TraAdvertisementThinDTO type(CorDictionaryPT typePT) {
+    public TraAdvertisementThinDTO type(CorDictionaryDTO typePT) {
         this.typeId = typePT;
         return this;
     }
 
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getTypeId() {
+    public CorDictionaryDTO getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(CorDictionaryPT typeId) {
+    public void setTypeId(CorDictionaryDTO typeId) {
         this.typeId = typeId;
     }
 
@@ -83,7 +83,7 @@ public class TraAdvertisementThinDTO {
         this.id = id;
     }
 
-    public TraAdvertisementThinDTO industryId(CorDictionaryPT industryId) {
+    public TraAdvertisementThinDTO industryId(CorDictionaryDTO industryId) {
         this.industryId = industryId;
         return this;
     }
@@ -94,11 +94,11 @@ public class TraAdvertisementThinDTO {
      * @return industryId
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getIndustryId() {
+    public CorDictionaryDTO getIndustryId() {
         return industryId;
     }
 
-    public void setIndustryId(CorDictionaryPT industryId) {
+    public void setIndustryId(CorDictionaryDTO industryId) {
         this.industryId = industryId;
     }
 

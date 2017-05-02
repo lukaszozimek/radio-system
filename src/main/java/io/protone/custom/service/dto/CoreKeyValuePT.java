@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -12,12 +13,12 @@ import java.util.Objects;
 
 public class CoreKeyValuePT   {
   @JsonProperty("key")
-  private CoreKeyPT key = null;
+  private CorKeyDTO key = null;
 
   @JsonProperty("value")
   private CoreValuePT value = null;
 
-  public CoreKeyValuePT key(CoreKeyPT key) {
+  public CoreKeyValuePT key(CorKeyDTO key) {
     this.key = key;
     return this;
   }
@@ -27,11 +28,11 @@ public class CoreKeyValuePT   {
    * @return key
   **/
   @ApiModelProperty(value = "")
-  public CoreKeyPT getKey() {
+  public CorKeyDTO getKey() {
     return key;
   }
 
-  public void setKey(CoreKeyPT key) {
+  public void setKey(CorKeyDTO key) {
     this.key = key;
   }
 

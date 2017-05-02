@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.thin.TraAdvertisementThinDTO;
 import io.protone.web.rest.dto.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,7 +42,7 @@ public class TraOrderPT {
     private TraAdvertisementThinDTO advertismentId = null;
 
     @JsonProperty("status")
-    private CorDictionaryPT statusId = null;
+    private CorDictionaryDTO statusId = null;
 
     @JsonProperty("emission")
     private List<SchEmissionPT> schEmissionPT = new ArrayList<SchEmissionPT>();
@@ -194,15 +195,15 @@ public class TraOrderPT {
      * @return status
      **/
     @ApiModelProperty(required = true, value = "")
-    public CorDictionaryPT getStatusId() {
+    public CorDictionaryDTO getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(CorDictionaryPT traOrderStatus) {
+    public void setStatusId(CorDictionaryDTO traOrderStatus) {
         this.statusId = traOrderStatus;
     }
 
-    public TraOrderPT statusId(CorDictionaryPT traOrderStatus) {
+    public TraOrderPT statusId(CorDictionaryDTO traOrderStatus) {
         this.statusId = traOrderStatus;
         return this;
     }

@@ -1,7 +1,7 @@
 package io.protone.web.rest.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -21,10 +21,10 @@ public class TraCustomerThinDTO {
     private String shortName = null;
 
     @JsonProperty("area")
-    private CorDictionaryPT area = null;
+    private CorDictionaryDTO area = null;
 
     @JsonProperty("industry")
-    private CorDictionaryPT industry = null;
+    private CorDictionaryDTO industry = null;
 
     @NotNull
     @JsonProperty("name")
@@ -34,10 +34,10 @@ public class TraCustomerThinDTO {
     private Integer paymentDate = null;
 
     @JsonProperty("range")
-    private CorDictionaryPT range = null;
+    private CorDictionaryDTO range = null;
 
     @JsonProperty("size")
-    private CorDictionaryPT size = null;
+    private CorDictionaryDTO size = null;
 
 
     public TraCustomerThinDTO id(Long id) {
@@ -78,7 +78,7 @@ public class TraCustomerThinDTO {
         this.shortName = shortName;
     }
 
-    public TraCustomerThinDTO area(CorDictionaryPT area) {
+    public TraCustomerThinDTO area(CorDictionaryDTO area) {
         this.area = area;
         return this;
     }
@@ -90,11 +90,11 @@ public class TraCustomerThinDTO {
      * @return industry
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getIndustry() {
+    public CorDictionaryDTO getIndustry() {
         return industry;
     }
 
-    public void setIndustry(CorDictionaryPT industry) {
+    public void setIndustry(CorDictionaryDTO industry) {
         this.industry = industry;
     }
 
@@ -137,7 +137,7 @@ public class TraCustomerThinDTO {
         this.paymentDate = paymentDate;
     }
 
-    public TraCustomerThinDTO range(CorDictionaryPT range) {
+    public TraCustomerThinDTO range(CorDictionaryDTO range) {
         this.range = range;
         return this;
     }
@@ -148,15 +148,15 @@ public class TraCustomerThinDTO {
      * @return range
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getRange() {
+    public CorDictionaryDTO getRange() {
         return range;
     }
 
-    public void setRange(CorDictionaryPT range) {
+    public void setRange(CorDictionaryDTO range) {
         this.range = range;
     }
 
-    public TraCustomerThinDTO size(CorDictionaryPT size) {
+    public TraCustomerThinDTO size(CorDictionaryDTO size) {
         this.size = size;
         return this;
     }
@@ -167,11 +167,11 @@ public class TraCustomerThinDTO {
      * @return size
      **/
     @ApiModelProperty(value = "")
-    public CorDictionaryPT getSize() {
+    public CorDictionaryDTO getSize() {
         return size;
     }
 
-    public void setSize(CorDictionaryPT size) {
+    public void setSize(CorDictionaryDTO size) {
         this.size = size;
     }
 

@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreKeyPT;
+import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPropertyKey;
 import org.junit.Before;
@@ -33,9 +33,9 @@ public class CorPropertyKeyMapperTest {
 
     private CorPropertyKey corPropertyKey;
 
-    private CoreKeyPT coreKeyPT;
+    private CorKeyDTO corKeyDTO;
 
-    private List<CoreKeyPT> coreKeyPTS = new ArrayList<>();
+    private List<CorKeyDTO> corKeyDTOS = new ArrayList<>();
 
     private List<CorPropertyKey> corPropertyKeys = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -45,15 +45,15 @@ public class CorPropertyKeyMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corPropertyKey = factory.manufacturePojo(CorPropertyKey.class);
         corPropertyKeys.add(corPropertyKey);
-        coreKeyPT = factory.manufacturePojo(CoreKeyPT.class);
-        coreKeyPTS.add(coreKeyPT);
+        corKeyDTO = factory.manufacturePojo(CorKeyDTO.class);
+        corKeyDTOS.add(corKeyDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        CorPropertyKey entity = corPropertyKeyMapper.DTO2DB(coreKeyPT, corNetwork);
+        CorPropertyKey entity = corPropertyKeyMapper.DTO2DB(corKeyDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getKey());
@@ -62,7 +62,7 @@ public class CorPropertyKeyMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        CoreKeyPT dto = corPropertyKeyMapper.DB2DTO(corPropertyKey);
+        CorKeyDTO dto = corPropertyKeyMapper.DB2DTO(corPropertyKey);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getKey());
@@ -70,7 +70,7 @@ public class CorPropertyKeyMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreKeyPT> dtos = corPropertyKeyMapper.DBs2DTOs(corPropertyKeys);
+        List<CorKeyDTO> dtos = corPropertyKeyMapper.DBs2DTOs(corPropertyKeys);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -82,7 +82,7 @@ public class CorPropertyKeyMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorPropertyKey> entities = corPropertyKeyMapper.DTOs2DBs(coreKeyPTS, corNetwork);
+        List<CorPropertyKey> entities = corPropertyKeyMapper.DTOs2DBs(corKeyDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

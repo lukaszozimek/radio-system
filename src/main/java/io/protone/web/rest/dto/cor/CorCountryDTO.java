@@ -1,6 +1,5 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -8,10 +7,10 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * ConfCountryPt
+ * CorCountryDTO
  */
 
-public class ConfCountryPt implements Serializable {
+public class CorCountryDTO implements Serializable {
     private Long id = null;
 
     @NotNull
@@ -20,7 +19,7 @@ public class ConfCountryPt implements Serializable {
     @NotNull
     private String shortName = null;
 
-    public ConfCountryPt id(Long id) {
+    public CorCountryDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -39,7 +38,7 @@ public class ConfCountryPt implements Serializable {
         this.id = id;
     }
 
-    public ConfCountryPt name(String name) {
+    public CorCountryDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +57,7 @@ public class ConfCountryPt implements Serializable {
         this.name = name;
     }
 
-    public ConfCountryPt shortName(String shortName) {
+    public CorCountryDTO shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -86,10 +85,10 @@ public class ConfCountryPt implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConfCountryPt confCountryPt = (ConfCountryPt) o;
-        return Objects.equals(this.id, confCountryPt.id) &&
-            Objects.equals(this.name, confCountryPt.name) &&
-            Objects.equals(this.shortName, confCountryPt.shortName);
+        CorCountryDTO corCountryDTO = (CorCountryDTO) o;
+        return Objects.equals(this.id, corCountryDTO.id) &&
+            Objects.equals(this.name, corCountryDTO.name) &&
+            Objects.equals(this.shortName, corCountryDTO.shortName);
     }
 
     @Override
@@ -100,7 +99,7 @@ public class ConfCountryPt implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ConfCountryPt {\n");
+        sb.append("class CorCountryDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");

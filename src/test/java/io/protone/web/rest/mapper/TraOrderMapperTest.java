@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CorDictionaryPT;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.*;
 import io.protone.web.rest.dto.thin.TraAdvertisementThinDTO;
@@ -64,7 +64,7 @@ public class TraOrderMapperTest {
         traOrderPT.setAdvertismentId(factory.manufacturePojo(TraAdvertisementThinDTO.class));
         traOrderPT.setCampaignId(1L);
         traOrderPT.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
-        traOrderPT.setStatusId(factory.manufacturePojo(CorDictionaryPT.class));
+        traOrderPT.setStatusId(factory.manufacturePojo(CorDictionaryDTO.class));
         traOrderPT.setInvoiceId(1L);
         orderPTS.add(traOrderPT);
         corNetwork = factory.manufacturePojo(CorNetwork.class);

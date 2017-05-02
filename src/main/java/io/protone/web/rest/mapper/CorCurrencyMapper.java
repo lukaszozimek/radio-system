@@ -1,8 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.ConfCountryPt;
 import io.protone.custom.service.dto.ConfCurrencyPT;
-import io.protone.domain.CorCountry;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
 import org.mapstruct.AfterMapping;
