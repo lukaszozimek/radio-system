@@ -353,7 +353,7 @@ public class LibraryResourceImplTest {
     @Transactional
     public void updateLibLibrary() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tep1st"));
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tst"));
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
         // Update the libLibrary
@@ -411,7 +411,7 @@ public class LibraryResourceImplTest {
     @Transactional
     public void deleteLibLibrary() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tepst"));
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tet"));
         int databaseSizeBeforeDelete = libLibraryRepository.findAll().size();
 
         // Get the libLibrary
