@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.library;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -10,11 +10,10 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * LibraryPT
+ * LibLibraryDTO
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibraryPT implements Serializable {
+public class LibLibraryDTO implements Serializable {
 
     private Long id = null;
 
@@ -22,28 +21,26 @@ public class LibraryPT implements Serializable {
     private String name = null;
 
     @NotNull
-    private Long counter = 0L;
+    private Long counter;
 
     private LibCounterTypeEnum counterType;
 
-
+    @NotNull
     private LibObjectTypeEnum libraryType;
 
     @NotNull
-    private Integer idxLength = 0;
+    private Integer idxLength;
 
     @NotNull
     private String shortcut = null;
 
-
-    private String prefix = null;
     @NotNull
-    private TypeEnum type = null;
+    private String prefix = null;
 
 
     private String description = null;
 
-    public LibraryPT id(Long id) {
+    public LibLibraryDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -62,7 +59,7 @@ public class LibraryPT implements Serializable {
         this.id = id;
     }
 
-    public LibraryPT prefix(String prefix) {
+    public LibLibraryDTO prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -81,7 +78,7 @@ public class LibraryPT implements Serializable {
         this.prefix = prefix;
     }
 
-    public LibraryPT name(String name) {
+    public LibLibraryDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -100,27 +97,8 @@ public class LibraryPT implements Serializable {
         this.name = name;
     }
 
-    public LibraryPT type(TypeEnum type) {
-        this.type = type;
-        return this;
-    }
 
-    /**
-     * Get type
-     *
-     * @return type
-     **/
-    @ApiModelProperty(required = true, value = "")
-    public TypeEnum getType() {
-        return type;
-    }
-
-    public void setType(TypeEnum type) {
-        this.type = type;
-    }
-
-
-    public LibraryPT description(String description) {
+    public LibLibraryDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -182,28 +160,27 @@ public class LibraryPT implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LibraryPT)) return false;
+        if (!(o instanceof LibLibraryDTO)) return false;
 
-        LibraryPT libraryPT = (LibraryPT) o;
+        LibLibraryDTO libLibraryDTO = (LibLibraryDTO) o;
 
-        if (getId() != null ? !getId().equals(libraryPT.getId()) : libraryPT.getId() != null) return false;
-        if (getPrefix() != null ? !getPrefix().equals(libraryPT.getPrefix()) : libraryPT.getPrefix() != null)
+        if (getId() != null ? !getId().equals(libLibraryDTO.getId()) : libLibraryDTO.getId() != null) return false;
+        if (getPrefix() != null ? !getPrefix().equals(libLibraryDTO.getPrefix()) : libLibraryDTO.getPrefix() != null)
             return false;
-        if (getName() != null ? !getName().equals(libraryPT.getName()) : libraryPT.getName() != null) return false;
-        if (getCounter() != null ? !getCounter().equals(libraryPT.getCounter()) : libraryPT.getCounter() != null)
+        if (getName() != null ? !getName().equals(libLibraryDTO.getName()) : libLibraryDTO.getName() != null) return false;
+        if (getCounter() != null ? !getCounter().equals(libLibraryDTO.getCounter()) : libLibraryDTO.getCounter() != null)
             return false;
-        if (getCounterType() != null ? !getCounterType().equals(libraryPT.getCounterType()) : libraryPT.getCounterType() != null)
+        if (getCounterType() != null ? !getCounterType().equals(libLibraryDTO.getCounterType()) : libLibraryDTO.getCounterType() != null)
             return false;
-        if (getLibraryType() != null ? !getLibraryType().equals(libraryPT.getLibraryType()) : libraryPT.getLibraryType() != null)
+        if (getLibraryType() != null ? !getLibraryType().equals(libLibraryDTO.getLibraryType()) : libLibraryDTO.getLibraryType() != null)
             return false;
-        if (getIdxLength() != null ? !getIdxLength().equals(libraryPT.getIdxLength()) : libraryPT.getIdxLength() != null)
+        if (getIdxLength() != null ? !getIdxLength().equals(libLibraryDTO.getIdxLength()) : libLibraryDTO.getIdxLength() != null)
             return false;
-        if (getShortcut() != null ? !getShortcut().equals(libraryPT.getShortcut()) : libraryPT.getShortcut() != null)
+        if (getShortcut() != null ? !getShortcut().equals(libLibraryDTO.getShortcut()) : libLibraryDTO.getShortcut() != null)
             return false;
-        if (getPrefix() != null ? !getPrefix().equals(libraryPT.getPrefix()) : libraryPT.getPrefix() != null)
+        if (getPrefix() != null ? !getPrefix().equals(libLibraryDTO.getPrefix()) : libLibraryDTO.getPrefix() != null)
             return false;
-        if (getType() != libraryPT.getType()) return false;
-        if (getDescription() != null ? !getDescription().equals(libraryPT.getDescription()) : libraryPT.getDescription() != null)
+        if (getDescription() != null ? !getDescription().equals(libLibraryDTO.getDescription()) : libLibraryDTO.getDescription() != null)
             return false;
 
         return true;
@@ -220,14 +197,14 @@ public class LibraryPT implements Serializable {
         result = 31 * result + (getIdxLength() != null ? getIdxLength().hashCode() : 0);
         result = 31 * result + (getShortcut() != null ? getShortcut().hashCode() : 0);
         result = 31 * result + (getPrefix() != null ? getPrefix().hashCode() : 0);
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "LibraryPT{" +
+        return "LibLibraryDTO{" +
             "id=" + id +
             ", prefix='" + prefix + '\'' +
             ", name='" + name + '\'' +
@@ -237,7 +214,6 @@ public class LibraryPT implements Serializable {
             ", idxLength=" + idxLength +
             ", shortcut='" + shortcut + '\'' +
             ", prefix='" + prefix + '\'' +
-            ", type=" + type +
             ", description='" + description + '\'' +
             '}';
     }

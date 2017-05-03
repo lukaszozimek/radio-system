@@ -1,8 +1,9 @@
-package io.protone.custom.web.rest.network.library.impl;
+package io.protone.web.rest.api.library;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibraryPT;
+import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.api.library.impl.LibraryResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import io.protone.domain.enumeration.LibCounterTypeEnum;
@@ -98,7 +99,7 @@ public class LibraryResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ApiNetworkLibraryImpl libLibraryResource = new ApiNetworkLibraryImpl();
+        LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
 
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
@@ -143,7 +144,7 @@ public class LibraryResourceImplTest {
         int databaseSizeBeforeCreate = libLibraryRepository.findAll().size();
 
         // Create the LibLibrary
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -172,7 +173,7 @@ public class LibraryResourceImplTest {
         // Create the LibLibrary with an existing ID
         LibLibrary existingLibLibrary = new LibLibrary();
         existingLibLibrary.setId(1L);
-        LibraryPT existingLibLibraryDTO = libLibraryMapper.DB2DTO(existingLibLibrary);
+        LibLibraryDTO existingLibLibraryDTO = libLibraryMapper.DB2DTO(existingLibLibrary);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
@@ -193,7 +194,7 @@ public class LibraryResourceImplTest {
         libLibrary.setPrefix(null);
 
         // Create the LibLibrary, which fails.
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -212,7 +213,7 @@ public class LibraryResourceImplTest {
         libLibrary.setIdxLength(null);
 
         // Create the LibLibrary, which fails.
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -231,7 +232,7 @@ public class LibraryResourceImplTest {
         libLibrary.setShortcut(null);
 
         // Create the LibLibrary, which fails.
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -250,7 +251,7 @@ public class LibraryResourceImplTest {
         libLibrary.setName(null);
 
         // Create the LibLibrary, which fails.
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -269,7 +270,7 @@ public class LibraryResourceImplTest {
         libLibrary.setCounter(null);
 
         // Create the LibLibrary, which fails.
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -288,7 +289,7 @@ public class LibraryResourceImplTest {
         libLibrary.setLibraryType(null);
 
         // Create the LibLibrary, which fails.
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -367,7 +368,7 @@ public class LibraryResourceImplTest {
             .counterType(UPDATED_COUNTER_TYPE)
             .libraryType(UPDATED_LIBRARY_TYPE)
             .description(UPDATED_DESCRIPTION);
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
 
         restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -394,7 +395,7 @@ public class LibraryResourceImplTest {
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
         // Create the LibLibrary
-        LibraryPT libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())

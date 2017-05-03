@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibraryPT;
+import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import org.junit.Before;
@@ -32,9 +32,9 @@ public class LibLibraryMapperTest {
 
     private LibLibrary libLibrary;
 
-    private LibraryPT libraryPT;
+    private LibLibraryDTO libLibraryDTO;
 
-    private List<LibraryPT> libraryPTS = new ArrayList<>();
+    private List<LibLibraryDTO> libLibraryDTOS = new ArrayList<>();
 
     private List<LibLibrary> libLibraries = new ArrayList<>();
 
@@ -46,15 +46,15 @@ public class LibLibraryMapperTest {
         libLibrary = factory.manufacturePojo(LibLibrary.class);
         libLibrary.setId(1L);
         libLibraries.add(libLibrary);
-        libraryPT = factory.manufacturePojo(LibraryPT.class);
-        libraryPTS.add(libraryPT);
+        libLibraryDTO = factory.manufacturePojo(LibLibraryDTO.class);
+        libLibraryDTOS.add(libLibraryDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        LibraryPT dto = libLibraryMapper.DB2DTO(libLibrary);
+        LibLibraryDTO dto = libLibraryMapper.DB2DTO(libLibrary);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getPrefix());
@@ -71,7 +71,7 @@ public class LibLibraryMapperTest {
     @Test
     public void DBs2DTOs() throws Exception {
 
-        List<LibraryPT> dtos = libLibraryMapper.DBs2DTOs(libLibraries);
+        List<LibLibraryDTO> dtos = libLibraryMapper.DBs2DTOs(libLibraries);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -89,7 +89,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibLibrary entity = libLibraryMapper.DTO2DB(libraryPT, corNetwork);
+        LibLibrary entity = libLibraryMapper.DTO2DB(libLibraryDTO, corNetwork);
 
 
         LibLibrary libLibrary = new LibLibrary();
@@ -108,7 +108,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibLibrary> entities = libLibraryMapper.DTOs2DBs(libraryPTS, corNetwork);
+        List<LibLibrary> entities = libLibraryMapper.DTOs2DBs(libLibraryDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.LibraryPT;
+import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import org.mapstruct.*;
@@ -11,25 +11,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface LibLibraryMapper {
 
-    LibraryPT DB2DTO(LibLibrary libLibrary);
+    LibLibraryDTO DB2DTO(LibLibrary libLibrary);
 
-    List<LibraryPT> DBs2DTOs(List<LibLibrary> libLibraries);
+    List<LibLibraryDTO> DBs2DTOs(List<LibLibrary> libLibraries);
 
-    LibLibrary DTO2DB(LibraryPT libLibraryDTO, @Context CorNetwork corNetwork);
+    LibLibrary DTO2DB(LibLibraryDTO libLibraryDTO, @Context CorNetwork corNetwork);
 
-    default List<LibLibrary> DTOs2DBs(List<LibraryPT> libraryPTS, CorNetwork networkId) {
+    default List<LibLibrary> DTOs2DBs(List<LibLibraryDTO> libLibraryDTOS, CorNetwork networkId) {
         List<LibLibrary> crmLeads = new ArrayList<>();
-        if (libraryPTS.isEmpty() || libraryPTS == null) {
+        if (libLibraryDTOS.isEmpty() || libLibraryDTOS == null) {
             return null;
         }
-        for (LibraryPT dto : libraryPTS) {
+        for (LibLibraryDTO dto : libLibraryDTOS) {
             crmLeads.add(DTO2DB(dto, networkId));
         }
         return crmLeads;
     }
 
     @AfterMapping
-    default void libraryPTToLibLibraryAfterMapping(LibraryPT dto, @MappingTarget LibLibrary entity, @Context CorNetwork corNetwork) {
+    default void libraryPTToLibLibraryAfterMapping(LibLibraryDTO dto, @MappingTarget LibLibrary entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

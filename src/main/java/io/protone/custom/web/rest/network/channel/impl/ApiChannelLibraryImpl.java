@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.channel.impl;
 
+import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.protone.service.library.LibLibraryService;
-import io.protone.custom.service.dto.LibraryPT;
 import io.protone.domain.CorNetwork;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.mapper.LibLibraryMapper;
@@ -31,15 +31,15 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
     private CorNetworkService networkService;
 
     @Override
-    public ResponseEntity<List<LibraryPT>> getAllLibrariesForChannelUsingGET(String networkShortcut, String channelShortcut, Pageable pagable) {
-        log.debug("REST request to get all LibraryPT");
+    public ResponseEntity<List<LibLibraryDTO>> getAllLibrariesForChannelUsingGET(String networkShortcut, String channelShortcut, Pageable pagable) {
+        log.debug("REST request to get all LibLibraryDTO");
         List<LibLibrary> libraries = libraryService.findLibraries(networkShortcut, pagable);
         return ResponseEntity.ok()
             .body(libraryMapper.DBs2DTOs(libraries));
     }
 
     @Override
-    public ResponseEntity<LibraryPT> updateLibraryForChannelUsingPUT(String networkShortcut, String channelShortcut, LibraryPT library) {
+    public ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(String networkShortcut, String channelShortcut, LibLibraryDTO library) {
         log.debug("REST request to update library: {}", library);
 
         if (library.getId() == null)
@@ -47,18 +47,18 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         LibLibrary entity = libraryMapper.DTO2DB(library, corNetwork);
         LibLibrary resultDB = libraryService.createOrUpdateLibrary(entity);
-        LibraryPT libraryDAO = libraryMapper.DB2DTO(resultDB);
+        LibLibraryDTO libraryDAO = libraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
     }
 
     @Override
-    public ResponseEntity<LibraryPT> createLibraryForChannelUsingPOST(String networkShortcut, String channelShortcut, LibraryPT library) {
+    public ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(String networkShortcut, String channelShortcut, LibLibraryDTO library) {
         log.debug("REST request to create library: {}", library);
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         LibLibrary entity = libraryMapper.DTO2DB(library, corNetwork);
         LibLibrary resultDB = libraryService.createOrUpdateLibrary(entity);
-        LibraryPT libraryDAO = libraryMapper.DB2DTO(resultDB);
+        LibLibraryDTO libraryDAO = libraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
             .body(libraryDAO);
     }
@@ -71,10 +71,10 @@ public class ApiChannelLibraryImpl implements ApiChannelLibrary {
     }
 
     @Override
-    public ResponseEntity<LibraryPT> getLibraryForChannelUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix) {
+    public ResponseEntity<LibLibraryDTO> getLibraryForChannelUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix) {
         log.debug("REST request to get library: {}", libraryPrefix);
         LibLibrary library = libraryService.findLibrary(networkShortcut, libraryPrefix);
-        LibraryPT dto = libraryMapper.DB2DTO(library);
+        LibLibraryDTO dto = libraryMapper.DB2DTO(library);
         return Optional.ofNullable(dto)
             .map(result -> new ResponseEntity<>(
                 result,
