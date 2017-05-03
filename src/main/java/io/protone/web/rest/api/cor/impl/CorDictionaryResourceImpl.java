@@ -1,5 +1,6 @@
 package io.protone.web.rest.api.cor.impl;
 
+import io.protone.domain.CorModule;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.mapper.CorDictionaryMapper;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +36,7 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CorDictionaryMapper customCorDictionaryMapper;
+    private CorDictionaryMapper corDictionaryMapper;
 
     @Inject
     private CorDictionaryRepository corDictionaryRepository;
@@ -41,15 +45,15 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     public ResponseEntity<CorDictionaryDTO> updateDictionaryValueUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                           @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                          @ApiParam(value = "corDictionaryDTO", required = true) @RequestBody CorDictionaryDTO corDictionaryDTO) {
+                                                                          @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException {
         log.debug("REST request to update CorDictionary : {}", corDictionaryDTO);
         if (corDictionaryDTO.getId() == null) {
             return createDictionaryValueUsingPOST(networkShortcut, module, type, corDictionaryDTO);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork);
+        CorDictionary corDictionary = corDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork, new CorModule().name(module), new CorDictionaryType().name(type));
         corDictionary = corDictionaryRepository.save(corDictionary);
-        CorDictionaryDTO result = customCorDictionaryMapper.DB2DTO(corDictionary);
+        CorDictionaryDTO result = corDictionaryMapper.DB2DTO(corDictionary);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("CorDictionary", result.getId().toString()))
             .body(result);
@@ -59,16 +63,17 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     public ResponseEntity<CorDictionaryDTO> createDictionaryValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                            @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                           @ApiParam(value = "corDictionaryDTO", required = true) @RequestBody CorDictionaryDTO corDictionaryDTO) {
+                                                                           @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException {
         log.debug("REST request to save CorDictionary : {}", corDictionaryDTO);
         if (corDictionaryDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorDictionary", "idexists", "A new CorDictionary cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDictionary corDictionary = customCorDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork);
+        CorDictionary corDictionary = corDictionaryMapper.DTO2DB(corDictionaryDTO, corNetwork, new CorModule().name(module), new CorDictionaryType().name(type));
         corDictionary = corDictionaryRepository.save(corDictionary);
-        CorDictionaryDTO result = customCorDictionaryMapper.DB2DTO(corDictionary);
-        return ResponseEntity.ok().body(result);
+        CorDictionaryDTO result = corDictionaryMapper.DB2DTO(corDictionary);
+
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/" + module + "/" + type + "/" + result.getId())).body(result);
     }
 
     @Override
@@ -87,10 +92,9 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
                                                                                 @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CorDictionary : {}", networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        List<CorDictionary> corDictionaries = corDictionaryRepository.findAllByCorDictionaryTypeAndNetwork(type, corNetwork);
-        List<CorDictionaryDTO> dictionaryPTS = customCorDictionaryMapper.DBs2DTOs(corDictionaries);
+        List<CorDictionary> corDictionaries = corDictionaryRepository.findByCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(type, module, networkShortcut);
+        List<CorDictionaryDTO> dictionaryPTS = corDictionaryMapper.DBs2DTOs(corDictionaries);
         return Optional.ofNullable(dictionaryPTS)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -99,12 +103,15 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
     }
 
     @Override
-    public ResponseEntity<CorDictionaryDTO> getDictionaryValueGET(String networkShortcut, String module, String type, Long id) {
+    public ResponseEntity<CorDictionaryDTO> getDictionaryValueGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                  @ApiParam(value = "module", required = true) @PathVariable("module") String module,
+                                                                  @ApiParam(value = "type", required = true) @PathVariable("type") String type,
+                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get CorDictionary : {}", networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        CorDictionary corDictionary = corDictionaryRepository.findByIdAndCorDictionaryTypeAndNetwork(id, new CorDictionaryType().name(type), corNetwork);
-        CorDictionaryDTO corDictionaryDTO = customCorDictionaryMapper.DB2DTO(corDictionary);
+
+        CorDictionary corDictionary = corDictionaryRepository.findByIdAndCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(id, type, module, networkShortcut);
+        CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
         return Optional.ofNullable(corDictionaryDTO)
             .map(result -> new ResponseEntity<>(
                 result,

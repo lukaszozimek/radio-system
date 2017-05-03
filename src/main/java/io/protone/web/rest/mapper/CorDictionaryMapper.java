@@ -1,5 +1,7 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.domain.CorDictionaryType;
+import io.protone.domain.CorModule;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
@@ -21,22 +23,24 @@ public interface CorDictionaryMapper {
 
     List<CorDictionaryDTO> DBs2DTOs(List<CorDictionary> corDictionaries);
 
-    CorDictionary DTO2DB(CorDictionaryDTO corDictionaryDTO, @Context CorNetwork corNetwork);
+    CorDictionary DTO2DB(CorDictionaryDTO corDictionaryDTO, @Context CorNetwork corNetwork, @Context CorModule module, @Context CorDictionaryType dictionaryType);
 
 
-    default List<CorDictionary> DTOs2DBs(List<CorDictionaryDTO> corDictionaryDTOS, CorNetwork networkId) {
+    default List<CorDictionary> DTOs2DBs(List<CorDictionaryDTO> corDictionaryDTOS, CorNetwork networkId, CorModule module, CorDictionaryType dictionaryType) {
         List<CorDictionary> corDictionaries = new ArrayList<>();
         if (corDictionaryDTOS.isEmpty() || corDictionaryDTOS == null) {
             return null;
         }
         for (CorDictionaryDTO dto : corDictionaryDTOS) {
-            corDictionaries.add(DTO2DB(dto, networkId));
+            corDictionaries.add(DTO2DB(dto, networkId, module, dictionaryType));
         }
         return corDictionaries;
     }
 
     @AfterMapping
-    default void confCountryPtToCorCountryAfterMapping(CorDictionaryDTO dto, @MappingTarget CorDictionary entity, @Context CorNetwork corNetwork) {
+    default void confCountryPtToCorCountryAfterMapping(CorDictionaryDTO dto, @MappingTarget CorDictionary entity, @Context CorNetwork corNetwork, @Context CorModule module, @Context CorDictionaryType dictionaryType) {
         entity.setNetwork(corNetwork);
+        entity.corModule(module.getName());
+        entity.dictionaryType(dictionaryType.getName());
     }
 }

@@ -15,9 +15,9 @@ import org.springframework.data.jpa.repository.Query;
 @SuppressWarnings("unused")
 public interface CorDictionaryRepository extends JpaRepository<CorDictionary, Long> {
 
-    List<CorDictionary> findAllByCorDictionaryTypeAndNetwork(String corDictionaryType, CorNetwork network);
+    List<CorDictionary> findByCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(String corDictionaryType, String corModule, String network);
 
-    CorDictionary findByIdAndCorDictionaryTypeAndNetwork(Long id, CorDictionaryType corDictionaryType, CorNetwork network);
+    CorDictionary findByIdAndCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(Long id, String corDictionaryType, String corModule, String network);
 
     CorDictionary findOneByIdAndNetwork(Long id, CorNetwork corNetwork);
 }

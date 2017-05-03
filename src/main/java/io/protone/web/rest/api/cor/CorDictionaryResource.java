@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +29,7 @@ public interface CorDictionaryResource {
     ResponseEntity<CorDictionaryDTO> updateDictionaryValueUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                    @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                   @ApiParam(value = "corDictionaryDTO", required = true) @RequestBody CorDictionaryDTO corDictionaryDTO);
+                                                                   @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -44,7 +46,7 @@ public interface CorDictionaryResource {
     ResponseEntity<CorDictionaryDTO> createDictionaryValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                     @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                    @ApiParam(value = "corDictionaryDTO", required = true) @RequestBody CorDictionaryDTO corDictionaryDTO);
+                                                                    @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteDictionaryValue", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -74,7 +76,7 @@ public interface CorDictionaryResource {
     ResponseEntity<List<CorDictionaryDTO>> getAllDictionaryValueUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                          @ApiParam(value = "type", required = true) @PathVariable("type") String type,
-                                                                         @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})

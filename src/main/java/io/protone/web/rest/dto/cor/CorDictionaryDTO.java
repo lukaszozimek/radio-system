@@ -1,6 +1,7 @@
 package io.protone.web.rest.dto.cor;
 
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,15 +12,13 @@ public class CorDictionaryDTO implements Serializable {
 
     private Long id;
 
+    @NotNull
     private String name;
 
     private String description;
 
-    private String corDictionaryType;
-
     private Long seqNumber;
 
-    private String corModule;
 
     public Long getId() {
         return id;
@@ -44,26 +43,13 @@ public class CorDictionaryDTO implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getCorDictionaryType() {
-        return corDictionaryType;
-    }
 
-    public void setCorDictionaryType(String corDictionaryType) {
-        this.corDictionaryType = corDictionaryType;
-    }
     public Long getSeqNumber() {
         return seqNumber;
     }
 
     public void setSeqNumber(Long seqNumber) {
         this.seqNumber = seqNumber;
-    }
-    public String getCorModule() {
-        return corModule;
-    }
-
-    public void setCorModule(String corModule) {
-        this.corModule = corModule;
     }
 
     @Override
@@ -77,7 +63,9 @@ public class CorDictionaryDTO implements Serializable {
 
         CorDictionaryDTO corDictionaryDTO = (CorDictionaryDTO) o;
 
-        if ( ! Objects.equals(id, corDictionaryDTO.id)) { return false; }
+        if (!Objects.equals(id, corDictionaryDTO.id)) {
+            return false;
+        }
 
         return true;
     }
@@ -93,9 +81,7 @@ public class CorDictionaryDTO implements Serializable {
             "id=" + id +
             ", name='" + name + "'" +
             ", description='" + description + "'" +
-            ", corDictionaryType='" + corDictionaryType + "'" +
             ", seqNumber='" + seqNumber + "'" +
-            ", corModule='" + corModule + "'" +
             '}';
     }
 }
