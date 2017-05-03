@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class LibItemPT {
     private Integer length = null;
 
     @JsonProperty("library")
-    private LibraryPT library = null;
+    private LibLibraryDTO library = null;
 
     @JsonProperty("markers")
     private List<LibMarkerPT> markers = new ArrayList<LibMarkerPT>();
@@ -214,7 +215,7 @@ public class LibItemPT {
         this.length = length;
     }
 
-    public LibItemPT library(LibraryPT library) {
+    public LibItemPT library(LibLibraryDTO library) {
         this.library = library;
         return this;
     }
@@ -225,11 +226,11 @@ public class LibItemPT {
      * @return library
      **/
     @ApiModelProperty(value = "")
-    public LibraryPT getLibrary() {
+    public LibLibraryDTO getLibrary() {
         return library;
     }
 
-    public void setLibrary(LibraryPT library) {
+    public void setLibrary(LibLibraryDTO library) {
         this.library = library;
     }
 
