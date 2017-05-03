@@ -209,7 +209,7 @@ public class CrmContactResourceImplTest {
         crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getId()))
+        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmContact.getId().intValue()))
@@ -226,7 +226,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getNonExistingCrmContact() throws Exception {
         // Get the crmContact
-        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -234,7 +234,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void updateCrmContact() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact);
+        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
 
         // Update the crmContact
@@ -294,7 +294,7 @@ public class CrmContactResourceImplTest {
         int databaseSizeBeforeDelete = crmContactRepository.findAll().size();
 
         // Get the crmContact
-        restCrmContactMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getId())
+        restCrmContactMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

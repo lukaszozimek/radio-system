@@ -33,7 +33,7 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
     private CrmOpportunityService crmOpportunityService;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Inject
     private CrmTaskMapper crmTaskMapper;
@@ -58,7 +58,7 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
         if (crmTaskPT.getId() == null) {
             return createOpportunityActivityUsingPOST(networkShortcut, shortName, crmTaskPT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
         CrmTask entity = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(requestEnitity, shortName, networkShortcut);
@@ -73,7 +73,7 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
         if (crmTaskPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmTask requestEnitity = crmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
         CrmTask entity = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(requestEnitity, shortName, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(entity);

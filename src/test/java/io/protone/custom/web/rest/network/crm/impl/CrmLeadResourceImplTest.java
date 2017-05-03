@@ -252,7 +252,7 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void deleteCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead.shortname("test"));
+        crmLeadRepository.saveAndFlush(crmLead.shortname("test").network(corNetwork));
         int databaseSizeBeforeDelete = crmLeadRepository.findAll().size();
 
         // Get the crmLead

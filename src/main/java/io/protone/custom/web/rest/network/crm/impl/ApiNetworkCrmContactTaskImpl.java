@@ -32,7 +32,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
     private CrmContactService crmContactService;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Inject
     private CrmTaskMapper crmTaskMapper;
@@ -59,7 +59,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         if (crmTaskPT.getId() == null) {
             return createContactActivityUsingPOST(networkShortcut, shortName, crmTaskPT);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
         CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
@@ -75,7 +75,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         if (crmTaskPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
         CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, corNetwork.getShortcut());
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
