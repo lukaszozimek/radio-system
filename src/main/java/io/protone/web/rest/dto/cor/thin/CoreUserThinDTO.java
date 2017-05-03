@@ -1,4 +1,4 @@
-package io.protone.web.rest.dto.thin;
+package io.protone.web.rest.dto.cor.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CorUser;

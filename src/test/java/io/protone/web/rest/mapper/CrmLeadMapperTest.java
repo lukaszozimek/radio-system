@@ -3,7 +3,7 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmLeadPT;
 import io.protone.domain.*;
-import io.protone.web.rest.dto.thin.CoreUserThinDTO;
+import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;

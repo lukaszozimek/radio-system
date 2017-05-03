@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.*;
-import io.protone.web.rest.dto.thin.TraCustomerThinDTO;
+import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import io.protone.domain.*;
 import org.mapstruct.*;
 

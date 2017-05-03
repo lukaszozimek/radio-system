@@ -1,9 +1,8 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.custom.service.dto.LibPersonPT;
 import io.protone.domain.*;
-import io.protone.web.rest.dto.thin.CoreUserThinDTO;
+import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import org.mapstruct.*;
 
 import java.util.ArrayList;

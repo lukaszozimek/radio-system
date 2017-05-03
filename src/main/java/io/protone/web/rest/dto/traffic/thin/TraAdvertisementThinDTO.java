@@ -1,7 +1,8 @@
-package io.protone.web.rest.dto.thin;
+package io.protone.web.rest.dto.traffic.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
+import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;

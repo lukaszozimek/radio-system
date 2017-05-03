@@ -2,7 +2,7 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.web.rest.dto.thin.TraInvoiceCustomerThinDTO;
+import io.protone.web.rest.dto.traffic.thin.TraInvoiceCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;

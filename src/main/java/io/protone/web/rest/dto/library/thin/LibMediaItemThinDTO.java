@@ -1,4 +1,4 @@
-package io.protone.web.rest.dto.thin;
+package io.protone.web.rest.dto.library.thin;
 
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;

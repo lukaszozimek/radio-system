@@ -2,7 +2,7 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.web.rest.dto.thin.CoreUserThinDTO;
+import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
 
