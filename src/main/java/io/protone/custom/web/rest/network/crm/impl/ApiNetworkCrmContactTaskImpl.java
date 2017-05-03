@@ -12,13 +12,17 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmContactTask {
@@ -40,19 +44,23 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         log.debug("REST request to get all CrmContact CrmTask,for CrmContact: {} and Network: {}", shortName, networkShortcut);
         List<CrmTask> reposesEntity = crmContactService.getTasksAssociatedWithContact(shortName, networkShortcut, pagable);
         List<CrmTaskPT> response = crmTaskMapper.DBs2DTOs(reposesEntity);
-        return ResponseEntity.ok().body(response);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<CrmTaskPT> updateContactActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                   @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) {
+                                                                   @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException {
         log.debug("REST request to update CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", crmTaskPT, shortName, networkShortcut);
         if (crmTaskPT.getId() == null) {
             return createContactActivityUsingPOST(networkShortcut, shortName, crmTaskPT);
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT,corNetwork);
+        CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
         CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.ok().body(response);
@@ -62,16 +70,17 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
     @Override
     public ResponseEntity<CrmTaskPT> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                    @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) {
+                                                                    @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException {
         log.debug("REST request to save CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", crmTaskPT, shortName, networkShortcut);
         if (crmTaskPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT,corNetwork);
+        CrmTask crmTask = crmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
         CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, corNetwork.getShortcut());
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/contact/" + shortName + "/task/" + crmTask.getId()))
+            .body(response);
     }
 
     @Override
@@ -80,7 +89,7 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", id, shortName, networkShortcut);
         crmContactService.deleteContactTask(shortName, id, networkShortcut);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", id.toString())).build();
 
     }
 
@@ -91,6 +100,10 @@ public class ApiNetworkCrmContactTaskImpl implements io.protone.custom.web.rest.
         log.debug("REST request to get CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", id, shortName, networkShortcut);
         CrmTask reposesEntity = crmContactService.getTaskAssociatedWithContact(id, networkShortcut);
         CrmTaskPT response = crmTaskMapper.DB2DTO(reposesEntity);
-        return ResponseEntity.ok().body(response);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -41,7 +42,7 @@ public interface ApiNetworkCrmContactTask {
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskPT> updateContactActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                            @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
+                                                            @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createContactActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
@@ -57,7 +58,7 @@ public interface ApiNetworkCrmContactTask {
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskPT> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                             @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
+                                                             @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteContactActivityActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})

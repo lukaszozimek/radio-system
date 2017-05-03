@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) {
+    public ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) throws URISyntaxException {
         log.debug("REST request to update TraAdvertisement : {}, for Network: {}", traAdvertisementPT, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (traAdvertisementPT.getId() == null) {
@@ -53,7 +55,7 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     }
 
     @Override
-    public ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) {
+    public ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) throws URISyntaxException {
         log.debug("REST request to save TraAdvertisement : {}, for Network: {}", traAdvertisementPT, networkShortcut);
         if (traAdvertisementPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraAdvertisement", "idexists", "A new TraAdvertisement cannot already have an ID")).body(null);
@@ -62,11 +64,8 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
         TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementPT, corNetwork);
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);
         TraAdvertisementPT response = traAdvertisementMapper.DB2DTO(entity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/advertisement/" + response.getId()))
+            .body(response);
     }
 
     @Override
@@ -83,14 +82,14 @@ public class ApiNetworkTrafficAdvertisementImpl implements ApiNetworkTrafficAdve
     }
 
     @Override
-    public ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx) {
+    public ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long idx) {
         log.debug("REST request to delete TraAdvertisement : {}, for Network: {}", idx, networkShortcut);
         traAdvertisementService.deleteAdvertisement(idx, networkShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraAdvertisement", idx.toString())).build();
     }
 
     @Override
-    public ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx) {
+    public ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long idx) {
         log.debug("REST request to get TraAdvertisement : {}, for Network: {}", idx, networkShortcut);
         TraAdvertisement entity = traAdvertisementService.getAdvertisement(idx, networkShortcut);
         TraAdvertisementPT response = traAdvertisementMapper.DB2DTO(entity);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -42,7 +43,7 @@ public interface ApiNetworkCrmOpportunityTask {
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskPT> updateOpportunityActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                 @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
+                                                                @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createOpportunityActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
@@ -58,7 +59,7 @@ public interface ApiNetworkCrmOpportunityTask {
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskPT> createOpportunityActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                 @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
+                                                                 @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
 
     @ApiOperation(value = "deleteOpportunityActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {

@@ -13,13 +13,17 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
@@ -35,7 +39,7 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
     private CrmLeadMapper crmLeadMapper;
 
     @Override
-    public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {
+    public ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) throws URISyntaxException {
         log.debug("REST request to update CrmLead : {}, for Network: {}", crmLeadPT);
         if (crmLeadPT.getId() == null) {
             return createLeadUsingPOST(networkShortcut, crmLeadPT);
@@ -44,11 +48,15 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
         CrmLead crmLead = crmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
         CrmLead entity = crmLeadService.saveLead(crmLead);
         CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
-        return ResponseEntity.ok().body(response);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public ResponseEntity<CrmLeadPT> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) {
+    public ResponseEntity<CrmLeadPT> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) throws URISyntaxException {
         log.debug("REST request to save CrmLead : {}, for Network: {}", crmLeadPT, networkShortcut);
         if (crmLeadPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmLead", "idexists", "A new CrmLead cannot already have an ID")).body(null);
@@ -57,7 +65,8 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
         CrmLead crmLead = crmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
         CrmLead entity = crmLeadService.saveLead(crmLead);
         CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/lead/" + response.getShortname()))
+            .body(response);
     }
 
     @Override
@@ -76,13 +85,17 @@ public class ApiNetworkCrmLeadImpl implements ApiNetworkCrmLead {
         CrmLead entity = crmLeadService.getLead(networkShortcut, shortName);
         CrmLeadPT response = crmLeadMapper.DB2DTO(entity);
 
-        return ResponseEntity.ok().body(response);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmLead : {}, for Network: {}", shortName, networkShortcut);
         crmLeadService.deleteLead(shortName, shortName);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmLead", shortName.toString())).build();
     }
 }

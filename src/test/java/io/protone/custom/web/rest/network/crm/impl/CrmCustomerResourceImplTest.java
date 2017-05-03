@@ -124,7 +124,7 @@ public class CrmCustomerResourceImplTest {
 
     @Before
     public void initTest() {
-        crmAccount = createEntity(em);
+        crmAccount = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -177,7 +177,7 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void getAllCrmAccounts() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount);
+        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
 
         // Get all the crmAccountList
         restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer?sort=id,desc"))
@@ -196,7 +196,7 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void getCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount);
+        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
 
         // Get the crmAccount
         restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
@@ -223,7 +223,7 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void updateCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount);
+        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
         int databaseSizeBeforeUpdate = crmAccountRepository.findAll().size();
 
         // Update the crmAccount
@@ -277,7 +277,7 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void deleteCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.shortName("XXXX"));
+        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork).shortName("XXXX"));
         int databaseSizeBeforeDelete = crmAccountRepository.findAll().size();
 
         // Get the crmAccount

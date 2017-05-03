@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +28,7 @@ public interface ApiNetworkTrafficCustomer {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt);
+                                                                @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException;
 
 
     @ApiOperation(value = "createTrafficCustomerUsingPOST", notes = "", response = TraCustomerPT.class, tags = {"TRAFFIC",})
@@ -42,7 +43,7 @@ public interface ApiNetworkTrafficCustomer {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                 @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt);
+                                                                 @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException;
 
 
     @ApiOperation(value = "getAllTrafficCustomersUsingGET", notes = "", response = TraCustomerPT.class, responseContainer = "List", tags = {"TRAFFIC",})

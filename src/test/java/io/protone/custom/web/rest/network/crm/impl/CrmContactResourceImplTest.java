@@ -132,7 +132,7 @@ public class CrmContactResourceImplTest {
 
     @Before
     public void initTest() {
-        crmContact = createEntity(em);
+        crmContact = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getAllCrmContacts() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact);
+        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
         // Get all the crmContactList
         restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
@@ -206,7 +206,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getCrmContact() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact);
+        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
         // Get the crmContact
         restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getId()))
@@ -290,7 +290,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void deleteCrmContact() throws Exception {
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact);
+        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
         int databaseSizeBeforeDelete = crmContactRepository.findAll().size();
 
         // Get the crmContact

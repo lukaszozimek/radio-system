@@ -120,7 +120,7 @@ public class TrafficCampaignResourceImplTest {
 
     @Before
     public void initTest() {
-        traCampaign = createEntity(em);
+        traCampaign = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -190,7 +190,7 @@ public class TrafficCampaignResourceImplTest {
     @Transactional
     public void getAllTraCampaigns() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign);
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
 
         // Get all the traCampaignList
         restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign?sort=id,desc", corNetwork.getShortcut()))
@@ -207,7 +207,7 @@ public class TrafficCampaignResourceImplTest {
     @Transactional
     public void getTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign);
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
 
         // Get the traCampaign
         restTraCampaignMockMvc.perform(get("/api/tra-campaigns/{id}", traCampaign.getId()))
@@ -232,7 +232,7 @@ public class TrafficCampaignResourceImplTest {
     @Transactional
     public void updateTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign);
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
         int databaseSizeBeforeUpdate = traCampaignRepository.findAll().size();
 
         // Update the traCampaign
@@ -282,7 +282,7 @@ public class TrafficCampaignResourceImplTest {
     @Transactional
     public void deleteTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.name("xxx"));
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).name("xxx"));
         int databaseSizeBeforeDelete = traCampaignRepository.findAll().size();
 
         // Get the traCampaign

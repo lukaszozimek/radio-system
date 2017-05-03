@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +28,7 @@ public interface ApiNetworkCrmLead {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmLeadPT> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                 @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT);
+                                                 @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) throws URISyntaxException;
 
     @ApiOperation(value = "createLead", notes = "", response = CrmLeadPT.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
@@ -41,7 +42,7 @@ public interface ApiNetworkCrmLead {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmLeadPT> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT);
+                                                  @ApiParam(value = "crmLeadPT", required = true) @RequestBody CrmLeadPT crmLeadPT) throws URISyntaxException;
 
     @ApiOperation(value = "getAllLeads", notes = "", response = CrmLeadPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {

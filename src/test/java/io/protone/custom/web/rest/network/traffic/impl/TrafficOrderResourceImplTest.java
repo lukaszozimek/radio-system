@@ -122,7 +122,7 @@ public class TrafficOrderResourceImplTest {
 
     @Before
     public void initTest() {
-        traOrder = createEntity(em);
+        traOrder = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -192,7 +192,7 @@ public class TrafficOrderResourceImplTest {
     @Transactional
     public void getAllTraOrders() throws Exception {
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder);
+        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
 
         // Get all the traOrderList
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order?sort=id,desc",corNetwork.getShortcut()))
@@ -209,7 +209,7 @@ public class TrafficOrderResourceImplTest {
     @Transactional
     public void getTraOrder() throws Exception {
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder);
+        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
 
         // Get the traOrder
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/{id}",corNetwork.getShortcut(), traOrder.getId()))
@@ -234,7 +234,7 @@ public class TrafficOrderResourceImplTest {
     @Transactional
     public void updateTraOrder() throws Exception {
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder);
+        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
         int databaseSizeBeforeUpdate = traOrderRepository.findAll().size();
 
         // Update the traOrder
@@ -284,7 +284,7 @@ public class TrafficOrderResourceImplTest {
     @Transactional
     public void deleteTraOrder() throws Exception {
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder);
+        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
         int databaseSizeBeforeDelete = traOrderRepository.findAll().size();
 
         // Get the traOrder

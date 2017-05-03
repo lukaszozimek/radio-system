@@ -121,7 +121,7 @@ public class CrmOpportunityResourceImplTest {
 
     @Before
     public void initTest() {
-        crmOpportunity = createEntity(em);
+        crmOpportunity = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -172,7 +172,7 @@ public class CrmOpportunityResourceImplTest {
     @Transactional
     public void getAllCrmOpportunities() throws Exception {
         // Initialize the database
-        crmOpportunityRepository.saveAndFlush(crmOpportunity);
+        crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
 
         // Get all the crmOpportunityList
         restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity?sort=id,desc",corNetwork.getShortcut()))
@@ -189,7 +189,7 @@ public class CrmOpportunityResourceImplTest {
     @Transactional
     public void getCrmOpportunity() throws Exception {
         // Initialize the database
-        crmOpportunityRepository.saveAndFlush(crmOpportunity);
+        crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
 
         // Get the crmOpportunity
         restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}",corNetwork.getShortcut(), crmOpportunity.getName()))
@@ -214,7 +214,7 @@ public class CrmOpportunityResourceImplTest {
     @Transactional
     public void updateCrmOpportunity() throws Exception {
         // Initialize the database
-        crmOpportunityRepository.saveAndFlush(crmOpportunity);
+        crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
         int databaseSizeBeforeUpdate = crmOpportunityRepository.findAll().size();
 
         // Update the crmOpportunity
@@ -264,7 +264,7 @@ public class CrmOpportunityResourceImplTest {
     @Transactional
     public void deleteCrmOpportunity() throws Exception {
         // Initialize the database
-        crmOpportunityRepository.saveAndFlush(crmOpportunity);
+        crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
         int databaseSizeBeforeDelete = crmOpportunityRepository.findAll().size();
 
         // Get the crmOpportunity

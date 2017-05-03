@@ -12,13 +12,17 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmCustomer {
@@ -34,7 +38,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     private CrmAccountMapper crmAccountMapper;
 
     @Override
-    public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) {
+    public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) throws URISyntaxException {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountPT, networkShortcut);
 
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
@@ -48,7 +52,7 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     }
 
     @Override
-    public ResponseEntity<CrmAccountPT> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) {
+    public ResponseEntity<CrmAccountPT> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) throws URISyntaxException {
         log.debug("REST request to save CrmAccount : {}, for Network: {}", crmAccountPT, networkShortcut);
         if (crmAccountPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
@@ -57,7 +61,8 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
         CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
         CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + crmAccount.getShortName()))
+            .body(response);
     }
 
     @Override
@@ -67,7 +72,11 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
         List<CrmAccount> entity = crmCustomerService.getAllCustomers(networkShortcut, pagable);
         List<CrmAccountPT> response = crmAccountMapper.DBs2DTOs(entity);
 
-        return ResponseEntity.ok().body(response);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -75,13 +84,17 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
         log.debug("REST request to get CrmAccount : {}, for Network: {}", shortName, networkShortcut);
         CrmAccount entity = crmCustomerService.getCustomer(shortName, networkShortcut);
         CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
-        return ResponseEntity.ok().body(response);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<Void> deleteCustomeryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmAccount : {}, for Network: {}", shortName, networkShortcut);
         crmCustomerService.deleteCustomer(shortName, networkShortcut);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmAccount", shortName.toString())).build();
     }
 }

@@ -118,7 +118,7 @@ public class TrafficInvoiceResourceImplTest {
 
     @Before
     public void initTest() {
-        traInvoice = createEntity(em);
+        traInvoice = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -168,7 +168,7 @@ public class TrafficInvoiceResourceImplTest {
     @Transactional
     public void getAllTraInvoices() throws Exception {
         // Initialize the database
-        traInvoiceRepository.saveAndFlush(traInvoice);
+        traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
 
         // Get all the traInvoiceList
         restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice?sort=id,desc",corNetwork.getShortcut()))
@@ -184,7 +184,7 @@ public class TrafficInvoiceResourceImplTest {
     @Transactional
     public void getTraInvoice() throws Exception {
         // Initialize the database
-        traInvoiceRepository.saveAndFlush(traInvoice);
+        traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
 
         // Get the traInvoice
         restTraInvoiceMockMvc.perform(get("/api/tra-invoices/{id}", traInvoice.getId()))
@@ -208,7 +208,7 @@ public class TrafficInvoiceResourceImplTest {
     @Transactional
     public void updateTraInvoice() throws Exception {
         // Initialize the database
-        traInvoiceRepository.saveAndFlush(traInvoice);
+        traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
         int databaseSizeBeforeUpdate = traInvoiceRepository.findAll().size();
 
         // Update the traInvoice
@@ -256,7 +256,7 @@ public class TrafficInvoiceResourceImplTest {
     @Transactional
     public void deleteTraInvoice() throws Exception {
         // Initialize the database
-        traInvoiceRepository.saveAndFlush(traInvoice);
+        traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
         int databaseSizeBeforeDelete = traInvoiceRepository.findAll().size();
 
         // Get the traInvoice

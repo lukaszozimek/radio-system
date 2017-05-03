@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +28,7 @@ public interface ApiNetworkCrmOpportunity {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmOpportunityPT> updateOpportunityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "crmOpportunityPT", required = true) @RequestBody CrmOpportunityPT crmOpportunityPT);
+                                                               @ApiParam(value = "crmOpportunityPT", required = true) @RequestBody CrmOpportunityPT crmOpportunityPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createOpportunity", notes = "", response = CrmOpportunityPT.class, tags = {"TRAFFIC", "CRM",})
@@ -42,7 +43,7 @@ public interface ApiNetworkCrmOpportunity {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmOpportunityPT> createOpportunityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "crmOpportunityPT", required = true) @RequestBody CrmOpportunityPT crmOpportunityPT);
+                                                                @ApiParam(value = "crmOpportunityPT", required = true) @RequestBody CrmOpportunityPT crmOpportunityPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "getAllOpportunities", notes = "", response = CrmOpportunityPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})

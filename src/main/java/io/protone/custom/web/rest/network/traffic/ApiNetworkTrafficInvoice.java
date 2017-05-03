@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -40,7 +41,7 @@ public interface ApiNetworkTrafficInvoice {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraInvoicePT> updateInvoiceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT);
+                                                       @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createInvoice", notes = "", response = TraInvoicePT.class, tags = {"TRAFFIC",})
@@ -55,7 +56,7 @@ public interface ApiNetworkTrafficInvoice {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT);
+                                                        @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteInvoice", notes = "", response = Void.class, tags = {"TRAFFIC",})

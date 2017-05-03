@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +34,13 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
 
     @Inject
     private CorNetworkService networkService;
+
     @Inject
     private CrmAccountMapper crmAccountMapper;
 
     @Override
     public ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) {
+                                                                       @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException {
         log.debug("REST request to update TraCustomer : {}, for Network: {}", traCustomerPt, networkShortcut);
         CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
         if (traCustomerPt.getId() == null) {
@@ -54,7 +57,7 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     }
 
     @Override
-    public ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) {
+    public ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException {
         log.debug("REST request to save TraCustomer : {}, for Network: {}", traCustomerPt, networkShortcut);
         if (traCustomerPt.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCustomer", "idexists", "A new TraCustomer cannot already have an ID")).body(null);
@@ -63,11 +66,8 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
         CrmAccount crmAccount = crmAccountMapper.traDTO2DB(traCustomerPt, corNetwork);
         CrmAccount entity = customerService.saveCustomer(crmAccount);
         TraCustomerPT response = crmAccountMapper.traDB2DTO(entity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/customer/" + traCustomerPt.getShortName()))
+            .body(response);
 
     }
 

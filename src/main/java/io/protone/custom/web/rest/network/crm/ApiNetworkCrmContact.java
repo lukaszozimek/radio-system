@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -23,7 +24,7 @@ public interface ApiNetworkCrmContact {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT);
+                                                       @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createContact", notes = "", response = CrmContactPT.class, tags = {"TRAFFIC", "CRM",})
@@ -38,7 +39,7 @@ public interface ApiNetworkCrmContact {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmContactPT> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT);
+                                                        @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "getAllContact", notes = "", response = CrmContactPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})

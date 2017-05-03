@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +28,7 @@ public interface ApiNetworkTrafficOrder {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                     @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT);
+                                                     @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT) throws URISyntaxException;
 
     @ApiOperation(value = "createAnOrder", notes = "", response = TraOrderPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
@@ -41,7 +42,7 @@ public interface ApiNetworkTrafficOrder {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraOrderPT> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                      @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT);
+                                                      @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT) throws URISyntaxException;
 
     @ApiOperation(value = "getAllAnOrders", notes = "", response = TraOrderPT.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {

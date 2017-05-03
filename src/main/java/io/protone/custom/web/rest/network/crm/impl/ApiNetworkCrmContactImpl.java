@@ -13,13 +13,17 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
@@ -35,9 +39,8 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
     private CrmContactMapper crmContactMapper;
 
 
-
     @Override
-    public ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT) {
+    public ResponseEntity<CrmContactPT> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT) throws URISyntaxException {
         log.debug("REST request to update CrmContact : {}, for Network: {}", crmContactPT, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (crmContactPT.getId() == null) {
@@ -50,7 +53,7 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
     }
 
     @Override
-    public ResponseEntity<CrmContactPT> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT) {
+    public ResponseEntity<CrmContactPT> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactPT", required = true) @RequestBody CrmContactPT crmContactPT) throws URISyntaxException {
         log.debug("REST request to save CrmContact : {}, for Network: {}", crmContactPT, networkShortcut);
         if (crmContactPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmContact", "idexists", "A new CrmContact cannot already have an ID")).body(null);
@@ -59,7 +62,8 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
         CrmContact contact = crmContactMapper.DTO2DB(crmContactPT, corNetwork);
         crmContactService.saveContact(contact);
         CrmContactPT response = crmContactMapper.DB2DTO(contact);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/contact/" + crmContactPT.getShortName()))
+            .body(response);
 
     }
 
@@ -68,22 +72,31 @@ public class ApiNetworkCrmContactImpl implements ApiNetworkCrmContact {
                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmContact, for Network: {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        List<CrmContactPT> crmContactPTS = crmContactMapper.DBs2DTOs(crmContactService.getAllContact(corNetwork.getShortcut(), pagable));
-        return ResponseEntity.ok().body(crmContactPTS);
+        List<CrmContactPT> response = crmContactMapper.DBs2DTOs(crmContactService.getAllContact(corNetwork.getShortcut(), pagable));
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
     @Override
     public ResponseEntity<CrmContactPT> getContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmContact : {}, for Network: {}", shortName, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CrmContactPT contact = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, corNetwork.getShortcut()));
-        return ResponseEntity.ok().body(contact);
+        CrmContactPT response = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, corNetwork.getShortcut()));
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<Void> deleteContactUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmContact : {}, for Network: {}", shortName, networkShortcut);
         crmContactService.deleteContact(shortName, networkShortcut);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmContact", shortName.toString())).build();
     }
 }

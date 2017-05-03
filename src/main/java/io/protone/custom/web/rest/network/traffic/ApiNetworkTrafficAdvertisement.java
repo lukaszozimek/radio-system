@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -27,7 +28,7 @@ public interface ApiNetworkTrafficAdvertisement {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraAdvertisementPT> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT);
+                                                                   @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createAdvertisement", notes = "", response = TraAdvertisementPT.class, tags = {"TRAFFIC",})
@@ -42,7 +43,7 @@ public interface ApiNetworkTrafficAdvertisement {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraAdvertisementPT> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT);
+                                                                    @ApiParam(value = "traAdvertisementPT", required = true) @RequestBody TraAdvertisementPT traAdvertisementPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "getAllAdvertisements", notes = "", response = TraAdvertisementPT.class, responseContainer = "List", tags = {"TRAFFIC",})
@@ -64,11 +65,11 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/{idx}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/{id}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteAdvertisementUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx);
+                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
     @ApiOperation(value = "getAdvertisement", notes = "", response = TraAdvertisementPT.class, tags = {"TRAFFIC",})
@@ -77,11 +78,11 @@ public interface ApiNetworkTrafficAdvertisement {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementPT.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementPT.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementPT.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/{idx}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraAdvertisementPT> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "idx", required = true) @PathVariable("idx") Long idx);
+                                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }

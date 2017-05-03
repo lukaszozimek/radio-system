@@ -109,7 +109,7 @@ public class TrafficAdvertisementResourceImplTest {
 
     @Before
     public void initTest() {
-        traAdvertisement = createEntity(em);
+        traAdvertisement = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -177,7 +177,7 @@ public class TrafficAdvertisementResourceImplTest {
     @Transactional
     public void getAllTraAdvertisements() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
 
         // Get all the traAdvertisementList
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement?sort=id,desc",corNetwork.getShortcut()))
@@ -192,7 +192,7 @@ public class TrafficAdvertisementResourceImplTest {
     @Transactional
     public void getTraAdvertisement() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
 
         // Get the traAdvertisement
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}",corNetwork.getShortcut(), traAdvertisement.getId()))
@@ -215,7 +215,7 @@ public class TrafficAdvertisementResourceImplTest {
     @Transactional
     public void updateTraAdvertisement() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
         int databaseSizeBeforeUpdate = traAdvertisementRepository.findAll().size();
 
         // Update the traAdvertisement
@@ -261,7 +261,7 @@ public class TrafficAdvertisementResourceImplTest {
     @Transactional
     public void deleteTraAdvertisement() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
         int databaseSizeBeforeDelete = traAdvertisementRepository.findAll().size();
 
         // Get the traAdvertisement

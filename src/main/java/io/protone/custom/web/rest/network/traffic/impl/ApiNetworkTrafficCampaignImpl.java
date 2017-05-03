@@ -18,9 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+//TODO Add ShortName to enity
 @RestController
 public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign {
     private final Logger log = LoggerFactory.getLogger(ApiNetworkTrafficCampaignImpl.class);
@@ -48,7 +51,7 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
     }
 
     @Override
-    public ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT) {
+    public ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT) throws URISyntaxException {
         log.debug("REST request to update TraCampaign : {}, for Network: {}", traCampaignPT, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (traCampaignPT.getId() == null) {
@@ -66,7 +69,7 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
     }
 
     @Override
-    public ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT) {
+    public ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT) throws URISyntaxException {
         log.debug("REST request to save TraCampaign : {}, for Network: {}", traCampaignPT, networkShortcut);
         if (traCampaignPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCampaign", "idexists", "A new TraCampaign cannot already have an ID")).body(null);
@@ -75,11 +78,8 @@ public class ApiNetworkTrafficCampaignImpl implements ApiNetworkTrafficCampaign 
         TraCampaign crmAccount = traCampaignMapper.DTO2DB(traCampaignPT, corNetwork);
         TraCampaign entity = traCampaignService.saveCampaign(crmAccount);
         TraCampaignPT response = traCampaignMapper.DB2DTO(entity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/campaign/" + response.getName()))
+            .body(response);
 
     }
 

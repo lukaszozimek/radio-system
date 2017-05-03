@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
@@ -40,7 +41,7 @@ public interface ApiNetworkTrafficCampaign {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraCampaignPT> updateCampaignUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT);
+                                                         @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT) throws URISyntaxException;
 
     @ApiOperation(value = "createCampaign", notes = "", response = TraCampaignPT.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
@@ -54,7 +55,7 @@ public interface ApiNetworkTrafficCampaign {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraCampaignPT> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT);
+                                                          @ApiParam(value = "traCampaignPT", required = true) @RequestBody TraCampaignPT traCampaignPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteCampaign", notes = "", response = Void.class, tags = {"TRAFFIC",})

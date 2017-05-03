@@ -114,7 +114,7 @@ public class CrmLeadResourceImplTest {
 
     @Before
     public void initTest() {
-        crmLead = createEntity(em);
+        crmLead = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -164,7 +164,7 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void getAllCrmLeads() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead);
+        crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
 
         // Get all the crmLeadList
         restCrmLeadMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead?sort=id,desc", corNetwork.getShortcut()))
@@ -180,10 +180,10 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void getCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead);
+        crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
 
         // Get the crmLead
-        restCrmLeadMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), crmLead.getId()))
+        restCrmLeadMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), crmLead.getShortname()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmLead.getId().intValue()))
@@ -204,7 +204,7 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void updateCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead);
+        crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
         int databaseSizeBeforeUpdate = crmLeadRepository.findAll().size();
 
         // Update the crmLead
@@ -252,11 +252,11 @@ public class CrmLeadResourceImplTest {
     @Transactional
     public void deleteCrmLead() throws Exception {
         // Initialize the database
-        crmLeadRepository.saveAndFlush(crmLead);
+        crmLeadRepository.saveAndFlush(crmLead.shortname("test"));
         int databaseSizeBeforeDelete = crmLeadRepository.findAll().size();
 
         // Get the crmLead
-        restCrmLeadMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), crmLead.getId())
+        restCrmLeadMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/lead/{shortName}", corNetwork.getShortcut(), crmLead.getShortname())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

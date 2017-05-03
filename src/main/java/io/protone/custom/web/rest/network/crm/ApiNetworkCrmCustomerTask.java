@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -43,7 +44,7 @@ public interface ApiNetworkCrmCustomerTask {
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskPT> updateCustomerActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                             @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
+                                                             @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "createCustomerActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
@@ -59,7 +60,7 @@ public interface ApiNetworkCrmCustomerTask {
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskPT> createCustomerActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                              @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT);
+                                                              @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteCustomerActivityActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})

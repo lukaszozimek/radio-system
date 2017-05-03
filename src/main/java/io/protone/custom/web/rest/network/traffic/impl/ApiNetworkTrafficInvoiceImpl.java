@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +52,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
     }
 
     @Override
-    public ResponseEntity<TraInvoicePT> updateInvoiceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT) {
+    public ResponseEntity<TraInvoicePT> updateInvoiceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT) throws URISyntaxException {
         log.debug("REST request to update TraInvoice : {}, for Network: {}", traInvoicePT, networkShortcut);
         if (traInvoicePT.getId() == null) {
             return createInvoiceUsingPOST(networkShortcut, traInvoicePT);
@@ -69,7 +71,7 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
     }
 
     @Override
-    public ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT) {
+    public ResponseEntity<TraInvoicePT> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traInvoicePT", required = true) @RequestBody TraInvoicePT traInvoicePT) throws URISyntaxException {
         log.debug("REST request to save TraInvoice : {}, for Network: {}", traInvoicePT, networkShortcut);
         if (traInvoicePT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraInvoice", "idexists", "A new TraInvoice cannot already have an ID")).body(null);
@@ -78,11 +80,8 @@ public class ApiNetworkTrafficInvoiceImpl implements ApiNetworkTrafficInvoice {
         TraInvoice traInvoice = traInvoiceMapper.DTO2DB(traInvoicePT, corNetwork);
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoicePT response = traInvoiceMapper.DB2DTO(entity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/invoice/" + response.getId()))
+            .body(response);
     }
 
     @Override
