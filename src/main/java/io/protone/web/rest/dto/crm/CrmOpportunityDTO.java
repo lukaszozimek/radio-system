@@ -1,6 +1,6 @@
 package io.protone.web.rest.dto.crm;
 
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
@@ -39,7 +39,7 @@ public class CrmOpportunityDTO implements Serializable {
 
     private Integer probability = null;
 
-    private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
+    private List<CrmTaskDTO> tasks = new ArrayList<CrmTaskDTO>();
 
 
     public CrmOpportunityDTO id(Long id) {
@@ -232,12 +232,12 @@ public class CrmOpportunityDTO implements Serializable {
         this.probability = probability;
     }
 
-    public CrmOpportunityDTO tasks(List<CrmTaskPT> tasks) {
+    public CrmOpportunityDTO tasks(List<CrmTaskDTO> tasks) {
         this.tasks = tasks;
         return this;
     }
 
-    public CrmOpportunityDTO addTasksItem(CrmTaskPT tasksItem) {
+    public CrmOpportunityDTO addTasksItem(CrmTaskDTO tasksItem) {
         this.tasks.add(tasksItem);
         return this;
     }
@@ -248,11 +248,11 @@ public class CrmOpportunityDTO implements Serializable {
      * @return tasks
      **/
     @ApiModelProperty(value = "")
-    public List<CrmTaskPT> getTasks() {
+    public List<CrmTaskDTO> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<CrmTaskPT> tasks) {
+    public void setTasks(List<CrmTaskDTO> tasks) {
         this.tasks = tasks;
     }
 

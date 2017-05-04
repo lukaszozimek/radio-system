@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmTask;
 import org.mapstruct.*;
@@ -17,29 +17,29 @@ public interface CrmTaskMapper {
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTaskPT DB2DTO(CrmTask cORAddress);
+    CrmTaskDTO DB2DTO(CrmTask cORAddress);
 
-    List<CrmTaskPT> DBs2DTOs(Set<CrmTask> cORAddresses);
+    List<CrmTaskDTO> DBs2DTOs(Set<CrmTask> cORAddresses);
 
-    List<CrmTaskPT> DBs2DTOs(List<CrmTask> cORAddresses);
+    List<CrmTaskDTO> DBs2DTOs(List<CrmTask> cORAddresses);
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTask DTO2DB(CrmTaskPT cORAddressDTO, @Context CorNetwork corNetwork);
+    CrmTask DTO2DB(CrmTaskDTO cORAddressDTO, @Context CorNetwork corNetwork);
 
-    default Set<CrmTask> DTOs2DBs(List<CrmTaskPT> crmTaskPTS, CorNetwork corNetwork) {
+    default Set<CrmTask> DTOs2DBs(List<CrmTaskDTO> crmTaskDTOS, CorNetwork corNetwork) {
         Set<CrmTask> crmTasks = new HashSet<>();
-        if (crmTaskPTS.isEmpty() || crmTaskPTS == null) {
+        if (crmTaskDTOS.isEmpty() || crmTaskDTOS == null) {
             return null;
         }
-        for (CrmTaskPT dto : crmTaskPTS) {
+        for (CrmTaskDTO dto : crmTaskDTOS) {
             crmTasks.add(DTO2DB(dto, corNetwork));
         }
         return crmTasks;
     }
 
     @AfterMapping
-    default void crmTaskPTToCrmTaskAfterMapping(CrmTaskPT dto, @MappingTarget CrmTask entity, @Context CorNetwork corNetwork) {
+    default void crmTaskPTToCrmTaskAfterMapping(CrmTaskDTO dto, @MappingTarget CrmTask entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

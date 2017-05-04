@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.crm;
 
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,49 +16,49 @@ import java.util.List;
 public interface ApiNetworkCrmLeadTask {
 
 
-    @ApiOperation(value = "getAllLeadActivities", notes = "", response = CrmTaskPT.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getAllLeadActivities", notes = "", response = CrmTaskDTO.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmTaskPT>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                 @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                 @ApiParam(value = "pagable", required = true)  Pageable pagable);
+    ResponseEntity<List<CrmTaskDTO>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                  @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
-    @ApiOperation(value = "updateLeadActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "updateLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
-        @ApiResponse(code = 201, message = "Created", response = CrmTaskPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = CrmTaskDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CrmTaskPT> updateLeadActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                         @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
+    ResponseEntity<CrmTaskDTO> updateLeadActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                          @ApiParam(value = "crmTaskDTO", required = true) @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createLeadActivity", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "createLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
-        @ApiResponse(code = 201, message = "Created", response = CrmTaskPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = CrmTaskDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CrmTaskPT> createLeadActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                          @ApiParam(value = "crmTaskPT", required = true) @RequestBody CrmTaskPT crmTaskPT) throws URISyntaxException;
+    ResponseEntity<CrmTaskDTO> createLeadActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                           @ApiParam(value = "crmTaskDTO", required = true) @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteLeadActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})
@@ -75,18 +75,18 @@ public interface ApiNetworkCrmLeadTask {
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "getLeadId", notes = "", response = CrmTaskPT.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getLeadId", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CrmTaskPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CrmTaskDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CrmTaskDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CrmTaskPT> getLeadActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
+    ResponseEntity<CrmTaskDTO> getLeadActivityUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }

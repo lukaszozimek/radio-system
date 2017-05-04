@@ -1,14 +1,12 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLead;
-import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
 import io.protone.repository.crm.CrmLeadRepository;
-import io.protone.repository.crm.CrmOpportunityRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmLeadService;
@@ -21,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +34,6 @@ import java.util.List;
 import static io.protone.web.rest.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -138,7 +134,7 @@ public class CrmLeadTaskResourceImplTest {
         int databaseSizeBeforeCreate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskPT crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
 
         restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), CrmLeadResourceImplTest.createEntity(em).getShortname())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -163,7 +159,7 @@ public class CrmLeadTaskResourceImplTest {
         // Create the CrmTask with an existing ID
         CrmTask existingCrmTask = new CrmTask();
         existingCrmTask.setId(1L);
-        CrmTaskPT existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask);
+        CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), CrmLeadResourceImplTest.createEntity(em).getShortname())
@@ -232,7 +228,7 @@ public class CrmLeadTaskResourceImplTest {
             .activityDate(UPDATED_ACTIVITY_DATE)
             .activityLength(UPDATED_ACTIVITY_LENGTH)
             .comment(UPDATED_COMMENT);
-        CrmTaskPT crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
 
         restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), CrmLeadResourceImplTest.createEntity(em).getShortname())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -255,7 +251,7 @@ public class CrmLeadTaskResourceImplTest {
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskPT crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task", corNetwork.getShortcut(), CrmLeadResourceImplTest.createEntity(em).getShortname())

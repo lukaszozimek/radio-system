@@ -1,51 +1,44 @@
 package io.protone.custom.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * CrmTaskPT
+ * CrmTaskDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CrmTaskPT {
-    @JsonProperty("id")
+public class CrmTaskDTO implements Serializable {
     private Long id = null;
 
-    @JsonProperty("status")
-    private CorDictionaryDTO crmTaskStatus = null;
+    private CorDictionaryDTO status = null;
 
-    @JsonProperty("createdBy")
     private CoreUserThinDTO createdBy = null;
 
-    @JsonProperty("assignedTo")
     private CoreUserThinDTO assignedTo = null;
 
-    @JsonProperty("subject")
+    @NotNull
     private String subject = null;
 
-    @JsonProperty("activityDate")
     private LocalDate activityDate = null;
 
-    @JsonProperty("activityLenght")
-    private Long activityLenght = null;
+    private Long activityLength = null;
 
-    @JsonProperty("comment")
     private String comment = null;
 
-    @JsonProperty("relatedTasks")
     @PodamExclude
-    private List<CrmTaskPT> relatedTasks = new ArrayList<CrmTaskPT>();
+    private List<CrmTaskDTO> relatedTasks = new ArrayList<CrmTaskDTO>();
 
-    public CrmTaskPT id(Long id) {
+    public CrmTaskDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -64,7 +57,7 @@ public class CrmTaskPT {
         this.id = id;
     }
 
-    public CrmTaskPT createdBy(CoreUserThinDTO createdBy) {
+    public CrmTaskDTO createdBy(CoreUserThinDTO createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -83,7 +76,7 @@ public class CrmTaskPT {
         this.createdBy = createdBy;
     }
 
-    public CrmTaskPT assignedTo(CoreUserThinDTO assignedTo) {
+    public CrmTaskDTO assignedTo(CoreUserThinDTO assignedTo) {
         this.assignedTo = assignedTo;
         return this;
     }
@@ -102,22 +95,22 @@ public class CrmTaskPT {
         this.assignedTo = assignedTo;
     }
 
-    public CrmTaskPT subject(String subject) {
+    public CrmTaskDTO subject(String subject) {
         this.subject = subject;
         return this;
     }
 
     @ApiModelProperty(value = "")
-    public CorDictionaryDTO getCrmTaskStatus() {
-        return crmTaskStatus;
+    public CorDictionaryDTO getStatus() {
+        return status;
     }
 
-    public void setCrmTaskStatus(CorDictionaryDTO crmTaskStatus) {
-        this.crmTaskStatus = crmTaskStatus;
+    public void setStatus(CorDictionaryDTO status) {
+        this.status = status;
     }
 
-    public CrmTaskPT crmTaskStatus(CorDictionaryDTO crmTaskStatus) {
-        this.crmTaskStatus = crmTaskStatus;
+    public CrmTaskDTO crmTaskStatus(CorDictionaryDTO crmTaskStatus) {
+        this.status = crmTaskStatus;
         return this;
     }
 
@@ -135,7 +128,7 @@ public class CrmTaskPT {
         this.subject = subject;
     }
 
-    public CrmTaskPT activityDate(LocalDate activityDate) {
+    public CrmTaskDTO activityDate(LocalDate activityDate) {
         this.activityDate = activityDate;
         return this;
     }
@@ -154,26 +147,26 @@ public class CrmTaskPT {
         this.activityDate = activityDate;
     }
 
-    public CrmTaskPT activityLenght(Long activityLenght) {
-        this.activityLenght = activityLenght;
+    public CrmTaskDTO activityLenght(Long activityLenght) {
+        this.activityLength = activityLenght;
         return this;
     }
 
     /**
-     * Get activityLenght
+     * Get activityLength
      *
-     * @return activityLenght
+     * @return activityLength
      **/
     @ApiModelProperty(value = "")
-    public Long getActivityLenght() {
-        return activityLenght;
+    public Long getActivityLength() {
+        return activityLength;
     }
 
-    public void setActivityLenght(Long activityLenght) {
-        this.activityLenght = activityLenght;
+    public void setActivityLength(Long activityLength) {
+        this.activityLength = activityLength;
     }
 
-    public CrmTaskPT comment(String comment) {
+    public CrmTaskDTO comment(String comment) {
         this.comment = comment;
         return this;
     }
@@ -192,12 +185,12 @@ public class CrmTaskPT {
         this.comment = comment;
     }
 
-    public CrmTaskPT relatedTasks(List<CrmTaskPT> relatedTasks) {
+    public CrmTaskDTO relatedTasks(List<CrmTaskDTO> relatedTasks) {
         this.relatedTasks = relatedTasks;
         return this;
     }
 
-    public CrmTaskPT addRelatedTasksItem(CrmTaskPT relatedTasksItem) {
+    public CrmTaskDTO addRelatedTasksItem(CrmTaskDTO relatedTasksItem) {
         this.relatedTasks.add(relatedTasksItem);
         return this;
     }
@@ -208,11 +201,11 @@ public class CrmTaskPT {
      * @return relatedTasks
      **/
     @ApiModelProperty(value = "")
-    public List<CrmTaskPT> getRelatedTasks() {
+    public List<CrmTaskDTO> getRelatedTasks() {
         return relatedTasks;
     }
 
-    public void setRelatedTasks(List<CrmTaskPT> relatedTasks) {
+    public void setRelatedTasks(List<CrmTaskDTO> relatedTasks) {
         this.relatedTasks = relatedTasks;
     }
 
@@ -225,37 +218,37 @@ public class CrmTaskPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CrmTaskPT crmTaskPT = (CrmTaskPT) o;
-        return Objects.equals(this.id, crmTaskPT.id) &&
-            Objects.equals(this.createdBy, crmTaskPT.createdBy) &&
-            Objects.equals(this.assignedTo, crmTaskPT.assignedTo) &&
-            Objects.equals(this.subject, crmTaskPT.subject) &&
-            Objects.equals(this.activityDate, crmTaskPT.activityDate) &&
-            Objects.equals(this.activityLenght, crmTaskPT.activityLenght) &&
-            Objects.equals(this.comment, crmTaskPT.comment) &&
-            Objects.equals(this.relatedTasks, crmTaskPT.relatedTasks) &&
-            Objects.equals(this.crmTaskStatus, crmTaskPT.crmTaskStatus);
+        CrmTaskDTO crmTaskDTO = (CrmTaskDTO) o;
+        return Objects.equals(this.id, crmTaskDTO.id) &&
+            Objects.equals(this.createdBy, crmTaskDTO.createdBy) &&
+            Objects.equals(this.assignedTo, crmTaskDTO.assignedTo) &&
+            Objects.equals(this.subject, crmTaskDTO.subject) &&
+            Objects.equals(this.activityDate, crmTaskDTO.activityDate) &&
+            Objects.equals(this.activityLength, crmTaskDTO.activityLength) &&
+            Objects.equals(this.comment, crmTaskDTO.comment) &&
+            Objects.equals(this.relatedTasks, crmTaskDTO.relatedTasks) &&
+            Objects.equals(this.status, crmTaskDTO.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdBy, assignedTo, subject, activityDate, activityLenght, comment, relatedTasks, crmTaskStatus);
+        return Objects.hash(id, createdBy, assignedTo, subject, activityDate, activityLength, comment, relatedTasks, status);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CrmTaskPT {\n");
+        sb.append("class CrmTaskDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
         sb.append("    assignedTo: ").append(toIndentedString(assignedTo)).append("\n");
         sb.append("    subject: ").append(toIndentedString(subject)).append("\n");
         sb.append("    activityDate: ").append(toIndentedString(activityDate)).append("\n");
-        sb.append("    activityLenght: ").append(toIndentedString(activityLenght)).append("\n");
+        sb.append("    activityLength: ").append(toIndentedString(activityLength)).append("\n");
         sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
         sb.append("    relatedTasks: ").append(toIndentedString(relatedTasks)).append("\n");
-        sb.append("    status: ").append(toIndentedString(crmTaskStatus)).append("\n");
+        sb.append("    status: ").append(toIndentedString(status)).append("\n");
 
         sb.append("}");
         return sb.toString();

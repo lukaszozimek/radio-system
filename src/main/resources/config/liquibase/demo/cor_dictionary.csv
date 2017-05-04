@@ -28,10 +28,10 @@ id;name;description;seq_number;dictionary_type_name;module_name;network_id
 20;Wykonany; ;0;crmStage;crm;1
 21;Wstrzymany; ;0;crmStage;crm;1
 
-22;Nowy; ;0;crmTaskStatus;crm;1
-23;W trakcie realizacji; ;0;crmTaskStatus;crm;1
-24;Wykonany; ;0;crmTaskStatus;crm;1
-25;Wstrzymany; ;0;crmTaskStatus;crm;1
+22;Nowy; ;0;status;crm;1
+23;W trakcie realizacji; ;0;status;crm;1
+24;Wykonany; ;0;status;crm;1
+25;Wstrzymany; ;0;status;crm;1
 
 26;Promos; ;0;traAdvertismentType;traffic;1
 27;Ogłoszenie wyborcze; ;0;traAdvertismentType;traffic;1

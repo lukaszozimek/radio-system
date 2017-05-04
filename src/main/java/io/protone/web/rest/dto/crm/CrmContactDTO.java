@@ -1,7 +1,7 @@
 package io.protone.web.rest.dto.crm;
 
 import io.protone.custom.service.dto.CoreAddressPT;
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
@@ -48,7 +48,7 @@ public class CrmContactDTO implements Serializable {
 
     private TraCustomerPersonPT person;
 
-    private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
+    private List<CrmTaskDTO> tasks = new ArrayList<CrmTaskDTO>();
 
 
     public CrmContactDTO area(CorDictionaryDTO area) {
@@ -57,7 +57,7 @@ public class CrmContactDTO implements Serializable {
     }
 
 
-    public CrmContactDTO addTasksItem(CrmTaskPT tasksItem) {
+    public CrmContactDTO addTasksItem(CrmTaskDTO tasksItem) {
         this.tasks.add(tasksItem);
         return this;
     }
@@ -314,7 +314,7 @@ public class CrmContactDTO implements Serializable {
         this.person = person;
     }
 
-    public CrmContactDTO tasks(List<CrmTaskPT> tasks) {
+    public CrmContactDTO tasks(List<CrmTaskDTO> tasks) {
         this.tasks = tasks;
         return this;
     }
@@ -325,11 +325,11 @@ public class CrmContactDTO implements Serializable {
      * @return tasks
      **/
     @ApiModelProperty(value = "")
-    public List<CrmTaskPT> getTasks() {
+    public List<CrmTaskDTO> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<CrmTaskPT> tasks) {
+    public void setTasks(List<CrmTaskDTO> tasks) {
         this.tasks = tasks;
     }
 

@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.domain.CrmTask;
@@ -34,9 +34,9 @@ public class CrmTaskMapperTest {
 
     private CrmTask crmTask;
 
-    private CrmTaskPT crmTaskPT;
+    private CrmTaskDTO crmTaskDTO;
 
-    private List<CrmTaskPT> crmTaskPTS = new ArrayList<>();
+    private List<CrmTaskDTO> crmTaskDTOS = new ArrayList<>();
 
     private Set<CrmTask> crmTasks = new HashSet<>();
 
@@ -51,14 +51,14 @@ public class CrmTaskMapperTest {
         crmTask.setAssignedTo(factory.manufacturePojo(CorUser.class));
         crmTask.setId(1L);
         crmTasks.add(crmTask);
-        crmTaskPT = factory.manufacturePojo(CrmTaskPT.class);
-        crmTaskPTS.add(crmTaskPT);
+        crmTaskDTO = factory.manufacturePojo(CrmTaskDTO.class);
+        crmTaskDTOS.add(crmTaskDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        CrmTaskPT dto = customCrmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO dto = customCrmTaskMapper.DB2DTO(crmTask);
 
         assertNotNull(dto.getCreatedBy());
         assertNotNull(dto.getAssignedTo());
@@ -71,7 +71,7 @@ public class CrmTaskMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmTaskPT> dtos = customCrmTaskMapper.DBs2DTOs(crmTasks);
+        List<CrmTaskDTO> dtos = customCrmTaskMapper.DBs2DTOs(crmTasks);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -89,7 +89,7 @@ public class CrmTaskMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmTask entity = customCrmTaskMapper.DTO2DB(crmTaskPT, corNetwork);
+        CrmTask entity = customCrmTaskMapper.DTO2DB(crmTaskDTO, corNetwork);
 
 
         assertNotNull(entity.getCreatedBy());
@@ -104,7 +104,7 @@ public class CrmTaskMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        Set<CrmTask> entities = customCrmTaskMapper.DTOs2DBs(crmTaskPTS, corNetwork);
+        Set<CrmTask> entities = customCrmTaskMapper.DTOs2DBs(crmTaskDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.crm.impl;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
@@ -136,7 +136,7 @@ public class CrmCustomerTaskResourceImplTest {
         int databaseSizeBeforeCreate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskPT crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
 
         restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task", corNetwork.getShortcut(), CrmCustomerResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -161,7 +161,7 @@ public class CrmCustomerTaskResourceImplTest {
         // Create the CrmTask with an existing ID
         CrmTask existingCrmTask = new CrmTask();
         existingCrmTask.setId(1L);
-        CrmTaskPT existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask);
+        CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task", corNetwork.getShortcut(), CrmCustomerResourceImplTest.createEntity(em).getShortName())
@@ -230,7 +230,7 @@ public class CrmCustomerTaskResourceImplTest {
             .activityDate(UPDATED_ACTIVITY_DATE)
             .activityLength(UPDATED_ACTIVITY_LENGTH)
             .comment(UPDATED_COMMENT);
-        CrmTaskPT crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
 
         restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task", corNetwork.getShortcut(), CrmCustomerResourceImplTest.createEntity(em).getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -253,7 +253,7 @@ public class CrmCustomerTaskResourceImplTest {
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskPT crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task", corNetwork.getShortcut(), CrmCustomerResourceImplTest.createEntity(em).getShortName())
