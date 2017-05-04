@@ -16,7 +16,7 @@ import javax.validation.Valid;
  * Created by lukaszozimek on 27/02/2017.
  */
 @Api(value = "protone", description = "Protone backend API documentation")
-public interface ApiUser {
+public interface CorUserResource {
     ResponseEntity registerAccount(@Valid @RequestBody CoreManagedUserPT managedUserVM);
 
     ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key);

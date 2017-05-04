@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
-public interface ApiConfigurationUser {
+public interface CorUserConfigurationResource {
 
     @ApiOperation(value = "getAllUsers", notes = "", response = CoreUserPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {

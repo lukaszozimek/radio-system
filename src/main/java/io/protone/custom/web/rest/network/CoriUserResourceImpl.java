@@ -33,9 +33,9 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/v1/user")
-public class ApiUserImpl implements ApiUser {
+public class CoriUserResourceImpl implements CorUserResource {
 
-    private final Logger log = LoggerFactory.getLogger(ApiUserImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CoriUserResourceImpl.class);
 
     private final CorUserRepository userRepository;
 
@@ -47,8 +47,8 @@ public class ApiUserImpl implements ApiUser {
 
     private final CustomMailService mailService;
 
-    public ApiUserImpl(CorUserRepository userRepository, CustomCorUserService userService,
-                       CustomMailService mailService, CorNetworkRepository corNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
+    public CoriUserResourceImpl(CorUserRepository userRepository, CustomCorUserService userService,
+                                CustomMailService mailService, CorNetworkRepository corNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;

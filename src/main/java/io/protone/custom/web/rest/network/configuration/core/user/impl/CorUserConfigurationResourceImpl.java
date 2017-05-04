@@ -9,7 +9,7 @@ import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.CustomMailService;
 import io.protone.custom.service.CustomCorUserService;
 import io.protone.custom.service.dto.CoreUserPT;
-import io.protone.custom.web.rest.network.configuration.core.user.ApiConfigurationUser;
+import io.protone.custom.web.rest.network.configuration.core.user.CorUserConfigurationResource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorUserRepository;
@@ -50,9 +50,9 @@ import java.util.Optional;
  * <p>Another option would be to have a specific JPA entity graph to handle this case.</p>
  */
 @RestController
-public class ApiUserConfigurationImpl implements ApiConfigurationUser {
+public class CorUserConfigurationResourceImpl implements CorUserConfigurationResource {
 
-    private final Logger log = LoggerFactory.getLogger(ApiUserConfigurationImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CorUserConfigurationResourceImpl.class);
 
     private static final String ENTITY_NAME = "userManagement";
 
@@ -64,8 +64,8 @@ public class ApiUserConfigurationImpl implements ApiConfigurationUser {
 
     private final CorNetworkService corNetworkService;
 
-    public ApiUserConfigurationImpl(CorUserRepository userRepository, CustomMailService mailService,
-                                    CustomCorUserService userService, CorNetworkService corNetworkService) {
+    public CorUserConfigurationResourceImpl(CorUserRepository userRepository, CustomMailService mailService,
+                                            CustomCorUserService userService, CorNetworkService corNetworkService) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
