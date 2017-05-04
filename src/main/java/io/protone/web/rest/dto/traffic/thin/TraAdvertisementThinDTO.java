@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * TraAdvertisementPT
+ * TraAdvertisementDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
@@ -167,7 +167,7 @@ public class TraAdvertisementThinDTO {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TraAdvertisementPT {\n");
+        sb.append("class TraAdvertisementDTO {\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    industryId: ").append(toIndentedString(industryId)).append("\n");

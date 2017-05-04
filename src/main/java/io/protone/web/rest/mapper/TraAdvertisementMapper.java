@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.protone.domain.*;
 import org.mapstruct.*;
@@ -17,29 +17,29 @@ public interface TraAdvertisementMapper {
     @Mapping(source = "industry", target = "industryId")
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "type", target = "typeId")
-    TraAdvertisementPT DB2DTO(TraAdvertisement traAdvertisement);
+    TraAdvertisementDTO DB2DTO(TraAdvertisement traAdvertisement);
 
-    List<TraAdvertisementPT> DBs2DTOs(List<TraAdvertisement> traAdvertisements);
+    List<TraAdvertisementDTO> DBs2DTOs(List<TraAdvertisement> traAdvertisements);
 
     @Mapping(source = "mediaItemId", target = "mediaItem")
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "industryId", target = "industry")
     @Mapping(source = "typeId", target = "type")
-    TraAdvertisement DTO2DB(TraAdvertisementPT traAdvertisementDTO, @Context CorNetwork corNetwork);
+    TraAdvertisement DTO2DB(TraAdvertisementDTO traAdvertisementDTO, @Context CorNetwork corNetwork);
 
-    default List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementPT> traAdvertisementDTOs, CorNetwork networkId) {
+    default List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementDTO> traAdvertisementDTOs, CorNetwork networkId) {
         List<TraAdvertisement> traCampaigns = new ArrayList<>();
         if (traAdvertisementDTOs.isEmpty() || traAdvertisementDTOs == null) {
             return null;
         }
-        for (TraAdvertisementPT dto : traAdvertisementDTOs) {
+        for (TraAdvertisementDTO dto : traAdvertisementDTOs) {
             traCampaigns.add(DTO2DB(dto, networkId));
         }
         return traCampaigns;
     }
 
     @AfterMapping
-    default void traAdvertisementPTToTraAdvertisementAfterMapping(TraAdvertisementPT dto, @MappingTarget TraAdvertisement entity, @Context CorNetwork corNetwork) {
+    default void traAdvertisementPTToTraAdvertisementAfterMapping(TraAdvertisementDTO dto, @MappingTarget TraAdvertisement entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

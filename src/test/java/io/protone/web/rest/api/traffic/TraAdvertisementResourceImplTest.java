@@ -1,8 +1,9 @@
-package io.protone.custom.web.rest.network.traffic.impl;
+package io.protone.web.rest.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.api.traffic.impl.TraAdvertisementResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraAdvertisement;
 import io.protone.repository.traffic.TraAdvertisementRepository;
@@ -41,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class TrafficAdvertisementResourceImplTest {
+public class TraAdvertisementResourceImplTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -56,6 +57,7 @@ public class TrafficAdvertisementResourceImplTest {
 
     @Autowired
     private TraAdvertisementMapper traAdvertisementMapper;
+
     @Autowired
     private TraAdvertisementService traAdvertisementService;
 
@@ -80,7 +82,7 @@ public class TrafficAdvertisementResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ApiNetworkTrafficAdvertisementImpl traAdvertisementResource = new ApiNetworkTrafficAdvertisementImpl();
+        TraAdvertisementResourceImpl traAdvertisementResource = new TraAdvertisementResourceImpl();
         ReflectionTestUtils.setField(traAdvertisementResource, "traAdvertisementService", traAdvertisementService);
         ReflectionTestUtils.setField(traAdvertisementResource, "traAdvertisementMapper", traAdvertisementMapper);
         ReflectionTestUtils.setField(traAdvertisementResource, "corNetworkService", corNetworkService);
@@ -118,7 +120,7 @@ public class TrafficAdvertisementResourceImplTest {
         int databaseSizeBeforeCreate = traAdvertisementRepository.findAll().size();
 
         // Create the TraAdvertisement
-        TraAdvertisementPT traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
+        TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
         restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -141,7 +143,7 @@ public class TrafficAdvertisementResourceImplTest {
         // Create the TraAdvertisement with an existing ID
         TraAdvertisement existingTraAdvertisement = new TraAdvertisement();
         existingTraAdvertisement.setId(1L);
-        TraAdvertisementPT existingTraAdvertisementDTO = traAdvertisementMapper.DB2DTO(existingTraAdvertisement);
+        TraAdvertisementDTO existingTraAdvertisementDTO = traAdvertisementMapper.DB2DTO(existingTraAdvertisement);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
@@ -162,7 +164,7 @@ public class TrafficAdvertisementResourceImplTest {
         traAdvertisement.setName(null);
 
         // Create the TraAdvertisement, which fails.
-        TraAdvertisementPT traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
+        TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
         restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -223,7 +225,7 @@ public class TrafficAdvertisementResourceImplTest {
         updatedTraAdvertisement
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION);
-        TraAdvertisementPT traAdvertisementDTO = traAdvertisementMapper.DB2DTO(updatedTraAdvertisement);
+        TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(updatedTraAdvertisement);
 
         restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,7 +246,7 @@ public class TrafficAdvertisementResourceImplTest {
         int databaseSizeBeforeUpdate = traAdvertisementRepository.findAll().size();
 
         // Create the TraAdvertisement
-        TraAdvertisementPT traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
+        TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())

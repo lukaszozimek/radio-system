@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,9 +33,9 @@ public class TraAdvertisementMapperTest {
 
     private TraAdvertisement traAdvertisement;
 
-    private TraAdvertisementPT traAdvertisementPT;
+    private TraAdvertisementDTO traAdvertisementDTO;
 
-    private List<TraAdvertisementPT> traAdvertisementPTS = new ArrayList<>();
+    private List<TraAdvertisementDTO> traAdvertisementDTOS = new ArrayList<>();
 
     private List<TraAdvertisement> traAdvertisements = new ArrayList<>();
 
@@ -51,15 +51,15 @@ public class TraAdvertisementMapperTest {
         traAdvertisement.setType(factory.manufacturePojo(CorDictionary.class));
         traAdvertisement.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
         traAdvertisements.add(traAdvertisement);
-        traAdvertisementPT = factory.manufacturePojo(TraAdvertisementPT.class);
-        traAdvertisementPTS.add(traAdvertisementPT);
+        traAdvertisementDTO = factory.manufacturePojo(TraAdvertisementDTO.class);
+        traAdvertisementDTOS.add(traAdvertisementDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        TraAdvertisementPT dto = customTRAAdvertisementMapper.DB2DTO(traAdvertisement);
+        TraAdvertisementDTO dto = customTRAAdvertisementMapper.DB2DTO(traAdvertisement);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getMediaItemId());
@@ -72,7 +72,7 @@ public class TraAdvertisementMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraAdvertisementPT> dtos = customTRAAdvertisementMapper.DBs2DTOs(traAdvertisements);
+        List<TraAdvertisementDTO> dtos = customTRAAdvertisementMapper.DBs2DTOs(traAdvertisements);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -90,7 +90,7 @@ public class TraAdvertisementMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementPTS, corNetwork);
+        List<TraAdvertisement> entities = customTRAAdvertisementMapper.DTOs2DBs(traAdvertisementDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -111,7 +111,7 @@ public class TraAdvertisementMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementPT, corNetwork);
+        TraAdvertisement entity = customTRAAdvertisementMapper.DTO2DB(traAdvertisementDTO, corNetwork);
 
 
         assertNotNull(entity.getId());

@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.traffic;
 
-import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +24,9 @@ public interface ApiNetworkTrafficCustomerAdvertisement {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}/advertisement",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraAdvertisementPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                  @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                                  @ApiParam(value = "pagable", required = true)  Pageable pagable);
+    ResponseEntity<List<TraAdvertisementDTO>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                                   @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
 }

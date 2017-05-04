@@ -1,42 +1,37 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.traffic;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * TraAdvertisementPT
+ * TraAdvertisementDTO
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraAdvertisementPT {
-    @JsonProperty("id")
+public class TraAdvertisementDTO implements Serializable {
+
     private Long id = null;
 
-    @JsonProperty("customerId")
     private TraCustomerThinDTO customerId = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("description")
     private String description = null;
 
-    @JsonProperty("industryId")
     private CorDictionaryDTO industryId = null;
 
-    @JsonProperty("mediaItemId")
     private LibMediaItemThinDTO mediaItemId = null;
 
-    @JsonProperty("typeId")
     private CorDictionaryDTO typeId;
 
 
-    public TraAdvertisementPT type(CorDictionaryDTO typePT) {
+    public TraAdvertisementDTO type(CorDictionaryDTO typePT) {
         this.typeId = typePT;
         return this;
     }
@@ -50,7 +45,7 @@ public class TraAdvertisementPT {
         this.typeId = typeId;
     }
 
-    public TraAdvertisementPT customerId(TraCustomerThinDTO customerId) {
+    public TraAdvertisementDTO customerId(TraCustomerThinDTO customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -69,7 +64,7 @@ public class TraAdvertisementPT {
         this.customerId = customerId;
     }
 
-    public TraAdvertisementPT description(String description) {
+    public TraAdvertisementDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -88,7 +83,7 @@ public class TraAdvertisementPT {
         this.description = description;
     }
 
-    public TraAdvertisementPT id(Long id) {
+    public TraAdvertisementDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -107,7 +102,7 @@ public class TraAdvertisementPT {
         this.id = id;
     }
 
-    public TraAdvertisementPT industryId(CorDictionaryDTO industryId) {
+    public TraAdvertisementDTO industryId(CorDictionaryDTO industryId) {
         this.industryId = industryId;
         return this;
     }
@@ -126,7 +121,7 @@ public class TraAdvertisementPT {
         this.industryId = industryId;
     }
 
-    public TraAdvertisementPT mediaItemId(LibMediaItemThinDTO mediaItemId) {
+    public TraAdvertisementDTO mediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
         return this;
     }
@@ -145,7 +140,7 @@ public class TraAdvertisementPT {
         this.mediaItemId = mediaItemId;
     }
 
-    public TraAdvertisementPT name(String name) {
+    public TraAdvertisementDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -173,13 +168,13 @@ public class TraAdvertisementPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraAdvertisementPT traAdvertisementPT = (TraAdvertisementPT) o;
-        return Objects.equals(this.customerId, traAdvertisementPT.customerId) &&
-            Objects.equals(this.description, traAdvertisementPT.description) &&
-            Objects.equals(this.id, traAdvertisementPT.id) &&
-            Objects.equals(this.industryId, traAdvertisementPT.industryId) &&
-            Objects.equals(this.mediaItemId, traAdvertisementPT.mediaItemId) &&
-            Objects.equals(this.name, traAdvertisementPT.name);
+        TraAdvertisementDTO traAdvertisementDTO = (TraAdvertisementDTO) o;
+        return Objects.equals(this.customerId, traAdvertisementDTO.customerId) &&
+            Objects.equals(this.description, traAdvertisementDTO.description) &&
+            Objects.equals(this.id, traAdvertisementDTO.id) &&
+            Objects.equals(this.industryId, traAdvertisementDTO.industryId) &&
+            Objects.equals(this.mediaItemId, traAdvertisementDTO.mediaItemId) &&
+            Objects.equals(this.name, traAdvertisementDTO.name);
     }
 
     @Override
@@ -190,7 +185,7 @@ public class TraAdvertisementPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TraAdvertisementPT {\n");
+        sb.append("class TraAdvertisementDTO {\n");
 
         sb.append("    customerId: ").append(toIndentedString(customerId)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ import java.util.Objects;
 public class TraCustomerAdvertismentsPT {
 
     @JsonProperty("mediaitem")
-    private List<TraAdvertisementPT> mediaitem = new ArrayList<TraAdvertisementPT>();
+    private List<TraAdvertisementDTO> mediaitem = new ArrayList<TraAdvertisementDTO>();
 
-    public TraCustomerAdvertismentsPT mediaitem(List<TraAdvertisementPT> mediaitem) {
+    public TraCustomerAdvertismentsPT mediaitem(List<TraAdvertisementDTO> mediaitem) {
         this.mediaitem = mediaitem;
         return this;
     }
 
-    public TraCustomerAdvertismentsPT addMediaitemItem(TraAdvertisementPT mediaitemItem) {
+    public TraCustomerAdvertismentsPT addMediaitemItem(TraAdvertisementDTO mediaitemItem) {
         this.mediaitem.add(mediaitemItem);
         return this;
     }
@@ -33,11 +34,11 @@ public class TraCustomerAdvertismentsPT {
      * @return mediaitem
      **/
     @ApiModelProperty(value = "")
-    public List<TraAdvertisementPT> getMediaitem() {
+    public List<TraAdvertisementDTO> getMediaitem() {
         return mediaitem;
     }
 
-    public void setMediaitem(List<TraAdvertisementPT> mediaitem) {
+    public void setMediaitem(List<TraAdvertisementDTO> mediaitem) {
         this.mediaitem = mediaitem;
     }
 

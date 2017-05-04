@@ -3,7 +3,7 @@ package io.protone.custom.web.rest.network.traffic.impl;
 import io.protone.domain.TraAdvertisement;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraAdvertisementService;
-import io.protone.custom.service.dto.TraAdvertisementPT;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerAdvertisement;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import io.swagger.annotations.ApiParam;
@@ -31,12 +31,12 @@ public class ApiNetworkTrafficCustomerAdvertisementImpl implements ApiNetworkTra
     private TraAdvertisementMapper traAdvertisementMapper;
 
     @Override
-    public ResponseEntity<List<TraAdvertisementPT>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                         @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraAdvertisementDTO>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraAdvertisement, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
         List<TraAdvertisement> entity = traAdvertisementService.getCustomerAdvertisements(customerShortcut, networkShortcut, pagable);
-        List<TraAdvertisementPT> response = traAdvertisementMapper.DBs2DTOs(entity);
+        List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,
