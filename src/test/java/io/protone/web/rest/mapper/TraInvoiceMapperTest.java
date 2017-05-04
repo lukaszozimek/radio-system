@@ -1,7 +1,7 @@
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
 import io.protone.domain.*;
 import io.protone.web.rest.mapper.TraInvoiceMapper;
 import org.junit.Before;
@@ -31,9 +31,9 @@ public class TraInvoiceMapperTest {
 
     private TraInvoice traInvoice;
 
-    private TraInvoicePT traInvoicePT;
+    private TraInvoiceDTO traInvoiceDTO;
 
-    private List<TraInvoicePT> traInvoicePTS = new ArrayList<>();
+    private List<TraInvoiceDTO> traInvoiceDTOS = new ArrayList<>();
 
     private List<TraInvoice> traInvoices = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -48,15 +48,15 @@ public class TraInvoiceMapperTest {
         traInvoice.setPrice(new BigDecimal(1));
         traInvoice.setId(1L);
         traInvoices.add(traInvoice);
-        traInvoicePT = factory.manufacturePojo(TraInvoicePT.class);
-        traInvoicePTS.add(traInvoicePT);
+        traInvoiceDTO = factory.manufacturePojo(TraInvoiceDTO.class);
+        traInvoiceDTOS.add(traInvoiceDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
     @Test
     public void DB2DTO() throws Exception {
-        TraInvoicePT dto = customTraInvoiceMapper.DB2DTO(traInvoice);
+        TraInvoiceDTO dto = customTraInvoiceMapper.DB2DTO(traInvoice);
 
         assertNotNull(dto.getOrders());
         assertNotNull(dto.getCustomerId());
@@ -70,7 +70,7 @@ public class TraInvoiceMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraInvoicePT> dtos = customTraInvoiceMapper.DBs2DTOs(traInvoices);
+        List<TraInvoiceDTO> dtos = customTraInvoiceMapper.DBs2DTOs(traInvoices);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -90,7 +90,7 @@ public class TraInvoiceMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraInvoice> entities = customTraInvoiceMapper.DTOs2DBs(traInvoicePTS, corNetwork);
+        List<TraInvoice> entities = customTraInvoiceMapper.DTOs2DBs(traInvoiceDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -111,7 +111,7 @@ public class TraInvoiceMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraInvoice entity = customTraInvoiceMapper.DTO2DB(traInvoicePT, corNetwork);
+        TraInvoice entity = customTraInvoiceMapper.DTO2DB(traInvoiceDTO, corNetwork);
 
 
         assertNotNull(entity.getCustomer());

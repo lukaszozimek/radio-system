@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.traffic;
 
-import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +14,18 @@ import java.util.List;
 public interface ApiNetworkTrafficCustomerInvoice {
 
 
-    @ApiOperation(value = "getAllInvoicesForCustomer", notes = "", response = TraInvoicePT.class, responseContainer = "List", tags = {"TRAFFIC",})
+    @ApiOperation(value = "getAllInvoicesForCustomer", notes = "", response = TraInvoiceDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = TraInvoicePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = TraInvoicePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = TraInvoicePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraInvoicePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = TraInvoiceDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraInvoiceDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraInvoiceDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraInvoiceDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}/invoice",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraInvoicePT>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<TraInvoiceDTO>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                            @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "notifyAboutUnpaidInvoiceCustomer", notes = "", response = Void.class, tags = {"TRAFFIC",})

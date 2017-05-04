@@ -1,13 +1,17 @@
-package io.protone.custom.web.rest.network.traffic.impl;
+package io.protone.web.rest.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.domain.TraInvoice;
+import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraInvoiceRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraInvoiceService;
+import io.protone.web.rest.api.crm.CrmCustomerResourceImplTest;
+import io.protone.web.rest.api.traffic.impl.TraInvoiceResourceImpl;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraInvoiceMapper;
 import org.junit.Before;
@@ -44,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class TrafficInvoiceResourceImplTest {
+public class TraInvoiceResourceImplTest {
 
     private static final Boolean DEFAULT_PAID = false;
     private static final Boolean UPDATED_PAID = true;
@@ -82,25 +86,13 @@ public class TrafficInvoiceResourceImplTest {
     private MockMvc restTraInvoiceMockMvc;
 
     private TraInvoice traInvoice;
+
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ApiNetworkTrafficInvoiceImpl traInvoiceResource = new ApiNetworkTrafficInvoiceImpl();
+    private CrmAccount crmAccount;
 
-        ReflectionTestUtils.setField(traInvoiceResource, "traInvoiceService", traInvoiceService);
-        ReflectionTestUtils.setField(traInvoiceResource, "traInvoiceMapper", traInvoiceMapper);
-        ReflectionTestUtils.setField(traInvoiceResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restTraInvoiceMockMvc = MockMvcBuilders.standaloneSetup(traInvoiceResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
+    @Autowired
+    private CrmAccountRepository crmAccountRepository;
 
     /**
      * Create an entity for this test.
@@ -117,6 +109,24 @@ public class TrafficInvoiceResourceImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        TraInvoiceResourceImpl traInvoiceResource = new TraInvoiceResourceImpl();
+
+        ReflectionTestUtils.setField(traInvoiceResource, "traInvoiceService", traInvoiceService);
+        ReflectionTestUtils.setField(traInvoiceResource, "traInvoiceMapper", traInvoiceMapper);
+        ReflectionTestUtils.setField(traInvoiceResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restTraInvoiceMockMvc = MockMvcBuilders.standaloneSetup(traInvoiceResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         traInvoice = createEntity(em).network(corNetwork);
     }
@@ -124,12 +134,13 @@ public class TrafficInvoiceResourceImplTest {
     @Test
     @Transactional
     public void createTraInvoice() throws Exception {
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         int databaseSizeBeforeCreate = traInvoiceRepository.findAll().size();
 
         // Create the TraInvoice
-        TraInvoicePT traInvoiceDTO = traInvoiceMapper.DB2DTO(traInvoice);
+        TraInvoiceDTO traInvoiceDTO = traInvoiceMapper.DB2DTO(traInvoice.customer(crmAccount));
 
-        restTraInvoiceMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/invoice",corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traInvoiceDTO)))
             .andExpect(status().isCreated());
@@ -151,10 +162,10 @@ public class TrafficInvoiceResourceImplTest {
         // Create the TraInvoice with an existing ID
         TraInvoice existingTraInvoice = new TraInvoice();
         existingTraInvoice.setId(1L);
-        TraInvoicePT existingTraInvoiceDTO = traInvoiceMapper.DB2DTO(existingTraInvoice);
+        TraInvoiceDTO existingTraInvoiceDTO = traInvoiceMapper.DB2DTO(existingTraInvoice.customer(crmAccount));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraInvoiceMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/invoice",corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingTraInvoiceDTO)))
             .andExpect(status().isBadRequest());
@@ -171,7 +182,7 @@ public class TrafficInvoiceResourceImplTest {
         traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
 
         // Get all the traInvoiceList
-        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice?sort=id,desc",corNetwork.getShortcut()))
+        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traInvoice.getId().intValue())))
@@ -187,7 +198,7 @@ public class TrafficInvoiceResourceImplTest {
         traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
 
         // Get the traInvoice
-        restTraInvoiceMockMvc.perform(get("/api/tra-invoices/{id}", traInvoice.getId()))
+        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), traInvoice.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traInvoice.getId().intValue()))
@@ -200,15 +211,16 @@ public class TrafficInvoiceResourceImplTest {
     @Transactional
     public void getNonExistingTraInvoice() throws Exception {
         // Get the traInvoice
-        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/{id}",corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateTraInvoice() throws Exception {
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         // Initialize the database
-        traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
+        traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork).customer(crmAccount));
         int databaseSizeBeforeUpdate = traInvoiceRepository.findAll().size();
 
         // Update the traInvoice
@@ -217,9 +229,9 @@ public class TrafficInvoiceResourceImplTest {
             .paid(UPDATED_PAID)
             .price(UPDATED_PRICE)
             .paymentDay(UPDATED_PAYMENT_DAY);
-        TraInvoicePT traInvoiceDTO = traInvoiceMapper.DB2DTO(updatedTraInvoice);
+        TraInvoiceDTO traInvoiceDTO = traInvoiceMapper.DB2DTO(updatedTraInvoice);
 
-        restTraInvoiceMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/invoice",corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traInvoiceDTO)))
             .andExpect(status().isOk());
@@ -236,13 +248,15 @@ public class TrafficInvoiceResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingTraInvoice() throws Exception {
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+
         int databaseSizeBeforeUpdate = traInvoiceRepository.findAll().size();
 
         // Create the TraInvoice
-        TraInvoicePT traInvoiceDTO = traInvoiceMapper.DB2DTO(traInvoice);
+        TraInvoiceDTO traInvoiceDTO = traInvoiceMapper.DB2DTO(traInvoice.customer(crmAccount));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraInvoiceMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/invoice",corNetwork.getShortcut())
+        restTraInvoiceMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/invoice", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traInvoiceDTO)))
             .andExpect(status().isCreated());
@@ -255,12 +269,13 @@ public class TrafficInvoiceResourceImplTest {
     @Test
     @Transactional
     public void deleteTraInvoice() throws Exception {
+
         // Initialize the database
         traInvoiceRepository.saveAndFlush(traInvoice.network(corNetwork));
         int databaseSizeBeforeDelete = traInvoiceRepository.findAll().size();
 
         // Get the traInvoice
-        restTraInvoiceMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/invoice/{id}",corNetwork.getShortcut(), traInvoice.getId())
+        restTraInvoiceMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/invoice/{id}", corNetwork.getShortcut(), traInvoice.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

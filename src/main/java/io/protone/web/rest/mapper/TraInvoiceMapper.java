@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
-import io.protone.custom.service.dto.TraInvoicePT;
+import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
@@ -20,28 +20,28 @@ public interface TraInvoiceMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")
     @Mapping(source = "orders", target = "orders")
-    TraInvoicePT DB2DTO(TraInvoice traInvoice);
+    TraInvoiceDTO DB2DTO(TraInvoice traInvoice);
 
-    List<TraInvoicePT> DBs2DTOs(List<TraInvoice> traInvoices);
+    List<TraInvoiceDTO> DBs2DTOs(List<TraInvoice> traInvoices);
 
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraInvoice DTO2DB(TraInvoicePT traInvoiceDTO, @Context CorNetwork corNetwork);
+    TraInvoice DTO2DB(TraInvoiceDTO traInvoiceDTO, @Context CorNetwork corNetwork);
 
-    default List<TraInvoice> DTOs2DBs(List<TraInvoicePT> traInvoiceDTOs, CorNetwork networkId) {
+    default List<TraInvoice> DTOs2DBs(List<TraInvoiceDTO> traInvoiceDTOs, CorNetwork networkId) {
         List<TraInvoice> traOrders = new ArrayList<>();
         if (traInvoiceDTOs.isEmpty() || traInvoiceDTOs == null) {
             return null;
         }
-        for (TraInvoicePT dto : traInvoiceDTOs) {
+        for (TraInvoiceDTO dto : traInvoiceDTOs) {
             traOrders.add(DTO2DB(dto, networkId));
         }
         return traOrders;
     }
 
     @AfterMapping
-    default void traInvoicePTToTraInvoiceAfterMapping(TraInvoicePT dto, @MappingTarget TraInvoice entity, @Context CorNetwork corNetwork) {
+    default void traInvoicePTToTraInvoiceAfterMapping(TraInvoiceDTO dto, @MappingTarget TraInvoice entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 
