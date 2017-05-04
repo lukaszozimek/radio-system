@@ -30,30 +30,27 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     private final Logger log = LoggerFactory.getLogger(ApiNetworkTrafficCustomerImpl.class);
 
     @Inject
-    private CrmCustomerService customerService;
+    private CrmCustomerService crmCustomerService;
 
     @Inject
-    private CorNetworkService networkService;
+    private CorNetworkService corNetworkService;
 
     @Inject
-    private CrmAccountMapper crmAccountMapper;
+    private CrmAccountMapper accountMapper;
 
     @Override
     public ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                        @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException {
         log.debug("REST request to update TraCustomer : {}, for Network: {}", traCustomerPt, networkShortcut);
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (traCustomerPt.getId() == null) {
             return createTrafficCustomerUsingPOST(networkShortcut, traCustomerPt);
         }
-        CrmAccount crmAccount = crmAccountMapper.traDTO2DB(traCustomerPt, corNetwork);
-        CrmAccount entity = customerService.saveCustomer(crmAccount);
-        TraCustomerPT response = crmAccountMapper.traDB2DTO(entity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerPt, corNetwork);
+        CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
+        TraCustomerPT response = accountMapper.traDB2DTO(entity);
+        return ResponseEntity.ok()
+            .body(response);
     }
 
     @Override
@@ -62,10 +59,10 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
         if (traCustomerPt.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCustomer", "idexists", "A new TraCustomer cannot already have an ID")).body(null);
         }
-        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
-        CrmAccount crmAccount = crmAccountMapper.traDTO2DB(traCustomerPt, corNetwork);
-        CrmAccount entity = customerService.saveCustomer(crmAccount);
-        TraCustomerPT response = crmAccountMapper.traDB2DTO(entity);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerPt, corNetwork);
+        CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
+        TraCustomerPT response = accountMapper.traDB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/customer/" + traCustomerPt.getShortName()))
             .body(response);
 
@@ -75,8 +72,8 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     public ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCustomer, for Network: {}", networkShortcut);
-        List<CrmAccount> entity = customerService.getAllCustomers(networkShortcut, pagable);
-        List<TraCustomerPT> response = crmAccountMapper.traDBs2DTOs(entity);
+        List<CrmAccount> entity = crmCustomerService.getAllCustomers(networkShortcut, pagable);
+        List<TraCustomerPT> response = accountMapper.traDBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -87,8 +84,8 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     @Override
     public ResponseEntity<TraCustomerPT> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
         log.debug("REST request to get TraCustomer : {}, for Network: {}", customerShortcut, networkShortcut);
-        CrmAccount entity = customerService.getCustomer(customerShortcut, networkShortcut);
-        TraCustomerPT response = crmAccountMapper.traDB2DTO(entity);
+        CrmAccount entity = crmCustomerService.getCustomer(customerShortcut, networkShortcut);
+        TraCustomerPT response = accountMapper.traDB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -100,7 +97,7 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     @Override
     public ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
         log.debug("REST request to delete TraCustomer : {}, for Network: {}", customerShortcut, networkShortcut);
-        customerService.deleteCustomer(customerShortcut, networkShortcut);
+        crmCustomerService.deleteCustomer(customerShortcut, networkShortcut);
         return ResponseEntity.ok().build();
     }
 }
