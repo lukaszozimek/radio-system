@@ -1,8 +1,8 @@
-package io.protone.custom.web.rest.network.traffic.impl;
+package io.protone.web.rest.api.traffic.impl;
 
 
-import io.protone.custom.service.dto.TraCustomerPT;
-import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomer;
+import io.protone.web.rest.dto.traffic.TraCustomerDTO;
+import io.protone.web.rest.api.traffic.TraCustomerResource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
@@ -20,14 +20,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer {
-    private final Logger log = LoggerFactory.getLogger(ApiNetworkTrafficCustomerImpl.class);
+public class TraCustomerResourceImpl implements TraCustomerResource {
+    private final Logger log = LoggerFactory.getLogger(TraCustomerResourceImpl.class);
 
     @Inject
     private CrmCustomerService crmCustomerService;
@@ -39,41 +40,42 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     private CrmAccountMapper accountMapper;
 
     @Override
-    public ResponseEntity<TraCustomerPT> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException {
-        log.debug("REST request to update TraCustomer : {}, for Network: {}", traCustomerPt, networkShortcut);
+    public ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                        @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestBody TraCustomerDTO traCustomerDTO) throws URISyntaxException {
+        log.debug("REST request to update TraCustomer : {}, for Network: {}", traCustomerDTO, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        if (traCustomerPt.getId() == null) {
-            return createTrafficCustomerUsingPOST(networkShortcut, traCustomerPt);
+        if (traCustomerDTO.getId() == null) {
+            return createTrafficCustomerUsingPOST(networkShortcut, traCustomerDTO);
         }
-        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerPt, corNetwork);
+        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerDTO, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
-        TraCustomerPT response = accountMapper.traDB2DTO(entity);
+        TraCustomerDTO response = accountMapper.traDB2DTO(entity);
         return ResponseEntity.ok()
             .body(response);
     }
 
     @Override
-    public ResponseEntity<TraCustomerPT> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCustomerPt", required = true) @RequestBody TraCustomerPT traCustomerPt) throws URISyntaxException {
-        log.debug("REST request to save TraCustomer : {}, for Network: {}", traCustomerPt, networkShortcut);
-        if (traCustomerPt.getId() != null) {
+    public ResponseEntity<TraCustomerDTO> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestBody TraCustomerDTO traCustomerDTO) throws URISyntaxException {
+        log.debug("REST request to save TraCustomer : {}, for Network: {}", traCustomerDTO, networkShortcut);
+        if (traCustomerDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCustomer", "idexists", "A new TraCustomer cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerPt, corNetwork);
+        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerDTO, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
-        TraCustomerPT response = accountMapper.traDB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/customer/" + traCustomerPt.getShortName()))
+        TraCustomerDTO response = accountMapper.traDB2DTO(entity);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/customer/" + traCustomerDTO.getShortName()))
             .body(response);
 
     }
 
     @Override
-    public ResponseEntity<List<TraCustomerPT>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                              @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraCustomerDTO>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCustomer, for Network: {}", networkShortcut);
         List<CrmAccount> entity = crmCustomerService.getAllCustomers(networkShortcut, pagable);
-        List<TraCustomerPT> response = accountMapper.traDBs2DTOs(entity);
+        List<TraCustomerDTO> response = accountMapper.traDBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -82,10 +84,10 @@ public class ApiNetworkTrafficCustomerImpl implements ApiNetworkTrafficCustomer 
     }
 
     @Override
-    public ResponseEntity<TraCustomerPT> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
+    public ResponseEntity<TraCustomerDTO> getTrafficCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
         log.debug("REST request to get TraCustomer : {}, for Network: {}", customerShortcut, networkShortcut);
         CrmAccount entity = crmCustomerService.getCustomer(customerShortcut, networkShortcut);
-        TraCustomerPT response = accountMapper.traDB2DTO(entity);
+        TraCustomerDTO response = accountMapper.traDB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

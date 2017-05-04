@@ -1,6 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.*;
+import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import io.protone.domain.*;
 import org.mapstruct.*;
@@ -56,9 +57,9 @@ public interface CrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    TraCustomerPT traDB2DTO(CrmAccount crmAccount);
+    TraCustomerDTO traDB2DTO(CrmAccount crmAccount);
 
-    List<TraCustomerPT> traDBs2DTOs(List<CrmAccount> crmAccounts);
+    List<TraCustomerDTO> traDBs2DTOs(List<CrmAccount> crmAccounts);
 
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
@@ -67,21 +68,21 @@ public interface CrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmAccount traDTO2DB(TraCustomerPT crmAccountDTO, @Context CorNetwork networkId);
+    CrmAccount traDTO2DB(TraCustomerDTO crmAccountDTO, @Context CorNetwork networkId);
 
-    default List<CrmAccount> traDTOs2DBs(List<TraCustomerPT> crmAccountDTOs, CorNetwork networkId) {
+    default List<CrmAccount> traDTOs2DBs(List<TraCustomerDTO> crmAccountDTOs, CorNetwork networkId) {
         List<CrmAccount> crmAccounts = new ArrayList<>();
         if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
             return null;
         }
-        for (TraCustomerPT dto : crmAccountDTOs) {
+        for (TraCustomerDTO dto : crmAccountDTOs) {
             crmAccounts.add(traDTO2DB(dto, networkId));
         }
         return crmAccounts;
     }
 
     @AfterMapping
-    default void traCustomerPTToCrmAccountAfterMapping(TraCustomerPT dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
+    default void traCustomerPTToCrmAccountAfterMapping(TraCustomerDTO dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

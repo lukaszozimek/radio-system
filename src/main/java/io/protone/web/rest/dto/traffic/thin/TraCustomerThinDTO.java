@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * TraCustomerPT
+ * TraCustomerDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
@@ -202,7 +202,7 @@ public class TraCustomerThinDTO {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TraCustomerPT {\n");
+        sb.append("class TraCustomerDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");

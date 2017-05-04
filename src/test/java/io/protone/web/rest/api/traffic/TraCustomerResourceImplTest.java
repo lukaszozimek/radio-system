@@ -1,11 +1,9 @@
-package io.protone.custom.web.rest.network.traffic.impl;
+package io.protone.web.rest.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.service.dto.TraCustomerPT;
+import io.protone.web.rest.api.traffic.impl.TraCustomerResourceImpl;
+import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.custom.web.rest.network.TestUtil;
-import io.protone.custom.web.rest.network.crm.impl.ApiNetworkCrmCustomerImpl;
-import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomer;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.repository.crm.CrmAccountRepository;
@@ -34,18 +32,15 @@ import java.util.List;
 import static io.protone.web.rest.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 02/05/2017.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class ApiNetworkTrafficCustomerImplTest {
+public class TraCustomerResourceImplTest {
 
     private static final String DEFAULT_SHORT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_NAME = "BBBBBBBBBB";
@@ -94,24 +89,6 @@ public class ApiNetworkTrafficCustomerImplTest {
 
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ApiNetworkTrafficCustomerImpl apiNetworkTrafficCustomer = new ApiNetworkTrafficCustomerImpl();
-
-        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "crmCustomerService", crmCustomerService);
-        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "accountMapper", crmAccountMapper);
-        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restCrmAccountMockMvc = MockMvcBuilders.standaloneSetup(apiNetworkTrafficCustomer)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
      * <p>
@@ -130,6 +107,24 @@ public class ApiNetworkTrafficCustomerImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        TraCustomerResourceImpl apiNetworkTrafficCustomer = new TraCustomerResourceImpl();
+
+        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "crmCustomerService", crmCustomerService);
+        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "accountMapper", crmAccountMapper);
+        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restCrmAccountMockMvc = MockMvcBuilders.standaloneSetup(apiNetworkTrafficCustomer)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         crmAccount = createEntity(em).network(corNetwork);
     }
@@ -140,11 +135,11 @@ public class ApiNetworkTrafficCustomerImplTest {
         int databaseSizeBeforeCreate = crmAccountRepository.findAll().size();
 
         // Create the CrmAccount
-        TraCustomerPT traCustomerPT = crmAccountMapper.traDB2DTO(crmAccount);
+        TraCustomerDTO traCustomerDTO = crmAccountMapper.traDB2DTO(crmAccount);
 
-        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCustomerPT)))
+            .content(TestUtil.convertObjectToJsonBytes(traCustomerDTO)))
             .andExpect(status().isCreated());
 
         // Validate the CrmAccount in the database
@@ -167,13 +162,13 @@ public class ApiNetworkTrafficCustomerImplTest {
         // Create the CrmAccount with an existing ID
         CrmAccount existingCrmAccount = new CrmAccount();
         existingCrmAccount.setId(1L);
-        TraCustomerPT existingTraCustomerPT = crmAccountMapper.traDB2DTO(existingCrmAccount);
+        TraCustomerDTO existingTraCustomerDTO = crmAccountMapper.traDB2DTO(existingCrmAccount);
 
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraCustomerPT)))
+            .content(TestUtil.convertObjectToJsonBytes(existingTraCustomerDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -193,8 +188,8 @@ public class ApiNetworkTrafficCustomerImplTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmAccount.getId().intValue())))
             .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].idNumber1").value(hasItem(DEFAULT_EXTERNAL_ID_1.toString())))
-            .andExpect(jsonPath("$.[*].idNumber2").value(hasItem(DEFAULT_EXTERNAL_ID_2.toString())))
+            .andExpect(jsonPath("$.[*].externalId1").value(hasItem(DEFAULT_EXTERNAL_ID_1.toString())))
+            .andExpect(jsonPath("$.[*].externalId2").value(hasItem(DEFAULT_EXTERNAL_ID_2.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].paymentDelay").value(hasItem(DEFAULT_PAYMENT_DELAY)))
             .andExpect(jsonPath("$.[*].vatNumber").value(hasItem(DEFAULT_VAT_NUMBER.toString())));
@@ -212,12 +207,51 @@ public class ApiNetworkTrafficCustomerImplTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmAccount.getId().intValue()))
             .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORT_NAME.toString()))
-            .andExpect(jsonPath("$.idNumber1").value(DEFAULT_EXTERNAL_ID_1.toString()))
-            .andExpect(jsonPath("$.idNumber2").value(DEFAULT_EXTERNAL_ID_2.toString()))
+            .andExpect(jsonPath("$.externalId1").value(DEFAULT_EXTERNAL_ID_1.toString()))
+            .andExpect(jsonPath("$.externalId2").value(DEFAULT_EXTERNAL_ID_2.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.paymentDelay").value(DEFAULT_PAYMENT_DELAY))
             .andExpect(jsonPath("$.vatNumber").value(DEFAULT_VAT_NUMBER.toString()));
     }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmAccountRepository.findAll().size();
+        // set the field null
+        crmAccount.setName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        TraCustomerDTO cfgMarkerConfigurationDTO = crmAccountMapper.traDB2DTO(crmAccount);
+
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/customer", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmAccount> crmAccounts = crmAccountRepository.findAll();
+        assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkShortNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmAccountRepository.findAll().size();
+        // set the field null
+        crmAccount.setShortName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        TraCustomerDTO cfgMarkerConfigurationDTO = crmAccountMapper.traDB2DTO(crmAccount);
+
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/customer", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmAccount> crmAccounts = crmAccountRepository.findAll();
+        assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
+    }
+
 
     @Test
     @Transactional
@@ -243,11 +277,11 @@ public class ApiNetworkTrafficCustomerImplTest {
             .name(UPDATED_NAME)
             .paymentDelay(UPDATED_PAYMENT_DELAY)
             .vatNumber(UPDATED_VAT_NUMBER);
-        TraCustomerPT traCustomerPT = crmAccountMapper.traDB2DTO(updatedCrmAccount);
+        TraCustomerDTO traCustomerDTO = crmAccountMapper.traDB2DTO(updatedCrmAccount);
 
         restCrmAccountMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCustomerPT)))
+            .content(TestUtil.convertObjectToJsonBytes(traCustomerDTO)))
             .andExpect(status().isOk());
 
         // Validate the CrmAccount in the database
@@ -268,12 +302,12 @@ public class ApiNetworkTrafficCustomerImplTest {
         int databaseSizeBeforeUpdate = crmAccountRepository.findAll().size();
 
         // Create the CrmAccount
-        TraCustomerPT traCustomerPT = crmAccountMapper.traDB2DTO(crmAccount);
+        TraCustomerDTO traCustomerDTO = crmAccountMapper.traDB2DTO(crmAccount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCrmAccountMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traCustomerPT)))
+            .content(TestUtil.convertObjectToJsonBytes(traCustomerDTO)))
             .andExpect(status().isCreated());
 
         // Validate the CrmAccount in the database

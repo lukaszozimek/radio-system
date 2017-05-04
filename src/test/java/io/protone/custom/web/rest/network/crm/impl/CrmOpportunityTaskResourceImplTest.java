@@ -43,7 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by lukaszozimek on 02/05/2017.
  */
 @RunWith(SpringRunner.class)
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CrmOpportunityTaskResourceImplTest {
 

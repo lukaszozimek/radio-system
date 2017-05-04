@@ -1,73 +1,56 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.traffic;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.CoreAddressPT;
+import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
+import io.protone.domain.TraDiscount;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * CrmAccountPT
+ * TraCustomerDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CrmAccountPT {
-    @JsonProperty("id")
-    private Long id = null;
+public class TraCustomerDTO implements Serializable {
 
-    @JsonProperty("shortName")
+    private Long id = null;
+    @NotNull
     private String shortName = null;
 
-    @JsonProperty("area")
     private CorDictionaryDTO area = null;
 
-    @JsonProperty("externalId1")
     private String externalId1 = null;
 
-    @JsonProperty("externalId2")
     private String externalId2 = null;
 
-    @JsonProperty("paymentDelay")
     private Integer paymentDelay = null;
 
-    @JsonProperty("industry")
     private CorDictionaryDTO industry = null;
-
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
+    private Integer paymentDate = null;
 
-    @JsonProperty("range")
     private CorDictionaryDTO range = null;
 
-    @JsonProperty("size")
     private CorDictionaryDTO size = null;
 
-    @JsonProperty("vatNumber")
     private String vatNumber = null;
 
-    @JsonProperty("addres")
     private CoreAddressPT addres = null;
 
-    @JsonProperty("account")
     private CoreUserThinDTO account = null;
 
-    @JsonProperty("person")
     private TraCustomerPersonPT person = null;
 
-    @JsonProperty("orders")
-    private List<TraOrderPT> orders = new ArrayList<TraOrderPT>();
+    private TraDiscount traDiscount = null;
 
-    @JsonProperty("campains")
-    private List<TraCampaignPT> campains = new ArrayList<TraCampaignPT>();
-
-    @JsonProperty("tasks")
-    private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
-
-    public CrmAccountPT id(Long id) {
+    public TraCustomerDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -86,7 +69,7 @@ public class CrmAccountPT {
         this.id = id;
     }
 
-    public CrmAccountPT shortName(String shortName) {
+    public TraCustomerDTO shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -105,8 +88,27 @@ public class CrmAccountPT {
         this.shortName = shortName;
     }
 
-    public CrmAccountPT area(CorDictionaryDTO area) {
+    public TraCustomerDTO area(CorDictionaryDTO area) {
         this.area = area;
+        return this;
+    }
+
+    /**
+     * Get shortName
+     *
+     * @return shortName
+     **/
+    @ApiModelProperty(value = "")
+    public TraDiscount getDiscount() {
+        return traDiscount;
+    }
+
+    public void setDiscount(TraDiscount traDiscount) {
+        this.traDiscount = traDiscount;
+    }
+
+    public TraCustomerDTO discount(TraDiscount traDiscount) {
+        this.traDiscount = traDiscount;
         return this;
     }
 
@@ -124,7 +126,7 @@ public class CrmAccountPT {
         this.area = area;
     }
 
-    public CrmAccountPT idNumber1(String idNumber1) {
+    public TraCustomerDTO idNumber1(String idNumber1) {
         this.externalId1 = idNumber1;
         return this;
     }
@@ -143,8 +145,22 @@ public class CrmAccountPT {
         this.externalId1 = externalId1;
     }
 
-    public CrmAccountPT idNumber2(String idNumber2) {
+    public TraCustomerDTO idNumber2(String idNumber2) {
         this.externalId2 = idNumber2;
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public Integer getPaymentDelay() {
+        return paymentDelay;
+    }
+
+    public void setPaymentDelay(Integer paymentDelay) {
+        this.paymentDelay = paymentDelay;
+    }
+
+    public TraCustomerDTO paymentDelay(Integer paymentDelay) {
+        this.paymentDelay = paymentDelay;
         return this;
     }
 
@@ -162,7 +178,7 @@ public class CrmAccountPT {
         this.externalId2 = externalId2;
     }
 
-    public CrmAccountPT industry(CorDictionaryDTO industry) {
+    public TraCustomerDTO industry(CorDictionaryDTO industry) {
         this.industry = industry;
         return this;
     }
@@ -181,7 +197,7 @@ public class CrmAccountPT {
         this.industry = industry;
     }
 
-    public CrmAccountPT name(String name) {
+    public TraCustomerDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -201,7 +217,26 @@ public class CrmAccountPT {
     }
 
 
-    public CrmAccountPT range(CorDictionaryDTO range) {
+    public TraCustomerDTO paymentDate(Integer paymentDate) {
+        this.paymentDate = paymentDate;
+        return this;
+    }
+
+    /**
+     * Get paymentDate
+     *
+     * @return paymentDate
+     **/
+    @ApiModelProperty(value = "")
+    public Integer getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Integer paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public TraCustomerDTO range(CorDictionaryDTO range) {
         this.range = range;
         return this;
     }
@@ -220,7 +255,7 @@ public class CrmAccountPT {
         this.range = range;
     }
 
-    public CrmAccountPT size(CorDictionaryDTO size) {
+    public TraCustomerDTO size(CorDictionaryDTO size) {
         this.size = size;
         return this;
     }
@@ -239,7 +274,7 @@ public class CrmAccountPT {
         this.size = size;
     }
 
-    public CrmAccountPT vatNumber(String vatNumber) {
+    public TraCustomerDTO vatNumber(String vatNumber) {
         this.vatNumber = vatNumber;
         return this;
     }
@@ -258,15 +293,15 @@ public class CrmAccountPT {
         this.vatNumber = vatNumber;
     }
 
-    public CrmAccountPT addres(CoreAddressPT addres) {
-        this.addres = addres;
+    public TraCustomerDTO addres(CoreAddressPT adress) {
+        this.addres = adress;
         return this;
     }
 
     /**
-     * Get adress
+     * Get addres
      *
-     * @return adress
+     * @return addres
      **/
     @ApiModelProperty(value = "")
     public CoreAddressPT getAddres() {
@@ -277,7 +312,7 @@ public class CrmAccountPT {
         this.addres = addres;
     }
 
-    public CrmAccountPT account(CoreUserThinDTO account) {
+    public TraCustomerDTO account(CoreUserThinDTO account) {
         this.account = account;
         return this;
     }
@@ -296,7 +331,7 @@ public class CrmAccountPT {
         this.account = account;
     }
 
-    public CrmAccountPT person(TraCustomerPersonPT person) {
+    public TraCustomerDTO persons(TraCustomerPersonPT person) {
         this.person = person;
         return this;
     }
@@ -316,92 +351,6 @@ public class CrmAccountPT {
         this.person = person;
     }
 
-    public CrmAccountPT orders(List<TraOrderPT> orders) {
-        this.orders = orders;
-        return this;
-    }
-
-    public CrmAccountPT addOrdersItem(TraOrderPT ordersItem) {
-        this.orders.add(ordersItem);
-        return this;
-    }
-
-    @ApiModelProperty(value = "")
-    public Integer getPaymentDelay() {
-        return paymentDelay;
-    }
-
-    public void setPaymentDelay(Integer paymentDelay) {
-        this.paymentDelay = paymentDelay;
-    }
-
-    public CrmAccountPT paymentDelay(Integer paymentDelay) {
-        this.paymentDelay = paymentDelay;
-        return this;
-    }
-
-    /**
-     * Get orders
-     *
-     * @return orders
-     **/
-    @ApiModelProperty(value = "")
-    public List<TraOrderPT> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<TraOrderPT> orders) {
-        this.orders = orders;
-    }
-
-    public CrmAccountPT campains(List<TraCampaignPT> campains) {
-        this.campains = campains;
-        return this;
-    }
-
-    public CrmAccountPT addCampainsItem(TraCampaignPT campainsItem) {
-        this.campains.add(campainsItem);
-        return this;
-    }
-
-    /**
-     * Get campains
-     *
-     * @return campains
-     **/
-    @ApiModelProperty(value = "")
-    public List<TraCampaignPT> getCampains() {
-        return campains;
-    }
-
-    public void setCampains(List<TraCampaignPT> campains) {
-        this.campains = campains;
-    }
-
-    public CrmAccountPT tasks(List<CrmTaskPT> tasks) {
-        this.tasks = tasks;
-        return this;
-    }
-
-    public CrmAccountPT addTasksItem(CrmTaskPT tasksItem) {
-        this.tasks.add(tasksItem);
-        return this;
-    }
-
-    /**
-     * Get tasks
-     *
-     * @return tasks
-     **/
-    @ApiModelProperty(value = "")
-    public List<CrmTaskPT> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<CrmTaskPT> tasks) {
-        this.tasks = tasks;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -411,34 +360,32 @@ public class CrmAccountPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CrmAccountPT crmAccountPT = (CrmAccountPT) o;
-        return Objects.equals(this.id, crmAccountPT.id) &&
-            Objects.equals(this.shortName, crmAccountPT.shortName) &&
-            Objects.equals(this.area, crmAccountPT.area) &&
-            Objects.equals(this.externalId1, crmAccountPT.externalId1) &&
-            Objects.equals(this.externalId2, crmAccountPT.externalId2) &&
-            Objects.equals(this.industry, crmAccountPT.industry) &&
-            Objects.equals(this.name, crmAccountPT.name) &&
-            Objects.equals(this.range, crmAccountPT.range) &&
-            Objects.equals(this.size, crmAccountPT.size) &&
-            Objects.equals(this.vatNumber, crmAccountPT.vatNumber) &&
-            Objects.equals(this.addres, crmAccountPT.addres) &&
-            Objects.equals(this.account, crmAccountPT.account) &&
-            Objects.equals(this.person, crmAccountPT.person) &&
-            Objects.equals(this.orders, crmAccountPT.orders) &&
-            Objects.equals(this.campains, crmAccountPT.campains) &&
-            Objects.equals(this.tasks, crmAccountPT.tasks);
+        TraCustomerDTO traCustomerDTO = (TraCustomerDTO) o;
+        return Objects.equals(this.id, traCustomerDTO.id) &&
+            Objects.equals(this.shortName, traCustomerDTO.shortName) &&
+            Objects.equals(this.area, traCustomerDTO.area) &&
+            Objects.equals(this.externalId1, traCustomerDTO.externalId1) &&
+            Objects.equals(this.externalId2, traCustomerDTO.externalId2) &&
+            Objects.equals(this.industry, traCustomerDTO.industry) &&
+            Objects.equals(this.name, traCustomerDTO.name) &&
+            Objects.equals(this.paymentDate, traCustomerDTO.paymentDate) &&
+            Objects.equals(this.range, traCustomerDTO.range) &&
+            Objects.equals(this.size, traCustomerDTO.size) &&
+            Objects.equals(this.vatNumber, traCustomerDTO.vatNumber) &&
+            Objects.equals(this.addres, traCustomerDTO.addres) &&
+            Objects.equals(this.account, traCustomerDTO.account) &&
+            Objects.equals(this.person, traCustomerDTO.person);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, shortName, area, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, orders, campains, tasks);
+        return Objects.hash(id, shortName, area, externalId1, externalId2, industry, name, paymentDate, range, size, vatNumber, addres, account, person);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CrmAccountPT {\n");
+        sb.append("class TraCustomerDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
@@ -447,15 +394,13 @@ public class CrmAccountPT {
         sb.append("    externalId2: ").append(toIndentedString(externalId2)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
         sb.append("    range: ").append(toIndentedString(range)).append("\n");
         sb.append("    size: ").append(toIndentedString(size)).append("\n");
         sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
         sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
         sb.append("    account: ").append(toIndentedString(account)).append("\n");
         sb.append("    person: ").append(toIndentedString(person)).append("\n");
-        sb.append("    orders: ").append(toIndentedString(orders)).append("\n");
-        sb.append("    campains: ").append(toIndentedString(campains)).append("\n");
-        sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
         sb.append("}");
         return sb.toString();
     }
