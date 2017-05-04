@@ -1,59 +1,52 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.crm;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.CoreAddressPT;
+import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * CrmLeadPT
+ * CrmLeadDTO
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CrmLeadPT {
-    @JsonProperty("id")
+public class CrmLeadDTO {
+
     private Long id = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("shortname")
+    @NotNull
     private String shortname = null;
 
-    @JsonProperty("description")
     private String description = null;
 
-    @JsonProperty("source")
     private CorDictionaryDTO source = null;
 
-    @JsonProperty("status")
     private CorDictionaryDTO status = null;
 
-    @JsonProperty("addres")
     private CoreAddressPT addres = null;
 
-    @JsonProperty("area")
     private CorDictionaryDTO area = null;
 
-    @JsonProperty("industry")
     private CorDictionaryDTO industry = null;
 
-    @JsonProperty("leadOwner")
     private CoreUserThinDTO leadOwner = null;
 
-    @JsonProperty("person")
     private TraCustomerPersonPT person = null;
 
-    @JsonProperty("tasks")
     @PodamExclude
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
 
-    public CrmLeadPT id(Long id) {
+    public CrmLeadDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -72,7 +65,7 @@ public class CrmLeadPT {
         this.id = id;
     }
 
-    public CrmLeadPT name(String name) {
+    public CrmLeadDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -85,7 +78,7 @@ public class CrmLeadPT {
         this.shortname = shortname;
     }
 
-    public CrmLeadPT shortName(String shortname) {
+    public CrmLeadDTO shortName(String shortname) {
         this.shortname = shortname;
         return this;
     }
@@ -104,7 +97,7 @@ public class CrmLeadPT {
         this.name = name;
     }
 
-    public CrmLeadPT description(String description) {
+    public CrmLeadDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -123,7 +116,7 @@ public class CrmLeadPT {
         this.description = description;
     }
 
-    public CrmLeadPT source(CorDictionaryDTO source) {
+    public CrmLeadDTO source(CorDictionaryDTO source) {
         this.source = source;
         return this;
     }
@@ -137,7 +130,7 @@ public class CrmLeadPT {
         this.leadOwner = leadOwner;
     }
 
-    public CrmLeadPT owner(CoreUserThinDTO leadOwner) {
+    public CrmLeadDTO owner(CoreUserThinDTO leadOwner) {
         this.leadOwner = leadOwner;
         return this;
     }
@@ -156,7 +149,7 @@ public class CrmLeadPT {
         this.source = source;
     }
 
-    public CrmLeadPT status(CorDictionaryDTO status) {
+    public CrmLeadDTO status(CorDictionaryDTO status) {
         this.status = status;
         return this;
     }
@@ -175,7 +168,7 @@ public class CrmLeadPT {
         this.status = status;
     }
 
-    public CrmLeadPT addres(CoreAddressPT addres) {
+    public CrmLeadDTO addres(CoreAddressPT addres) {
         this.addres = addres;
         return this;
     }
@@ -194,7 +187,7 @@ public class CrmLeadPT {
         this.addres = addres;
     }
 
-    public CrmLeadPT area(CorDictionaryDTO area) {
+    public CrmLeadDTO area(CorDictionaryDTO area) {
         this.area = area;
         return this;
     }
@@ -213,7 +206,7 @@ public class CrmLeadPT {
         this.area = area;
     }
 
-    public CrmLeadPT industry(CorDictionaryDTO industry) {
+    public CrmLeadDTO industry(CorDictionaryDTO industry) {
         this.industry = industry;
         return this;
     }
@@ -232,7 +225,7 @@ public class CrmLeadPT {
         this.industry = industry;
     }
 
-    public CrmLeadPT person(TraCustomerPersonPT person) {
+    public CrmLeadDTO person(TraCustomerPersonPT person) {
         this.person = person;
         return this;
     }
@@ -252,12 +245,12 @@ public class CrmLeadPT {
     }
 
 
-    public CrmLeadPT tasks(List<CrmTaskPT> tasks) {
+    public CrmLeadDTO tasks(List<CrmTaskPT> tasks) {
         this.tasks = tasks;
         return this;
     }
 
-    public CrmLeadPT addTasksItem(CrmTaskPT tasksItem) {
+    public CrmLeadDTO addTasksItem(CrmTaskPT tasksItem) {
         this.tasks.add(tasksItem);
         return this;
     }
@@ -285,18 +278,18 @@ public class CrmLeadPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CrmLeadPT crmLeadPT = (CrmLeadPT) o;
-        return Objects.equals(this.id, crmLeadPT.id) &&
-            Objects.equals(this.name, crmLeadPT.name) &&
-            Objects.equals(this.description, crmLeadPT.description) &&
-            Objects.equals(this.source, crmLeadPT.source) &&
-            Objects.equals(this.status, crmLeadPT.status) &&
-            Objects.equals(this.addres, crmLeadPT.addres) &&
-            Objects.equals(this.area, crmLeadPT.area) &&
-            Objects.equals(this.industry, crmLeadPT.industry) &&
-            Objects.equals(this.person, crmLeadPT.person) &&
-            Objects.equals(this.tasks, crmLeadPT.tasks) &&
-            Objects.equals(this.shortname, crmLeadPT.shortname);
+        CrmLeadDTO crmLeadDTO = (CrmLeadDTO) o;
+        return Objects.equals(this.id, crmLeadDTO.id) &&
+            Objects.equals(this.name, crmLeadDTO.name) &&
+            Objects.equals(this.description, crmLeadDTO.description) &&
+            Objects.equals(this.source, crmLeadDTO.source) &&
+            Objects.equals(this.status, crmLeadDTO.status) &&
+            Objects.equals(this.addres, crmLeadDTO.addres) &&
+            Objects.equals(this.area, crmLeadDTO.area) &&
+            Objects.equals(this.industry, crmLeadDTO.industry) &&
+            Objects.equals(this.person, crmLeadDTO.person) &&
+            Objects.equals(this.tasks, crmLeadDTO.tasks) &&
+            Objects.equals(this.shortname, crmLeadDTO.shortname);
     }
 
     @Override
@@ -307,7 +300,7 @@ public class CrmLeadPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CrmLeadPT {\n");
+        sb.append("class CrmLeadDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");

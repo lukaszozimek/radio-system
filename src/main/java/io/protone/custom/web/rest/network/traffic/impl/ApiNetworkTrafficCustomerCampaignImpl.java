@@ -4,7 +4,7 @@ package io.protone.custom.web.rest.network.traffic.impl;
 import io.protone.domain.TraCampaign;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraCampaignService;
-import io.protone.custom.service.dto.TraCampaignDTO;
+import io.protone.web.rest.dto.traffic.TraCampaignDTO;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerCampaign;
 import io.protone.web.rest.mapper.TraCampaignMapper;
 import io.swagger.annotations.ApiParam;

@@ -1,13 +1,10 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CrmOpportunityPT;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
 import org.mapstruct.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

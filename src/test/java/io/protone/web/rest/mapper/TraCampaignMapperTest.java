@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.custom.service.dto.TraCampaignDTO;
+import io.protone.web.rest.dto.traffic.TraCampaignDTO;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.domain.*;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;

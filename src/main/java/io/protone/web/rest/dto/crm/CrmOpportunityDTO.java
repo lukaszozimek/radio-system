@@ -1,56 +1,48 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.crm;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * CrmOpportunityPT
+ * CrmOpportunityDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CrmOpportunityPT {
-    @JsonProperty("id")
+public class CrmOpportunityDTO implements Serializable {
     private Long id = null;
 
-    @JsonProperty("opportunityOwner")
     private CoreUserThinDTO opportunityOwner = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("contactId")
     private Long contactId = null;
 
-    @JsonProperty("leadId")
     private Long leadId = null;
 
-    @JsonProperty("accountId")
     private Long accountId = null;
 
-    @JsonProperty("lastTry")
     private LocalDate lastTry = null;
 
-    @JsonProperty("closeDate")
     private LocalDate closeDate = null;
 
-    @JsonProperty("stage")
     private CorDictionaryDTO stage = null;
 
-    @JsonProperty("propability")
-    private Integer propability = null;
+    private Integer probability = null;
 
-    @JsonProperty("tasks")
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
 
 
-    public CrmOpportunityPT id(Long id) {
+    public CrmOpportunityDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -69,7 +61,7 @@ public class CrmOpportunityPT {
         this.id = id;
     }
 
-    public CrmOpportunityPT opportunityOwner(CoreUserThinDTO opportunityOwner) {
+    public CrmOpportunityDTO opportunityOwner(CoreUserThinDTO opportunityOwner) {
         this.opportunityOwner = opportunityOwner;
         return this;
     }
@@ -88,7 +80,7 @@ public class CrmOpportunityPT {
         this.opportunityOwner = opportunityOwner;
     }
 
-    public CrmOpportunityPT name(String name) {
+    public CrmOpportunityDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -107,7 +99,7 @@ public class CrmOpportunityPT {
         this.name = name;
     }
 
-    public CrmOpportunityPT contactId(Long contact) {
+    public CrmOpportunityDTO contactId(Long contact) {
         this.contactId = contact;
         return this;
     }
@@ -126,12 +118,12 @@ public class CrmOpportunityPT {
         this.contactId = contactId;
     }
 
-    public CrmOpportunityPT lastTry(LocalDate lastTry) {
+    public CrmOpportunityDTO lastTry(LocalDate lastTry) {
         this.lastTry = lastTry;
         return this;
     }
 
-    public CrmOpportunityPT LeadId(Long Lead) {
+    public CrmOpportunityDTO LeadId(Long Lead) {
         this.leadId = leadId;
         return this;
     }
@@ -150,7 +142,7 @@ public class CrmOpportunityPT {
         this.leadId = leadId;
     }
 
-    public CrmOpportunityPT accountId(Long account) {
+    public CrmOpportunityDTO accountId(Long account) {
         this.accountId = account;
         return this;
     }
@@ -183,7 +175,7 @@ public class CrmOpportunityPT {
         this.lastTry = lastTry;
     }
 
-    public CrmOpportunityPT closeDate(LocalDate closeDate) {
+    public CrmOpportunityDTO closeDate(LocalDate closeDate) {
         this.closeDate = closeDate;
         return this;
     }
@@ -202,7 +194,7 @@ public class CrmOpportunityPT {
         this.closeDate = closeDate;
     }
 
-    public CrmOpportunityPT stage(CorDictionaryDTO stage) {
+    public CrmOpportunityDTO stage(CorDictionaryDTO stage) {
         this.stage = stage;
         return this;
     }
@@ -221,31 +213,31 @@ public class CrmOpportunityPT {
         this.stage = stage;
     }
 
-    public CrmOpportunityPT propability(Integer propability) {
-        this.propability = propability;
+    public CrmOpportunityDTO propability(Integer propability) {
+        this.probability = propability;
         return this;
     }
 
     /**
-     * Get propability
+     * Get probability
      *
-     * @return propability
+     * @return probability
      **/
     @ApiModelProperty(value = "")
-    public Integer getPropability() {
-        return propability;
+    public Integer getProbability() {
+        return probability;
     }
 
-    public void setPropability(Integer propability) {
-        this.propability = propability;
+    public void setProbability(Integer probability) {
+        this.probability = probability;
     }
 
-    public CrmOpportunityPT tasks(List<CrmTaskPT> tasks) {
+    public CrmOpportunityDTO tasks(List<CrmTaskPT> tasks) {
         this.tasks = tasks;
         return this;
     }
 
-    public CrmOpportunityPT addTasksItem(CrmTaskPT tasksItem) {
+    public CrmOpportunityDTO addTasksItem(CrmTaskPT tasksItem) {
         this.tasks.add(tasksItem);
         return this;
     }
@@ -273,27 +265,27 @@ public class CrmOpportunityPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CrmOpportunityPT crmOpportunityPT = (CrmOpportunityPT) o;
-        return Objects.equals(this.id, crmOpportunityPT.id) &&
-            Objects.equals(this.opportunityOwner, crmOpportunityPT.opportunityOwner) &&
-            Objects.equals(this.name, crmOpportunityPT.name) &&
-            Objects.equals(this.contactId, crmOpportunityPT.contactId) &&
-            Objects.equals(this.lastTry, crmOpportunityPT.lastTry) &&
-            Objects.equals(this.closeDate, crmOpportunityPT.closeDate) &&
-            Objects.equals(this.stage, crmOpportunityPT.stage) &&
-            Objects.equals(this.propability, crmOpportunityPT.propability) &&
-            Objects.equals(this.tasks, crmOpportunityPT.tasks);
+        CrmOpportunityDTO crmOpportunityDTO = (CrmOpportunityDTO) o;
+        return Objects.equals(this.id, crmOpportunityDTO.id) &&
+            Objects.equals(this.opportunityOwner, crmOpportunityDTO.opportunityOwner) &&
+            Objects.equals(this.name, crmOpportunityDTO.name) &&
+            Objects.equals(this.contactId, crmOpportunityDTO.contactId) &&
+            Objects.equals(this.lastTry, crmOpportunityDTO.lastTry) &&
+            Objects.equals(this.closeDate, crmOpportunityDTO.closeDate) &&
+            Objects.equals(this.stage, crmOpportunityDTO.stage) &&
+            Objects.equals(this.probability, crmOpportunityDTO.probability) &&
+            Objects.equals(this.tasks, crmOpportunityDTO.tasks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, opportunityOwner, name, contactId, lastTry, closeDate, stage, propability, tasks);
+        return Objects.hash(id, opportunityOwner, name, contactId, lastTry, closeDate, stage, probability, tasks);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CrmOpportunityPT {\n");
+        sb.append("class CrmOpportunityDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    opportunityOwner: ").append(toIndentedString(opportunityOwner)).append("\n");
@@ -304,7 +296,7 @@ public class CrmOpportunityPT {
         sb.append("    lastTry: ").append(toIndentedString(lastTry)).append("\n");
         sb.append("    closeDate: ").append(toIndentedString(closeDate)).append("\n");
         sb.append("    stage: ").append(toIndentedString(stage)).append("\n");
-        sb.append("    propability: ").append(toIndentedString(propability)).append("\n");
+        sb.append("    probability: ").append(toIndentedString(probability)).append("\n");
         sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
         sb.append("}");
         return sb.toString();

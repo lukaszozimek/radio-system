@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CrmOpportunityPT;
+import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
 import io.protone.domain.*;
 import org.mapstruct.*;
 
@@ -19,28 +19,28 @@ public interface CrmOpportunityMapper {
     @Mapping(source = "contact.id", target = "contactId")
     @Mapping(source = "account.id", target = "accountId")
     @Mapping(source = "lead.id", target = "leadId")
-    CrmOpportunityPT DB2DTO(CrmOpportunity crmOpportunity);
+    CrmOpportunityDTO DB2DTO(CrmOpportunity crmOpportunity);
 
-    List<CrmOpportunityPT> DBs2DTOs(List<CrmOpportunity> crmOpportunities);
+    List<CrmOpportunityDTO> DBs2DTOs(List<CrmOpportunity> crmOpportunities);
 
     @Mapping(source = "stage", target = "stage")
     @Mapping(source = "opportunityOwner", target = "keeper")
     @Mapping(source = "contactId", target = "contact")
     @Mapping(source = "accountId", target = "account")
     @Mapping(source = "leadId", target = "lead")
-    CrmOpportunity DTO2DB(CrmOpportunityPT crmOpportunityDTO, @Context CorNetwork corNetwork);
+    CrmOpportunity DTO2DB(CrmOpportunityDTO crmOpportunityDTO, @Context CorNetwork corNetwork);
 
     @AfterMapping
-    default void crmOpportunityPTToCrmOpportunityAfterMapping(CrmOpportunityPT dto, @MappingTarget CrmOpportunity entity, @Context CorNetwork corNetwork) {
+    default void crmOpportunityPTToCrmOpportunityAfterMapping(CrmOpportunityDTO dto, @MappingTarget CrmOpportunity entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 
-    default List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityPT> crmOpportunityDTO, CorNetwork corNetwork) {
+    default List<CrmOpportunity> DTOs2DBs(List<CrmOpportunityDTO> crmOpportunityDTO, CorNetwork corNetwork) {
         List<CrmOpportunity> crmOpportunities = new ArrayList<>();
         if (crmOpportunityDTO.isEmpty() || crmOpportunityDTO == null) {
             return null;
         }
-        for (CrmOpportunityPT dto : crmOpportunityDTO) {
+        for (CrmOpportunityDTO dto : crmOpportunityDTO) {
             crmOpportunities.add(DTO2DB(dto, corNetwork));
         }
         return crmOpportunities;

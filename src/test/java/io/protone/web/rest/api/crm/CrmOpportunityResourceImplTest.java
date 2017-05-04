@@ -1,8 +1,9 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmOpportunityPT;
+import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.api.crm.impl.CrmOpportunityResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import io.protone.repository.crm.CrmOpportunityRepository;
@@ -86,24 +87,6 @@ public class CrmOpportunityResourceImplTest {
 
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ApiNetworkCrmOpportunityImpl crmOpportunityResource = new ApiNetworkCrmOpportunityImpl();
-
-        ReflectionTestUtils.setField(crmOpportunityResource, "crmOpportunityService", crmOpportunityService);
-        ReflectionTestUtils.setField(crmOpportunityResource, "crmOpportunityMapper", crmOpportunityMapper);
-        ReflectionTestUtils.setField(crmOpportunityResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restCrmOpportunityMockMvc = MockMvcBuilders.standaloneSetup(crmOpportunityResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
      * <p>
@@ -120,6 +103,24 @@ public class CrmOpportunityResourceImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        CrmOpportunityResourceImpl crmOpportunityResource = new CrmOpportunityResourceImpl();
+
+        ReflectionTestUtils.setField(crmOpportunityResource, "crmOpportunityService", crmOpportunityService);
+        ReflectionTestUtils.setField(crmOpportunityResource, "crmOpportunityMapper", crmOpportunityMapper);
+        ReflectionTestUtils.setField(crmOpportunityResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restCrmOpportunityMockMvc = MockMvcBuilders.standaloneSetup(crmOpportunityResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         crmOpportunity = createEntity(em).network(corNetwork);
     }
@@ -130,9 +131,9 @@ public class CrmOpportunityResourceImplTest {
         int databaseSizeBeforeCreate = crmOpportunityRepository.findAll().size();
 
         // Create the CrmOpportunity
-        CrmOpportunityPT crmOpportunityDTO = crmOpportunityMapper.DB2DTO(crmOpportunity);
+        CrmOpportunityDTO crmOpportunityDTO = crmOpportunityMapper.DB2DTO(crmOpportunity);
 
-        restCrmOpportunityMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity",corNetwork.getShortcut())
+        restCrmOpportunityMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmOpportunityDTO)))
             .andExpect(status().isCreated());
@@ -155,10 +156,10 @@ public class CrmOpportunityResourceImplTest {
         // Create the CrmOpportunity with an existing ID
         CrmOpportunity existingCrmOpportunity = new CrmOpportunity();
         existingCrmOpportunity.setId(1L);
-        CrmOpportunityPT existingCrmOpportunityDTO = crmOpportunityMapper.DB2DTO(existingCrmOpportunity);
+        CrmOpportunityDTO existingCrmOpportunityDTO = crmOpportunityMapper.DB2DTO(existingCrmOpportunity);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmOpportunityMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity",corNetwork.getShortcut())
+        restCrmOpportunityMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmOpportunityDTO)))
             .andExpect(status().isBadRequest());
@@ -175,7 +176,7 @@ public class CrmOpportunityResourceImplTest {
         crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
 
         // Get all the crmOpportunityList
-        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity?sort=id,desc",corNetwork.getShortcut()))
+        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmOpportunity.getId().intValue())))
@@ -192,7 +193,7 @@ public class CrmOpportunityResourceImplTest {
         crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
 
         // Get the crmOpportunity
-        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}",corNetwork.getShortcut(), crmOpportunity.getName()))
+        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), crmOpportunity.getName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmOpportunity.getId().intValue()))
@@ -206,7 +207,7 @@ public class CrmOpportunityResourceImplTest {
     @Transactional
     public void getNonExistingCrmOpportunity() throws Exception {
         // Get the crmOpportunity
-        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}",corNetwork.getShortcut(), Long.MAX_VALUE))
+        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -224,9 +225,9 @@ public class CrmOpportunityResourceImplTest {
             .lastTry(UPDATED_LAST_TRY)
             .closeDate(UPDATED_CLOSE_DATE)
             .probability(UPDATED_PROBABILITY);
-        CrmOpportunityPT crmOpportunityDTO = crmOpportunityMapper.DB2DTO(updatedCrmOpportunity);
+        CrmOpportunityDTO crmOpportunityDTO = crmOpportunityMapper.DB2DTO(updatedCrmOpportunity);
 
-        restCrmOpportunityMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity",corNetwork.getShortcut())
+        restCrmOpportunityMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmOpportunityDTO)))
             .andExpect(status().isOk());
@@ -243,14 +244,33 @@ public class CrmOpportunityResourceImplTest {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmOpportunityRepository.findAll().size();
+        // set the field null
+        crmOpportunity.setName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        CrmOpportunityDTO cfgMarkerConfigurationDTO = crmOpportunityMapper.DB2DTO(crmOpportunity);
+
+        restCrmOpportunityMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmOpportunity> crmOpportunities = crmOpportunityRepository.findAll();
+        assertThat(crmOpportunities).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void updateNonExistingCrmOpportunity() throws Exception {
         int databaseSizeBeforeUpdate = crmOpportunityRepository.findAll().size();
 
         // Create the CrmOpportunity
-        CrmOpportunityPT crmOpportunityDTO = crmOpportunityMapper.DB2DTO(crmOpportunity);
+        CrmOpportunityDTO crmOpportunityDTO = crmOpportunityMapper.DB2DTO(crmOpportunity);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmOpportunityMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity",corNetwork.getShortcut())
+        restCrmOpportunityMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmOpportunityDTO)))
             .andExpect(status().isCreated());
@@ -263,12 +283,13 @@ public class CrmOpportunityResourceImplTest {
     @Test
     @Transactional
     public void deleteCrmOpportunity() throws Exception {
+        crmOpportunityRepository.deleteAll();
         // Initialize the database
         crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
         int databaseSizeBeforeDelete = crmOpportunityRepository.findAll().size();
 
         // Get the crmOpportunity
-        restCrmOpportunityMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}",corNetwork.getShortcut(), crmOpportunity.getName())
+        restCrmOpportunityMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), crmOpportunity.getName())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

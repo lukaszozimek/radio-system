@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmLeadPT;
+import io.protone.web.rest.dto.crm.CrmLeadDTO;
 import io.protone.domain.*;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import org.assertj.core.util.Sets;
@@ -32,9 +32,9 @@ public class CrmLeadMapperTest {
 
     private CrmLead crmLead;
 
-    private CrmLeadPT crmLeadPT;
+    private CrmLeadDTO crmLeadDTO;
 
-    private List<CrmLeadPT> crmLeadPTS = new ArrayList<>();
+    private List<CrmLeadDTO> crmLeadDTOS = new ArrayList<>();
 
     private List<CrmLead> crmLeads = new ArrayList<>();
 
@@ -58,16 +58,16 @@ public class CrmLeadMapperTest {
         crmLead.setNetwork(factory.manufacturePojo(CorNetwork.class));
         crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
         crmLeads.add(crmLead);
-        crmLeadPT = factory.manufacturePojo(CrmLeadPT.class);
-        crmLeadPT.setOwner(factory.manufacturePojo(CoreUserThinDTO.class));
-        crmLeadPTS.add(crmLeadPT);
+        crmLeadDTO = factory.manufacturePojo(CrmLeadDTO.class);
+        crmLeadDTO.setOwner(factory.manufacturePojo(CoreUserThinDTO.class));
+        crmLeadDTOS.add(crmLeadDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        CrmLeadPT dto = customCrmLeadMapper.DB2DTO(crmLead);
+        CrmLeadDTO dto = customCrmLeadMapper.DB2DTO(crmLead);
 
         assertNotNull(dto.getArea());
         assertNotNull(dto.getStatus());
@@ -87,7 +87,7 @@ public class CrmLeadMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CrmLeadPT> dtos = customCrmLeadMapper.DBs2DTOs(crmLeads);
+        List<CrmLeadDTO> dtos = customCrmLeadMapper.DBs2DTOs(crmLeads);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -112,7 +112,7 @@ public class CrmLeadMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmLead> entities = customCrmLeadMapper.DTOs2DBs(crmLeadPTS, corNetwork);
+        List<CrmLead> entities = customCrmLeadMapper.DTOs2DBs(crmLeadDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -137,7 +137,7 @@ public class CrmLeadMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmLead entity = customCrmLeadMapper.DTO2DB(crmLeadPT, corNetwork);
+        CrmLead entity = customCrmLeadMapper.DTO2DB(crmLeadDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getKeeper());

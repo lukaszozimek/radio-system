@@ -1,7 +1,7 @@
 package io.protone.web.rest.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.TraCampaignDTO;
+import io.protone.web.rest.dto.traffic.TraCampaignDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.web.rest.api.traffic.impl.TraCampaignResourceImpl;
 import io.protone.domain.CorNetwork;

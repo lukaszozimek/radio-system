@@ -2,7 +2,7 @@ package io.protone.web.rest.mapper;
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmOpportunityPT;
+import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
 import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +32,9 @@ public class CrmOpportunityMapperTest {
 
     private CrmOpportunity crmOpportunity;
 
-    private CrmOpportunityPT crmOpportunityPT;
+    private CrmOpportunityDTO crmOpportunityDTO;
 
-    private List<CrmOpportunityPT> crmOpportunityPTS = new ArrayList<>();
+    private List<CrmOpportunityDTO> crmOpportunityDTOS = new ArrayList<>();
 
     private List<CrmOpportunity> crmOpportunities = new ArrayList<>();
 
@@ -57,8 +57,8 @@ public class CrmOpportunityMapperTest {
         crmOpportunity.getLead().setId(1L);
         crmOpportunity.setTasks(Sets.newHashSet(factory.manufacturePojo(CrmTask.class)));
         crmOpportunities.add(crmOpportunity);
-        crmOpportunityPT = factory.manufacturePojo(CrmOpportunityPT.class);
-        crmOpportunityPTS.add(crmOpportunityPT);
+        crmOpportunityDTO = factory.manufacturePojo(CrmOpportunityDTO.class);
+        crmOpportunityDTOS.add(crmOpportunityDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
 
@@ -66,7 +66,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        CrmOpportunityPT dto = customCrmOpportunityMapper.DB2DTO(crmOpportunity);
+        CrmOpportunityDTO dto = customCrmOpportunityMapper.DB2DTO(crmOpportunity);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getStage());
@@ -82,7 +82,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CrmOpportunityPT> dtos = customCrmOpportunityMapper.DBs2DTOs(crmOpportunities);
+        List<CrmOpportunityDTO> dtos = customCrmOpportunityMapper.DBs2DTOs(crmOpportunities);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -103,7 +103,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityPTS, corNetwork);
+        List<CrmOpportunity> entities = customCrmOpportunityMapper.DTOs2DBs(crmOpportunityDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -126,7 +126,7 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityPT, corNetwork);
+        CrmOpportunity entity = customCrmOpportunityMapper.DTO2DB(crmOpportunityDTO, corNetwork);
 
 
         assertNotNull(entity.getId());

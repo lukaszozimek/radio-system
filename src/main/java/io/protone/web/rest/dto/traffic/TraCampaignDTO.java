@@ -1,7 +1,6 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.traffic;
 
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
