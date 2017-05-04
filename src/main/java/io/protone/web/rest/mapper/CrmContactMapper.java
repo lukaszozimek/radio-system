@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.*;
 import io.protone.domain.*;
+import io.protone.web.rest.dto.crm.CrmContactDTO;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public interface CrmContactMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmContactPT DB2DTO(CrmContact crmAccount);
+    CrmContactDTO DB2DTO(CrmContact crmAccount);
 
-    List<CrmContactPT> DBs2DTOs(List<CrmContact> crmAccounts);
+    List<CrmContactDTO> DBs2DTOs(List<CrmContact> crmAccounts);
 
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")
@@ -31,21 +31,21 @@ public interface CrmContactMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    CrmContact DTO2DB(CrmContactPT crmAccountDTO, @Context CorNetwork networkId);
+    CrmContact DTO2DB(CrmContactDTO crmAccountDTO, @Context CorNetwork networkId);
 
-    default List<CrmContact> DTOs2DBs(List<CrmContactPT> crmAccountDTOs, CorNetwork networkId) {
+    default List<CrmContact> DTOs2DBs(List<CrmContactDTO> crmAccountDTOs, CorNetwork networkId) {
         List<CrmContact> crmContacts = new ArrayList<>();
         if (crmAccountDTOs.isEmpty() || crmAccountDTOs == null) {
             return null;
         }
-        for (CrmContactPT dto : crmAccountDTOs) {
+        for (CrmContactDTO dto : crmAccountDTOs) {
             crmContacts.add(DTO2DB(dto, networkId));
         }
         return crmContacts;
     }
 
     @AfterMapping
-    default void crmContactPTToCrmContactAfterMapping(CrmContactPT dto, @MappingTarget CrmContact entity, @Context CorNetwork corNetwork) {
+    default void crmContactPTToCrmContactAfterMapping(CrmContactDTO dto, @MappingTarget CrmContact entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

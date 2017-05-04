@@ -1,75 +1,63 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.crm;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.CoreAddressPT;
+import io.protone.custom.service.dto.CrmTaskPT;
+import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * CrmContactPT
+ * CrmContactDTO
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CrmContactPT {
-    @JsonProperty("area")
-    private CorDictionaryDTO area = null;
-
-    @JsonProperty("id")
+public class CrmContactDTO implements Serializable {
     private Long id = null;
 
-    @JsonProperty("idNumber1")
-    private String idNumber1 = null;
-
-    @JsonProperty("idNumber2")
-    private String idNumber2 = null;
-
-    @JsonProperty("industry")
-    private CorDictionaryDTO industry = null;
-
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-
-    @JsonProperty("paymentDelay")
-    private Integer paymentDelay = null;
-
-    @JsonProperty("range")
-    private CorDictionaryDTO range = null;
-
-    @JsonProperty("size")
-    private CorDictionaryDTO size = null;
-
-    @JsonProperty("vatNumber")
-    private String vatNumber = null;
-
-    @JsonProperty("shortName")
+    @NotNull
     private String shortName = null;
 
-    @JsonProperty("addres")
+    private String externalId1 = null;
+
+    private String externalId2 = null;
+
+    private CorDictionaryDTO area = null;
+
+    private CorDictionaryDTO industry = null;
+
+    private Integer paymentDelay = null;
+
+    private CorDictionaryDTO range = null;
+
+    private CorDictionaryDTO size = null;
+
+    private String vatNumber = null;
+
     private CoreAddressPT addres = null;
 
-    @JsonProperty("account")
     private CoreUserThinDTO account = null;
 
-    @JsonProperty("person")
     private TraCustomerPersonPT person;
 
-
-    @JsonProperty("tasks")
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
 
 
-    public CrmContactPT area(CorDictionaryDTO area) {
+    public CrmContactDTO area(CorDictionaryDTO area) {
         this.area = area;
         return this;
     }
 
 
-    public CrmContactPT addTasksItem(CrmTaskPT tasksItem) {
+    public CrmContactDTO addTasksItem(CrmTaskPT tasksItem) {
         this.tasks.add(tasksItem);
         return this;
     }
@@ -88,7 +76,7 @@ public class CrmContactPT {
         this.area = area;
     }
 
-    public CrmContactPT id(Long id) {
+    public CrmContactDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -107,8 +95,8 @@ public class CrmContactPT {
         this.id = id;
     }
 
-    public CrmContactPT idNumber1(String idNumber1) {
-        this.idNumber1 = idNumber1;
+    public CrmContactDTO idNumber1(String idNumber1) {
+        this.externalId1 = idNumber1;
         return this;
     }
 
@@ -121,7 +109,7 @@ public class CrmContactPT {
         this.shortName = shortName;
     }
 
-    public CrmContactPT shortName(String shortName) {
+    public CrmContactDTO shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -135,45 +123,45 @@ public class CrmContactPT {
         this.paymentDelay = paymentDelay;
     }
 
-    public CrmContactPT paymentDelay(Integer paymentDelay) {
+    public CrmContactDTO paymentDelay(Integer paymentDelay) {
         this.paymentDelay = paymentDelay;
         return this;
     }
 
     /**
-     * Get idNumber1
+     * Get externalId1
      *
-     * @return idNumber1
+     * @return externalId1
      **/
     @ApiModelProperty(value = "")
-    public String getIdNumber1() {
-        return idNumber1;
+    public String getExternalId1() {
+        return externalId1;
     }
 
-    public void setIdNumber1(String idNumber1) {
-        this.idNumber1 = idNumber1;
+    public void setExternalId1(String externalId1) {
+        this.externalId1 = externalId1;
     }
 
-    public CrmContactPT idNumber2(String idNumber2) {
-        this.idNumber2 = idNumber2;
+    public CrmContactDTO idNumber2(String idNumber2) {
+        this.externalId2 = idNumber2;
         return this;
     }
 
     /**
-     * Get idNumber2
+     * Get externalId2
      *
-     * @return idNumber2
+     * @return externalId2
      **/
     @ApiModelProperty(value = "")
-    public String getIdNumber2() {
-        return idNumber2;
+    public String getExternalId2() {
+        return externalId2;
     }
 
-    public void setIdNumber2(String idNumber2) {
-        this.idNumber2 = idNumber2;
+    public void setExternalId2(String externalId2) {
+        this.externalId2 = externalId2;
     }
 
-    public CrmContactPT industry(CorDictionaryDTO industry) {
+    public CrmContactDTO industry(CorDictionaryDTO industry) {
         this.industry = industry;
         return this;
     }
@@ -192,7 +180,7 @@ public class CrmContactPT {
         this.industry = industry;
     }
 
-    public CrmContactPT name(String name) {
+    public CrmContactDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -211,7 +199,7 @@ public class CrmContactPT {
         this.name = name;
     }
 
-    public CrmContactPT range(CorDictionaryDTO range) {
+    public CrmContactDTO range(CorDictionaryDTO range) {
         this.range = range;
         return this;
     }
@@ -230,7 +218,7 @@ public class CrmContactPT {
         this.range = range;
     }
 
-    public CrmContactPT size(CorDictionaryDTO size) {
+    public CrmContactDTO size(CorDictionaryDTO size) {
         this.size = size;
         return this;
     }
@@ -249,7 +237,7 @@ public class CrmContactPT {
         this.size = size;
     }
 
-    public CrmContactPT vatNumber(String vatNumber) {
+    public CrmContactDTO vatNumber(String vatNumber) {
         this.vatNumber = vatNumber;
         return this;
     }
@@ -268,7 +256,7 @@ public class CrmContactPT {
         this.vatNumber = vatNumber;
     }
 
-    public CrmContactPT addres(CoreAddressPT adress) {
+    public CrmContactDTO addres(CoreAddressPT adress) {
         this.addres = adress;
         return this;
     }
@@ -287,7 +275,7 @@ public class CrmContactPT {
         this.addres = addres;
     }
 
-    public CrmContactPT account(CoreUserThinDTO account) {
+    public CrmContactDTO account(CoreUserThinDTO account) {
         this.account = account;
         return this;
     }
@@ -306,7 +294,7 @@ public class CrmContactPT {
         this.account = account;
     }
 
-    public CrmContactPT person(TraCustomerPersonPT person) {
+    public CrmContactDTO person(TraCustomerPersonPT person) {
         this.person = person;
         return this;
     }
@@ -326,7 +314,7 @@ public class CrmContactPT {
         this.person = person;
     }
 
-    public CrmContactPT tasks(List<CrmTaskPT> tasks) {
+    public CrmContactDTO tasks(List<CrmTaskPT> tasks) {
         this.tasks = tasks;
         return this;
     }
@@ -354,37 +342,37 @@ public class CrmContactPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CrmContactPT crmContactPT = (CrmContactPT) o;
-        return Objects.equals(this.area, crmContactPT.area) &&
-            Objects.equals(this.id, crmContactPT.id) &&
-            Objects.equals(this.idNumber1, crmContactPT.idNumber1) &&
-            Objects.equals(this.idNumber2, crmContactPT.idNumber2) &&
-            Objects.equals(this.industry, crmContactPT.industry) &&
-            Objects.equals(this.name, crmContactPT.name) &&
-            Objects.equals(this.range, crmContactPT.range) &&
-            Objects.equals(this.size, crmContactPT.size) &&
-            Objects.equals(this.vatNumber, crmContactPT.vatNumber) &&
-            Objects.equals(this.addres, crmContactPT.addres) &&
-            Objects.equals(this.account, crmContactPT.account) &&
-            Objects.equals(this.person, crmContactPT.person) &&
-            Objects.equals(this.tasks, crmContactPT.tasks) &&
-            Objects.equals(this.shortName, crmContactPT.shortName);
+        CrmContactDTO crmContactDTO = (CrmContactDTO) o;
+        return Objects.equals(this.area, crmContactDTO.area) &&
+            Objects.equals(this.id, crmContactDTO.id) &&
+            Objects.equals(this.externalId1, crmContactDTO.externalId1) &&
+            Objects.equals(this.externalId2, crmContactDTO.externalId2) &&
+            Objects.equals(this.industry, crmContactDTO.industry) &&
+            Objects.equals(this.name, crmContactDTO.name) &&
+            Objects.equals(this.range, crmContactDTO.range) &&
+            Objects.equals(this.size, crmContactDTO.size) &&
+            Objects.equals(this.vatNumber, crmContactDTO.vatNumber) &&
+            Objects.equals(this.addres, crmContactDTO.addres) &&
+            Objects.equals(this.account, crmContactDTO.account) &&
+            Objects.equals(this.person, crmContactDTO.person) &&
+            Objects.equals(this.tasks, crmContactDTO.tasks) &&
+            Objects.equals(this.shortName, crmContactDTO.shortName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(area, id, idNumber1, idNumber2, industry, name, range, size, vatNumber, addres, account, person, tasks, shortName);
+        return Objects.hash(area, id, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, tasks, shortName);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CrmContactPT {\n");
+        sb.append("class CrmContactDTO {\n");
 
         sb.append("    area: ").append(toIndentedString(area)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    idNumber1: ").append(toIndentedString(idNumber1)).append("\n");
-        sb.append("    idNumber2: ").append(toIndentedString(idNumber2)).append("\n");
+        sb.append("    externalId1: ").append(toIndentedString(externalId1)).append("\n");
+        sb.append("    externalId2: ").append(toIndentedString(externalId2)).append("\n");
         sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    range: ").append(toIndentedString(range)).append("\n");

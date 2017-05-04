@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmContactPT;
+import io.protone.web.rest.dto.crm.CrmContactDTO;
 import io.protone.domain.*;
 import org.assertj.core.util.Sets;
 import org.junit.Before;
@@ -31,11 +31,11 @@ public class CrmContactMapperTest {
 
     private CrmContact crmContact;
 
-    private CrmContactPT crmContactPT;
+    private CrmContactDTO crmContactDTO;
 
     private CorNetwork corNetwork;
 
-    private List<CrmContactPT> crmContactPTS = new ArrayList<>();
+    private List<CrmContactDTO> crmContactDTOS = new ArrayList<>();
 
     private List<CrmContact> crmContacts = new ArrayList<>();
 
@@ -57,14 +57,14 @@ public class CrmContactMapperTest {
         crmContact.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
         crmContact.setNetwork(factory.manufacturePojo(CorNetwork.class));
         crmContacts.add(crmContact);
-        crmContactPT = factory.manufacturePojo(CrmContactPT.class);
-        crmContactPTS.add(crmContactPT);
+        crmContactDTO = factory.manufacturePojo(CrmContactDTO.class);
+        crmContactDTOS.add(crmContactDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        CrmContactPT dto = customCrmContactMapper.DB2DTO(crmContact);
+        CrmContactDTO dto = customCrmContactMapper.DB2DTO(crmContact);
 
         assertNotNull(dto.getId());
 
@@ -85,7 +85,7 @@ public class CrmContactMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CrmContactPT> dtos = customCrmContactMapper.DBs2DTOs(crmContacts);
+        List<CrmContactDTO> dtos = customCrmContactMapper.DBs2DTOs(crmContacts);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -110,7 +110,7 @@ public class CrmContactMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmContact> entities = customCrmContactMapper.DTOs2DBs(crmContactPTS, corNetwork);
+        List<CrmContact> entities = customCrmContactMapper.DTOs2DBs(crmContactDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -135,7 +135,7 @@ public class CrmContactMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmContact entity = customCrmContactMapper.DTO2DB(crmContactPT, corNetwork);
+        CrmContact entity = customCrmContactMapper.DTO2DB(crmContactDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getArea());

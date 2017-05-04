@@ -1,7 +1,8 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmContactPT;
+import io.protone.web.rest.api.crm.impl.CrmContactResourceImpl;
+import io.protone.web.rest.dto.crm.CrmContactDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmContact;
@@ -34,9 +35,7 @@ import static io.protone.web.rest.api.cor.CorNetworkResourceIntTest.TEST_NETWORK
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 02/05/2017.
@@ -94,24 +93,6 @@ public class CrmContactResourceImplTest {
 
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ApiNetworkCrmContactImpl crmContactResource = new ApiNetworkCrmContactImpl();
-
-        ReflectionTestUtils.setField(crmContactResource, "crmContactService", crmContactService);
-        ReflectionTestUtils.setField(crmContactResource, "crmContactMapper", crmContactMapper);
-        ReflectionTestUtils.setField(crmContactResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restCrmContactMockMvc = MockMvcBuilders.standaloneSetup(crmContactResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
      * <p>
@@ -131,6 +112,24 @@ public class CrmContactResourceImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        CrmContactResourceImpl crmContactResource = new CrmContactResourceImpl();
+
+        ReflectionTestUtils.setField(crmContactResource, "crmContactService", crmContactService);
+        ReflectionTestUtils.setField(crmContactResource, "crmContactMapper", crmContactMapper);
+        ReflectionTestUtils.setField(crmContactResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restCrmContactMockMvc = MockMvcBuilders.standaloneSetup(crmContactResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         crmContact = createEntity(em).network(corNetwork);
     }
@@ -141,7 +140,7 @@ public class CrmContactResourceImplTest {
         int databaseSizeBeforeCreate = crmContactRepository.findAll().size();
 
         // Create the CrmContact
-        CrmContactPT crmContactDTO = crmContactMapper.DB2DTO(crmContact);
+        CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
 
         restCrmContactMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -155,11 +154,49 @@ public class CrmContactResourceImplTest {
         assertThat(testCrmContact.getShortName()).isEqualTo(DEFAULT_SHORT_NAME);
         assertThat(testCrmContact.getExternalId1()).isEqualTo(DEFAULT_EXTERNAL_ID_1);
         assertThat(testCrmContact.getExternalId2()).isEqualTo(DEFAULT_EXTERNAL_ID_2);
-        assertThat(testCrmContact.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
         assertThat(testCrmContact.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCrmContact.getPaymentDelay()).isEqualTo(DEFAULT_PAYMENT_DELAY);
         assertThat(testCrmContact.getVatNumber()).isEqualTo(DEFAULT_VAT_NUMBER);
     }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmContactRepository.findAll().size();
+        // set the field null
+        crmContact.setName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        CrmContactDTO cfgMarkerConfigurationDTO = crmContactMapper.DB2DTO(crmContact);
+
+        restCrmContactMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmContact> crmAccounts = crmContactRepository.findAll();
+        assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkShortNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmContactRepository.findAll().size();
+        // set the field null
+        crmContact.setShortName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        CrmContactDTO cfgMarkerConfigurationDTO = crmContactMapper.DB2DTO(crmContact);
+
+        restCrmContactMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmContact> crmAccounts = crmContactRepository.findAll();
+        assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
+    }
+
 
     @Test
     @Transactional
@@ -169,7 +206,7 @@ public class CrmContactResourceImplTest {
         // Create the CrmContact with an existing ID
         CrmContact existingCrmContact = new CrmContact();
         existingCrmContact.setId(1L);
-        CrmContactPT existingCrmContactDTO = crmContactMapper.DB2DTO(existingCrmContact);
+        CrmContactDTO existingCrmContactDTO = crmContactMapper.DB2DTO(existingCrmContact);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCrmContactMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
@@ -196,7 +233,6 @@ public class CrmContactResourceImplTest {
             .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME.toString())))
             .andExpect(jsonPath("$.[*].externalId1").value(hasItem(DEFAULT_EXTERNAL_ID_1.toString())))
             .andExpect(jsonPath("$.[*].externalId2").value(hasItem(DEFAULT_EXTERNAL_ID_2.toString())))
-            .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(DEFAULT_PAYMENT_DATE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].paymentDelay").value(hasItem(DEFAULT_PAYMENT_DELAY)))
             .andExpect(jsonPath("$.[*].vatNumber").value(hasItem(DEFAULT_VAT_NUMBER.toString())));
@@ -216,7 +252,6 @@ public class CrmContactResourceImplTest {
             .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORT_NAME.toString()))
             .andExpect(jsonPath("$.externalId1").value(DEFAULT_EXTERNAL_ID_1.toString()))
             .andExpect(jsonPath("$.externalId2").value(DEFAULT_EXTERNAL_ID_2.toString()))
-            .andExpect(jsonPath("$.paymentDate").value(DEFAULT_PAYMENT_DATE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.paymentDelay").value(DEFAULT_PAYMENT_DELAY))
             .andExpect(jsonPath("$.vatNumber").value(DEFAULT_VAT_NUMBER.toString()));
@@ -247,7 +282,7 @@ public class CrmContactResourceImplTest {
             .name(UPDATED_NAME)
             .paymentDelay(UPDATED_PAYMENT_DELAY)
             .vatNumber(UPDATED_VAT_NUMBER);
-        CrmContactPT crmContactDTO = crmContactMapper.DB2DTO(updatedCrmContact);
+        CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(updatedCrmContact);
 
         restCrmContactMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -261,9 +296,7 @@ public class CrmContactResourceImplTest {
         assertThat(testCrmContact.getShortName()).isEqualTo(UPDATED_SHORT_NAME);
         assertThat(testCrmContact.getExternalId1()).isEqualTo(UPDATED_EXTERNAL_ID_1);
         assertThat(testCrmContact.getExternalId2()).isEqualTo(UPDATED_EXTERNAL_ID_2);
-        assertThat(testCrmContact.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
         assertThat(testCrmContact.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCrmContact.getPaymentDelay()).isEqualTo(UPDATED_PAYMENT_DELAY);
         assertThat(testCrmContact.getVatNumber()).isEqualTo(UPDATED_VAT_NUMBER);
     }
 
@@ -273,7 +306,7 @@ public class CrmContactResourceImplTest {
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
 
         // Create the CrmContact
-        CrmContactPT crmContactDTO = crmContactMapper.DB2DTO(crmContact);
+        CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCrmContactMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
