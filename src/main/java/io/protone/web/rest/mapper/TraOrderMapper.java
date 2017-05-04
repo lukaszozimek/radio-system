@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.TraOrderPT;
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.domain.*;
 import org.mapstruct.*;
 
@@ -18,9 +18,9 @@ public interface TraOrderMapper {
     @Mapping(source = "campaign.id", target = "campaignId")
     @Mapping(source = "invoice.id", target = "invoiceId")
     @Mapping(target = "emissions", ignore = true)
-    TraOrderPT DB2DTO(TraOrder traOrder);
+    TraOrderDTO DB2DTO(TraOrder traOrder);
 
-    List<TraOrderPT> DBs2DTOs(List<TraOrder> traOrders);
+    List<TraOrderDTO> DBs2DTOs(List<TraOrder> traOrders);
 
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "statusId", target = "status")
@@ -28,21 +28,21 @@ public interface TraOrderMapper {
     @Mapping(source = "invoiceId", target = "invoice")
     @Mapping(source = "campaignId", target = "campaign")
     @Mapping(target = "emissions", ignore = true)
-    TraOrder DTO2DB(TraOrderPT traOrderDTO, @Context CorNetwork corNetwork);
+    TraOrder DTO2DB(TraOrderDTO traOrderDTO, @Context CorNetwork corNetwork);
 
-    default List<TraOrder> DTOs2DBs(List<TraOrderPT> traOrderPTS, CorNetwork networkId) {
+    default List<TraOrder> DTOs2DBs(List<TraOrderDTO> traOrderDTOS, CorNetwork networkId) {
         List<TraOrder> crmLeads = new ArrayList<>();
-        if (traOrderPTS.isEmpty() || traOrderPTS == null) {
+        if (traOrderDTOS.isEmpty() || traOrderDTOS == null) {
             return null;
         }
-        for (TraOrderPT dto : traOrderPTS) {
+        for (TraOrderDTO dto : traOrderDTOS) {
             crmLeads.add(DTO2DB(dto, networkId));
         }
         return crmLeads;
     }
 
     @AfterMapping
-    default void traOrderPTToTraOrderAfterMapping(TraOrderPT dto, @MappingTarget TraOrder entity, @Context CorNetwork corNetwork) {
+    default void traOrderPTToTraOrderAfterMapping(TraOrderDTO dto, @MappingTarget TraOrder entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

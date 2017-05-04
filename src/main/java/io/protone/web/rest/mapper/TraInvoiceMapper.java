@@ -2,10 +2,8 @@ package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
 import io.protone.custom.service.dto.TraInvoicePT;
-import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
-import io.protone.domain.TraOrder;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
 import org.mapstruct.*;
 

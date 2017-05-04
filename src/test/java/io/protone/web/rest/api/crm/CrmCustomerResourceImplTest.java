@@ -1,13 +1,15 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmAccountPT;
+import io.protone.web.rest.dto.crm.CrmAccountDTO;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.api.crm.impl.CrmCustomerResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
+import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.CrmAccountMapper;
 import org.junit.Before;
@@ -87,24 +89,6 @@ public class CrmCustomerResourceImplTest {
 
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ApiNetworkCrmCustomerImpl crmAccountResource = new ApiNetworkCrmCustomerImpl();
-
-        ReflectionTestUtils.setField(crmAccountResource, "crmCustomerService", crmCustomerService);
-        ReflectionTestUtils.setField(crmAccountResource, "crmAccountMapper", crmAccountMapper);
-        ReflectionTestUtils.setField(crmAccountResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restCrmAccountMockMvc = MockMvcBuilders.standaloneSetup(crmAccountResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
      * <p>
@@ -123,6 +107,24 @@ public class CrmCustomerResourceImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        CrmCustomerResourceImpl crmAccountResource = new CrmCustomerResourceImpl();
+
+        ReflectionTestUtils.setField(crmAccountResource, "crmCustomerService", crmCustomerService);
+        ReflectionTestUtils.setField(crmAccountResource, "crmAccountMapper", crmAccountMapper);
+        ReflectionTestUtils.setField(crmAccountResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restCrmAccountMockMvc = MockMvcBuilders.standaloneSetup(crmAccountResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         crmAccount = createEntity(em).network(corNetwork);
     }
@@ -133,9 +135,9 @@ public class CrmCustomerResourceImplTest {
         int databaseSizeBeforeCreate = crmAccountRepository.findAll().size();
 
         // Create the CrmAccount
-        CrmAccountPT crmAccountDTO = crmAccountMapper.DB2DTO(crmAccount);
+        CrmAccountDTO crmAccountDTO = crmAccountMapper.DB2DTO(crmAccount);
 
-        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer")
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmAccountDTO)))
             .andExpect(status().isCreated());
@@ -160,10 +162,10 @@ public class CrmCustomerResourceImplTest {
         // Create the CrmAccount with an existing ID
         CrmAccount existingCrmAccount = new CrmAccount();
         existingCrmAccount.setId(1L);
-        CrmAccountPT existingCrmAccountDTO = crmAccountMapper.DB2DTO(existingCrmAccount);
+        CrmAccountDTO existingCrmAccountDTO = crmAccountMapper.DB2DTO(existingCrmAccount);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer")
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmAccountDTO)))
             .andExpect(status().isBadRequest());
@@ -180,7 +182,7 @@ public class CrmCustomerResourceImplTest {
         crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
 
         // Get all the crmAccountList
-        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer?sort=id,desc"))
+        restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmAccount.getId().intValue())))
@@ -213,6 +215,44 @@ public class CrmCustomerResourceImplTest {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmAccountRepository.findAll().size();
+        // set the field null
+        crmAccount.setName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        TraCustomerDTO cfgMarkerConfigurationDTO = crmAccountMapper.traDB2DTO(crmAccount);
+
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmAccount> crmAccounts = crmAccountRepository.findAll();
+        assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkShortNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmAccountRepository.findAll().size();
+        // set the field null
+        crmAccount.setShortName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        TraCustomerDTO cfgMarkerConfigurationDTO = crmAccountMapper.traDB2DTO(crmAccount);
+
+        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmAccount> crmAccounts = crmAccountRepository.findAll();
+        assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getNonExistingCrmAccount() throws Exception {
         // Get the crmAccount
         restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), Long.MAX_VALUE))
@@ -223,7 +263,8 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void updateCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccountRepository.deleteAll();
+        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork).shortName("YYYYY"));
         int databaseSizeBeforeUpdate = crmAccountRepository.findAll().size();
 
         // Update the crmAccount
@@ -235,7 +276,7 @@ public class CrmCustomerResourceImplTest {
             .name(UPDATED_NAME)
             .paymentDelay(UPDATED_PAYMENT_DELAY)
             .vatNumber(UPDATED_VAT_NUMBER);
-        CrmAccountPT crmAccountDTO = crmAccountMapper.DB2DTO(updatedCrmAccount);
+        CrmAccountDTO crmAccountDTO = crmAccountMapper.DB2DTO(updatedCrmAccount);
 
         restCrmAccountMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -260,7 +301,7 @@ public class CrmCustomerResourceImplTest {
         int databaseSizeBeforeUpdate = crmAccountRepository.findAll().size();
 
         // Create the CrmAccount
-        CrmAccountPT crmAccountDTO = crmAccountMapper.DB2DTO(crmAccount);
+        CrmAccountDTO crmAccountDTO = crmAccountMapper.DB2DTO(crmAccount);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCrmAccountMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
@@ -277,7 +318,8 @@ public class CrmCustomerResourceImplTest {
     @Transactional
     public void deleteCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork).shortName("XXXX"));
+        crmAccountRepository.deleteAll();
+        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
         int databaseSizeBeforeDelete = crmAccountRepository.findAll().size();
 
         // Get the crmAccount

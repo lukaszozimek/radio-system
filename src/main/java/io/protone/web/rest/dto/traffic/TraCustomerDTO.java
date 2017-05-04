@@ -19,6 +19,10 @@ import java.util.Objects;
 public class TraCustomerDTO implements Serializable {
 
     private Long id = null;
+
+    @NotNull
+    private String name = null;
+
     @NotNull
     private String shortName = null;
 
@@ -31,8 +35,7 @@ public class TraCustomerDTO implements Serializable {
     private Integer paymentDelay = null;
 
     private CorDictionaryDTO industry = null;
-    @NotNull
-    private String name = null;
+
 
     private Integer paymentDate = null;
 

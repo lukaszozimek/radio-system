@@ -4,7 +4,9 @@ import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
+import io.protone.repository.crm.CrmOpportunityRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmOpportunityService;
@@ -13,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -76,11 +79,18 @@ public class CrmOpportunityTaskResourceImplTest {
     @Inject
     private EntityManager em;
 
+    @Inject
+    private CrmOpportunityRepository crmOpportunityRepository;
+
+
     private MockMvc restCrmTaskMockMvc;
 
     private CrmTask crmTask;
 
     private CorNetwork corNetwork;
+
+    private CrmOpportunity crmOpportunity;
+
 
     /**
      * Create an entity for this test.

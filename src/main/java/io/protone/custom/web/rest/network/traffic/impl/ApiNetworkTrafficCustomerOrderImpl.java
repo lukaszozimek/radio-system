@@ -1,9 +1,9 @@
 package io.protone.custom.web.rest.network.traffic.impl;
 
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.domain.TraOrder;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraOrderService;
-import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerOrder;
 import io.protone.web.rest.mapper.TraOrderMapper;
 import io.swagger.annotations.ApiParam;
@@ -32,12 +32,12 @@ public class ApiNetworkTrafficCustomerOrderImpl implements ApiNetworkTrafficCust
     private TraOrderMapper traOrderMapper;
 
     @Override
-    public ResponseEntity<List<TraOrderPT>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                         @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraOrderDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraOrder, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
         List<TraOrder> entity = orderService.getCustomerOrders(customerShortcut, networkShortcut, pagable);
-        List<TraOrderPT> response = traOrderMapper.DBs2DTOs(entity);
+        List<TraOrderDTO> response = traOrderMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

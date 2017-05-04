@@ -2,7 +2,6 @@ package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
 import io.protone.custom.service.dto.TraCampaignPT;
-import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
 import org.mapstruct.*;

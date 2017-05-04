@@ -1,26 +1,12 @@
 package io.protone.custom.metadata.audiovault.parser;
 
-import io.protone.ProtoneApp;
-import org.apache.tika.Tika;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.CompositeParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.nio.file.Files;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by lukaszozimek on 16/03/2017.

@@ -4,7 +4,11 @@ import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.CrmContact;
 import io.protone.domain.CrmTask;
+import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.crm.CrmContactRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmContactService;
@@ -43,7 +47,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by lukaszozimek on 02/05/2017.
  */
 @RunWith(SpringRunner.class)
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CrmContactTaskResourceImplTest {
 
@@ -81,11 +84,17 @@ public class CrmContactTaskResourceImplTest {
     @Inject
     private EntityManager em;
 
+    @Inject
+    private CrmContactRepository crmContactRepository;
+
+
     private MockMvc restCrmTaskMockMvc;
 
     private CrmTask crmTask;
 
     private CorNetwork corNetwork;
+
+    private CrmContact crmContact;
 
     /**
      * Create an entity for this test.

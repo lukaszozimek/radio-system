@@ -4,10 +4,13 @@ import io.protone.ProtoneApp;
 import io.protone.custom.service.dto.CrmTaskPT;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.domain.CrmTask;
+import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
+import io.protone.web.rest.api.crm.CrmCustomerResourceImplTest;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,7 +35,6 @@ import java.util.List;
 import static io.protone.web.rest.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by lukaszozimek on 02/05/2017.
  */
 @RunWith(SpringRunner.class)
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CrmCustomerTaskResourceImplTest {
 
@@ -81,11 +81,18 @@ public class CrmCustomerTaskResourceImplTest {
     @Inject
     private EntityManager em;
 
+
+    @Inject
+    private CrmAccountRepository crmAccountRepository;
+
+
     private MockMvc restCrmTaskMockMvc;
 
     private CrmTask crmTask;
 
     private CorNetwork corNetwork;
+
+    private CrmAccount crmAccount;
 
     /**
      * Create an entity for this test.

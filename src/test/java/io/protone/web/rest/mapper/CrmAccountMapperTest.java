@@ -1,8 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmAccountPT;
-import io.protone.custom.service.dto.CrmContactPT;
+import io.protone.web.rest.dto.crm.CrmAccountDTO;
 import io.protone.domain.*;
 import org.assertj.core.util.Sets;
 import org.junit.Before;
@@ -32,9 +31,9 @@ public class CrmAccountMapperTest {
 
     private CrmAccount crmAccount;
 
-    private CrmAccountPT crmAccountPT;
+    private CrmAccountDTO crmAccountDTO;
 
-    private List<CrmAccountPT> crmAccountPTS = new ArrayList<>();
+    private List<CrmAccountDTO> crmAccountDTOS = new ArrayList<>();
 
     private List<CrmAccount> crmAccounts = new ArrayList<>();
 
@@ -58,8 +57,8 @@ public class CrmAccountMapperTest {
         crmAccount.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
         crmAccount.setNetwork(factory.manufacturePojo(CorNetwork.class));
         crmAccounts.add(crmAccount);
-        crmAccountPT = factory.manufacturePojo(CrmAccountPT.class);
-        crmAccountPTS.add(crmAccountPT);
+        crmAccountDTO = factory.manufacturePojo(CrmAccountDTO.class);
+        crmAccountDTOS.add(crmAccountDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
@@ -67,7 +66,7 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        CrmAccountPT dto = customCrmAccountMapper.DB2DTO(crmAccount);
+        CrmAccountDTO dto = customCrmAccountMapper.DB2DTO(crmAccount);
 
         assertNotNull(dto.getArea());
         assertNotNull(dto.getSize());
@@ -86,7 +85,7 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CrmAccountPT> dtos = customCrmAccountMapper.DBs2DTOs(crmAccounts);
+        List<CrmAccountDTO> dtos = customCrmAccountMapper.DBs2DTOs(crmAccounts);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -111,7 +110,7 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CrmAccount> entities = customCrmAccountMapper.DTOs2DBs(crmAccountPTS, corNetwork);
+        List<CrmAccount> entities = customCrmAccountMapper.DTOs2DBs(crmAccountDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -138,7 +137,7 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmAccount entity = customCrmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
+        CrmAccount entity = customCrmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
 
 
         assertNotNull(entity.getArea());

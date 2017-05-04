@@ -1,10 +1,10 @@
-package io.protone.custom.web.rest.network.traffic.impl;
+package io.protone.web.rest.api.traffic.impl;
 
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.domain.TraOrder;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraOrderService;
-import io.protone.custom.service.dto.TraOrderPT;
-import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficOrder;
+import io.protone.web.rest.api.traffic.TraOrderResource;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.TraOrderMapper;
 import io.protone.web.rest.util.HeaderUtil;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -26,8 +27,8 @@ import java.util.Optional;
 
 
 @RestController
-public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
-    private final Logger log = LoggerFactory.getLogger(ApiNetworkTrafficOrderImpl.class);
+public class TraOrderResourceImpl implements TraOrderResource {
+    private final Logger log = LoggerFactory.getLogger(TraOrderResourceImpl.class);
 
     @Inject
     private TraOrderService traOrderService;
@@ -39,41 +40,41 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<TraOrderPT> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT) throws URISyntaxException {
-        log.debug("REST request to update TraOrder : {}, for Network: {}", traOrderPT, networkShortcut);
-        if (traOrderPT.getId() == null) {
-            return createAnOrderUsingPOST(networkShortcut, traOrderPT);
+    public ResponseEntity<TraOrderDTO> updateAnOrderUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traOrderDTO", required = true) @Valid @RequestBody TraOrderDTO traOrderDTO) throws URISyntaxException {
+        log.debug("REST request to update TraOrder : {}, for Network: {}", traOrderDTO, networkShortcut);
+        if (traOrderDTO.getId() == null) {
+            return createAnOrderUsingPOST(networkShortcut, traOrderDTO);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        TraOrder traOrder = traOrderMapper.DTO2DB(traOrderPT, corNetwork);
+        TraOrder traOrder = traOrderMapper.DTO2DB(traOrderDTO, corNetwork);
         TraOrder entity = traOrderService.saveOrder(traOrder);
-        TraOrderPT response = traOrderMapper.DB2DTO(entity);
+        TraOrderDTO response = traOrderMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
 
     }
 
     @Override
-    public ResponseEntity<TraOrderPT> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traOrderPT", required = true) @RequestBody TraOrderPT traOrderPT) throws URISyntaxException {
-        log.debug("REST request to save TraOrder : {}, for Network: {}", traOrderPT, networkShortcut);
-        if (traOrderPT.getId() != null) {
+    public ResponseEntity<TraOrderDTO> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traOrderDTO", required = true) @Valid @RequestBody TraOrderDTO traOrderDTO) throws URISyntaxException {
+        log.debug("REST request to save TraOrder : {}, for Network: {}", traOrderDTO, networkShortcut);
+        if (traOrderDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraOrder cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        TraOrder traOrder = traOrderMapper.DTO2DB(traOrderPT, corNetwork);
+        TraOrder traOrder = traOrderMapper.DTO2DB(traOrderDTO, corNetwork);
         TraOrder entity = traOrderService.saveOrder(traOrder);
-        TraOrderPT response = traOrderMapper.DB2DTO(entity);
+        TraOrderDTO response = traOrderMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/order/" + response.getId()))
             .body(response);
     }
 
     @Override
-    public ResponseEntity<List<TraOrderPT>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraOrderDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraOrder, for Network: {}", networkShortcut);
         List<TraOrder> entity = traOrderService.getAllOrders(networkShortcut, pagable);
-        List<TraOrderPT> response = traOrderMapper.DBs2DTOs(entity);
+        List<TraOrderDTO> response = traOrderMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -82,10 +83,10 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
     }
 
     @Override
-    public ResponseEntity<TraOrderPT> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<TraOrderDTO> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraOrder : {}, for Network: {}", id, networkShortcut);
         TraOrder entity = traOrderService.getOrder(id, networkShortcut);
-        TraOrderPT response = traOrderMapper.DB2DTO(entity);
+        TraOrderDTO response = traOrderMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -101,7 +102,7 @@ public class ApiNetworkTrafficOrderImpl implements ApiNetworkTrafficOrder {
     }
 
     @Override
-    public ResponseEntity<TraOrderPT> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    public ResponseEntity<TraOrderDTO> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         return null;
     }
 }

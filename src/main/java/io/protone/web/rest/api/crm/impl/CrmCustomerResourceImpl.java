@@ -1,9 +1,10 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm.impl;
 
+import io.protone.web.rest.dto.crm.CrmAccountDTO;
+import io.protone.web.rest.api.crm.CrmCustomerResource;
 import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
-import io.protone.custom.service.dto.CrmAccountPT;
 import io.protone.web.rest.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.CrmAccountMapper;
@@ -19,13 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.network.crm.ApiNetworkCrmCustomer {
+public class CrmCustomerResourceImpl implements CrmCustomerResource {
     private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
@@ -38,39 +40,39 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     private CrmAccountMapper crmAccountMapper;
 
     @Override
-    public ResponseEntity<CrmAccountPT> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) throws URISyntaxException {
-        log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountPT, networkShortcut);
+    public ResponseEntity<CrmAccountDTO> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
+        log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
 
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        if (crmAccountPT.getId() == null) {
-            return createCustomerUsingPOST(networkShortcut, crmAccountPT);
+        if (crmAccountDTO.getId() == null) {
+            return createCustomerUsingPOST(networkShortcut, crmAccountDTO);
         }
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
-        CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
+        CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
-    public ResponseEntity<CrmAccountPT> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountPT", required = true) @RequestBody CrmAccountPT crmAccountPT) throws URISyntaxException {
-        log.debug("REST request to save CrmAccount : {}, for Network: {}", crmAccountPT, networkShortcut);
-        if (crmAccountPT.getId() != null) {
+    public ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
+        log.debug("REST request to save CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
+        if (crmAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountPT, corNetwork);
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
-        CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
+        CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + crmAccount.getShortName()))
             .body(response);
     }
 
     @Override
-    public ResponseEntity<List<CrmAccountPT>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<CrmAccountDTO>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount, for Network: {}", networkShortcut);
         List<CrmAccount> entity = crmCustomerService.getAllCustomers(networkShortcut, pagable);
-        List<CrmAccountPT> response = crmAccountMapper.DBs2DTOs(entity);
+        List<CrmAccountDTO> response = crmAccountMapper.DBs2DTOs(entity);
 
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -80,10 +82,10 @@ public class ApiNetworkCrmCustomerImpl implements io.protone.custom.web.rest.net
     }
 
     @Override
-    public ResponseEntity<CrmAccountPT> getCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<CrmAccountDTO> getCustomerUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmAccount : {}, for Network: {}", shortName, networkShortcut);
         CrmAccount entity = crmCustomerService.getCustomer(shortName, networkShortcut);
-        CrmAccountPT response = crmAccountMapper.DB2DTO(entity);
+        CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

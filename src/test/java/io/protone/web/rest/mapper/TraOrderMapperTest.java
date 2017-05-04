@@ -1,8 +1,8 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.custom.service.dto.TraOrderPT;
 import io.protone.domain.*;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
@@ -33,9 +33,9 @@ public class TraOrderMapperTest {
 
     private TraOrder traOrder;
 
-    private TraOrderPT traOrderPT;
+    private TraOrderDTO traOrderDTO;
 
-    private List<TraOrderPT> orderPTS = new ArrayList<>();
+    private List<TraOrderDTO> orderPTS = new ArrayList<>();
 
     private List<TraOrder> traOrders = new ArrayList<>();
 
@@ -59,21 +59,21 @@ public class TraOrderMapperTest {
         traOrder.setInvoice(factory.manufacturePojo(TraInvoice.class));
         traOrder.getInvoice().setId(1L);
         traOrders.add(traOrder);
-        traOrderPT = factory.manufacturePojo(TraOrderPT.class);
-        traOrderPT.getId();
-        traOrderPT.setAdvertismentId(factory.manufacturePojo(TraAdvertisementThinDTO.class));
-        traOrderPT.setCampaignId(1L);
-        traOrderPT.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
-        traOrderPT.setStatusId(factory.manufacturePojo(CorDictionaryDTO.class));
-        traOrderPT.setInvoiceId(1L);
-        orderPTS.add(traOrderPT);
+        traOrderDTO = factory.manufacturePojo(TraOrderDTO.class);
+        traOrderDTO.getId();
+        traOrderDTO.setAdvertismentId(factory.manufacturePojo(TraAdvertisementThinDTO.class));
+        traOrderDTO.setCampaignId(1L);
+        traOrderDTO.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
+        traOrderDTO.setStatusId(factory.manufacturePojo(CorDictionaryDTO.class));
+        traOrderDTO.setInvoiceId(1L);
+        orderPTS.add(traOrderDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        TraOrderPT dto = customTraOrderMapper.DB2DTO(traOrder);
+        TraOrderDTO dto = customTraOrderMapper.DB2DTO(traOrder);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getAdvertismentId());
@@ -91,7 +91,7 @@ public class TraOrderMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraOrderPT> dtos = customTraOrderMapper.DBs2DTOs(traOrders);
+        List<TraOrderDTO> dtos = customTraOrderMapper.DBs2DTOs(traOrders);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -134,7 +134,7 @@ public class TraOrderMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraOrder entity = customTraOrderMapper.DTO2DB(traOrderPT, corNetwork);
+        TraOrder entity = customTraOrderMapper.DTO2DB(traOrderDTO, corNetwork);
 
         assertNotNull(entity.getAdvertisment());
         assertNotNull(entity.getStatus());

@@ -1,56 +1,50 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.traffic;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * TraOrderPT
+ * TraOrderDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraOrderPT {
-    @JsonProperty("calculatedPrize")
+public class TraOrderDTO {
+
     private Long calculatedPrize = null;
 
-    @JsonProperty("campaign")
     private Long campaignId = null;
 
-    @JsonProperty("customer")
+    @NotNull
     private TraCustomerThinDTO customerId = null;
 
-    @JsonProperty("endDate")
     private LocalDate endDate = null;
 
-    @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("startDate")
     private LocalDate startDate = null;
 
-    @JsonProperty("advertisment")
+    @NotNull
     private TraAdvertisementThinDTO advertismentId = null;
 
-    @JsonProperty("status")
     private CorDictionaryDTO statusId = null;
 
-    @JsonProperty("emission")
     private List<SchEmissionPT> schEmissionPT = new ArrayList<SchEmissionPT>();
 
-    @JsonProperty
     private Long invoiceId = null;
 
-    public TraOrderPT calculatedPrize(Long calculatedPrize) {
+    public TraOrderDTO calculatedPrize(Long calculatedPrize) {
         this.calculatedPrize = calculatedPrize;
         return this;
     }
@@ -69,7 +63,7 @@ public class TraOrderPT {
         this.calculatedPrize = calculatedPrize;
     }
 
-    public TraOrderPT traCampaign(Long campaignId) {
+    public TraOrderDTO traCampaign(Long campaignId) {
         this.campaignId = campaignId;
         return this;
     }
@@ -89,7 +83,7 @@ public class TraOrderPT {
     }
 
 
-    public TraOrderPT customerId(TraCustomerThinDTO customerId) {
+    public TraOrderDTO customerId(TraCustomerThinDTO customerId) {
         this.customerId = customerId;
         return this;
     }
@@ -108,7 +102,7 @@ public class TraOrderPT {
         this.customerId = customerId;
     }
 
-    public TraOrderPT endDate(LocalDate endDate) {
+    public TraOrderDTO endDate(LocalDate endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -127,7 +121,7 @@ public class TraOrderPT {
         this.endDate = endDate;
     }
 
-    public TraOrderPT id(Long id) {
+    public TraOrderDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -146,7 +140,7 @@ public class TraOrderPT {
         this.id = id;
     }
 
-    public TraOrderPT name(String name) {
+    public TraOrderDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -165,7 +159,7 @@ public class TraOrderPT {
         this.name = name;
     }
 
-    public TraOrderPT startDate(LocalDate startDate) {
+    public TraOrderDTO startDate(LocalDate startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -184,7 +178,7 @@ public class TraOrderPT {
         this.invoiceId = traInvoicePT;
     }
 
-    public TraOrderPT invoiceId(Long traInvoicePT) {
+    public TraOrderDTO invoiceId(Long traInvoicePT) {
         this.invoiceId = traInvoicePT;
         return this;
     }
@@ -203,7 +197,7 @@ public class TraOrderPT {
         this.statusId = traOrderStatus;
     }
 
-    public TraOrderPT statusId(CorDictionaryDTO traOrderStatus) {
+    public TraOrderDTO statusId(CorDictionaryDTO traOrderStatus) {
         this.statusId = traOrderStatus;
         return this;
     }
@@ -222,7 +216,7 @@ public class TraOrderPT {
         this.advertismentId = advertisment;
     }
 
-    public TraOrderPT advertismentId(TraAdvertisementThinDTO advertisment) {
+    public TraOrderDTO advertismentId(TraAdvertisementThinDTO advertisment) {
         this.advertismentId = advertisment;
         return this;
     }
@@ -241,17 +235,17 @@ public class TraOrderPT {
         this.schEmissionPT = emissions;
     }
 
-    public TraOrderPT addEmission(SchEmissionPT emission) {
+    public TraOrderDTO addEmission(SchEmissionPT emission) {
         this.schEmissionPT.add(emission);
         return this;
     }
 
-    public TraOrderPT removeEmission(SchEmissionPT emission) {
+    public TraOrderDTO removeEmission(SchEmissionPT emission) {
         this.schEmissionPT.remove(emission);
         return this;
     }
 
-    public TraOrderPT emissions(List<SchEmissionPT> emissions) {
+    public TraOrderDTO emissions(List<SchEmissionPT> emissions) {
         this.schEmissionPT = emissions;
         return this;
     }
@@ -279,16 +273,16 @@ public class TraOrderPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraOrderPT traOrderPT = (TraOrderPT) o;
-        return Objects.equals(this.calculatedPrize, traOrderPT.calculatedPrize) &&
-            Objects.equals(this.campaignId, traOrderPT.campaignId) &&
-            Objects.equals(this.customerId, traOrderPT.customerId) &&
-            Objects.equals(this.endDate, traOrderPT.endDate) &&
-            Objects.equals(this.id, traOrderPT.id) &&
-            Objects.equals(this.name, traOrderPT.name) &&
-            Objects.equals(this.startDate, traOrderPT.startDate) &&
-            Objects.equals(this.schEmissionPT, traOrderPT.schEmissionPT) &&
-            Objects.equals(this.advertismentId, traOrderPT.advertismentId);
+        TraOrderDTO traOrderDTO = (TraOrderDTO) o;
+        return Objects.equals(this.calculatedPrize, traOrderDTO.calculatedPrize) &&
+            Objects.equals(this.campaignId, traOrderDTO.campaignId) &&
+            Objects.equals(this.customerId, traOrderDTO.customerId) &&
+            Objects.equals(this.endDate, traOrderDTO.endDate) &&
+            Objects.equals(this.id, traOrderDTO.id) &&
+            Objects.equals(this.name, traOrderDTO.name) &&
+            Objects.equals(this.startDate, traOrderDTO.startDate) &&
+            Objects.equals(this.schEmissionPT, traOrderDTO.schEmissionPT) &&
+            Objects.equals(this.advertismentId, traOrderDTO.advertismentId);
     }
 
     @Override
@@ -299,7 +293,7 @@ public class TraOrderPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TraOrderPT {\n");
+        sb.append("class TraOrderDTO {\n");
 
         sb.append("    calculatedPrize: ").append(toIndentedString(calculatedPrize)).append("\n");
         sb.append("    campaignId: ").append(toIndentedString(campaignId)).append("\n");

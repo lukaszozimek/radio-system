@@ -2,6 +2,7 @@ package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.traffic.thin.TraInvoiceCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -20,7 +21,7 @@ public class TraInvoicePT {
     private Long id = null;
 
     @JsonProperty("order")
-    private List<TraOrderPT> orders = null;
+    private List<TraOrderDTO> orders = null;
 
     @JsonProperty("paid")
     private Boolean paid = null;
@@ -56,7 +57,7 @@ public class TraInvoicePT {
         this.id = id;
     }
 
-    public TraInvoicePT order(List<TraOrderPT> order) {
+    public TraInvoicePT order(List<TraOrderDTO> order) {
         this.orders = order;
         return this;
     }
@@ -67,11 +68,11 @@ public class TraInvoicePT {
      * @return orders
      **/
     @ApiModelProperty(value = "")
-    public List<TraOrderPT> getOrders() {
+    public List<TraOrderDTO> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<TraOrderPT> orders) {
+    public void setOrders(List<TraOrderDTO> orders) {
         this.orders = orders;
     }
 
