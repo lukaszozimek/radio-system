@@ -1,47 +1,43 @@
 package io.protone.custom.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * TraCampaignPT
+ * TraCampaignDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraCampaignPT {
-    @JsonProperty("customerPT")
+public class TraCampaignDTO implements Serializable {
+
+    @NotNull
     private TraCustomerThinDTO customerPT = null;
 
-    @JsonProperty("endDate")
     private LocalDate endDate = null;
 
-    @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("prize")
     private Long prize = null;
 
-    @JsonProperty("startDate")
     private LocalDate startDate = null;
 
-    @JsonProperty("status")
     private CorDictionaryDTO status = null;
 
-    @JsonProperty("orders")
     private List<TraOrderDTO> orders = new ArrayList<TraOrderDTO>();
 
-    public TraCampaignPT customerId(TraCustomerThinDTO customerId) {
+    public TraCampaignDTO customerId(TraCustomerThinDTO customerId) {
         this.customerPT = customerId;
         return this;
     }
@@ -61,7 +57,7 @@ public class TraCampaignPT {
         this.customerPT = customerId;
     }
 
-    public TraCampaignPT endDate(LocalDate endDate) {
+    public TraCampaignDTO endDate(LocalDate endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -81,7 +77,7 @@ public class TraCampaignPT {
         this.status = status;
     }
 
-    public TraCampaignPT status(CorDictionaryDTO status) {
+    public TraCampaignDTO status(CorDictionaryDTO status) {
         this.status = status;
         return this;
     }
@@ -100,7 +96,7 @@ public class TraCampaignPT {
         this.endDate = endDate;
     }
 
-    public TraCampaignPT id(Long id) {
+    public TraCampaignDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -119,7 +115,7 @@ public class TraCampaignPT {
         this.id = id;
     }
 
-    public TraCampaignPT name(String name) {
+    public TraCampaignDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -138,7 +134,7 @@ public class TraCampaignPT {
         this.name = name;
     }
 
-    public TraCampaignPT prize(Long prize) {
+    public TraCampaignDTO prize(Long prize) {
         this.prize = prize;
         return this;
     }
@@ -157,7 +153,7 @@ public class TraCampaignPT {
         this.prize = prize;
     }
 
-    public TraCampaignPT startDate(LocalDate startDate) {
+    public TraCampaignDTO startDate(LocalDate startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -176,12 +172,12 @@ public class TraCampaignPT {
         this.startDate = startDate;
     }
 
-    public TraCampaignPT orders(List<TraOrderDTO> orders) {
+    public TraCampaignDTO orders(List<TraOrderDTO> orders) {
         this.orders = orders;
         return this;
     }
 
-    public TraCampaignPT addOrder(TraOrderDTO order) {
+    public TraCampaignDTO addOrder(TraOrderDTO order) {
         this.orders.add(order);
         return this;
     }
@@ -209,14 +205,14 @@ public class TraCampaignPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraCampaignPT traCampaignPT = (TraCampaignPT) o;
-        return Objects.equals(this.customerPT, traCampaignPT.customerPT) &&
-            Objects.equals(this.endDate, traCampaignPT.endDate) &&
-            Objects.equals(this.id, traCampaignPT.id) &&
-            Objects.equals(this.name, traCampaignPT.name) &&
-            Objects.equals(this.prize, traCampaignPT.prize) &&
-            Objects.equals(this.startDate, traCampaignPT.startDate) &&
-            Objects.equals(this.orders, traCampaignPT.orders);
+        TraCampaignDTO traCampaignDTO = (TraCampaignDTO) o;
+        return Objects.equals(this.customerPT, traCampaignDTO.customerPT) &&
+            Objects.equals(this.endDate, traCampaignDTO.endDate) &&
+            Objects.equals(this.id, traCampaignDTO.id) &&
+            Objects.equals(this.name, traCampaignDTO.name) &&
+            Objects.equals(this.prize, traCampaignDTO.prize) &&
+            Objects.equals(this.startDate, traCampaignDTO.startDate) &&
+            Objects.equals(this.orders, traCampaignDTO.orders);
     }
 
     @Override
@@ -227,7 +223,7 @@ public class TraCampaignPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TraCampaignPT {\n");
+        sb.append("class TraCampaignDTO {\n");
 
         sb.append("    customerId: ").append(toIndentedString(customerPT)).append("\n");
         sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");

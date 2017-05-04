@@ -4,7 +4,7 @@ package io.protone.custom.web.rest.network.traffic.impl;
 import io.protone.domain.TraCampaign;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraCampaignService;
-import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.custom.service.dto.TraCampaignDTO;
 import io.protone.custom.web.rest.network.traffic.ApiNetworkTrafficCustomerCampaign;
 import io.protone.web.rest.mapper.TraCampaignMapper;
 import io.swagger.annotations.ApiParam;
@@ -34,12 +34,12 @@ public class ApiNetworkTrafficCustomerCampaignImpl implements ApiNetworkTrafficC
     private TraCampaignMapper traCampaignMapper;
 
     @Override
-    public ResponseEntity<List<TraCampaignPT>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                               @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraCampaignDTO>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCampaign, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
         List<TraCampaign> entity = campaignService.getCustomerCampaing(customerShortcut, networkShortcut, pagable);
-        List<TraCampaignPT> response = traCampaignMapper.DBs2DTOs(entity);
+        List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

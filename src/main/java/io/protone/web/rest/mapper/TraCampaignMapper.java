@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.custom.service.dto.LibMarkerPT;
-import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.custom.service.dto.TraCampaignDTO;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
 import org.mapstruct.*;
@@ -18,28 +18,28 @@ public interface TraCampaignMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraCampaignPT DB2DTO(TraCampaign traCampaign);
+    TraCampaignDTO DB2DTO(TraCampaign traCampaign);
 
-    List<TraCampaignPT> DBs2DTOs(List<TraCampaign> traCampaigns);
+    List<TraCampaignDTO> DBs2DTOs(List<TraCampaign> traCampaigns);
 
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "orders", target = "orders")
-    TraCampaign DTO2DB(TraCampaignPT traCampaignDTO, @Context CorNetwork corNetwork);
+    TraCampaign DTO2DB(TraCampaignDTO traCampaignDTO, @Context CorNetwork corNetwork);
 
-    default List<TraCampaign> DTOs2DBs(List<TraCampaignPT> traCampaignPT, CorNetwork networkId) {
+    default List<TraCampaign> DTOs2DBs(List<TraCampaignDTO> traCampaignDTO, CorNetwork networkId) {
         List<TraCampaign> traCampaigns = new ArrayList<>();
-        if (traCampaignPT.isEmpty() || traCampaignPT == null) {
+        if (traCampaignDTO.isEmpty() || traCampaignDTO == null) {
             return null;
         }
-        for (TraCampaignPT dto : traCampaignPT) {
+        for (TraCampaignDTO dto : traCampaignDTO) {
             traCampaigns.add(DTO2DB(dto, networkId));
         }
         return traCampaigns;
     }
 
     @AfterMapping
-    default void traCampaignPTToTraCampaignAfterMapping(TraCampaignPT dto, @MappingTarget TraCampaign entity, @Context CorNetwork corNetwork) {
+    default void traCampaignPTToTraCampaignAfterMapping(TraCampaignDTO dto, @MappingTarget TraCampaign entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

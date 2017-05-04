@@ -1,13 +1,17 @@
-package io.protone.custom.web.rest.network.traffic.impl;
+package io.protone.web.rest.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.custom.service.dto.TraCampaignDTO;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.api.traffic.impl.TraCampaignResourceImpl;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;
+import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraCampaignRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraCampaignService;
+import io.protone.web.rest.api.crm.CrmCustomerResourceImplTest;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraCampaignMapper;
 import org.junit.Before;
@@ -41,9 +45,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by lukaszozimek on 02/05/2017.
  */
+///TODO: ShortName to campaign
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class TrafficCampaignResourceImplTest {
+public class TraCampaignResourceImplTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -56,6 +61,7 @@ public class TrafficCampaignResourceImplTest {
 
     private static final Long DEFAULT_PRIZE = 1L;
     private static final Long UPDATED_PRIZE = 2L;
+
     @Autowired
     private CorNetworkService corNetworkService;
 
@@ -83,25 +89,12 @@ public class TrafficCampaignResourceImplTest {
     private MockMvc restTraCampaignMockMvc;
 
     private TraCampaign traCampaign;
+
     private CorNetwork corNetwork;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        ApiNetworkTrafficCampaignImpl traCampaignResource = new ApiNetworkTrafficCampaignImpl();
-
-        ReflectionTestUtils.setField(traCampaignResource, "traCampaignService", traCampaignService);
-        ReflectionTestUtils.setField(traCampaignResource, "traCampaignMapper", traCampaignMapper);
-        ReflectionTestUtils.setField(traCampaignResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restTraCampaignMockMvc = MockMvcBuilders.standaloneSetup(traCampaignResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
+    private CrmAccount crmAccount;
+    @Autowired
+    private CrmAccountRepository crmAccountRepository;
 
     /**
      * Create an entity for this test.
@@ -119,6 +112,24 @@ public class TrafficCampaignResourceImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        TraCampaignResourceImpl traCampaignResource = new TraCampaignResourceImpl();
+
+        ReflectionTestUtils.setField(traCampaignResource, "traCampaignService", traCampaignService);
+        ReflectionTestUtils.setField(traCampaignResource, "traCampaignMapper", traCampaignMapper);
+        ReflectionTestUtils.setField(traCampaignResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restTraCampaignMockMvc = MockMvcBuilders.standaloneSetup(traCampaignResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         traCampaign = createEntity(em).network(corNetwork);
     }
@@ -126,10 +137,12 @@ public class TrafficCampaignResourceImplTest {
     @Test
     @Transactional
     public void createTraCampaign() throws Exception {
+
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         int databaseSizeBeforeCreate = traCampaignRepository.findAll().size();
 
         // Create the TraCampaign
-        TraCampaignPT traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
+        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.customer(crmAccount));
 
         restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -151,10 +164,11 @@ public class TrafficCampaignResourceImplTest {
     public void createTraCampaignWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = traCampaignRepository.findAll().size();
 
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         // Create the TraCampaign with an existing ID
         TraCampaign existingTraCampaign = new TraCampaign();
         existingTraCampaign.setId(1L);
-        TraCampaignPT existingTraCampaignDTO = traCampaignMapper.DB2DTO(existingTraCampaign);
+        TraCampaignDTO existingTraCampaignDTO = traCampaignMapper.DB2DTO(existingTraCampaign.customer(crmAccount));
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
@@ -175,7 +189,7 @@ public class TrafficCampaignResourceImplTest {
         traCampaign.setName(null);
 
         // Create the TraCampaign, which fails.
-        TraCampaignPT traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
+        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
 
         restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -210,7 +224,7 @@ public class TrafficCampaignResourceImplTest {
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
 
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(get("/api/tra-campaigns/{id}", traCampaign.getId()))
+        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traCampaign.getId().intValue()))
@@ -232,6 +246,8 @@ public class TrafficCampaignResourceImplTest {
     @Transactional
     public void updateTraCampaign() throws Exception {
         // Initialize the database
+
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
         int databaseSizeBeforeUpdate = traCampaignRepository.findAll().size();
 
@@ -242,7 +258,7 @@ public class TrafficCampaignResourceImplTest {
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
             .prize(UPDATED_PRIZE);
-        TraCampaignPT traCampaignDTO = traCampaignMapper.DB2DTO(updatedTraCampaign);
+        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(updatedTraCampaign.customer(crmAccount));
 
         restTraCampaignMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -262,10 +278,12 @@ public class TrafficCampaignResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingTraCampaign() throws Exception {
+
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         int databaseSizeBeforeUpdate = traCampaignRepository.findAll().size();
 
         // Create the TraCampaign
-        TraCampaignPT traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
+        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.customer(crmAccount));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restTraCampaignMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())

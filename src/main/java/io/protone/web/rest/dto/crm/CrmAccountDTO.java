@@ -2,7 +2,7 @@ package io.protone.web.rest.dto.crm;
 
 import io.protone.custom.service.dto.CoreAddressPT;
 import io.protone.custom.service.dto.CrmTaskPT;
-import io.protone.custom.service.dto.TraCampaignPT;
+import io.protone.custom.service.dto.TraCampaignDTO;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
@@ -55,7 +55,7 @@ public class CrmAccountDTO implements Serializable {
 
     private List<TraOrderDTO> orders = new ArrayList<TraOrderDTO>();
 
-    private List<TraCampaignPT> campains = new ArrayList<TraCampaignPT>();
+    private List<TraCampaignDTO> campains = new ArrayList<TraCampaignDTO>();
 
     private List<CrmTaskPT> tasks = new ArrayList<CrmTaskPT>();
 
@@ -346,12 +346,12 @@ public class CrmAccountDTO implements Serializable {
         this.orders = orders;
     }
 
-    public CrmAccountDTO campains(List<TraCampaignPT> campains) {
+    public CrmAccountDTO campains(List<TraCampaignDTO> campains) {
         this.campains = campains;
         return this;
     }
 
-    public CrmAccountDTO addCampainsItem(TraCampaignPT campainsItem) {
+    public CrmAccountDTO addCampainsItem(TraCampaignDTO campainsItem) {
         this.campains.add(campainsItem);
         return this;
     }
@@ -362,11 +362,11 @@ public class CrmAccountDTO implements Serializable {
      * @return campains
      **/
     @ApiModelProperty(value = "")
-    public List<TraCampaignPT> getCampains() {
+    public List<TraCampaignDTO> getCampains() {
         return campains;
     }
 
-    public void setCampains(List<TraCampaignPT> campains) {
+    public void setCampains(List<TraCampaignDTO> campains) {
         this.campains = campains;
     }
 
