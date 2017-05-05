@@ -1,8 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.ConfMusicLogPT;
-import io.protone.custom.service.dto.CoreAddressPT;
-import io.protone.domain.CfgExternalSystemLog;
+import io.protone.web.rest.dto.cor.CoreAddressDTO;
 import io.protone.domain.CorAddress;
 import io.protone.domain.CorNetwork;
 import org.mapstruct.AfterMapping;
@@ -18,25 +16,25 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CorAddressMapper {
-    CoreAddressPT DB2DTO(CorAddress cORAddress);
+    CoreAddressDTO DB2DTO(CorAddress cORAddress);
 
-    List<CoreAddressPT> DBs2DTOs(List<CorAddress> cORAddresses);
+    List<CoreAddressDTO> DBs2DTOs(List<CorAddress> cORAddresses);
 
-    CorAddress DTO2DB(CoreAddressPT cORAddressDTO, @Context CorNetwork corNetwork);
+    CorAddress DTO2DB(CoreAddressDTO cORAddressDTO, @Context CorNetwork corNetwork);
 
-    default List<CorAddress> DTOs2DBs(List<CoreAddressPT> coreAddressPTS, CorNetwork networkId) {
+    default List<CorAddress> DTOs2DBs(List<CoreAddressDTO> coreAddressDTOS, CorNetwork networkId) {
         List<CorAddress> corAddresses = new ArrayList<>();
-        if (coreAddressPTS.isEmpty() || coreAddressPTS == null) {
+        if (coreAddressDTOS.isEmpty() || coreAddressDTOS == null) {
             return null;
         }
-        for (CoreAddressPT dto : coreAddressPTS) {
+        for (CoreAddressDTO dto : coreAddressDTOS) {
             corAddresses.add(DTO2DB(dto, networkId));
         }
         return corAddresses;
     }
 
     @AfterMapping
-    default void coreAddressPTToCorAddressAfterMapping(CoreAddressPT dto, @MappingTarget CorAddress entity, @Context CorNetwork corNetwork) {
+    default void coreAddressPTToCorAddressAfterMapping(CoreAddressDTO dto, @MappingTarget CorAddress entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

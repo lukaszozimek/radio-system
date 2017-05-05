@@ -8,8 +8,6 @@ import io.protone.service.library.LibLibraryService;
 import io.protone.service.library.LibMarkerService;
 import io.protone.web.rest.mapper.LibItemMapper;
 import io.protone.domain.*;
-import io.protone.repository.cor.CorUserRepository;
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.security.SecurityUtils;
 import org.apache.commons.io.IOUtils;
@@ -20,6 +18,7 @@ import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.AutoDetectParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,121 +60,64 @@ public class LibItemService {
     private MediaUtils mediaUtils;
 
     @Inject
-    private LibMediaItemRepository mediaItemRepository;
-
-    @Inject
     private LibAudioObjectRepository audioObjectRepository;
 
     @Inject
-    private CorUserRepository userRepository;
+    private CustomCorUserService customCorUserService;
 
     @Inject
     private LibMetadataService libMetadataService;
 
     @Inject
-    private LibArtistService libArtistRepository;
+    private LibArtistService libArtistService;
 
     @Inject
-    private LibAlbumService libAlbumRepository;
+    private LibAlbumService libAlbumService;
 
     @Inject
     private LibMarkerService libMarkerService;
 
     @Inject
-    private LibTrackRepository libTrackRepository;
+    private LibTrackService libTrackService;
 
     @Inject
-    private LibLabelRepository libLabelRepository;
+    private LibLabelService libLabelService;
 
-    public LibItemPT getItem(String networkShortcut, String libraryShortcut, String idx) {
-        LibItemPT result = null;
+    public LibMediaItem getMediaItem(String networkShortcut, String libraryShortcut, String idx) {
+        Optional<LibMediaItem> optionalItemDB = itemRepository.findByLibrary_ShortcutAndIdx(libraryShortcut, idx);
+        return optionalItemDB.orElse(null);
+    }
+
+    public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
+        List<LibMediaItem> itemsDB = itemRepository.findByLibrary_Shortcut(libraryShortcut, pagable);
+        return itemsDB;
+    }
+
+
+    public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
+        LibArtist artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
+        libMediaItem.setArtist(artist);
+
+        libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum(), artist, corNetwork));
+        libMediaItem.setLabel(libLabelService.saveLibLabel(libMediaItem.getLabel()).orElse(null));
+        libMediaItem.setTrack(libTrackService.saveLibTrack(libMediaItem.getTrack()).orElse(null));
+        libMediaItem.setMarkers(libMarkerService.saveLibMarkers(libMediaItem.getMarkers()).orElse(null));
+
+        return itemRepository.saveAndFlush(libMediaItem);
+    }
+
+    public List<LibMediaItem> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException {
+
+        List<LibMediaItem> result = new ArrayList<>();
+
+        if (files == null || files.length == 0) {
+            return result;
+        }
         LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
-        if (libraryDB == null)
+        if (libraryDB == null) {
             return result;
 
-        Optional<LibMediaItem> optionalItemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx);
-        result = itemMapper.DB2DTO(optionalItemDB.orElse(null));
-        return result;
-    }
-
-    public List<LibItemPT> getItem(String networkShortcut, String libraryShortcut) {
-        List<LibItemPT> results = new ArrayList<>();
-        LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
-        if (libraryDB == null)
-            return results;
-
-        List<LibMediaItem> itemsDB = itemRepository.findByLibrary(libraryDB);
-        results = itemMapper.DBs2DTOs(itemsDB);
-        return results;
-    }
-
-    @Transactional
-    public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-        LibMediaItem itemToDelete = getItemFromDB(networkShortcut, libraryShortcut, idx);
-        deleteItemFromMinio(itemToDelete);
-        itemRepository.delete(itemToDelete);
-    }
-
-    @Transactional
-    public void deleteItem(LibMediaItem libMediaItem) {
-        deleteItemFromMinio(libMediaItem);
-        itemRepository.delete(libMediaItem);
-    }
-
-    private void deleteItemFromMinio(LibMediaItem libMediaItem) {
-        if (libMediaItem != null) {
-
-            List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
-            if (audioObjects != null || !audioObjects.isEmpty() ) {
-                for (LibAudioObject audioObject : audioObjects) {
-                    LibCloudObject cloudObject = audioObject.getCloudObject();
-                    try {
-                        s3Client.delete(cloudObject.getUuid());
-                        audioObjectRepository.delete(audioObject);
-                        audioObjectRepository.flush();
-                        cloudObjectRepository.delete(cloudObject);
-                        cloudObjectRepository.flush();
-                    } catch (DeleteException e) {
-                        e.printStackTrace();
-                    } catch (S3Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
         }
-    }
-
-    public LibItemPT update(LibItemPT libItemPT, CorNetwork corNetwork) {
-        LibMediaItem libItem = itemMapper.DTO2DB(libItemPT, corNetwork);
-        LibArtist artist = libArtistRepository.findOrSaveOne(libItem.getArtist().getName(), corNetwork);
-        libItem.setArtist(artist);
-        LibAlbum album = libAlbumRepository.findOrSaveOne(libItem.getAlbum(), artist, corNetwork);
-        libItem.setAlbum(album);
-        if (libItem.getLabel() != null) {
-            libLabelRepository.saveAndFlush(libItem.getLabel());
-        }
-        if (libItem.getTrack() != null) {
-            libTrackRepository.saveAndFlush(libItem.getTrack());
-        }
-        if (libItem.getMarkers() != null) {
-            libItem.setMarkers(libMarkerService.saveLibMarkers(libItem.getMarkers()));
-        }
-        LibMediaItem item = itemRepository.saveAndFlush(libItem);
-
-        return itemMapper.DB2DTO(item);
-    }
-
-    public List<LibItemPT> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException {
-
-        List<LibItemPT> result = new ArrayList<>();
-
-        if (files == null || files.length == 0)
-            return result;
-
-        LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
-        if (libraryDB == null)
-            return result;
-
         for (MultipartFile file : files) {
 
             String fileName = file.getOriginalFilename();
@@ -201,7 +143,7 @@ public class LibItemService {
                 cloudObject.setSize(file.getSize());
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
-                CorUser currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+                CorUser currentUser = customCorUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
                 CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
 
                 cloudObject.setCreatedBy(currentUser);
@@ -221,15 +163,16 @@ public class LibItemService {
                 log.debug("Persisting LibAudioObject: {}", audioObject);
                 audioObjectRepository.saveAndFlush(audioObject);
 
-                result.add(itemMapper.DB2DTO(libMediaItem));
+                result.add(libMediaItem);
             } catch (UploadException e) {
-                e.printStackTrace();
+                log.error("There is a problem with uploading file to S3 Storage :{}", fileName);
+
             } catch (S3Exception e) {
-                e.printStackTrace();
+                log.error("There is a problem with uploading file to S3 Storage :{}", fileName);
             } catch (TikaException e) {
                 e.printStackTrace();
             } catch (SAXException e) {
-                e.printStackTrace();
+                log.error("There is a problem with processing the file  :{}", fileName);
             } finally {
                 bais.close();
             }
@@ -243,14 +186,14 @@ public class LibItemService {
 
         LibMediaItem itemDB = getItemFromDB(networkShortcut, libraryShortcut, idx);
 
-        if (itemDB == null)
+        if (itemDB == null) {
             return result;
-
+        }
         List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemDB);
 
-        if (audioObjects == null || audioObjects.size() == 0)
+        if (audioObjects == null || audioObjects.size() == 0) {
             return result;
-
+        }
         LibAudioObject audioObject = audioObjects.iterator().next();
 
         LibCloudObject cloudObject = audioObject.getCloudObject();
@@ -277,14 +220,43 @@ public class LibItemService {
     }
 
     public LibMediaItem getItemFromDB(String networkShortcut, String libraryShortcut, String idx) {
-        LibMediaItem result = null;
-        LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
-        if (libraryDB == null)
-            return result;
-
-        Optional<LibMediaItem> optItemDB = itemRepository.findByLibraryAndIdx(libraryDB, idx);
-
+        Optional<LibMediaItem> optItemDB = itemRepository.findByLibrary_ShortcutAndIdx(libraryShortcut, idx);
         return optItemDB.orElse(null);
     }
+
+    public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
+        LibMediaItem itemToDelete = getItemFromDB(networkShortcut, libraryShortcut, idx);
+        deleteItemFromMinio(itemToDelete);
+        itemRepository.delete(itemToDelete);
+    }
+
+    public void deleteItem(LibMediaItem libMediaItem) {
+        deleteItemFromMinio(libMediaItem);
+        itemRepository.delete(libMediaItem);
+    }
+
+    private void deleteItemFromMinio(LibMediaItem libMediaItem) {
+        if (libMediaItem != null) {
+
+            List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
+            if (audioObjects != null || !audioObjects.isEmpty()) {
+                for (LibAudioObject audioObject : audioObjects) {
+                    LibCloudObject cloudObject = audioObject.getCloudObject();
+                    try {
+                        s3Client.delete(cloudObject.getUuid());
+                        audioObjectRepository.delete(audioObject);
+                        audioObjectRepository.flush();
+                        cloudObjectRepository.delete(cloudObject);
+                        cloudObjectRepository.flush();
+                    } catch (DeleteException e) {
+                        e.printStackTrace();
+                    } catch (S3Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
 
 }

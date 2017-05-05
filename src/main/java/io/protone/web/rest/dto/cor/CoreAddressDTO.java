@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * CoreAddressPT
+ * CoreAddressDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreAddressPT   {
+public class CoreAddressDTO {
   @JsonProperty("city")
   private String city = null;
 
@@ -29,7 +29,7 @@ public class CoreAddressPT   {
   @JsonProperty("street")
   private String street = null;
 
-  public CoreAddressPT city(String city) {
+  public CoreAddressDTO city(String city) {
     this.city = city;
     return this;
   }
@@ -47,7 +47,7 @@ public class CoreAddressPT   {
     this.city = city;
   }
 
-  public CoreAddressPT country(String country) {
+  public CoreAddressDTO country(String country) {
     this.country = country;
     return this;
   }
@@ -65,7 +65,7 @@ public class CoreAddressPT   {
     this.country = country;
   }
 
-  public CoreAddressPT id(Long id) {
+  public CoreAddressDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -83,7 +83,7 @@ public class CoreAddressPT   {
     this.id = id;
   }
 
-  public CoreAddressPT number(String number) {
+  public CoreAddressDTO number(String number) {
     this.number = number;
     return this;
   }
@@ -101,7 +101,7 @@ public class CoreAddressPT   {
     this.number = number;
   }
 
-  public CoreAddressPT postalCode(String postalCode) {
+  public CoreAddressDTO postalCode(String postalCode) {
     this.postalCode = postalCode;
     return this;
   }
@@ -119,7 +119,7 @@ public class CoreAddressPT   {
     this.postalCode = postalCode;
   }
 
-  public CoreAddressPT street(String street) {
+  public CoreAddressDTO street(String street) {
     this.street = street;
     return this;
   }
@@ -146,13 +146,13 @@ public class CoreAddressPT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CoreAddressPT coreAddressPT = (CoreAddressPT) o;
-    return Objects.equals(this.city, coreAddressPT.city) &&
-        Objects.equals(this.country, coreAddressPT.country) &&
-        Objects.equals(this.id, coreAddressPT.id) &&
-        Objects.equals(this.number, coreAddressPT.number) &&
-        Objects.equals(this.postalCode, coreAddressPT.postalCode) &&
-        Objects.equals(this.street, coreAddressPT.street);
+    CoreAddressDTO coreAddressDTO = (CoreAddressDTO) o;
+    return Objects.equals(this.city, coreAddressDTO.city) &&
+        Objects.equals(this.country, coreAddressDTO.country) &&
+        Objects.equals(this.id, coreAddressDTO.id) &&
+        Objects.equals(this.number, coreAddressDTO.number) &&
+        Objects.equals(this.postalCode, coreAddressDTO.postalCode) &&
+        Objects.equals(this.street, coreAddressDTO.street);
   }
 
   @Override
@@ -163,7 +163,7 @@ public class CoreAddressPT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CoreAddressPT {\n");
+    sb.append("class CoreAddressDTO {\n");
 
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    country: ").append(toIndentedString(country)).append("\n");

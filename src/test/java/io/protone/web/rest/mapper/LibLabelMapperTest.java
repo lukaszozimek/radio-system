@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibLabelPT;
+import io.protone.custom.service.dto.LibLabelDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLabel;
 import org.junit.Before;
@@ -32,9 +32,9 @@ public class LibLabelMapperTest {
 
     private LibLabel libLabel;
 
-    private LibLabelPT libLabelPT;
+    private LibLabelDTO libLabelDTO;
 
-    private List<LibLabelPT> libLabelPTS = new ArrayList<>();
+    private List<LibLabelDTO> libLabelDTOS = new ArrayList<>();
 
     private List<LibLabel> libLabels = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -44,15 +44,15 @@ public class LibLabelMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         libLabel = factory.manufacturePojo(LibLabel.class);
         libLabels.add(libLabel);
-        libLabelPT = factory.manufacturePojo(LibLabelPT.class);
-        libLabelPTS.add(libLabelPT);
+        libLabelDTO = factory.manufacturePojo(LibLabelDTO.class);
+        libLabelDTOS.add(libLabelDTO);
 
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        LibLabelPT dto = customLibLabelMapperExt.DB2DTO(libLabel);
+        LibLabelDTO dto = customLibLabelMapperExt.DB2DTO(libLabel);
 
         assertNotNull(dto.getDescription());
         assertNotNull(dto.getId());
@@ -62,7 +62,7 @@ public class LibLabelMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibLabelPT> dtos = customLibLabelMapperExt.DBs2DTOs(libLabels);
+        List<LibLabelDTO> dtos = customLibLabelMapperExt.DBs2DTOs(libLabels);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -75,7 +75,7 @@ public class LibLabelMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibLabel entity = customLibLabelMapperExt.DTO2DB(libLabelPT,corNetwork);
+        LibLabel entity = customLibLabelMapperExt.DTO2DB(libLabelDTO,corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
@@ -86,7 +86,7 @@ public class LibLabelMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibLabel> entities = customLibLabelMapperExt.DTOs2DBs(libLabelPTS,corNetwork);
+        List<LibLabel> entities = customLibLabelMapperExt.DTOs2DBs(libLabelDTOS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

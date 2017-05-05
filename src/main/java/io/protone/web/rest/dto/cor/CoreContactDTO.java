@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 import io.protone.domain.enumeration.CorContactTypeEnum;
 
@@ -7,11 +7,11 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * CoreContactPT
+ * CoreContactDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreContactPT {
+public class CoreContactDTO {
     private Long id;
 
     @NotNull
@@ -54,7 +54,7 @@ public class CoreContactPT {
             return false;
         }
 
-        CoreContactPT cORContactDTO = (CoreContactPT) o;
+        CoreContactDTO cORContactDTO = (CoreContactDTO) o;
 
         if (!Objects.equals(id, cORContactDTO.id)) return false;
 

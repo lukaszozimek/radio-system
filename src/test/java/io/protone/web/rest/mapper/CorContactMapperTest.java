@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreContactPT;
+import io.protone.web.rest.dto.cor.CoreContactDTO;
 import io.protone.domain.CorContact;
 import io.protone.domain.CorNetwork;
 import org.junit.Before;
@@ -34,9 +34,9 @@ public class CorContactMapperTest {
 
     private CorContact corContact;
 
-    private CoreContactPT coreContactPT;
+    private CoreContactDTO coreContactDTO;
 
-    private List<CoreContactPT> coreContactPTS = new ArrayList<>();
+    private List<CoreContactDTO> coreContactDTOS = new ArrayList<>();
 
     private Set<CorContact> corContacts = new HashSet<>();
 
@@ -48,8 +48,8 @@ public class CorContactMapperTest {
         corContact = factory.manufacturePojo(CorContact.class);
         corContact.setId(1L);
         corContacts.add(corContact);
-        coreContactPT = factory.manufacturePojo(CoreContactPT.class);
-        coreContactPTS.add(coreContactPT);
+        coreContactDTO = factory.manufacturePojo(CoreContactDTO.class);
+        coreContactDTOS.add(coreContactDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
     }
@@ -57,7 +57,7 @@ public class CorContactMapperTest {
     @Test
     public void DB2DTO() throws Exception {
 
-        CoreContactPT dto = corContactMapper.DB2DTO(corContact);
+        CoreContactDTO dto = corContactMapper.DB2DTO(corContact);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getContact());
@@ -67,7 +67,7 @@ public class CorContactMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreContactPT> dtos = corContactMapper.DBs2DTOs(corContacts);
+        List<CoreContactDTO> dtos = corContactMapper.DBs2DTOs(corContacts);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -80,7 +80,7 @@ public class CorContactMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorContact corContact = corContactMapper.DTO2DB(coreContactPT, corNetwork);
+        CorContact corContact = corContactMapper.DTO2DB(coreContactDTO, corNetwork);
 
         assertNotNull(corContact.getId());
         assertNotNull(corContact.getContact());
@@ -92,7 +92,7 @@ public class CorContactMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorContact> entities = corContactMapper.DTOs2DBs(coreContactPTS, corNetwork);
+        List<CorContact> entities = corContactMapper.DTOs2DBs(coreContactDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibMarkerPT;
+import io.protone.custom.service.dto.LibMarkerDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
@@ -31,9 +31,9 @@ public class LibMarkerMapperTest {
 
     private LibMarker libMarker;
 
-    private LibMarkerPT libMarkerPT;
+    private LibMarkerDTO libMarkerDTO;
 
-    private List<LibMarkerPT> libMarkerPTS = new ArrayList<>();
+    private List<LibMarkerDTO> libMarkerDTOS = new ArrayList<>();
 
     private List<LibMarker> libMarkers = new ArrayList<>();
 
@@ -47,15 +47,15 @@ public class LibMarkerMapperTest {
         libMarker.getMediaItem().setId(1L);
         libMarker.setId(1L);
         libMarkers.add(libMarker);
-        libMarkerPT = factory.manufacturePojo(LibMarkerPT.class);
-        libMarkerPTS.add(libMarkerPT);
+        libMarkerDTO = factory.manufacturePojo(LibMarkerDTO.class);
+        libMarkerDTOS.add(libMarkerDTO);
 
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        LibMarkerPT dto = customLibMarkerMapperExt.DB2DTO(libMarker);
+        LibMarkerDTO dto = customLibMarkerMapperExt.DB2DTO(libMarker);
 
         assertNotNull(dto.getMediaItemId());
         assertNotNull(dto.getId());
@@ -66,7 +66,7 @@ public class LibMarkerMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibMarkerPT> dtos = customLibMarkerMapperExt.DBs2DTOs(libMarkers);
+        List<LibMarkerDTO> dtos = customLibMarkerMapperExt.DBs2DTOs(libMarkers);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -82,7 +82,7 @@ public class LibMarkerMapperTest {
     @Test
     public void DTO2DB() throws Exception {
         //TODO: add Network
-        LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerPT, corNetwork);
+        LibMarker entity = customLibMarkerMapperExt.DTO2DB(libMarkerDTO, corNetwork);
 
         assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getId());
@@ -95,7 +95,7 @@ public class LibMarkerMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerPTS, corNetwork);
+        List<LibMarker> entities = customLibMarkerMapperExt.DTOs2DBs(libMarkerDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

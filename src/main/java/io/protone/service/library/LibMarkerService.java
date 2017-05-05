@@ -4,14 +4,18 @@ import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
 import io.protone.repository.library.LibMarkerRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.Validate.notEmpty;
 
 /**
  * Created by lukaszozimek on 15/03/2017.
@@ -30,8 +34,11 @@ public class LibMarkerService {
         return libMarkerRepository.saveAndFlush(new LibMarker().name(markerName).startTime(startTime).markerType(LibMarkerTypeEnum.MT_BASIC).mediaItem(mediaItem));
     }
 
-    public Set<LibMarker> saveLibMarkers(Set<LibMarker> markers) {
-        log.debug("Persisting LibMarker's: {}", markers);
-        return libMarkerRepository.save(markers).stream().collect(Collectors.toSet());
+    public Optional<Set<LibMarker>> saveLibMarkers(Set<LibMarker> markers) {
+        if (markers != null && CollectionUtils.isNotEmpty(markers)) {
+            log.debug("Persisting LibMarker's: {}", markers);
+            return Optional.of(libMarkerRepository.save(markers).stream().collect(Collectors.toSet()));
+        }
+        return Optional.empty();
     }
 }

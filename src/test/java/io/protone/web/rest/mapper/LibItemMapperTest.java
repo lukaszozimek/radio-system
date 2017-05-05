@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibItemPT;
+import io.protone.custom.service.dto.LibMediaItemDTO;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import org.assertj.core.util.Sets;
@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import javax.sound.midi.Track;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,13 +35,13 @@ public class LibItemMapperTest {
 
     private LibMediaItem libMediaItem;
 
-    private LibItemPT libItemPT;
+    private LibMediaItemDTO libMediaItemDTO;
 
     private CorTag corTag;
 
     private CorNetwork corNetwork;
 
-    private List<LibItemPT> libItemPTS = new ArrayList<>();
+    private List<LibMediaItemDTO> libMediaItemDTOS = new ArrayList<>();
 
     private List<LibMediaItem> libMediaItems = new ArrayList<>();
 
@@ -63,8 +62,8 @@ public class LibItemMapperTest {
         libMediaItem.setTags(Sets.newLinkedHashSet(factory.manufacturePojo(CorTag.class)));
         libMediaItem.setTrack(factory.manufacturePojo(LibTrack.class));
         libMediaItems.add(libMediaItem);
-        libItemPT = factory.manufacturePojo(LibItemPT.class);
-        libItemPTS.add(libItemPT);
+        libMediaItemDTO = factory.manufacturePojo(LibMediaItemDTO.class);
+        libMediaItemDTOS.add(libMediaItemDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corTag = factory.manufacturePojo(CorTag.class);
 
@@ -72,7 +71,7 @@ public class LibItemMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        LibItemPT dto = customItemMapperExt.DB2DTO(libMediaItem);
+        LibMediaItemDTO dto = customItemMapperExt.DB2DTO(libMediaItem);
 
 
         assertNotNull(dto.getId());
@@ -95,7 +94,7 @@ public class LibItemMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibItemPT> dtos = customItemMapperExt.DBs2DTOs(libMediaItems);
+        List<LibMediaItemDTO> dtos = customItemMapperExt.DBs2DTOs(libMediaItems);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -122,7 +121,7 @@ public class LibItemMapperTest {
     @Test
     public void DTO2DB() throws Exception {
         ///TODO: Network Constraing
-        LibMediaItem entity = customItemMapperExt.DTO2DB(libItemPT, corNetwork);
+        LibMediaItem entity = customItemMapperExt.DTO2DB(libMediaItemDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getAlbum());
@@ -145,7 +144,7 @@ public class LibItemMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibMediaItem> entities = customItemMapperExt.DTOs2DBs(libItemPTS, corNetwork);
+        List<LibMediaItem> entities = customItemMapperExt.DTOs2DBs(libMediaItemDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -170,25 +169,25 @@ public class LibItemMapperTest {
 
     @Test
     public void mapState() throws Exception {
-        LibItemStateEnum archived = customItemMapperExt.mapState(LibItemPT.StateEnum.ARCHIVED);
+        LibItemStateEnum archived = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.ARCHIVED);
         assertEquals(archived, archived.IS_ARCHIVED);
 
-        LibItemStateEnum deleted = customItemMapperExt.mapState(LibItemPT.StateEnum.DELETED);
+        LibItemStateEnum deleted = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.DELETED);
         assertEquals(deleted, archived.IS_DELETED);
 
-        LibItemStateEnum disabled = customItemMapperExt.mapState(LibItemPT.StateEnum.DISABLED);
+        LibItemStateEnum disabled = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.DISABLED);
         assertEquals(disabled, archived.IS_DISABLED);
 
-        LibItemStateEnum enabled = customItemMapperExt.mapState(LibItemPT.StateEnum.ENABLED);
+        LibItemStateEnum enabled = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.ENABLED);
         assertEquals(enabled, enabled.IS_ENABLED);
 
-        LibItemStateEnum newState = customItemMapperExt.mapState(LibItemPT.StateEnum.NEW);
+        LibItemStateEnum newState = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.NEW);
         assertEquals(newState, newState.IS_NEW);
 
-        LibItemStateEnum other = customItemMapperExt.mapState(LibItemPT.StateEnum.OTHER);
+        LibItemStateEnum other = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.OTHER);
         assertEquals(other, other.IS_OTHER);
 
-        LibItemStateEnum postProcess = customItemMapperExt.mapState(LibItemPT.StateEnum.POSTPROCESS);
+        LibItemStateEnum postProcess = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.POSTPROCESS);
         assertEquals(postProcess, postProcess.IS_POSTPROCESS);
 
     }

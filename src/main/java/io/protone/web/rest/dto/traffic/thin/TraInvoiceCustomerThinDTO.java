@@ -1,7 +1,7 @@
 package io.protone.web.rest.dto.traffic.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.CoreAddressPT;
+import io.protone.web.rest.dto.cor.CoreAddressDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -40,7 +40,7 @@ public class TraInvoiceCustomerThinDTO {
     private String vatNumber = null;
 
     @JsonProperty("addres")
-    private CoreAddressPT addres = null;
+    private CoreAddressDTO addres = null;
 
 
     public TraInvoiceCustomerThinDTO id(Long id) {
@@ -189,7 +189,7 @@ public class TraInvoiceCustomerThinDTO {
         this.vatNumber = vatNumber;
     }
 
-    public TraInvoiceCustomerThinDTO addres(CoreAddressPT adress) {
+    public TraInvoiceCustomerThinDTO addres(CoreAddressDTO adress) {
         this.addres = adress;
         return this;
     }
@@ -200,11 +200,11 @@ public class TraInvoiceCustomerThinDTO {
      * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAddres() {
+    public CoreAddressDTO getAddres() {
         return addres;
     }
 
-    public void setAddres(CoreAddressPT addres) {
+    public void setAddres(CoreAddressDTO addres) {
         this.addres = addres;
     }
 

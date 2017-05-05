@@ -8,11 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * LibMarkerPT
+ * LibMarkerDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibMarkerPT {
+public class LibMarkerDTO {
     @JsonProperty("id")
     private Long id = null;
 
@@ -67,7 +67,7 @@ public class LibMarkerPT {
     @JsonProperty("startTime")
     private Long startTime = null;
 
-    public LibMarkerPT id(Long id) {
+    public LibMarkerDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -86,7 +86,7 @@ public class LibMarkerPT {
         this.id = id;
     }
 
-    public LibMarkerPT markerType(MarkerTypeEnum markerType) {
+    public LibMarkerDTO markerType(MarkerTypeEnum markerType) {
         this.markerType = markerType;
         return this;
     }
@@ -105,7 +105,7 @@ public class LibMarkerPT {
         this.markerType = markerType;
     }
 
-    public LibMarkerPT mediaItemId(Long mediaItemId) {
+    public LibMarkerDTO mediaItemId(Long mediaItemId) {
         this.mediaItemId = mediaItemId;
         return this;
     }
@@ -124,7 +124,7 @@ public class LibMarkerPT {
         this.mediaItemId = mediaItemId;
     }
 
-    public LibMarkerPT name(String name) {
+    public LibMarkerDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -143,7 +143,7 @@ public class LibMarkerPT {
         this.name = name;
     }
 
-    public LibMarkerPT startTime(Long startTime) {
+    public LibMarkerDTO startTime(Long startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -171,12 +171,12 @@ public class LibMarkerPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LibMarkerPT libMarkerPT = (LibMarkerPT) o;
-        return Objects.equals(this.id, libMarkerPT.id) &&
-            Objects.equals(this.markerType, libMarkerPT.markerType) &&
-            Objects.equals(this.mediaItemId, libMarkerPT.mediaItemId) &&
-            Objects.equals(this.name, libMarkerPT.name) &&
-            Objects.equals(this.startTime, libMarkerPT.startTime);
+        LibMarkerDTO libMarkerDTO = (LibMarkerDTO) o;
+        return Objects.equals(this.id, libMarkerDTO.id) &&
+            Objects.equals(this.markerType, libMarkerDTO.markerType) &&
+            Objects.equals(this.mediaItemId, libMarkerDTO.mediaItemId) &&
+            Objects.equals(this.name, libMarkerDTO.name) &&
+            Objects.equals(this.startTime, libMarkerDTO.startTime);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class LibMarkerPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class LibMarkerPT {\n");
+        sb.append("class LibMarkerDTO {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    markerType: ").append(toIndentedString(markerType)).append("\n");

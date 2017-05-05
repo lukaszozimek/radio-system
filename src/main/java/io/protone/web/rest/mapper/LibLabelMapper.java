@@ -1,9 +1,7 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.LibLabelPT;
-import io.protone.custom.service.dto.LibPersonPT;
+import io.protone.custom.service.dto.LibLabelDTO;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CorPerson;
 import io.protone.domain.LibLabel;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
@@ -19,25 +17,25 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface LibLabelMapper {
 
-    LibLabelPT DB2DTO(LibLabel lIBLabel);
+    LibLabelDTO DB2DTO(LibLabel lIBLabel);
 
-    List<LibLabelPT> DBs2DTOs(List<LibLabel> lIBLabels);
+    List<LibLabelDTO> DBs2DTOs(List<LibLabel> lIBLabels);
 
-    LibLabel DTO2DB(LibLabelPT dto, @Context CorNetwork network);
+    LibLabel DTO2DB(LibLabelDTO dto, @Context CorNetwork network);
 
-    default List<LibLabel> DTOs2DBs(List<LibLabelPT> dtos, @Context CorNetwork network) {
+    default List<LibLabel> DTOs2DBs(List<LibLabelDTO> dtos, @Context CorNetwork network) {
         List<LibLabel> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
         }
-        for (LibLabelPT dto : dtos) {
+        for (LibLabelDTO dto : dtos) {
             corPeople.add(DTO2DB(dto, network));
         }
         return corPeople;
     }
 
     @AfterMapping
-    default void libLabelPTToLibLabelAfterMapping(LibLabelPT dto, @MappingTarget LibLabel entity, @Context CorNetwork corNetwork) {
+    default void libLabelPTToLibLabelAfterMapping(LibLabelDTO dto, @MappingTarget LibLabel entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

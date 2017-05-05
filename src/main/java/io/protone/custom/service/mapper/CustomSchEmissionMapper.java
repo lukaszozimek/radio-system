@@ -1,6 +1,5 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.domain.SchEmission;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class CustomSchEmissionMapper {
             .blockId(2L)
             .startTime(emission.getStartTime())
             .endTime(emission.getEndTime());
-            ///   .mediaItem(new LibItemPT())
+            ///   .mediaItem(new LibMediaItemDTO())
 
     }
 

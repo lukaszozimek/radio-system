@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreAddressPT;
+import io.protone.web.rest.dto.cor.CoreAddressDTO;
 import io.protone.domain.CorAddress;
 import io.protone.domain.CorNetwork;
 import org.junit.Before;
@@ -31,9 +31,9 @@ public class CorAddressMapperTest {
 
     private CorAddress corAddress;
 
-    private CoreAddressPT coreAddressPT;
+    private CoreAddressDTO coreAddressDTO;
 
-    private List<CoreAddressPT> coreAddressPTS = new ArrayList<>();
+    private List<CoreAddressDTO> coreAddressDTOS = new ArrayList<>();
 
     private List<CorAddress> corAddresses = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -43,8 +43,8 @@ public class CorAddressMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corAddress = factory.manufacturePojo(CorAddress.class);
         corAddresses.add(corAddress);
-        coreAddressPT = factory.manufacturePojo(CoreAddressPT.class);
-        coreAddressPTS.add(coreAddressPT);
+        coreAddressDTO = factory.manufacturePojo(CoreAddressDTO.class);
+        coreAddressDTOS.add(coreAddressDTO);
 
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
@@ -52,36 +52,36 @@ public class CorAddressMapperTest {
     @Test
     public void DB2DTO() throws Exception {
 
-        CoreAddressPT coreAddressPT = corAddressMapper.DB2DTO(corAddress);
+        CoreAddressDTO coreAddressDTO = corAddressMapper.DB2DTO(corAddress);
 
-        assertNotNull(coreAddressPT.getCity());
-        assertNotNull(coreAddressPT.getCountry());
-        assertNotNull(coreAddressPT.getId());
-        assertNotNull(coreAddressPT.getNumber());
-        assertNotNull(coreAddressPT.getPostalCode());
-        assertNotNull(coreAddressPT.getStreet());
+        assertNotNull(coreAddressDTO.getCity());
+        assertNotNull(coreAddressDTO.getCountry());
+        assertNotNull(coreAddressDTO.getId());
+        assertNotNull(coreAddressDTO.getNumber());
+        assertNotNull(coreAddressDTO.getPostalCode());
+        assertNotNull(coreAddressDTO.getStreet());
     }
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreAddressPT> addressPTS = corAddressMapper.DBs2DTOs(corAddresses);
+        List<CoreAddressDTO> addressPTS = corAddressMapper.DBs2DTOs(corAddresses);
 
         assertNotNull(addressPTS);
         assertEquals(addressPTS.size(), 1);
         addressPTS.stream().forEach(dto -> {
-            assertNotNull(coreAddressPT.getCity());
-            assertNotNull(coreAddressPT.getCountry());
-            assertNotNull(coreAddressPT.getId());
-            assertNotNull(coreAddressPT.getNumber());
-            assertNotNull(coreAddressPT.getPostalCode());
-            assertNotNull(coreAddressPT.getStreet());
+            assertNotNull(coreAddressDTO.getCity());
+            assertNotNull(coreAddressDTO.getCountry());
+            assertNotNull(coreAddressDTO.getId());
+            assertNotNull(coreAddressDTO.getNumber());
+            assertNotNull(coreAddressDTO.getPostalCode());
+            assertNotNull(coreAddressDTO.getStreet());
 
         });
     }
 
     @Test
     public void DTO2DB() throws Exception {
-        CorAddress entity = corAddressMapper.DTO2DB(coreAddressPT, corNetwork);
+        CorAddress entity = corAddressMapper.DTO2DB(coreAddressDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getStreet());
@@ -96,7 +96,7 @@ public class CorAddressMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressPTS, corNetwork);
+        List<CorAddress> entities = corAddressMapper.DTOs2DBs(coreAddressDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

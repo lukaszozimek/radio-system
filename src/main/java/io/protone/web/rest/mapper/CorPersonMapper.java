@@ -1,8 +1,8 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.custom.service.dto.LibPersonDTO;
 import io.protone.web.rest.dto.cor.CorPersonDTO;
-import io.protone.custom.service.dto.LibPersonPT;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
+import io.protone.web.rest.dto.traffic.TraCustomerPersonDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPerson;
 import org.mapstruct.AfterMapping;
@@ -27,38 +27,38 @@ public interface CorPersonMapper {
 
     List<CorPerson> DTOs2DBs(List<CorPersonDTO> cORPersonDTOs);
 
-    LibPersonPT corPerson2LibPersonPT(CorPerson db);
+    LibPersonDTO corPerson2LibPersonPT(CorPerson db);
 
-    List<LibPersonPT> corPersons2LibPersonPTs(List<CorPerson> cORPeople);
+    List<LibPersonDTO> corPersons2LibPersonPTs(List<CorPerson> cORPeople);
 
-    CorPerson libPersonPT2CorPerson(LibPersonPT dto, @Context CorNetwork network);
+    CorPerson libPersonPT2CorPerson(LibPersonDTO dto, @Context CorNetwork network);
 
-    default List<CorPerson> libPersonPTs2corPersons(List<LibPersonPT> dtos, @Context CorNetwork network) {
+    default List<CorPerson> libPersonPTs2corPersons(List<LibPersonDTO> dtos, @Context CorNetwork network) {
         List<CorPerson> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
         }
-        for (LibPersonPT dto : dtos) {
+        for (LibPersonDTO dto : dtos) {
             corPeople.add(libPersonPT2CorPerson(dto, network));
         }
         return corPeople;
     }
 
     @AfterMapping
-    default void libPersonPTToCorPersonAfterMapping(LibPersonPT dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+    default void libPersonPTToCorPersonAfterMapping(LibPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 
-    TraCustomerPersonPT corPerson2TraCustomerPersonPT(CorPerson person);
+    TraCustomerPersonDTO corPerson2TraCustomerPersonPT(CorPerson person);
 
-    CorPerson traCustomerPersonPT2CorPerson(TraCustomerPersonPT personPT, @Context CorNetwork network);
+    CorPerson traCustomerPersonPT2CorPerson(TraCustomerPersonDTO personPT, @Context CorNetwork network);
 
-    default List<CorPerson> traCustomerPersonPTs2CorPersons(List<TraCustomerPersonPT> dtos, @Context CorNetwork networkId) {
+    default List<CorPerson> traCustomerPersonPTs2CorPersons(List<TraCustomerPersonDTO> dtos, @Context CorNetwork networkId) {
         List<CorPerson> corPeople = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
         }
-        for (TraCustomerPersonPT dto : dtos) {
+        for (TraCustomerPersonDTO dto : dtos) {
             corPeople.add(traCustomerPersonPT2CorPerson(dto, networkId));
         }
         return corPeople;
@@ -66,7 +66,7 @@ public interface CorPersonMapper {
 
 
     @AfterMapping
-    default void traCustomerPersonPTToCorPersonAfterMapping(TraCustomerPersonPT dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+    default void traCustomerPersonPTToCorPersonAfterMapping(TraCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

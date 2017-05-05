@@ -1,9 +1,9 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
+import io.protone.custom.service.dto.LibPersonDTO;
 import io.protone.web.rest.dto.cor.CorPersonDTO;
-import io.protone.custom.service.dto.LibPersonPT;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
+import io.protone.web.rest.dto.traffic.TraCustomerPersonDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPerson;
 import org.junit.Before;
@@ -38,9 +38,9 @@ public class CorPersonMapperTest {
 
     private CorPersonDTO corPersonDTO;
 
-    private LibPersonPT libPersonPT;
+    private LibPersonDTO libPersonDTO;
 
-    private TraCustomerPersonPT traCustomerPersonPT;
+    private TraCustomerPersonDTO traCustomerPersonDTO;
 
     private CorNetwork corNetwork;
 
@@ -48,9 +48,9 @@ public class CorPersonMapperTest {
 
     private List<CorPerson> corPeople = new ArrayList<>();
 
-    private List<LibPersonPT> libPersonPTS = new ArrayList<>();
+    private List<LibPersonDTO> libPersonDTOS = new ArrayList<>();
 
-    private List<TraCustomerPersonPT> traCustomerPersonPTList = new ArrayList<>();
+    private List<TraCustomerPersonDTO> traCustomerPersonDTOList = new ArrayList<>();
 
     @Before
     public void initPojos() {
@@ -61,13 +61,13 @@ public class CorPersonMapperTest {
         corPersonDTO = factory.manufacturePojo(CorPersonDTO.class);
         corPersonDTO.setId(1L);
         corPersonDTOS.add(corPersonDTO);
-        libPersonPT = factory.manufacturePojo(LibPersonPT.class);
-        libPersonPT.setId(1L);
+        libPersonDTO = factory.manufacturePojo(LibPersonDTO.class);
+        libPersonDTO.setId(1L);
 
-        libPersonPTS.add(libPersonPT);
-        traCustomerPersonPT = factory.manufacturePojo(TraCustomerPersonPT.class);
-        traCustomerPersonPT.setId(1L);
-        traCustomerPersonPTList.add(traCustomerPersonPT);
+        libPersonDTOS.add(libPersonDTO);
+        traCustomerPersonDTO = factory.manufacturePojo(TraCustomerPersonDTO.class);
+        traCustomerPersonDTO.setId(1L);
+        traCustomerPersonDTOList.add(traCustomerPersonDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
@@ -131,7 +131,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void corPerson2LibPersonPT() throws Exception {
-        LibPersonPT dto = corPersonMapper.corPerson2LibPersonPT(corPerson);
+        LibPersonDTO dto = corPersonMapper.corPerson2LibPersonPT(corPerson);
         assertNotNull(dto.getId());
         assertNotNull(dto.getFirstName());
         assertNotNull(dto.getLastName());
@@ -142,7 +142,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void corPersons2LibPersonPTs() throws Exception {
-        List<LibPersonPT> dtos = corPersonMapper.corPersons2LibPersonPTs(corPeople);
+        List<LibPersonDTO> dtos = corPersonMapper.corPersons2LibPersonPTs(corPeople);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -158,7 +158,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void libPersonPT2CorPerson() throws Exception {
-        CorPerson entity = corPersonMapper.libPersonPT2CorPerson(libPersonPT, corNetwork);
+        CorPerson entity = corPersonMapper.libPersonPT2CorPerson(libPersonDTO, corNetwork);
 
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getFirstName());
@@ -170,7 +170,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void libPersonPTs2corPersons() throws Exception {
-        List<CorPerson> entities = corPersonMapper.libPersonPTs2corPersons(libPersonPTS, corNetwork);
+        List<CorPerson> entities = corPersonMapper.libPersonPTs2corPersons(libPersonDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -187,7 +187,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void corPerson2TraCustomerPersonPT() throws Exception {
-        TraCustomerPersonPT dto = corPersonMapper.corPerson2TraCustomerPersonPT(corPerson);
+        TraCustomerPersonDTO dto = corPersonMapper.corPerson2TraCustomerPersonPT(corPerson);
         assertNotNull(dto.getId());
         assertNotNull(dto.getDescription());
         assertNotNull(dto.getFirstName());
@@ -199,7 +199,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void traCustomerPersonPT2CorPerson() throws Exception {
-        CorPerson entity = corPersonMapper.traCustomerPersonPT2CorPerson(traCustomerPersonPT, corNetwork);
+        CorPerson entity = corPersonMapper.traCustomerPersonPT2CorPerson(traCustomerPersonDTO, corNetwork);
 
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getFirstName());
@@ -212,7 +212,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void traCustomerPersonPTs2CorPersons() throws Exception {
-        List<CorPerson> entities = corPersonMapper.traCustomerPersonPTs2CorPersons(traCustomerPersonPTList, corNetwork);
+        List<CorPerson> entities = corPersonMapper.traCustomerPersonPTs2CorPersons(traCustomerPersonDTOList, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.LibMarkerPT;
+import io.protone.custom.service.dto.LibMarkerDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class SchLibItemThinPT {
     private Integer length = null;
 
     @JsonProperty("markers")
-    private List<LibMarkerPT> markers = new ArrayList<LibMarkerPT>();
+    private List<LibMarkerDTO> markers = new ArrayList<LibMarkerDTO>();
 
     @JsonProperty("name")
     private String name = null;
@@ -121,12 +121,12 @@ public class SchLibItemThinPT {
         this.length = length;
     }
 
-    public SchLibItemThinPT markers(List<LibMarkerPT> markers) {
+    public SchLibItemThinPT markers(List<LibMarkerDTO> markers) {
         this.markers = markers;
         return this;
     }
 
-    public SchLibItemThinPT addMarkersItem(LibMarkerPT markersItem) {
+    public SchLibItemThinPT addMarkersItem(LibMarkerDTO markersItem) {
         this.markers.add(markersItem);
         return this;
     }
@@ -137,11 +137,11 @@ public class SchLibItemThinPT {
      * @return markers
      **/
     @ApiModelProperty(value = "")
-    public List<LibMarkerPT> getMarkers() {
+    public List<LibMarkerDTO> getMarkers() {
         return markers;
     }
 
-    public void setMarkers(List<LibMarkerPT> markers) {
+    public void setMarkers(List<LibMarkerDTO> markers) {
         this.markers = markers;
     }
 
@@ -208,7 +208,7 @@ public class SchLibItemThinPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class LibItemPT {\n");
+        sb.append("class LibMediaItemDTO {\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    album: ").append(toIndentedString(albumName)).append("\n");
         sb.append("    artist: ").append(toIndentedString(artistName)).append("\n");

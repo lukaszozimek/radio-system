@@ -1,11 +1,11 @@
 package io.protone.custom.web.rest.network.channel.impl;
 
+import io.protone.custom.service.dto.LibMediaItemDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.LibItemService;
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.LibResponseEntity;
 import io.protone.custom.web.rest.network.channel.ApiChannelLibraryItem;
-import io.protone.custom.web.rest.network.library.impl.ApiNetworkLibraryItemImpl;
+import io.protone.custom.web.rest.network.library.impl.LibMediaItemResourceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,7 @@ import javax.inject.Inject;
 @RestController
 public class ApiChannelLibraryItemImpl implements ApiChannelLibraryItem {
 
-    private final Logger log = LoggerFactory.getLogger(ApiNetworkLibraryItemImpl.class);
+    private final Logger log = LoggerFactory.getLogger(LibMediaItemResourceImpl.class);
 
     @Inject
     private LibItemService itemService;
@@ -26,7 +26,7 @@ public class ApiChannelLibraryItemImpl implements ApiChannelLibraryItem {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<LibItemPT> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(String networkShortcut, String libraryPrefix, String channelShortcut, LibItemPT mediaItem) {
+    public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(String networkShortcut, String libraryPrefix, String channelShortcut, LibMediaItemDTO mediaItem) {
         return null;
     }
 
@@ -36,7 +36,7 @@ public class ApiChannelLibraryItemImpl implements ApiChannelLibraryItem {
     }
 
     @Override
-    public ResponseEntity<LibItemPT> getItemsByNetworShortcutAndChannelShortcutAndLibrarUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix) {
+    public ResponseEntity<LibMediaItemDTO> getItemsByNetworShortcutAndChannelShortcutAndLibrarUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix) {
         return null;
     }
 
@@ -46,7 +46,7 @@ public class ApiChannelLibraryItemImpl implements ApiChannelLibraryItem {
     }
 
     @Override
-    public ResponseEntity<LibItemPT> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix, String idx) {
+    public ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix, String idx) {
         return null;
     }
 

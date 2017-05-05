@@ -1,7 +1,7 @@
 package io.protone.web.rest.dto.crm;
 
-import io.protone.custom.service.dto.CoreAddressPT;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
+import io.protone.web.rest.dto.cor.CoreAddressDTO;
+import io.protone.web.rest.dto.traffic.TraCustomerPersonDTO;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,7 +32,7 @@ public class CrmLeadDTO {
 
     private CorDictionaryDTO status = null;
 
-    private CoreAddressPT addres = null;
+    private CoreAddressDTO addres = null;
 
     private CorDictionaryDTO area = null;
 
@@ -40,7 +40,7 @@ public class CrmLeadDTO {
 
     private CoreUserThinDTO leadOwner = null;
 
-    private TraCustomerPersonPT person = null;
+    private TraCustomerPersonDTO person = null;
 
     @PodamExclude
     private List<CrmTaskDTO> tasks = new ArrayList<CrmTaskDTO>();
@@ -167,7 +167,7 @@ public class CrmLeadDTO {
         this.status = status;
     }
 
-    public CrmLeadDTO addres(CoreAddressPT addres) {
+    public CrmLeadDTO addres(CoreAddressDTO addres) {
         this.addres = addres;
         return this;
     }
@@ -178,11 +178,11 @@ public class CrmLeadDTO {
      * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAddres() {
+    public CoreAddressDTO getAddres() {
         return addres;
     }
 
-    public void setAddres(CoreAddressPT addres) {
+    public void setAddres(CoreAddressDTO addres) {
         this.addres = addres;
     }
 
@@ -224,7 +224,7 @@ public class CrmLeadDTO {
         this.industry = industry;
     }
 
-    public CrmLeadDTO person(TraCustomerPersonPT person) {
+    public CrmLeadDTO person(TraCustomerPersonDTO person) {
         this.person = person;
         return this;
     }
@@ -235,11 +235,11 @@ public class CrmLeadDTO {
      * @return person
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPersonPT getPerson() {
+    public TraCustomerPersonDTO getPerson() {
         return person;
     }
 
-    public void setPerson(TraCustomerPersonPT person) {
+    public void setPerson(TraCustomerPersonDTO person) {
         this.person = person;
     }
 

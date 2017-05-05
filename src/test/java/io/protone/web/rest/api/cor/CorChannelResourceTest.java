@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CorChannelResourceTest {
-    private static final String NETWORK_TEST = "aa";
+
 
     private static final String DEFAULT_SHORTCUT = "AAA";
     private static final String UPDATED_SHORTCUT = "BBB";

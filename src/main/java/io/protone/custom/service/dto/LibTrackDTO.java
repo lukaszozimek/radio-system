@@ -6,11 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * LibTrackPT
+ * LibTrackDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibTrackPT   {
+public class LibTrackDTO {
   @JsonProperty("albumId")
   private Long albumId = null;
 
@@ -36,7 +36,7 @@ public class LibTrackPT   {
   @JsonProperty("trackNo")
   private Integer trackNo = null;
 
-  public LibTrackPT albumId(Long albumId) {
+  public LibTrackDTO albumId(Long albumId) {
     this.albumId = albumId;
     return this;
   }
@@ -54,7 +54,7 @@ public class LibTrackPT   {
     this.albumId = albumId;
   }
 
-  public LibTrackPT artistId(Long artistId) {
+  public LibTrackDTO artistId(Long artistId) {
     this.artistId = artistId;
     return this;
   }
@@ -72,7 +72,7 @@ public class LibTrackPT   {
     this.artistId = artistId;
   }
 
-  public LibTrackPT description(String description) {
+  public LibTrackDTO description(String description) {
     this.description = description;
     return this;
   }
@@ -90,7 +90,7 @@ public class LibTrackPT   {
     this.description = description;
   }
 
-  public LibTrackPT discNo(Integer discNo) {
+  public LibTrackDTO discNo(Integer discNo) {
     this.discNo = discNo;
     return this;
   }
@@ -108,7 +108,7 @@ public class LibTrackPT   {
     this.discNo = discNo;
   }
 
-  public LibTrackPT id(Long id) {
+  public LibTrackDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -126,7 +126,7 @@ public class LibTrackPT   {
     this.id = id;
   }
 
-  public LibTrackPT length(Long length) {
+  public LibTrackDTO length(Long length) {
     this.length = length;
     return this;
   }
@@ -144,7 +144,7 @@ public class LibTrackPT   {
     this.length = length;
   }
 
-  public LibTrackPT name(String name) {
+  public LibTrackDTO name(String name) {
     this.name = name;
     return this;
   }
@@ -162,7 +162,7 @@ public class LibTrackPT   {
     this.name = name;
   }
 
-  public LibTrackPT trackNo(Integer trackNo) {
+  public LibTrackDTO trackNo(Integer trackNo) {
     this.trackNo = trackNo;
     return this;
   }
@@ -189,15 +189,15 @@ public class LibTrackPT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LibTrackPT libTrackPT = (LibTrackPT) o;
-    return Objects.equals(this.albumId, libTrackPT.albumId) &&
-        Objects.equals(this.artistId, libTrackPT.artistId) &&
-        Objects.equals(this.description, libTrackPT.description) &&
-        Objects.equals(this.discNo, libTrackPT.discNo) &&
-        Objects.equals(this.id, libTrackPT.id) &&
-        Objects.equals(this.length, libTrackPT.length) &&
-        Objects.equals(this.name, libTrackPT.name) &&
-        Objects.equals(this.trackNo, libTrackPT.trackNo);
+    LibTrackDTO libTrackDTO = (LibTrackDTO) o;
+    return Objects.equals(this.albumId, libTrackDTO.albumId) &&
+        Objects.equals(this.artistId, libTrackDTO.artistId) &&
+        Objects.equals(this.description, libTrackDTO.description) &&
+        Objects.equals(this.discNo, libTrackDTO.discNo) &&
+        Objects.equals(this.id, libTrackDTO.id) &&
+        Objects.equals(this.length, libTrackDTO.length) &&
+        Objects.equals(this.name, libTrackDTO.name) &&
+        Objects.equals(this.trackNo, libTrackDTO.trackNo);
   }
 
   @Override
@@ -208,7 +208,7 @@ public class LibTrackPT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LibTrackPT {\n");
+    sb.append("class LibTrackDTO {\n");
 
     sb.append("    albumId: ").append(toIndentedString(albumId)).append("\n");
     sb.append("    artistId: ").append(toIndentedString(artistId)).append("\n");

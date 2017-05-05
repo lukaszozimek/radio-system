@@ -1,7 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.LibAlbumPT;
-import io.protone.custom.service.dto.LibPersonPT;
+import io.protone.custom.service.dto.LibAlbumDTO;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAlbumTypeEnum;
 import org.mapstruct.*;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mapper for the entity LibAlbum and its DTO LibAlbumPT.
+ * Mapper for the entity LibAlbum and its DTO LibAlbumDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface LibAlbumMapper {
@@ -18,28 +17,28 @@ public interface LibAlbumMapper {
     @Mapping(source = "cover.id", target = "coverId")
     @Mapping(source = "label.id", target = "labelId")
     @Mapping(source = "artist.id", target = "artistId")
-    LibAlbumPT DB2DTO(LibAlbum db);
+    LibAlbumDTO DB2DTO(LibAlbum db);
 
-    List<LibAlbumPT> DBs2DTOs(List<LibAlbum> dbs);
+    List<LibAlbumDTO> DBs2DTOs(List<LibAlbum> dbs);
 
     @Mapping(source = "coverId", target = "cover")
     @Mapping(source = "labelId", target = "label")
     @Mapping(source = "artistId", target = "artist")
-    LibAlbum DTO2DB(LibAlbumPT dto, @Context CorNetwork network);
+    LibAlbum DTO2DB(LibAlbumDTO dto, @Context CorNetwork network);
 
-    default List<LibAlbum> DTOs2DBs(List<LibAlbumPT> dtos, @Context CorNetwork network) {
+    default List<LibAlbum> DTOs2DBs(List<LibAlbumDTO> dtos, @Context CorNetwork network) {
         List<LibAlbum> libAlbums = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {
             return null;
         }
-        for (LibAlbumPT dto : dtos) {
+        for (LibAlbumDTO dto : dtos) {
             libAlbums.add(DTO2DB(dto, network));
         }
         return libAlbums;
     }
 
     @AfterMapping
-    default void libAlbumPTToLibAlbumAfterMapping(LibAlbumPT dto, @MappingTarget LibAlbum entity, @Context CorNetwork corNetwork) {
+    default void libAlbumPTToLibAlbumAfterMapping(LibAlbumDTO dto, @MappingTarget LibAlbum entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 
@@ -70,24 +69,24 @@ public interface LibAlbumMapper {
         return lIBArtist;
     }
 
-    default LibAlbumPT.AlbumTypeEnum mapAlbumTypeEnum(LibAlbumTypeEnum value) {
+    default LibAlbumDTO.AlbumTypeEnum mapAlbumTypeEnum(LibAlbumTypeEnum value) {
 
         if (value.compareTo(LibAlbumTypeEnum.AT_ALBUM) == 0)
-            return LibAlbumPT.AlbumTypeEnum.ALBUM;
+            return LibAlbumDTO.AlbumTypeEnum.ALBUM;
         else if (value.compareTo(LibAlbumTypeEnum.AT_COMPILATION) == 0)
-            return LibAlbumPT.AlbumTypeEnum.COMPILATION;
+            return LibAlbumDTO.AlbumTypeEnum.COMPILATION;
         else if (value.compareTo(LibAlbumTypeEnum.AT_SINGLE) == 0)
-            return LibAlbumPT.AlbumTypeEnum.SINGLE;
+            return LibAlbumDTO.AlbumTypeEnum.SINGLE;
         else
-            return LibAlbumPT.AlbumTypeEnum.OTHER;
+            return LibAlbumDTO.AlbumTypeEnum.OTHER;
     }
 
-    default LibAlbumTypeEnum mapLibAlbumTypeEnum(LibAlbumPT.AlbumTypeEnum value) {
-        if (value.compareTo(LibAlbumPT.AlbumTypeEnum.ALBUM) == 0)
+    default LibAlbumTypeEnum mapLibAlbumTypeEnum(LibAlbumDTO.AlbumTypeEnum value) {
+        if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.ALBUM) == 0)
             return LibAlbumTypeEnum.AT_ALBUM;
-        else if (value.compareTo(LibAlbumPT.AlbumTypeEnum.COMPILATION) == 0)
+        else if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.COMPILATION) == 0)
             return LibAlbumTypeEnum.AT_COMPILATION;
-        else if (value.compareTo(LibAlbumPT.AlbumTypeEnum.SINGLE) == 0)
+        else if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.SINGLE) == 0)
             return LibAlbumTypeEnum.AT_SINGLE;
         else
             return LibAlbumTypeEnum.AT_OTHER;

@@ -1,7 +1,6 @@
 package io.protone.web.rest.dto.traffic;
 
-import io.protone.custom.service.dto.CoreAddressPT;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
+import io.protone.web.rest.dto.cor.CoreAddressDTO;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.protone.domain.TraDiscount;
@@ -45,11 +44,11 @@ public class TraCustomerDTO implements Serializable {
 
     private String vatNumber = null;
 
-    private CoreAddressPT addres = null;
+    private CoreAddressDTO addres = null;
 
     private CoreUserThinDTO account = null;
 
-    private TraCustomerPersonPT person = null;
+    private TraCustomerPersonDTO person = null;
 
     private TraDiscount traDiscount = null;
 
@@ -296,7 +295,7 @@ public class TraCustomerDTO implements Serializable {
         this.vatNumber = vatNumber;
     }
 
-    public TraCustomerDTO addres(CoreAddressPT adress) {
+    public TraCustomerDTO addres(CoreAddressDTO adress) {
         this.addres = adress;
         return this;
     }
@@ -307,11 +306,11 @@ public class TraCustomerDTO implements Serializable {
      * @return addres
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAddres() {
+    public CoreAddressDTO getAddres() {
         return addres;
     }
 
-    public void setAddres(CoreAddressPT addres) {
+    public void setAddres(CoreAddressDTO addres) {
         this.addres = addres;
     }
 
@@ -334,7 +333,7 @@ public class TraCustomerDTO implements Serializable {
         this.account = account;
     }
 
-    public TraCustomerDTO persons(TraCustomerPersonPT person) {
+    public TraCustomerDTO persons(TraCustomerPersonDTO person) {
         this.person = person;
         return this;
     }
@@ -346,11 +345,11 @@ public class TraCustomerDTO implements Serializable {
      * @return person
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPersonPT getPerson() {
+    public TraCustomerPersonDTO getPerson() {
         return person;
     }
 
-    public void setPerson(TraCustomerPersonPT person) {
+    public void setPerson(TraCustomerPersonDTO person) {
         this.person = person;
     }
 

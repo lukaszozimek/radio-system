@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibAlbumPT;
+import io.protone.custom.service.dto.LibAlbumDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import org.junit.Before;
@@ -30,9 +30,9 @@ public class LibAlbumMapperTest {
 
     private LibAlbum libAlbum;
 
-    private LibAlbumPT libAlbumPT;
+    private LibAlbumDTO libAlbumDTO;
 
-    private List<LibAlbumPT> libAlbumPTS = new ArrayList<>();
+    private List<LibAlbumDTO> libAlbumDTOS = new ArrayList<>();
 
     private List<LibAlbum> libAlbums = new ArrayList<>();
 
@@ -44,14 +44,14 @@ public class LibAlbumMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         libAlbum = factory.manufacturePojo(LibAlbum.class);
         libAlbums.add(libAlbum);
-        libAlbumPT = factory.manufacturePojo(LibAlbumPT.class);
-        libAlbumPTS.add(libAlbumPT);
+        libAlbumDTO = factory.manufacturePojo(LibAlbumDTO.class);
+        libAlbumDTOS.add(libAlbumDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        LibAlbumPT dto = customLibAlbumMapper.DB2DTO(libAlbum);
+        LibAlbumDTO dto = customLibAlbumMapper.DB2DTO(libAlbum);
 
 
         assertNotNull(dto.getArtistId());
@@ -68,7 +68,7 @@ public class LibAlbumMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibAlbumPT> dtos = customLibAlbumMapper.DBs2DTOs(libAlbums);
+        List<LibAlbumDTO> dtos = customLibAlbumMapper.DBs2DTOs(libAlbums);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -89,7 +89,7 @@ public class LibAlbumMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumPT,corNetwork);
+        LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumDTO,corNetwork);
 
         assertNotNull(entity.getCover());
         assertNotNull(entity.getLabel());
@@ -106,7 +106,7 @@ public class LibAlbumMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibAlbum> entities = customLibAlbumMapper.DTOs2DBs(libAlbumPTS,corNetwork);
+        List<LibAlbum> entities = customLibAlbumMapper.DTOs2DBs(libAlbumDTOS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

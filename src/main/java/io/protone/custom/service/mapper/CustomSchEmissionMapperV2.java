@@ -1,6 +1,5 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.custom.service.dto.thin.SchLibItemThinPT;
 import io.protone.domain.*;

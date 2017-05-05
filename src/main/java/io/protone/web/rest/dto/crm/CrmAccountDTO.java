@@ -1,8 +1,8 @@
 package io.protone.web.rest.dto.crm;
 
-import io.protone.custom.service.dto.CoreAddressPT;
+import io.protone.web.rest.dto.cor.CoreAddressDTO;
+import io.protone.web.rest.dto.traffic.TraCustomerPersonDTO;
 import io.protone.web.rest.dto.traffic.TraCampaignDTO;
-import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
@@ -46,11 +46,11 @@ public class CrmAccountDTO implements Serializable {
 
     private String vatNumber = null;
 
-    private CoreAddressPT addres = null;
+    private CoreAddressDTO addres = null;
 
     private CoreUserThinDTO account = null;
 
-    private TraCustomerPersonPT person = null;
+    private TraCustomerPersonDTO person = null;
 
     private List<TraOrderDTO> orders = new ArrayList<TraOrderDTO>();
 
@@ -249,7 +249,7 @@ public class CrmAccountDTO implements Serializable {
         this.vatNumber = vatNumber;
     }
 
-    public CrmAccountDTO addres(CoreAddressPT addres) {
+    public CrmAccountDTO addres(CoreAddressDTO addres) {
         this.addres = addres;
         return this;
     }
@@ -260,11 +260,11 @@ public class CrmAccountDTO implements Serializable {
      * @return adress
      **/
     @ApiModelProperty(value = "")
-    public CoreAddressPT getAddres() {
+    public CoreAddressDTO getAddres() {
         return addres;
     }
 
-    public void setAddres(CoreAddressPT addres) {
+    public void setAddres(CoreAddressDTO addres) {
         this.addres = addres;
     }
 
@@ -287,7 +287,7 @@ public class CrmAccountDTO implements Serializable {
         this.account = account;
     }
 
-    public CrmAccountDTO person(TraCustomerPersonPT person) {
+    public CrmAccountDTO person(TraCustomerPersonDTO person) {
         this.person = person;
         return this;
     }
@@ -299,11 +299,11 @@ public class CrmAccountDTO implements Serializable {
      * @return person
      **/
     @ApiModelProperty(value = "")
-    public TraCustomerPersonPT getPerson() {
+    public TraCustomerPersonDTO getPerson() {
         return person;
     }
 
-    public void setPerson(TraCustomerPersonPT person) {
+    public void setPerson(TraCustomerPersonDTO person) {
         this.person = person;
     }
 

@@ -12,32 +12,33 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * LibItemPT
+ * LibMediaItemDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibItemPT {
+public class LibMediaItemDTO {
     @JsonProperty("id")
     private Long id;
     @JsonProperty("album")
-    private LibAlbumPT album = null;
+    private LibAlbumDTO album = null;
 
     @JsonProperty("itemType")
     private LibItemTypeEnum libItemTypeEnum = null;
+
     @JsonProperty("artist")
-    private LibArtistPT artist = null;
+    private LibArtistDTO artist = null;
 
     @JsonProperty("authors")
-    private List<LibPersonPT> authors = new ArrayList<>();
+    private List<LibPersonDTO> authors = new ArrayList<>();
 
     @JsonProperty("composers")
-    private List<LibPersonPT> composers = new ArrayList<>();
+    private List<LibPersonDTO> composers = new ArrayList<>();
 
     @JsonProperty("idx")
     private String idx = null;
 
     @JsonProperty("label")
-    private LibLabelPT label = null;
+    private LibLabelDTO label = null;
 
     @JsonProperty("length")
     private Integer length = null;
@@ -46,23 +47,28 @@ public class LibItemPT {
     private LibLibraryDTO library = null;
 
     @JsonProperty("markers")
-    private List<LibMarkerPT> markers = new ArrayList<LibMarkerPT>();
+    private List<LibMarkerDTO> markers = new ArrayList<LibMarkerDTO>();
 
     @JsonProperty("name")
     private String name = null;
 
     @JsonProperty("properties")
     private List<CoreKeyValuePT> properties = new ArrayList<CoreKeyValuePT>();
+
     @JsonProperty("resourceType")
     private ResourceTypeEnum resourceType = null;
+
     @JsonProperty("state")
     private StateEnum state = null;
+
     @JsonProperty("stream")
     private String stream = null;
+
     @JsonProperty("tags")
     private List<String> tags = new ArrayList<String>();
+
     @JsonProperty("track")
-    private LibTrackPT track = null;
+    private LibTrackDTO track = null;
 
     public Long getId() {
         return id;
@@ -72,7 +78,7 @@ public class LibItemPT {
         this.id = id;
     }
 
-    public LibItemPT album(LibAlbumPT album) {
+    public LibMediaItemDTO album(LibAlbumDTO album) {
         this.album = album;
         return this;
     }
@@ -83,15 +89,15 @@ public class LibItemPT {
      * @return album
      **/
     @ApiModelProperty(value = "")
-    public LibAlbumPT getAlbum() {
+    public LibAlbumDTO getAlbum() {
         return album;
     }
 
-    public void setAlbum(LibAlbumPT album) {
+    public void setAlbum(LibAlbumDTO album) {
         this.album = album;
     }
 
-    public LibItemPT artist(LibArtistPT artist) {
+    public LibMediaItemDTO artist(LibArtistDTO artist) {
         this.artist = artist;
         return this;
     }
@@ -102,20 +108,20 @@ public class LibItemPT {
      * @return artist
      **/
     @ApiModelProperty(value = "")
-    public LibArtistPT getArtist() {
+    public LibArtistDTO getArtist() {
         return artist;
     }
 
-    public void setArtist(LibArtistPT artist) {
+    public void setArtist(LibArtistDTO artist) {
         this.artist = artist;
     }
 
-    public LibItemPT author(List<LibPersonPT> author) {
+    public LibMediaItemDTO author(List<LibPersonDTO> author) {
         this.authors = author;
         return this;
     }
 
-    public LibItemPT addAuthors(LibPersonPT composer) {
+    public LibMediaItemDTO addAuthors(LibPersonDTO composer) {
         this.authors.add(composer);
         return this;
     }
@@ -126,15 +132,15 @@ public class LibItemPT {
      * @return authors
      **/
     @ApiModelProperty(value = "")
-    public List<LibPersonPT> getAuthors() {
+    public List<LibPersonDTO> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<LibPersonPT> authors) {
+    public void setAuthors(List<LibPersonDTO> authors) {
         this.authors = this.authors;
     }
 
-    public LibItemPT composer(List<LibPersonPT> composers) {
+    public LibMediaItemDTO composer(List<LibPersonDTO> composers) {
         this.composers = composers;
         return this;
     }
@@ -145,20 +151,20 @@ public class LibItemPT {
      * @return composers
      **/
     @ApiModelProperty(value = "")
-    public List<LibPersonPT> getComposers() {
+    public List<LibPersonDTO> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<LibPersonPT> composers) {
+    public void setComposers(List<LibPersonDTO> composers) {
         this.composers = composers;
     }
 
-    public LibItemPT addComposer(LibPersonPT composer) {
+    public LibMediaItemDTO addComposer(LibPersonDTO composer) {
         this.composers.add(composer);
         return this;
     }
 
-    public LibItemPT idx(String idx) {
+    public LibMediaItemDTO idx(String idx) {
         this.idx = idx;
         return this;
     }
@@ -177,7 +183,7 @@ public class LibItemPT {
         this.idx = idx;
     }
 
-    public LibItemPT label(LibLabelPT label) {
+    public LibMediaItemDTO label(LibLabelDTO label) {
         this.label = label;
         return this;
     }
@@ -188,15 +194,15 @@ public class LibItemPT {
      * @return label
      **/
     @ApiModelProperty(value = "")
-    public LibLabelPT getLabel() {
+    public LibLabelDTO getLabel() {
         return label;
     }
 
-    public void setLabel(LibLabelPT label) {
+    public void setLabel(LibLabelDTO label) {
         this.label = label;
     }
 
-    public LibItemPT length(Integer length) {
+    public LibMediaItemDTO length(Integer length) {
         this.length = length;
         return this;
     }
@@ -215,7 +221,7 @@ public class LibItemPT {
         this.length = length;
     }
 
-    public LibItemPT library(LibLibraryDTO library) {
+    public LibMediaItemDTO library(LibLibraryDTO library) {
         this.library = library;
         return this;
     }
@@ -234,12 +240,12 @@ public class LibItemPT {
         this.library = library;
     }
 
-    public LibItemPT markers(List<LibMarkerPT> markers) {
+    public LibMediaItemDTO markers(List<LibMarkerDTO> markers) {
         this.markers = markers;
         return this;
     }
 
-    public LibItemPT addMarkersItem(LibMarkerPT markersItem) {
+    public LibMediaItemDTO addMarkersItem(LibMarkerDTO markersItem) {
         this.markers.add(markersItem);
         return this;
     }
@@ -250,15 +256,15 @@ public class LibItemPT {
      * @return markers
      **/
     @ApiModelProperty(value = "")
-    public List<LibMarkerPT> getMarkers() {
+    public List<LibMarkerDTO> getMarkers() {
         return markers;
     }
 
-    public void setMarkers(List<LibMarkerPT> markers) {
+    public void setMarkers(List<LibMarkerDTO> markers) {
         this.markers = markers;
     }
 
-    public LibItemPT name(String name) {
+    public LibMediaItemDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -277,12 +283,12 @@ public class LibItemPT {
         this.name = name;
     }
 
-    public LibItemPT properties(List<CoreKeyValuePT> properties) {
+    public LibMediaItemDTO properties(List<CoreKeyValuePT> properties) {
         this.properties = properties;
         return this;
     }
 
-    public LibItemPT addPropertiesItem(CoreKeyValuePT propertiesItem) {
+    public LibMediaItemDTO addPropertiesItem(CoreKeyValuePT propertiesItem) {
         this.properties.add(propertiesItem);
         return this;
     }
@@ -301,7 +307,7 @@ public class LibItemPT {
         this.properties = properties;
     }
 
-    public LibItemPT resourceType(ResourceTypeEnum resourceType) {
+    public LibMediaItemDTO resourceType(ResourceTypeEnum resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -320,7 +326,7 @@ public class LibItemPT {
         this.resourceType = resourceType;
     }
 
-    public LibItemPT state(StateEnum state) {
+    public LibMediaItemDTO state(StateEnum state) {
         this.state = state;
         return this;
     }
@@ -339,7 +345,7 @@ public class LibItemPT {
         this.state = state;
     }
 
-    public LibItemPT stream(String stream) {
+    public LibMediaItemDTO stream(String stream) {
         this.stream = stream;
         return this;
     }
@@ -358,12 +364,12 @@ public class LibItemPT {
         this.stream = stream;
     }
 
-    public LibItemPT tags(List<String> tags) {
+    public LibMediaItemDTO tags(List<String> tags) {
         this.tags = tags;
         return this;
     }
 
-    public LibItemPT addTagsItem(String tagsItem) {
+    public LibMediaItemDTO addTagsItem(String tagsItem) {
         this.tags.add(tagsItem);
         return this;
     }
@@ -382,7 +388,7 @@ public class LibItemPT {
         this.tags = tags;
     }
 
-    public LibItemPT track(LibTrackPT track) {
+    public LibMediaItemDTO track(LibTrackDTO track) {
         this.track = track;
         return this;
     }
@@ -393,11 +399,11 @@ public class LibItemPT {
      * @return track
      **/
     @ApiModelProperty(value = "")
-    public LibTrackPT getTrack() {
+    public LibTrackDTO getTrack() {
         return track;
     }
 
-    public void setTrack(LibTrackPT track) {
+    public void setTrack(LibTrackDTO track) {
         this.track = track;
     }
 
@@ -409,24 +415,24 @@ public class LibItemPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LibItemPT libItemPT = (LibItemPT) o;
-        return Objects.equals(this.album, libItemPT.album) &&
-            Objects.equals(this.artist, libItemPT.artist) &&
-            Objects.equals(this.authors, libItemPT.authors) &&
-            Objects.equals(this.composers, libItemPT.composers) &&
-            Objects.equals(this.idx, libItemPT.idx) &&
-            Objects.equals(this.label, libItemPT.label) &&
-            Objects.equals(this.length, libItemPT.length) &&
-            Objects.equals(this.library, libItemPT.library) &&
-            Objects.equals(this.markers, libItemPT.markers) &&
-            Objects.equals(this.name, libItemPT.name) &&
-            Objects.equals(this.properties, libItemPT.properties) &&
-            Objects.equals(this.resourceType, libItemPT.resourceType) &&
-            Objects.equals(this.state, libItemPT.state) &&
-            Objects.equals(this.stream, libItemPT.stream) &&
-            Objects.equals(this.tags, libItemPT.tags) &&
-            Objects.equals(this.id, libItemPT.id) &&
-            Objects.equals(this.track, libItemPT.track);
+        LibMediaItemDTO libMediaItemDTO = (LibMediaItemDTO) o;
+        return Objects.equals(this.album, libMediaItemDTO.album) &&
+            Objects.equals(this.artist, libMediaItemDTO.artist) &&
+            Objects.equals(this.authors, libMediaItemDTO.authors) &&
+            Objects.equals(this.composers, libMediaItemDTO.composers) &&
+            Objects.equals(this.idx, libMediaItemDTO.idx) &&
+            Objects.equals(this.label, libMediaItemDTO.label) &&
+            Objects.equals(this.length, libMediaItemDTO.length) &&
+            Objects.equals(this.library, libMediaItemDTO.library) &&
+            Objects.equals(this.markers, libMediaItemDTO.markers) &&
+            Objects.equals(this.name, libMediaItemDTO.name) &&
+            Objects.equals(this.properties, libMediaItemDTO.properties) &&
+            Objects.equals(this.resourceType, libMediaItemDTO.resourceType) &&
+            Objects.equals(this.state, libMediaItemDTO.state) &&
+            Objects.equals(this.stream, libMediaItemDTO.stream) &&
+            Objects.equals(this.tags, libMediaItemDTO.tags) &&
+            Objects.equals(this.id, libMediaItemDTO.id) &&
+            Objects.equals(this.track, libMediaItemDTO.track);
     }
 
     @Override
@@ -437,7 +443,7 @@ public class LibItemPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class LibItemPT {\n");
+        sb.append("class LibMediaItemDTO {\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    album: ").append(toIndentedString(album)).append("\n");
         sb.append("    artist: ").append(toIndentedString(artist)).append("\n");

@@ -53,7 +53,7 @@ public class TraAdvertisementShuffleServiceTest {/*
         tarShuffleAdvertisementPT.setNumber(2);
         tarShuffleAdvertisementPT.setTraAdvertisementDTO(new TraAdvertisementDTO());
         tarShuffleAdvertisementPT.getTraAdvertisementDTO().setId((long) 1);
-        tarShuffleAdvertisementPT.getTraAdvertisementDTO().setMediaItemId(new LibMediaItemPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementDTO().setMediaItemId(new LibMediaItemThinDTO());
 
         advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
@@ -67,7 +67,7 @@ public class TraAdvertisementShuffleServiceTest {/*
         tarShuffleAdvertisementPT.setNumber(3);
         tarShuffleAdvertisementPT.setTraAdvertisementDTO(new TraAdvertisementDTO());
         tarShuffleAdvertisementPT.getTraAdvertisementDTO().setId((long) 1);
-        tarShuffleAdvertisementPT.getTraAdvertisementDTO().setMediaItemId(new LibMediaItemPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementDTO().setMediaItemId(new LibMediaItemThinDTO());
         //then
         advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);
     }
@@ -90,7 +90,7 @@ public class TraAdvertisementShuffleServiceTest {/*
         tarShuffleAdvertisementPT.setNumber(3);
         tarShuffleAdvertisementPT.setTraAdvertisementDTO(new TraAdvertisementDTO());
         tarShuffleAdvertisementPT.getTraAdvertisementDTO().setId((long) 1);
-        tarShuffleAdvertisementPT.getTraAdvertisementDTO().setMediaItemId(new LibMediaItemPT());
+        tarShuffleAdvertisementPT.getTraAdvertisementDTO().setMediaItemId(new LibMediaItemThinDTO());
         tarShuffleAdvertisementPT.getTraAdvertisementDTO().getMediaItemId().setIdx("1");
         //then
         advertisementShuffle.shuffleCommercials(tarShuffleAdvertisementPT);

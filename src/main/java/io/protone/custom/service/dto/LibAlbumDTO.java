@@ -9,11 +9,11 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * LibAlbumPT
+ * LibAlbumDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibAlbumPT {
+public class LibAlbumDTO {
     @JsonProperty("albumType")
     private AlbumTypeEnum albumType = null;
     @JsonProperty("artistId")
@@ -31,7 +31,7 @@ public class LibAlbumPT {
     @JsonProperty("releaseDate")
     private LocalDate releaseDate = null;
 
-    public LibAlbumPT albumType(AlbumTypeEnum albumType) {
+    public LibAlbumDTO albumType(AlbumTypeEnum albumType) {
         this.albumType = albumType;
         return this;
     }
@@ -50,7 +50,7 @@ public class LibAlbumPT {
         this.albumType = albumType;
     }
 
-    public LibAlbumPT artistId(Long artistId) {
+    public LibAlbumDTO artistId(Long artistId) {
         this.artistId = artistId;
         return this;
     }
@@ -69,7 +69,7 @@ public class LibAlbumPT {
         this.artistId = artistId;
     }
 
-    public LibAlbumPT coverId(Long coverId) {
+    public LibAlbumDTO coverId(Long coverId) {
         this.coverId = coverId;
         return this;
     }
@@ -88,7 +88,7 @@ public class LibAlbumPT {
         this.coverId = coverId;
     }
 
-    public LibAlbumPT description(String description) {
+    public LibAlbumDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -107,7 +107,7 @@ public class LibAlbumPT {
         this.description = description;
     }
 
-    public LibAlbumPT id(Long id) {
+    public LibAlbumDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -126,7 +126,7 @@ public class LibAlbumPT {
         this.id = id;
     }
 
-    public LibAlbumPT labelId(Long labelId) {
+    public LibAlbumDTO labelId(Long labelId) {
         this.labelId = labelId;
         return this;
     }
@@ -145,7 +145,7 @@ public class LibAlbumPT {
         this.labelId = labelId;
     }
 
-    public LibAlbumPT name(String name) {
+    public LibAlbumDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -164,7 +164,7 @@ public class LibAlbumPT {
         this.name = name;
     }
 
-    public LibAlbumPT releaseDate(LocalDate releaseDate) {
+    public LibAlbumDTO releaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
         return this;
     }
@@ -190,15 +190,15 @@ public class LibAlbumPT {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LibAlbumPT libAlbumPT = (LibAlbumPT) o;
-        return Objects.equals(this.albumType, libAlbumPT.albumType) &&
-            Objects.equals(this.artistId, libAlbumPT.artistId) &&
-            Objects.equals(this.coverId, libAlbumPT.coverId) &&
-            Objects.equals(this.description, libAlbumPT.description) &&
-            Objects.equals(this.id, libAlbumPT.id) &&
-            Objects.equals(this.labelId, libAlbumPT.labelId) &&
-            Objects.equals(this.name, libAlbumPT.name) &&
-            Objects.equals(this.releaseDate, libAlbumPT.releaseDate);
+        LibAlbumDTO libAlbumDTO = (LibAlbumDTO) o;
+        return Objects.equals(this.albumType, libAlbumDTO.albumType) &&
+            Objects.equals(this.artistId, libAlbumDTO.artistId) &&
+            Objects.equals(this.coverId, libAlbumDTO.coverId) &&
+            Objects.equals(this.description, libAlbumDTO.description) &&
+            Objects.equals(this.id, libAlbumDTO.id) &&
+            Objects.equals(this.labelId, libAlbumDTO.labelId) &&
+            Objects.equals(this.name, libAlbumDTO.name) &&
+            Objects.equals(this.releaseDate, libAlbumDTO.releaseDate);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class LibAlbumPT {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class LibAlbumPT {\n");
+        sb.append("class LibAlbumDTO {\n");
 
         sb.append("    albumType: ").append(toIndentedString(albumType)).append("\n");
         sb.append("    artistId: ").append(toIndentedString(artistId)).append("\n");

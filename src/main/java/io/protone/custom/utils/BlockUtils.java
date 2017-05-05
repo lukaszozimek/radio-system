@@ -128,7 +128,7 @@ public class BlockUtils {
 
     public SchEmissionPT sampleEmission(Long length) {
         SchEmissionPT emission = new SchEmissionPT()
-            //.mediaItem(new LibItemPT())
+            //.mediaItem(new LibMediaItemDTO())
             ;
         return emission;
     }

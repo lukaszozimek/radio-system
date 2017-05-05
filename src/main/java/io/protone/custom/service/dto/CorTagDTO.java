@@ -6,18 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * ConfTagPT
+ * CorTagDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class ConfTagPT   {
+public class CorTagDTO {
   @JsonProperty("id")
   private Long id = null;
 
   @JsonProperty("tag")
   private String tag = null;
 
-  public ConfTagPT id(Long id) {
+  public CorTagDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -35,7 +35,7 @@ public class ConfTagPT   {
     this.id = id;
   }
 
-  public ConfTagPT tag(String tag) {
+  public CorTagDTO tag(String tag) {
     this.tag = tag;
     return this;
   }
@@ -62,9 +62,9 @@ public class ConfTagPT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ConfTagPT confTagPT = (ConfTagPT) o;
-    return Objects.equals(this.id, confTagPT.id) &&
-        Objects.equals(this.tag, confTagPT.tag);
+    CorTagDTO corTagDTO = (CorTagDTO) o;
+    return Objects.equals(this.id, corTagDTO.id) &&
+        Objects.equals(this.tag, corTagDTO.tag);
   }
 
   @Override
@@ -75,7 +75,7 @@ public class ConfTagPT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ConfTagPT {\n");
+    sb.append("class CorTagDTO {\n");
 
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    tag: ").append(toIndentedString(tag)).append("\n");

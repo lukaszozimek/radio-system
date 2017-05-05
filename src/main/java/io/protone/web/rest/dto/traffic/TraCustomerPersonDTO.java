@@ -1,6 +1,7 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.traffic;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.cor.CoreContactDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -8,11 +9,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * TraCustomerPersonPT
+ * TraCustomerPersonDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraCustomerPersonPT   {
+public class TraCustomerPersonDTO {
   @JsonProperty("description")
   private String description = null;
 
@@ -26,9 +27,9 @@ public class TraCustomerPersonPT   {
   private String lastName = null;
 
   @JsonProperty("contacts")
-  private List<CoreContactPT> contacts = new ArrayList<CoreContactPT>();
+  private List<CoreContactDTO> contacts = new ArrayList<CoreContactDTO>();
 
-  public TraCustomerPersonPT description(String description) {
+  public TraCustomerPersonDTO description(String description) {
     this.description = description;
     return this;
   }
@@ -46,7 +47,7 @@ public class TraCustomerPersonPT   {
     this.description = description;
   }
 
-  public TraCustomerPersonPT firstName(String firstName) {
+  public TraCustomerPersonDTO firstName(String firstName) {
     this.firstName = firstName;
     return this;
   }
@@ -64,7 +65,7 @@ public class TraCustomerPersonPT   {
     this.firstName = firstName;
   }
 
-  public TraCustomerPersonPT id(Long id) {
+  public TraCustomerPersonDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -82,7 +83,7 @@ public class TraCustomerPersonPT   {
     this.id = id;
   }
 
-  public TraCustomerPersonPT lastName(String lastName) {
+  public TraCustomerPersonDTO lastName(String lastName) {
     this.lastName = lastName;
     return this;
   }
@@ -100,12 +101,12 @@ public class TraCustomerPersonPT   {
     this.lastName = lastName;
   }
 
-  public TraCustomerPersonPT contacts(List<CoreContactPT> contacts) {
+  public TraCustomerPersonDTO contacts(List<CoreContactDTO> contacts) {
     this.contacts = contacts;
     return this;
   }
 
-  public TraCustomerPersonPT addContactsItem(CoreContactPT contactsItem) {
+  public TraCustomerPersonDTO addContactsItem(CoreContactDTO contactsItem) {
     this.contacts.add(contactsItem);
     return this;
   }
@@ -115,11 +116,11 @@ public class TraCustomerPersonPT   {
    * @return contacts
   **/
   @ApiModelProperty(value = "")
-  public List<CoreContactPT> getContacts() {
+  public List<CoreContactDTO> getContacts() {
     return contacts;
   }
 
-  public void setContacts(List<CoreContactPT> contacts) {
+  public void setContacts(List<CoreContactDTO> contacts) {
     this.contacts = contacts;
   }
 
@@ -132,12 +133,12 @@ public class TraCustomerPersonPT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TraCustomerPersonPT traCustomerPersonPT = (TraCustomerPersonPT) o;
-    return Objects.equals(this.description, traCustomerPersonPT.description) &&
-        Objects.equals(this.firstName, traCustomerPersonPT.firstName) &&
-        Objects.equals(this.id, traCustomerPersonPT.id) &&
-        Objects.equals(this.lastName, traCustomerPersonPT.lastName) &&
-        Objects.equals(this.contacts, traCustomerPersonPT.contacts);
+    TraCustomerPersonDTO traCustomerPersonDTO = (TraCustomerPersonDTO) o;
+    return Objects.equals(this.description, traCustomerPersonDTO.description) &&
+        Objects.equals(this.firstName, traCustomerPersonDTO.firstName) &&
+        Objects.equals(this.id, traCustomerPersonDTO.id) &&
+        Objects.equals(this.lastName, traCustomerPersonDTO.lastName) &&
+        Objects.equals(this.contacts, traCustomerPersonDTO.contacts);
   }
 
   @Override
@@ -148,7 +149,7 @@ public class TraCustomerPersonPT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TraCustomerPersonPT {\n");
+    sb.append("class TraCustomerPersonDTO {\n");
 
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");

@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibArtistPT;
+import io.protone.custom.service.dto.LibArtistDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibArtist;
 import org.junit.Before;
@@ -32,9 +32,9 @@ public class LibArtistMapperTest {
 
     private LibArtist libArtist;
 
-    private LibArtistPT libArtistPT;
+    private LibArtistDTO libArtistDTO;
 
-    private List<LibArtistPT> libArtistPTS = new ArrayList<>();
+    private List<LibArtistDTO> libArtistDTOS = new ArrayList<>();
 
     private List<LibArtist> libArtists = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -43,8 +43,8 @@ public class LibArtistMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         libArtist = factory.manufacturePojo(LibArtist.class);
         libArtists.add(libArtist);
-        libArtistPT = factory.manufacturePojo(LibArtistPT.class);
-        libArtistPTS.add(libArtistPT);
+        libArtistDTO = factory.manufacturePojo(LibArtistDTO.class);
+        libArtistDTOS.add(libArtistDTO);
 
 
         corNetwork = factory.manufacturePojo(CorNetwork.class);
@@ -52,7 +52,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        LibArtistPT dto = libArtistMapper.DB2DTO(libArtist);
+        LibArtistDTO dto = libArtistMapper.DB2DTO(libArtist);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
@@ -63,7 +63,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<LibArtist> entities = libArtistMapper.DTOs2DBs(libArtistPTS,corNetwork);
+        List<LibArtist> entities = libArtistMapper.DTOs2DBs(libArtistDTOS,corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -81,7 +81,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibArtist entity = libArtistMapper.DTO2DB(libArtistPT,corNetwork);
+        LibArtist entity = libArtistMapper.DTO2DB(libArtistDTO,corNetwork);
 
 
         assertNotNull(entity.getDescription());
@@ -94,7 +94,7 @@ public class LibArtistMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibArtistPT> dtos = libArtistMapper.DBs2DTOs(libArtists);
+        List<LibArtistDTO> dtos = libArtistMapper.DBs2DTOs(libArtists);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);

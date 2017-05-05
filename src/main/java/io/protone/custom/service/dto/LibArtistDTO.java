@@ -8,11 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * LibArtistPT
+ * LibArtistDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibArtistPT   {
+public class LibArtistDTO {
   @JsonProperty("description")
   private String description = null;
 
@@ -61,7 +61,7 @@ public class LibArtistPT   {
   @JsonProperty("type")
   private TypeEnum type = null;
 
-  public LibArtistPT description(String description) {
+  public LibArtistDTO description(String description) {
     this.description = description;
     return this;
   }
@@ -79,7 +79,7 @@ public class LibArtistPT   {
     this.description = description;
   }
 
-  public LibArtistPT id(Long id) {
+  public LibArtistDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -97,7 +97,7 @@ public class LibArtistPT   {
     this.id = id;
   }
 
-  public LibArtistPT name(String name) {
+  public LibArtistDTO name(String name) {
     this.name = name;
     return this;
   }
@@ -115,7 +115,7 @@ public class LibArtistPT   {
     this.name = name;
   }
 
-  public LibArtistPT type(TypeEnum type) {
+  public LibArtistDTO type(TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -142,11 +142,11 @@ public class LibArtistPT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LibArtistPT libArtistPT = (LibArtistPT) o;
-    return Objects.equals(this.description, libArtistPT.description) &&
-        Objects.equals(this.id, libArtistPT.id) &&
-        Objects.equals(this.name, libArtistPT.name) &&
-        Objects.equals(this.type, libArtistPT.type);
+    LibArtistDTO libArtistDTO = (LibArtistDTO) o;
+    return Objects.equals(this.description, libArtistDTO.description) &&
+        Objects.equals(this.id, libArtistDTO.id) &&
+        Objects.equals(this.name, libArtistDTO.name) &&
+        Objects.equals(this.type, libArtistDTO.type);
   }
 
   @Override
@@ -157,7 +157,7 @@ public class LibArtistPT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LibArtistPT {\n");
+    sb.append("class LibArtistDTO {\n");
 
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
