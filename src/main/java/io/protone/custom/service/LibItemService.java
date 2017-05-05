@@ -95,10 +95,14 @@ public class LibItemService {
 
 
     public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
-        LibArtist artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
-        libMediaItem.setArtist(artist);
-
-        libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum(), artist, corNetwork));
+        LibArtist artist = new LibArtist();
+        if (libMediaItem.getArtist() != null) {
+            artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
+            libMediaItem.setArtist(artist);
+        }
+        if (libMediaItem.getAlbum() != null) {
+            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum(), artist, corNetwork));
+        }
         libMediaItem.setLabel(libLabelService.saveLibLabel(libMediaItem.getLabel()).orElse(null));
         libMediaItem.setTrack(libTrackService.saveLibTrack(libMediaItem.getTrack()).orElse(null));
         libMediaItem.setMarkers(libMarkerService.saveLibMarkers(libMediaItem.getMarkers()).orElse(null));
@@ -116,7 +120,6 @@ public class LibItemService {
         LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
         if (libraryDB == null) {
             return result;
-
         }
         for (MultipartFile file : files) {
 
@@ -210,9 +213,9 @@ public class LibItemService {
 
             result = IOUtils.toByteArray(stream);
         } catch (S3Exception e) {
-            e.printStackTrace();
+            log.error("There is a problem with uploading file to S3 Storage :{}", idx);
         } catch (DownloadException e) {
-            e.printStackTrace();
+            log.error("There is a problem with uploading file to S3 Storage :{}", idx);
         } finally {
             stream.close();
         }

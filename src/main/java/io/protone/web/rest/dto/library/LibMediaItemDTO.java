@@ -1,11 +1,12 @@
 package io.protone.web.rest.dto.library;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.cor.CorKeyValueDTO;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,60 +14,47 @@ import java.util.Objects;
 /**
  * LibMediaItemDTO
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibMediaItemDTO {
-    @JsonProperty("id")
+public class LibMediaItemDTO implements Serializable {
+
     private Long id;
-    @JsonProperty("album")
+
     private LibAlbumDTO album = null;
 
-    @JsonProperty("itemType")
-    private LibItemStateEnum libItemTypeEnum = null;
-
-    @JsonProperty("artist")
     private LibArtistDTO artist = null;
 
-    @JsonProperty("authors")
     private List<LibPersonDTO> authors = new ArrayList<>();
 
-    @JsonProperty("composers")
     private List<LibPersonDTO> composers = new ArrayList<>();
 
-    @JsonProperty("idx")
+    @NotNull
     private String idx = null;
 
-    @JsonProperty("label")
+    private String command = null;
+
+    private String description = null;
+
     private LibLabelDTO label = null;
 
-    @JsonProperty("length")
-    private Integer length = null;
+    private Double length = null;
 
-    @JsonProperty("library")
     private LibLibraryDTO library = null;
 
-    @JsonProperty("markers")
     private List<LibMarkerDTO> markers = new ArrayList<LibMarkerDTO>();
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
-    @JsonProperty("properties")
     private List<CorKeyValueDTO> properties = new ArrayList<CorKeyValueDTO>();
 
-    @JsonProperty("resourceType")
-    private LibItemTypeEnum resourceType = null;
+    private LibItemTypeEnum itemType = null;
 
-    @JsonProperty("state")
     private LibItemStateEnum state = null;
 
-    @JsonProperty("stream")
     private String stream = null;
 
-    @JsonProperty("tags")
     private List<String> tags = new ArrayList<String>();
 
-    @JsonProperty("track")
     private LibTrackDTO track = null;
 
     public Long getId() {
@@ -80,6 +68,32 @@ public class LibMediaItemDTO {
     public LibMediaItemDTO album(LibAlbumDTO album) {
         this.album = album;
         return this;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    public LibMediaItemDTO command(String command) {
+        this.command = command;
+        return this;
+    }
+
+    public LibMediaItemDTO description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -201,7 +215,7 @@ public class LibMediaItemDTO {
         this.label = label;
     }
 
-    public LibMediaItemDTO length(Integer length) {
+    public LibMediaItemDTO length(Double length) {
         this.length = length;
         return this;
     }
@@ -212,11 +226,11 @@ public class LibMediaItemDTO {
      * @return length
      **/
     @ApiModelProperty(value = "")
-    public Integer getLength() {
+    public Double getLength() {
         return length;
     }
 
-    public void setLength(Integer length) {
+    public void setLength(Double length) {
         this.length = length;
     }
 
@@ -307,22 +321,22 @@ public class LibMediaItemDTO {
     }
 
     public LibMediaItemDTO resourceType(LibItemTypeEnum resourceType) {
-        this.resourceType = resourceType;
+        this.itemType = resourceType;
         return this;
     }
 
     /**
-     * Get resourceType
+     * Get itemType
      *
-     * @return resourceType
+     * @return itemType
      **/
     @ApiModelProperty(value = "")
-    public LibItemTypeEnum getResourceType() {
-        return resourceType;
+    public LibItemTypeEnum getItemType() {
+        return itemType;
     }
 
-    public void setResourceType(LibItemTypeEnum resourceType) {
-        this.resourceType = resourceType;
+    public void setItemType(LibItemTypeEnum itemType) {
+        this.itemType = itemType;
     }
 
     public LibMediaItemDTO state(LibItemStateEnum state) {
@@ -426,7 +440,7 @@ public class LibMediaItemDTO {
             Objects.equals(this.markers, libMediaItemDTO.markers) &&
             Objects.equals(this.name, libMediaItemDTO.name) &&
             Objects.equals(this.properties, libMediaItemDTO.properties) &&
-            Objects.equals(this.resourceType, libMediaItemDTO.resourceType) &&
+            Objects.equals(this.itemType, libMediaItemDTO.itemType) &&
             Objects.equals(this.state, libMediaItemDTO.state) &&
             Objects.equals(this.stream, libMediaItemDTO.stream) &&
             Objects.equals(this.tags, libMediaItemDTO.tags) &&
@@ -436,7 +450,7 @@ public class LibMediaItemDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, resourceType, state, stream, tags, track, id);
+        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, itemType, state, stream, tags, track, id);
     }
 
     @Override
@@ -455,7 +469,7 @@ public class LibMediaItemDTO {
         sb.append("    markers: ").append(toIndentedString(markers)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
-        sb.append("    resourceType: ").append(toIndentedString(resourceType)).append("\n");
+        sb.append("    itemType: ").append(toIndentedString(itemType)).append("\n");
         sb.append("    state: ").append(toIndentedString(state)).append("\n");
         sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
         sb.append("    tags: ").append(toIndentedString(tags)).append("\n");

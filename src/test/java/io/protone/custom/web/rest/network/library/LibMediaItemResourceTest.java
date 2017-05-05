@@ -24,6 +24,7 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,7 +102,11 @@ public class LibMediaItemResourceTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        LibMediaItemResource libMediaItemResource = new LibMediaItemResourceImpl();
+        LibMediaItemResourceImpl libMediaItemResource = new LibMediaItemResourceImpl();
+        ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
+        ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
+        ReflectionTestUtils.setField(libMediaItemResource, "libMediaItemMapper", libMediaItemMapper);
+        ReflectionTestUtils.setField(libMediaItemResource, "corNetworkService", corNetworkService);
 
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
@@ -177,63 +182,6 @@ public class LibMediaItemResourceTest {
 
     @Test
     @Transactional
-    public void checkItemTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = libMediaItemRepository.findAll().size();
-        // set the field null
-        libMediaItem.setItemType(null);
-
-        // Create the LibMediaItem, which fails.
-        LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(libMediaItem);
-
-        restLibMediaItemMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libMediaItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
-        assertThat(libMediaItemList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkLengthIsRequired() throws Exception {
-        int databaseSizeBeforeTest = libMediaItemRepository.findAll().size();
-        // set the field null
-        libMediaItem.setLength(null);
-
-        // Create the LibMediaItem, which fails.
-        LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(libMediaItem);
-
-        restLibMediaItemMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libMediaItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
-        assertThat(libMediaItemList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkStateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = libMediaItemRepository.findAll().size();
-        // set the field null
-        libMediaItem.setState(null);
-
-        // Create the LibMediaItem, which fails.
-        LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(libMediaItem);
-
-        restLibMediaItemMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libMediaItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
-        assertThat(libMediaItemList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllLibMediaItems() throws Exception {
         // Initialize the database
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary));
@@ -246,7 +194,7 @@ public class LibMediaItemResourceTest {
             .andExpect(jsonPath("$.[*].idx").value(hasItem(DEFAULT_IDX.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].itemType").value(hasItem(DEFAULT_ITEM_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH.doubleValue())))
+            .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH)))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
             .andExpect(jsonPath("$.[*].command").value(hasItem(DEFAULT_COMMAND.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
