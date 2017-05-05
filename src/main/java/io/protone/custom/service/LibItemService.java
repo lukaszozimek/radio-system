@@ -63,7 +63,7 @@ public class LibItemService {
     private LibAudioObjectRepository audioObjectRepository;
 
     @Inject
-    private CustomCorUserService customCorUserService;
+    private CorUserService corUserService;
 
     @Inject
     private LibMetadataService libMetadataService;
@@ -143,7 +143,7 @@ public class LibItemService {
                 cloudObject.setSize(file.getSize());
                 cloudObject.setCreateDate(ZonedDateTime.now());
 
-                CorUser currentUser = customCorUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
+                CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
                 CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
 
                 cloudObject.setCreatedBy(currentUser);
