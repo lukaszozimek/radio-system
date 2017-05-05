@@ -105,6 +105,20 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     }
 
     @Override
+    public ResponseEntity<List<TraInvoiceDTO>> getAllTrafficInvoicesForCustomerGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all TraInvoice, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
+        List<TraInvoice> entity = traInvoiceService.getCustomerInvoice(customerShortcut, networkShortcut, pagable);
+        List<TraInvoiceDTO> response = traInvoiceMapper.DBs2DTOs(entity);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<Void> notifyAboutUnpaidInvoiceUsingGET(@ApiParam(value = "cutomerId", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         return null;
     }

@@ -84,5 +84,18 @@ public interface TraCampaignResource {
     ResponseEntity<TraCampaignDTO> getCampaignUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
+    @ApiOperation(value = "getAllCustomerCampaigns", notes = "", response = TraCampaignDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = TraCampaignDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraCampaignDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraCampaignDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraCampaignDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/campaign/customer/{customerShortcut}",
+        produces = {"application/json"},
+        method = RequestMethod.GET)
+    ResponseEntity<List<TraCampaignDTO>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
+
 
 }

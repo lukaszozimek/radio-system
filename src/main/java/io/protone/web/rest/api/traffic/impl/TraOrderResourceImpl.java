@@ -102,6 +102,20 @@ public class TraOrderResourceImpl implements TraOrderResource {
     }
 
     @Override
+    public ResponseEntity<List<TraOrderDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all TraOrder, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
+        List<TraOrder> entity = traOrderService.getCustomerOrders(customerShortcut, networkShortcut, pagable);
+        List<TraOrderDTO> response = traOrderMapper.DBs2DTOs(entity);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<TraOrderDTO> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         return null;
     }

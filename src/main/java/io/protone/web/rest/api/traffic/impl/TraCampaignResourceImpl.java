@@ -102,4 +102,18 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @Override
+    public ResponseEntity<List<TraCampaignDTO>> getAllCustomerCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all TraCampaign, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
+        List<TraCampaign> entity = traCampaignService.getCustomerCampaing(customerShortcut, networkShortcut, pagable);
+        List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

@@ -1,5 +1,6 @@
 package io.protone.web.rest.api.traffic;
 
+import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
@@ -83,6 +84,19 @@ public interface TraAdvertisementResource {
         method = RequestMethod.GET)
     ResponseEntity<TraAdvertisementDTO> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
+
+    @ApiOperation(value = "getAllCustomersAdvertismentsUsingGET", notes = "", response = TraCustomerAdvertismentsPT.class, responseContainer = "List", tags = {"TRAFFIC",})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = TraCustomerAdvertismentsPT.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerAdvertismentsPT.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerAdvertismentsPT.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerAdvertismentsPT.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/customer/{customerShortcut}",
+        produces = {"application/json"},
+        method = RequestMethod.GET)
+    ResponseEntity<List<TraAdvertisementDTO>> getAllCustomersAdvertismentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                                   @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
 
 }
