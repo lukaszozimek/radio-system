@@ -317,4 +317,23 @@ public class TraCampaignResourceImplTest {
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(TraCampaign.class);
     }
+
+    @Test
+    @Transactional
+    public void getAllTraCampaignsForCustomer() throws Exception {
+        // Initialize the database
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traCampaignRepository.saveAndFlush(traCampaign.customer(crmAccount).network(corNetwork));
+
+        // Get all the traCampaignList
+        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(traCampaign.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+            .andExpect(jsonPath("$.[*].prize").value(hasItem(DEFAULT_PRIZE.intValue())));
+    }
+
 }

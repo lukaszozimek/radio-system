@@ -285,6 +285,23 @@ public class TraInvoiceResourceImplTest {
     }
 
     @Test
+    @Transactional
+    public void getAllTraInvoicesForCustomer() throws Exception {
+        // Initialize the database
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traInvoiceRepository.saveAndFlush(traInvoice.customer(crmAccount).network(corNetwork));
+
+        // Get all the traInvoiceList
+        restTraInvoiceMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/invoice/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(),crmAccount.getShortName()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(traInvoice.getId().intValue())))
+            .andExpect(jsonPath("$.[*].paid").value(hasItem(DEFAULT_PAID.booleanValue())))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].paymentDay").value(hasItem(DEFAULT_PAYMENT_DAY.toString())));
+    }
+
+    @Test
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(TraInvoice.class);
     }

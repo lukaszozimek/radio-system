@@ -1,6 +1,9 @@
 package io.protone.web.rest.api.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.CrmAccount;
+import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.web.rest.api.crm.CrmCustomerResourceImplTest;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.web.rest.api.traffic.impl.TraAdvertisementResourceImpl;
@@ -62,6 +65,8 @@ public class TraAdvertisementResourceImplTest {
     private TraAdvertisementService traAdvertisementService;
 
     @Autowired
+    private CrmAccountRepository crmAccountRepository;
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -78,6 +83,20 @@ public class TraAdvertisementResourceImplTest {
     private TraAdvertisement traAdvertisement;
 
     private CorNetwork corNetwork;
+    private CrmAccount crmAccount;
+
+    /**
+     * Create an entity for this test.
+     * <p>
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static TraAdvertisement createEntity(EntityManager em) {
+        TraAdvertisement traAdvertisement = new TraAdvertisement()
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION);
+        return traAdvertisement;
+    }
 
     @Before
     public void setup() {
@@ -96,19 +115,6 @@ public class TraAdvertisementResourceImplTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
-    /**
-     * Create an entity for this test.
-     * <p>
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static TraAdvertisement createEntity(EntityManager em) {
-        TraAdvertisement traAdvertisement = new TraAdvertisement()
-            .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION);
-        return traAdvertisement;
-    }
-
     @Before
     public void initTest() {
         traAdvertisement = createEntity(em).network(corNetwork);
@@ -122,7 +128,7 @@ public class TraAdvertisementResourceImplTest {
         // Create the TraAdvertisement
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
-        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
             .andExpect(status().isCreated());
@@ -146,7 +152,7 @@ public class TraAdvertisementResourceImplTest {
         TraAdvertisementDTO existingTraAdvertisementDTO = traAdvertisementMapper.DB2DTO(existingTraAdvertisement);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingTraAdvertisementDTO)))
             .andExpect(status().isBadRequest());
@@ -166,7 +172,7 @@ public class TraAdvertisementResourceImplTest {
         // Create the TraAdvertisement, which fails.
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
-        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
             .andExpect(status().isBadRequest());
@@ -182,7 +188,7 @@ public class TraAdvertisementResourceImplTest {
         traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
 
         // Get all the traAdvertisementList
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement?sort=id,desc",corNetwork.getShortcut()))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traAdvertisement.getId().intValue())))
@@ -197,7 +203,7 @@ public class TraAdvertisementResourceImplTest {
         traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
 
         // Get the traAdvertisement
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}",corNetwork.getShortcut(), traAdvertisement.getId()))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traAdvertisement.getId().intValue()))
@@ -209,7 +215,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getNonExistingTraAdvertisement() throws Exception {
         // Get the traAdvertisement
-        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}",corNetwork.getShortcut(), Long.MAX_VALUE))
+        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -227,7 +233,7 @@ public class TraAdvertisementResourceImplTest {
             .description(UPDATED_DESCRIPTION);
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(updatedTraAdvertisement);
 
-        restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
             .andExpect(status().isOk());
@@ -249,7 +255,7 @@ public class TraAdvertisementResourceImplTest {
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement",corNetwork.getShortcut())
+        restTraAdvertisementMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
             .andExpect(status().isCreated());
@@ -267,13 +273,30 @@ public class TraAdvertisementResourceImplTest {
         int databaseSizeBeforeDelete = traAdvertisementRepository.findAll().size();
 
         // Get the traAdvertisement
-        restTraAdvertisementMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}",corNetwork.getShortcut(), traAdvertisement.getId())
+        restTraAdvertisementMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
         // Validate the database is empty
         List<TraAdvertisement> traAdvertisementList = traAdvertisementRepository.findAll();
         assertThat(traAdvertisementList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTraAdvertisementsForCustomer() throws Exception {
+        // Initialize the database
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.customer(crmAccount).network(corNetwork));
+
+        // Get all the traAdvertisementList
+        restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(traAdvertisement.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test

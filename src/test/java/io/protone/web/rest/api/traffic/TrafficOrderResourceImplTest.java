@@ -87,8 +87,10 @@ public class TrafficOrderResourceImplTest {
 
     @Autowired
     private TraAdvertisementRepository traAdvertisementRepository;
+
     @Autowired
     private CrmAccountRepository crmAccountRepository;
+
     private MockMvc restTraOrderMockMvc;
 
     private TraOrder traOrder;
@@ -96,6 +98,7 @@ public class TrafficOrderResourceImplTest {
     private CorNetwork corNetwork;
 
     private TraAdvertisement traAdvertisement;
+
     private CrmAccount crmAccount;
 
     /**
@@ -367,6 +370,25 @@ public class TrafficOrderResourceImplTest {
         // Validate the database is empty
         List<TraOrder> traOrderList = traOrderRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+    @Test
+    @Transactional
+    public void getAllTraOrdersForCustomer() throws Exception {
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
+
+        // Initialize the database
+        traOrderRepository.saveAndFlush(traOrder.customer(crmAccount).network(corNetwork));
+
+        // Get all the traOrderList
+        restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(),crmAccount.getShortName()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+            .andExpect(jsonPath("$.[*].calculatedPrize").value(hasItem(DEFAULT_CALCULATED_PRIZE.intValue())));
     }
 
     @Test
