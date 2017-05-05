@@ -80,7 +80,7 @@ public class LibMarkerServiceTest {
         LibMarker libMarker = new LibMarker().markerType(LibMarkerTypeEnum.MT_BASIC).mediaItem(libMediaItem).startTime(SAMPLE_MARKER_START_TIME).name(SAMPLE_MARKER_NAME);
         Set<LibMarker> libMarkerSet = Sets.newSet(libMarker);
         //then
-        Set<LibMarker> savedLibMarkers = libMarkerService.saveLibMarkers(libMarkerSet);
+        Set<LibMarker> savedLibMarkers = libMarkerService.saveLibMarkers(libMarkerSet).orElse(null);
 
         //assert
         assertNotNull(savedLibMarkers);
