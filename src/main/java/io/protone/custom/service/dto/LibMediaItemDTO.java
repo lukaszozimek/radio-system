@@ -3,6 +3,7 @@ package io.protone.custom.service.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,7 +24,7 @@ public class LibMediaItemDTO {
     private LibAlbumDTO album = null;
 
     @JsonProperty("itemType")
-    private LibItemTypeEnum libItemTypeEnum = null;
+    private LibItemStateEnum libItemTypeEnum = null;
 
     @JsonProperty("artist")
     private LibArtistDTO artist = null;
@@ -56,10 +57,10 @@ public class LibMediaItemDTO {
     private List<CoreKeyValuePT> properties = new ArrayList<CoreKeyValuePT>();
 
     @JsonProperty("resourceType")
-    private ResourceTypeEnum resourceType = null;
+    private LibItemTypeEnum resourceType = null;
 
     @JsonProperty("state")
-    private StateEnum state = null;
+    private LibItemStateEnum state = null;
 
     @JsonProperty("stream")
     private String stream = null;
@@ -307,7 +308,7 @@ public class LibMediaItemDTO {
         this.properties = properties;
     }
 
-    public LibMediaItemDTO resourceType(ResourceTypeEnum resourceType) {
+    public LibMediaItemDTO resourceType(LibItemTypeEnum resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -318,15 +319,15 @@ public class LibMediaItemDTO {
      * @return resourceType
      **/
     @ApiModelProperty(value = "")
-    public ResourceTypeEnum getResourceType() {
+    public LibItemTypeEnum getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(ResourceTypeEnum resourceType) {
+    public void setResourceType(LibItemTypeEnum resourceType) {
         this.resourceType = resourceType;
     }
 
-    public LibMediaItemDTO state(StateEnum state) {
+    public LibMediaItemDTO state(LibItemStateEnum state) {
         this.state = state;
         return this;
     }
@@ -337,11 +338,11 @@ public class LibMediaItemDTO {
      * @return state
      **/
     @ApiModelProperty(value = "")
-    public StateEnum getState() {
+    public LibItemStateEnum getState() {
         return state;
     }
 
-    public void setState(StateEnum state) {
+    public void setState(LibItemStateEnum state) {
         this.state = state;
     }
 
@@ -476,82 +477,6 @@ public class LibMediaItemDTO {
         return o.toString().replace("\n", "\n    ");
     }
 
-    /**
-     * Gets or Sets resourceType
-     */
-    public enum ResourceTypeEnum {
-        AUDIO("IT_AUDIO"),
 
-        VIDEO("IT_VIDEO"),
-
-        COMMAND("IT_COMMAND"),
-
-        OTHER("IT_OTHER");
-
-        private String value;
-
-        ResourceTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static ResourceTypeEnum fromValue(String text) {
-            for (ResourceTypeEnum b : ResourceTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
-
-    /**
-     * Gets or Sets state
-     */
-    public enum StateEnum {
-        NEW("IS_NEW"),
-
-        POSTPROCESS("IS_POSTPROCESS"),
-
-        ENABLED("IS_ENABLED"),
-
-        DISABLED("IS_DISABLED"),
-
-        ARCHIVED("IS_ARCHIVED"),
-
-        DELETED("IS_DELETED"),
-
-        ERROR("IS_ERROR"),
-
-        OTHER("IS_OTHER");
-
-        private String value;
-
-        StateEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static StateEnum fromValue(String text) {
-            for (StateEnum b : StateEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
 }
 

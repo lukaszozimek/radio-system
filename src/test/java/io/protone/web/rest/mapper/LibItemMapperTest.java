@@ -167,30 +167,6 @@ public class LibItemMapperTest {
     }
 
 
-    @Test
-    public void mapState() throws Exception {
-        LibItemStateEnum archived = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.ARCHIVED);
-        assertEquals(archived, archived.IS_ARCHIVED);
-
-        LibItemStateEnum deleted = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.DELETED);
-        assertEquals(deleted, archived.IS_DELETED);
-
-        LibItemStateEnum disabled = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.DISABLED);
-        assertEquals(disabled, archived.IS_DISABLED);
-
-        LibItemStateEnum enabled = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.ENABLED);
-        assertEquals(enabled, enabled.IS_ENABLED);
-
-        LibItemStateEnum newState = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.NEW);
-        assertEquals(newState, newState.IS_NEW);
-
-        LibItemStateEnum other = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.OTHER);
-        assertEquals(other, other.IS_OTHER);
-
-        LibItemStateEnum postProcess = customItemMapperExt.mapState(LibMediaItemDTO.StateEnum.POSTPROCESS);
-        assertEquals(postProcess, postProcess.IS_POSTPROCESS);
-
-    }
 
     @Test
     public void corTagFromString() throws Exception {

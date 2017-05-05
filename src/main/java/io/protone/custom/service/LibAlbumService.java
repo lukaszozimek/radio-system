@@ -35,7 +35,6 @@ public class LibAlbumService {
         LibArtist libArtist = libArtistService.findOrSaveOne(albumArtistName, network);
         if (libArtist != null) {
             if (Strings.isNullOrEmpty(name)) {
-
                 log.debug("Persisting LibAlbum new empty album");
                 return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
 

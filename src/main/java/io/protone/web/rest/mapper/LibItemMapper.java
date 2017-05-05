@@ -46,26 +46,6 @@ public interface LibItemMapper {
     LibMediaItemThinDTO libMediaItemThinPtFromLibMediaItem(LibMediaItem id);
 
 
-    default LibMediaItemDTO.StateEnum mapState(LibItemStateEnum state) {
-
-        if (state.compareTo(LibItemStateEnum.IS_ARCHIVED) == 0) {
-            return LibMediaItemDTO.StateEnum.ARCHIVED;
-        } else if (state.compareTo(LibItemStateEnum.IS_DELETED) == 0) {
-            return LibMediaItemDTO.StateEnum.DELETED;
-        } else if (state.compareTo(LibItemStateEnum.IS_DISABLED) == 0) {
-            return LibMediaItemDTO.StateEnum.DISABLED;
-        } else if (state.compareTo(LibItemStateEnum.IS_ENABLED) == 0) {
-            return LibMediaItemDTO.StateEnum.ENABLED;
-        } else if (state.compareTo(LibItemStateEnum.IS_ERROR) == 0) {
-            return LibMediaItemDTO.StateEnum.ERROR;
-        } else if (state.compareTo(LibItemStateEnum.IS_NEW) == 0) {
-            return LibMediaItemDTO.StateEnum.NEW;
-        } else if (state.compareTo(LibItemStateEnum.IS_POSTPROCESS) == 0) {
-            return LibMediaItemDTO.StateEnum.POSTPROCESS;
-        } else {
-            return LibMediaItemDTO.StateEnum.OTHER;
-        }
-    }
 
     default CorTag corTagFromString(String tag, CorNetwork networkId) {
 
@@ -83,51 +63,6 @@ public interface LibItemMapper {
         return tag.getTag();
     }
 
-    default LibMediaItemDTO.ResourceTypeEnum mapResourceType(LibItemTypeEnum itemType) {
 
-        if (itemType.compareTo(LibItemTypeEnum.IT_AUDIO) == 0) {
-            return LibMediaItemDTO.ResourceTypeEnum.AUDIO;
-        } else if (itemType.compareTo(LibItemTypeEnum.IT_VIDEO) == 0) {
-            return LibMediaItemDTO.ResourceTypeEnum.VIDEO;
-        } else if (itemType.compareTo(LibItemTypeEnum.IT_COMMAND) == 0) {
-            return LibMediaItemDTO.ResourceTypeEnum.COMMAND;
-        } else {
-            return LibMediaItemDTO.ResourceTypeEnum.OTHER;
-        }
-    }
-
-    default LibItemTypeEnum mapItemType(LibMediaItemDTO.ResourceTypeEnum type) {
-
-        if (type.compareTo(LibMediaItemDTO.ResourceTypeEnum.AUDIO) == 0) {
-            return LibItemTypeEnum.IT_AUDIO;
-        } else if (type.compareTo(LibMediaItemDTO.ResourceTypeEnum.VIDEO) == 0) {
-            return LibItemTypeEnum.IT_VIDEO;
-        } else if (type.compareTo(LibMediaItemDTO.ResourceTypeEnum.COMMAND) == 0) {
-            return LibItemTypeEnum.IT_COMMAND;
-        } else {
-            return LibItemTypeEnum.IT_OTHER;
-        }
-    }
-
-    default LibItemStateEnum mapState(LibMediaItemDTO.StateEnum state) {
-
-        if (state.compareTo(LibMediaItemDTO.StateEnum.ARCHIVED) == 0) {
-            return LibItemStateEnum.IS_ARCHIVED;
-        } else if (state.compareTo(LibMediaItemDTO.StateEnum.DELETED) == 0) {
-            return LibItemStateEnum.IS_DELETED;
-        } else if (state.compareTo(LibMediaItemDTO.StateEnum.DISABLED) == 0) {
-            return LibItemStateEnum.IS_DISABLED;
-        } else if (state.compareTo(LibMediaItemDTO.StateEnum.ENABLED) == 0) {
-            return LibItemStateEnum.IS_ENABLED;
-        } else if (state.compareTo(LibMediaItemDTO.StateEnum.ERROR) == 0) {
-            return LibItemStateEnum.IS_ERROR;
-        } else if (state.compareTo(LibMediaItemDTO.StateEnum.NEW) == 0) {
-            return LibItemStateEnum.IS_NEW;
-        } else if (state.compareTo(LibMediaItemDTO.StateEnum.POSTPROCESS) == 0) {
-            return LibItemStateEnum.IS_POSTPROCESS;
-        } else {
-            return LibItemStateEnum.IS_OTHER;
-        }
-    }
 
 }

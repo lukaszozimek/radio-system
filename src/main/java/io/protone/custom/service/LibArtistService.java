@@ -17,7 +17,6 @@ import javax.inject.Inject;
 @Service
 @Transactional
 public class LibArtistService {
-
     private final Logger log = LoggerFactory.getLogger(LibArtistService.class);
 
     @Inject
@@ -28,7 +27,6 @@ public class LibArtistService {
         if (name != null && network != null) {
             LibArtist libArtist = libArtistRepository.findOneByNameAndNetwork(name, network);
             if (libArtist != null) {
-
                 log.debug("Resolved  LibArtist: {}", libArtist);
                 return libArtist;
             }

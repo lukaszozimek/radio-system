@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class LibMetadataServiceTest {
+
     @Autowired
     private LibItemService libArtistService;
 
