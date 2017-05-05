@@ -1,8 +1,9 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CrmTaskDTO;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
 import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.web.rest.api.crm.impl.CrmOpportunityTaskResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
@@ -10,7 +11,6 @@ import io.protone.repository.crm.CrmOpportunityRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmOpportunityService;
-import io.protone.web.rest.api.crm.CrmOpportunityResourceImplTest;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,7 +108,7 @@ public class CrmOpportunityTaskResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ApiNetworkCrmOpportunityTaskImpl crmTaskResource = new ApiNetworkCrmOpportunityTaskImpl();
+        CrmOpportunityTaskResourceImpl crmTaskResource = new CrmOpportunityTaskResourceImpl();
         ReflectionTestUtils.setField(crmTaskResource, "crmOpportunityService", crmOpportunityService);
         ReflectionTestUtils.setField(crmTaskResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(crmTaskResource, "crmTaskMapper", crmTaskMapper);
@@ -123,18 +123,21 @@ public class CrmOpportunityTaskResourceImplTest {
 
     @Before
     public void initTest() {
+        crmOpportunity = CrmOpportunityResourceImplTest.createEntity(em).network(corNetwork);
         crmTask = createEntity(em).network(corNetwork);
     }
 
     @Test
     @Transactional
     public void createCrmTask() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunity = crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         int databaseSizeBeforeCreate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.network(corNetwork).opportunity(crmOpportunity));
 
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName())
+        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), crmOpportunity.getName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -152,15 +155,17 @@ public class CrmOpportunityTaskResourceImplTest {
     @Test
     @Transactional
     public void createCrmTaskWithExistingId() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         int databaseSizeBeforeCreate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask with an existing ID
         CrmTask existingCrmTask = new CrmTask();
         existingCrmTask.setId(1L);
-        CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask);
+        CrmTaskDTO existingCrmTaskDTO = crmTaskMapper.DB2DTO(existingCrmTask.opportunity(crmOpportunity));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName())
+        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), crmOpportunity.getName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmTaskDTO)))
             .andExpect(status().isBadRequest());
@@ -173,11 +178,14 @@ public class CrmOpportunityTaskResourceImplTest {
     @Test
     @Transactional
     public void getAllCrmTasks() throws Exception {
+        crmOpportunityRepository.deleteAll();
+
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask);
+        crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).opportunity(crmOpportunity));
 
         // Get all the crmTaskList
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName()))
+        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task?sort=id,desc", corNetwork.getShortcut(), crmOpportunity.getName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmTask.getId().intValue())))
@@ -190,11 +198,13 @@ public class CrmOpportunityTaskResourceImplTest {
     @Test
     @Transactional
     public void getCrmTask() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask);
+        crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).opportunity(crmOpportunity));
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName(), crmTask.getId()))
+        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}", corNetwork.getShortcut(), crmOpportunity.getName(), crmTask.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmTask.getId().intValue()))
@@ -208,15 +218,17 @@ public class CrmOpportunityTaskResourceImplTest {
     @Transactional
     public void getNonExistingCrmTask() throws Exception {
         // Get the crmTask
-        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName(), Long.MAX_VALUE))
+        restCrmTaskMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}", corNetwork.getShortcut(), crmOpportunity.getName(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateCrmTask() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask);
+        crmTaskRepository.saveAndFlush(crmTask.opportunity(crmOpportunity));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Update the crmTask
@@ -228,7 +240,7 @@ public class CrmOpportunityTaskResourceImplTest {
             .comment(UPDATED_COMMENT);
         CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(updatedCrmTask);
 
-        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName())
+        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), crmOpportunity.getName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isOk());
@@ -246,13 +258,15 @@ public class CrmOpportunityTaskResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingCrmTask() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Create the CrmTask
-        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask);
+        CrmTaskDTO crmTaskDTO = crmTaskMapper.DB2DTO(crmTask.opportunity(crmOpportunity));
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName())
+        restCrmTaskMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), crmOpportunity.getName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskDTO)))
             .andExpect(status().isCreated());
@@ -265,12 +279,14 @@ public class CrmOpportunityTaskResourceImplTest {
     @Test
     @Transactional
     public void deleteCrmTask() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask);
+        crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).opportunity(crmOpportunity));
         int databaseSizeBeforeDelete = crmTaskRepository.findAll().size();
 
         // Get the crmTask
-        restCrmTaskMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}", corNetwork.getShortcut(), CrmOpportunityResourceImplTest.createEntity(em).getName(), crmTask.getId())
+        restCrmTaskMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task/{id}", corNetwork.getShortcut(), crmOpportunity.getName(), crmTask.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
@@ -278,4 +294,26 @@ public class CrmOpportunityTaskResourceImplTest {
         List<CrmTask> crmTaskList = crmTaskRepository.findAll();
         assertThat(crmTaskList).hasSize(databaseSizeBeforeDelete - 1);
     }
+
+    @Test
+    @Transactional
+    public void checkShortNameIsRequired() throws Exception {
+        crmOpportunityRepository.deleteAll();
+        crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
+        int databaseSizeBeforeTest = crmTaskRepository.findAll().size();
+        // set the field null
+        crmTask.setSubject(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        CrmTaskDTO cfgMarkerConfigurationDTO = crmTaskMapper.DB2DTO(crmTask);
+
+        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}/task", corNetwork.getShortcut(), crmOpportunity.getName())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmTask> crmTasks = crmTaskRepository.findAll();
+        assertThat(crmTasks).hasSize(databaseSizeBeforeTest);
+    }
+
 }

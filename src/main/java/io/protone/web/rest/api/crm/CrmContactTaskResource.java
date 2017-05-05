@@ -1,6 +1,6 @@
-package io.protone.custom.web.rest.network.crm;
+package io.protone.web.rest.api.crm;
 
-import io.protone.custom.service.dto.CrmTaskDTO;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
-public interface ApiNetworkCrmContactTask {
+public interface CrmContactTaskResource {
 
     @ApiOperation(value = "getAllContactActivities", notes = "", response = CrmTaskDTO.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {
@@ -42,7 +43,7 @@ public interface ApiNetworkCrmContactTask {
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskDTO> updateContactActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                             @ApiParam(value = "crmTaskDTO", required = true) @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
+                                                             @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createContactActivity", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
@@ -58,7 +59,7 @@ public interface ApiNetworkCrmContactTask {
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskDTO> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                              @ApiParam(value = "crmTaskDTO", required = true) @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
+                                                              @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteContactActivityActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})

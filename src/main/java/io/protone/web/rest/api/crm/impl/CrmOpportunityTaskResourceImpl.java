@@ -1,12 +1,12 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm.impl;
 
-import io.protone.custom.service.dto.CrmTaskDTO;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.service.crm.CrmOpportunityService;
 import io.protone.domain.CrmTask;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.api.library.impl.LibraryMarkerConfigurationResourceImpl;
-import io.protone.custom.web.rest.network.crm.ApiNetworkCrmOpportunityTask;
+import io.protone.web.rest.api.crm.CrmOpportunityTaskResource;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -20,13 +20,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunityTask {
+public class CrmOpportunityTaskResourceImpl implements CrmOpportunityTaskResource {
     private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
@@ -53,7 +54,7 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> updateOpportunityActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
+    public ResponseEntity<CrmTaskDTO> updateOpportunityActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
         log.debug("REST request to update CrmOpportunity CrmTask : {}, for CrmOpportunity: {} and Network: {}", crmTaskDTO, shortName, networkShortcut);
         if (crmTaskDTO.getId() == null) {
             return createOpportunityActivityUsingPOST(networkShortcut, shortName, crmTaskDTO);
@@ -68,7 +69,7 @@ public class ApiNetworkCrmOpportunityTaskImpl implements ApiNetworkCrmOpportunit
     }
 
     @Override
-    public ResponseEntity<CrmTaskDTO> createOpportunityActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true) @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
+    public ResponseEntity<CrmTaskDTO> createOpportunityActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName, @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
         log.debug("REST request to save CrmOpportunity CrmTask : {}, for CrmOpportunity: {} and Network: {}", crmTaskDTO, shortName, networkShortcut);
         if (crmTaskDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);

@@ -1,7 +1,6 @@
 package io.protone.web.rest.dto.crm;
 
 import io.protone.custom.service.dto.CoreAddressPT;
-import io.protone.custom.service.dto.CrmTaskDTO;
 import io.protone.custom.service.dto.TraCustomerPersonPT;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;

@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.crm;
 
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;

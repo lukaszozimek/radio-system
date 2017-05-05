@@ -83,7 +83,7 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
     @Override
     public ResponseEntity<CrmLeadDTO> getLeadUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmLead : {}, for Network: {}", shortName, networkShortcut);
-        CrmLead entity = crmLeadService.getLead(networkShortcut, shortName);
+        CrmLead entity = crmLeadService.getLead(shortName, networkShortcut);
         CrmLeadDTO response = crmLeadMapper.DB2DTO(entity);
 
         return Optional.ofNullable(response)

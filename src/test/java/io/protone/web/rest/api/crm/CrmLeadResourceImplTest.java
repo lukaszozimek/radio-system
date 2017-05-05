@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.crm.impl;
+package io.protone.web.rest.api.crm;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.api.crm.impl.CrmLeadResourceImpl;

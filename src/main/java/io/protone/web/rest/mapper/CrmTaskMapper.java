@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CrmTaskDTO;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmTask;
 import org.mapstruct.*;
