@@ -6,8 +6,8 @@ package io.protone.custom.web.rest.network.configuration.core.user.impl;
 
 import io.github.jhipster.web.util.ResponseUtil;
 import io.protone.service.cor.CorNetworkService;
-import io.protone.custom.service.CustomMailService;
-import io.protone.custom.service.CustomCorUserService;
+import io.protone.custom.service.CorMailService;
+import io.protone.custom.service.CorUserService;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.web.rest.network.configuration.core.user.CorUserConfigurationResource;
 import io.protone.domain.CorNetwork;
@@ -58,14 +58,14 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     private final CorUserRepository userRepository;
 
-    private final CustomMailService mailService;
+    private final CorMailService mailService;
 
-    private final CustomCorUserService userService;
+    private final CorUserService userService;
 
     private final CorNetworkService corNetworkService;
 
-    public CorUserConfigurationResourceImpl(CorUserRepository userRepository, CustomMailService mailService,
-                                            CustomCorUserService userService, CorNetworkService corNetworkService) {
+    public CorUserConfigurationResourceImpl(CorUserRepository userRepository, CorMailService mailService,
+                                            CorUserService userService, CorNetworkService corNetworkService) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;

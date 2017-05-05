@@ -2,8 +2,8 @@ package io.protone.custom.web.rest.network;
 
 
 import com.codahale.metrics.annotation.Timed;
-import io.protone.custom.service.CustomMailService;
-import io.protone.custom.service.CustomCorUserService;
+import io.protone.custom.service.CorMailService;
+import io.protone.custom.service.CorUserService;
 import io.protone.custom.service.dto.CoreManagedUserPT;
 import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.web.rest.mapper.CorNetworkMapper;
@@ -43,12 +43,12 @@ public class CorUserResourceImpl implements CorUserResource {
 
     private final CorNetworkMapper customCorNetworkMapper;
 
-    private final CustomCorUserService userService;
+    private final CorUserService userService;
 
-    private final CustomMailService mailService;
+    private final CorMailService mailService;
 
-    public CorUserResourceImpl(CorUserRepository userRepository, CustomCorUserService userService,
-                               CustomMailService mailService, CorNetworkRepository corNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
+    public CorUserResourceImpl(CorUserRepository userRepository, CorUserService userService,
+                               CorMailService mailService, CorNetworkRepository corNetworkRepository, CorNetworkMapper customCorNetworkMapper) {
 
         this.userRepository = userRepository;
         this.userService = userService;

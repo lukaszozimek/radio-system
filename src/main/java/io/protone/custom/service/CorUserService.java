@@ -40,9 +40,9 @@ import static java.util.stream.Collectors.toList;
  */
 @Service
 @Transactional
-public class CustomCorUserService {
+public class CorUserService {
 
-    private final Logger log = LoggerFactory.getLogger(CustomCorUserService.class);
+    private final Logger log = LoggerFactory.getLogger(CorUserService.class);
 
     @Autowired
     private CorUserRepository userRepository;

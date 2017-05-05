@@ -23,9 +23,9 @@ import java.util.Locale;
  * </p>
  */
 @Service
-public class CustomMailService {
+public class CorMailService {
 
-    private final Logger log = LoggerFactory.getLogger(CustomMailService.class);
+    private final Logger log = LoggerFactory.getLogger(CorMailService.class);
 
     private static final String USER = "user";
 
@@ -39,8 +39,8 @@ public class CustomMailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    public CustomMailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-                             MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public CorMailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
+                          MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
