@@ -29,10 +29,13 @@ import java.util.Optional;
 public class CorTaxResourceImpl implements CorTaxResource {
 
     private final Logger log = LoggerFactory.getLogger(CorTaxResourceImpl.class);
+
     @Inject
     private CorTaxRepository corTaxRepository;
+
     @Inject
     private CorNetworkService corNetworkService;
+
     @Inject
     private CorTaxMapper corTaxMapper;
 

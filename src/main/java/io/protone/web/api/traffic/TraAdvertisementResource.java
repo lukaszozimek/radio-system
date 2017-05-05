@@ -1,6 +1,5 @@
 package io.protone.web.api.traffic;
 
-import io.protone.custom.service.dto.TraCustomerAdvertismentsPT;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
@@ -85,12 +84,12 @@ public interface TraAdvertisementResource {
     ResponseEntity<TraAdvertisementDTO> getAdvertisementUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "getAllCustomersAdvertismentsUsingGET", notes = "", response = TraCustomerAdvertismentsPT.class, responseContainer = "List", tags = {"TRAFFIC",})
+    @ApiOperation(value = "getAllCustomersAdvertismentsUsingGET", notes = "", response = TraAdvertisementDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = TraCustomerAdvertismentsPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerAdvertismentsPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerAdvertismentsPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraCustomerAdvertismentsPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = TraAdvertisementDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraAdvertisementDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraAdvertisementDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraAdvertisementDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/advertisement/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)

@@ -32,8 +32,10 @@ public class CorCurrencyResourceImpl implements CorCurrencyResource {
 
     @Inject
     private CorCurrencyRepository corCurrencyRepository;
+
     @Inject
     private CorNetworkService corNetworkService;
+
     @Inject
     private CorCurrencyMapper corCurrencyMapper;
 

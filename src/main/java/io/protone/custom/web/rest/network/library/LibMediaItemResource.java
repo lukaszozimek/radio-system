@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.library;
 
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
-import io.protone.custom.service.dto.LibResponseEntity;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -93,12 +93,12 @@ public interface LibMediaItemResource {
                                                                         @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx);
 
 
-    @ApiOperation(value = "getItemStreamByNetworShortcutAndLibrar", notes = "", response = LibResponseEntity.class, tags = {"LIBRARY",})
+    @ApiOperation(value = "getItemStreamByNetworShortcutAndLibrar", notes = "", response = ByteArrayInputStream.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibResponseEntity.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibResponseEntity.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibResponseEntity.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibResponseEntity.class)})
+        @ApiResponse(code = 200, message = "OK", response = ByteArrayInputStream.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = ByteArrayInputStream.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = ByteArrayInputStream.class),
+        @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}/stream",
         method = RequestMethod.GET)
     ResponseEntity<byte[]> streamItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

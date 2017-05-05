@@ -1,7 +1,6 @@
 package io.protone.custom.web.rest.network.channel;
 
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
-import io.protone.custom.service.dto.LibResponseEntity;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.ByteArrayInputStream;
+
+//TODO: Assign LibLibrary to multiple channels
+//TODO: Assign LibItem to Multiple Channels
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiChannelLibraryItem {
 
@@ -92,20 +95,20 @@ public interface ApiChannelLibraryItem {
                                                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
 
 
-    @ApiOperation(value = "getItemStreamByNetworShortcutAndChannelShortcutAndLibrary", notes = "", response = LibResponseEntity.class, tags = {"LIBRARY",})
+    @ApiOperation(value = "getItemStreamByNetworShortcutAndChannelShortcutAndLibrary", notes = "", response = ByteArrayInputStream.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibResponseEntity.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibResponseEntity.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibResponseEntity.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibResponseEntity.class)})
+        @ApiResponse(code = 200, message = "OK", response = ByteArrayInputStream.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = ByteArrayInputStream.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = ByteArrayInputStream.class),
+        @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}/item/{idx}/stream",
         produces = {"*/*"},
         consumes = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<LibResponseEntity> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
+    ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                             @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                             @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
 
 
 }

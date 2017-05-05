@@ -3,7 +3,6 @@ package io.protone.custom.web.rest.network.channel.impl;
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.LibItemService;
-import io.protone.custom.service.dto.LibResponseEntity;
 import io.protone.custom.web.rest.network.channel.ApiChannelLibraryItem;
 import io.protone.custom.web.rest.network.library.impl.LibMediaItemResourceImpl;
 import org.slf4j.Logger;
@@ -51,7 +50,7 @@ public class ApiChannelLibraryItemImpl implements ApiChannelLibraryItem {
     }
 
     @Override
-    public ResponseEntity<LibResponseEntity> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix, String idx) {
+    public ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(String networkShortcut, String channelShortcut, String libraryPrefix, String idx) {
         return null;
     }
 }
