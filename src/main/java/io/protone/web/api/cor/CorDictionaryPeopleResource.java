@@ -16,7 +16,7 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface CorDictionaryPeopleResource {
 
-    @ApiOperation(value = "updatePerson", notes = "", response = CorPersonDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updatePerson", notes = "", response = CorPersonDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorPersonDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorPersonDTO.class),
@@ -30,7 +30,7 @@ public interface CorDictionaryPeopleResource {
     ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                       @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException;
 
-    @ApiOperation(value = "DTO2DB", notes = "", response = CorPersonDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "DTO2DB", notes = "", response = CorPersonDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorPersonDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorPersonDTO.class),
@@ -45,7 +45,7 @@ public interface CorDictionaryPeopleResource {
                                                        @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deletePerson", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "deletePerson", notes = "", response = Void.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -71,7 +71,7 @@ public interface CorDictionaryPeopleResource {
                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getPerson", notes = "", response = CorPersonDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getPerson", notes = "", response = CorPersonDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorPersonDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorPersonDTO.class),

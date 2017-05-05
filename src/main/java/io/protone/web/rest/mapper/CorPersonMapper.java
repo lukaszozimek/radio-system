@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.LibPersonDTO;
+import io.protone.web.rest.dto.library.LibPersonDTO;
 import io.protone.web.rest.dto.cor.CorPersonDTO;
 import io.protone.web.rest.dto.traffic.TraCustomerPersonDTO;
 import io.protone.domain.CorNetwork;

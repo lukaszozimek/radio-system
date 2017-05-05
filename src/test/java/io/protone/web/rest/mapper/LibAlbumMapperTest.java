@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibAlbumDTO;
+import io.protone.web.rest.dto.library.LibAlbumDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import org.junit.Before;

@@ -1,7 +1,7 @@
 package io.protone.custom.service.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.custom.service.dto.LibMarkerDTO;
+import io.protone.web.rest.dto.library.LibMarkerDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;

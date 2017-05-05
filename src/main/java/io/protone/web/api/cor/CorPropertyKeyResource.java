@@ -16,7 +16,7 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface CorPropertyKeyResource {
 
-    @ApiOperation(value = "getPropertyKey", notes = "", response = CorKeyDTO.class, tags = {"CONFIGURATION", "DICTIONARY",})
+    @ApiOperation(value = "getPropertyKey", notes = "", response = CorKeyDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorKeyDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorKeyDTO.class),
@@ -29,7 +29,7 @@ public interface CorPropertyKeyResource {
                                                      @ApiParam(value = "id", required = true) @PathVariable("id") String id);
 
 
-    @ApiOperation(value = "deletePropertyKey", notes = "", response = Void.class, tags = {"CONFIGURATION", "DICTIONARY",})
+    @ApiOperation(value = "deletePropertyKey", notes = "", response = Void.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -55,7 +55,7 @@ public interface CorPropertyKeyResource {
                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "updatePropertyKey", notes = "", response = CorKeyDTO.class, tags = {"CONFIGURATION", "DICTIONARY",})
+    @ApiOperation(value = "updatePropertyKey", notes = "", response = CorKeyDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorKeyDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorKeyDTO.class),
@@ -70,7 +70,7 @@ public interface CorPropertyKeyResource {
                                                         @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createPropertyKey", notes = "", response = CorKeyDTO.class, tags = {"CONFIGURATION", "DICTIONARY",})
+    @ApiOperation(value = "createPropertyKey", notes = "", response = CorKeyDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorKeyDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorKeyDTO.class),

@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.library;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

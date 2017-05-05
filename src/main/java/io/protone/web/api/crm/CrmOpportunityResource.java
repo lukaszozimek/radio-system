@@ -17,7 +17,7 @@ import java.util.List;
 public interface CrmOpportunityResource {
 
 
-    @ApiOperation(value = "updateOpportunity", notes = "", response = CrmOpportunityDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "updateOpportunity", notes = "", response = CrmOpportunityDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmOpportunityDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmOpportunityDTO.class),
@@ -32,7 +32,7 @@ public interface CrmOpportunityResource {
                                                                 @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createOpportunity", notes = "", response = CrmOpportunityDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "createOpportunity", notes = "", response = CrmOpportunityDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmOpportunityDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmOpportunityDTO.class),
@@ -47,7 +47,7 @@ public interface CrmOpportunityResource {
                                                                  @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "getAllOpportunities", notes = "", response = CrmOpportunityDTO.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getAllOpportunities", notes = "", response = CrmOpportunityDTO.class, responseContainer = "List", tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmOpportunityDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityDTO.class),
@@ -60,7 +60,7 @@ public interface CrmOpportunityResource {
                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getOpportunity", notes = "", response = CrmOpportunityDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getOpportunity", notes = "", response = CrmOpportunityDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmOpportunityDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmOpportunityDTO.class),
@@ -73,7 +73,7 @@ public interface CrmOpportunityResource {
                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
-    @ApiOperation(value = "deleteOpportunity", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "deleteOpportunity", notes = "", response = Void.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

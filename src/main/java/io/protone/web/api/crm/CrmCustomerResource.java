@@ -17,7 +17,7 @@ import java.util.List;
 public interface CrmCustomerResource {
 
 
-    @ApiOperation(value = "updateCustomer", notes = "", response = CrmAccountDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "updateCustomer", notes = "", response = CrmAccountDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmAccountDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmAccountDTO.class),
@@ -32,7 +32,7 @@ public interface CrmCustomerResource {
                                                          @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createCustomer", notes = "", response = CrmAccountDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "createCustomer", notes = "", response = CrmAccountDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmAccountDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmAccountDTO.class),
@@ -47,7 +47,7 @@ public interface CrmCustomerResource {
                                                           @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "getAllCustomers", notes = "", response = CrmAccountDTO.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getAllCustomers", notes = "", response = CrmAccountDTO.class, responseContainer = "List", tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmAccountDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
@@ -60,7 +60,7 @@ public interface CrmCustomerResource {
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getCustomer", notes = "", response = CrmAccountDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getCustomer", notes = "", response = CrmAccountDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmAccountDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmAccountDTO.class),
@@ -73,7 +73,7 @@ public interface CrmCustomerResource {
                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
-    @ApiOperation(value = "deleteCustomer", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "deleteCustomer", notes = "", response = Void.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

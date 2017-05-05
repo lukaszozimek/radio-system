@@ -17,7 +17,7 @@ import java.util.List;
 public interface CorDictionaryCountryResource {
 
 
-    @ApiOperation(value = "updateCountry", notes = "", response = CorCountryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updateCountry", notes = "", response = CorCountryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorCountryDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorCountryDTO.class),
@@ -32,7 +32,7 @@ public interface CorDictionaryCountryResource {
                                                         @ApiParam(value = "countryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createCountry", notes = "", response = CorCountryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "createCountry", notes = "", response = CorCountryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorCountryDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorCountryDTO.class),
@@ -47,7 +47,7 @@ public interface CorDictionaryCountryResource {
                                                          @ApiParam(value = "countryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deletePerson", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "deletePerson", notes = "", response = Void.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -73,7 +73,7 @@ public interface CorDictionaryCountryResource {
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getPerson", notes = "", response = CorCountryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getPerson", notes = "", response = CorCountryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorCountryDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorCountryDTO.class),

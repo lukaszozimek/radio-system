@@ -1,9 +1,7 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CorUser;
-import io.protone.web.rest.dto.cor.CorChannelDTO;
-import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.ZonedDateTime;
@@ -14,11 +12,11 @@ import java.util.Set;
 import static java.util.stream.Collectors.toList;
 
 /**
- * CoreUserPT
+ * CorUserDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreUserPT {
+public class CorUserDTO {
 
     @JsonProperty("id")
     private Long id = null;
@@ -53,14 +51,14 @@ public class CoreUserPT {
     @JsonProperty("channel")
     private List<CorChannelDTO> channelPT = null;
 
-    public CoreUserPT(Long id) {
+    public CorUserDTO(Long id) {
         this.id = id;
     }
 
-    public CoreUserPT() {
+    public CorUserDTO() {
     }
 
-    public CoreUserPT(CorUser corUser) {
+    public CorUserDTO(CorUser corUser) {
         this.id = corUser.getId();
         this.activated = corUser.isActivated();
         this.authorities = corUser.getAuthorities().stream().map(authority -> authority.getName().toString()).collect(toList());
@@ -74,7 +72,7 @@ public class CoreUserPT {
 
     }
 
-    public CoreUserPT(Long id, String login, String firstName, String lastName, String email, boolean activated, String imageUrl, String langKey, String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities) {
+    public CorUserDTO(Long id, String login, String firstName, String lastName, String email, boolean activated, String imageUrl, String langKey, String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate, Set<String> authorities) {
         this.id = id;
         this.activated = activated;
         this.authorities = authorities.stream().collect(toList());
@@ -88,7 +86,7 @@ public class CoreUserPT {
     }
 
 
-    public CoreUserPT activated(Boolean activated) {
+    public CorUserDTO activated(Boolean activated) {
         this.activated = activated;
         return this;
     }
@@ -107,12 +105,12 @@ public class CoreUserPT {
         this.activated = activated;
     }
 
-    public CoreUserPT authorities(List<String> authorities) {
+    public CorUserDTO authorities(List<String> authorities) {
         this.authorities = authorities;
         return this;
     }
 
-    public CoreUserPT addAuthoritiesItem(String authoritiesItem) {
+    public CorUserDTO addAuthoritiesItem(String authoritiesItem) {
         this.authorities.add(authoritiesItem);
         return this;
     }
@@ -131,7 +129,7 @@ public class CoreUserPT {
         this.authorities = authorities;
     }
 
-    public CoreUserPT email(String email) {
+    public CorUserDTO email(String email) {
         this.email = email;
         return this;
     }
@@ -150,7 +148,7 @@ public class CoreUserPT {
         this.email = email;
     }
 
-    public CoreUserPT firstName(String firstName) {
+    public CorUserDTO firstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -169,7 +167,7 @@ public class CoreUserPT {
         this.firstName = firstName;
     }
 
-    public CoreUserPT langKey(String langKey) {
+    public CorUserDTO langKey(String langKey) {
         this.langKey = langKey;
         return this;
     }
@@ -188,7 +186,7 @@ public class CoreUserPT {
         this.langKey = langKey;
     }
 
-    public CoreUserPT lastName(String lastName) {
+    public CorUserDTO lastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -207,7 +205,7 @@ public class CoreUserPT {
         this.lastName = lastName;
     }
 
-    public CoreUserPT login(String login) {
+    public CorUserDTO login(String login) {
         this.login = login;
         return this;
     }
@@ -221,7 +219,7 @@ public class CoreUserPT {
         this.imageurl = imageurl;
     }
 
-    public CoreUserPT imageUrl(String imageurl) {
+    public CorUserDTO imageUrl(String imageurl) {
         this.imageurl = imageurl;
         return this;
     }
@@ -235,7 +233,7 @@ public class CoreUserPT {
         this.networkPT = networkPt;
     }
 
-    public CoreUserPT network(CorNetworkDTO networkPt) {
+    public CorUserDTO network(CorNetworkDTO networkPt) {
         this.networkPT = networkPt;
         return this;
     }
@@ -249,7 +247,7 @@ public class CoreUserPT {
         this.channelPT = channelId;
     }
 
-    public CoreUserPT channel(List<CorChannelDTO> channelId) {
+    public CorUserDTO channel(List<CorChannelDTO> channelId) {
         this.channelPT = channelId;
         return this;
     }
@@ -282,9 +280,9 @@ public class CoreUserPT {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CoreUserPT)) return false;
+        if (!(o instanceof CorUserDTO)) return false;
 
-        CoreUserPT that = (CoreUserPT) o;
+        CorUserDTO that = (CorUserDTO) o;
 
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getActivated() != null ? !getActivated().equals(that.getActivated()) : that.getActivated() != null)
@@ -323,7 +321,7 @@ public class CoreUserPT {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("CoreUserPT{");
+        final StringBuffer sb = new StringBuffer("CorUserDTO{");
         sb.append("id=").append(id);
         sb.append(", activated=").append(activated);
         sb.append(", authorities=").append(authorities);

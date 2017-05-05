@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network;
 
-import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.web.rest.dto.cor.CorManagedUserDTO;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.web.rest.dto.UserDTO;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
 import io.swagger.annotations.Api;
@@ -17,13 +17,13 @@ import javax.validation.Valid;
  */
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface CorUserResource {
-    ResponseEntity registerAccount(@Valid @RequestBody CoreManagedUserPT managedUserVM);
+    ResponseEntity registerAccount(@Valid @RequestBody CorManagedUserDTO managedUserVM);
 
     ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key);
 
     String isAuthenticated(HttpServletRequest request);
 
-    ResponseEntity<CoreUserPT> getAccount();
+    ResponseEntity<CorUserDTO> getAccount();
 
     ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO);
 

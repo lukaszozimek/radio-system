@@ -17,7 +17,7 @@ import java.util.List;
 public interface CorChannelResource {
 
 
-    @ApiOperation(value = "updateChannel", notes = "", response = CorChannelDTO.class, tags = {"CHANNEL", "CORE",})
+    @ApiOperation(value = "updateChannel", notes = "", response = CorChannelDTO.class, tags = { "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorChannelDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorChannelDTO.class),
@@ -32,7 +32,7 @@ public interface CorChannelResource {
                                                         @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createChannel", notes = "", response = CorChannelDTO.class, tags = {"CHANNEL", "CORE",})
+    @ApiOperation(value = "createChannel", notes = "", response = CorChannelDTO.class, tags = { "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorChannelDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorChannelDTO.class),
@@ -47,7 +47,7 @@ public interface CorChannelResource {
                                                          @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "getAllChannels", notes = "", response = CorChannelDTO.class, responseContainer = "List", tags = {"CHANNEL", "CORE",})
+    @ApiOperation(value = "getAllChannels", notes = "", response = CorChannelDTO.class, responseContainer = "List", tags = { "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorChannelDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
@@ -59,7 +59,7 @@ public interface CorChannelResource {
     ResponseEntity<List<CorChannelDTO>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
-    @ApiOperation(value = "getChannel", notes = "", response = CorChannelDTO.class, tags = {"CHANNEL", "CORE",})
+    @ApiOperation(value = "getChannel", notes = "", response = CorChannelDTO.class, tags = { "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorChannelDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorChannelDTO.class),
@@ -71,7 +71,7 @@ public interface CorChannelResource {
     ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut);
 
-    @ApiOperation(value = "deleteChannel", notes = "", response = Void.class, tags = {"CHANNEL", "CORE",})
+    @ApiOperation(value = "deleteChannel", notes = "", response = Void.class, tags = { "CORE",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

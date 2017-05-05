@@ -16,7 +16,7 @@ import java.util.List;
 public interface CrmLeadResource {
 
 
-    @ApiOperation(value = "updateLead", notes = "", response = CrmLeadDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "updateLead", notes = "", response = CrmLeadDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmLeadDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmLeadDTO.class),
@@ -30,7 +30,7 @@ public interface CrmLeadResource {
     ResponseEntity<CrmLeadDTO> updateLeadUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                   @ApiParam(value = "crmLeadDTO", required = true) @RequestBody CrmLeadDTO crmLeadDTO) throws URISyntaxException;
 
-    @ApiOperation(value = "createLead", notes = "", response = CrmLeadDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "createLead", notes = "", response = CrmLeadDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmLeadDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmLeadDTO.class),
@@ -44,7 +44,7 @@ public interface CrmLeadResource {
     ResponseEntity<CrmLeadDTO> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                    @ApiParam(value = "crmLeadDTO", required = true) @RequestBody CrmLeadDTO crmLeadDTO) throws URISyntaxException;
 
-    @ApiOperation(value = "getAllLeads", notes = "", response = CrmLeadDTO.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getAllLeads", notes = "", response = CrmLeadDTO.class, responseContainer = "List", tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmLeadDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadDTO.class),
@@ -57,7 +57,7 @@ public interface CrmLeadResource {
                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getLead", notes = "", response = CrmLeadDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getLead", notes = "", response = CrmLeadDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmLeadDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmLeadDTO.class),
@@ -70,7 +70,7 @@ public interface CrmLeadResource {
                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
 
-    @ApiOperation(value = "deleteLead", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "deleteLead", notes = "", response = Void.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

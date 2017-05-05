@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 /**
- * CoreUserPT
+ * CorUserDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
@@ -224,7 +224,7 @@ public class CoreUserThinDTO {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("CoreUserPT{");
+        final StringBuffer sb = new StringBuffer("CorUserDTO{");
         sb.append("id=").append(id);
         sb.append(", email='").append(email).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');

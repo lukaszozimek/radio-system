@@ -17,7 +17,7 @@ import java.util.List;
 public interface CrmLeadTaskResource {
 
 
-    @ApiOperation(value = "getAllLeadActivities", notes = "", response = CrmTaskDTO.class, responseContainer = "List", tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getAllLeadActivities", notes = "", response = CrmTaskDTO.class, responseContainer = "List", tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),
@@ -30,7 +30,7 @@ public interface CrmLeadTaskResource {
                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                   @ApiParam(value = "pagable", required = true)  Pageable pagable);
 
-    @ApiOperation(value = "updateLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "updateLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmTaskDTO.class),
@@ -46,7 +46,7 @@ public interface CrmLeadTaskResource {
                                                           @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "createLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmTaskDTO.class),
@@ -62,7 +62,7 @@ public interface CrmLeadTaskResource {
                                                            @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteLeadActivity", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "deleteLeadActivity", notes = "", response = Void.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -76,7 +76,7 @@ public interface CrmLeadTaskResource {
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "getLeadId", notes = "", response = CrmTaskDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "getLeadId", notes = "", response = CrmTaskDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmTaskDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CrmTaskDTO.class),

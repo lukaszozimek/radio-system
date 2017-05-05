@@ -2,8 +2,8 @@ package io.protone.custom.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.Sets;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.web.rest.dto.cor.CorNetworkDTO;
-import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.web.rest.mapper.CorChannelMapper;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.web.rest.mapper.CorUserMapper;
@@ -149,7 +149,7 @@ public class CorUserService {
         return newUser;
     }
 
-    public CorUser createUser(CoreUserPT userDTO) {
+    public CorUser createUser(CorUserDTO userDTO) {
         CorUser user = new CorUser();
         CorUser userCreator = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
 
@@ -201,7 +201,7 @@ public class CorUserService {
     /**
      * Update all information for a specific user, and return the modified user.
      */
-    public CoreUserPT updateUser(CoreUserPT userDTO) {
+    public CorUserDTO updateUser(CorUserDTO userDTO) {
 
         CorUser corUser = Optional.of(userRepository
             .findOne(userDTO.getId()))
@@ -247,7 +247,7 @@ public class CorUserService {
     }
 
     @Transactional(readOnly = true)
-    public List<CoreUserPT> getAllManagedUsers(CorNetwork corNetwork) {
+    public List<CorUserDTO> getAllManagedUsers(CorNetwork corNetwork) {
         return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(corUserMapper::DB2DTO).collect(toList());
     }
 
@@ -262,7 +262,7 @@ public class CorUserService {
     }
 
     @Transactional(readOnly = true)
-    public CoreUserPT getUserWithAuthorities() {
+    public CorUserDTO getUserWithAuthorities() {
         CorUser corUser = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
         return corUserMapper.DB2DTO(corUser);
     }

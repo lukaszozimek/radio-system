@@ -1,17 +1,16 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 
 /**
- * CoreValuePT
+ * CorValueDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreValuePT   {
+public class CorValueDTO {
   @JsonProperty("id")
   private Long id = null;
 
@@ -21,7 +20,7 @@ public class CoreValuePT   {
   @JsonProperty("value")
   private String value = null;
 
-  public CoreValuePT id(Long id) {
+  public CorValueDTO id(Long id) {
     this.id = id;
     return this;
   }
@@ -39,7 +38,7 @@ public class CoreValuePT   {
     this.id = id;
   }
 
-  public CoreValuePT propertyKeyId(CorKeyDTO propertyKeyId) {
+  public CorValueDTO propertyKeyId(CorKeyDTO propertyKeyId) {
     this.propertyKeyId = propertyKeyId;
     return this;
   }
@@ -57,7 +56,7 @@ public class CoreValuePT   {
     this.propertyKeyId = propertyKeyId;
   }
 
-  public CoreValuePT value(String value) {
+  public CorValueDTO value(String value) {
     this.value = value;
     return this;
   }
@@ -84,10 +83,10 @@ public class CoreValuePT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CoreValuePT coreValuePT = (CoreValuePT) o;
-    return Objects.equals(this.id, coreValuePT.id) &&
-        Objects.equals(this.propertyKeyId, coreValuePT.propertyKeyId) &&
-        Objects.equals(this.value, coreValuePT.value);
+    CorValueDTO corValueDTO = (CorValueDTO) o;
+    return Objects.equals(this.id, corValueDTO.id) &&
+        Objects.equals(this.propertyKeyId, corValueDTO.propertyKeyId) &&
+        Objects.equals(this.value, corValueDTO.value);
   }
 
   @Override
@@ -98,7 +97,7 @@ public class CoreValuePT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CoreValuePT {\n");
+    sb.append("class CorValueDTO {\n");
 
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    propertyKeyId: ").append(toIndentedString(propertyKeyId)).append("\n");

@@ -15,7 +15,7 @@ import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface CorDictionaryResource {
-    @ApiOperation(value = "updateDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updateDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorDictionaryDTO.class),
@@ -32,7 +32,7 @@ public interface CorDictionaryResource {
                                                                    @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "createDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorDictionaryDTO.class),
@@ -49,7 +49,7 @@ public interface CorDictionaryResource {
                                                                     @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteDictionaryValue", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "deleteDictionaryValue", notes = "", response = Void.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -79,7 +79,7 @@ public interface CorDictionaryResource {
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getDictionaryValue", notes = "", response = CorDictionaryDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorDictionaryDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorDictionaryDTO.class),

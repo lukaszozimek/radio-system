@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.LibTrackDTO;
+import io.protone.web.rest.dto.library.LibTrackDTO;
 import io.protone.domain.*;
 import org.mapstruct.*;
 

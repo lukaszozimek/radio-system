@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.LibLabelDTO;
+import io.protone.web.rest.dto.library.LibLabelDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLabel;
 import org.junit.Before;

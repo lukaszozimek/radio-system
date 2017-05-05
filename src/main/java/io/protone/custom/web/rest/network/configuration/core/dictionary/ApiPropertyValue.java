@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary;
 
-import io.protone.custom.service.dto.CoreValuePT;
+import io.protone.web.rest.dto.cor.CorValueDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,44 +15,44 @@ import java.util.List;
 public interface ApiPropertyValue {
 
 
-    @ApiOperation(value = "createPropertyValue", notes = "", response = CoreValuePT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "createPropertyValue", notes = "", response = CorValueDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreValuePT.class),
-        @ApiResponse(code = 201, message = "Created", response = CoreValuePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreValuePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorValueDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = CorValueDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorValueDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorValueDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorValueDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/value",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CoreValuePT> createPropertyValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "propertyValueDTO", required = true) @RequestBody CoreValuePT propertyValueDTO);
+    ResponseEntity<CorValueDTO> createPropertyValueUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                             @ApiParam(value = "propertyValueDTO", required = true) @RequestBody CorValueDTO propertyValueDTO);
 
-    @ApiOperation(value = "getAllPropertyValues", notes = "", response = CoreValuePT.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getAllPropertyValues", notes = "", response = CorValueDTO.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreValuePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreValuePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorValueDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorValueDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorValueDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorValueDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/value",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CoreValuePT>> getAllPropertyValuesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CorValueDTO>> getAllPropertyValuesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 
-    @ApiOperation(value = "updatePropertyValue", notes = "", response = CoreValuePT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updatePropertyValue", notes = "", response = CorValueDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreValuePT.class),
-        @ApiResponse(code = 201, message = "Created", response = CoreValuePT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreValuePT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreValuePT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreValuePT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorValueDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = CorValueDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorValueDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorValueDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorValueDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/value",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CoreValuePT> updatePropertyValueUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                            @ApiParam(value = "propertyValueDTO", required = true) @RequestBody CoreValuePT propertyValueDTO);
+    ResponseEntity<CorValueDTO> updatePropertyValueUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                            @ApiParam(value = "propertyValueDTO", required = true) @RequestBody CorValueDTO propertyValueDTO);
 
 }

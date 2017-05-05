@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.channel;
 
-import io.protone.custom.service.dto.LibMediaItemDTO;
+import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.custom.service.dto.LibResponseEntity;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;

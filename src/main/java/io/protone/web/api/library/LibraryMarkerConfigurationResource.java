@@ -17,7 +17,7 @@ import java.util.List;
 public interface LibraryMarkerConfigurationResource {
 
 
-    @ApiOperation(value = "updateMarkerConfiguration", notes = "", response = LibMarkerConfigurationDTO.class, tags = {"CONFIGURATION", "CORE",})
+    @ApiOperation(value = "updateMarkerConfiguration", notes = "", response = LibMarkerConfigurationDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 201, message = "Created", response = LibMarkerConfigurationDTO.class),
@@ -32,7 +32,7 @@ public interface LibraryMarkerConfigurationResource {
                                                                                 @ApiParam(value = "markerConfigurationDTO", required = true) @Valid @RequestBody LibMarkerConfigurationDTO markerConfigurationPT) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createMarkerConfiguration", notes = "", response = LibMarkerConfigurationDTO.class, tags = {"CONFIGURATION", "CORE",})
+    @ApiOperation(value = "createMarkerConfiguration", notes = "", response = LibMarkerConfigurationDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 201, message = "Created", response = LibMarkerConfigurationDTO.class),
@@ -47,7 +47,7 @@ public interface LibraryMarkerConfigurationResource {
                                                                                  @ApiParam(value = "markerConfigurationPT", required = true) @Valid @RequestBody LibMarkerConfigurationDTO markerConfigurationPT) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteMarkerConfiguration", notes = "", response = Void.class, tags = {"CONFIGURATION", "CORE",})
+    @ApiOperation(value = "deleteMarkerConfiguration", notes = "", response = Void.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -73,7 +73,7 @@ public interface LibraryMarkerConfigurationResource {
                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getMarkerConfiguration", notes = "", response = LibMarkerConfigurationDTO.class, tags = {"CONFIGURATION", "CORE",})
+    @ApiOperation(value = "getMarkerConfiguration", notes = "", response = LibMarkerConfigurationDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibMarkerConfigurationDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = LibMarkerConfigurationDTO.class),

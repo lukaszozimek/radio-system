@@ -30,7 +30,7 @@ public interface CorCurrencyResource {
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "getCurrency", notes = "", response = CorCurrencyDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getCurrency", notes = "", response = CorCurrencyDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorCurrencyDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = CorCurrencyDTO.class),
@@ -43,7 +43,7 @@ public interface CorCurrencyResource {
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "updateCurrency", notes = "", response = CorCurrencyDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updateCurrency", notes = "", response = CorCurrencyDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorCurrencyDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorCurrencyDTO.class),
@@ -57,7 +57,7 @@ public interface CorCurrencyResource {
     ResponseEntity<CorCurrencyDTO> updateCurrencyUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                           @ApiParam(value = "currencyDTO", required = true) @Valid @RequestBody CorCurrencyDTO currencyDTO) throws URISyntaxException;
 
-    @ApiOperation(value = "createCurrency", notes = "", response = CorCurrencyDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "createCurrency", notes = "", response = CorCurrencyDTO.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CorCurrencyDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CorCurrencyDTO.class),
@@ -72,7 +72,7 @@ public interface CorCurrencyResource {
                                                            @ApiParam(value = "corCurrencyDTO", required = true) @Valid @RequestBody CorCurrencyDTO corCurrencyDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteCurrency", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "deleteCurrency", notes = "", response = Void.class, tags = {"CORE"})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

@@ -1,13 +1,11 @@
 package io.protone.web.rest.mapper;
 
 import com.google.common.base.Strings;
-import io.protone.custom.service.dto.LibMediaItemDTO;
+import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTag;
 import io.protone.domain.LibMediaItem;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 

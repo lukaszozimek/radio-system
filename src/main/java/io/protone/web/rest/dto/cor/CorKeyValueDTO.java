@@ -1,24 +1,23 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
 
 /**
- * CoreKeyValuePT
+ * CorKeyValueDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreKeyValuePT   {
+public class CorKeyValueDTO {
   @JsonProperty("key")
   private CorKeyDTO key = null;
 
   @JsonProperty("value")
-  private CoreValuePT value = null;
+  private CorValueDTO value = null;
 
-  public CoreKeyValuePT key(CorKeyDTO key) {
+  public CorKeyValueDTO key(CorKeyDTO key) {
     this.key = key;
     return this;
   }
@@ -36,7 +35,7 @@ public class CoreKeyValuePT   {
     this.key = key;
   }
 
-  public CoreKeyValuePT value(CoreValuePT value) {
+  public CorKeyValueDTO value(CorValueDTO value) {
     this.value = value;
     return this;
   }
@@ -46,11 +45,11 @@ public class CoreKeyValuePT   {
    * @return value
   **/
   @ApiModelProperty(value = "")
-  public CoreValuePT getValue() {
+  public CorValueDTO getValue() {
     return value;
   }
 
-  public void setValue(CoreValuePT value) {
+  public void setValue(CorValueDTO value) {
     this.value = value;
   }
 
@@ -63,9 +62,9 @@ public class CoreKeyValuePT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CoreKeyValuePT coreKeyValuePT = (CoreKeyValuePT) o;
-    return Objects.equals(this.key, coreKeyValuePT.key) &&
-        Objects.equals(this.value, coreKeyValuePT.value);
+    CorKeyValueDTO corKeyValueDTO = (CorKeyValueDTO) o;
+    return Objects.equals(this.key, corKeyValueDTO.key) &&
+        Objects.equals(this.value, corKeyValueDTO.value);
   }
 
   @Override
@@ -76,7 +75,7 @@ public class CoreKeyValuePT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CoreKeyValuePT {\n");
+    sb.append("class CorKeyValueDTO {\n");
 
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");

@@ -4,8 +4,8 @@ package io.protone.custom.web.rest.network;
 import com.codahale.metrics.annotation.Timed;
 import io.protone.custom.service.CorMailService;
 import io.protone.custom.service.CorUserService;
-import io.protone.custom.service.dto.CoreManagedUserPT;
-import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.web.rest.dto.cor.CorUserDTO;
+import io.protone.web.rest.dto.cor.CorManagedUserDTO;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorNetworkRepository;
@@ -67,7 +67,7 @@ public class CorUserResourceImpl implements CorUserResource {
         produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     @Timed
     @Override
-    public ResponseEntity registerAccount(@Valid @RequestBody CoreManagedUserPT managedUserVM) {
+    public ResponseEntity registerAccount(@Valid @RequestBody CorManagedUserDTO managedUserVM) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -129,7 +129,7 @@ public class CorUserResourceImpl implements CorUserResource {
     @GetMapping("/account")
     @Timed
     @Override
-    public ResponseEntity<CoreUserPT> getAccount() {
+    public ResponseEntity<CorUserDTO> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
             .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

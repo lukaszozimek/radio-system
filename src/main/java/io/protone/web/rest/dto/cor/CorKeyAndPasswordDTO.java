@@ -1,4 +1,4 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.cor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,18 +6,18 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 /**
- * CoreKeyAndPasswordPT
+ * CorKeyAndPasswordDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CoreKeyAndPasswordPT   {
+public class CorKeyAndPasswordDTO {
   @JsonProperty("key")
   private String key = null;
 
   @JsonProperty("newPassword")
   private String newPassword = null;
 
-  public CoreKeyAndPasswordPT key(String key) {
+  public CorKeyAndPasswordDTO key(String key) {
     this.key = key;
     return this;
   }
@@ -35,7 +35,7 @@ public class CoreKeyAndPasswordPT   {
     this.key = key;
   }
 
-  public CoreKeyAndPasswordPT newPassword(String newPassword) {
+  public CorKeyAndPasswordDTO newPassword(String newPassword) {
     this.newPassword = newPassword;
     return this;
   }
@@ -62,9 +62,9 @@ public class CoreKeyAndPasswordPT   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CoreKeyAndPasswordPT coreKeyAndPasswordPT = (CoreKeyAndPasswordPT) o;
-    return Objects.equals(this.key, coreKeyAndPasswordPT.key) &&
-        Objects.equals(this.newPassword, coreKeyAndPasswordPT.newPassword);
+    CorKeyAndPasswordDTO corKeyAndPasswordDTO = (CorKeyAndPasswordDTO) o;
+    return Objects.equals(this.key, corKeyAndPasswordDTO.key) &&
+        Objects.equals(this.newPassword, corKeyAndPasswordDTO.newPassword);
   }
 
   @Override
@@ -75,7 +75,7 @@ public class CoreKeyAndPasswordPT   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CoreKeyAndPasswordPT {\n");
+    sb.append("class CorKeyAndPasswordDTO {\n");
 
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    newPassword: ").append(toIndentedString(newPassword)).append("\n");

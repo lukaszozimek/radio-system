@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.domain.*;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
 import org.mapstruct.*;
@@ -15,25 +15,25 @@ public interface CorUserMapper {
 
     @Mapping(source = "networks", target = "network")
     @Mapping(source = "channels", target = "channel")
-    CoreUserPT DB2DTO(CorUser user);
+    CorUserDTO DB2DTO(CorUser user);
 
-    List<CoreUserPT> DBs2DTOs(List<CorUser> users);
+    List<CorUserDTO> DBs2DTOs(List<CorUser> users);
 
-    CorUser DTO2DB(CoreUserPT userPT, @Context CorChannel corChannel, @Context CorNetwork corNetwork);
+    CorUser DTO2DB(CorUserDTO userPT, @Context CorChannel corChannel, @Context CorNetwork corNetwork);
 
-    default List<CorUser> DTOs2DBs(List<CoreUserPT> userPTs, @Context CorChannel corChannel, @Context CorNetwork corNetwork) {
+    default List<CorUser> DTOs2DBs(List<CorUserDTO> userPTs, @Context CorChannel corChannel, @Context CorNetwork corNetwork) {
         List<CorUser> corPeople = new ArrayList<>();
         if (userPTs.isEmpty() || userPTs == null) {
             return null;
         }
-        for (CoreUserPT dto : userPTs) {
+        for (CorUserDTO dto : userPTs) {
             corPeople.add(DTO2DB(dto, corChannel, corNetwork));
         }
         return corPeople;
     }
 
     @AfterMapping
-    default void coreUserPTToCorUserAfterMapping(CoreUserPT dto, @MappingTarget CorUser entity, @Context CorChannel corChannel, @Context CorNetwork corNetwork) {
+    default void coreUserPTToCorUserAfterMapping(CorUserDTO dto, @MappingTarget CorUser entity, @Context CorChannel corChannel, @Context CorNetwork corNetwork) {
         entity.addNetwork(corNetwork);
         entity.addChannel(corChannel);
     }

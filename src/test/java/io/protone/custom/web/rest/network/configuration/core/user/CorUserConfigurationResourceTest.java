@@ -1,7 +1,7 @@
 package io.protone.custom.web.rest.network.configuration.core.user;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
@@ -135,7 +135,7 @@ public class CorUserConfigurationResourceTest {
         int databaseSizeBeforeCreate = corUserRepository.findAll().size();
 
         // Create the CorDictionary
-        CoreUserPT corDictionaryDTO = corUserMapper.DB2DTO(corUser);
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser);
 
         restCorUserMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -161,7 +161,7 @@ public class CorUserConfigurationResourceTest {
         // Create the CorDictionary with an existing ID
         CorUser existingCorDictionary = new CorUser();
         existingCorDictionary.setId(1L);
-        CoreUserPT existingCorDictionaryDTO = corUserMapper.DB2DTO(existingCorDictionary);
+        CorUserDTO existingCorDictionaryDTO = corUserMapper.DB2DTO(existingCorDictionary);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCorUserMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
@@ -272,7 +272,7 @@ public class CorUserConfigurationResourceTest {
         int databaseSizeBeforeUpdate = corUserRepository.findAll().size();
 
         // Create the CorDictionary
-        CoreUserPT corDictionaryDTO = corUserMapper.DB2DTO(corUser);
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCorUserMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())

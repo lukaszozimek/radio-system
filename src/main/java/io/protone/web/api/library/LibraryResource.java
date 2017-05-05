@@ -16,7 +16,7 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface LibraryResource {
 
-    @ApiOperation(value = "updateLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY", "CORE",})
+    @ApiOperation(value = "updateLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
         @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
@@ -44,7 +44,7 @@ public interface LibraryResource {
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "createLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY", "CORE",})
+    @ApiOperation(value = "createLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
         @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
@@ -59,7 +59,7 @@ public interface LibraryResource {
                                                          @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags = {"LIBRARY", "CORE",})
+    @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -72,7 +72,7 @@ public interface LibraryResource {
                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
 
-    @ApiOperation(value = "getLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY", "CORE",})
+    @ApiOperation(value = "getLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),

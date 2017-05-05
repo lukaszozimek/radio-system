@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.channel.impl;
 
-import io.protone.custom.service.dto.LibMediaItemDTO;
+import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.LibItemService;
 import io.protone.custom.service.dto.LibResponseEntity;

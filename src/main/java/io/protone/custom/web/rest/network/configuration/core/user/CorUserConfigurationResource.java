@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.user;
 
-import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,59 +14,59 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface CorUserConfigurationResource {
 
-    @ApiOperation(value = "getAllUsers", notes = "", response = CoreUserPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getAllUsers", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreUserPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorUserDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CoreUserPT>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
 
 
-    @ApiOperation(value = "getUser", notes = "", response = CoreUserPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getUser", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreUserPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorUserDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<CoreUserPT> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "login", required = true) @PathVariable("login") String login);
+    ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                               @ApiParam(value = "login", required = true) @PathVariable("login") String login);
 
 
-    @ApiOperation(value = "updateUser", notes = "", response = CoreUserPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updateUser", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreUserPT.class),
-        @ApiResponse(code = 201, message = "Created", response = CoreUserPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorUserDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = CorUserDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<CoreUserPT> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                          @ApiParam(value = "contactStatusPT", required = true) @RequestBody CoreUserPT coreUserPT);
+    ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                  @ApiParam(value = "contactStatusPT", required = true) @RequestBody CorUserDTO corUserDTO);
 
 
-    @ApiOperation(value = "createUser", notes = "", response = CoreUserPT.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "createUser", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = CoreUserPT.class),
-        @ApiResponse(code = 201, message = "Created", response = CoreUserPT.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = CoreUserPT.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = CoreUserPT.class),
-        @ApiResponse(code = 404, message = "Not Found", response = CoreUserPT.class)})
+        @ApiResponse(code = 200, message = "OK", response = CorUserDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = CorUserDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = CorUserDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = CorUserDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<CoreUserPT> createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "contactStatusPT", required = true) @RequestBody CoreUserPT coreUserPT) throws URISyntaxException;
+    ResponseEntity<CorUserDTO> createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                   @ApiParam(value = "contactStatusPT", required = true) @RequestBody CorUserDTO corUserDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteUser", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})

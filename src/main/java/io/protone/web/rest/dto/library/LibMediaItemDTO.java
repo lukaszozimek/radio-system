@@ -1,11 +1,9 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.library;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.web.rest.dto.cor.CorKeyValueDTO;
 import io.protone.domain.enumeration.LibItemStateEnum;
 import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class LibMediaItemDTO {
     private String name = null;
 
     @JsonProperty("properties")
-    private List<CoreKeyValuePT> properties = new ArrayList<CoreKeyValuePT>();
+    private List<CorKeyValueDTO> properties = new ArrayList<CorKeyValueDTO>();
 
     @JsonProperty("resourceType")
     private LibItemTypeEnum resourceType = null;
@@ -284,12 +282,12 @@ public class LibMediaItemDTO {
         this.name = name;
     }
 
-    public LibMediaItemDTO properties(List<CoreKeyValuePT> properties) {
+    public LibMediaItemDTO properties(List<CorKeyValueDTO> properties) {
         this.properties = properties;
         return this;
     }
 
-    public LibMediaItemDTO addPropertiesItem(CoreKeyValuePT propertiesItem) {
+    public LibMediaItemDTO addPropertiesItem(CorKeyValueDTO propertiesItem) {
         this.properties.add(propertiesItem);
         return this;
     }
@@ -300,11 +298,11 @@ public class LibMediaItemDTO {
      * @return properties
      **/
     @ApiModelProperty(value = "")
-    public List<CoreKeyValuePT> getProperties() {
+    public List<CorKeyValueDTO> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<CoreKeyValuePT> properties) {
+    public void setProperties(List<CorKeyValueDTO> properties) {
         this.properties = properties;
     }
 

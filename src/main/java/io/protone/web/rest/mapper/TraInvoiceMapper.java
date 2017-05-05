@@ -1,6 +1,6 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.custom.service.dto.LibMarkerDTO;
+import io.protone.web.rest.dto.library.LibMarkerDTO;
 import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;

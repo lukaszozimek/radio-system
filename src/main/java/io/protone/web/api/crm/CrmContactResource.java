@@ -13,7 +13,7 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface CrmContactResource {
 
-    @ApiOperation(value = "updateContact", notes = "", response = CrmContactDTO.class, tags = {"TRAFFIC", "CRM",})
+    @ApiOperation(value = "updateContact", notes = "", response = CrmContactDTO.class, tags = { "CRM",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = CrmContactDTO.class),
         @ApiResponse(code = 201, message = "Created", response = CrmContactDTO.class),

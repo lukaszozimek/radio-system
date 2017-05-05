@@ -16,7 +16,7 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface TraDiscountResource {
 
-    @ApiOperation(value = "getAllDiscount", notes = "", response = TraDiscountDTO.class, responseContainer = "List", tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "getAllDiscount", notes = "", response = TraDiscountDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraDiscountDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraDiscountDTO.class),
@@ -42,7 +42,7 @@ public interface TraDiscountResource {
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "updateDiscount", notes = "", response = TraDiscountDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "updateDiscount", notes = "", response = TraDiscountDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraDiscountDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraDiscountDTO.class),
@@ -57,7 +57,7 @@ public interface TraDiscountResource {
                                                           @ApiParam(value = "discountPT", required = true) @RequestBody TraDiscountDTO discountPT) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createDiscount", notes = "", response = CorTaxDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "createDiscount", notes = "", response = CorTaxDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraDiscountDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraDiscountDTO.class),
@@ -72,7 +72,7 @@ public interface TraDiscountResource {
                                                            @ApiParam(value = "discountPT", required = true) @RequestBody TraDiscountDTO discountPT) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteDiscount", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
+    @ApiOperation(value = "deleteDiscount", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

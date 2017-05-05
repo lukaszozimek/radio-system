@@ -1,6 +1,6 @@
 package io.protone.custom.web.rest.network.configuration.core.dictionary;
 
-import io.protone.custom.service.dto.CorTagDTO;
+import io.protone.web.rest.dto.cor.CorTagDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.dto.CoreUserPT;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +32,9 @@ public class CorUserMapperTest {
 
     private CorUser corUser;
 
-    private CoreUserPT coreUserPT;
+    private CorUserDTO corUserDTO;
 
-    private List<CoreUserPT> coreUserPTS = new ArrayList<>();
+    private List<CorUserDTO> corUserDTOS = new ArrayList<>();
 
     private List<CorUser> corUsers = new ArrayList<>();
     private CorNetwork corNetwork;
@@ -48,15 +48,15 @@ public class CorUserMapperTest {
         corUser.addNetwork(factory.manufacturePojo(CorNetwork.class));
 
         corUsers.add(corUser);
-        coreUserPT = factory.manufacturePojo(CoreUserPT.class);
-        coreUserPTS.add(coreUserPT);
+        corUserDTO = factory.manufacturePojo(CorUserDTO.class);
+        corUserDTOS.add(corUserDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
     @Test
     public void DB2DTO() throws Exception {
-        CoreUserPT dto = customCorUserMapperExt.DB2DTO(corUser);
+        CorUserDTO dto = customCorUserMapperExt.DB2DTO(corUser);
 
         assertNotNull(dto.getActivated());
         assertNotNull(dto.getAuthorities());
@@ -71,7 +71,7 @@ public class CorUserMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CoreUserPT> dtos = customCorUserMapperExt.DBs2DTOs(corUsers);
+        List<CorUserDTO> dtos = customCorUserMapperExt.DBs2DTOs(corUsers);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -92,7 +92,7 @@ public class CorUserMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorUser entity = customCorUserMapperExt.DTO2DB(coreUserPT, corChannel, corNetwork);
+        CorUser entity = customCorUserMapperExt.DTO2DB(corUserDTO, corChannel, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getLogin());
@@ -107,7 +107,7 @@ public class CorUserMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorUser> entities = customCorUserMapperExt.DTOs2DBs(coreUserPTS, corChannel, corNetwork);
+        List<CorUser> entities = customCorUserMapperExt.DTOs2DBs(corUserDTOS, corChannel, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -2,7 +2,7 @@ package io.protone.custom.web.rest.network.library;
 
 import io.protone.ProtoneApp;
 import io.protone.custom.service.LibItemService;
-import io.protone.custom.service.dto.LibMediaItemDTO;
+import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.custom.web.rest.network.library.impl.LibMediaItemResourceImpl;
 import io.protone.domain.CorNetwork;

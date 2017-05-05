@@ -5,10 +5,10 @@ package io.protone.custom.web.rest.network.configuration.core.user.impl;
  */
 
 import io.github.jhipster.web.util.ResponseUtil;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.CorMailService;
 import io.protone.custom.service.CorUserService;
-import io.protone.custom.service.dto.CoreUserPT;
 import io.protone.custom.web.rest.network.configuration.core.user.CorUserConfigurationResource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
@@ -88,20 +88,20 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     @Override
     public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                              @ApiParam(value = "coreUserPT", required = true) @RequestBody CoreUserPT coreUserPT) throws URISyntaxException {
-        log.debug("REST request to save User : {}", coreUserPT);
+                                              @ApiParam(value = "corUserDTO", required = true) @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
+        log.debug("REST request to save User : {}", corUserDTO);
 
         //Lowercase the user login before comparing with database
-        if (userRepository.findOneByLogin(coreUserPT.getLogin().toLowerCase()).isPresent()) {
+        if (userRepository.findOneByLogin(corUserDTO.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
                 .body(null);
-        } else if (userRepository.findOneByEmail(coreUserPT.getEmail()).isPresent()) {
+        } else if (userRepository.findOneByEmail(corUserDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
                 .body(null);
         } else {
-            CorUser newUser = userService.createUser(coreUserPT);
+            CorUser newUser = userService.createUser(corUserDTO);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
@@ -112,7 +112,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     /**
      * PUT  /users : Updates an existing User.
      *
-     * @param coreUserPT the user to update
+     * @param corUserDTO the user to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated user,
      * or with status 400 (Bad Request) if the login or email is already in use,
      * or with status 500 (Internal Server Error) if the user couldn't be updated
@@ -120,29 +120,29 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
 
     @Override
-    public ResponseEntity<CoreUserPT> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "coreUserPT", required = true) @RequestBody CoreUserPT coreUserPT) {
-        log.debug("REST request to update User : {}", coreUserPT);
-        Optional<CorUser> existingUser = userRepository.findOneByEmail(coreUserPT.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(coreUserPT.getId()))) {
+    public ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                         @ApiParam(value = "corUserDTO", required = true) @RequestBody CorUserDTO corUserDTO) {
+        log.debug("REST request to update User : {}", corUserDTO);
+        Optional<CorUser> existingUser = userRepository.findOneByEmail(corUserDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(corUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "E-mail already in use")).body(null);
         }
-        existingUser = userRepository.findOneByLogin(coreUserPT.getLogin().toLowerCase());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(coreUserPT.getId()))) {
+        existingUser = userRepository.findOneByLogin(corUserDTO.getLogin().toLowerCase());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(corUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
         }
-        Optional<CoreUserPT> updatedUser = Optional.of(userService.updateUser(coreUserPT));
+        Optional<CorUserDTO> updatedUser = Optional.of(userService.updateUser(corUserDTO));
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
-            HeaderUtil.createAlert("userManagement.updated", coreUserPT.getLogin()));
+            HeaderUtil.createAlert("userManagement.updated", corUserDTO.getLogin()));
     }
 
 
     @Override
-    public ResponseEntity<List<CoreUserPT>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         CorNetwork network = corNetworkService.findNetwork(networkShortcut);
-        List<CoreUserPT> coreUserPTList = userService.getAllManagedUsers(network);
-        return ResponseEntity.ok().body(coreUserPTList);
+        List<CorUserDTO> corUserDTOList = userService.getAllManagedUsers(network);
+        return ResponseEntity.ok().body(corUserDTOList);
     }
 
     /**
@@ -152,13 +152,13 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
     @Override
-    public ResponseEntity<CoreUserPT> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<CorUserDTO> getUserUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                       @ApiParam(value = "login", required = true) @PathVariable("login") String login) {
         log.debug("REST request to get User : {}", login);
         CorNetwork network = corNetworkService.findNetwork(networkShortcut);
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLoginAndNetwork(login, network)
-                .map(CoreUserPT::new));
+                .map(CorUserDTO::new));
     }
 
     /**
