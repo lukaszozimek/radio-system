@@ -1,6 +1,6 @@
 package io.protone.service.crm;
 
-import io.protone.custom.service.CorPersonService;
+import io.protone.service.cor.CorPersonService;
 import io.protone.repository.cor.CorAddressRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.crm.CrmTaskRepository;

@@ -1,4 +1,4 @@
-package io.protone.custom.service;
+package io.protone.service.cor;
 
 import io.protone.domain.CorContact;
 import io.protone.domain.CorPerson;
