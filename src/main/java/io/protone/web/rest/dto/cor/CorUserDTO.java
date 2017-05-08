@@ -46,10 +46,10 @@ public class CorUserDTO {
     private String login = null;
 
     @JsonProperty("network")
-    private CorNetworkDTO networkPT;
+    private CorNetworkDTO network;
 
     @JsonProperty("channel")
-    private List<CorChannelDTO> channelPT = null;
+    private List<CorChannelDTO> channel = null;
 
     public CorUserDTO(Long id) {
         this.id = id;
@@ -226,29 +226,29 @@ public class CorUserDTO {
 
     @ApiModelProperty(value = "")
     public CorNetworkDTO getNetwork() {
-        return this.networkPT;
+        return this.network;
     }
 
     public void setNetwork(CorNetworkDTO networkPt) {
-        this.networkPT = networkPt;
+        this.network = networkPt;
     }
 
     public CorUserDTO network(CorNetworkDTO networkPt) {
-        this.networkPT = networkPt;
+        this.network = networkPt;
         return this;
     }
 
     @ApiModelProperty(value = "")
     public List<CorChannelDTO> getChannel() {
-        return this.channelPT;
+        return this.channel;
     }
 
     public void setChannel(List<CorChannelDTO> channelId) {
-        this.channelPT = channelId;
+        this.channel = channelId;
     }
 
     public CorUserDTO channel(List<CorChannelDTO> channelId) {
-        this.channelPT = channelId;
+        this.channel = channelId;
         return this;
     }
 
@@ -331,8 +331,8 @@ public class CorUserDTO {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", login='").append(login).append('\'');
         sb.append(", imageurl='").append(imageurl).append('\'');
-        sb.append(", network='").append(networkPT).append('\'');
-        sb.append(", channel='").append(channelPT).append('\'');
+        sb.append(", network='").append(network).append('\'');
+        sb.append(", channel='").append(channel).append('\'');
         sb.append('}');
         return sb.toString();
 

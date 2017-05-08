@@ -231,6 +231,7 @@ public class CorUserService {
         return corUserMapper.DB2DTO(corUser);
     }
 
+
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
@@ -246,22 +247,19 @@ public class CorUserService {
         });
     }
 
-    @Transactional(readOnly = true)
     public List<CorUserDTO> getAllManagedUsers(CorNetwork corNetwork) {
         return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(corUserMapper::DB2DTO).collect(toList());
     }
 
-    @Transactional(readOnly = true)
     public Optional<CorUser> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
-    @Transactional(readOnly = true)
     public CorUser getUserWithAuthorities(Long id) {
         return userRepository.findOneWithAuthoritiesById(id);
     }
 
-    @Transactional(readOnly = true)
+
     public CorUserDTO getUserWithAuthorities() {
         CorUser corUser = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
         return corUserMapper.DB2DTO(corUser);
@@ -284,7 +282,6 @@ public class CorUserService {
         }
     }
 
-    @Transactional(readOnly = true)
     public Optional<CorUser> getUserWithAuthoritiesByLoginAndNetwork(String login, CorNetwork corNetwork) {
         return userRepository.findOneWithAuthoritiesByLoginAndNetworks(login, Sets.newHashSet(corNetwork));
     }

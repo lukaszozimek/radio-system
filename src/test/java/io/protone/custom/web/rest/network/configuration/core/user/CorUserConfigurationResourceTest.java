@@ -1,6 +1,9 @@
 package io.protone.custom.web.rest.network.configuration.core.user;
 
 import io.protone.ProtoneApp;
+import io.protone.custom.service.CorMailService;
+import io.protone.custom.service.CorUserService;
+import io.protone.custom.web.rest.network.configuration.core.user.impl.CorUserConfigurationResourceImpl;
 import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorDictionary;
@@ -23,7 +26,6 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +66,11 @@ public class CorUserConfigurationResourceTest {
     private CorUserMapper corUserMapper;
 
     @Autowired
+    private CorUserService corUserService;
+    @Autowired
+    private CorMailService corMailService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -80,24 +87,6 @@ public class CorUserConfigurationResourceTest {
     private CorUser corUser;
 
     private CorNetwork corNetwork;
-
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        CorUserConfigurationResourceTest corDictionaryResource = new CorUserConfigurationResourceTest();
-
-        ReflectionTestUtils.setField(corDictionaryResource, "corUserRepository", corUserRepository);
-        ReflectionTestUtils.setField(corDictionaryResource, "corUserMapper", corUserMapper);
-        ReflectionTestUtils.setField(corDictionaryResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restCorUserMockMvc = MockMvcBuilders.standaloneSetup(corDictionaryResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -119,9 +108,23 @@ public class CorUserConfigurationResourceTest {
         user.setImageurl("http://placehold.it/50x50");
         user.setLangkey("en");
         user.setNetworks(Sets.newLinkedHashSet(network));
-        em.persist(user);
-        em.flush();
         return user;
+    }
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        CorUserConfigurationResourceImpl corDictionaryResource = new CorUserConfigurationResourceImpl( corUserRepository,  corMailService,
+            corUserService,  corNetworkService);
+
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        this.restCorUserMockMvc = MockMvcBuilders.standaloneSetup(corDictionaryResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -226,7 +229,7 @@ public class CorUserConfigurationResourceTest {
             .name(UPDATED_LOGIN)
             .description(UPDATED_PASSWORD_HASH)
             .seqNumber(UPDATED_SEQ_NUMBER);
-        CorDictionaryDTO corDictionaryDTO = corUserMapper.DB2DTO(updatedCorDictionary);
+        CorDictionaryDTO corDictionaryDTO = corUserService.DB2DTO(updatedCorDictionary);
 
         restCorUserMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -254,7 +257,7 @@ public class CorUserConfigurationResourceTest {
         corUser.setLogin(null);
 /*
         // Create the LibLibrary, which fails.
-        CorDictionaryDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser);
+        CorDictionaryDTO corDictionaryDTO = corUserService.DB2DTO(corUser);
 
         restCorUserMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -293,7 +296,7 @@ public class CorUserConfigurationResourceTest {
         int databaseSizeBeforeDelete = corUserRepository.findAll().size();
 
         // Get the corUser
-        restCorUserMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getId())
+        restCorUserMockMvc.perform(delete("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
