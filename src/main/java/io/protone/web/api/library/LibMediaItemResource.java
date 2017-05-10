@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.library;
+package io.protone.web.api.library;
 
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.swagger.annotations.*;

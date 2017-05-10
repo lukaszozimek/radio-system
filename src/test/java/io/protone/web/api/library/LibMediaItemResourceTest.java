@@ -1,10 +1,11 @@
-package io.protone.custom.web.rest.network.library;
+package io.protone.web.api.library;
 
 import io.protone.ProtoneApp;
+import io.protone.config.s3.S3Client;
 import io.protone.custom.service.LibItemService;
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.custom.web.rest.network.TestUtil;
-import io.protone.custom.web.rest.network.library.impl.LibMediaItemResourceImpl;
+import io.protone.web.api.library.impl.LibMediaItemResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import io.protone.domain.LibMediaItem;
@@ -17,6 +18,7 @@ import io.protone.web.rest.mapper.LibItemMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +38,9 @@ import java.util.List;
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -99,24 +104,8 @@ public class LibMediaItemResourceTest {
 
     private LibLibrary libLibrary;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        LibMediaItemResourceImpl libMediaItemResource = new LibMediaItemResourceImpl();
-        ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
-        ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
-        ReflectionTestUtils.setField(libMediaItemResource, "libMediaItemMapper", libMediaItemMapper);
-        ReflectionTestUtils.setField(libMediaItemResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
-        corNetwork.setId(1L);
-        libLibrary = new LibLibrary().shortcut("tes").network(corNetwork);
-        libLibrary.setId(1L);
-        this.restLibMediaItemMockMvc = MockMvcBuilders.standaloneSetup(libMediaItemResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
+    @Mock
+    private S3Client s3Client;
 
     /**
      * Create an entity for this test.
@@ -134,6 +123,27 @@ public class LibMediaItemResourceTest {
             .command(DEFAULT_COMMAND)
             .description(DEFAULT_DESCRIPTION);
         return libMediaItem;
+    }
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+
+        LibMediaItemResourceImpl libMediaItemResource = new LibMediaItemResourceImpl();
+
+        ReflectionTestUtils.setField(itemService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
+        ReflectionTestUtils.setField(libMediaItemResource, "libMediaItemMapper", libMediaItemMapper);
+        ReflectionTestUtils.setField(libMediaItemResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+        libLibrary = new LibLibrary().shortcut("tes").network(corNetwork);
+        libLibrary.setId(1L);
+        this.restLibMediaItemMockMvc = MockMvcBuilders.standaloneSetup(libMediaItemResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -277,22 +287,21 @@ public class LibMediaItemResourceTest {
         restLibMediaItemMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libMediaItemDTO)))
-            .andExpect(status().isCreated());
+            .andExpect(status().isBadRequest());
 
-        // Validate the LibMediaItem in the database
-        List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
-        assertThat(libMediaItemList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test
     @Transactional
     public void deleteLibMediaItem() throws Exception {
         // Initialize the database
+        libMediaItemRepository.deleteAll();
+        doNothing().when(s3Client).delete(anyObject());
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary));
         int databaseSizeBeforeDelete = libMediaItemRepository.findAll().size();
 
         // Get the libMediaItem
-        restLibMediaItemMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{id}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getId())
+        restLibMediaItemMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{id}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getIdx())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

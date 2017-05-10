@@ -4,7 +4,7 @@ import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.LibItemService;
 import io.protone.custom.web.rest.network.channel.ApiChannelLibraryItem;
-import io.protone.custom.web.rest.network.library.impl.LibMediaItemResourceImpl;
+import io.protone.web.api.library.impl.LibMediaItemResourceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

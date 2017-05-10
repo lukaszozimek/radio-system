@@ -1,12 +1,13 @@
-package io.protone.custom.web.rest.network.library.impl;
+package io.protone.web.api.library.impl;
 
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.domain.LibMediaItem;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.LibItemService;
-import io.protone.custom.web.rest.network.library.LibMediaItemResource;
+import io.protone.web.api.library.LibMediaItemResource;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.LibItemMapper;
+import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,11 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                               @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                               @ApiParam(value = "mediaItem", required = true) @Valid @RequestBody LibMediaItemDTO mediaItem) {
+
+       if(mediaItem.getId()==null){
+           return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
+
+       }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         LibMediaItem requestEntity = libMediaItemMapper.DTO2DB(mediaItem, corNetwork);
         LibMediaItem entity = libItemService.update(requestEntity, corNetwork);

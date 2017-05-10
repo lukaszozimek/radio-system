@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.configuration.core.user.impl;
+package io.protone.web.api.cor.impl;
 
 /**
  * Created by lukaszozimek on 27/02/2017.
@@ -9,7 +9,7 @@ import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.CorMailService;
 import io.protone.custom.service.CorUserService;
-import io.protone.custom.web.rest.network.configuration.core.user.CorUserConfigurationResource;
+import io.protone.web.api.cor.CorUserConfigurationResource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorUserRepository;

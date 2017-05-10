@@ -10,6 +10,7 @@ import io.protone.repository.cor.CorUserRepository;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -75,4 +76,8 @@ public class CorUserResourceTest {
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
     }
 
+    @Test
+    public void emptyTest(){
+
+    }
 }

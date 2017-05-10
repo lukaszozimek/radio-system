@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network.configuration.core.user;
+package io.protone.web.api.cor;
 
 import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.swagger.annotations.*;
