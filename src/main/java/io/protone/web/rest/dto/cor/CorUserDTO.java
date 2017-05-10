@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.domain.CorUser;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,41 +16,32 @@ import static java.util.stream.Collectors.toList;
 /**
  * CorUserDTO
  */
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class CorUserDTO {
+public class CorUserDTO  implements Serializable{
 
-    @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("activated")
     private Boolean activated = null;
 
-    @JsonProperty("authorities")
+    @NotNull
     private List<String> authorities = new ArrayList<String>();
 
-    @JsonProperty("imageurl")
     private String imageurl = null;
 
-    @JsonProperty("email")
+    @NotNull
     private String email = null;
 
-    @JsonProperty("firstName")
     private String firstName = null;
 
-    @JsonProperty("langKey")
     private String langKey = null;
 
-    @JsonProperty("lastName")
     private String lastName = null;
 
-    @JsonProperty("login")
+    @NotNull
     private String login = null;
 
-    @JsonProperty("network")
     private CorNetworkDTO network;
 
-    @JsonProperty("channel")
     private List<CorChannelDTO> channel = null;
 
     public CorUserDTO(Long id) {

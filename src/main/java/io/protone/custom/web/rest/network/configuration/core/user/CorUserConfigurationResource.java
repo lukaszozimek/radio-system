@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public interface CorUserConfigurationResource {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "contactStatusPT", required = true) @RequestBody CorUserDTO corUserDTO);
+                                                  @ApiParam(value = "contactStatusPT", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createUser", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -66,7 +67,7 @@ public interface CorUserConfigurationResource {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CorUserDTO> createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                   @ApiParam(value = "contactStatusPT", required = true) @RequestBody CorUserDTO corUserDTO) throws URISyntaxException;
+                                                   @ApiParam(value = "contactStatusPT", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteUser", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -79,6 +80,6 @@ public interface CorUserConfigurationResource {
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteUserUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                           @ApiParam(value = "login", required = true) @PathVariable("login") String login);
+                                               @ApiParam(value = "login", required = true) @PathVariable("login") String login);
 
 }

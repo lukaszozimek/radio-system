@@ -4,6 +4,8 @@ import io.protone.ProtoneApp;
 import io.protone.custom.service.CorMailService;
 import io.protone.custom.service.CorUserService;
 import io.protone.custom.web.rest.network.configuration.core.user.impl.CorUserConfigurationResourceImpl;
+import io.protone.security.SecurityUtils;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.domain.CorDictionary;
@@ -16,26 +18,36 @@ import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.CorUserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.assertj.core.util.Sets;
+import org.hibernate.secure.spi.GrantedPermission;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -47,15 +59,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CorUserConfigurationResourceTest {
-    private static final String DEFAULT_LOGIN = "AAAAAAAAAA";
+    private static final String DEFAULT_LOGIN = "test";
     private static final String UPDATED_LOGIN = "BBBBBBBBBB";
 
     private static final String DEFAULT_PASSWORD_HASH = "AAAAAAAAAA";
     private static final String UPDATED_PASSWORD_HASH = "BBBBBBBBBB";
 
-    private static final String TEST_MODULE = "crm";
-
-    private static final String TEST_TYPE = "crmStage";
     @Autowired
     private CorUserRepository corUserRepository;
 
@@ -114,14 +123,14 @@ public class CorUserConfigurationResourceTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CorUserConfigurationResourceImpl corDictionaryResource = new CorUserConfigurationResourceImpl( corUserRepository,  corMailService,
-            corUserService,  corNetworkService);
+        CorUserConfigurationResourceImpl corUserConfigurationResource = new CorUserConfigurationResourceImpl(corUserRepository, corMailService,
+            corUserService, corNetworkService);
 
 
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
 
-        this.restCorUserMockMvc = MockMvcBuilders.standaloneSetup(corDictionaryResource)
+        this.restCorUserMockMvc = MockMvcBuilders.standaloneSetup(corUserConfigurationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
@@ -134,11 +143,17 @@ public class CorUserConfigurationResourceTest {
 
     @Test
     @Transactional
-    public void createCorDictionary() throws Exception {
+    public void createCorUser() throws Exception {
+        User principal = new User("admin", "", Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
+        SecurityContextImpl impl = new SecurityContextImpl();
+        impl.setAuthentication(new UsernamePasswordAuthenticationToken(principal,
+            "", Collections.singletonList(new SimpleGrantedAuthority("ADMIN"))));
+        SecurityContextHolder.setContext(impl);
+
         int databaseSizeBeforeCreate = corUserRepository.findAll().size();
 
         // Create the CorDictionary
-        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser);
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
         restCorUserMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -148,23 +163,22 @@ public class CorUserConfigurationResourceTest {
         // Validate the CorDictionary in the database
         List<CorUser> corDictionaryLallst = corUserRepository.findAll();
         assertThat(corDictionaryLallst).hasSize(databaseSizeBeforeCreate + 1);
-        CorUser testCorDictionary = corDictionaryLallst.get(corDictionaryLallst.size() - 1);
-        assertThat(testCorDictionary.getLogin()).isEqualTo(DEFAULT_LOGIN);
-        assertThat(testCorDictionary.getPasswordhash()).isEqualTo(DEFAULT_PASSWORD_HASH);
-        assertThat(testCorDictionary.getEmail()).isEqualTo(TEST_TYPE);
-        assertThat(testCorDictionary.getAuthorities().stream().findFirst().get().getName()).isEqualTo(AuthoritiesConstants.ADMIN);
+        CorUser corUser = corDictionaryLallst.get(corDictionaryLallst.size() - 1);
+        assertThat(corUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
 
     }
 
     @Test
     @Transactional
-    public void createCorDictionaryWithExistingId() throws Exception {
+    public void createCorUserWithExistingId() throws Exception {
+
+        corUserRepository.deleteAll();
         int databaseSizeBeforeCreate = corUserRepository.findAll().size();
 
         // Create the CorDictionary with an existing ID
         CorUser existingCorDictionary = new CorUser();
         existingCorDictionary.setId(1L);
-        CorUserDTO existingCorDictionaryDTO = corUserMapper.DB2DTO(existingCorDictionary);
+        CorUserDTO existingCorDictionaryDTO = corUserMapper.DB2DTO(existingCorDictionary.networks(Sets.newLinkedHashSet(corNetwork)));
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCorUserMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
@@ -179,8 +193,9 @@ public class CorUserConfigurationResourceTest {
 
     @Test
     @Transactional
-    public void getAllCorDictionaries() throws Exception {
+    public void getAllCorUsers() throws Exception {
         // Initialize the database
+        corUserRepository.deleteAll();
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
         // Get all the corDictionaryList
@@ -188,29 +203,28 @@ public class CorUserConfigurationResourceTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(corUser.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_LOGIN.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_PASSWORD_HASH.toString())));
+            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN.toString())));
     }
 
     @Test
     @Transactional
-    public void getCorDictionary() throws Exception {
+    public void getCorUser() throws Exception {
+
+        corUserRepository.deleteAll();
         // Initialize the database
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
-/*
+
         // Get the corUser
-        restCorUserMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getId()))
+        restCorUserMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), corUser.getLogin()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(corUser.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_LOGIN.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_PASSWORD_HASH.toString()))
-            .andExpect(jsonPath("$.seqNumber").value(DEFAULT_SEQ_NUMBER.intValue()));*/
+            .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN.toString()));
     }
 
     @Test
     @Transactional
-    public void getNonExistingCorDictionary() throws Exception {
+    public void getNonExistingCorUser() throws Exception {
         // Get the corUser
         restCorUserMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/user/{login}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -218,18 +232,19 @@ public class CorUserConfigurationResourceTest {
 
     @Test
     @Transactional
-    public void updateCorDictionary() throws Exception {
+    public void updateCorUser() throws Exception {
+
+        corUserRepository.deleteAll();
         // Initialize the database
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
         int databaseSizeBeforeUpdate = corUserRepository.findAll().size();
-/*
+
         // Update the corUser
-        CorUser updatedCorDictionary = corUserRepository.findOne(corUser.getId());
-        updatedCorDictionary
-            .name(UPDATED_LOGIN)
-            .description(UPDATED_PASSWORD_HASH)
-            .seqNumber(UPDATED_SEQ_NUMBER);
-        CorDictionaryDTO corDictionaryDTO = corUserService.DB2DTO(updatedCorDictionary);
+        CorUser corUser1 = corUserRepository.findOne(corUser.getId());
+        corUser1
+            .login(UPDATED_LOGIN)
+            .passwordhash(UPDATED_PASSWORD_HASH);
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser1);
 
         restCorUserMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -240,24 +255,22 @@ public class CorUserConfigurationResourceTest {
         List<CorUser> corUsers = corUserRepository.findAll();
         assertThat(corUsers).hasSize(databaseSizeBeforeUpdate);
         CorUser corUser = corUsers.get(corUsers.size() - 1);
-  */
-        /*
-        assertThat(corUser.getName()).isEqualTo(UPDATED_LOGIN);
-        assertThat(corUser.getDescription()).isEqualTo(UPDATED_PASSWORD_HASH);
-        assertThat(corUser.getCorDictionaryType()).isEqualTo(TEST_TYPE);
-        assertThat(corUser.getSeqNumber()).isEqualTo(UPDATED_SEQ_NUMBER);
-        assertThat(corUser.getCorModule()).isEqualTo(TEST_MODULE);*/
+
+        assertThat(corUser.getLogin()).isEqualTo(UPDATED_LOGIN);
+        assertThat(corUser.getPasswordhash()).isEqualTo(UPDATED_PASSWORD_HASH);
     }
 
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    public void checkLoginIsRequired() throws Exception {
+
+        corUserRepository.deleteAll();
         int databaseSizeBeforeTest = corUserRepository.findAll().size();
         // set the field null
         corUser.setLogin(null);
-/*
+
         // Create the LibLibrary, which fails.
-        CorDictionaryDTO corDictionaryDTO = corUserService.DB2DTO(corUser);
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
         restCorUserMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -266,17 +279,25 @@ public class CorUserConfigurationResourceTest {
 
         List<CorUser> libLibraryList = corUserRepository.findAll();
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
-  */
     }
 
     @Test
     @Transactional
-    public void updateNonExistingCorDictionary() throws Exception {
+    public void updateNonExistingCorUser() throws Exception {
+
+        User principal = new User("admin", "", Collections.singletonList(new SimpleGrantedAuthority("ADMIN")));
+        SecurityContextImpl impl = new SecurityContextImpl();
+        impl.setAuthentication(new UsernamePasswordAuthenticationToken(principal,
+            "", Collections.singletonList(new SimpleGrantedAuthority("ADMIN"))));
+        SecurityContextHolder.setContext(impl);
+
         int databaseSizeBeforeUpdate = corUserRepository.findAll().size();
 
         // Create the CorDictionary
-        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser);
-
+        CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
+        corDictionaryDTO.setLogin("xxxxxx");
+        corDictionaryDTO.setEmail("lfllflflflflf@com.pl");
+        corDictionaryDTO.setId(null);
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCorUserMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/user", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -291,6 +312,8 @@ public class CorUserConfigurationResourceTest {
     @Test
     @Transactional
     public void deleteCorDictionary() throws Exception {
+
+        corUserRepository.deleteAll();
         // Initialize the database
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
         int databaseSizeBeforeDelete = corUserRepository.findAll().size();

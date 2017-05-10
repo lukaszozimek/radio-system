@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -52,10 +53,8 @@ import java.util.Optional;
 @RestController
 public class CorUserConfigurationResourceImpl implements CorUserConfigurationResource {
 
-    private final Logger log = LoggerFactory.getLogger(CorUserConfigurationResourceImpl.class);
-
     private static final String ENTITY_NAME = "userManagement";
-
+    private final Logger log = LoggerFactory.getLogger(CorUserConfigurationResourceImpl.class);
     private final CorUserRepository userRepository;
 
     private final CorMailService mailService;
@@ -88,9 +87,12 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     @Override
     public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                              @ApiParam(value = "corUserDTO", required = true) @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
+                                              @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", corUserDTO);
 
+        if (corUserDTO.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "createExistingUser", "")).body(null);
+        }
         //Lowercase the user login before comparing with database
         if (userRepository.findOneByLogin(corUserDTO.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
@@ -121,7 +123,10 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     @Override
     public ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "corUserDTO", required = true) @RequestBody CorUserDTO corUserDTO) {
+                                                         @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
+        if (corUserDTO.getId() == null) {
+            return createUserUsingPOST(networkShortcut, corUserDTO);
+        }
         log.debug("REST request to update User : {}", corUserDTO);
         Optional<CorUser> existingUser = userRepository.findOneByEmail(corUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(corUserDTO.getId()))) {
