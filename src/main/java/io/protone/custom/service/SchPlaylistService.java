@@ -7,14 +7,17 @@ import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
-import io.protone.repository.custom.CustomCorChannelRepository;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
+import io.protone.service.cor.CorChannelService;
+import io.protone.service.cor.CorNetworkService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +25,8 @@ import java.util.Optional;
 @Service
 @Transactional
 public class SchPlaylistService {
+
+    private final Logger log = LoggerFactory.getLogger(SchPlaylistService.class);
 
     @Inject
     private CorNetworkService networkService;
@@ -36,7 +41,7 @@ public class SchPlaylistService {
     private CustomSchPlaylistMapper playlistMapper;
 
     @Inject
-    private CustomCorChannelRepository channelRepository;
+    private CorChannelRepository channelRepository;
 
     @Inject
     private SchBlockService blockService;
@@ -48,20 +53,19 @@ public class SchPlaylistService {
     private BlockUtils blockUtils;
 
     public SchPlaylistPT randomPlaylist(String networkShortcut, String channelShortcut, String date) {
-        CorChannel channelDB = channelService.getChannel(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         LocalDate localDate = LocalDate.parse(date);
 
         return new SchPlaylistPT()
-            .channelId(channelDB.getId())
-            .date(localDate)
-            .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
+            .date(localDate);
+          //  .blocks(blockUtils.sampleDay(localDate.atStartOfDay(ZoneOffset.UTC)));
     }
 
     private SchPlaylistPT savePlaylist(SchPlaylistPT playlist) {
         SchPlaylist playlistDB = playlistMapper.DTOToDB(playlist);
         playlistDB = playlistRepository.saveAndFlush(playlistDB);
         SchPlaylistPT result = playlistMapper.DBToDTO(playlistDB);
-        result.blocks(blockService.setBlocks(playlist.getBlocks(), result, null));
+      //  result.blocks(blockService.setClocks(playlist.getBlocks(), result, null));
         return result;
     }
 
@@ -100,12 +104,12 @@ public class SchPlaylistService {
     public SchPlaylistPT getPlaylistByChannelAndDate(String networkShortcut, String channelShortcut, String date) {
 
         SchPlaylistPT result = null;
-        CorChannel channelDB = channelService.getChannel(networkShortcut, channelShortcut);
+        CorChannel channelDB = channelService.findChannel(networkShortcut, channelShortcut);
         Optional<SchPlaylist> optionalPlaylist = playlistRepository.findByChannelAndDate(channelDB, LocalDate.parse(date));
         if (optionalPlaylist.isPresent()) {
             result = playlistMapper.DBToDTO(optionalPlaylist.get());
             result.blocks(new ArrayList<>());
-            result.blocks(blockService.getBlocks(result, null, null));
+           // result.blocks(blockService.getBlocks(result, null, null));
         }
         return result;
     }

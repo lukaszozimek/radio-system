@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,29 +26,36 @@ public class TraInvoice implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @Column(name = "paid")
     private Boolean paid;
 
-    @Column(name = "price", precision=10, scale=2)
+    @Column(name = "price", precision = 10, scale = 2)
+    @PodamExclude
     private BigDecimal price;
 
     @Column(name = "payment_day")
     private LocalDate paymentDay;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount customer;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
-    private TraInvoiceStatus status;
+    @PodamExclude
+    private CorDictionary status;
 
     @OneToMany(mappedBy = "invoice")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+
+    @PodamExclude
     private Set<TraOrder> orders = new HashSet<>();
 
     public Long getId() {
@@ -123,17 +131,17 @@ public class TraInvoice implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraInvoiceStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public TraInvoice status(TraInvoiceStatus traInvoiceStatus) {
-        this.status = traInvoiceStatus;
+    public TraInvoice status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(TraInvoiceStatus traInvoiceStatus) {
-        this.status = traInvoiceStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public Set<TraOrder> getOrders() {

@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
-
-@Api(value = "custom", description = "the api API")
+@Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiChannelPlayoutShot {
 
 
@@ -19,7 +17,7 @@ public interface ApiChannelPlayoutShot {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/play",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/play",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -35,7 +33,7 @@ public interface ApiChannelPlayoutShot {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/stop",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/stop",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -51,7 +49,7 @@ public interface ApiChannelPlayoutShot {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/pause",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/pause",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -67,15 +65,12 @@ public interface ApiChannelPlayoutShot {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/unload",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/playout/shot/{shortName}/unload",
         produces = { "*/*" },
         consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Void> unloadShotUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
-
-
-
 
 }

@@ -14,12 +14,10 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface CustomSchPlaylistMapper {
 
-    @Mapping(source = "channel.id", target = "channelId")
     SchPlaylistPT DBToDTO(SchPlaylist schPlaylist);
 
     List<SchPlaylistPT> DBsToDTOs(List<SchPlaylist> schPlaylists);
 
-    @Mapping(source = "channelId", target = "channel")
     SchPlaylist DTOToDB(SchPlaylistPT dto);
 
     List<SchPlaylist> DTOsToDBs(List<SchPlaylistPT> dtos);

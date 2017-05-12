@@ -3,6 +3,7 @@ package io.protone.domain;
 import io.protone.domain.enumeration.CorContactTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ public class CorContact implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @NotNull
@@ -36,9 +38,11 @@ public class CorContact implements Serializable {
     private CorContactTypeEnum contactType;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private CorPerson person;
 
     public Long getId() {

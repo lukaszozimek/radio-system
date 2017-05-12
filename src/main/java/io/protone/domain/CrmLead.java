@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class CrmLead implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @Column(name = "name")
@@ -36,33 +38,42 @@ public class CrmLead implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorPerson person;
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorAddress addres;
 
     @ManyToOne
-    private CrmLeadStatus leadStatus;
+    @PodamExclude
+    private CorDictionary leadStatus;
 
     @ManyToOne
-    private CrmLeadSource leadSource;
+    @PodamExclude
+    private CorDictionary leadSource;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
-    private TraIndustry industry;
+    @PodamExclude
+    private CorDictionary industry;
 
     @ManyToOne
-    private CorArea area;
+    @PodamExclude
+    private CorDictionary area;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @OneToMany(mappedBy = "lead")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CrmTask> tasks = new HashSet<>();
 
     public Long getId() {
@@ -138,30 +149,30 @@ public class CrmLead implements Serializable {
         this.addres = corAddress;
     }
 
-    public CrmLeadStatus getLeadStatus() {
+    public CorDictionary getLeadStatus() {
         return leadStatus;
     }
 
-    public CrmLead leadStatus(CrmLeadStatus crmLeadStatus) {
-        this.leadStatus = crmLeadStatus;
+    public CrmLead leadStatus(CorDictionary corDictionary) {
+        this.leadStatus = corDictionary;
         return this;
     }
 
-    public void setLeadStatus(CrmLeadStatus crmLeadStatus) {
-        this.leadStatus = crmLeadStatus;
+    public void setLeadStatus(CorDictionary corDictionary) {
+        this.leadStatus = corDictionary;
     }
 
-    public CrmLeadSource getLeadSource() {
+    public CorDictionary getLeadSource() {
         return leadSource;
     }
 
-    public CrmLead leadSource(CrmLeadSource crmLeadSource) {
-        this.leadSource = crmLeadSource;
+    public CrmLead leadSource(CorDictionary corDictionary) {
+        this.leadSource = corDictionary;
         return this;
     }
 
-    public void setLeadSource(CrmLeadSource crmLeadSource) {
-        this.leadSource = crmLeadSource;
+    public void setLeadSource(CorDictionary corDictionary) {
+        this.leadSource = corDictionary;
     }
 
     public CorUser getKeeper() {
@@ -177,30 +188,30 @@ public class CrmLead implements Serializable {
         this.keeper = corUser;
     }
 
-    public TraIndustry getIndustry() {
+    public CorDictionary getIndustry() {
         return industry;
     }
 
-    public CrmLead industry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
+    public CrmLead industry(CorDictionary corDictionary) {
+        this.industry = corDictionary;
         return this;
     }
 
-    public void setIndustry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
+    public void setIndustry(CorDictionary corDictionary) {
+        this.industry = corDictionary;
     }
 
-    public CorArea getArea() {
+    public CorDictionary getArea() {
         return area;
     }
 
-    public CrmLead area(CorArea corArea) {
-        this.area = corArea;
+    public CrmLead area(CorDictionary corDictionary) {
+        this.area = corDictionary;
         return this;
     }
 
-    public void setArea(CorArea corArea) {
-        this.area = corArea;
+    public void setArea(CorDictionary corDictionary) {
+        this.area = corDictionary;
     }
 
     public CorNetwork getNetwork() {

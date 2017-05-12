@@ -1,21 +1,19 @@
 package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 
 
-import io.protone.custom.service.CorNetworkService;
-import io.protone.custom.service.dto.ConfCrmContactStatusPT;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfMusicLogPT;
-import io.protone.custom.service.mapper.CustomConfMusicLogMapper;
-import io.protone.custom.web.rest.network.configuration.crm.impl.ApiConfigurationCrmDictionaryContactStatusImpl;
+import io.protone.web.rest.mapper.ConfMusicLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogMusic;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmContactStatus;
 import io.protone.domain.enumeration.CfgLogTypeEnum;
-import io.protone.repository.CfgExternalSystemLogRepository;
+import io.protone.repository.cfg.CfgExternalSystemLogRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +32,7 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CustomConfMusicLogMapper confCommercialLogMapper;
+    private ConfMusicLogMapper confCommercialLogMapper;
 
     @Inject
     private CfgExternalSystemLogRepository cfgExternalSystemLogRepository;
@@ -46,8 +44,7 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
             return createMusicLogConfigurationUsingPOST(networkShortcut, confMusicLogPT);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT);
-        cfgExternalSystemLog.setNetwork(corNetwork);
+        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT, corNetwork);
 
         cfgExternalSystemLog.setLogColumn(CfgLogTypeEnum.LT_MUSIC);
         cfgExternalSystemLog = cfgExternalSystemLogRepository.save(cfgExternalSystemLog);
@@ -64,7 +61,7 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CfgExternalSystemLog", "idexists", "A new CfgExternalSystemLog cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT);
+        CfgExternalSystemLog cfgExternalSystemLog = confCommercialLogMapper.DTO2DB(confMusicLogPT, corNetwork);
 
         cfgExternalSystemLog.setNetwork(corNetwork);
         cfgExternalSystemLog.setLogColumn(CfgLogTypeEnum.LT_MUSIC);
@@ -82,7 +79,8 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
     }
 
     @Override
-    public ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<ConfMusicLogPT>> getAllMusicLogConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CfgExternalSystemLog : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 

@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,6 +27,7 @@ public class TraCampaign implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @NotNull
@@ -43,20 +45,25 @@ public class TraCampaign implements Serializable {
     private Long prize;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount customer;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
-    private TraCampaingStatus status;
+    @PodamExclude
+    private CorDictionary status;
 
     @ManyToOne
+    @PodamExclude
     private TraPrice price;
 
     @OneToMany(mappedBy = "campaign")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<TraOrder> orders = new HashSet<>();
 
     public Long getId() {
@@ -145,17 +152,17 @@ public class TraCampaign implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraCampaingStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public TraCampaign status(TraCampaingStatus traCampaingStatus) {
-        this.status = traCampaingStatus;
+    public TraCampaign status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(TraCampaingStatus traCampaingStatus) {
-        this.status = traCampaingStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraPrice getPrice() {

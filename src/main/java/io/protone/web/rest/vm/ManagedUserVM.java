@@ -1,6 +1,6 @@
 package io.protone.web.rest.vm;
 
-import io.protone.service.dto.UserDTO;
+import io.protone.web.rest.dto.UserDTO;
 import javax.validation.constraints.Size;
 
 import java.time.ZonedDateTime;

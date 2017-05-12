@@ -2,6 +2,7 @@ package io.protone.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,23 +35,24 @@ public class TraAdvertisement implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private LibMediaItem mediaItem;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LibMediaItem libitem;
-
     @ManyToOne
+    @PodamExclude
     private CrmAccount customer;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
-    private TraIndustry industry;
+    @PodamExclude
+    private CorDictionary industry;
 
     @ManyToOne
-    private TraAdvertismentType type;
+    @PodamExclude
+    private CorDictionary type;
 
     public Long getId() {
         return id;
@@ -99,19 +101,6 @@ public class TraAdvertisement implements Serializable {
         this.mediaItem = libMediaItem;
     }
 
-    public LibMediaItem getLibitem() {
-        return libitem;
-    }
-
-    public TraAdvertisement libitem(LibMediaItem libMediaItem) {
-        this.libitem = libMediaItem;
-        return this;
-    }
-
-    public void setLibitem(LibMediaItem libMediaItem) {
-        this.libitem = libMediaItem;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
     }
@@ -138,30 +127,30 @@ public class TraAdvertisement implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraIndustry getIndustry() {
+    public CorDictionary getIndustry() {
         return industry;
     }
 
-    public TraAdvertisement industry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
+    public TraAdvertisement industry(CorDictionary corDictionary) {
+        this.industry = corDictionary;
         return this;
     }
 
-    public void setIndustry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
+    public void setIndustry(CorDictionary corDictionary) {
+        this.industry = corDictionary;
     }
 
-    public TraAdvertismentType getType() {
+    public CorDictionary getType() {
         return type;
     }
 
-    public TraAdvertisement type(TraAdvertismentType traAdvertismentType) {
-        this.type = traAdvertismentType;
+    public TraAdvertisement type(CorDictionary corDictionary) {
+        this.type = corDictionary;
         return this;
     }
 
-    public void setType(TraAdvertismentType traAdvertismentType) {
-        this.type = traAdvertismentType;
+    public void setType(CorDictionary corDictionary) {
+        this.type = corDictionary;
     }
 
     @Override

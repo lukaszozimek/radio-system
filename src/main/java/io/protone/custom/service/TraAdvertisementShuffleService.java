@@ -1,14 +1,14 @@
 package io.protone.custom.service;
 
 import io.protone.custom.service.dto.TraShuffleAdvertisementPT;
-import io.protone.custom.service.mapper.CustomLibMediaItemMapper;
 import io.protone.domain.SchBlock;
 import io.protone.domain.SchEmission;
 import io.protone.domain.TraAdvertisement;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
-import io.protone.repository.custom.CustomTraAdvertisementRepository;
+import io.protone.repository.traffic.TraAdvertisementRepository;
+import io.protone.web.rest.mapper.LibItemMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,7 @@ import java.util.List;
  */
 @Service
 public class TraAdvertisementShuffleService {
+
     private final Logger log = LoggerFactory.getLogger(TraAdvertisementShuffleService.class);
 
     @Inject
@@ -30,15 +31,15 @@ public class TraAdvertisementShuffleService {
     private CustomSchEmissionRepository schEmissionRepository;
 
     @Inject
-    private CustomTraAdvertisementRepository customTraAdvertisementRepository;
+    private TraAdvertisementRepository traAdvertisementRepository;
 
     @Inject
-    private CustomLibMediaItemMapper customLibMediaItemMapper;
+    private LibItemMapper libItemMapper;
 
     public void shuffleCommercials(TraShuffleAdvertisementPT tarShuffleAdvertisementPT) {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
-        TraAdvertisement traAdvertisement = customTraAdvertisementRepository.findOne(tarShuffleAdvertisementPT.getTraAdvertisementPT().getId());
+        TraAdvertisement traAdvertisement = traAdvertisementRepository.findOne(tarShuffleAdvertisementPT.getTraAdvertisementDTO().getId());
         log.debug("Found advertisment {}", traAdvertisement.getId());
         List<SchBlock> schBlockList = customSchBlockRepository.findByScheduledStartTimeBetweenAndType(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), SchBlockTypeEnum.BT_COMMERCIAL);
         log.debug("Found number of blocks in range : {}", schBlockList.size());
@@ -51,11 +52,11 @@ public class TraAdvertisementShuffleService {
                 List<SchEmission> schEmissionList = schEmissionRepository.findByBlock(schBlockList.get(blockIndex));
                 long numberOfAdvertisements = schEmissionList.stream()
                     .filter(schEmission ->
-                        schEmission.getMediaItem().getIdx().equalsIgnoreCase(tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId().getIdx())).count();
+                        schEmission.getMediaItem().getIdx().equalsIgnoreCase(tarShuffleAdvertisementPT.getTraAdvertisementDTO().getMediaItemId().getIdx())).count();
                 ///Add Filtering by lenghtScheduledTime
                 if (numberOfAdvertisements == 0) {
                     SchBlock schBlock = schBlockList.get(blockIndex);
-                    SchEmission emission = new SchEmission().block(schBlock).seq(schEmissionList.size() + 1).mediaItem(customLibMediaItemMapper.lIBMediaItemPTToLibMediaItem(tarShuffleAdvertisementPT.getTraAdvertisementPT().getMediaItemId()));
+                    //     SchEmission emission = new SchEmission().block(schBlock).seq(schEmissionList.size() + 1).mediaItem(libItemMapper.DTO2DB(tarShuffleAdvertisementPT.getTraAdvertisementDTO().getMediaItemId()));
                     numberOfCommercialsShuffled++;
                 }
             } else {

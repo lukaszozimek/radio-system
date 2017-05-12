@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +22,7 @@ public class CrmAccount implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @PodamExclude
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
@@ -44,39 +46,50 @@ public class CrmAccount implements Serializable {
     private String vatNumber;
 
     @OneToOne
+    @PodamExclude
     @JoinColumn(unique = true)
     private CorPerson person;
 
     @OneToOne
+    @PodamExclude
     @JoinColumn(unique = true)
     private CorAddress addres;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private TraDiscount discount;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
+    @PodamExclude
     private CorCountry country;
 
     @ManyToOne
-    private CorRange range;
+    @PodamExclude
+    private CorDictionary range;
 
     @ManyToOne
-    private CorSize size;
+    @PodamExclude
+    private CorDictionary size;
 
     @ManyToOne
-    private TraIndustry industry;
+    @PodamExclude
+    private CorDictionary industry;
 
     @ManyToOne
-    private CorArea area;
+    @PodamExclude
+    private CorDictionary area;
 
     @OneToMany(mappedBy = "account")
     @JsonIgnore
+    @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CrmTask> tasks = new HashSet<>();
 
@@ -244,55 +257,55 @@ public class CrmAccount implements Serializable {
         this.country = corCountry;
     }
 
-    public CorRange getRange() {
+    public CorDictionary getRange() {
         return range;
     }
 
-    public CrmAccount range(CorRange corRange) {
+    public CrmAccount range(CorDictionary corRange) {
         this.range = corRange;
         return this;
     }
 
-    public void setRange(CorRange corRange) {
+    public void setRange(CorDictionary corRange) {
         this.range = corRange;
     }
 
-    public CorSize getSize() {
+    public CorDictionary getSize() {
         return size;
     }
 
-    public CrmAccount size(CorSize corSize) {
+    public CrmAccount size(CorDictionary corSize) {
         this.size = corSize;
         return this;
     }
 
-    public void setSize(CorSize corSize) {
+    public void setSize(CorDictionary corSize) {
         this.size = corSize;
     }
 
-    public TraIndustry getIndustry() {
+    public CorDictionary getIndustry() {
         return industry;
     }
 
-    public CrmAccount industry(TraIndustry traIndustry) {
+    public CrmAccount industry(CorDictionary traIndustry) {
         this.industry = traIndustry;
         return this;
     }
 
-    public void setIndustry(TraIndustry traIndustry) {
+    public void setIndustry(CorDictionary traIndustry) {
         this.industry = traIndustry;
     }
 
-    public CorArea getArea() {
+    public CorDictionary getArea() {
         return area;
     }
 
-    public CrmAccount area(CorArea corArea) {
+    public CrmAccount area(CorDictionary corArea) {
         this.area = corArea;
         return this;
     }
 
-    public void setArea(CorArea corArea) {
+    public void setArea(CorDictionary corArea) {
         this.area = corArea;
     }
 

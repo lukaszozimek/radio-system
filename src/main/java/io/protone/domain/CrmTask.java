@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,34 +40,44 @@ public class CrmTask implements Serializable {
     private String comment;
 
     @ManyToOne
+    @PodamExclude
     private CorUser createdBy;
 
     @ManyToOne
+    @PodamExclude
     private CorUser assignedTo;
 
     @ManyToOne
-    private CrmTaskStatus status;
+    @PodamExclude
+    private CorDictionary status;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private CrmOpportunity opportunity;
 
     @ManyToOne
+    @PodamExclude
     private CrmContact contact;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount account;
 
     @ManyToOne
+    @PodamExclude
     private CrmLead lead;
 
     @ManyToOne
+    @PodamExclude
     private CrmTask tasks;
 
     @OneToMany(mappedBy = "taskComment")
     @JsonIgnore
+    @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CrmTaskComment> comments = new HashSet<>();
 
@@ -156,17 +167,17 @@ public class CrmTask implements Serializable {
         this.assignedTo = corUser;
     }
 
-    public CrmTaskStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public CrmTask status(CrmTaskStatus crmTaskStatus) {
-        this.status = crmTaskStatus;
+    public CrmTask status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(CrmTaskStatus crmTaskStatus) {
-        this.status = crmTaskStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public CorNetwork getNetwork() {

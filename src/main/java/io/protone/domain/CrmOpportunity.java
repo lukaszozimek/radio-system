@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,26 +40,33 @@ public class CrmOpportunity implements Serializable {
     private Integer probability;
 
     @ManyToOne
-    private CrmStage stage;
+    @PodamExclude
+    private CorDictionary stage;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
+    @PodamExclude
     private CrmContact contact;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount account;
 
     @ManyToOne
+    @PodamExclude
     private CrmLead lead;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @OneToMany(mappedBy = "opportunity")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<CrmTask> tasks = new HashSet<>();
 
     public Long getId() {
@@ -121,17 +129,17 @@ public class CrmOpportunity implements Serializable {
         this.probability = probability;
     }
 
-    public CrmStage getStage() {
+    public CorDictionary getStage() {
         return stage;
     }
 
-    public CrmOpportunity stage(CrmStage crmStage) {
-        this.stage = crmStage;
+    public CrmOpportunity stage(CorDictionary corDictionary) {
+        this.stage = corDictionary;
         return this;
     }
 
-    public void setStage(CrmStage crmStage) {
-        this.stage = crmStage;
+    public void setStage(CorDictionary corDictionary) {
+        this.stage = corDictionary;
     }
 
     public CorUser getKeeper() {

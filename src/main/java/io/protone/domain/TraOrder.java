@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -26,6 +27,7 @@ public class TraOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @NotNull
@@ -43,29 +45,37 @@ public class TraOrder implements Serializable {
     private Long calculatedPrize;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount customer;
 
     @ManyToOne
+    @PodamExclude
     private TraPrice price;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
-    private TraOrderStatus status;
+    @PodamExclude
+    private CorDictionary status;
 
     @ManyToOne
+    @PodamExclude
     private TraAdvertisement advertisment;
 
     @ManyToOne
+    @PodamExclude
     private TraCampaign campaign;
 
     @ManyToOne
+    @PodamExclude
     private TraInvoice invoice;
 
     @OneToMany(mappedBy = "order")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<SchEmission> emissions = new HashSet<>();
 
     public Long getId() {
@@ -167,17 +177,17 @@ public class TraOrder implements Serializable {
         this.network = corNetwork;
     }
 
-    public TraOrderStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public TraOrder status(TraOrderStatus traOrderStatus) {
-        this.status = traOrderStatus;
+    public TraOrder status(CorDictionary corDictionary) {
+        this.status = corDictionary;
         return this;
     }
 
-    public void setStatus(TraOrderStatus traOrderStatus) {
-        this.status = traOrderStatus;
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraAdvertisement getAdvertisment() {

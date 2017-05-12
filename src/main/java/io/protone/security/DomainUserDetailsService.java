@@ -1,10 +1,7 @@
 package io.protone.security;
 
 import io.protone.domain.CorUser;
-import io.protone.domain.User;
-import io.protone.repository.CorUserRepository;
-import io.protone.repository.UserRepository;
-import io.protone.repository.custom.CustomCorUserRepository;
+import io.protone.repository.cor.CorUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,9 +23,9 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
 
-    private final CustomCorUserRepository userRepository;
+    private final CorUserRepository userRepository;
 
-    public DomainUserDetailsService(CustomCorUserRepository userRepository) {
+    public DomainUserDetailsService(CorUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

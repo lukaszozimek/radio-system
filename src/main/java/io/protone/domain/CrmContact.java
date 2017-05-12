@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,39 +50,50 @@ public class CrmContact implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorAddress addres;
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorCountry country;
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private CorPerson person;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
-    private CorRange range;
+    @PodamExclude
+    private CorDictionary range;
 
     @ManyToOne
-    private CorSize size;
+    @PodamExclude
+    private CorDictionary size;
 
     @ManyToOne
-    private TraIndustry industry;
+    @PodamExclude
+    private CorDictionary industry;
 
     @ManyToOne
-    private CorArea area;
+    @PodamExclude
+    private CorDictionary area;
 
     @ManyToOne
+    @PodamExclude
     private CorUser keeper;
 
     @ManyToOne
-    private CrmContactStatus status;
+    @PodamExclude
+    private CorDictionary status;
 
     @OneToMany(mappedBy = "contact")
     @JsonIgnore
+    @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CrmTask> tasks = new HashSet<>();
 
@@ -97,17 +109,21 @@ public class CrmContact implements Serializable {
         return shortName;
     }
 
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public CrmContact shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public String getExternalId1() {
         return externalId1;
+    }
+
+    public void setExternalId1(String externalId1) {
+        this.externalId1 = externalId1;
     }
 
     public CrmContact externalId1(String externalId1) {
@@ -115,12 +131,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setExternalId1(String externalId1) {
-        this.externalId1 = externalId1;
-    }
-
     public String getExternalId2() {
         return externalId2;
+    }
+
+    public void setExternalId2(String externalId2) {
+        this.externalId2 = externalId2;
     }
 
     public CrmContact externalId2(String externalId2) {
@@ -128,12 +144,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setExternalId2(String externalId2) {
-        this.externalId2 = externalId2;
-    }
-
     public LocalDate getPaymentDate() {
         return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     public CrmContact paymentDate(LocalDate paymentDate) {
@@ -141,12 +157,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setPaymentDate(LocalDate paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CrmContact name(String name) {
@@ -154,12 +170,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getPaymentDelay() {
         return paymentDelay;
+    }
+
+    public void setPaymentDelay(Integer paymentDelay) {
+        this.paymentDelay = paymentDelay;
     }
 
     public CrmContact paymentDelay(Integer paymentDelay) {
@@ -167,12 +183,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setPaymentDelay(Integer paymentDelay) {
-        this.paymentDelay = paymentDelay;
-    }
-
     public String getVatNumber() {
         return vatNumber;
+    }
+
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
     }
 
     public CrmContact vatNumber(String vatNumber) {
@@ -180,12 +196,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setVatNumber(String vatNumber) {
-        this.vatNumber = vatNumber;
-    }
-
     public CorAddress getAddres() {
         return addres;
+    }
+
+    public void setAddres(CorAddress corAddress) {
+        this.addres = corAddress;
     }
 
     public CrmContact addres(CorAddress corAddress) {
@@ -193,12 +209,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setAddres(CorAddress corAddress) {
-        this.addres = corAddress;
-    }
-
     public CorCountry getCountry() {
         return country;
+    }
+
+    public void setCountry(CorCountry corCountry) {
+        this.country = corCountry;
     }
 
     public CrmContact country(CorCountry corCountry) {
@@ -206,12 +222,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setCountry(CorCountry corCountry) {
-        this.country = corCountry;
-    }
-
     public CorPerson getPerson() {
         return person;
+    }
+
+    public void setPerson(CorPerson corPerson) {
+        this.person = corPerson;
     }
 
     public CrmContact person(CorPerson corPerson) {
@@ -219,12 +235,12 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setPerson(CorPerson corPerson) {
-        this.person = corPerson;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CrmContact network(CorNetwork corNetwork) {
@@ -232,64 +248,64 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public CorRange getRange() {
+    public CorDictionary getRange() {
         return range;
     }
 
-    public CrmContact range(CorRange corRange) {
+    public void setRange(CorDictionary corRange) {
+        this.range = corRange;
+    }
+
+    public CrmContact range(CorDictionary corRange) {
         this.range = corRange;
         return this;
     }
 
-    public void setRange(CorRange corRange) {
-        this.range = corRange;
-    }
-
-    public CorSize getSize() {
+    public CorDictionary getSize() {
         return size;
     }
 
-    public CrmContact size(CorSize corSize) {
+    public void setSize(CorDictionary corSize) {
+        this.size = corSize;
+    }
+
+    public CrmContact size(CorDictionary corSize) {
         this.size = corSize;
         return this;
     }
 
-    public void setSize(CorSize corSize) {
-        this.size = corSize;
-    }
-
-    public TraIndustry getIndustry() {
+    public CorDictionary getIndustry() {
         return industry;
     }
 
-    public CrmContact industry(TraIndustry traIndustry) {
+    public void setIndustry(CorDictionary traIndustry) {
+        this.industry = traIndustry;
+    }
+
+    public CrmContact industry(CorDictionary traIndustry) {
         this.industry = traIndustry;
         return this;
     }
 
-    public void setIndustry(TraIndustry traIndustry) {
-        this.industry = traIndustry;
-    }
-
-    public CorArea getArea() {
+    public CorDictionary getArea() {
         return area;
     }
 
-    public CrmContact area(CorArea corArea) {
+    public void setArea(CorDictionary corArea) {
         this.area = corArea;
-        return this;
     }
 
-    public void setArea(CorArea corArea) {
+    public CrmContact area(CorDictionary corArea) {
         this.area = corArea;
+        return this;
     }
 
     public CorUser getKeeper() {
         return keeper;
+    }
+
+    public void setKeeper(CorUser corUser) {
+        this.keeper = corUser;
     }
 
     public CrmContact keeper(CorUser corUser) {
@@ -297,25 +313,25 @@ public class CrmContact implements Serializable {
         return this;
     }
 
-    public void setKeeper(CorUser corUser) {
-        this.keeper = corUser;
-    }
-
-    public CrmContactStatus getStatus() {
+    public CorDictionary getStatus() {
         return status;
     }
 
-    public CrmContact status(CrmContactStatus crmContactStatus) {
+    public void setStatus(CorDictionary crmContactStatus) {
+        this.status = crmContactStatus;
+    }
+
+    public CrmContact status(CorDictionary crmContactStatus) {
         this.status = crmContactStatus;
         return this;
     }
 
-    public void setStatus(CrmContactStatus crmContactStatus) {
-        this.status = crmContactStatus;
-    }
-
     public Set<CrmTask> getTasks() {
         return tasks;
+    }
+
+    public void setTasks(Set<CrmTask> crmTasks) {
+        this.tasks = crmTasks;
     }
 
     public CrmContact tasks(Set<CrmTask> crmTasks) {
@@ -333,10 +349,6 @@ public class CrmContact implements Serializable {
         this.tasks.remove(crmTask);
         crmTask.setContact(null);
         return this;
-    }
-
-    public void setTasks(Set<CrmTask> crmTasks) {
-        this.tasks = crmTasks;
     }
 
     @Override

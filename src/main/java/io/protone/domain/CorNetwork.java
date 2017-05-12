@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -45,6 +46,7 @@ public class CorNetwork implements Serializable {
 
     @ManyToMany(mappedBy = "networks")
     @JsonIgnore
+    @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorUser> networkUsers = new HashSet<>();
 

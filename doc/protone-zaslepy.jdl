@@ -410,8 +410,8 @@ entity TRACustomer {
 	range Long
 	area String
 	vatNumber String
-    idNumber1 String
-    idNumber2 String
+    externalId1 String
+    externalId2 String
 	paymentDate Integer
 }
 

@@ -21,7 +21,9 @@ public class ConfMusicLogPT implements Serializable {
 
     private CfgLogTypeEnum logColumn;
 
-    private Long networkId;
+    private String delimiter;
+
+    private Integer columnSequence;
 
     private Long channelId;
 
@@ -57,12 +59,20 @@ public class ConfMusicLogPT implements Serializable {
         this.logColumn = logColumn;
     }
 
-    public Long getNetworkId() {
-        return networkId;
+    public String getDelimiter() {
+        return delimiter;
     }
 
-    public void setNetworkId(Long corNetworkId) {
-        this.networkId = corNetworkId;
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public Integer getColumnSequence() {
+        return columnSequence;
+    }
+
+    public void setColumnSequence(Integer columnSequence) {
+        this.columnSequence = columnSequence;
     }
 
     public Long getChannelId() {
@@ -83,6 +93,7 @@ public class ConfMusicLogPT implements Serializable {
         }
 
         ConfMusicLogPT cfgExternalSystemLogDTO = (ConfMusicLogPT) o;
+
         if (!Objects.equals(id, cfgExternalSystemLogDTO.id)) {
             return false;
         }
@@ -97,11 +108,13 @@ public class ConfMusicLogPT implements Serializable {
 
     @Override
     public String toString() {
-        return "CfgExternalSystemLogDTO{" +
+        return "ConfMusicLogPT{" +
             "id=" + id +
             ", name='" + name + "'" +
             ", lenght='" + lenght + "'" +
             ", logColumn='" + logColumn + "'" +
+            ", delimiter='" + delimiter + "'" +
+            ", columnSequence='" + columnSequence + "'" +
             '}';
     }
 }

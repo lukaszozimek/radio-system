@@ -1,7 +1,7 @@
 package io.protone.custom.utils;
 
 import io.protone.domain.LibLibrary;
-import io.protone.repository.LibLibraryRepository;
+import io.protone.repository.library.LibLibraryRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;

@@ -1,6 +1,7 @@
 package io.protone.custom.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 
 import java.time.ZonedDateTime;
 
@@ -10,7 +11,7 @@ import java.time.ZonedDateTime;
 public class TraShuffleAdvertisementPT {
 
     @JsonProperty("advertisement")
-    private TraAdvertisementPT traAdvertisementPT;
+    private TraAdvertisementDTO traAdvertisementDTO;
 
     @JsonProperty("from")
     private ZonedDateTime from;
@@ -56,11 +57,11 @@ public class TraShuffleAdvertisementPT {
         this.tarShuffleAdvertisementOptionalPT = tarShuffleAdvertisementOptionalPT;
     }
 
-    public TraAdvertisementPT getTraAdvertisementPT() {
-        return traAdvertisementPT;
+    public TraAdvertisementDTO getTraAdvertisementDTO() {
+        return traAdvertisementDTO;
     }
 
-    public void setTraAdvertisementPT(TraAdvertisementPT traAdvertisementPT) {
-        this.traAdvertisementPT = traAdvertisementPT;
+    public void setTraAdvertisementDTO(TraAdvertisementDTO traAdvertisementDTO) {
+        this.traAdvertisementDTO = traAdvertisementDTO;
     }
 }

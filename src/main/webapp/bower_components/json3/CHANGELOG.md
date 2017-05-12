@@ -23,7 +23,7 @@
 
  * Renamed `Prim` to `JSON3`
  * Added `JSON3.Version`
- * Added support for AMD lodaers as the `"json"` module
+ * Added support for AMD lodaers as the `"json"` corModule
  * Added feature tests for native `JSON` implementations
  * Added string coercion for the `source` argument in `JSON3.parse`
  * Fixed the date serialization routine in `JSON3.stringify`

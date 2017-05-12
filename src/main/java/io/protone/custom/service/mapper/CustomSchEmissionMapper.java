@@ -1,6 +1,5 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.domain.SchEmission;
 import org.springframework.stereotype.Service;
@@ -25,9 +24,9 @@ public class CustomSchEmissionMapper {
             .seq(emission.getSeq())
             .blockId(2L)
             .startTime(emission.getStartTime())
-            .endTime(emission.getEndTime())
-            .mediaItem(new LibItemPT())
-            .length(emission.getLength());
+            .endTime(emission.getEndTime());
+            ///   .mediaItem(new LibMediaItemDTO())
+
     }
 
     public List<SchEmission> createListEmissionFromListDTO(List<SchEmissionPT> schEmissionPT) {
@@ -49,7 +48,7 @@ public class CustomSchEmissionMapper {
         schEmission.setId(schEmissionPT.getId());
         return schEmission
             .seq(schEmissionPT.getSeq())
-            .length(schEmissionPT.getLength());
+            .length(Long.valueOf(schEmissionPT.getMediaItem().getLength()));
     }
 
     public List<SchEmissionPT> createDTOFromListEntites(Set<SchEmission> schEmissionLibItemPTMap) {

@@ -1,16 +1,11 @@
 package io.protone.custom.utils;
 
-import io.protone.custom.service.dto.LibItemPT;
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
-import io.protone.domain.LibLibrary;
-import io.protone.domain.SchBlock;
 import io.protone.domain.enumeration.SchBlockTypeEnum;
 import io.protone.domain.enumeration.SchStartTypeEnum;
-import io.protone.repository.LibLibraryRepository;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
@@ -25,8 +20,7 @@ public class BlockUtils {
 
         List<SchBlockPT> results = new ArrayList<>();
         SchBlockPT band = new SchBlockPT();
-        band.type(SchBlockTypeEnum.BT_BAND)
-            .name("SAMPLE_" + band.getType())
+        band
         .addBlock(sampleHour(now, 12,false))
         .startTime(now)
         .startType(SchStartTypeEnum.ST_ABSOLUTE)
@@ -48,7 +42,7 @@ public class BlockUtils {
             block.endTime(dt);
             for (SchEmissionPT emission: block.getEmissions()) {
                 emission.startTime(dt);
-                dt = dt.plus(emission.getLength(), ChronoField.MILLI_OF_DAY.getBaseUnit());
+                dt = dt.plus(emission.getMediaItem().getLength(), ChronoField.MILLI_OF_DAY.getBaseUnit());
                 emission.endTime(dt);
             }
             updateStartTime(block.getBlocks(), dt);
@@ -90,7 +84,6 @@ public class BlockUtils {
         ZonedDateTime dt = dateTime.withHour(h).withMinute(0).withSecond(0).withNano(0);
 
         SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_HOUR)
             .startTime(dt)
             .startType(SchStartTypeEnum.ST_ABSOLUTE)
             .relativeDelay(0L)
@@ -110,7 +103,6 @@ public class BlockUtils {
 
     public SchBlockPT sampleCommercial(int numOfElements) {
         SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_COMMERCIAL)
             .name("SAMPLE_" + SchBlockTypeEnum.BT_COMMERCIAL)
             .startType(SchStartTypeEnum.ST_ABSOLUTE)
             .relativeDelay(0L);
@@ -126,7 +118,6 @@ public class BlockUtils {
 
     public SchBlockPT sampleMusic(int numOfElements) {
         SchBlockPT result = new SchBlockPT()
-            .type(SchBlockTypeEnum.BT_PROGRAM)
             .name("SAMPLE_" + SchBlockTypeEnum.BT_PROGRAM)
             .startType(SchStartTypeEnum.ST_ABSOLUTE)
             .relativeDelay(0L);
@@ -137,10 +128,8 @@ public class BlockUtils {
 
     public SchEmissionPT sampleEmission(Long length) {
         SchEmissionPT emission = new SchEmissionPT()
-            .name("SAMPLE_EMISSION")
-            //.mediaItem(new LibItemPT())
+            //.mediaItem(new LibMediaItemDTO())
             ;
-        emission.length(length);
         return emission;
     }
 }

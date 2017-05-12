@@ -4,6 +4,7 @@ import io.protone.domain.enumeration.LibCounterTypeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,6 +25,7 @@ public class LibLibrary implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @NotNull
@@ -62,6 +64,7 @@ public class LibLibrary implements Serializable {
     private String description;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     public Long getId() {

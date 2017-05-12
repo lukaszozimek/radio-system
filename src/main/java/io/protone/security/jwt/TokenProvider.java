@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import io.protone.domain.CorUser;
-import io.protone.repository.custom.CustomCorUserRepository;
+import io.protone.repository.cor.CorUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,7 +41,7 @@ public class TokenProvider {
     }
 
     @Inject
-    private CustomCorUserRepository customCorUserRepository;
+    private CorUserRepository corUserRepository;
 
     @PostConstruct
     public void init() {
@@ -53,6 +53,7 @@ public class TokenProvider {
         this.tokenValidityInMillisecondsForRememberMe =
             1000 * jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe();
     }
+
     @Transactional
     public String createToken(Authentication authentication, Boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream()
@@ -66,7 +67,7 @@ public class TokenProvider {
         } else {
             validity = new Date(now + this.tokenValidityInMilliseconds);
         }
-        CorUser corUser = customCorUserRepository.findOneByLogin(authentication.getName()).orElse(null);
+        CorUser corUser = corUserRepository.findOneByLogin(authentication.getName()).orElse(null);
         Map<String, Object> jwtHeader = new HashMap<>();
         jwtHeader.put("NETWORK", corUser.getNetworks().stream().findFirst().get());
         jwtHeader.put("CHANNEL", corUser.getChannels());
@@ -84,7 +85,6 @@ public class TokenProvider {
             .setSigningKey(secretKey)
             .parseClaimsJws(token)
             .getBody();
-
         Collection<? extends GrantedAuthority> authorities =
             Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -93,6 +93,14 @@ public class TokenProvider {
         User principal = new User(claims.getSubject(), "", authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    }
+
+    public JwsHeader getUserAuthorizationAccess(String token) {
+        return Jwts.parser()
+            .setSigningKey(secretKey)
+            .parseClaimsJws(token)
+            .getHeader();
+
     }
 
     public boolean validateToken(String authToken) {

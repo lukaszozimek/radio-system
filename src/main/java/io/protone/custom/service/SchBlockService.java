@@ -2,11 +2,10 @@ package io.protone.custom.service;
 
 import io.protone.custom.service.dto.SchBlockPT;
 import io.protone.custom.service.dto.SchEmissionPT;
+import io.protone.custom.service.dto.SchEventPT;
 import io.protone.custom.service.dto.SchPlaylistPT;
-import io.protone.custom.service.dto.SchTemplatePT;
 import io.protone.custom.service.mapper.CustomSchBlockMapper;
 import io.protone.custom.service.mapper.CustomSchEmissionMapperV2;
-import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
 import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.SchBlock;
 import io.protone.domain.SchEmission;
@@ -14,17 +13,19 @@ import io.protone.domain.SchPlaylist;
 import io.protone.domain.SchTemplate;
 import io.protone.repository.custom.CustomSchBlockRepository;
 import io.protone.repository.custom.CustomSchEmissionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class SchBlockService {
+
+    private final Logger log = LoggerFactory.getLogger(SchBlockService.class);
 
     @Inject
     private CustomSchEmissionMapperV2 emissionMapper;
@@ -41,7 +42,7 @@ public class SchBlockService {
     @Inject
     private BlockUtils blockUtils;
 
-    public List<SchBlockPT> getBlocks(SchPlaylistPT playlistDTO, SchTemplatePT templateDTO, SchBlockPT parentBlockDTO) {
+    public List<SchBlockPT> getBlocks(SchPlaylistPT playlistDTO, SchEventPT templateDTO, SchBlockPT parentBlockDTO) {
 
         List<SchBlockPT> results = new ArrayList<>();
 
@@ -72,7 +73,7 @@ public class SchBlockService {
         return emissionMapper.DBs2DTOs(emissionRepository.findByBlock(emissionMapper.mapSchBlock(childBlockDTO.getId())));
     }
 
-    public List<SchBlockPT> setBlocks(List<SchBlockPT> blocks, SchPlaylistPT playlist, SchTemplatePT template) {
+    public List<SchBlockPT> setBlocks(List<SchBlockPT> blocks, SchPlaylistPT playlist, SchEventPT template) {
 
         List<SchBlockPT> results = new ArrayList<>();
 
@@ -83,7 +84,7 @@ public class SchBlockService {
     }
 
     @Transactional
-    public SchBlockPT setBlock(SchBlockPT blockDTO, Long parentId, SchPlaylistPT playlist, SchTemplatePT template) {
+    public SchBlockPT setBlock(SchBlockPT blockDTO, Long parentId, SchPlaylistPT playlist, SchEventPT template) {
 
         SchBlock blockDB = blockMapper.DTO2DB(blockDTO);
         blockDB.setParentBlock(emissionMapper.mapSchBlock(parentId));

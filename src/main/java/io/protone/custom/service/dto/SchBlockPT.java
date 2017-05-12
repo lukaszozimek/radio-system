@@ -25,30 +25,28 @@ public class SchBlockPT implements Serializable {
     @Size(max = 100)
     private String name;
 
-    private SchBlockTypeEnum type;
     private SchStartTypeEnum startType;
+
+    private SchEventPT.SchEventTypeEnum schEventType;
+
     private Long relativeDelay;
 
     private ZonedDateTime scheduledStartTime;
+
     private ZonedDateTime scheduledEndTime;
+
     private Long scheduledLength = 0L;
 
     private ZonedDateTime startTime;
+
     private ZonedDateTime endTime;
+
     private Long length = 0L;
 
-    private Integer dimYear;
-    private Integer dimMonth;
-    private Integer dimDay;
-    private Integer dimHour;
-    private Integer dimMinute;
-    private Integer dimSecond;
-
-    private Long playlistId;
-    private Long templateId;
     private Long parentBlockId;
 
     private List<SchBlockPT> blocks = new ArrayList<>();
+
     private List<SchEmissionPT> emissions = new ArrayList<>();
 
     public Long getId() {
@@ -75,13 +73,7 @@ public class SchBlockPT implements Serializable {
         this.name = name;
     }
 
-    public SchBlockTypeEnum getType() {
-        return type;
-    }
 
-    public void setType(SchBlockTypeEnum type) {
-        this.type = type;
-    }
 
     public SchStartTypeEnum getStartType() {
         return startType;
@@ -150,69 +142,6 @@ public class SchBlockPT implements Serializable {
         this.scheduledLength = length;
     }
 
-    public Integer getDimYear() {
-        return dimYear;
-    }
-
-    public void setDimYear(Integer dimYear) {
-        this.dimYear = dimYear;
-    }
-
-    public Integer getDimMonth() {
-        return dimMonth;
-    }
-
-    public void setDimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
-    }
-
-    public Integer getDimDay() {
-        return dimDay;
-    }
-
-    public void setDimDay(Integer dimDay) {
-        this.dimDay = dimDay;
-    }
-
-    public Integer getDimHour() {
-        return dimHour;
-    }
-
-    public void setDimHour(Integer dimHour) {
-        this.dimHour = dimHour;
-    }
-
-    public Integer getDimMinute() {
-        return dimMinute;
-    }
-
-    public void setDimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
-    }
-
-    public Integer getDimSecond() {
-        return dimSecond;
-    }
-
-    public void setDimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
-    }
-
-    public Long getPlaylistId() {
-        return playlistId;
-    }
-
-    public void setPlaylistId(Long playlistId) {
-        this.playlistId = playlistId;
-    }
-
-    public Long getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
-    }
 
     public Long getParentBlockId() {
         return parentBlockId;
@@ -253,11 +182,6 @@ public class SchBlockPT implements Serializable {
         return this;
     }
 
-    public SchBlockPT type(SchBlockTypeEnum type) {
-        this.type = type;
-        return this;
-    }
-
     public SchBlockPT startType(SchStartTypeEnum startType) {
         this.startType = startType;
         return this;
@@ -286,12 +210,6 @@ public class SchBlockPT implements Serializable {
 
     public SchBlockPT startTime(ZonedDateTime startTime) {
         this.setStartTime(startTime);
-        this.dimYear(startTime.getYear())
-            .dimMonth(startTime.getMonthValue())
-            .dimDay(startTime.getDayOfMonth())
-            .dimHour(startTime.getHour())
-            .dimMinute(startTime.getMinute())
-            .dimSecond(startTime.getSecond());
         return this;
     }
 
@@ -306,45 +224,6 @@ public class SchBlockPT implements Serializable {
         return this;
     }
 
-    public SchBlockPT dimYear(Integer dimYear) {
-        this.dimYear = dimYear;
-        return this;
-    }
-
-    public SchBlockPT dimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
-        return this;
-    }
-
-    public SchBlockPT dimDay(Integer dimDay) {
-        this.dimDay = dimDay;
-        return this;
-    }
-
-    public SchBlockPT dimHour(Integer dimHour) {
-        this.dimHour = dimHour;
-        return this;
-    }
-
-    public SchBlockPT dimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
-        return this;
-    }
-
-    public SchBlockPT dimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
-        return this;
-    }
-
-    public SchBlockPT playlistId(Long playlistId) {
-        this.playlistId = playlistId;
-        return this;
-    }
-
-    public SchBlockPT templateId(Long templateId) {
-        this.templateId = templateId;
-        return this;
-    }
 
     public SchBlockPT parentBlockId(Long parentBlockId) {
         this.parentBlockId = parentBlockId;
@@ -354,10 +233,10 @@ public class SchBlockPT implements Serializable {
     public SchBlockPT blocks(List<SchBlockPT> blocks) {
         this.blocks = blocks;
         Long totalLength = 0L;
-        for (SchBlockPT block: blocks)
+        for (SchBlockPT block : blocks)
             totalLength += block.getLength();
-        for (SchEmissionPT emission: this.getEmissions())
-            totalLength += emission.getLength();
+        for (SchEmissionPT emission : this.getEmissions())
+            totalLength += emission.getMediaItem().getLength();
         this.length(totalLength);
         return this;
     }
@@ -371,17 +250,17 @@ public class SchBlockPT implements Serializable {
     public SchBlockPT emissions(List<SchEmissionPT> emissions) {
         this.emissions = emissions;
         Long totalLength = 0L;
-        for (SchBlockPT block: this.getBlocks())
+        for (SchBlockPT block : this.getBlocks())
             totalLength += block.getLength();
-        for (SchEmissionPT emission: emissions)
-            totalLength += emission.getLength();
+        for (SchEmissionPT emission : emissions)
+            totalLength += emission.getMediaItem().getLength();
         this.length(totalLength);
         return this;
     }
 
     public SchBlockPT addEmission(SchEmissionPT emission) {
         this.emissions.add(emission);
-        this.setLength(this.getLength() + emission.getLength());
+        this.setLength(this.getLength() + emission.getMediaItem().getLength());
         return this;
     }
 
@@ -395,7 +274,6 @@ public class SchBlockPT implements Serializable {
         if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (getSeq() != null ? !getSeq().equals(that.getSeq()) : that.getSeq() != null) return false;
         if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        if (getType() != that.getType()) return false;
         if (getStartType() != that.getStartType()) return false;
         if (getRelativeDelay() != null ? !getRelativeDelay().equals(that.getRelativeDelay()) : that.getRelativeDelay() != null)
             return false;
@@ -409,19 +287,6 @@ public class SchBlockPT implements Serializable {
             return false;
         if (getEndTime() != null ? !getEndTime().equals(that.getEndTime()) : that.getEndTime() != null) return false;
         if (getLength() != null ? !getLength().equals(that.getLength()) : that.getLength() != null) return false;
-        if (getDimYear() != null ? !getDimYear().equals(that.getDimYear()) : that.getDimYear() != null) return false;
-        if (getDimMonth() != null ? !getDimMonth().equals(that.getDimMonth()) : that.getDimMonth() != null)
-            return false;
-        if (getDimDay() != null ? !getDimDay().equals(that.getDimDay()) : that.getDimDay() != null) return false;
-        if (getDimHour() != null ? !getDimHour().equals(that.getDimHour()) : that.getDimHour() != null) return false;
-        if (getDimMinute() != null ? !getDimMinute().equals(that.getDimMinute()) : that.getDimMinute() != null)
-            return false;
-        if (getDimSecond() != null ? !getDimSecond().equals(that.getDimSecond()) : that.getDimSecond() != null)
-            return false;
-        if (getPlaylistId() != null ? !getPlaylistId().equals(that.getPlaylistId()) : that.getPlaylistId() != null)
-            return false;
-        if (getTemplateId() != null ? !getTemplateId().equals(that.getTemplateId()) : that.getTemplateId() != null)
-            return false;
         if (getParentBlockId() != null ? !getParentBlockId().equals(that.getParentBlockId()) : that.getParentBlockId() != null)
             return false;
         if (getBlocks() != null ? !getBlocks().equals(that.getBlocks()) : that.getBlocks() != null) return false;
@@ -433,7 +298,6 @@ public class SchBlockPT implements Serializable {
         int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getSeq() != null ? getSeq().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         result = 31 * result + (getStartType() != null ? getStartType().hashCode() : 0);
         result = 31 * result + (getRelativeDelay() != null ? getRelativeDelay().hashCode() : 0);
         result = 31 * result + (getScheduledStartTime() != null ? getScheduledStartTime().hashCode() : 0);
@@ -442,14 +306,6 @@ public class SchBlockPT implements Serializable {
         result = 31 * result + (getStartTime() != null ? getStartTime().hashCode() : 0);
         result = 31 * result + (getEndTime() != null ? getEndTime().hashCode() : 0);
         result = 31 * result + (getLength() != null ? getLength().hashCode() : 0);
-        result = 31 * result + (getDimYear() != null ? getDimYear().hashCode() : 0);
-        result = 31 * result + (getDimMonth() != null ? getDimMonth().hashCode() : 0);
-        result = 31 * result + (getDimDay() != null ? getDimDay().hashCode() : 0);
-        result = 31 * result + (getDimHour() != null ? getDimHour().hashCode() : 0);
-        result = 31 * result + (getDimMinute() != null ? getDimMinute().hashCode() : 0);
-        result = 31 * result + (getDimSecond() != null ? getDimSecond().hashCode() : 0);
-        result = 31 * result + (getPlaylistId() != null ? getPlaylistId().hashCode() : 0);
-        result = 31 * result + (getTemplateId() != null ? getTemplateId().hashCode() : 0);
         result = 31 * result + (getParentBlockId() != null ? getParentBlockId().hashCode() : 0);
         result = 31 * result + (getBlocks() != null ? getBlocks().hashCode() : 0);
         result = 31 * result + (getEmissions() != null ? getEmissions().hashCode() : 0);
@@ -462,7 +318,6 @@ public class SchBlockPT implements Serializable {
         sb.append("id=").append(id);
         sb.append(", seq=").append(seq);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", type=").append(type);
         sb.append(", startType=").append(startType);
         sb.append(", relativeDelay=").append(relativeDelay);
         sb.append(", scheduledStartTime=").append(scheduledStartTime);
@@ -470,19 +325,18 @@ public class SchBlockPT implements Serializable {
         sb.append(", scheduledLength=").append(scheduledLength);
         sb.append(", startTime=").append(startTime);
         sb.append(", endTime=").append(endTime);
-        sb.append(", length=").append(length);
-        sb.append(", dimYear=").append(dimYear);
-        sb.append(", dimMonth=").append(dimMonth);
-        sb.append(", dimDay=").append(dimDay);
-        sb.append(", dimHour=").append(dimHour);
-        sb.append(", dimMinute=").append(dimMinute);
-        sb.append(", dimSecond=").append(dimSecond);
-        sb.append(", playlistId=").append(playlistId);
-        sb.append(", templateId=").append(templateId);
         sb.append(", parentBlockId=").append(parentBlockId);
         sb.append(", blocks=").append(blocks);
         sb.append(", emissions=").append(emissions);
         sb.append('}');
         return sb.toString();
+    }
+
+    public SchEventPT.SchEventTypeEnum getSchEventType() {
+        return schEventType;
+    }
+
+    public void setSchEventType(SchEventPT.SchEventTypeEnum schEventType) {
+        this.schEventType = schEventType;
     }
 }
