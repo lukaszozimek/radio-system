@@ -1,7 +1,7 @@
-package io.protone.custom.metadata.audiovault.parser;
+package io.protone.service.metadata.audiovault.parser;
 
 import io.protone.service.constans.MarkerConstans;
-import io.protone.custom.metadata.ProtoneMetadataProperty;
+import io.protone.service.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
@@ -18,7 +18,7 @@ import java.nio.ByteOrder;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static io.protone.custom.metadata.ProtoneMetadataProperty.*;
+import static io.protone.service.metadata.ProtoneMetadataProperty.*;
 
 /**
  * Created by lukaszozimek on 16/03/2017.

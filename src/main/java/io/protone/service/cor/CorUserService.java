@@ -1,4 +1,4 @@
-package io.protone.custom.service;
+package io.protone.service.cor;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.Sets;

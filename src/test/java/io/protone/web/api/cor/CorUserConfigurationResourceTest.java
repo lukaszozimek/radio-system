@@ -1,8 +1,8 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.CorMailService;
-import io.protone.custom.service.CorUserService;
+import io.protone.service.cor.CorMailService;
+import io.protone.service.cor.CorUserService;
 import io.protone.web.api.cor.impl.CorUserConfigurationResourceImpl;
 import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.custom.web.rest.network.TestUtil;

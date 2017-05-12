@@ -1,13 +1,10 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
 import io.protone.repository.library.*;
 import io.protone.service.constans.ServiceConstants;
-import io.protone.service.library.LibArtistService;
-import io.protone.service.library.LibLibraryService;
-import io.protone.service.library.LibMarkerService;
-import io.protone.service.library.LibTrackService;
+import io.protone.service.cor.CorUserService;
 import io.protone.web.rest.mapper.LibItemMapper;
 import io.protone.domain.*;
 import io.protone.custom.utils.MediaUtils;

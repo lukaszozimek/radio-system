@@ -3,7 +3,7 @@ package io.protone.web.api.library.impl;
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.domain.LibMediaItem;
 import io.protone.service.cor.CorNetworkService;
-import io.protone.custom.service.LibItemService;
+import io.protone.service.library.LibItemService;
 import io.protone.web.api.library.LibMediaItemResource;
 import io.protone.domain.CorNetwork;
 import io.protone.web.rest.mapper.LibItemMapper;

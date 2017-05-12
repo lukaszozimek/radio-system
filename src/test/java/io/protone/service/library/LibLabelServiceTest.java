@@ -1,9 +1,9 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.LibLabel;
 import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.repository.cor.CorPersonRepository;
 import io.protone.repository.library.LibLabelRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +15,8 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -48,7 +50,21 @@ public class LibLabelServiceTest {
     }
 
     @Test
-    public void saveLibLabel() throws Exception {
+    public void shoudlSaveLibTrack() throws Exception {
+        LibLabel libLabel = factory.manufacturePojo(LibLabel.class).network(corNetwork);
+
+        Optional<LibLabel> savedLibLabel = libLabelService.saveLibLabel(libLabel);
+
+        assertNotNull(savedLibLabel.get());
+        assertNotNull(savedLibLabel.get().getId());
+
     }
 
+    @Test
+    public void shoudlNotSaveLibTrack() throws Exception {
+
+        Optional<LibLabel> libLabel = libLabelService.saveLibLabel(null);
+
+        assertFalse(libLabel.isPresent());
+    }
 }

@@ -2,7 +2,7 @@ package io.protone.web.api.library;
 
 import io.protone.ProtoneApp;
 import io.protone.config.s3.S3Client;
-import io.protone.custom.service.LibItemService;
+import io.protone.service.library.LibItemService;
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.custom.web.rest.network.TestUtil;
 import io.protone.web.api.library.impl.LibMediaItemResourceImpl;

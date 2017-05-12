@@ -1,4 +1,4 @@
-package io.protone.custom.service;
+package io.protone.service.cor;
 
 import io.github.jhipster.config.JHipsterProperties;
 import io.protone.domain.CorUser;

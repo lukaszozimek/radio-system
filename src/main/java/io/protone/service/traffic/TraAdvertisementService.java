@@ -1,6 +1,6 @@
 package io.protone.service.traffic;
 
-import io.protone.custom.service.LibItemService;
+import io.protone.service.library.LibItemService;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.domain.TraAdvertisement;

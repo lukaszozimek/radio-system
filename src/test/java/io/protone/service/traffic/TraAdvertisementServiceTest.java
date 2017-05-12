@@ -1,7 +1,7 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.service.LibItemService;
+import io.protone.service.library.LibItemService;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.LibMediaItem;

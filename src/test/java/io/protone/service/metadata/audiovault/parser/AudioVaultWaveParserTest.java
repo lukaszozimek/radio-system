@@ -1,4 +1,4 @@
-package io.protone.custom.metadata.audiovault.parser;
+package io.protone.service.metadata.audiovault.parser;
 
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;

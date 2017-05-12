@@ -1,4 +1,4 @@
-package io.protone.custom.metadata;
+package io.protone.service.metadata;
 
 import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.metadata.XMPDM;

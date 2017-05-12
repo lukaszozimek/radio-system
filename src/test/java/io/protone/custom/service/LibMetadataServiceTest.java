@@ -3,6 +3,7 @@ package io.protone.custom.service;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.service.library.LibItemService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +14,6 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by lukaszozimek on 30/04/2017.

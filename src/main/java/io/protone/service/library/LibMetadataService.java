@@ -1,11 +1,11 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 
 import java.util.*;
 
 import io.protone.service.constans.MarkerConstans;
-import io.protone.custom.metadata.ProtoneMetadataProperty;
+import io.protone.service.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibAudioQualityEnum;
@@ -14,8 +14,6 @@ import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.cor.CorPropertyKeyRepository;
 import io.protone.repository.cor.CorPropertyValueRepository;
 import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.service.library.LibArtistService;
-import io.protone.service.library.LibMarkerService;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.XMPDM;

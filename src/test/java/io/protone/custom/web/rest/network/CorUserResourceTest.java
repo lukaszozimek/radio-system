@@ -2,8 +2,8 @@ package io.protone.custom.web.rest.network;
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.custom.service.CorUserService;
-import io.protone.custom.service.CorMailService;
+import io.protone.service.cor.CorUserService;
+import io.protone.service.cor.CorMailService;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.cor.CorUserRepository;
