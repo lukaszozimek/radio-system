@@ -110,7 +110,7 @@ public interface LibraryResource {
         method = RequestMethod.PUT)
     ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                  @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library);
+                                                                  @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException;
 
 
     @ApiOperation(value = "createLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
@@ -126,7 +126,7 @@ public interface LibraryResource {
         method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library);
+                                                                   @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteLibraryForChannel", notes = "", response = Void.class, tags = {"LIBRARY",})

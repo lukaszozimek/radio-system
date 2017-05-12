@@ -51,11 +51,10 @@ public class CorChannel implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorUser> channelUsers = new HashSet<>();
 
-    @ManyToMany(mappedBy = "channels")
+    @ManyToOne
     @JsonIgnore
     @PodamExclude
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<LibLibrary> channelLibraries = new HashSet<>();
+    private LibLibrary channelLibraries = null;
 
     public Long getId() {
         return id;
@@ -143,25 +142,25 @@ public class CorChannel implements Serializable {
     }
 
 
-    public CorChannel channelLibarary(Set<LibLibrary> corUsers) {
-        this.channelLibraries = corUsers;
+    public CorChannel channelLibarary(LibLibrary libLibrary) {
+        this.channelLibraries = libLibrary;
         return this;
     }
 
-    public CorChannel addChannelLibarary(LibLibrary corUser) {
-        this.channelLibraries.add(corUser);
-        corUser.getChannels().add(this);
+    public CorChannel addChannelLibarary(LibLibrary libLibrary) {
+        this.channelLibraries = libLibrary;
+        libLibrary.getChannels().add(this);
         return this;
     }
 
-    public CorChannel removeChannelLibarary(LibLibrary corUser) {
-        this.channelUsers.remove(corUser);
-        corUser.getChannels().remove(this);
+    public CorChannel removeChannelLibarary(LibLibrary libLibrary) {
+        this.channelUsers.remove(libLibrary);
+        libLibrary.getChannels().remove(this);
         return this;
     }
 
-    public void setChannelLibraries(Set<LibLibrary> corUsers) {
-        this.channelLibraries = corUsers;
+    public void setChannelLibraries(LibLibrary libLibrary) {
+        this.channelLibraries = libLibrary;
     }
 
     @Override

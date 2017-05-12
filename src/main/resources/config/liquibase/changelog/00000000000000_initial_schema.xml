@@ -203,7 +203,7 @@
             <column name="channel_users_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="channel_library_id" type="bigint">
+            <column name="channel_libraries_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
 

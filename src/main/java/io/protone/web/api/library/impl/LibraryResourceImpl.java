@@ -100,34 +100,66 @@ public class LibraryResourceImpl implements LibraryResource {
     public ResponseEntity<List<LibLibraryDTO>> getAllLibrariesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        return null;
+        log.debug("REST request to get all LibLibraryDTO");
+        List<LibLibrary> libraries = libLibraryService.findLibrariesByChannel(networkShortcut, channelShortcut, pagable);
+        return ResponseEntity.ok()
+            .body(libLibraryMapper.DBs2DTOs(libraries));
     }
 
     @Override
     public ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) {
-        return null;
+                                                                         @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException {
+        log.debug("REST request to update library: {}", library);
+
+        if (library.getId() == null) {
+            return createLibraryForChannelUsingPOST(networkShortcut, channelShortcut, library);
+        }
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        LibLibrary entity = libLibraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
+        LibLibraryDTO libraryDAO = libLibraryMapper.DB2DTO(resultDB);
+        return ResponseEntity.ok()
+            .body(libraryDAO);
     }
 
     @Override
     public ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) {
-        return null;
+                                                                          @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException {
+        log.debug("REST request to create library: {}", library);
+        if (library.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);
+        }
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        LibLibrary entity = libLibraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
+        LibLibraryDTO libraryDAO = libLibraryMapper.DB2DTO(resultDB);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/library/" + libraryDAO.getShortcut()))
+            .body(libraryDAO);
     }
 
     @Override
     public ResponseEntity<Void> deleteLibraryForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
-        return null;
+        log.debug("REST request to delete LIBLibrary : {}", libraryPrefix);
+        libLibraryService.deleteLibrary(libraryPrefix, networkShortcut);
+        return ResponseEntity.ok().build();
+
     }
 
     @Override
     public ResponseEntity<LibLibraryDTO> getLibraryForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                       @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
-        return null;
+        log.debug("REST request to get library: {}", libraryPrefix);
+        LibLibrary library = libLibraryService.findLibraryByChannel(networkShortcut, channelShortcut, libraryPrefix);
+        LibLibraryDTO dto = libLibraryMapper.DB2DTO(library);
+        return Optional.ofNullable(dto)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

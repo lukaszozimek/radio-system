@@ -2,12 +2,15 @@ package io.protone.web.rest.dto.library;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.List;
 import io.protone.domain.enumeration.LibCounterTypeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * LibLibraryDTO
@@ -36,6 +39,8 @@ public class LibLibraryDTO implements Serializable {
 
     @NotNull
     private String prefix = null;
+
+    private List<CorChannelDTO> channels = new ArrayList();
 
 
     private String description = null;
@@ -157,6 +162,14 @@ public class LibLibraryDTO implements Serializable {
         this.shortcut = shortcut;
     }
 
+    public List<CorChannelDTO> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<CorChannelDTO> channels) {
+        this.channels = channels;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -217,6 +230,7 @@ public class LibLibraryDTO implements Serializable {
             ", description='" + description + '\'' +
             '}';
     }
+
 
     /**
      * Gets or Sets type
