@@ -1,4 +1,4 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
 import io.protone.domain.LibTrack;
 import io.protone.repository.library.LibTrackRepository;

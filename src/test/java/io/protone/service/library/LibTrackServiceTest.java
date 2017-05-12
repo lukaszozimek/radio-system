@@ -1,11 +1,10 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import io.protone.domain.LibTrack;
 import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.repository.cor.CorPersonRepository;
 import io.protone.repository.library.LibAlbumRepository;
 import io.protone.repository.library.LibTrackRepository;
 import org.junit.Before;
@@ -18,7 +17,6 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
 
 import java.util.Optional;
 
