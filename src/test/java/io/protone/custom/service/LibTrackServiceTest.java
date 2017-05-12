@@ -2,8 +2,11 @@ package io.protone.custom.service;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.LibAlbum;
+import io.protone.domain.LibTrack;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.cor.CorPersonRepository;
+import io.protone.repository.library.LibAlbumRepository;
 import io.protone.repository.library.LibTrackRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +18,9 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
+
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -34,6 +40,9 @@ public class LibTrackServiceTest {
     @Autowired
     private CorNetworkRepository networkRepository;
 
+    @Autowired
+    private LibAlbumRepository libAlbumRepository;
+
     private CorNetwork corNetwork;
 
     private PodamFactory factory;
@@ -48,7 +57,30 @@ public class LibTrackServiceTest {
     }
 
     @Test
-    public void saveLibTrack() throws Exception {
+    public void shoudlSaveLibTrack() throws Exception {
+        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class).network(corNetwork);
+        libAlbum.setArtist(null);
+        libAlbum.setCover(null);
+        libAlbum.setLabel(null);
+        libAlbum = libAlbumRepository.save(libAlbum);
+        LibTrack libTrack = factory.manufacturePojo(LibTrack.class);
+        libTrack.network(corNetwork);
+        libTrack.setId(null);
+        libTrack.album(libAlbum);
+        libTrack.artist(null);
+
+        Optional<LibTrack> saveLibTrack = libTrackService.saveLibTrack(libTrack);
+
+        assertNotNull(saveLibTrack.get());
+        assertNotNull(saveLibTrack.get().getId());
+
     }
 
+    @Test
+    public void shoudlNotSaveLibTrack() throws Exception {
+
+        Optional<LibTrack> saveLibTrack = libTrackService.saveLibTrack(null);
+
+        assertFalse(saveLibTrack.isPresent());
+    }
 }
