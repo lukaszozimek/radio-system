@@ -4,6 +4,7 @@ import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.*;
 import io.protone.repository.library.*;
 import io.protone.service.constans.ServiceConstants;
+import io.protone.service.library.LibArtistService;
 import io.protone.service.library.LibLibraryService;
 import io.protone.service.library.LibMarkerService;
 import io.protone.web.rest.mapper.LibItemMapper;

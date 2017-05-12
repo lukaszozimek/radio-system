@@ -6,6 +6,7 @@ import io.protone.domain.LibAlbum;
 import io.protone.domain.LibArtist;
 import io.protone.domain.enumeration.LibAlbumTypeEnum;
 import io.protone.repository.library.LibAlbumRepository;
+import io.protone.service.library.LibArtistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

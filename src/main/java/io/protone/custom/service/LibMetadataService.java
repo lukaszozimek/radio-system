@@ -14,6 +14,7 @@ import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.cor.CorPropertyKeyRepository;
 import io.protone.repository.cor.CorPropertyValueRepository;
 import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.service.library.LibArtistService;
 import io.protone.service.library.LibMarkerService;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
