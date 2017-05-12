@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network;
+package io.protone.web.api.cor.impl;
 
 import com.codahale.metrics.annotation.Timed;
 import io.protone.security.jwt.JWTConfigurer;
@@ -23,13 +23,13 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserJWTController {
+public class CorUserJWTController {
 
     private final TokenProvider tokenProvider;
 
     private final AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    public CorUserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
     }

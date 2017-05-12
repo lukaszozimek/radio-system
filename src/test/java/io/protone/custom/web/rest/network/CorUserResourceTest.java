@@ -7,6 +7,7 @@ import io.protone.service.cor.CorMailService;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.cor.CorUserRepository;
+import io.protone.web.api.cor.impl.CorUserResourceImpl;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;

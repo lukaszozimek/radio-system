@@ -1,9 +1,10 @@
-package io.protone.custom.web.rest.network;
+package io.protone.web.api.cor.impl;
 
 
 import com.codahale.metrics.annotation.Timed;
 import io.protone.service.cor.CorMailService;
 import io.protone.service.cor.CorUserService;
+import io.protone.web.api.cor.CorUserResource;
 import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.web.rest.dto.cor.CorManagedUserDTO;
 import io.protone.web.rest.mapper.CorNetworkMapper;

@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network;
+package io.protone.web.api.cor;
 
 import io.protone.web.rest.dto.cor.CorManagedUserDTO;
 import io.protone.web.rest.dto.cor.CorUserDTO;
