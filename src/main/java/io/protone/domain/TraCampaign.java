@@ -35,6 +35,9 @@ public class TraCampaign implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @Column(name = "short_name")
+    private String shortName;
+
     @Column(name = "start_date")
     private LocalDate startDate;
 
@@ -85,6 +88,19 @@ public class TraCampaign implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public TraCampaign shortName(String shortName) {
+        this.shortName = shortName;
+        return this;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public LocalDate getStartDate() {
@@ -228,6 +244,7 @@ public class TraCampaign implements Serializable {
         return "TraCampaign{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", shortName='" + shortName + "'" +
             ", startDate='" + startDate + "'" +
             ", endDate='" + endDate + "'" +
             ", prize='" + prize + "'" +

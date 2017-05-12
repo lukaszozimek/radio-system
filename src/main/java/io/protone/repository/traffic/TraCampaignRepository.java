@@ -17,10 +17,10 @@ public interface TraCampaignRepository extends JpaRepository<TraCampaign, Long> 
 
     List<TraCampaign> findAllByNetwork_Shortcut(String network, Pageable pageable);
 
-    TraCampaign findByNameAndNetwork_Shortcut(String name, String network);
+    TraCampaign findByShortNameAndNetwork_Shortcut(String shortName, String network);
 
     List<TraCampaign> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
 
-    void deleteByNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    void deleteByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
 
 }

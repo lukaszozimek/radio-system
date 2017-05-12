@@ -69,6 +69,7 @@ public class CrmOpportunityMapperTest {
         CrmOpportunityDTO dto = customCrmOpportunityMapper.DB2DTO(crmOpportunity);
 
         assertNotNull(dto.getId());
+        assertNotNull(dto.getShortName());
         assertNotNull(dto.getStage());
         assertNotNull(dto.getAccountId());
         assertNotNull(dto.getLeadId());
@@ -89,6 +90,7 @@ public class CrmOpportunityMapperTest {
         dtos.stream().forEach(dto -> {
 
             assertNotNull(dto.getId());
+            assertNotNull(dto.getShortName());
             assertNotNull(dto.getStage());
             assertNotNull(dto.getAccountId());
             assertNotNull(dto.getLeadId());
@@ -110,6 +112,8 @@ public class CrmOpportunityMapperTest {
         entities.stream().forEach(entity -> {
 
             assertNotNull(entity.getId());
+
+            assertNotNull(entity.getShortName());
             assertNotNull(entity.getAccount());
             assertNotNull(entity.getStage());
             assertNotNull(entity.getKeeper());
@@ -130,6 +134,7 @@ public class CrmOpportunityMapperTest {
 
 
         assertNotNull(entity.getId());
+        assertNotNull(entity.getShortName());
         assertNotNull(entity.getAccount());
         assertNotNull(entity.getStage());
         assertNotNull(entity.getKeeper());

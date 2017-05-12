@@ -49,12 +49,12 @@ public class TraCampaignService {
     }
 
     public void deleteCampaign(String shortcut, String corNetwork) {
-        traCampaignRepository.deleteByNameAndNetwork_Shortcut(shortcut, corNetwork);
+        traCampaignRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
 
     public TraCampaign getCampaign(String shortcut, String corNetwork) {
-        return traCampaignRepository.findByNameAndNetwork_Shortcut(shortcut, corNetwork);
+        return traCampaignRepository.findByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
     public List<TraCampaign> getCustomerCampaing(String shortcut, String corNetwork, Pageable pageable) {

@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.ByteArrayInputStream;
 
-//TODO: Assign LibLibrary to multiple channels
-//TODO: Assign LibItem to Multiple Channels
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface ApiChannelLibraryItem {
 

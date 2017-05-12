@@ -118,8 +118,8 @@ public class TraCampaignServiceTest {
         campaign.setNetwork(corNetwork);
         campaign = traCampaignRepository.save(campaign);
         //then
-        traCampaignService.deleteCampaign(campaign.getName(), corNetwork.getShortcut());
-        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getName(), corNetwork.getShortcut());
+        traCampaignService.deleteCampaign(campaign.getShortName(), corNetwork.getShortcut());
+        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getShortName(), corNetwork.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -133,7 +133,7 @@ public class TraCampaignServiceTest {
         campaign = traCampaignRepository.save(campaign);
 
         //then
-        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getName(), corNetwork.getShortcut());
+        TraCampaign fetchedEntity = traCampaignService.getCampaign(campaign.getShortName(), corNetwork.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);

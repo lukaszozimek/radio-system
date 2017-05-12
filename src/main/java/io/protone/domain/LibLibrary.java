@@ -10,7 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A LibLibrary.
@@ -66,6 +68,15 @@ public class LibLibrary implements Serializable {
     @ManyToOne
     @PodamExclude
     private CorNetwork network;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "lib_library_channel",
+        joinColumns = @JoinColumn(name = "lib_library_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
+    @PodamExclude
+    private Set<CorChannel> channels = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -187,6 +198,32 @@ public class LibLibrary implements Serializable {
         this.network = corNetwork;
         return this;
     }
+
+    public Set<CorChannel> getChannels() {
+        return channels;
+    }
+
+    public LibLibrary channels(Set<CorChannel> corChannels) {
+        this.channels = corChannels;
+        return this;
+    }
+
+    public LibLibrary addChannel(CorChannel corChannel) {
+        this.channels.add(corChannel);
+        corChannel.addChannelLibarary(this);
+        return this;
+    }
+
+    public LibLibrary removeChannel(CorChannel corChannel) {
+        this.channels.remove(corChannel);
+        corChannel.addChannelLibarary(null);
+        return this;
+    }
+
+    public void setChannels(Set<CorChannel> corChannels) {
+        this.channels = corChannels;
+    }
+
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;

@@ -47,16 +47,16 @@ public class CrmOpportunityService {
     }
 
     public void deleteOpportunity(String shortcut, String corNetwork) {
-        opportunityRepository.deleteByNameAndNetwork_Shortcut(shortcut, corNetwork);
+        opportunityRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
     public CrmOpportunity getOpportunity(String shortcut, String corNetwork) {
-        return opportunityRepository.findOneByNameAndNetwork_Shortcut(shortcut, corNetwork);
+        return opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
 
     public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmTask crmTask, String shortcut, String corNetwork) {
-        CrmOpportunity crmOpportunity = opportunityRepository.findOneByNameAndNetwork_Shortcut(shortcut, corNetwork);
+        CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmOpportunity != null) {
             crmTask.setOpportunity(crmOpportunity);
             crmTask.setNetwork(crmOpportunity.getNetwork());
@@ -70,7 +70,7 @@ public class CrmOpportunityService {
     }
 
     public List<CrmTask> getTasksAssociatedWithOpportunity(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByOpportunity_NameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+        return crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     public CrmTask getTaskAssociatedWithOpportunity(Long taskId, String corNetwork) {
@@ -79,7 +79,7 @@ public class CrmOpportunityService {
 
 
     public void deleteOpportunityTask(String shortcut, Long taskId, String corNetwork) {
-        CrmOpportunity crmOpportunity = opportunityRepository.findOneByNameAndNetwork_Shortcut(shortcut, corNetwork);
+        CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         crmOpportunity.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         opportunityRepository.save(crmOpportunity);
         crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);

@@ -24,6 +24,9 @@ public class CrmOpportunityDTO implements Serializable {
     @NotNull
     private String name = null;
 
+    @NotNull
+    private String shortName = null;
+
     private Long contactId = null;
 
     private Long leadId = null;
@@ -81,6 +84,25 @@ public class CrmOpportunityDTO implements Serializable {
 
     public CrmOpportunityDTO name(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     **/
+    @ApiModelProperty(value = "")
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public CrmOpportunityDTO shortName(String shortName) {
+        this.shortName = shortName;
         return this;
     }
 
@@ -289,6 +311,7 @@ public class CrmOpportunityDTO implements Serializable {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    opportunityOwner: ").append(toIndentedString(opportunityOwner)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
         sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
         sb.append("    leadId: ").append(toIndentedString(leadId)).append("\n");
         sb.append("    accountId: ").append(toIndentedString(accountId)).append("\n");

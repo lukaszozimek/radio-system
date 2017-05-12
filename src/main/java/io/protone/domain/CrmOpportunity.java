@@ -30,6 +30,9 @@ public class CrmOpportunity implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "short_name")
+    private String shortName;
+
     @Column(name = "last_try")
     private LocalDate lastTry;
 
@@ -88,6 +91,19 @@ public class CrmOpportunity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public CrmOpportunity shortName(String shortName) {
+        this.shortName = shortName;
+        return this;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public LocalDate getLastTry() {
@@ -257,6 +273,7 @@ public class CrmOpportunity implements Serializable {
         return "CrmOpportunity{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", shortName='" + shortName + "'" +
             ", lastTry='" + lastTry + "'" +
             ", closeDate='" + closeDate + "'" +
             ", probability='" + probability + "'" +

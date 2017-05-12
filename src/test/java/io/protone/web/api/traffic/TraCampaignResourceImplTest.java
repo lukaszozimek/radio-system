@@ -51,6 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TraCampaignResourceImplTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String DEFAULT_SHORT_NAME = "AAAAAAAXAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
@@ -105,6 +106,7 @@ public class TraCampaignResourceImplTest {
     public static TraCampaign createEntity(EntityManager em) {
         TraCampaign traCampaign = new TraCampaign()
             .name(DEFAULT_NAME)
+            .shortName(DEFAULT_SHORT_NAME)
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
             .prize(DEFAULT_PRIZE);
@@ -142,7 +144,7 @@ public class TraCampaignResourceImplTest {
         int databaseSizeBeforeCreate = traCampaignRepository.findAll().size();
 
         // Create the TraCampaign
-        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.customer(crmAccount));
+        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign.shortName(DEFAULT_SHORT_NAME).customer(crmAccount));
 
         restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -168,7 +170,7 @@ public class TraCampaignResourceImplTest {
         // Create the TraCampaign with an existing ID
         TraCampaign existingTraCampaign = new TraCampaign();
         existingTraCampaign.setId(1L);
-        TraCampaignDTO existingTraCampaignDTO = traCampaignMapper.DB2DTO(existingTraCampaign.customer(crmAccount));
+        TraCampaignDTO existingTraCampaignDTO = traCampaignMapper.DB2DTO(existingTraCampaign.shortName(DEFAULT_SHORT_NAME).customer(crmAccount));
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
@@ -187,6 +189,25 @@ public class TraCampaignResourceImplTest {
         int databaseSizeBeforeTest = traCampaignRepository.findAll().size();
         // set the field null
         traCampaign.setName(null);
+
+        // Create the TraCampaign, which fails.
+        TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
+
+        restTraCampaignMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/campaign", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(traCampaignDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TraCampaign> traCampaignList = traCampaignRepository.findAll();
+        assertThat(traCampaignList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkShortNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = traCampaignRepository.findAll().size();
+        // set the field null
+        traCampaign.setShortName(null);
 
         // Create the TraCampaign, which fails.
         TraCampaignDTO traCampaignDTO = traCampaignMapper.DB2DTO(traCampaign);
@@ -224,7 +245,7 @@ public class TraCampaignResourceImplTest {
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
 
         // Get the traCampaign
-        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getName()))
+        restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traCampaign.getId().intValue()))
@@ -300,7 +321,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void deleteTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).name("xxx"));
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).shortName("xxx").name("xxx"));
         int databaseSizeBeforeDelete = traCampaignRepository.findAll().size();
 
         // Get the traCampaign

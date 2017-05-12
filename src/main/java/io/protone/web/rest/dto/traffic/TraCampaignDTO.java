@@ -26,6 +26,9 @@ public class TraCampaignDTO implements Serializable {
     private Long id = null;
 
     @NotNull
+    private String shortName = null;
+
+    @NotNull
     private String name = null;
 
     private Long prize = null;
@@ -114,6 +117,26 @@ public class TraCampaignDTO implements Serializable {
         this.id = id;
     }
 
+    public TraCampaignDTO shortName(String shortName) {
+        this.shortName = shortName;
+        return this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+
     public TraCampaignDTO name(String name) {
         this.name = name;
         return this;
@@ -132,6 +155,7 @@ public class TraCampaignDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
 
     public TraCampaignDTO prize(Long prize) {
         this.prize = prize;
@@ -228,6 +252,7 @@ public class TraCampaignDTO implements Serializable {
         sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
         sb.append("    prize: ").append(toIndentedString(prize)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
         sb.append("    orders: ").append(toIndentedString(orders)).append("\n");

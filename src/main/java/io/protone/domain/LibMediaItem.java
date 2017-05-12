@@ -81,34 +81,38 @@ public class LibMediaItem implements Serializable {
     @PodamExclude
     private LibTrack track;
 
+    @ManyToOne
+    @PodamExclude
+    private CorNetwork network;
+
+    @PodamExclude
     @OneToMany(mappedBy = "author")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @PodamExclude
     private Set<CorPerson> authors = new HashSet<>();
 
+    @PodamExclude
     @OneToMany(mappedBy = "composer")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @PodamExclude
     private Set<CorPerson> composers = new HashSet<>();
 
+    @PodamExclude
     @OneToMany(mappedBy = "mediaItem")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @PodamExclude
     private Set<LibMarker> markers = new HashSet<>();
 
+    @PodamExclude
     @OneToMany(mappedBy = "tags")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @PodamExclude
     private Set<CorTag> tags = new HashSet<>();
 
+    @PodamExclude
     @OneToMany(mappedBy = "libItemPropertyValue")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @PodamExclude
     private Set<CorPropertyValue> properites = new HashSet<>();
 
     public Long getId() {
@@ -273,6 +277,19 @@ public class LibMediaItem implements Serializable {
 
     public void setTrack(LibTrack libTrack) {
         this.track = libTrack;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public LibMediaItem network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public Set<CorPerson> getAuthors() {

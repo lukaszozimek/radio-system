@@ -20,7 +20,7 @@ public interface CrmOpportunityRepository extends JpaRepository<CrmOpportunity, 
 
     CrmOpportunity findOneByNameAndNetwork(String name, CorNetwork network);
 
-    CrmOpportunity findOneByNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    CrmOpportunity findOneByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
 
-    void deleteByNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    void deleteByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
 }
