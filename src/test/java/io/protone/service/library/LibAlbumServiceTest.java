@@ -1,4 +1,4 @@
-package io.protone.custom.service;
+package io.protone.service.library;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;

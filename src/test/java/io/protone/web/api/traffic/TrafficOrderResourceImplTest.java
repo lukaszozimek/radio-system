@@ -5,7 +5,7 @@ import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.crm.CrmCustomerResourceImplTest;
 import io.protone.web.api.traffic.impl.TraOrderResourceImpl;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;

@@ -3,7 +3,7 @@ package io.protone.web.api.cor;
 import io.protone.ProtoneApp;
 import io.protone.web.api.cor.impl.CorCurrencyResourceImpl;
 import io.protone.web.rest.dto.cor.CorCurrencyDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorCurrencyRepository;

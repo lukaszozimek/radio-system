@@ -4,7 +4,7 @@ import io.protone.ProtoneApp;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.crm.impl.CrmLeadResourceImpl;
 import io.protone.web.rest.dto.crm.CrmLeadDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLead;
 import io.protone.repository.crm.CrmLeadRepository;

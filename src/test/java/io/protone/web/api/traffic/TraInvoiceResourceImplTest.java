@@ -2,7 +2,7 @@ package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraInvoice;

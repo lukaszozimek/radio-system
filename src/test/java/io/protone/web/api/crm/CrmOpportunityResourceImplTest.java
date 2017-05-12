@@ -2,7 +2,7 @@ package io.protone.web.api.crm;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.web.api.crm.impl.CrmOpportunityResourceImpl;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;

@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network;
+package io.protone.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

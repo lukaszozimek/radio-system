@@ -2,7 +2,7 @@ package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.cor.CorTaxDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
 import io.protone.repository.cor.CorTaxRepository;

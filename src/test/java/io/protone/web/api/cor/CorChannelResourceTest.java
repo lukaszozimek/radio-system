@@ -1,7 +1,7 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorChannelRepository;

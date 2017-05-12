@@ -3,7 +3,7 @@ package io.protone.web.api.cor;
 import io.protone.ProtoneApp;
 import io.protone.web.api.cor.impl.CorNetworkResourceImpl;
 import io.protone.web.rest.dto.cor.CorNetworkDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.service.cor.CorNetworkService;

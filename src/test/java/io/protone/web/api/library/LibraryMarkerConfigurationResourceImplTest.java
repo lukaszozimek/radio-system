@@ -2,7 +2,7 @@ package io.protone.web.api.library;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.library.LibMarkerConfigurationDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;

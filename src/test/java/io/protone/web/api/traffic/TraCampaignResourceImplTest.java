@@ -5,7 +5,7 @@ import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.crm.CrmCustomerResourceImplTest;
 import io.protone.web.api.traffic.impl.TraCampaignResourceImpl;
 import io.protone.web.rest.dto.traffic.TraCampaignDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraCampaign;

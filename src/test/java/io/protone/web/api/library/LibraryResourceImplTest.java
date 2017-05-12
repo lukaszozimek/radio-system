@@ -4,7 +4,7 @@ import io.protone.ProtoneApp;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.library.impl.LibraryResourceImpl;
 import io.protone.web.rest.dto.library.LibLibraryDTO;
-import io.protone.custom.web.rest.network.TestUtil;
+import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibLibrary;
 import io.protone.domain.enumeration.LibCounterTypeEnum;

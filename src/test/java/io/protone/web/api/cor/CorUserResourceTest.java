@@ -1,4 +1,4 @@
-package io.protone.custom.web.rest.network;
+package io.protone.web.api.cor;
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
