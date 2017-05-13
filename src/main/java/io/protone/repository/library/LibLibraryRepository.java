@@ -16,7 +16,7 @@ import java.util.List;
 public interface LibLibraryRepository extends JpaRepository<LibLibrary, Long> {
     LibLibrary findOneByNetwork_ShortcutAndShortcut(String network, String shortcut);
 
-    LibLibrary findOneByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(String network,String shortcut, String corChannel);
+    LibLibrary findOneByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(String network, String corChannel, String shortcut);
 
     List<LibLibrary> findByNetwork(CorNetwork network);
 
@@ -26,5 +26,5 @@ public interface LibLibraryRepository extends JpaRepository<LibLibrary, Long> {
 
     void deleteByShortcutAndNetwork_Shortcut(String shortcut, String network);
 
-    void deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(String shortcut,String channelShortcut, String network);
+    void deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(String shortcut, String channelShortcut, String network);
 }

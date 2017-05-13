@@ -83,6 +83,7 @@ public interface LibraryResource {
         method = RequestMethod.GET)
     ResponseEntity<LibLibraryDTO> getLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
+
     @ApiOperation(value = "getAllLibrariesForChannel", notes = "", response = LibLibraryDTO.class, responseContainer = "List", tags = {"LIBRARY",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
@@ -110,7 +111,7 @@ public interface LibraryResource {
         method = RequestMethod.PUT)
     ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                  @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException;
+                                                                  @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
 
 
     @ApiOperation(value = "createLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
@@ -126,7 +127,7 @@ public interface LibraryResource {
         method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException;
+                                                                   @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteLibraryForChannel", notes = "", response = Void.class, tags = {"LIBRARY",})

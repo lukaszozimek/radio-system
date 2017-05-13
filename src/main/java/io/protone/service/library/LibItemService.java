@@ -88,7 +88,7 @@ public class LibItemService {
     }
 
     public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
-        List<LibMediaItem> itemsDB = itemRepository.findByLibrary_Shortcut(libraryShortcut, pagable);
+        List<LibMediaItem> itemsDB = itemRepository.findByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
         return itemsDB;
     }
 

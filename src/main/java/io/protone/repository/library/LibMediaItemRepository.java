@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface LibMediaItemRepository extends JpaRepository<LibMediaItem, Long> {
     List<LibMediaItem> findByLibrary(LibLibrary library);
 
-    List<LibMediaItem> findByLibrary_Shortcut(String libraryDB, Pageable pageable);
+    List<LibMediaItem> findByNetwork_ShortcutAndLibrary_Shortcut(String networkShortcut, String libraryDB, Pageable pageable);
 
     Optional<LibMediaItem> findByLibrary_ShortcutAndIdx(String libraryDB, String idx);
 }

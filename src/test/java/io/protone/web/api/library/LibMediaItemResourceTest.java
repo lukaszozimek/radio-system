@@ -194,7 +194,7 @@ public class LibMediaItemResourceTest {
     @Transactional
     public void getAllLibMediaItems() throws Exception {
         // Initialize the database
-        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary));
+        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
 
         // Get all the libMediaItemList
         restLibMediaItemMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item?sort=id,desc", corNetwork.getShortcut(), libLibrary.getShortcut()))

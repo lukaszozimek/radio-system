@@ -51,7 +51,7 @@ public class LibLibraryService {
     }
 
     public void deleteLibrary(String libraryShortcut, String channelShortcut, String networkShortcut) {
-        libraryRepository.deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(libraryShortcut,channelShortcut, networkShortcut);
+        libraryRepository.deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(networkShortcut, channelShortcut, libraryShortcut);
     }
 
     public LibLibrary createOrUpdateLibrary(LibLibrary libLibrary) {

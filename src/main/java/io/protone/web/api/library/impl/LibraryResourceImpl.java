@@ -109,7 +109,7 @@ public class LibraryResourceImpl implements LibraryResource {
     @Override
     public ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException {
+                                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException {
         log.debug("REST request to update library: {}", library);
 
         if (library.getId() == null) {
@@ -126,7 +126,7 @@ public class LibraryResourceImpl implements LibraryResource {
     @Override
     public ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "library", required = true) @RequestBody LibLibraryDTO library) throws URISyntaxException {
+                                                                          @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException {
         log.debug("REST request to create library: {}", library);
         if (library.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);
@@ -144,7 +144,7 @@ public class LibraryResourceImpl implements LibraryResource {
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
         log.debug("REST request to delete LIBLibrary : {}", libraryPrefix);
-        libLibraryService.deleteLibrary(libraryPrefix, networkShortcut);
+        libLibraryService.deleteLibrary(libraryPrefix,channelShortcut, networkShortcut);
         return ResponseEntity.ok().build();
 
     }
