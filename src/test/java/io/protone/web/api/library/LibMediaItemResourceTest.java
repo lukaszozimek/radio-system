@@ -214,7 +214,7 @@ public class LibMediaItemResourceTest {
     @Transactional
     public void getLibMediaItem() throws Exception {
         // Initialize the database
-        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary));
+        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
 
         // Get the libMediaItem
         restLibMediaItemMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{id}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getIdx()))
@@ -297,7 +297,7 @@ public class LibMediaItemResourceTest {
         // Initialize the database
         libMediaItemRepository.deleteAll();
         doNothing().when(s3Client).delete(anyObject());
-        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary));
+        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeDelete = libMediaItemRepository.findAll().size();
 
         // Get the libMediaItem

@@ -17,5 +17,6 @@ public interface LibMediaItemRepository extends JpaRepository<LibMediaItem, Long
 
     List<LibMediaItem> findByNetwork_ShortcutAndLibrary_Shortcut(String networkShortcut, String libraryDB, Pageable pageable);
 
-    Optional<LibMediaItem> findByLibrary_ShortcutAndIdx(String libraryDB, String idx);
+    Optional<LibMediaItem> findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(String networkShortcut, String libraryDB, String idx);
+
 }
