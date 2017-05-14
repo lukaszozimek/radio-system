@@ -1,12 +1,12 @@
 package io.protone.web.rest.dto.scheduler;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.web.rest.dto.scheduler.thin.SchLibItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.SchLibItemThinDTO;
+
+import java.util.Objects;
 
 /**
  * SchAttachmentDTO

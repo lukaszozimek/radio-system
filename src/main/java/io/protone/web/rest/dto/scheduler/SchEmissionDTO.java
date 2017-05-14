@@ -1,16 +1,13 @@
 package io.protone.web.rest.dto.scheduler;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.scheduler.thin.SchLibItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.SchAttachmentDTO;
-import io.swagger.model.SchLibItemThinDTO;
-import io.swagger.model.SchQueueParamsDTO;
-import io.swagger.model.SchTimeParamsDTO;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.*;
+import java.util.Objects;
 /**
  * SchEmissionDTO
  */
