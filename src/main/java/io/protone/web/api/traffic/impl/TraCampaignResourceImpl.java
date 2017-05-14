@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-//TODO Add ShortName to enity
+
 @RestController
 public class TraCampaignResourceImpl implements TraCampaignResource {
     private final Logger log = LoggerFactory.getLogger(TraCampaignResourceImpl.class);

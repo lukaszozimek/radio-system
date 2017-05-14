@@ -26,7 +26,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
-//TODO: Provide Short NAme for entity
 @RestController
 public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
     private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);

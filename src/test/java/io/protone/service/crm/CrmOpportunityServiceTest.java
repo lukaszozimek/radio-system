@@ -175,7 +175,7 @@ public class CrmOpportunityServiceTest {
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        crmOpportunityService.getOpportunity(crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
         CrmOpportunity localCrmContact = crmOpportunityRepository.findOne(crmOpportunity.getId());
 
         //assert
@@ -195,8 +195,8 @@ public class CrmOpportunityServiceTest {
         crmTask.setNetwork(corNetwork);
 
         //then
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
-        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
+        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
 
         //assert
         assertNotNull(crmTask1);
@@ -235,10 +235,10 @@ public class CrmOpportunityServiceTest {
         crmTask.setNetwork(corNetwork);
 
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
 
         //then
-        List<CrmTask> localTask = crmOpportunityService.getTasksAssociatedWithOpportunity(crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut(), new PageRequest(0, 10));
+        List<CrmTask> localTask = crmOpportunityService.getTasksAssociatedWithOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(localTask);
@@ -258,7 +258,7 @@ public class CrmOpportunityServiceTest {
         crmTask.setNetwork(corNetwork);
 
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
 
         //then
         CrmTask localTask = crmOpportunityService.getTaskAssociatedWithOpportunity(crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
@@ -281,13 +281,13 @@ public class CrmOpportunityServiceTest {
         crmTask.setNetwork(corNetwork);
 
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
-        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
 
         // then
-        crmOpportunityService.deleteOpportunityTask(crmOpportunity.getName(), crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
+        crmOpportunityService.deleteOpportunityTask(crmOpportunity.getShortName(), crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
 
         CrmTask localTask = crmOpportunityService.getTaskAssociatedWithOpportunity(crmTask1.getId(), crmOpportunity.getNetwork().getShortcut());
-        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        CrmOpportunity localContact = crmOpportunityService.getOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
 
         //assert
         assertNull(localTask);
@@ -305,7 +305,7 @@ public class CrmOpportunityServiceTest {
         crmOpportunity = crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        crmOpportunityService.deleteOpportunity(crmOpportunity.getName(), crmOpportunity.getNetwork().getShortcut());
+        crmOpportunityService.deleteOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
         CrmOpportunity localContact = crmOpportunityRepository.findOne(crmOpportunity.getId());
 
         //assert

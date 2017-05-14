@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest(classes = ProtoneApp.class)
 public class TraCampaignMapperTest {
     @Autowired
-    private TraCampaignMapper customLibMarkerMapperExt;
+    private TraCampaignMapper traCampaignMapper;
 
     private TraCampaign traCampaign;
 
@@ -48,6 +48,7 @@ public class TraCampaignMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traCampaign = factory.manufacturePojo(TraCampaign.class);
+        traCampaign.shortName("xxx");
         traCampaign.setId(1L);
         traCampaign.setCustomer(factory.manufacturePojo(CrmAccount.class));
         traCampaign.getCustomer().setId(1L);
@@ -55,6 +56,7 @@ public class TraCampaignMapperTest {
         traCampaign.setStatus(factory.manufacturePojo(CorDictionary.class));
         traCampaigns.add(traCampaign);
         campaignPT = factory.manufacturePojo(TraCampaignDTO.class);
+        campaignPT.shortName("xxx");
         campaignPT.setCustomerId(factory.manufacturePojo(TraCustomerThinDTO.class));
         campaignPT.setOrders(Lists.newArrayList(factory.manufacturePojo(TraOrderDTO.class)));
         campaignPT.setStatus(factory.manufacturePojo(CorDictionaryDTO.class));
@@ -65,9 +67,10 @@ public class TraCampaignMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        TraCampaignDTO dto = customLibMarkerMapperExt.DB2DTO(traCampaign);
+        TraCampaignDTO dto = traCampaignMapper.DB2DTO(traCampaign);
 
         assertNotNull(dto.getOrders());
+        assertNotNull(dto.getShortName());
         assertNotNull(dto.getCustomerId());
         assertNotNull(dto.getStatus());
         assertNotNull(dto.getId());
@@ -80,12 +83,12 @@ public class TraCampaignMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraCampaignDTO> dtos = customLibMarkerMapperExt.DBs2DTOs(traCampaigns);
+        List<TraCampaignDTO> dtos = traCampaignMapper.DBs2DTOs(traCampaigns);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-
+            assertNotNull(dto.getShortName());
             assertNotNull(dto.getOrders());
             assertNotNull(dto.getCustomerId());
             assertNotNull(dto.getStatus());
@@ -99,10 +102,11 @@ public class TraCampaignMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        TraCampaign entity = customLibMarkerMapperExt.DTO2DB(campaignPT, corNetwork);
+        TraCampaign entity = traCampaignMapper.DTO2DB(campaignPT, corNetwork);
 
 
         assertNotNull(entity.getCustomer());
+        assertNotNull(entity.getShortName());
         assertNotNull(entity.getOrders());
         assertNotNull(entity.getStatus());
         assertNotNull(entity.getEndDate());
@@ -116,12 +120,13 @@ public class TraCampaignMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraCampaign> entities = customLibMarkerMapperExt.DTOs2DBs(traCampaignDTOS, corNetwork);
+        List<TraCampaign> entities = traCampaignMapper.DTOs2DBs(traCampaignDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getCustomer());
+            assertNotNull(entity.getShortName());
             assertNotNull(entity.getOrders());
             assertNotNull(entity.getStatus());
             assertNotNull(entity.getEndDate());

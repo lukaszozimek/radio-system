@@ -8,13 +8,14 @@ import org.mapstruct.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CorChannelMapper.class})
 public interface LibLibraryMapper {
 
     LibLibraryDTO DB2DTO(LibLibrary libLibrary);
 
     List<LibLibraryDTO> DBs2DTOs(List<LibLibrary> libLibraries);
 
+    @Mapping(source ="channels", target="channels"  )
     LibLibrary DTO2DB(LibLibraryDTO libLibraryDTO, @Context CorNetwork corNetwork);
 
     default List<LibLibrary> DTOs2DBs(List<LibLibraryDTO> libLibraryDTOS, CorNetwork networkId) {
@@ -31,5 +32,6 @@ public interface LibLibraryMapper {
     @AfterMapping
     default void libraryPTToLibLibraryAfterMapping(LibLibraryDTO dto, @MappingTarget LibLibrary entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
+
     }
 }

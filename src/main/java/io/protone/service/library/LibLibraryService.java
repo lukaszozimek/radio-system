@@ -41,6 +41,19 @@ public class LibLibraryService {
         libraryRepository.deleteByShortcutAndNetwork_Shortcut(libraryShortcut, networkShortcut);
     }
 
+    public List<LibLibrary> findLibrariesByChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
+        return libraryRepository.findAllByNetwork_ShortcutAndChannels_ShortcutIn(networkShortcut, channelShortcut, pageable);
+    }
+
+    public LibLibrary findLibraryByChannel(String networkShortcut, String channelShortcut, String libraryShortcut) {
+        LibLibrary result = libraryRepository.findOneByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(networkShortcut, channelShortcut, libraryShortcut);
+        return result;
+    }
+
+    public void deleteLibrary(String libraryShortcut, String channelShortcut, String networkShortcut) {
+        libraryRepository.deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(networkShortcut, channelShortcut, libraryShortcut);
+    }
+
     public LibLibrary createOrUpdateLibrary(LibLibrary libLibrary) {
         log.debug("Persisting LibLibrary: {}", libLibrary);
         libLibrary = libraryRepository.saveAndFlush(libLibrary);

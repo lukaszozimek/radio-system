@@ -46,6 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ProtoneApp.class)
 public class CrmOpportunityResourceImplTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String DEFAULT_SHORT_NAME = "AAAAAAAXAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final LocalDate DEFAULT_LAST_TRY = LocalDate.ofEpochDay(0L);
@@ -96,6 +97,7 @@ public class CrmOpportunityResourceImplTest {
     public static CrmOpportunity createEntity(EntityManager em) {
         CrmOpportunity crmOpportunity = new CrmOpportunity()
             .name(DEFAULT_NAME)
+            .shortName(DEFAULT_SHORT_NAME)
             .lastTry(DEFAULT_LAST_TRY)
             .closeDate(DEFAULT_CLOSE_DATE)
             .probability(DEFAULT_PROBABILITY);
@@ -193,7 +195,7 @@ public class CrmOpportunityResourceImplTest {
         crmOpportunityRepository.saveAndFlush(crmOpportunity.network(corNetwork));
 
         // Get the crmOpportunity
-        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), crmOpportunity.getName()))
+        restCrmOpportunityMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), crmOpportunity.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmOpportunity.getId().intValue()))
@@ -261,6 +263,26 @@ public class CrmOpportunityResourceImplTest {
         assertThat(crmOpportunities).hasSize(databaseSizeBeforeTest);
     }
 
+
+    @Test
+    @Transactional
+    public void checkShortNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = crmOpportunityRepository.findAll().size();
+        // set the field null
+        crmOpportunity.setShortName(null);
+
+        // Create the CfgMarkerConfiguration, which fails.
+        CrmOpportunityDTO cfgMarkerConfigurationDTO = crmOpportunityMapper.DB2DTO(crmOpportunity);
+
+        restCrmOpportunityMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/opportunity", corNetwork.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CrmOpportunity> crmOpportunities = crmOpportunityRepository.findAll();
+        assertThat(crmOpportunities).hasSize(databaseSizeBeforeTest);
+    }
+
     @Test
     @Transactional
     public void updateNonExistingCrmOpportunity() throws Exception {
@@ -289,7 +311,7 @@ public class CrmOpportunityResourceImplTest {
         int databaseSizeBeforeDelete = crmOpportunityRepository.findAll().size();
 
         // Get the crmOpportunity
-        restCrmOpportunityMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), crmOpportunity.getName())
+        restCrmOpportunityMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/opportunity/{shortName}", corNetwork.getShortcut(), crmOpportunity.getShortName())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

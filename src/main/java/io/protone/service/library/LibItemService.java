@@ -83,12 +83,12 @@ public class LibItemService {
     private LibLabelService libLabelService;
 
     public LibMediaItem getMediaItem(String networkShortcut, String libraryShortcut, String idx) {
-        Optional<LibMediaItem> optionalItemDB = itemRepository.findByLibrary_ShortcutAndIdx(libraryShortcut, idx);
+        Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
         return optionalItemDB.orElse(null);
     }
 
     public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
-        List<LibMediaItem> itemsDB = itemRepository.findByLibrary_Shortcut(libraryShortcut, pagable);
+        List<LibMediaItem> itemsDB = itemRepository.findByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
         return itemsDB;
     }
 
@@ -222,7 +222,7 @@ public class LibItemService {
     }
 
     public LibMediaItem getItemFromDB(String networkShortcut, String libraryShortcut, String idx) {
-        Optional<LibMediaItem> optItemDB = itemRepository.findByLibrary_ShortcutAndIdx(libraryShortcut, idx);
+        Optional<LibMediaItem> optItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
         return optItemDB.orElse(null);
     }
 
