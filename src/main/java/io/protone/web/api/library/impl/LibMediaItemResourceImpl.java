@@ -29,6 +29,8 @@ import java.util.Optional;
 /**
  * Created by grzesiek on 27.01.2017.
  */
+
+//TODO: How to deal with channel in this case
 @RestController
 public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
