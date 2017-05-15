@@ -69,7 +69,7 @@ public class LibLibrary implements Serializable {
     @PodamExclude
     private CorNetwork network;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "lib_library_channel",
         joinColumns = @JoinColumn(name = "lib_library_id", referencedColumnName = "id"),
@@ -210,15 +210,16 @@ public class LibLibrary implements Serializable {
 
     public LibLibrary addChannel(CorChannel corChannel) {
         this.channels.add(corChannel);
-        corChannel.addChannelLibarary(this);
+
         return this;
     }
 
     public LibLibrary removeChannel(CorChannel corChannel) {
         this.channels.remove(corChannel);
-        corChannel.addChannelLibarary(null);
+
         return this;
     }
+
     public void setChannels(Set<CorChannel> corChannels) {
         this.channels = corChannels;
     }

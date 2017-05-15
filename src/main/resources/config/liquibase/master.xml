@@ -221,6 +221,11 @@
                   file="/config/liquibase/demo/cor_dictionary.csv"
                   separator=";"
                   tableName="cor_dictionary"/>
+
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/cor_channel_lib_library.csv"
+                  separator=";"
+                  tableName="lib_library_channel"/>
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>
 
