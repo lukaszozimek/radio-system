@@ -100,6 +100,11 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraPrice.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraBlockConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraBlock.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraEmission.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraPlaylist.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmTaskComment.xml"
              relativeToChangelogFile="false"/>
@@ -193,6 +198,10 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraPrice.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraBlockConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraBlock.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraEmission.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraPlaylist.xml" relativeToChangelogFile="false"/>
 
     <changeSet id="" author="">
         <loadData encoding="UTF-8"

@@ -1,3 +1,36 @@
+entity TraBlockConfiguration{
+day CorDayOfWeekEnum
+name String
+length Long
+startBlock Long
+stopBlock Long
+
+}
+entity TraEmission{
+
+     timeStart Long
+     timeStop Long
+
+}
+
+enum CorDayOfWeekEnum {
+   DW_MONDAY,
+   DW_TUESDAY,
+   DW_WEDNESDAY,
+   DW_THURSDAY,
+   DW_FRIDAY,
+   DW_SATURDAY,
+   DW_SUNDAY
+}
+entity TraBlock{
+    name String
+    length Long
+    startBlock Long
+    stopBlock Long
+}
+entity TraPlaylist{
+    playlistDate LocalDate
+}
 entity CrmAccount {
  	shortName String
     externalId1 String
@@ -655,7 +688,20 @@ relationship ManyToOne {
     CrmTaskComment{taskComment} to CrmTask {comments},
     CrmTaskComment{createdBy} to CorUser,
     CorChannel{network} to CorNetwork,
-    CorNotification{user} to CorUser
+    CorNotification{user} to CorUser,
+
+    TraBlockConfiguration {network} to CorNetwork,
+    TraEmission {network} to CorNetwork,
+    TraBlock {network} to CorNetwork,
+    TraPlaylist {network} to CorNetwork,
+    TraBlockConfiguration {channel} to CorChannel,
+    TraEmission {channel} to CorChannel,
+    TraBlock {channel} to CorChannel,
+    TraPlaylist {channel} to CorChannel,
+
+    TraEmission {advertiment} to TraAdvertisement,
+    TraEmission {block} to TraBlock{emissions},
+    TraBlock {block} to TraPlaylist{playlists}
 }
 relationship ManyToMany {
 
