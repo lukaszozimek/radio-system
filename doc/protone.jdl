@@ -40,6 +40,7 @@ entity CrmLead {
 
 entity CrmOpportunity{
     name String
+    shortName String
   	lastTry LocalDate
     closeDate LocalDate
     probability Integer
@@ -433,6 +434,7 @@ entity TraInvoice {
 
 entity TraCampaign {
 	name String required maxlength(100)
+	shortName String
 	startDate LocalDate
 	endDate LocalDate
 	prize Long
@@ -528,6 +530,7 @@ relationship ManyToOne {
     LibMediaItem{artist} to LibArtist,
     LibMediaItem{album} to LibAlbum,
     LibMediaItem{Track} to LibTrack,
+    LibMediaItem{network} to CorNetwork,
 
     LibAlbum{label} to LibLabel,
     LibTrack{album} to LibAlbum,
