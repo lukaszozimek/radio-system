@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by lukaszozimek on 14.05.2017.
@@ -15,31 +16,39 @@ import javax.validation.Valid;
 
 @RestController
 public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationResource {
-    public ResponseEntity<TraBlockConfigurationDTO> creatSchedulerScheduleForChannelUsingPOSTUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                       @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) {
+
+    @Override
+    public ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                            @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) {
         return null;
     }
 
-
-    public ResponseEntity<TraBlockConfigurationDTO> getAllSchedulerScheduleForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    @Override
+    public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
         return null;
     }
 
-
-    public ResponseEntity<TraBlockConfigurationDTO> getAllSchedulerScheduleForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    @Override
+    public ResponseEntity<TraBlockConfigurationDTO> getTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         return null;
     }
 
-    public ResponseEntity<TraBlockConfigurationDTO> updateSchedulerScheduleForChanneltUsingPUTUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+    @Override
+    public ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         return null;
     }
 
-
+    @Override
+    public ResponseEntity<Void> deleteTrafficBlockConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+        return null;
+    }
 }

@@ -58,8 +58,8 @@ public interface SchClockResource {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchClockDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
+                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
     );
 
 
@@ -75,8 +75,8 @@ public interface SchClockResource {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<SchClockDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockDTO clockDTO);
+                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                       @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockDTO clockDTO);
 
 
     @ApiOperation(value = "deleteSchedulerClockForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
@@ -90,8 +90,8 @@ public interface SchClockResource {
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
+                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
     );
 
 }

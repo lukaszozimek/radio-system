@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by lukaszozimek on 14.05.2017.
@@ -19,9 +20,9 @@ import javax.validation.Valid;
 public class SchPlaylistResourceImpl implements SchPlaylistResource {
 
     @Override
-    public ResponseEntity<SchPlaylistDTO> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<SchPlaylistDTO>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         return null;
     }
 
