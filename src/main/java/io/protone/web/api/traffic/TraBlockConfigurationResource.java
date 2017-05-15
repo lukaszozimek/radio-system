@@ -28,7 +28,7 @@ public interface TraBlockConfigurationResource {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraBlockConfigurationDTO> creatSchedulerScheduleForChannelUsingPOSTUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                 @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO);
 
@@ -42,7 +42,7 @@ public interface TraBlockConfigurationResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/block",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraBlockConfigurationDTO> getAllSchedulerScheduleForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable
                                                                                                );
@@ -57,7 +57,7 @@ public interface TraBlockConfigurationResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraBlockConfigurationDTO> getAllSchedulerScheduleForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> getTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                @ApiParam(value = "id", required = true) @PathVariable("id") Long id
 
@@ -74,9 +74,23 @@ public interface TraBlockConfigurationResource {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraBlockConfigurationDTO> updateSchedulerScheduleForChanneltUsingPUTUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id
+    );
+    @ApiOperation(value = "deleteSchedulerClockForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = Void.class),
+        @ApiResponse(code = 204, message = "No Content", response = Void.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
+        @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}",
+        produces = {"application/json"},
+        method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteTrafficBlockConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                              @ApiParam(value = "id", required = true) @PathVariable("id") Long id
     );
 
 

@@ -29,7 +29,7 @@ public interface TraPlaylistResource {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<TraPlaylistDTO> creatSchedulerScheduleForChannelUsingPOSTUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDTO> creatChannelTrafficPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody TraPlaylistDTO traPlaylistDTO);
 
@@ -44,7 +44,7 @@ public interface TraPlaylistResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
         produces = {"*/*"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETEUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteChannelTrafficPlaylistUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
@@ -58,7 +58,21 @@ public interface TraPlaylistResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<TraPlaylistDTO> getSchedulerScheduleForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDTO> getChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") String date);
+
+
+    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}/download",
+        produces = {"application/json"},
+        method = RequestMethod.GET)
+    ResponseEntity<TraPlaylistDTO> getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
@@ -74,9 +88,8 @@ public interface TraPlaylistResource {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<TraPlaylistDTO> updateSchedulerScheduleForChanneltUsingPUTUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<TraPlaylistDTO> updateChannelTrafficPlaylistUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-
                                                                                       @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody TraPlaylistDTO traPlaylistDTO);
 
 }

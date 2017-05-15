@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface SchEventResource {
 
-    @ApiOperation(value = "getAllSchedulerTemplatesForChannel", notes = "", response = SchEventDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllSchedulerEventForChannel", notes = "", response = SchEventDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchEventDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventDTO.class),
@@ -27,7 +27,7 @@ public interface SchEventResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<SchEventDTO> getAllSchedulerTemplatesForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchEventDTO> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -43,27 +43,13 @@ public interface SchEventResource {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
-    ResponseEntity<SchEventDTO> creatSchedulerTemplatesForChannelUsingPOSTUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchEventDTO> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                     @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventDTO schEventDTO);
 
 
-    @ApiOperation(value = "deleteSchedulerClockForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-        @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/{shortName}",
-        produces = {"application/json"},
-        method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETEUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
-    );
 
-    @ApiOperation(value = "deleteSchedulerTemplateForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "deleteSchedulerEventForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -73,11 +59,11 @@ public interface SchEventResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerTemplateForChannelUsingDELETEUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<Void> deleteSchedulerEventForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName);
 
-    @ApiOperation(value = "getSchedulerTemplateForChannel", notes = "", response = SchEventDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getSchedulerEventForChannel", notes = "", response = SchEventDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchEventDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventDTO.class),
@@ -86,12 +72,12 @@ public interface SchEventResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<SchEventDTO> getSchedulerTemplateForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchEventDTO> getSchedulerEventForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName
     );
 
-    @ApiOperation(value = "updateSchedulerTemplatesForChannel", notes = "", response = SchEventDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "updateSchedulerEventForChannel", notes = "", response = SchEventDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchEventDTO.class),
         @ApiResponse(code = 201, message = "Created", response = SchEventDTO.class),
@@ -102,7 +88,7 @@ public interface SchEventResource {
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
-    ResponseEntity<SchEventDTO> updateSchedulerTemplatesForChannelUsingPUTUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<SchEventDTO> updateSchedulerEventForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventDTO schEventDTO);
 

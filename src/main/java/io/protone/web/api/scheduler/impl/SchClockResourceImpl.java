@@ -32,16 +32,24 @@ public class SchClockResourceImpl implements SchClockResource {
     }
 
     @Override
-    public ResponseEntity<SchClockDTO> getSchedulerClockForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<SchClockDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         return null;
     }
 
     @Override
-    public ResponseEntity<SchClockDTO> updateSchedulerClockForChanneltUsingPUTUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                       @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockDTO clockDTO) {
+    public ResponseEntity<SchClockDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                              @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockDTO clockDTO) {
         return null;
     }
+
+    @Override
+    public ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+        return null;
+    }
+
 }

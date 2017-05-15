@@ -19,45 +19,38 @@ public class SchEventResourceImpl implements SchEventResource {
 
 
     @Override
-    public ResponseEntity<SchEventDTO> getAllSchedulerTemplatesForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<SchEventDTO> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
         return null;
     }
 
     @Override
-    public ResponseEntity<SchEventDTO> creatSchedulerTemplatesForChannelUsingPOSTUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                           @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventDTO schEventDTO) {
+    public ResponseEntity<SchEventDTO> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                  @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventDTO schEventDTO) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETEUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<Void> deleteSchedulerEventForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> deleteSchedulerTemplateForChannelUsingDELETEUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<SchEventDTO> getSchedulerTemplateForChannelUsingGETUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+    public ResponseEntity<SchEventDTO> getSchedulerEventForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
 
         return null;
     }
 
     @Override
-    public ResponseEntity<SchEventDTO> updateSchedulerTemplatesForChannelUsingPUTUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                          @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventDTO schEventDTO) {
+    public ResponseEntity<SchEventDTO> updateSchedulerEventForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                              @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventDTO schEventDTO) {
         return null;
     }
 }
