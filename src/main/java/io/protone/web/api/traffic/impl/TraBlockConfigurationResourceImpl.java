@@ -1,12 +1,13 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraBlockConfiguration;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
+import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraBlockConfigurationService;
 import io.protone.web.api.traffic.TraBlockConfigurationResource;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
+import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.mapper.TraBlockConfigurationMapper;
 import io.protone.web.rest.util.HeaderUtil;
@@ -57,7 +58,7 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
         TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork);
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/order/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/block/" + response.getId()))
             .body(response);
     }
 
@@ -65,14 +66,28 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
-        return null;
+        log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, networkShortcut);
+        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurations(networkShortcut, pagable);
+        List<TraBlockConfigurationDTO> response = traBlockConfigurationMapper.DBs2DTOs(entity);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationByDateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                        @ApiParam(value = "day", required = true) @PathVariable("day") TraBlockConfigurationDTO.DayOfWeekEnum day) {
-        return null;
+                                                                                                        @ApiParam(value = "day", required = true) @PathVariable("day") CorDayOfWeekEnum day) {
+        log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, networkShortcut);
+        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurationsByDay(networkShortcut, day);
+        List<TraBlockConfigurationDTO> response = traBlockConfigurationMapper.DBs2DTOs(entity);
+        return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -92,8 +107,17 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     @Override
     public ResponseEntity<TraBlockConfigurationDTO> updateTrafficBlockConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
-        return null;
+                                                                                            @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException {
+        log.debug("REST request to update TraBlockConfiguration : {}, for Channel {} Network: {}", traBlockConfigurationDTO, channelShortcut, networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        if (traBlockConfigurationDTO.getId() == null) {
+            return creatTrafficBlockConfigurationUsingPOST(networkShortcut, channelShortcut, traBlockConfigurationDTO);
+        }
+        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork);
+        TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
+        TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
+        return ResponseEntity.ok()
+            .body(response);
     }
 
     @Override

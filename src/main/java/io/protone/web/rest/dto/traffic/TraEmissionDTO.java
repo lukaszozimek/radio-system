@@ -16,6 +16,10 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class TraEmissionDTO {
+
+    @JsonProperty("id")
+    private Long id = null;
+
     @JsonProperty("advertismentId")
     private Long advertismentId = null;
 
@@ -28,6 +32,14 @@ public class TraEmissionDTO {
     public TraEmissionDTO advertismentId(Long advertismentId) {
         this.advertismentId = advertismentId;
         return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**

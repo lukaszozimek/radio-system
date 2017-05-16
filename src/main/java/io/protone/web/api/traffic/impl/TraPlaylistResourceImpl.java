@@ -63,7 +63,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork);
         TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/order/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/playlist/" + response.getPalylistDate()))
             .body(response);
     }
 

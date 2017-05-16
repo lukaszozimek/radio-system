@@ -25,30 +25,29 @@ public class TraPlaylistService {
         return traPlaylistRepository.save(traPlaylistList);
     }
 
-
     @Transactional
     public TraPlaylist savePlaylist(TraPlaylist traPlaylistList) {
         return traPlaylistRepository.save(traPlaylistList);
     }
 
     @Transactional
-    public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String networkShotcut) {
-        return traPlaylistRepository.findAllByNetwork_ShortcutAndPlaylistDateBetween(networkShotcut, from, to);
+    public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String networkshortcut) {
+        return traPlaylistRepository.findAllByNetwork_ShortcutAndPlaylistDateBetween(networkshortcut, from, to);
     }
 
     @Transactional
-    public TraPlaylist getTraPlaylistList(LocalDate date, String networkShotcut) {
-        return traPlaylistRepository.findOneByPlaylistDateAndNetwork_Shortcut(date, networkShotcut);
+    public TraPlaylist getTraPlaylistList(LocalDate date, String networkshortcut) {
+        return traPlaylistRepository.findOneByPlaylistDateAndNetwork_Shortcut(date, networkshortcut);
     }
 
     @Transactional
-    public List<TraPlaylist> getAllPlaylistList(String networkShotcut, Pageable pageable) {
-        return traPlaylistRepository.findAllByNetwork_Shortcut(networkShotcut, pageable);
+    public List<TraPlaylist> getAllPlaylistList(String networkshortcut, Pageable pageable) {
+        return traPlaylistRepository.findAllByNetwork_Shortcut(networkshortcut, pageable);
     }
 
 
     @Transactional
-    public void deleteOneTraPlaylistList(LocalDate date, String networkShotcut) {
-        traPlaylistRepository.deleteByPlaylistDateAndNetwork_Shortcut(date, networkShotcut);
+    public void deleteOneTraPlaylistList(LocalDate date, String networkshortcut) {
+        traPlaylistRepository.deleteByPlaylistDateAndNetwork_Shortcut(date, networkshortcut);
     }
 }

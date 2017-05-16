@@ -29,7 +29,7 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -45,7 +45,7 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
         produces = {"*/*"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteChannelTrafficPlaylistUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -59,7 +59,7 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraPlaylistDTO> getChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -72,7 +72,7 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -85,7 +85,7 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{fromDate}/{toDate}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{fromDate}/{toDate}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistInRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -99,7 +99,7 @@ public interface TraPlaylistResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/batch",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/batch",
         produces = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<List<TraPlaylistDTO>> createChannelTrafficPlaylistInRangeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
