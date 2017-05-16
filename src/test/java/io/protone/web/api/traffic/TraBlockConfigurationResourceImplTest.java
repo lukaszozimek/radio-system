@@ -4,6 +4,8 @@ import io.protone.ProtoneApp;
 import io.protone.domain.TraBlockConfiguration;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.repository.traffic.TraBlockConfigurationRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.service.traffic.TraBlockConfigurationService;
 import io.protone.util.TestUtil;
 import io.protone.web.api.traffic.impl.TraBlockConfigurationResourceImpl;
 import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
@@ -19,6 +21,7 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +31,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 15/05/2017.
@@ -61,6 +57,12 @@ public class TraBlockConfigurationResourceImplTest {
     private static final Long UPDATED_STOP_BLOCK = 2L;
 
     @Autowired
+    private CorNetworkService corNetworkService;
+
+    @Autowired
+    private TraBlockConfigurationService traBlockConfigurationService;
+
+    @Autowired
     private TraBlockConfigurationRepository traBlockConfigurationRepository;
 
     @Autowired
@@ -82,10 +84,14 @@ public class TraBlockConfigurationResourceImplTest {
 
     private TraBlockConfiguration traBlockConfiguration;
 
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         TraBlockConfigurationResourceImpl traBlockConfigurationResource = new TraBlockConfigurationResourceImpl();
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "traBlockConfigurationService", traBlockConfigurationService);
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "traBlockConfigurationMapper", traBlockConfigurationMapper);
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "corNetworkService", corNetworkService);
         this.restTraBlockConfigurationMockMvc = MockMvcBuilders.standaloneSetup(traBlockConfigurationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -121,7 +127,7 @@ public class TraBlockConfigurationResourceImplTest {
         // Create the TraBlockConfiguration
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
-        restTraBlockConfigurationMockMvc.perform(post("/api/tra-block-configurations")
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
             .andExpect(status().isCreated());
@@ -148,7 +154,7 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO existingTraBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(existingTraBlockConfiguration);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraBlockConfigurationMockMvc.perform(post("/api/tra-block-configurations")
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingTraBlockConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -165,7 +171,7 @@ public class TraBlockConfigurationResourceImplTest {
         traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
 
         // Get all the traBlockConfigurationList
-        restTraBlockConfigurationMockMvc.perform(get("/api/tra-block-configurations?sort=id,desc"))
+        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traBlockConfiguration.getId().intValue())))
@@ -183,7 +189,7 @@ public class TraBlockConfigurationResourceImplTest {
         traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
 
         // Get the traBlockConfiguration
-        restTraBlockConfigurationMockMvc.perform(get("/api/tra-block-configurations/{id}", traBlockConfiguration.getId()))
+        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", traBlockConfiguration.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traBlockConfiguration.getId().intValue()))
@@ -198,7 +204,7 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void getNonExistingTraBlockConfiguration() throws Exception {
         // Get the traBlockConfiguration
-        restTraBlockConfigurationMockMvc.perform(get("/api/tra-block-configurations/{id}", Long.MAX_VALUE))
+        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -219,7 +225,7 @@ public class TraBlockConfigurationResourceImplTest {
             .stopBlock(UPDATED_STOP_BLOCK);
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(updatedTraBlockConfiguration);
 
-        restTraBlockConfigurationMockMvc.perform(put("/api/tra-block-configurations")
+        restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
             .andExpect(status().isOk());
@@ -244,7 +250,7 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraBlockConfigurationMockMvc.perform(put("/api/tra-block-configurations")
+        restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
             .andExpect(status().isCreated());
@@ -262,7 +268,7 @@ public class TraBlockConfigurationResourceImplTest {
         int databaseSizeBeforeDelete = traBlockConfigurationRepository.findAll().size();
 
         // Get the traBlockConfiguration
-        restTraBlockConfigurationMockMvc.perform(delete("/api/tra-block-configurations/{id}", traBlockConfiguration.getId())
+        restTraBlockConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", traBlockConfiguration.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
