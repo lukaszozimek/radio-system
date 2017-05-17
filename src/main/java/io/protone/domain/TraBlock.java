@@ -21,6 +21,7 @@ public class TraBlock implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -180,26 +181,35 @@ public class TraBlock implements Serializable {
         traEmission.setBlock(null);
         return this;
     }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         TraBlock traBlock = (TraBlock) o;
-        if (traBlock.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, traBlock.id);
+
+        if (!getId().equals(traBlock.getId())) return false;
+        if (!getName().equals(traBlock.getName())) return false;
+        if (!getLength().equals(traBlock.getLength())) return false;
+        if (!getStartBlock().equals(traBlock.getStartBlock())) return false;
+        if (!getStopBlock().equals(traBlock.getStopBlock())) return false;
+        if (!getNetwork().equals(traBlock.getNetwork())) return false;
+        if (!getChannel().equals(traBlock.getChannel())) return false;
+        if (!getBlock().equals(traBlock.getBlock())) return false;
+        return getEmissions().equals(traBlock.getEmissions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        int result = id != null ? getId().hashCode() : 0;
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getLength().hashCode();
+        result = 31 * result + getStartBlock().hashCode();
+        result = 31 * result + getStopBlock().hashCode();
+
+        return result;
     }
+
 
     @Override
     public String toString() {

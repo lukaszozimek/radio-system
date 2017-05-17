@@ -74,7 +74,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to delete TraOrder : {}, for Network: {}", date, networkShortcut);
-        traPlaylistService.deleteOneTraPlaylistList(date, networkShortcut);
+        traPlaylistService.deleteOneTraPlaylistList(date, networkShortcut, channelShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();
     }
 
@@ -83,7 +83,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to get TraPlaylist : {}, for Network: {}", date, networkShortcut);
-        TraPlaylist entity = traPlaylistService.getTraPlaylistList(date, networkShortcut);
+        TraPlaylist entity = traPlaylistService.getTraPlaylistList(date, networkShortcut, channelShortcut);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -97,7 +97,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraPlaylist, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        List<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut, pagable);
+        List<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut,channelShortcut, pagable);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -112,7 +112,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                                             @ApiParam(value = "fromDate", required = true) @PathVariable("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                                             @ApiParam(value = "toDate", required = true) @PathVariable("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         log.debug("REST request to get all TraPlaylist, for Channel {}, Network: {} in Range from {} to {}", channelShortcut, networkShortcut, fromDate, toDate);
-        List<TraPlaylist> entity = traPlaylistService.getTraPlaylistListInRange(fromDate, toDate, networkShortcut);
+        List<TraPlaylist> entity = traPlaylistService.getTraPlaylistListInRange(fromDate, toDate, networkShortcut, channelShortcut);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(

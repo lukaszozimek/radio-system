@@ -17,13 +17,22 @@ import java.util.List;
 public interface TraPlaylistRepository extends JpaRepository<TraPlaylist, Long> {
     List<TraPlaylist> findAllByNetwork_Shortcut(String shortcut, Pageable pageable);
 
+
+    List<TraPlaylist> findAllByNetwork_ShortcutAndChannel_Shortcut(String shortcut, String channelShortcut, Pageable pageable);
+
+    List<TraPlaylist> findAllByNetwork_ShortcutAndChannel_ShortcutAndPlaylistDateBetween(String shortcut, String channelShortcut, LocalDate from, LocalDate to);
+
+
     List<TraPlaylist> findAllByNetwork_ShortcutAndPlaylistDateBetween(String shortcut, LocalDate from, LocalDate to);
 
-    TraPlaylist findOneByIdAndNetwork_Shortcut(Long id, String shortcut);
 
-    TraPlaylist findOneByPlaylistDateAndNetwork_Shortcut(LocalDate date, String shortcut);
+    TraPlaylist findOneByIdAndNetwork_ShortcutAndChannel_Shortcut(Long id, String shortcut, String channelShortcut);
+
+    TraPlaylist findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String shortcut, String channelShortcut);
 
 
     void deleteByPlaylistDateAndNetwork_Shortcut(LocalDate date, String shortcut);
+
+    void deleteByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(LocalDate date, String shortcut, String channelShortcut);
 
 }

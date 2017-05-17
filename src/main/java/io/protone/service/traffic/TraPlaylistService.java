@@ -20,6 +20,9 @@ public class TraPlaylistService {
     @Autowired
     private TraPlaylistRepository traPlaylistRepository;
 
+    @Autowired
+    private TraBlockService traBlockService;
+
     @Transactional
     public List<TraPlaylist> savePlaylists(List<TraPlaylist> traPlaylistList) {
         return traPlaylistRepository.save(traPlaylistList);
@@ -27,27 +30,28 @@ public class TraPlaylistService {
 
     @Transactional
     public TraPlaylist savePlaylist(TraPlaylist traPlaylistList) {
+        traPlaylistList.playlists(traBlockService.traSaveBlockSet(traPlaylistList.getPlaylists()));
         return traPlaylistRepository.save(traPlaylistList);
     }
 
     @Transactional
-    public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String networkshortcut) {
-        return traPlaylistRepository.findAllByNetwork_ShortcutAndPlaylistDateBetween(networkshortcut, from, to);
+    public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String networkshortcut, String channelShortcut) {
+        return traPlaylistRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndPlaylistDateBetween(networkshortcut, channelShortcut, from, to);
     }
 
     @Transactional
-    public TraPlaylist getTraPlaylistList(LocalDate date, String networkshortcut) {
-        return traPlaylistRepository.findOneByPlaylistDateAndNetwork_Shortcut(date, networkshortcut);
+    public TraPlaylist getTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
+        return traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
     }
 
     @Transactional
-    public List<TraPlaylist> getAllPlaylistList(String networkshortcut, Pageable pageable) {
-        return traPlaylistRepository.findAllByNetwork_Shortcut(networkshortcut, pageable);
+    public List<TraPlaylist> getAllPlaylistList(String networkshortcut, String channelShortcut, Pageable pageable) {
+        return traPlaylistRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkshortcut, channelShortcut, pageable);
     }
 
 
     @Transactional
-    public void deleteOneTraPlaylistList(LocalDate date, String networkshortcut) {
-        traPlaylistRepository.deleteByPlaylistDateAndNetwork_Shortcut(date, networkshortcut);
+    public void deleteOneTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
+        traPlaylistRepository.deleteByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
     }
 }

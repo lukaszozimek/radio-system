@@ -18,6 +18,7 @@ public class TraEmission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -58,17 +59,21 @@ public class TraEmission implements Serializable {
         return timeStart;
     }
 
+    public void setTimeStart(Long timeStart) {
+        this.timeStart = timeStart;
+    }
+
     public TraEmission timeStart(Long timeStart) {
         this.timeStart = timeStart;
         return this;
     }
 
-    public void setTimeStart(Long timeStart) {
-        this.timeStart = timeStart;
-    }
-
     public Long getTimeStop() {
         return timeStop;
+    }
+
+    public void setTimeStop(Long timeStop) {
+        this.timeStop = timeStop;
     }
 
     public TraEmission timeStop(Long timeStop) {
@@ -76,12 +81,12 @@ public class TraEmission implements Serializable {
         return this;
     }
 
-    public void setTimeStop(Long timeStop) {
-        this.timeStop = timeStop;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraEmission network(CorNetwork corNetwork) {
@@ -89,12 +94,12 @@ public class TraEmission implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     public TraEmission channel(CorChannel corChannel) {
@@ -102,12 +107,12 @@ public class TraEmission implements Serializable {
         return this;
     }
 
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
-    }
-
     public TraAdvertisement getAdvertiment() {
         return advertiment;
+    }
+
+    public void setAdvertiment(TraAdvertisement traAdvertisement) {
+        this.advertiment = traAdvertisement;
     }
 
     public TraEmission advertiment(TraAdvertisement traAdvertisement) {
@@ -115,12 +120,12 @@ public class TraEmission implements Serializable {
         return this;
     }
 
-    public void setAdvertiment(TraAdvertisement traAdvertisement) {
-        this.advertiment = traAdvertisement;
-    }
-
     public TraBlock getBlock() {
         return block;
+    }
+
+    public void setBlock(TraBlock traBlock) {
+        this.block = traBlock;
     }
 
     public TraEmission block(TraBlock traBlock) {
@@ -128,28 +133,28 @@ public class TraEmission implements Serializable {
         return this;
     }
 
-    public void setBlock(TraBlock traBlock) {
-        this.block = traBlock;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TraEmission traEmission = (TraEmission) o;
-        if (traEmission.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, traEmission.id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraEmission that = (TraEmission) o;
+
+        if (!getId().equals(that.getId())) return false;
+        if (!getTimeStart().equals(that.getTimeStart())) return false;
+        if (!getTimeStop().equals(that.getTimeStop())) return false;
+        if (!getNetwork().equals(that.getNetwork())) return false;
+        if (!getChannel().equals(that.getChannel())) return false;
+        if (!getAdvertiment().equals(that.getAdvertiment())) return false;
+        return getBlock().equals(that.getBlock());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        int result = id != null ? getId().hashCode() : 0;
+        result = 31 * result + getTimeStart().hashCode();
+        result = 31 * result + getTimeStop().hashCode();
+        return result;
     }
 
     @Override
