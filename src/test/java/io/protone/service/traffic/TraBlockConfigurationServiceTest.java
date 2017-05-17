@@ -2,8 +2,12 @@ package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.TraBlockConfiguration;
+import io.protone.domain.TraOrder;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.traffic.TraBlockConfigurationRepository;
 import io.protone.repository.traffic.TraBlockRepository;
 import io.protone.service.crm.CrmCustomerService;
 import org.junit.Before;
@@ -11,11 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -34,7 +41,7 @@ public class TraBlockConfigurationServiceTest {
     private CorNetworkRepository corNetworkRepository;
 
     @Autowired
-    private TraBlockRepository traBlockRepository;
+    private TraBlockConfigurationRepository traBlockRepository;
 
     private CorNetwork corNetwork;
 
@@ -50,23 +57,69 @@ public class TraBlockConfigurationServiceTest {
     }
 
     @Test
-    public void findConfigurationBlock() throws Exception {
+    public void shouldGetOrders() throws Exception {
+        //when
+        TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setNetwork(corNetwork);
+        traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
+
+        //then
+        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurations(corNetwork.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertEquals(1, fetchedEntity.size());
+        assertEquals(traBlockConfiguration.getId(), fetchedEntity.get(0).getId());
+        assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.get(0).getNetwork());
+
     }
 
     @Test
-    public void deleteBlockConfiguration() throws Exception {
+    public void shouldSaveOrder() throws Exception {
+        //when
+        TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setNetwork(corNetwork);
+
+        //then
+        TraBlockConfiguration fetchedEntity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getName(), traBlockConfiguration.getName());
+        assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
-    public void saveBlockConfiguration() throws Exception {
+    public void shouldDeleteOrder() throws Exception {
+        //when
+        TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setNetwork(corNetwork);
+        traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
+        //then
+        traBlockConfigurationService.deleteBlockConfiguration(traBlockConfiguration.getId(), corNetwork.getShortcut());
+        TraBlockConfiguration fetchedEntity = traBlockConfigurationService.findConfigurationBlock(traBlockConfiguration.getId(), corNetwork.getShortcut());
+
+        //assert
+        assertNull(fetchedEntity);
     }
 
     @Test
-    public void getAllBlockConfigurations() throws Exception {
-    }
+    public void shouldGetOrder() throws Exception {
+        //when
+        TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setNetwork(corNetwork);
+        traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
 
-    @Test
-    public void getAllBlockConfigurationsByDay() throws Exception {
+        //then
+        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurationsByDay(corNetwork.getShortcut(), traBlockConfiguration.getDay());
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertEquals(1, fetchedEntity.size());
+        assertEquals(traBlockConfiguration.getId(), fetchedEntity.get(0).getId());
+        assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.get(0).getNetwork());
+
     }
 
 }
