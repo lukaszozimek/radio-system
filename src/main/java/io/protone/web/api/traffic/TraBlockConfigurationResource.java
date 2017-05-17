@@ -73,7 +73,7 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)
@@ -103,7 +103,7 @@ public interface TraBlockConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraBlockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{day}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{day}/",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationByDateUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

@@ -30,7 +30,7 @@ public class TraBlockDTO {
     private Long startBlock = null;
 
 
-    @JsonProperty("startBlock")
+    @JsonProperty("stopBlock")
     private Long stopBlock = null;
 
 
@@ -121,6 +121,7 @@ public class TraBlockDTO {
         this.emissions = emissions;
     }
 
+    @ApiModelProperty(value = "")
     public Long getStopBlock() {
         return stopBlock;
     }
@@ -129,6 +130,7 @@ public class TraBlockDTO {
         this.stopBlock = stopBlock;
     }
 
+    @ApiModelProperty(value = "")
     public Long getStartBlock() {
         return startBlock;
     }

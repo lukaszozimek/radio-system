@@ -71,7 +71,7 @@ public class TraPlaylistMapperTest {
         assertNotNull(dto.getBlocks());
         assertEquals(1, dto.getBlocks().size());
 
-        assertNotNull(dto.getPalylistDate());
+        assertNotNull(dto.getPlaylistDate());
 
 
     }
@@ -87,7 +87,7 @@ public class TraPlaylistMapperTest {
             assertNotNull(dto.getBlocks());
 
             assertEquals(1, dto.getBlocks().size());
-            assertNotNull(dto.getPalylistDate());
+            assertNotNull(dto.getPlaylistDate());
         });
     }
 

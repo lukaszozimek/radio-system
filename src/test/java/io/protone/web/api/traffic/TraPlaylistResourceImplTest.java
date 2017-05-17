@@ -184,7 +184,7 @@ public class TraPlaylistResourceImplTest {
         traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
 
         // Get the traPlaylist
-        restTraPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), traPlaylist.getId()))
+        restTraPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traPlaylist.getId().intValue()))
@@ -251,7 +251,7 @@ public class TraPlaylistResourceImplTest {
         int databaseSizeBeforeDelete = traPlaylistRepository.findAll().size();
 
         // Get the traPlaylist
-        restTraPlaylistMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), traPlaylist.getId())
+        restTraPlaylistMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

@@ -34,7 +34,7 @@ public class TraBlockConfigurationDTO {
     @JsonProperty("startBlock")
     private Long startBlock = null;
 
-    @JsonProperty("startBlock")
+    @JsonProperty("stopBlock")
     private Long stopBlock = null;
 
     @JsonProperty("day")

@@ -20,8 +20,9 @@ public class TraPlaylistDTO {
     private Long id = null;
 
 
-    @JsonProperty("date")
-    private LocalDate palylistDate;
+
+    @JsonProperty("playlistDate")
+    private LocalDate playlistDate;
 
     @JsonProperty("blocks")
     private List<TraBlockDTO> blocks = new ArrayList<TraBlockDTO>();
@@ -34,12 +35,12 @@ public class TraPlaylistDTO {
         this.id = id;
     }
 
-    public LocalDate getPalylistDate() {
-        return palylistDate;
+    public LocalDate getPlaylistDate() {
+        return playlistDate;
     }
 
-    public void setPalylistDate(LocalDate palylistDate) {
-        this.palylistDate = palylistDate;
+    public void setPlaylistDate(LocalDate playlistDate) {
+        this.playlistDate = playlistDate;
     }
 
     public TraPlaylistDTO blocks(List<TraBlockDTO> blocks) {
@@ -85,20 +86,18 @@ public class TraPlaylistDTO {
         return Objects.hash(blocks);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraPlaylistDTO {\n");
-
-        sb.append("    blocks: ").append(toIndentedString(blocks)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
      */
+    @Override
+    public String toString() {
+        return "TraPlaylistDTO{" +
+            "id=" + id +
+            ", playlistDate=" + playlistDate +
+            ", blocks=" + blocks +
+            '}';
+    }
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

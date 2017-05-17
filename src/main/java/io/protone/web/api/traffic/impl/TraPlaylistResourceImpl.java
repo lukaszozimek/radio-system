@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,7 +54,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     @Override
     public ResponseEntity<TraPlaylistDTO> creatChannelTrafficPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                               @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException {
+                                                                               @Valid @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException {
         log.debug("REST request to save TraPlaylist : {}, for Channel {} Network: {}", traPlaylistDTO, channelShortcut, networkShortcut);
         if (traPlaylistDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraPlaylist", "idexists", "A new TraPlaylist cannot already have an ID")).body(null);
@@ -64,14 +65,14 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
         TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/playlist/" + response.getPalylistDate()))
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/playlist/" + response.getPlaylistDate()))
             .body(response);
     }
 
     @Override
     public ResponseEntity<Void> deleteChannelTrafficPlaylistUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                        @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
+                                                                        @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to delete TraOrder : {}, for Network: {}", date, networkShortcut);
         traPlaylistService.deleteOneTraPlaylistList(date, networkShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();
@@ -80,7 +81,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     @Override
     public ResponseEntity<TraPlaylistDTO> getChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                            @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
+                                                                            @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to get TraPlaylist : {}, for Network: {}", date, networkShortcut);
         TraPlaylist entity = traPlaylistService.getTraPlaylistList(date, networkShortcut);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
@@ -108,8 +109,8 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     @Override
     public ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistInRangeUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                            @ApiParam(value = "fromDate", required = true) @PathVariable("fromDate") LocalDate fromDate,
-                                                                                            @ApiParam(value = "toDate", required = true) @PathVariable("toDate") LocalDate toDate) {
+                                                                                            @ApiParam(value = "fromDate", required = true) @PathVariable("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+                                                                                            @ApiParam(value = "toDate", required = true) @PathVariable("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
         log.debug("REST request to get all TraPlaylist, for Channel {}, Network: {} in Range from {} to {}", channelShortcut, networkShortcut, fromDate, toDate);
         List<TraPlaylist> entity = traPlaylistService.getTraPlaylistListInRange(fromDate, toDate, networkShortcut);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entity);
@@ -143,7 +144,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     @Override
     public ResponseEntity<TraPlaylistDTO> getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
+                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return null;
     }
 
