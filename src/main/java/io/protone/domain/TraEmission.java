@@ -2,6 +2,7 @@ package io.protone.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,6 +21,7 @@ public class TraEmission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @Column(name = "time_start")
@@ -29,15 +31,19 @@ public class TraEmission implements Serializable {
     private Long timeStop;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private CorChannel channel;
 
     @ManyToOne
+    @PodamExclude
     private TraAdvertisement advertiment;
 
     @ManyToOne
+    @PodamExclude
     private TraBlock block;
 
     public Long getId() {

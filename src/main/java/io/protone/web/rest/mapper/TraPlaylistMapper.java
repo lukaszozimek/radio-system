@@ -17,11 +17,14 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {TraBlockMapper.class})
 public interface TraPlaylistMapper {
+
+    @Mapping(source = "playlistDate", target = "palylistDate")
     @Mapping(source = "playlists", target = "blocks")
     TraPlaylistDTO DB2DTO(TraPlaylist traPlaylist);
 
     List<TraPlaylistDTO> DBs2DTOs(List<TraPlaylist> traPlaylists);
 
+    @Mapping(source = "palylistDate", target = "playlistDate")
     @Mapping(source = "blocks", target = "playlists")
     TraPlaylist DTO2DB(TraPlaylistDTO traPlaylistDTO, @Context CorNetwork network, @Context CorChannel corChannel);
 
@@ -31,7 +34,7 @@ public interface TraPlaylistMapper {
             return null;
         }
         for (TraPlaylistDTO dto : traPlaylistDTOS) {
-            traPlaylists.add(DTO2DB(dto, network,corChannel));
+            traPlaylists.add(DTO2DB(dto, network, corChannel));
         }
         return traPlaylists;
     }

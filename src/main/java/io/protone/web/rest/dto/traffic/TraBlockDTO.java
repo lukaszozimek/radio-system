@@ -15,8 +15,6 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class TraBlockDTO {
-    @JsonProperty("description")
-    private String description = null;
 
     @JsonProperty("id")
     private Long id = null;
@@ -27,6 +25,7 @@ public class TraBlockDTO {
     @JsonProperty("lenght")
     private Long lenght = null;
 
+
     @JsonProperty("startBlock")
     private Long startBlock = null;
 
@@ -34,30 +33,10 @@ public class TraBlockDTO {
     @JsonProperty("startBlock")
     private Long stopBlock = null;
 
-    @JsonProperty("seq")
-    private Long seq = null;
 
     @JsonProperty("emissions")
     private List<TraEmissionDTO> emissions = new ArrayList<TraEmissionDTO>();
 
-    public TraBlockDTO description(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return description
-     **/
-    @ApiModelProperty(value = "")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public TraBlockDTO id(Long id) {
         this.id = id;
@@ -117,24 +96,6 @@ public class TraBlockDTO {
         this.lenght = lenght;
     }
 
-    public TraBlockDTO seq(Long seq) {
-        this.seq = seq;
-        return this;
-    }
-
-    /**
-     * Get seq
-     *
-     * @return seq
-     **/
-    @ApiModelProperty(value = "")
-    public Long getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Long seq) {
-        this.seq = seq;
-    }
 
     public TraBlockDTO emissions(List<TraEmissionDTO> emissions) {
         this.emissions = emissions;
@@ -160,6 +121,22 @@ public class TraBlockDTO {
         this.emissions = emissions;
     }
 
+    public Long getStopBlock() {
+        return stopBlock;
+    }
+
+    public void setStopBlock(Long stopBlock) {
+        this.stopBlock = stopBlock;
+    }
+
+    public Long getStartBlock() {
+        return startBlock;
+    }
+
+    public void setStartBlock(Long startBlock) {
+        this.startBlock = startBlock;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -170,32 +147,30 @@ public class TraBlockDTO {
             return false;
         }
         TraBlockDTO traBlockDTO = (TraBlockDTO) o;
-        return Objects.equals(this.description, traBlockDTO.description) &&
+        return
             Objects.equals(this.id, traBlockDTO.id) &&
-            Objects.equals(this.name, traBlockDTO.name) &&
-            Objects.equals(this.lenght, traBlockDTO.lenght) &&
-            Objects.equals(this.seq, traBlockDTO.seq) &&
-            Objects.equals(this.emissions, traBlockDTO.emissions);
+                Objects.equals(this.name, traBlockDTO.name) &&
+                Objects.equals(this.lenght, traBlockDTO.lenght) &&
+                Objects.equals(this.startBlock, traBlockDTO.startBlock) &&
+                Objects.equals(this.stopBlock, traBlockDTO.stopBlock) &&
+                Objects.equals(this.emissions, traBlockDTO.emissions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, id, name, lenght, seq, emissions);
+        return Objects.hash(id, name, lenght, emissions);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraBlockDTO {\n");
-
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    lenght: ").append(toIndentedString(lenght)).append("\n");
-        sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
-        sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "TraBlockDTO{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", lenght=" + lenght +
+            ", startBlock=" + startBlock +
+            ", stopBlock=" + stopBlock +
+            ", emissions=" + emissions +
+            '}';
     }
 
     /**

@@ -1,15 +1,10 @@
 package io.protone.web.rest.dto.traffic;
 
-import java.time.LocalTime;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.validation.constraints.*;
 
 /**
  * TraEmissionDTO
@@ -21,8 +16,8 @@ public class TraEmissionDTO {
     @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("advertismentId")
-    private TraAdvertisementThinDTO advertismentId = null;
+    @JsonProperty("advertiment")
+    private TraAdvertisementThinDTO advertiment = null;
 
     @JsonProperty("timeStart")
     private Long timeStart = null;
@@ -30,8 +25,8 @@ public class TraEmissionDTO {
     @JsonProperty("timeStop")
     private Long timeStop = null;
 
-    public TraEmissionDTO advertismentId(TraAdvertisementThinDTO advertismentId) {
-        this.advertismentId = advertismentId;
+    public TraEmissionDTO advertisment(TraAdvertisementThinDTO advertisment) {
+        this.advertiment = advertisment;
         return this;
     }
 
@@ -44,17 +39,17 @@ public class TraEmissionDTO {
     }
 
     /**
-     * Get advertismentId
+     * Get advertiment
      *
-     * @return advertismentId
+     * @return advertiment
      **/
     @ApiModelProperty(value = "")
-    public TraAdvertisementThinDTO getAdvertismentId() {
-        return advertismentId;
+    public TraAdvertisementThinDTO getAdvertiment() {
+        return advertiment;
     }
 
-    public void setAdvertismentId(TraAdvertisementThinDTO advertismentId) {
-        this.advertismentId = advertismentId;
+    public void setAdvertiment(TraAdvertisementThinDTO advertiment) {
+        this.advertiment = advertiment;
     }
 
     public TraEmissionDTO timeStart(Long timeStart) {
@@ -105,14 +100,14 @@ public class TraEmissionDTO {
             return false;
         }
         TraEmissionDTO traEmissionDTO = (TraEmissionDTO) o;
-        return Objects.equals(this.advertismentId, traEmissionDTO.advertismentId) &&
+        return Objects.equals(this.advertiment, traEmissionDTO.advertiment) &&
             Objects.equals(this.timeStart, traEmissionDTO.timeStart) &&
             Objects.equals(this.timeStop, traEmissionDTO.timeStop);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(advertismentId, timeStart, timeStop);
+        return Objects.hash(advertiment, timeStart, timeStop);
     }
 
     @Override
@@ -120,7 +115,7 @@ public class TraEmissionDTO {
         StringBuilder sb = new StringBuilder();
         sb.append("class TraEmissionDTO {\n");
 
-        sb.append("    advertismentId: ").append(toIndentedString(advertismentId)).append("\n");
+        sb.append("    advertiment: ").append(toIndentedString(advertiment)).append("\n");
         sb.append("    timeStart: ").append(toIndentedString(timeStart)).append("\n");
         sb.append("    timeStop: ").append(toIndentedString(timeStop)).append("\n");
         sb.append("}");

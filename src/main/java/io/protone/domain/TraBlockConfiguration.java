@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
+import uk.co.jemos.podam.common.PodamExclude;
 
 /**
  * A TraBlockConfiguration.
@@ -22,6 +23,7 @@ public class TraBlockConfiguration implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -41,9 +43,11 @@ public class TraBlockConfiguration implements Serializable {
     private Long stopBlock;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private CorChannel channel;
 
     public Long getId() {

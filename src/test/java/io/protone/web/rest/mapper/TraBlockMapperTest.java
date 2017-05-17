@@ -4,7 +4,9 @@ import io.protone.ProtoneApp;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraBlock;
+import io.protone.domain.TraEmission;
 import io.protone.web.rest.dto.traffic.TraBlockDTO;
+import io.protone.web.rest.dto.traffic.TraEmissionDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,11 +48,17 @@ public class TraBlockMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traBlock = factory.manufacturePojo(TraBlock.class);
+        traBlock.setId(1L);
+
+        TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
+        traBlock.addEmissions(traEmission);
         traBlocks.add(traBlock);
         traBlockDTO = factory.manufacturePojo(TraBlockDTO.class);
+        traBlockDTO.setId(1L);
+        TraEmissionDTO traEmissionDTO = factory.manufacturePojo(TraEmissionDTO.class);
+        traBlockDTO.addEmissionsItem(traEmissionDTO);
         traBlockDTOS.add(traBlockDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
-
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -61,8 +69,10 @@ public class TraBlockMapperTest {
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
-        assertNotNull(dto.getDescription());
+        assertNotNull(dto.getStartBlock());
+        assertNotNull(dto.getStopBlock());
         assertNotNull(dto.getEmissions());
+        assertEquals(1, dto.getEmissions().size());
 
 
     }
@@ -77,8 +87,10 @@ public class TraBlockMapperTest {
 
             assertNotNull(dto.getId());
             assertNotNull(dto.getName());
-            assertNotNull(dto.getDescription());
+            assertNotNull(dto.getStartBlock());
+            assertNotNull(dto.getStopBlock());
             assertNotNull(dto.getEmissions());
+            assertEquals(1, dto.getEmissions().size());
 
         });
     }
@@ -90,6 +102,7 @@ public class TraBlockMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getEmissions());
+        assertEquals(1, entity.getEmissions().size());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getNetwork());
     }
@@ -104,6 +117,8 @@ public class TraBlockMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getName());
             assertNotNull(entity.getEmissions());
+
+            assertEquals(1, entity.getEmissions().size());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getNetwork());
 

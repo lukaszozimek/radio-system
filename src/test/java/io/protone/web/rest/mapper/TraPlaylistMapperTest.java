@@ -3,7 +3,9 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.TraBlock;
 import io.protone.domain.TraPlaylist;
+import io.protone.web.rest.dto.traffic.TraBlockDTO;
 import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +48,15 @@ public class TraPlaylistMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traPlaylist = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist.setId(1L);
+
+        TraBlock traBlock = factory.manufacturePojo(TraBlock.class);
+        traPlaylist.addPlaylists(traBlock);
         traPlaylists.add(traPlaylist);
         traPlaylistDTO = factory.manufacturePojo(TraPlaylistDTO.class);
+        traPlaylistDTO.setId(1L);
+        TraBlockDTO traBlockDTO = factory.manufacturePojo(TraBlockDTO.class);
+        traPlaylistDTO.addBlocksItem(traBlockDTO);
         traPlaylistDTOS.add(traPlaylistDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
@@ -60,6 +69,8 @@ public class TraPlaylistMapperTest {
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getBlocks());
+        assertEquals(1, dto.getBlocks().size());
+
         assertNotNull(dto.getPalylistDate());
 
 
@@ -74,6 +85,8 @@ public class TraPlaylistMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
             assertNotNull(dto.getBlocks());
+
+            assertEquals(1, dto.getBlocks().size());
             assertNotNull(dto.getPalylistDate());
         });
     }

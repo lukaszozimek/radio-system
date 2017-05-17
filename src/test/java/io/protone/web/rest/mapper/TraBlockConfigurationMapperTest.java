@@ -46,8 +46,10 @@ public class TraBlockConfigurationMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setId(1L);
         traBlockConfigurations.add(traBlockConfiguration);
         traDitraBlockConfigurationDTO = factory.manufacturePojo(TraBlockConfigurationDTO.class);
+        traDitraBlockConfigurationDTO.setId(1L);
         traBlockConfigurationDTOS.add(traDitraBlockConfigurationDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
@@ -74,7 +76,6 @@ public class TraBlockConfigurationMapperTest {
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-
             assertNotNull(dto.getId());
             assertNotNull(dto.getStartBlock());
             assertNotNull(dto.getStopBlock());
@@ -83,7 +84,6 @@ public class TraBlockConfigurationMapperTest {
             assertNotNull(dto.getDay());
         });
     }
-
 
     @Test
     public void DTO2DB() throws Exception {

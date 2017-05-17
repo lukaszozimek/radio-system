@@ -1,12 +1,16 @@
 package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.CorChannel;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraBlockConfiguration;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.repository.traffic.TraBlockConfigurationRepository;
+import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraBlockConfigurationService;
 import io.protone.util.TestUtil;
+import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraBlockConfigurationResourceImpl;
 import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
@@ -60,6 +64,8 @@ public class TraBlockConfigurationResourceImplTest {
     private CorNetworkService corNetworkService;
 
     @Autowired
+    private CorChannelService corChannelService;
+    @Autowired
     private TraBlockConfigurationService traBlockConfigurationService;
 
     @Autowired
@@ -83,20 +89,8 @@ public class TraBlockConfigurationResourceImplTest {
     private MockMvc restTraBlockConfigurationMockMvc;
 
     private TraBlockConfiguration traBlockConfiguration;
-
-
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        TraBlockConfigurationResourceImpl traBlockConfigurationResource = new TraBlockConfigurationResourceImpl();
-        ReflectionTestUtils.setField(traBlockConfigurationResource, "traBlockConfigurationService", traBlockConfigurationService);
-        ReflectionTestUtils.setField(traBlockConfigurationResource, "traBlockConfigurationMapper", traBlockConfigurationMapper);
-        ReflectionTestUtils.setField(traBlockConfigurationResource, "corNetworkService", corNetworkService);
-        this.restTraBlockConfigurationMockMvc = MockMvcBuilders.standaloneSetup(traBlockConfigurationResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
+    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
     /**
      * Create an entity for this test.
@@ -115,8 +109,27 @@ public class TraBlockConfigurationResourceImplTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        TraBlockConfigurationResourceImpl traBlockConfigurationResource = new TraBlockConfigurationResourceImpl();
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "traBlockConfigurationService", traBlockConfigurationService);
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "traBlockConfigurationMapper", traBlockConfigurationMapper);
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traBlockConfigurationResource, "corChannelService", corChannelService);
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
+        this.restTraBlockConfigurationMockMvc = MockMvcBuilders.standaloneSetup(traBlockConfigurationResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
-        traBlockConfiguration = createEntity(em);
+        traBlockConfiguration = createEntity(em).network(corNetwork).channel(corChannel);
     }
 
     @Test
@@ -127,7 +140,7 @@ public class TraBlockConfigurationResourceImplTest {
         // Create the TraBlockConfiguration
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
-        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
             .andExpect(status().isCreated());
@@ -154,7 +167,7 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO existingTraBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(existingTraBlockConfiguration);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingTraBlockConfigurationDTO)))
             .andExpect(status().isBadRequest());
@@ -168,10 +181,10 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void getAllTraBlockConfigurations() throws Exception {
         // Initialize the database
-        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
+        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration.network(corNetwork).channel(corChannel));
 
         // Get all the traBlockConfigurationList
-        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block?sort=id,desc"))
+        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traBlockConfiguration.getId().intValue())))
@@ -186,10 +199,10 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void getTraBlockConfiguration() throws Exception {
         // Initialize the database
-        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
+        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration.network(corNetwork).channel(corChannel));
 
         // Get the traBlockConfiguration
-        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", traBlockConfiguration.getId()))
+        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traBlockConfiguration.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traBlockConfiguration.getId().intValue()))
@@ -204,7 +217,7 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void getNonExistingTraBlockConfiguration() throws Exception {
         // Get the traBlockConfiguration
-        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", Long.MAX_VALUE))
+        restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -212,7 +225,7 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void updateTraBlockConfiguration() throws Exception {
         // Initialize the database
-        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
+        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration.network(corNetwork).channel(corChannel));
         int databaseSizeBeforeUpdate = traBlockConfigurationRepository.findAll().size();
 
         // Update the traBlockConfiguration
@@ -225,7 +238,7 @@ public class TraBlockConfigurationResourceImplTest {
             .stopBlock(UPDATED_STOP_BLOCK);
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(updatedTraBlockConfiguration);
 
-        restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
+        restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
             .andExpect(status().isOk());
@@ -250,7 +263,7 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block")
+        restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
             .andExpect(status().isCreated());
@@ -264,11 +277,11 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void deleteTraBlockConfiguration() throws Exception {
         // Initialize the database
-        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
+        traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration.network(corNetwork).channel(corChannel));
         int databaseSizeBeforeDelete = traBlockConfigurationRepository.findAll().size();
 
         // Get the traBlockConfiguration
-        restTraBlockConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", traBlockConfiguration.getId())
+        restTraBlockConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traBlockConfiguration.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

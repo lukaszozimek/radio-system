@@ -3,8 +3,10 @@ package io.protone.web.rest.mapper;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.TraAdvertisement;
 import io.protone.domain.TraEmission;
 import io.protone.web.rest.dto.traffic.TraEmissionDTO;
+import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,11 +47,14 @@ public class TraEmissionMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         traEmission = factory.manufacturePojo(TraEmission.class);
+        traEmission.setId(1L);
+        traEmission.advertiment(factory.manufacturePojo(TraAdvertisement.class));
         traEmissions.add(traEmission);
         traEmissionDTO = factory.manufacturePojo(TraEmissionDTO.class);
+        traEmissionDTO.setId(1L);
+        traEmissionDTO.advertisment(factory.manufacturePojo(TraAdvertisementThinDTO.class));
         traEmissionDTOS.add(traEmissionDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
-
         corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
@@ -59,7 +64,7 @@ public class TraEmissionMapperTest {
         TraEmissionDTO dto = traEmissionMapper.DB2DTO(traEmission);
 
         assertNotNull(dto.getId());
-        assertNotNull(dto.getAdvertismentId());
+        assertNotNull(dto.getAdvertiment());
         assertNotNull(dto.getTimeStart());
         assertNotNull(dto.getTimeStop());
 
@@ -74,7 +79,7 @@ public class TraEmissionMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
-            assertNotNull(dto.getAdvertismentId());
+            assertNotNull(dto.getAdvertiment());
             assertNotNull(dto.getTimeStart());
             assertNotNull(dto.getTimeStop());
         });
