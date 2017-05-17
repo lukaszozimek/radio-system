@@ -1,6 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraBlock;
 import io.protone.web.rest.dto.traffic.TraBlockDTO;
@@ -39,6 +40,8 @@ public class TraBlockMapperTest {
 
     private CorNetwork corNetwork;
 
+    private CorChannel corChannel;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
@@ -47,6 +50,8 @@ public class TraBlockMapperTest {
         traBlockDTO = factory.manufacturePojo(TraBlockDTO.class);
         traBlockDTOS.add(traBlockDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
+
+        corChannel = factory.manufacturePojo(CorChannel.class);
     }
 
 
@@ -55,6 +60,9 @@ public class TraBlockMapperTest {
         TraBlockDTO dto = traBlockMapper.DB2DTO(traBlock);
 
         assertNotNull(dto.getId());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getDescription());
+        assertNotNull(dto.getEmissions());
 
 
     }
@@ -66,26 +74,37 @@ public class TraBlockMapperTest {
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
+
             assertNotNull(dto.getId());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getDescription());
+            assertNotNull(dto.getEmissions());
+
         });
     }
 
 
     @Test
     public void DTO2DB() throws Exception {
-        TraBlock entity = traBlockMapper.DTO2DB(traBlockDTO, corNetwork);
+        TraBlock entity = traBlockMapper.DTO2DB(traBlockDTO, corNetwork, corChannel);
         assertNotNull(entity.getId());
+        assertNotNull(entity.getName());
+        assertNotNull(entity.getEmissions());
+        assertNotNull(entity.getChannel());
         assertNotNull(entity.getNetwork());
     }
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<TraBlock> entities = traBlockMapper.DTOs2DBs(traBlockDTOS, corNetwork);
+        List<TraBlock> entities = traBlockMapper.DTOs2DBs(traBlockDTOS, corNetwork, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getId());
+            assertNotNull(entity.getName());
+            assertNotNull(entity.getEmissions());
+            assertNotNull(entity.getChannel());
             assertNotNull(entity.getNetwork());
 
         });

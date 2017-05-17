@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,7 +22,7 @@ public class TraEmissionDTO {
     private Long id = null;
 
     @JsonProperty("advertismentId")
-    private Long advertismentId = null;
+    private TraAdvertisementThinDTO advertismentId = null;
 
     @JsonProperty("timeStart")
     private Long timeStart = null;
@@ -29,7 +30,7 @@ public class TraEmissionDTO {
     @JsonProperty("timeStop")
     private Long timeStop = null;
 
-    public TraEmissionDTO advertismentId(Long advertismentId) {
+    public TraEmissionDTO advertismentId(TraAdvertisementThinDTO advertismentId) {
         this.advertismentId = advertismentId;
         return this;
     }
@@ -48,11 +49,11 @@ public class TraEmissionDTO {
      * @return advertismentId
      **/
     @ApiModelProperty(value = "")
-    public Long getAdvertismentId() {
+    public TraAdvertisementThinDTO getAdvertismentId() {
         return advertismentId;
     }
 
-    public void setAdvertismentId(Long advertismentId) {
+    public void setAdvertismentId(TraAdvertisementThinDTO advertismentId) {
         this.advertismentId = advertismentId;
     }
 

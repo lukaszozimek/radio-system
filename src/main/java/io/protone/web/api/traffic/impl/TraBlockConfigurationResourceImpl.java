@@ -2,6 +2,7 @@ package io.protone.web.api.traffic.impl;
 
 import io.protone.domain.*;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraBlockConfigurationService;
 import io.protone.web.api.traffic.TraBlockConfigurationResource;
@@ -45,17 +46,21 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     @Autowired
     private CorNetworkService corNetworkService;
 
+    @Autowired
+    private CorChannelService corChannelService;
+
     @Override
     public ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException {
         log.debug("REST request to save TraOrder : {}, for Network: {}", traBlockConfigurationDTO, networkShortcut);
         if (traBlockConfigurationDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraOrder cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraBlockConfiguration cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork);
+        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork,corChannel);
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/block/" + response.getId()))
@@ -109,11 +114,13 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException {
         log.debug("REST request to update TraBlockConfiguration : {}, for Channel {} Network: {}", traBlockConfigurationDTO, channelShortcut, networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+
         if (traBlockConfigurationDTO.getId() == null) {
             return creatTrafficBlockConfigurationUsingPOST(networkShortcut, channelShortcut, traBlockConfigurationDTO);
         }
-        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
+        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork, corChannel);
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
         return ResponseEntity.ok()

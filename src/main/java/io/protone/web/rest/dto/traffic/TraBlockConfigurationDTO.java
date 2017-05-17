@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -29,58 +30,15 @@ public class TraBlockConfigurationDTO {
     @JsonProperty("length")
     private Long length = null;
 
+
     @JsonProperty("startBlock")
     private Long startBlock = null;
 
     @JsonProperty("startBlock")
     private Long stopBlock = null;
 
-    /**
-     * Gets or Sets dayOfWeek
-     */
-    public enum DayOfWeekEnum {
-        MONDAY("MONDAY"),
-
-        TUESDAY("TUESDAY"),
-
-        WEDNESDAY("WEDNESDAY"),
-
-        THURSDAY("THURSDAY"),
-
-        FRIDAY("FRIDAY"),
-
-        SATURDAY("SATURDAY"),
-
-        SUNDAY("SUNDAY");
-
-        private String value;
-
-        DayOfWeekEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        @JsonCreator
-        public static DayOfWeekEnum fromValue(String text) {
-            for (DayOfWeekEnum b : DayOfWeekEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-    }
-
-    @JsonProperty("dayOfWeek")
-    private DayOfWeekEnum dayOfWeek = null;
-
-    @JsonProperty("seq")
-    private Long seq = null;
+    @JsonProperty("day")
+    private CorDayOfWeekEnum day;
 
     public TraBlockConfigurationDTO description(String description) {
         this.description = description;
@@ -159,8 +117,8 @@ public class TraBlockConfigurationDTO {
         this.length = length;
     }
 
-    public TraBlockConfigurationDTO dayOfWeek(DayOfWeekEnum dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public TraBlockConfigurationDTO day(CorDayOfWeekEnum day) {
+        this.day = day;
         return this;
     }
 
@@ -170,33 +128,29 @@ public class TraBlockConfigurationDTO {
      * @return dayOfWeek
      **/
     @ApiModelProperty(value = "")
-    public DayOfWeekEnum getDayOfWeek() {
-        return dayOfWeek;
+    public CorDayOfWeekEnum getDay() {
+        return day;
     }
 
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDay(CorDayOfWeekEnum day) {
+        this.day = day;
     }
 
-    public TraBlockConfigurationDTO seq(Long seq) {
-        this.seq = seq;
-        return this;
+    public Long getStopBlock() {
+        return stopBlock;
     }
 
-    /**
-     * Get seq
-     *
-     * @return seq
-     **/
-    @ApiModelProperty(value = "")
-    public Long getSeq() {
-        return seq;
+    public void setStopBlock(Long stopBlock) {
+        this.stopBlock = stopBlock;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
+    public Long getStartBlock() {
+        return startBlock;
     }
 
+    public void setStartBlock(Long startBlock) {
+        this.startBlock = startBlock;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -211,13 +165,12 @@ public class TraBlockConfigurationDTO {
             Objects.equals(this.id, traBlockConfigurationDTO.id) &&
             Objects.equals(this.name, traBlockConfigurationDTO.name) &&
             Objects.equals(this.length, traBlockConfigurationDTO.length) &&
-            Objects.equals(this.dayOfWeek, traBlockConfigurationDTO.dayOfWeek) &&
-            Objects.equals(this.seq, traBlockConfigurationDTO.seq);
+            Objects.equals(this.day, traBlockConfigurationDTO.day);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, id, name, length, dayOfWeek, seq);
+        return Objects.hash(description, id, name, length, day);
     }
 
     @Override
@@ -229,8 +182,7 @@ public class TraBlockConfigurationDTO {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    length: ").append(toIndentedString(length)).append("\n");
-        sb.append("    dayOfWeek: ").append(toIndentedString(dayOfWeek)).append("\n");
-        sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
+        sb.append("    dayOfWeek: ").append(toIndentedString(day)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -245,5 +197,7 @@ public class TraBlockConfigurationDTO {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+
 }
 
