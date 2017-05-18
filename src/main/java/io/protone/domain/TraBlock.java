@@ -203,9 +203,9 @@ public class TraBlock implements Serializable {
     public int hashCode() {
         int result = id != null ? getId().hashCode() : 0;
         result = 31 * result + getName().hashCode();
-        result = 31 * result + getLength().hashCode();
-        result = 31 * result + getStartBlock().hashCode();
-        result = 31 * result + getStopBlock().hashCode();
+        result = 31 * result + length.hashCode();
+        result = 31 * result + startBlock.hashCode();
+        result = 31 * result + stopBlock.hashCode();
 
         return result;
     }

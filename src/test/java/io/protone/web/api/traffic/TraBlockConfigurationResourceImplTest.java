@@ -4,6 +4,7 @@ import io.protone.ProtoneApp;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraBlockConfiguration;
+import io.protone.domain.TraPlaylist;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.repository.traffic.TraBlockConfigurationRepository;
 import io.protone.service.cor.CorChannelService;
@@ -13,6 +14,7 @@ import io.protone.util.TestUtil;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraBlockConfigurationResourceImpl;
 import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
+import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraBlockConfigurationMapper;
 import org.junit.Before;
@@ -288,6 +290,69 @@ public class TraBlockConfigurationResourceImplTest {
         // Validate the database is empty
         List<TraBlockConfiguration> traBlockConfigurationList = traBlockConfigurationRepository.findAll();
         assertThat(traBlockConfigurationList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        traBlockConfiguration = createEntity(em).network(corNetwork).channel(corChannel);
+
+        int databaseSizeBeforeTest = traBlockConfigurationRepository.findAll().size();
+        // set the field null
+        traBlockConfiguration.setName(null);
+
+        // Create the TraOrder, which fails.
+        TraBlockConfigurationDTO traOrderDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
+
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TraBlockConfiguration> traOrderList = traBlockConfigurationRepository.findAll();
+        assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkStartIsRequired() throws Exception {
+        traBlockConfiguration = createEntity(em).network(corNetwork).channel(corChannel);
+
+        int databaseSizeBeforeTest = traBlockConfigurationRepository.findAll().size();
+        // set the field null
+        traBlockConfiguration.setStartBlock(null);
+
+        // Create the TraOrder, which fails.
+        TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
+
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TraBlockConfiguration> traOrderList = traBlockConfigurationRepository.findAll();
+        assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkStopIsRequired() throws Exception {
+        traBlockConfiguration = createEntity(em).network(corNetwork).channel(corChannel);
+
+        int databaseSizeBeforeTest = traBlockConfigurationRepository.findAll().size();
+        // set the field null
+        traBlockConfiguration.setStopBlock(null);
+
+        // Create the TraOrder, which fails.
+        TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
+
+        restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TraBlockConfiguration> traOrderList = traBlockConfigurationRepository.findAll();
+        assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

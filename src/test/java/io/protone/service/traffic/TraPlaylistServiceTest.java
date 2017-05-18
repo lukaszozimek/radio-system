@@ -62,6 +62,7 @@ public class TraPlaylistServiceTest {
 
         corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel.setId(null);
+        corChannel.setShortcut("XXX");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
 
@@ -149,12 +150,12 @@ public class TraPlaylistServiceTest {
 
         TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist1.setPlaylistDate(LocalDate.now().plusMonths(1));
-        traPlaylist.setNetwork(corNetwork);
-        traPlaylist.setChannel(corChannel);
-        traPlaylist = traPlaylistRepository.save(traPlaylist);
+        traPlaylist1.setNetwork(corNetwork);
+        traPlaylist1.setChannel(corChannel);
+        traPlaylist1 = traPlaylistRepository.save(traPlaylist1);
 
         //then
-        List<TraPlaylist> fetchedEntity = traPlaylistService.getTraPlaylistListInRange(traPlaylist.getPlaylistDate(), traPlaylist1.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        List<TraPlaylist> fetchedEntity = traPlaylistService.getTraPlaylistListInRange(traPlaylist.getPlaylistDate(), traPlaylist1.getPlaylistDate().plusMonths(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
 
         //assert

@@ -1,8 +1,6 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraPlaylist;
+import io.protone.domain.*;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraPlaylistService;
@@ -11,6 +9,7 @@ import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
 import io.protone.web.rest.mapper.TraPlaylistMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
+import liquibase.util.csv.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +19,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.awt.print.Book;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -97,7 +103,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraPlaylist, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        List<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut,channelShortcut, pagable);
+        List<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut, channelShortcut, pagable);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -142,10 +148,34 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     }
 
     @Override
-    public ResponseEntity<TraPlaylistDTO> getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return null;
+    public void getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                                                          HttpServletResponse response) throws IOException {
+        String csvFileName = date + ".csv";
+
+        response.setContentType("text/csv");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+            csvFileName);
+        response.setHeader(headerKey, headerValue);
+
+        TraPlaylist traPlaylist = traPlaylistService.getTraPlaylistList(date, networkShortcut, channelShortcut);
+        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),
+            CsvPreference.STANDARD_PREFERENCE);
+
+        String[] header = {"id", "time_start", "time_stop"};
+
+        csvWriter.writeHeader(header);
+        for (TraBlock traBlock : traPlaylist.getPlaylists()) {
+            for (TraEmission traEmission : traBlock.getEmissions()) {
+                csvWriter.write(traEmission, header);
+            }
+        }
+
+        csvWriter.close();
+        response.setStatus(200);
     }
 
     @Override

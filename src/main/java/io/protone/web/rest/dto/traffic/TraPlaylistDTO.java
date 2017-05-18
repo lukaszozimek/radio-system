@@ -3,6 +3,8 @@ package io.protone.web.rest.dto.traffic;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,18 +15,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class TraPlaylistDTO {
+public class TraPlaylistDTO implements Serializable {
 
 
-    @JsonProperty("id")
     private Long id = null;
 
-
-
-    @JsonProperty("playlistDate")
+    @NotNull
     private LocalDate playlistDate;
 
-    @JsonProperty("blocks")
     private List<TraBlockDTO> blocks = new ArrayList<TraBlockDTO>();
 
     public Long getId() {
@@ -98,6 +96,7 @@ public class TraPlaylistDTO {
             ", blocks=" + blocks +
             '}';
     }
+
     private String toIndentedString(Object o) {
         if (o == null) {
             return "null";

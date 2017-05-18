@@ -22,8 +22,8 @@ public class TraBlockDTO {
     @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("lenght")
-    private Long lenght = null;
+    @JsonProperty("length")
+    private Long length = null;
 
 
     @JsonProperty("startBlock")
@@ -77,8 +77,8 @@ public class TraBlockDTO {
         this.name = name;
     }
 
-    public TraBlockDTO lenght(Long lenght) {
-        this.lenght = lenght;
+    public TraBlockDTO length(Long lenght) {
+        this.length = lenght;
         return this;
     }
 
@@ -88,12 +88,12 @@ public class TraBlockDTO {
      * @return lenght
      **/
     @ApiModelProperty(value = "")
-    public Long getLenght() {
-        return lenght;
+    public Long getLength() {
+        return length;
     }
 
-    public void setLenght(Long lenght) {
-        this.lenght = lenght;
+    public void setLength(Long length) {
+        this.length = length;
     }
 
 
@@ -152,7 +152,7 @@ public class TraBlockDTO {
         return
             Objects.equals(this.id, traBlockDTO.id) &&
                 Objects.equals(this.name, traBlockDTO.name) &&
-                Objects.equals(this.lenght, traBlockDTO.lenght) &&
+                Objects.equals(this.length, traBlockDTO.length) &&
                 Objects.equals(this.startBlock, traBlockDTO.startBlock) &&
                 Objects.equals(this.stopBlock, traBlockDTO.stopBlock) &&
                 Objects.equals(this.emissions, traBlockDTO.emissions);
@@ -160,7 +160,7 @@ public class TraBlockDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lenght, emissions);
+        return Objects.hash(id, name, length, emissions);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class TraBlockDTO {
         return "TraBlockDTO{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", lenght=" + lenght +
+            ", lengthmv=" + length +
             ", startBlock=" + startBlock +
             ", stopBlock=" + stopBlock +
             ", emissions=" + emissions +
