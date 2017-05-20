@@ -20,7 +20,7 @@ import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface TraBlockConfigurationResource {
-    @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = TraBlockConfigurationDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = TraBlockConfigurationDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraBlockConfigurationDTO.class),
@@ -36,7 +36,7 @@ public interface TraBlockConfigurationResource {
                                                                                      @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = TraBlockConfigurationDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = TraBlockConfigurationDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
@@ -51,7 +51,7 @@ public interface TraBlockConfigurationResource {
     );
 
 
-    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = TraBlockConfigurationDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = TraBlockConfigurationDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraBlockConfigurationDTO.class),
@@ -66,7 +66,7 @@ public interface TraBlockConfigurationResource {
 
     );
 
-    @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = TraBlockConfigurationDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = TraBlockConfigurationDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraBlockConfigurationDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraBlockConfigurationDTO.class),
@@ -82,7 +82,7 @@ public interface TraBlockConfigurationResource {
                                                                                      @ApiParam(value = "id", required = true) @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO
     ) throws URISyntaxException;
 
-    @ApiOperation(value = "deleteSchedulerClockForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "deleteSchedulerClockForChannel", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),

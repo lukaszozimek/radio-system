@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -46,11 +47,12 @@ public class TraPlaylistMapperTest {
 
     @Before
     public void initPojos() {
-        PodamFactory factory = new PodamFactoryImpl();
+        PodamFactoryImpl factory = new PodamFactoryImpl();
         traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setId(1L);
 
         TraBlock traBlock = factory.manufacturePojo(TraBlock.class);
+
         traPlaylist.addPlaylists(traBlock);
         traPlaylists.add(traPlaylist);
         traPlaylistDTO = factory.manufacturePojo(TraPlaylistDTO.class);
@@ -69,7 +71,7 @@ public class TraPlaylistMapperTest {
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getBlocks());
-        assertEquals(1, dto.getBlocks().size());
+        assertNotEquals(0, dto.getBlocks().size());
 
         assertNotNull(dto.getPlaylistDate());
 
@@ -85,8 +87,7 @@ public class TraPlaylistMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
             assertNotNull(dto.getBlocks());
-
-            assertEquals(1, dto.getBlocks().size());
+            assertNotEquals(0, dto.getBlocks().size());
             assertNotNull(dto.getPlaylistDate());
         });
     }
@@ -97,7 +98,7 @@ public class TraPlaylistMapperTest {
         TraPlaylist entity = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
         assertNotNull(entity.getId());
         assertNotNull(entity.getPlaylists());
-        assertNotEquals(entity.getPlaylists().size(), 0);
+        assertNotEquals(0, entity.getPlaylists().size());
         assertNotNull(entity.getPlaylistDate());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getNetwork());
@@ -112,7 +113,7 @@ public class TraPlaylistMapperTest {
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getId());
             assertNotNull(entity.getPlaylists());
-            assertNotEquals(entity.getPlaylists().size(), 0);
+            assertNotEquals(0, entity.getPlaylists().size());
             assertNotNull(entity.getPlaylistDate());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getNetwork());

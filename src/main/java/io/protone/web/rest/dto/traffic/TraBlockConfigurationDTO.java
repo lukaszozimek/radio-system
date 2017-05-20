@@ -1,5 +1,6 @@
 package io.protone.web.rest.dto.traffic;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -17,27 +18,26 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class TraBlockConfigurationDTO {
+public class TraBlockConfigurationDTO implements Serializable {
     @JsonProperty("description")
     private String description = null;
 
     @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
 
     @JsonProperty("length")
     private Long length = null;
 
-
-    @JsonProperty("startBlock")
+    @NotNull
     private Long startBlock = null;
 
-    @JsonProperty("stopBlock")
+    @NotNull
     private Long stopBlock = null;
 
-    @JsonProperty("day")
+    @NotNull
     private CorDayOfWeekEnum day;
 
     public TraBlockConfigurationDTO description(String description) {

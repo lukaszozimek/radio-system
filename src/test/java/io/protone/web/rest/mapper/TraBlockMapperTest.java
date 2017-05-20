@@ -102,7 +102,7 @@ public class TraBlockMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getName());
         assertNotNull(entity.getEmissions());
-        assertEquals(1, entity.getEmissions().size());
+        assertNotEquals(0, entity.getEmissions().size());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getNetwork());
     }
@@ -118,7 +118,7 @@ public class TraBlockMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getEmissions());
 
-            assertEquals(1, entity.getEmissions().size());
+            assertNotEquals(0, entity.getEmissions().size());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getNetwork());
 
