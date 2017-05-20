@@ -21,7 +21,7 @@ public class CorAuthority implements Serializable {
     @NotNull
     @Size(min = 0, max = 50)
     @Id
-    @Column(length = 50)
+    @Column(length = 50, unique = true, nullable = false)
     private String name;
 
     public String getName() {

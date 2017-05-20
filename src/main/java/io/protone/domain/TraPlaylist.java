@@ -28,7 +28,7 @@ public class TraPlaylist implements Serializable {
     @PodamExclude
     private Long id;
 
-    @Column(name = "playlist_date")
+    @Column(name = "playlist_date", nullable = false, unique = true)
     private LocalDate playlistDate;
 
     @ManyToOne

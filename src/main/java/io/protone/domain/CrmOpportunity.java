@@ -30,7 +30,7 @@ public class CrmOpportunity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
     @Column(name = "last_try")

@@ -27,7 +27,7 @@ public class CrmContact implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
     @Column(name = "external_id_1")

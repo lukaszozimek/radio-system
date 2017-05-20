@@ -29,10 +29,10 @@ public class CorUser implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "login")
+    @Column(name = "login",nullable = false)
     private String login;
 
-    @Column(name = "passwordhash")
+    @Column(name = "passwordhash",nullable = false)
     private String passwordhash;
 
     @Column(name = "firstname")
@@ -41,7 +41,7 @@ public class CorUser implements Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "email")
+    @Column(name = "email",nullable = false)
     private String email;
 
     @Column(name = "imageurl")

@@ -30,7 +30,7 @@ public class CrmLead implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "shortname")
+    @Column(name = "shortname", unique = true, nullable = false)
     private String shortname;
 
     @Column(name = "description")

@@ -35,7 +35,7 @@ public class TraCampaign implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", nullable = false, unique = true)
     private String shortName;
 
     @Column(name = "start_date")

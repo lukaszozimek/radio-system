@@ -23,7 +23,7 @@ public class CorDictionary implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")
@@ -33,10 +33,10 @@ public class CorDictionary implements Serializable {
     @Column(name = "seq_number")
     private Long seqNumber;
 
-    @Column(name = "dictionary_type_name")
+    @Column(name = "dictionary_type_name", nullable = false)
     private String corDictionaryType;
 
-    @Column(name = "module_name")
+    @Column(name = "module_name", nullable = false)
     private String corModule;
 
     @ManyToOne
