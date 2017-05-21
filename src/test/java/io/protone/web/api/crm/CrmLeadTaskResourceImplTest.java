@@ -231,7 +231,7 @@ public class CrmLeadTaskResourceImplTest {
         crmLeadRepository.deleteAll();
         crmLeadRepository.save(crmLead.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.lead(crmLead));
+        crmTaskRepository.saveAndFlush(crmTask.lead(crmLead).network(corNetwork));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Update the crmTask

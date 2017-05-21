@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -108,11 +109,7 @@ public class TraPlaylistResourceImplTest {
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
 
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
         this.restTraPlaylistMockMvc = MockMvcBuilders.standaloneSetup(traPlaylistResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -121,6 +118,10 @@ public class TraPlaylistResourceImplTest {
 
     @Before
     public void initTest() {
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
         traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
     }
 
@@ -149,8 +150,11 @@ public class TraPlaylistResourceImplTest {
     public void createBatchTraPlaylist() throws Exception {
         int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
 
+
+        TraPlaylist traPlaylist1 = createEntity(em).network(corNetwork).channel(corChannel);
+        traPlaylist1.playlistDate(LocalDate.now().plusMonths(1));
         // Create the TraPlaylist
-        List<TraPlaylistDTO> traPlaylistDTOS = traPlaylistMapper.DBs2DTOs(Lists.newArrayList(traPlaylist, traPlaylist.playlistDate(LocalDate.now().plusMonths(1))));
+        List<TraPlaylistDTO> traPlaylistDTOS = traPlaylistMapper.DBs2DTOs(Lists.newArrayList(traPlaylist, traPlaylist1));
 
 
         restTraPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/batch", corNetwork.getShortcut(), corChannel.getShortcut())

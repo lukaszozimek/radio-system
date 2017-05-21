@@ -231,7 +231,7 @@ public class CrmCustomerTaskResourceImplTest {
         crmAccountRepository.deleteAll();
         crmAccountRepository.save(crmAccount.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.account(crmAccount));
+        crmTaskRepository.saveAndFlush(crmTask.account(crmAccount).network(corNetwork));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Update the crmTask

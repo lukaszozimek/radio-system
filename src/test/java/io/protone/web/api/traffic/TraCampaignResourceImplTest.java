@@ -225,6 +225,8 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getAllTraCampaigns() throws Exception {
         // Initialize the database
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
 
         // Get all the traCampaignList
@@ -242,6 +244,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getTraCampaign() throws Exception {
         // Initialize the database
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
 
         // Get the traCampaign
@@ -321,6 +324,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void deleteTraCampaign() throws Exception {
         // Initialize the database
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).shortName("xxx").name("xxx").customer(crmAccount));
         int databaseSizeBeforeDelete = traCampaignRepository.findAll().size();
 

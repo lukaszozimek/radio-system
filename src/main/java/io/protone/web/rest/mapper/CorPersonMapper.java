@@ -23,9 +23,21 @@ public interface CorPersonMapper {
 
     List<CorPersonDTO> DBs2DTOs(List<CorPerson> cORPeople);
 
-    CorPerson DTO2DB(CorPersonDTO cORPersonDTO);
-
-    List<CorPerson> DTOs2DBs(List<CorPersonDTO> cORPersonDTOs);
+    CorPerson DTO2DB(CorPersonDTO cORPersonDTO, @Context CorNetwork corNetwork);
+    @AfterMapping
+    default void corPersonDTOToCorPersonAfterMapping(CorPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
+    default  List<CorPerson> DTOs2DBs(List<CorPersonDTO> cORPersonDTOs, @Context CorNetwork network){
+        List<CorPerson> corPeople = new ArrayList<>();
+        if (cORPersonDTOs.isEmpty() || cORPersonDTOs == null) {
+            return null;
+        }
+        for (CorPersonDTO dto : cORPersonDTOs) {
+            corPeople.add(DTO2DB(dto, network));
+        }
+        return corPeople;
+    }
 
     LibPersonDTO corPerson2LibPersonPT(CorPerson db);
 

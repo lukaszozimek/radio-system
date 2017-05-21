@@ -1,5 +1,6 @@
 package io.protone.web.api.cor.impl;
 
+import io.protone.domain.CorNetwork;
 import io.protone.web.rest.dto.cor.CorPersonDTO;
 import io.protone.repository.cor.CorPersonRepository;
 import io.protone.service.cor.CorNetworkService;
@@ -38,12 +39,13 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
     private CorPersonMapper corPersonMapper;
 
     @Override
-    public ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true)@Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
+    public ResponseEntity<CorPersonDTO> updatePersonUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to update CorPerson : {}", personDTO);
         if (personDTO.getId() == null) {
             return createPersonUsingPOST(networkShortcut, personDTO);
         }
-        CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO, corNetwork);
         cORPerson = corPersonRepository.save(cORPerson);
         CorPersonDTO result = corPersonMapper.DB2DTO(cORPerson);
         return ResponseEntity.ok()
@@ -53,12 +55,13 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
 
     @Override
     public ResponseEntity<CorPersonDTO> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "personDTO", required = true)@Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
+                                                              @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
         log.debug("REST request to save CorPerson : {}", personDTO);
         if (personDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPerson", "idexists", "A new cORPerson cannot already have an ID")).body(null);
         }
-        CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO);
+        CorNetwork corNetwork = networkService.findNetwork(networkShortcut);
+        CorPerson cORPerson = corPersonMapper.DTO2DB(personDTO, corNetwork);
         cORPerson = corPersonRepository.save(cORPerson);
         CorPersonDTO result = corPersonMapper.DB2DTO(cORPerson);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))

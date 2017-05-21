@@ -115,8 +115,6 @@ public class TraCustomerResourceImplTest {
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "accountMapper", crmAccountMapper);
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "corNetworkService", corNetworkService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
 
         this.restCrmAccountMockMvc = MockMvcBuilders.standaloneSetup(apiNetworkTrafficCustomer)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -126,6 +124,8 @@ public class TraCustomerResourceImplTest {
 
     @Before
     public void initTest() {
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
         crmAccount = createEntity(em).network(corNetwork);
     }
 
@@ -199,14 +199,14 @@ public class TraCustomerResourceImplTest {
     @Transactional
     public void getCrmAccount() throws Exception {
         // Initialize the database
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork).shortName("yyyy"));
 
         // Get the crmAccount
         restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmAccount.getId().intValue()))
-            .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORT_NAME.toString()))
+            .andExpect(jsonPath("$.shortName").value("yyyy"))
             .andExpect(jsonPath("$.externalId1").value(DEFAULT_EXTERNAL_ID_1.toString()))
             .andExpect(jsonPath("$.externalId2").value(DEFAULT_EXTERNAL_ID_2.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
