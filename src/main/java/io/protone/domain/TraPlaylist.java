@@ -16,7 +16,8 @@ import java.util.Objects;
  * A TraPlaylist.
  */
 @Entity
-@Table(name = "tra_playlist")
+@Table(name = "tra_playlist", uniqueConstraints =
+@UniqueConstraint(columnNames = {"playlist_date", "network_id", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TraPlaylist implements Serializable {
 

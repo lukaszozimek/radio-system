@@ -5,6 +5,9 @@ import io.protone.ProtoneApp;
 import io.protone.domain.*;
 import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraPlaylistRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,12 +49,21 @@ public class TraPlaylistServiceTest {
     @Autowired
     private TraPlaylistRepository traPlaylistRepository;
 
+    @Autowired
+    private TraAdvertisementRepository traAdvertisementRepository;
+
+    @Autowired
+    private CrmAccountRepository crmAccountRepository;
+
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
 
     private CorNetwork corNetwork;
 
     private CorChannel corChannel;
 
     private PodamFactory factory;
+
 
     @Before
     public void setUp() throws Exception {
@@ -167,10 +179,25 @@ public class TraPlaylistServiceTest {
     @Test
     public void shouldSaveBlockWithEmissions() throws Exception {
         //when
+
+        LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setNetwork(corNetwork);
+        libMediaItem = libMediaItemRepository.save(libMediaItem);
+        TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
+        traAdvertisement.setNetwork(corNetwork);
+
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
+
+        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount = crmAccountRepository.save(crmAccount);
+        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        traAdvertisement.customer(crmAccount);
+        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
         traEmission.setChannel(corChannel);
         traEmission.setNetwork(corNetwork);
+        traEmission.setAdvertiment(traAdvertisement);
         TraBlock traBlock = factory.manufacturePojo(TraBlock.class)
             .emissions(Sets.newHashSet(traEmission))
             .channel(corChannel)
@@ -203,6 +230,19 @@ public class TraPlaylistServiceTest {
     @Test
     public void shouldSaveBlocksWithEmissions() throws Exception {
         //when
+        LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setNetwork(corNetwork);
+        libMediaItem = libMediaItemRepository.save(libMediaItem);
+        TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
+        traAdvertisement.setNetwork(corNetwork);
+
+        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount = crmAccountRepository.save(crmAccount);
+        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        traAdvertisement.customer(crmAccount);
+        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
+
         Set<TraBlock> traBlockSet = new HashSet<>();
         Set<TraEmission> traEmissionSet = new HashSet<>();
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
@@ -210,6 +250,7 @@ public class TraPlaylistServiceTest {
 
             TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
             traEmission.setChannel(corChannel);
+            traEmission.setAdvertiment(traAdvertisement);
             traEmission.setNetwork(corNetwork);
             traEmissionSet.add(traEmission);
         }

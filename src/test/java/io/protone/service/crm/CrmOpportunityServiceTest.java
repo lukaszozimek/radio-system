@@ -102,6 +102,7 @@ public class CrmOpportunityServiceTest {
     public void shouldSaveCrmOpportuniteWithAssociatedLead() throws Exception {
         //when
         CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
+        crmLead.network(corNetwork);
         crmLead = crmLeadRepository.saveAndFlush(crmLead);
 
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
@@ -124,6 +125,7 @@ public class CrmOpportunityServiceTest {
     public void shouldSaveCrmContactWithWithAssociatedContact() throws Exception {
         //when
         CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
+        crmContact.setNetwork(corNetwork);
         crmContact = crmContactRepository.saveAndFlush(crmContact);
 
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
@@ -147,6 +149,7 @@ public class CrmOpportunityServiceTest {
     public void shouldSaveCrmContacthWithAssociatedAccount() throws Exception {
         //when
         CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
 
         CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);

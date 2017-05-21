@@ -45,7 +45,7 @@ public class TraAdvertisementServiceTest {
     private CorNetworkRepository corNetworkRepository;
 
     @Autowired
-    private TraAdvertisementRepository traCampaignRepository;
+    private TraAdvertisementRepository traAdvertisementRepository;
 
     @Autowired
     private CrmAccountRepository crmAccountRepository;
@@ -58,6 +58,9 @@ public class TraAdvertisementServiceTest {
 
     private CorNetwork corNetwork;
 
+    private CrmAccount crmAccount;
+    private LibMediaItem libMediaItem;
+
     private PodamFactory factory;
 
     @Before
@@ -67,7 +70,12 @@ public class TraAdvertisementServiceTest {
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount = crmAccountRepository.save(crmAccount);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setNetwork(corNetwork);
+        libMediaItem = libMediaItemRepository.save(libMediaItem);
 
         doNothing().when(libItemService).deleteItem(anyObject());
         ReflectionUtils.setField(FieldUtils.getField(TraAdvertisementService.class, "libItemService", true), traAdvertisementService, libItemService);
@@ -79,7 +87,9 @@ public class TraAdvertisementServiceTest {
         //when
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement = traCampaignRepository.save(traAdvertisement);
+        traAdvertisement.customer(crmAccount);
+        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then
         List<TraAdvertisement> fetchedEntity = traAdvertisementService.getAllAdvertisement(corNetwork.getShortcut(), new PageRequest(0, 10));
@@ -94,10 +104,10 @@ public class TraAdvertisementServiceTest {
     @Test
     public void saveAdvertisement() throws Exception {
         //when
-        //TODO: Provide network constraint for LibMediaItem
-        LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItem = libMediaItemRepository.save(libMediaItem);
+
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
+        traAdvertisement.customer(crmAccount);
+        traAdvertisement.setMediaItem(libMediaItem);
         traAdvertisement.setNetwork(corNetwork);
         traAdvertisement.setMediaItem(libMediaItem);
 
@@ -117,7 +127,9 @@ public class TraAdvertisementServiceTest {
         //when
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement = traCampaignRepository.save(traAdvertisement);
+        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.customer(crmAccount);
+        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then
         traAdvertisementService.deleteAdvertisement(traAdvertisement.getId(), corNetwork.getShortcut());
@@ -132,7 +144,9 @@ public class TraAdvertisementServiceTest {
         //when
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement = traCampaignRepository.save(traAdvertisement);
+        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.customer(crmAccount);
+        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then
         TraAdvertisement fetchedEntity = traAdvertisementService.getAdvertisement(traAdvertisement.getId(), corNetwork.getShortcut());
@@ -152,7 +166,8 @@ public class TraAdvertisementServiceTest {
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
         traAdvertisement.setCustomer(crmAccount);
-        traAdvertisement = traCampaignRepository.save(traAdvertisement);
+        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then
         List<TraAdvertisement> fetchedEntity = traAdvertisementService.getCustomerAdvertisements(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));

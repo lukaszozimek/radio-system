@@ -43,6 +43,8 @@ public class TraCampaignServiceTest {
 
     private CorNetwork corNetwork;
 
+    private CrmAccount crmAccount;
+
     private PodamFactory factory;
     private TraOrderService traOrderService;
 
@@ -52,6 +54,9 @@ public class TraCampaignServiceTest {
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setNetwork(corNetwork);
+        crmAccount = crmAccountRepository.save(crmAccount);
 
     }
 
@@ -60,6 +65,7 @@ public class TraCampaignServiceTest {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setNetwork(corNetwork);
+        campaign.setCustomer(crmAccount);
         campaign = traCampaignRepository.save(campaign);
 
         //then
@@ -76,6 +82,8 @@ public class TraCampaignServiceTest {
     public void shouldSaveCampaignWithOutOrder() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
 
         //then
@@ -92,8 +100,10 @@ public class TraCampaignServiceTest {
     public void shouldSaveCampaignWithOrders() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
         campaign.addOrders(traOrder);
 
@@ -115,6 +125,7 @@ public class TraCampaignServiceTest {
     public void shouldDeleteCampaign() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
         campaign = traCampaignRepository.save(campaign);
         //then
@@ -129,6 +140,7 @@ public class TraCampaignServiceTest {
     public void shoulGetCampaign() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
         campaign = traCampaignRepository.save(campaign);
 
@@ -145,9 +157,6 @@ public class TraCampaignServiceTest {
     public void shoulGetCustomerCampaign() throws Exception {
 
         //when
-        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
-        crmAccount = crmAccountRepository.save(crmAccount);
         TraCampaign traCampaign = factory.manufacturePojo(TraCampaign.class);
         traCampaign.setNetwork(corNetwork);
         traCampaign.setCustomer(crmAccount);

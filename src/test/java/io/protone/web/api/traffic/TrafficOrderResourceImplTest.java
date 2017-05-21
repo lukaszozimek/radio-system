@@ -1,15 +1,14 @@
 package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.*;
+import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.crm.CrmCustomerResourceImplTest;
+import io.protone.web.api.library.LibMediaItemResourceTest;
 import io.protone.web.api.traffic.impl.TraOrderResourceImpl;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.util.TestUtil;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.TraAdvertisement;
-import io.protone.domain.TraOrder;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraOrderRepository;
@@ -91,6 +90,9 @@ public class TrafficOrderResourceImplTest {
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
+
     private MockMvc restTraOrderMockMvc;
 
     private TraOrder traOrder;
@@ -98,6 +100,8 @@ public class TrafficOrderResourceImplTest {
     private CorNetwork corNetwork;
 
     private TraAdvertisement traAdvertisement;
+
+    private LibMediaItem libMediaItem;
 
     private CrmAccount crmAccount;
 
@@ -127,17 +131,16 @@ public class TrafficOrderResourceImplTest {
 
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
         corNetwork.setId(1L);
-        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em));
-        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em));
+        libMediaItem = LibMediaItemResourceTest.createEntity(em);
+        libMediaItem.setNetwork(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(libMediaItem).customer(crmAccount).network(corNetwork));
+
         this.restTraOrderMockMvc = MockMvcBuilders.standaloneSetup(traOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
-    }
-
-    @Before
-    public void initTest() {
-
     }
 
     @Test
@@ -371,6 +374,7 @@ public class TrafficOrderResourceImplTest {
         List<TraOrder> traOrderList = traOrderRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeDelete - 1);
     }
+
     @Test
     @Transactional
     public void getAllTraOrdersForCustomer() throws Exception {
@@ -381,7 +385,7 @@ public class TrafficOrderResourceImplTest {
         traOrderRepository.saveAndFlush(traOrder.customer(crmAccount).network(corNetwork));
 
         // Get all the traOrderList
-        restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(),crmAccount.getShortName()))
+        restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))

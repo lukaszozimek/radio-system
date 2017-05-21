@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraPlaylist.
+    -->
+    <changeSet id="20170515200401-2" author="jhipster">
+        <addUniqueConstraint columnNames="playlist_date,network_id,channel_id"
+                             constraintName="composit_key_constraing_playlist_date_channel_id_network_id"
+                             deferrable="true"
+                             disabled="true"
+                             initiallyDeferred="true"
+                             tableName="tra_playlist"
+                            />
+        
+
+    </changeSet>
+</databaseChangeLog>

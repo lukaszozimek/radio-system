@@ -43,6 +43,8 @@ public class TraOrderServiceTest {
 
     private CorNetwork corNetwork;
 
+    private CrmAccount crmAccount;
+
     private PodamFactory factory;
 
     @Before
@@ -52,12 +54,17 @@ public class TraOrderServiceTest {
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
 
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setNetwork(corNetwork);
+        crmAccount = crmAccountRepository.save(crmAccount);
+
     }
 
     @Test
     public void shouldGetOrders() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
         traOrder = customTraOrderRepository.save(traOrder);
 
@@ -76,6 +83,7 @@ public class TraOrderServiceTest {
     public void shouldSaveOrder() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
 
         //then
@@ -92,6 +100,7 @@ public class TraOrderServiceTest {
     public void shouldDeleteOrder() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
         traOrder = customTraOrderRepository.save(traOrder);
         //then
@@ -106,6 +115,7 @@ public class TraOrderServiceTest {
     public void shouldGetOrder() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
         traOrder = customTraOrderRepository.save(traOrder);
 
@@ -123,9 +133,6 @@ public class TraOrderServiceTest {
     public void shouldGetOrderAssociatedWithCustomer() throws Exception {
 
         //when
-        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
-        crmAccount = crmAccountRepository.save(crmAccount);
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setNetwork(corNetwork);
         traOrder.setCustomer(crmAccount);

@@ -116,8 +116,10 @@ public class TraAdvertisementResourceImplTest {
     }
 
     @Before
-    public void initTest() {
-        traAdvertisement = createEntity(em).network(corNetwork);
+    public void initTest()
+    {
+        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traAdvertisement = createEntity(em).network(corNetwork).customer(crmAccount);
     }
 
     @Test
@@ -185,7 +187,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getAllTraAdvertisements() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount));
 
         // Get all the traAdvertisementList
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement?sort=id,desc", corNetwork.getShortcut()))
@@ -200,7 +202,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getTraAdvertisement() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount));
 
         // Get the traAdvertisement
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId()))
@@ -287,7 +289,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getAllTraAdvertisementsForCustomer() throws Exception {
         // Initialize the database
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+
         traAdvertisementRepository.saveAndFlush(traAdvertisement.customer(crmAccount).network(corNetwork));
 
         // Get all the traAdvertisementList

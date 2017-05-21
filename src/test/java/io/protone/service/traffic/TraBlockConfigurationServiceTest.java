@@ -1,10 +1,8 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.TraBlockConfiguration;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraBlockConfigurationRepository;
@@ -41,9 +39,14 @@ public class TraBlockConfigurationServiceTest {
     private CorNetworkRepository corNetworkRepository;
 
     @Autowired
+    private CorChannelRepository corChannelRepository;
+
+    @Autowired
     private TraBlockConfigurationRepository traBlockRepository;
 
     private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     private PodamFactory factory;
 
@@ -54,6 +57,10 @@ public class TraBlockConfigurationServiceTest {
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
 
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        corChannel.setId(null);
+        corChannel = corChannelRepository.save(corChannel);
+
     }
 
     @Test
@@ -61,6 +68,7 @@ public class TraBlockConfigurationServiceTest {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setNetwork(corNetwork);
+        traBlockConfiguration.setChannel(corChannel);
         traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
 
         //then
@@ -78,6 +86,7 @@ public class TraBlockConfigurationServiceTest {
     public void shouldSaveOrder() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setChannel(corChannel);
         traBlockConfiguration.setNetwork(corNetwork);
 
         //then
@@ -94,6 +103,7 @@ public class TraBlockConfigurationServiceTest {
     public void shouldDeleteOrder() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setChannel(corChannel);
         traBlockConfiguration.setNetwork(corNetwork);
         traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
         //then
@@ -108,6 +118,7 @@ public class TraBlockConfigurationServiceTest {
     public void shouldGetOrder() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
+        traBlockConfiguration.setChannel(corChannel);
         traBlockConfiguration.setNetwork(corNetwork);
         traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
 
