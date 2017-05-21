@@ -6,15 +6,11 @@
     <!--
         Added the constraints for entity TraPlaylist.
     -->
-    <changeSet id="20170515200401-2" author="jhipster">
-        <addUniqueConstraint columnNames="playlist_date,network_id,channel_id"
-                             constraintName="composit_key_constraing_playlist_date_channel_id_network_id"
-                             deferrable="true"
-                             disabled="true"
-                             initiallyDeferred="true"
-                             tableName="tra_playlist"
-                            />
-        
+    <changeSet id="201705152004222-2" author="jhipster">
 
+        <addUniqueConstraint columnNames="playlist_date, network_id, channel_id"
+                             constraintName="composit_key_constraing_playlist_date_channel_id_network_id"
+                             tableName="tra_playlist"
+        />
     </changeSet>
 </databaseChangeLog>

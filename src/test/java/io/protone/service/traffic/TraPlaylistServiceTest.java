@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -285,4 +286,89 @@ public class TraPlaylistServiceTest {
         assertEquals(3, fetchedEntity.getPlaylists().stream().findAny().get().getEmissions().size());
 
     }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoPlaylistWithSameDayInOneNetworkAndChannel() {
+        //given
+        LocalDate localDate = LocalDate.now();
+
+        //when
+        TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist.setId(null);
+        traPlaylist.setPlaylistDate(localDate);
+        traPlaylist.setNetwork(corNetwork);
+        traPlaylist.setChannel(corChannel);
+
+        TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist1.setId(null);
+        traPlaylist1.setPlaylistDate(localDate);
+        traPlaylist1.setNetwork(corNetwork);
+        traPlaylist1.setChannel(corChannel);
+
+        //then
+        traPlaylist = traPlaylistService.savePlaylist(traPlaylist);
+        traPlaylist1 = traPlaylistService.savePlaylist(traPlaylist1);
+
+    }
+
+    @Test
+    public void shouldSaveTwoPlaylistWithSameDayInOneNetworkAndDifferentChannels() {
+        //given
+        LocalDate localDate = LocalDate.now();
+       CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setShortcut("XXX");
+        corChannelSecond.network(corNetwork);
+        corChannelRepository.saveAndFlush(corChannelSecond);
+        //when
+        TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist.setId(null);
+        traPlaylist.setPlaylistDate(localDate);
+        traPlaylist.setNetwork(corNetwork);
+        traPlaylist.setChannel(corChannel);
+
+        TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist1.setId(null);
+        traPlaylist1.setPlaylistDate(localDate);
+        traPlaylist1.setNetwork(corNetwork);
+        traPlaylist1.setChannel(corChannelSecond);
+
+        //then
+        traPlaylistService.savePlaylist(traPlaylist);
+        traPlaylistService.savePlaylist(traPlaylist1);
+
+    }
+
+    @Test
+    public void shouldSaveTwoPlaylistWithSameDayInOneNetworksAndDifferentChannels() {
+        //given
+        LocalDate localDate = LocalDate.now();
+
+       CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.saveAndFlush(corNetworkSecond);
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        corChannelSecond.setId(null);
+        corChannelSecond.setShortcut("XXT");
+        corChannelSecond.network(corNetworkSecond);
+        corChannelRepository.saveAndFlush(corChannelSecond);
+        //when
+        TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist.setId(null);
+        traPlaylist.setPlaylistDate(localDate);
+        traPlaylist.setNetwork(corNetwork);
+        traPlaylist.setChannel(corChannel);
+
+        TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist1.setId(null);
+        traPlaylist1.setPlaylistDate(localDate);
+        traPlaylist1.setNetwork(corNetworkSecond);
+        traPlaylist1.setChannel(corChannelSecond);
+
+        //then
+        traPlaylistService.savePlaylist(traPlaylist);
+        traPlaylistService.savePlaylist(traPlaylist1);
+
+    }
+
 }

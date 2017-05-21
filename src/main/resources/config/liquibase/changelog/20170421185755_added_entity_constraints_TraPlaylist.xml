@@ -7,7 +7,7 @@
         Added the constraints for entity TraPlaylist.
     -->
     <changeSet id="20170515200401-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="tra_playlist"
                                  constraintName="fk_tra_playlist_network_id"

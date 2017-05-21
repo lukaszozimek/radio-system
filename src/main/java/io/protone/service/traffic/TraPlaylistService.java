@@ -31,7 +31,7 @@ public class TraPlaylistService {
     @Transactional
     public TraPlaylist savePlaylist(TraPlaylist traPlaylistList) {
         traPlaylistList.playlists(traBlockService.traSaveBlockSet(traPlaylistList.getPlaylists()));
-        return traPlaylistRepository.save(traPlaylistList);
+        return traPlaylistRepository.saveAndFlush(traPlaylistList);
     }
 
     @Transactional
