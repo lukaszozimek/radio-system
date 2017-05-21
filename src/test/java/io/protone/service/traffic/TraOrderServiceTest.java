@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -29,6 +30,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class TraOrderServiceTest {
+    private static final String TEST_NAME = "TEST";
     @Autowired
     private TraOrderService traOrderService;
 
@@ -149,4 +151,47 @@ public class TraOrderServiceTest {
         assertEquals(traOrder.getNetwork(), fetchedEntity.get(0).getNetwork());
     }
 
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoOrdersWithSameNameInOneNetwork() throws Exception {
+
+        //when
+        TraOrder traOrder = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
+        traOrder.setCustomer(crmAccount);
+        traOrder.setNetwork(corNetwork);
+
+        TraOrder traOrderSecond = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
+        traOrderSecond.setCustomer(crmAccount);
+        traOrderSecond.setNetwork(corNetwork);
+
+
+        //then
+        traOrder = traOrderService.saveOrder(traOrder);
+        traOrderSecond = traOrderService.saveOrder(traOrderSecond);
+
+    }
+
+    @Test
+    public void shouldSaveTwoOrdersWithSameNameInDifferentNetworks() throws Exception {
+        //given
+
+
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.saveAndFlush(corNetworkSecond);
+        //when
+        TraOrder traOrder = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
+        traOrder.setCustomer(crmAccount);
+        traOrder.setNetwork(corNetwork);
+
+        TraOrder traOrderSecond = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
+        traOrderSecond.setCustomer(crmAccount);
+        traOrderSecond.setNetwork(corNetworkSecond);
+
+
+        //then
+        traOrder = traOrderService.saveOrder(traOrder);
+        traOrderSecond = traOrderService.saveOrder(traOrderSecond);
+
+
+    }
 }

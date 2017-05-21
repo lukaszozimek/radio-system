@@ -7,48 +7,10 @@
         Added the constraints for entity TraOrder.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="customer_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_customer_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="crm_account"/>
 
-        <addForeignKeyConstraint baseColumnNames="price_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_price_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_price"/>
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
-        <addForeignKeyConstraint baseColumnNames="status_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_status_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="advertisment_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_advertisment_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_advertisement"/>
-
-        <addForeignKeyConstraint baseColumnNames="campaign_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_campaign_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_campaign"/>
-
-        <addForeignKeyConstraint baseColumnNames="invoice_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_invoice_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_invoice"/>
-
+        <addUniqueConstraint columnNames="name, network_id"
+                             constraintName="composite_key_constrain_tra_order_name_network_id"
+                             tableName="tra_order"
+        />
     </changeSet>
 </databaseChangeLog>
