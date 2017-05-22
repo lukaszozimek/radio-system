@@ -2,6 +2,7 @@ package io.protone.service.library;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmOpportunity;
 import io.protone.domain.LibLibrary;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.library.LibLibraryRepository;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -28,6 +30,8 @@ import static org.junit.Assert.*;
 @Transactional
 public class LibLibraryServiceTest {
 
+    private static final String TEST_SHORTNAME = "Tes";
+    private static final String TEST_PREFIX = "C";
     @Autowired
     private LibLibraryService libLibraryService;
 
@@ -119,6 +123,86 @@ public class LibLibraryServiceTest {
         assertNotNull(fetchedEntity.getName(), libLibrary.getName());
         assertNotNull(fetchedEntity.getShortcut(), libLibrary.getShortcut());
         assertEquals(libLibrary.getNetwork(), fetchedEntity.getNetwork());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoLibraryWithSameShortNameInOneNetwork() {
+
+        /// /when
+        LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setId(null);
+        libLibrary.setShortcut(TEST_SHORTNAME);
+        libLibrary.setNetwork(corNetwork);
+        LibLibrary libLibrary1 = factory.manufacturePojo(LibLibrary.class);
+        libLibrary1.setId(null);
+        libLibrary1.setShortcut(TEST_SHORTNAME);
+        libLibrary1.setNetwork(corNetwork);
+
+        libLibrary = libLibraryService.createOrUpdateLibrary(libLibrary);
+        libLibrary1 = libLibraryService.createOrUpdateLibrary(libLibrary1);
+
+
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoLibraryWithSameNameInOneNetwork() {
+
+        /// /when
+        LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setId(null);
+        libLibrary.setName(TEST_SHORTNAME);
+        libLibrary.setNetwork(corNetwork);
+        LibLibrary libLibrary1 = factory.manufacturePojo(LibLibrary.class);
+        libLibrary1.setId(null);
+        libLibrary1.setName(TEST_SHORTNAME);
+        libLibrary1.setNetwork(corNetwork);
+
+        libLibrary = libLibraryService.createOrUpdateLibrary(libLibrary);
+        libLibrary1 = libLibraryService.createOrUpdateLibrary(libLibrary1);
+
+
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoLibraryWithSamePrefixInOneNetwork() {
+
+        /// /when
+        LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setId(null);
+        libLibrary.prefix(TEST_PREFIX);
+        libLibrary.setNetwork(corNetwork);
+        LibLibrary libLibrary1 = factory.manufacturePojo(LibLibrary.class);
+        libLibrary1.setId(null);
+        libLibrary1.prefix(TEST_PREFIX);
+        libLibrary1.setNetwork(corNetwork);
+
+        libLibrary = libLibraryService.createOrUpdateLibrary(libLibrary);
+        libLibrary1 = libLibraryService.createOrUpdateLibrary(libLibrary1);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoLibraryWithSameShortNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        ///when
+        LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setId(null);
+        libLibrary.shortcut(TEST_SHORTNAME);
+        libLibrary.setNetwork(corNetwork);
+        LibLibrary libLibrary1 = factory.manufacturePojo(LibLibrary.class);
+        libLibrary1.setId(null);
+        libLibrary1.shortcut(TEST_SHORTNAME);
+        libLibrary1.setNetwork(corNetworkSecond);
+
+        //then
+        libLibrary = libLibraryService.createOrUpdateLibrary(libLibrary);
+        libLibrary1 = libLibraryService.createOrUpdateLibrary(libLibrary1);
+
     }
 
 }

@@ -18,7 +18,11 @@ import java.util.Set;
  * A LibLibrary.
  */
 @Entity
-@Table(name = "lib_library")
+@Table(name = "lib_library", uniqueConstraints ={
+@UniqueConstraint(columnNames = {"shortcut", "network_id"}),
+@UniqueConstraint(columnNames = {"prefix", "network_id"}),
+@UniqueConstraint(columnNames = {"name", "network_id"})
+})
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibLibrary implements Serializable {
 

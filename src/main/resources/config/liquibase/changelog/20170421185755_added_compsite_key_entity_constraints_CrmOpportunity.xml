@@ -7,42 +7,11 @@
         Added the constraints for entity CrmOpportunity.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="stage_id"
-                                 baseTableName="crm_opportunity"
-                                 constraintName="fk_crm_opportunity_stage_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
 
-        <addForeignKeyConstraint baseColumnNames="keeper_id"
-                                 baseTableName="crm_opportunity"
-                                 constraintName="fk_crm_opportunity_keeper_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="contact_id"
-                                 baseTableName="crm_opportunity"
-                                 constraintName="fk_crm_opportunity_contact_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="crm_contact"/>
-
-        <addForeignKeyConstraint baseColumnNames="account_id"
-                                 baseTableName="crm_opportunity"
-                                 constraintName="fk_crm_opportunity_account_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="crm_account"/>
-
-        <addForeignKeyConstraint baseColumnNames="lead_id"
-                                 baseTableName="crm_opportunity"
-                                 constraintName="fk_crm_opportunity_lead_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="crm_lead"/>
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="crm_opportunity"
-                                 constraintName="fk_crm_opportunity_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+        <addUniqueConstraint columnNames="short_name, network_id"
+                             constraintName="composite_key_constrain_crm_opportunity_short_name_network_id"
+                             tableName="crm_opportunity"
+        />
 
     </changeSet>
 </databaseChangeLog>

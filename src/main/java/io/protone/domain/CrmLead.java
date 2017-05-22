@@ -15,7 +15,8 @@ import java.util.Set;
  * A CrmLead.
  */
 @Entity
-@Table(name = "crm_lead")
+@Table(name = "crm_lead", uniqueConstraints =
+@UniqueConstraint(columnNames = {"shortname", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmLead implements Serializable {
 
@@ -88,17 +89,21 @@ public class CrmLead implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public CrmLead name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getShortname() {
         return shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
     }
 
     public CrmLead shortname(String shortname) {
@@ -106,12 +111,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setShortname(String shortname) {
-        this.shortname = shortname;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public CrmLead description(String description) {
@@ -119,12 +124,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CorPerson getPerson() {
         return person;
+    }
+
+    public void setPerson(CorPerson corPerson) {
+        this.person = corPerson;
     }
 
     public CrmLead person(CorPerson corPerson) {
@@ -132,12 +137,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setPerson(CorPerson corPerson) {
-        this.person = corPerson;
-    }
-
     public CorAddress getAddres() {
         return addres;
+    }
+
+    public void setAddres(CorAddress corAddress) {
+        this.addres = corAddress;
     }
 
     public CrmLead addres(CorAddress corAddress) {
@@ -145,12 +150,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setAddres(CorAddress corAddress) {
-        this.addres = corAddress;
-    }
-
     public CorDictionary getLeadStatus() {
         return leadStatus;
+    }
+
+    public void setLeadStatus(CorDictionary corDictionary) {
+        this.leadStatus = corDictionary;
     }
 
     public CrmLead leadStatus(CorDictionary corDictionary) {
@@ -158,12 +163,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setLeadStatus(CorDictionary corDictionary) {
-        this.leadStatus = corDictionary;
-    }
-
     public CorDictionary getLeadSource() {
         return leadSource;
+    }
+
+    public void setLeadSource(CorDictionary corDictionary) {
+        this.leadSource = corDictionary;
     }
 
     public CrmLead leadSource(CorDictionary corDictionary) {
@@ -171,12 +176,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setLeadSource(CorDictionary corDictionary) {
-        this.leadSource = corDictionary;
-    }
-
     public CorUser getKeeper() {
         return keeper;
+    }
+
+    public void setKeeper(CorUser corUser) {
+        this.keeper = corUser;
     }
 
     public CrmLead keeper(CorUser corUser) {
@@ -184,12 +189,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setKeeper(CorUser corUser) {
-        this.keeper = corUser;
-    }
-
     public CorDictionary getIndustry() {
         return industry;
+    }
+
+    public void setIndustry(CorDictionary corDictionary) {
+        this.industry = corDictionary;
     }
 
     public CrmLead industry(CorDictionary corDictionary) {
@@ -197,12 +202,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setIndustry(CorDictionary corDictionary) {
-        this.industry = corDictionary;
-    }
-
     public CorDictionary getArea() {
         return area;
+    }
+
+    public void setArea(CorDictionary corDictionary) {
+        this.area = corDictionary;
     }
 
     public CrmLead area(CorDictionary corDictionary) {
@@ -210,12 +215,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setArea(CorDictionary corDictionary) {
-        this.area = corDictionary;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CrmLead network(CorNetwork corNetwork) {
@@ -223,12 +228,12 @@ public class CrmLead implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public Set<CrmTask> getTasks() {
         return tasks;
+    }
+
+    public void setTasks(Set<CrmTask> crmTasks) {
+        this.tasks = crmTasks;
     }
 
     public CrmLead tasks(Set<CrmTask> crmTasks) {
@@ -246,10 +251,6 @@ public class CrmLead implements Serializable {
         this.tasks.remove(crmTask);
         crmTask.setLead(null);
         return this;
-    }
-
-    public void setTasks(Set<CrmTask> crmTasks) {
-        this.tasks = crmTasks;
     }
 
     @Override

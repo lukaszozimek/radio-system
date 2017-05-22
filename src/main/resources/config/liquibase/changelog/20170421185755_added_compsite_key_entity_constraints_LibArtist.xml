@@ -7,12 +7,11 @@
         Added the constraints for entity LibArtist.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_artist"
-                                 constraintName="fk_lib_artist_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
 
+
+        <addUniqueConstraint columnNames="name, network_id"
+                             constraintName="composite_key_constrain_lib_artist_name_network_id"
+                             tableName="lib_artist"
+        />
     </changeSet>
 </databaseChangeLog>

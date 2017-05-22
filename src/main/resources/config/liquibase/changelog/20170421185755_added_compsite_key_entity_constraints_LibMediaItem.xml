@@ -7,42 +7,13 @@
         Added the constraints for entity LibMediaItem.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="library_id"
-                                 baseTableName="lib_media_item"
-                                 constraintName="fk_lib_media_item_library_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_library"/>
 
-        <addForeignKeyConstraint baseColumnNames="label_id"
-                                 baseTableName="lib_media_item"
-                                 constraintName="fk_lib_media_item_label_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_label"/>
 
-        <addForeignKeyConstraint baseColumnNames="artist_id"
-                                 baseTableName="lib_media_item"
-                                 constraintName="fk_lib_media_item_artist_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_artist"/>
+        <addUniqueConstraint columnNames="idx, network_id"
+                             constraintName="composite_key_constrain_lib_media_item_idx_network_id"
+                             tableName="lib_media_item"
+        />
 
-        <addForeignKeyConstraint baseColumnNames="album_id"
-                                 baseTableName="lib_media_item"
-                                 constraintName="fk_lib_media_item_album_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_album"/>
-
-        <addForeignKeyConstraint baseColumnNames="track_id"
-                                 baseTableName="lib_media_item"
-                                 constraintName="fk_lib_media_item_track_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_track"/>
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_media_item"
-                                 constraintName="fk_lib_media_item_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
 
     </changeSet>
 </databaseChangeLog>

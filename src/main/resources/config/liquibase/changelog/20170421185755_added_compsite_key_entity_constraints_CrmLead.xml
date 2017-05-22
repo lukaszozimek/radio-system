@@ -7,54 +7,12 @@
         Added the constraints for entity CrmLead.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="person_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_person_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_person"/>
 
-        <addForeignKeyConstraint baseColumnNames="addres_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_addres_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_address"/>
 
-        <addForeignKeyConstraint baseColumnNames="lead_status_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_lead_status_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="lead_source_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_lead_source_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="keeper_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_keeper_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="industry_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_industry_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="area_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_area_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="crm_lead"
-                                 constraintName="fk_crm_lead_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
+        <addUniqueConstraint columnNames="shortname, network_id"
+                             constraintName="composite_key_constrain_crm_lead_short_name_network_id"
+                             tableName="crm_lead"
+        />
 
     </changeSet>
 </databaseChangeLog>

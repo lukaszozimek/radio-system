@@ -16,7 +16,8 @@ import java.util.Set;
  * A CrmContact.
  */
 @Entity
-@Table(name = "crm_contact")
+@Table(name = "crm_contact", uniqueConstraints =
+@UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmContact implements Serializable {
 

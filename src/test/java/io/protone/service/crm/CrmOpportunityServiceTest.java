@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CrmOpportunityServiceTest {
 
+    private static final String TEST_SHORTNAME = "Test";
     @Autowired
     private CrmOpportunityService crmOpportunityService;
 
@@ -313,5 +315,47 @@ public class CrmOpportunityServiceTest {
 
         //assert
         assertNull(localContact);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoLeadWithSameShortNameInOneNetwork() {
+
+        /// /when
+        CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity.setId(null);
+        crmOpportunity.setShortName(TEST_SHORTNAME);
+        crmOpportunity.setNetwork(corNetwork);
+        CrmOpportunity crmOpportunity1 = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity1.setId(null);
+        crmOpportunity1.setShortName(TEST_SHORTNAME);
+        crmOpportunity1.setNetwork(corNetwork);
+
+        crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
+        crmOpportunity1 = crmOpportunityService.saveOpportunity(crmOpportunity1);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoLeadWithSameShortNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        ///when
+        CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity.setId(null);
+        crmOpportunity.setShortName(TEST_SHORTNAME);
+        crmOpportunity.setNetwork(corNetwork);
+        CrmOpportunity crmOpportunity1 = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity1.setId(null);
+        crmOpportunity1.setShortName(TEST_SHORTNAME);
+        crmOpportunity1.setNetwork(corNetworkSecond);
+
+        //then
+        crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
+        crmOpportunity1 = crmOpportunityService.saveOpportunity(crmOpportunity1);
+
     }
 }

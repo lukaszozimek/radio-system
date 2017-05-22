@@ -210,6 +210,14 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_TraOrder.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_TraCampaign.xml" relativeToChangelogFile="false"/>
 
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibLibrary.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibMediaItem.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_CrmOpportunity.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_CrmLead.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_CrmContact.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_CrmAccount.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibArtist.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibLabel.xml" relativeToChangelogFile="false"/>
     <changeSet id="" author="">
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/lib_library.csv"

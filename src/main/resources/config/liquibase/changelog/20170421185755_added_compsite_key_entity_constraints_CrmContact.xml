@@ -7,66 +7,12 @@
         Added the constraints for entity CrmContact.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="addres_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_addres_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_address"/>
 
-        <addForeignKeyConstraint baseColumnNames="country_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_country_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_country"/>
 
-        <addForeignKeyConstraint baseColumnNames="person_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_person_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_person"/>
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
-        <addForeignKeyConstraint baseColumnNames="range_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_range_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="size_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_size_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="industry_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_industry_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="area_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_area_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="keeper_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_keeper_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="status_id"
-                                 baseTableName="crm_contact"
-                                 constraintName="fk_crm_contact_status_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
+        <addUniqueConstraint columnNames="short_name, network_id"
+                             constraintName="composite_key_constrain_crm_contact_short_name_network_id"
+                             tableName="crm_contact"
+        />
 
     </changeSet>
 </databaseChangeLog>

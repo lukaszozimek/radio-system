@@ -15,7 +15,8 @@ import java.util.Set;
  * A CrmAccount.
  */
 @Entity
-@Table(name = "crm_account")
+@Table(name = "crm_account", uniqueConstraints =
+@UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmAccount implements Serializable {
 
@@ -27,7 +28,7 @@ public class CrmAccount implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "short_name",nullable = false)
+    @Column(name = "short_name", nullable = false)
     private String shortName;
 
     @Column(name = "external_id_1")
@@ -105,17 +106,21 @@ public class CrmAccount implements Serializable {
         return shortName;
     }
 
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public CrmAccount shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public String getExternalId1() {
         return externalId1;
+    }
+
+    public void setExternalId1(String externalId1) {
+        this.externalId1 = externalId1;
     }
 
     public CrmAccount externalId1(String externalId1) {
@@ -123,12 +128,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setExternalId1(String externalId1) {
-        this.externalId1 = externalId1;
-    }
-
     public String getExternalId2() {
         return externalId2;
+    }
+
+    public void setExternalId2(String externalId2) {
+        this.externalId2 = externalId2;
     }
 
     public CrmAccount externalId2(String externalId2) {
@@ -136,12 +141,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setExternalId2(String externalId2) {
-        this.externalId2 = externalId2;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CrmAccount name(String name) {
@@ -149,12 +154,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getPaymentDelay() {
         return paymentDelay;
+    }
+
+    public void setPaymentDelay(Integer paymentDelay) {
+        this.paymentDelay = paymentDelay;
     }
 
     public CrmAccount paymentDelay(Integer paymentDelay) {
@@ -162,12 +167,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setPaymentDelay(Integer paymentDelay) {
-        this.paymentDelay = paymentDelay;
-    }
-
     public String getVatNumber() {
         return vatNumber;
+    }
+
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
     }
 
     public CrmAccount vatNumber(String vatNumber) {
@@ -175,12 +180,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setVatNumber(String vatNumber) {
-        this.vatNumber = vatNumber;
-    }
-
     public CorPerson getPerson() {
         return person;
+    }
+
+    public void setPerson(CorPerson corPerson) {
+        this.person = corPerson;
     }
 
     public CrmAccount person(CorPerson corPerson) {
@@ -188,12 +193,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setPerson(CorPerson corPerson) {
-        this.person = corPerson;
-    }
-
     public CorAddress getAddres() {
         return addres;
+    }
+
+    public void setAddres(CorAddress corAddress) {
+        this.addres = corAddress;
     }
 
     public CrmAccount addres(CorAddress corAddress) {
@@ -201,12 +206,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setAddres(CorAddress corAddress) {
-        this.addres = corAddress;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CrmAccount network(CorNetwork corNetwork) {
@@ -214,12 +219,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public TraDiscount getDiscount() {
         return discount;
+    }
+
+    public void setDiscount(TraDiscount traDiscount) {
+        this.discount = traDiscount;
     }
 
     public CrmAccount discount(TraDiscount traDiscount) {
@@ -227,12 +232,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setDiscount(TraDiscount traDiscount) {
-        this.discount = traDiscount;
-    }
-
     public CorUser getKeeper() {
         return keeper;
+    }
+
+    public void setKeeper(CorUser corUser) {
+        this.keeper = corUser;
     }
 
     public CrmAccount keeper(CorUser corUser) {
@@ -240,12 +245,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setKeeper(CorUser corUser) {
-        this.keeper = corUser;
-    }
-
     public CorCountry getCountry() {
         return country;
+    }
+
+    public void setCountry(CorCountry corCountry) {
+        this.country = corCountry;
     }
 
     public CrmAccount country(CorCountry corCountry) {
@@ -253,12 +258,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setCountry(CorCountry corCountry) {
-        this.country = corCountry;
-    }
-
     public CorDictionary getRange() {
         return range;
+    }
+
+    public void setRange(CorDictionary corRange) {
+        this.range = corRange;
     }
 
     public CrmAccount range(CorDictionary corRange) {
@@ -266,12 +271,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setRange(CorDictionary corRange) {
-        this.range = corRange;
-    }
-
     public CorDictionary getSize() {
         return size;
+    }
+
+    public void setSize(CorDictionary corSize) {
+        this.size = corSize;
     }
 
     public CrmAccount size(CorDictionary corSize) {
@@ -279,12 +284,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setSize(CorDictionary corSize) {
-        this.size = corSize;
-    }
-
     public CorDictionary getIndustry() {
         return industry;
+    }
+
+    public void setIndustry(CorDictionary traIndustry) {
+        this.industry = traIndustry;
     }
 
     public CrmAccount industry(CorDictionary traIndustry) {
@@ -292,12 +297,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setIndustry(CorDictionary traIndustry) {
-        this.industry = traIndustry;
-    }
-
     public CorDictionary getArea() {
         return area;
+    }
+
+    public void setArea(CorDictionary corArea) {
+        this.area = corArea;
     }
 
     public CrmAccount area(CorDictionary corArea) {
@@ -305,12 +310,12 @@ public class CrmAccount implements Serializable {
         return this;
     }
 
-    public void setArea(CorDictionary corArea) {
-        this.area = corArea;
-    }
-
     public Set<CrmTask> getTasks() {
         return tasks;
+    }
+
+    public void setTasks(Set<CrmTask> crmTasks) {
+        this.tasks = crmTasks;
     }
 
     public CrmAccount tasks(Set<CrmTask> crmTasks) {
@@ -328,10 +333,6 @@ public class CrmAccount implements Serializable {
         this.tasks.remove(crmTask);
         crmTask.setAccount(null);
         return this;
-    }
-
-    public void setTasks(Set<CrmTask> crmTasks) {
-        this.tasks = crmTasks;
     }
 
     @Override

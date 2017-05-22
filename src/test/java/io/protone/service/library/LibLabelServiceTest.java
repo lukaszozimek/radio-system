@@ -2,6 +2,7 @@ package io.protone.service.library;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.LibArtist;
 import io.protone.domain.LibLabel;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.library.LibLabelRepository;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -27,6 +29,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class LibLabelServiceTest {
+    private static final String TEST_NAME = "TEST";
     @Autowired
     private LibLabelService libLabelService;
 
@@ -66,5 +69,47 @@ public class LibLabelServiceTest {
         Optional<LibLabel> libLabel = libLabelService.saveLibLabel(null);
 
         assertFalse(libLabel.isPresent());
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoArtistWithSameShortNameInOneNetwork() {
+
+        /// /when
+        LibLabel libArtist = factory.manufacturePojo(LibLabel.class);
+        libArtist.setId(null);
+        libArtist.name(TEST_NAME);
+        libArtist.setNetwork(corNetwork);
+        LibLabel libArtist1 = factory.manufacturePojo(LibLabel.class);
+        libArtist1.setId(null);
+        libArtist1.setName(TEST_NAME);
+        libArtist1.setNetwork(corNetwork);
+
+        libArtist = libLabelRepository.saveAndFlush(libArtist);
+        libArtist1 = libLabelRepository.saveAndFlush(libArtist1);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoArtistWithSameNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = networkRepository.save(corNetworkSecond);
+
+        /// /when
+        LibLabel libArtist = factory.manufacturePojo(LibLabel.class);
+        libArtist.setId(null);
+        libArtist.name(TEST_NAME);
+        libArtist.setNetwork(corNetwork);
+        LibLabel libArtist1 = factory.manufacturePojo(LibLabel.class);
+        libArtist1.setId(null);
+        libArtist1.setName(TEST_NAME);
+        libArtist1.setNetwork(corNetworkSecond);
+
+        libArtist = libLabelRepository.saveAndFlush(libArtist);
+        libArtist1 = libLabelRepository.saveAndFlush(libArtist1);
+
+
     }
 }

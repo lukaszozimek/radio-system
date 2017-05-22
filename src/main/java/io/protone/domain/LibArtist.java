@@ -14,7 +14,8 @@ import java.util.Objects;
  * A LibArtist.
  */
 @Entity
-@Table(name = "lib_artist")
+@Table(name = "lib_artist", uniqueConstraints =
+@UniqueConstraint(columnNames = {"name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibArtist implements Serializable {
 

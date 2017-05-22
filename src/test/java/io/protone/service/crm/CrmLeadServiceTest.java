@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -26,6 +27,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class CrmLeadServiceTest {
+    private static final String TEST_SHORTNAME = "TEST";
     @Autowired
     private CrmLeadService crmLeadService;
 
@@ -301,6 +303,48 @@ public class CrmLeadServiceTest {
 
         //assert
         assertNull(localContact);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoOpportunityWithSameShortNameInOneNetwork() {
+
+        /// /when
+        CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
+        crmLead.setId(null);
+        crmLead.setShortname(TEST_SHORTNAME);
+        crmLead.setNetwork(corNetwork);
+        CrmLead crmLead1 = factory.manufacturePojo(CrmLead.class);
+        crmLead1.setId(null);
+        crmLead1.setShortname(TEST_SHORTNAME);
+        crmLead1.setNetwork(corNetwork);
+
+        crmLead = crmLeadService.saveLead(crmLead);
+        crmLead1 = crmLeadService.saveLead(crmLead1);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoOpportunityWithSameShortNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        ///when
+        CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
+        crmLead.setId(null);
+        crmLead.setShortname(TEST_SHORTNAME);
+        crmLead.setNetwork(corNetwork);
+        CrmLead crmLead1 = factory.manufacturePojo(CrmLead.class);
+        crmLead1.setId(null);
+        crmLead1.setShortname(TEST_SHORTNAME);
+        crmLead1.setNetwork(corNetworkSecond);
+
+        //then
+        crmLead = crmLeadService.saveLead(crmLead);
+        crmLead1 = crmLeadService.saveLead(crmLead1);
+
     }
 
 }

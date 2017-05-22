@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -27,6 +28,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CrmCustomerServiceTest {
 
+    private static final String TEST_SHORTNAME = "TEST";
     @Autowired
     private CrmCustomerService crmCustomerService;
 
@@ -303,4 +305,46 @@ public class CrmCustomerServiceTest {
         //assert
         assertNull(localContact);
     }
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoCustomerWithSameShortNameInOneNetwork() {
+
+        /// /when
+        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setId(null);
+        crmAccount.setShortName(TEST_SHORTNAME);
+        crmAccount.setNetwork(corNetwork);
+        CrmAccount crmAccount1 = factory.manufacturePojo(CrmAccount.class);
+        crmAccount1.setId(null);
+        crmAccount1.setShortName(TEST_SHORTNAME);
+        crmAccount1.setNetwork(corNetwork);
+
+        crmAccount = crmCustomerService.saveCustomer(crmAccount);
+        crmAccount1 = crmCustomerService.saveCustomer(crmAccount1);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoCustomerWithSameShortNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        ///when
+        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setId(null);
+        crmAccount.setShortName(TEST_SHORTNAME);
+        crmAccount.setNetwork(corNetwork);
+        CrmAccount crmAccount1 = factory.manufacturePojo(CrmAccount.class);
+        crmAccount1.setId(null);
+        crmAccount1.setShortName(TEST_SHORTNAME);
+        crmAccount1.setNetwork(corNetworkSecond);
+
+        //then
+        crmAccount = crmCustomerService.saveCustomer(crmAccount);
+        crmAccount1 = crmCustomerService.saveCustomer(crmAccount1);
+
+    }
+
 }

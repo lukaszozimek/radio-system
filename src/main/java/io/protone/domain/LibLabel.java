@@ -13,7 +13,8 @@ import java.util.Objects;
  * A LibLabel.
  */
 @Entity
-@Table(name = "lib_label")
+@Table(name = "lib_label", uniqueConstraints =
+@UniqueConstraint(columnNames = {"name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibLabel implements Serializable {
 
@@ -47,17 +48,21 @@ public class LibLabel implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public LibLabel name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LibLabel description(String description) {
@@ -65,21 +70,17 @@ public class LibLabel implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibLabel network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

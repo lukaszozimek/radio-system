@@ -55,7 +55,7 @@ public class CrmCustomerService {
             crmAccount.person(corPerson);
         }
         log.debug("Persisting CrmAccount: {}", crmAccount);
-        crmAccount = accountRepository.save(crmAccount);
+        crmAccount = accountRepository.saveAndFlush(crmAccount);
         return crmAccount;
     }
 
