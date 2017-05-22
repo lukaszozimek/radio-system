@@ -206,9 +206,9 @@
 
 
     <!--Custom-->
-
     <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_TraPlaylist.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_TraOrder.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_TraCampaign.xml" relativeToChangelogFile="false"/>
 
     <changeSet id="" author="">
         <loadData encoding="UTF-8"

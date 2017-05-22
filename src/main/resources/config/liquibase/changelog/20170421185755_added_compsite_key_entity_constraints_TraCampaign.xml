@@ -7,30 +7,11 @@
         Added the constraints for entity TraCampaign.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="customer_id"
-                                 baseTableName="tra_campaign"
-                                 constraintName="fk_tra_campaign_customer_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="crm_account"/>
 
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="tra_campaign"
-                                 constraintName="fk_tra_campaign_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
-        <addForeignKeyConstraint baseColumnNames="status_id"
-                                 baseTableName="tra_campaign"
-                                 constraintName="fk_tra_campaign_status_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
-
-        <addForeignKeyConstraint baseColumnNames="price_id"
-                                 baseTableName="tra_campaign"
-                                 constraintName="fk_tra_campaign_price_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_price"/>
+        <addUniqueConstraint columnNames="short_name, network_id"
+                             constraintName="composite_key_constrain_tra_campaign_name_network_id"
+                             tableName="tra_campaign"
+        />
 
     </changeSet>
 </databaseChangeLog>
