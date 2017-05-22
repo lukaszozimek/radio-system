@@ -1,8 +1,7 @@
 package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.LibMediaItem;
+import io.protone.domain.*;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.web.api.crm.CrmCustomerResourceImplTest;
@@ -10,8 +9,6 @@ import io.protone.web.api.library.LibMediaItemResourceTest;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.util.TestUtil;
 import io.protone.web.api.traffic.impl.TraAdvertisementResourceImpl;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraAdvertisement;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraAdvertisementService;
@@ -123,10 +120,16 @@ public class TraAdvertisementResourceImplTest {
 
     @Before
     public void initTest() {
+        traAdvertisementRepository.deleteAllInBatch();
+        libMediaItemRepository.deleteAllInBatch();
+        crmAccountRepository.deleteAllInBatch();
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
-        libMediaItem = libMediaItemRepository.save(LibMediaItemResourceTest.createEntity(em).network(corNetwork));
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
+        libMediaItem = libMediaItemRepository.saveAndFlush(LibMediaItemResourceTest.createEntity(em).network(corNetwork).library(libLibrary));
+        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traAdvertisement = createEntity(em).network(corNetwork).customer(crmAccount).mediaItem(libMediaItem);
     }
 

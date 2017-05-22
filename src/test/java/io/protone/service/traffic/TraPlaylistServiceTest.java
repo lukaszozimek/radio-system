@@ -180,9 +180,12 @@ public class TraPlaylistServiceTest {
     @Test
     public void shouldSaveBlockWithEmissions() throws Exception {
         //when
-
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setLibrary(libLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
@@ -231,8 +234,12 @@ public class TraPlaylistServiceTest {
     @Test
     public void shouldSaveBlocksWithEmissions() throws Exception {
         //when
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setLibrary(libLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
@@ -315,7 +322,7 @@ public class TraPlaylistServiceTest {
     public void shouldSaveTwoPlaylistWithSameDayInOneNetworkAndDifferentChannels() {
         //given
         LocalDate localDate = LocalDate.now();
-       CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
+        CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
         corChannelSecond.setId(null);
         corChannelSecond.setShortcut("XXX");
         corChannelSecond.network(corNetwork);
@@ -344,7 +351,7 @@ public class TraPlaylistServiceTest {
         //given
         LocalDate localDate = LocalDate.now();
 
-       CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
         corNetworkSecond.setId(null);
         corNetworkSecond = corNetworkRepository.saveAndFlush(corNetworkSecond);
         CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);

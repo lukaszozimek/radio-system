@@ -50,7 +50,7 @@
             </column>
 
             <column name="library_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="label_id" type="bigint">

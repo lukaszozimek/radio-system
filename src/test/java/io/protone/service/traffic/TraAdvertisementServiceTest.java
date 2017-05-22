@@ -1,11 +1,8 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.*;
 import io.protone.service.library.LibItemService;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.LibMediaItem;
-import io.protone.domain.TraAdvertisement;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
@@ -70,11 +67,16 @@ public class TraAdvertisementServiceTest {
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount = crmAccountRepository.save(crmAccount);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+
         libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setLibrary(libLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
 
         doNothing().when(libItemService).deleteItem(anyObject());

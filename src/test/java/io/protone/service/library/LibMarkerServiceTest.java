@@ -2,6 +2,7 @@ package io.protone.service.library;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.LibLibrary;
 import io.protone.domain.LibMarker;
 import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
@@ -58,8 +59,12 @@ public class LibMarkerServiceTest {
     @Test
     public void shouldSaveMarker() throws Exception {
         //when
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setLibrary(libLibrary);
         libMediaItemRepository.save(libMediaItem);
 
         //then
@@ -76,8 +81,12 @@ public class LibMarkerServiceTest {
     @Test
     public void saveLibMarkers() throws Exception {
         //when
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setLibrary(libLibrary);
         libMediaItemRepository.save(libMediaItem);
         LibMarker libMarker = new LibMarker().markerType(LibMarkerTypeEnum.MT_BASIC).mediaItem(libMediaItem).startTime(SAMPLE_MARKER_START_TIME).name(SAMPLE_MARKER_NAME);
         Set<LibMarker> libMarkerSet = Sets.newSet(libMarker);

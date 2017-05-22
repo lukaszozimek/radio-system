@@ -36,6 +36,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -103,6 +104,8 @@ public class TrafficOrderResourceImplTest {
 
     private LibMediaItem libMediaItem;
 
+    private LibLibrary libLibrary;
+
     private CrmAccount crmAccount;
 
     /**
@@ -112,6 +115,7 @@ public class TrafficOrderResourceImplTest {
      * if they test an entity which requires the current entity.
      */
     public static TraOrder createEntity(EntityManager em) {
+
         TraOrder traOrder = new TraOrder()
             .name(DEFAULT_NAME)
             .startDate(DEFAULT_START_DATE)
@@ -125,17 +129,28 @@ public class TrafficOrderResourceImplTest {
         MockitoAnnotations.initMocks(this);
         TraOrderResourceImpl traOrderResource = new TraOrderResourceImpl();
 
+        traAdvertisementRepository.deleteAllInBatch();
+        libMediaItemRepository.deleteAllInBatch();
+        crmAccountRepository.deleteAllInBatch();
+
+
+
+        corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
+        corNetwork.setId(1L);
+        libLibrary = new LibLibrary();
+        libLibrary.setId(1L);
+        libLibrary.setShortcut("tes");
+        libMediaItem = LibMediaItemResourceTest.createEntity(em);
+        libMediaItem.setNetwork(corNetwork);
+        libMediaItem.setLibrary(libLibrary);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(libMediaItem).customer(crmAccount).network(corNetwork));
+
         ReflectionTestUtils.setField(traOrderResource, "traOrderService", traOrderService);
         ReflectionTestUtils.setField(traOrderResource, "traOrderMapper", traOrderMapper);
         ReflectionTestUtils.setField(traOrderResource, "corNetworkService", corNetworkService);
 
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        libMediaItem = LibMediaItemResourceTest.createEntity(em);
-        libMediaItem.setNetwork(corNetwork);
-        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
-        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(libMediaItem).customer(crmAccount).network(corNetwork));
 
         this.restTraOrderMockMvc = MockMvcBuilders.standaloneSetup(traOrderResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -378,7 +393,6 @@ public class TrafficOrderResourceImplTest {
     @Test
     @Transactional
     public void getAllTraOrdersForCustomer() throws Exception {
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database

@@ -9,7 +9,7 @@
     <changeSet id="20170421185755-2" author="jhipster">
 
 
-        <addUniqueConstraint columnNames="idx, network_id"
+        <addUniqueConstraint columnNames="idx,library_id, network_id"
                              constraintName="composite_key_constrain_lib_media_item_idx_network_id"
                              tableName="lib_media_item"
         />
