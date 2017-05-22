@@ -1,6 +1,7 @@
 package io.protone.service.cor;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorNetworkRepository;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -24,6 +26,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CorNetworkServiceTest {
 
+    private static final String TEST_NAME = "tet";
     @Autowired
     private CorNetworkService corNetworkService;
 
@@ -71,6 +74,39 @@ public class CorNetworkServiceTest {
         corNetworkService.deleteNetwork(corNetwork.getShortcut());
         CorNetwork local = corNetworkService.findNetwork(corNetwork.getShortcut());
         assertNull(local);
+
+    }
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoNetworksWithSameShortName() {
+
+        /// /when
+        CorNetwork corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corNetwork.setId(null);
+        corNetwork.setShortcut(TEST_NAME);
+
+        CorNetwork corNetwork1 = factory.manufacturePojo(CorNetwork.class);
+        corNetwork1.setId(null);
+        corNetwork1.setShortcut(TEST_NAME);
+
+        corNetwork = corNetworkService.save(corNetwork);
+        corNetwork1 = corNetworkService.save(corNetwork1);
+
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoNetworksWithSameName() {
+
+        /// /when
+        CorNetwork corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corNetwork.setId(null);
+        corNetwork.setName(TEST_NAME);
+
+        CorNetwork corNetwork1 = factory.manufacturePojo(CorNetwork.class);
+        corNetwork1.setId(null);
+        corNetwork1.setName(TEST_NAME);
+
+        corNetwork = corNetworkService.save(corNetwork);
+        corNetwork1 = corNetworkService.save(corNetwork1);
 
     }
 }

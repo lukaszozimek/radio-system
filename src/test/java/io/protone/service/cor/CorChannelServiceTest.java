@@ -3,6 +3,7 @@ package io.protone.service.cor;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
+import io.protone.domain.LibArtist;
 import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -28,6 +30,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CorChannelServiceTest {
 
+    private static final String TEST_NAME = "Tes";
     @Autowired
     private CorChannelService corChannelService;
     @Autowired
@@ -92,4 +95,46 @@ public class CorChannelServiceTest {
 
         assertNull(fetechedEntity);
     }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoCorChannelWithSameShortNameInOneNetwork() {
+
+        /// /when
+        CorChannel corChannel = factory.manufacturePojo(CorChannel.class);
+        corChannel.setId(null);
+        corChannel.setShortcut(TEST_NAME);
+        corChannel.setNetwork(corNetwork);
+        CorChannel corChannel1 = factory.manufacturePojo(CorChannel.class);
+        corChannel1.setId(null);
+        corChannel1.setShortcut(TEST_NAME);
+        corChannel1.setNetwork(corNetwork);
+
+        corChannel = corChannelService.save(corChannel);
+        corChannel1 = corChannelService.save(corChannel1);
+
+    }
+
+    @Test
+    public void shouldSaveTwoCorChannelWithSameNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        /// /when
+        CorChannel corChannel = factory.manufacturePojo(CorChannel.class);
+        corChannel.setId(null);
+        corChannel.setShortcut(TEST_NAME);
+        corChannel.setNetwork(corNetwork);
+        CorChannel corChannel1 = factory.manufacturePojo(CorChannel.class);
+        corChannel1.setId(null);
+        corChannel1.setShortcut(TEST_NAME);
+        corChannel1.setNetwork(corNetworkSecond);
+
+        corChannel = corChannelService.save(corChannel);
+        corChannel1 = corChannelService.save(corChannel1);
+
+
+    }
+
 }

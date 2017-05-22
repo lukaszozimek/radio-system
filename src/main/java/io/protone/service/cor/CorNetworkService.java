@@ -35,7 +35,7 @@ public class CorNetworkService {
 
     public CorNetwork save(CorNetwork network) {
         log.debug("Persisting CorNetwork: {}", network);
-        return ccorNetworkRepository.save(network);
+        return ccorNetworkRepository.saveAndFlush(network);
     }
 
 }

@@ -22,23 +22,23 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="street" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="number" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="postal_code" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="city" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="country" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="network_id" type="bigint">

@@ -75,7 +75,7 @@ public class TraPlaylistServiceTest {
 
         corChannel = factory.manufacturePojo(CorChannel.class);
         corChannel.setId(null);
-        corChannel.setShortcut("XXX");
+        corChannel.setShortcut("HHH");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
 
@@ -324,7 +324,7 @@ public class TraPlaylistServiceTest {
         LocalDate localDate = LocalDate.now();
         CorChannel corChannelSecond = factory.manufacturePojo(CorChannel.class);
         corChannelSecond.setId(null);
-        corChannelSecond.setShortcut("XXX");
+        corChannelSecond.setShortcut("YYY");
         corChannelSecond.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannelSecond);
         //when
