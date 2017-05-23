@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by lukaszozimek on 02/05/2017.
  */
-///TODO: ShortName to campaign
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class TraCampaignResourceImplTest {
@@ -133,7 +133,9 @@ public class TraCampaignResourceImplTest {
 
     @Before
     public void initTest() {
-        traCampaign = createEntity(em).network(corNetwork);
+        crmAccountRepository.deleteAllInBatch();
+        crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
+        traCampaign = createEntity(em).network(corNetwork).customer(crmAccount);
     }
 
     @Test
@@ -166,7 +168,6 @@ public class TraCampaignResourceImplTest {
     public void createTraCampaignWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = traCampaignRepository.findAll().size();
 
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         // Create the TraCampaign with an existing ID
         TraCampaign existingTraCampaign = new TraCampaign();
         existingTraCampaign.setId(1L);
@@ -225,7 +226,8 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getAllTraCampaigns() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
+
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
 
         // Get all the traCampaignList
         restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign?sort=id,desc", corNetwork.getShortcut()))
@@ -242,7 +244,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
 
         // Get the traCampaign
         restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/{shortName}", corNetwork.getShortcut(), traCampaign.getShortName()))
@@ -268,8 +270,7 @@ public class TraCampaignResourceImplTest {
     public void updateTraCampaign() throws Exception {
         // Initialize the database
 
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork));
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).customer(crmAccount));
         int databaseSizeBeforeUpdate = traCampaignRepository.findAll().size();
 
         // Update the traCampaign
@@ -300,7 +301,6 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void updateNonExistingTraCampaign() throws Exception {
 
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         int databaseSizeBeforeUpdate = traCampaignRepository.findAll().size();
 
         // Create the TraCampaign
@@ -321,7 +321,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void deleteTraCampaign() throws Exception {
         // Initialize the database
-        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).shortName("xxx").name("xxx"));
+        traCampaignRepository.saveAndFlush(traCampaign.network(corNetwork).shortName("xxx").name("xxx").customer(crmAccount));
         int databaseSizeBeforeDelete = traCampaignRepository.findAll().size();
 
         // Get the traCampaign
@@ -343,8 +343,7 @@ public class TraCampaignResourceImplTest {
     @Transactional
     public void getAllTraCampaignsForCustomer() throws Exception {
         // Initialize the database
-        crmAccount = crmAccountRepository.save(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traCampaignRepository.saveAndFlush(traCampaign.customer(crmAccount).network(corNetwork));
+        traCampaignRepository.saveAndFlush(traCampaign.customer(crmAccount).network(corNetwork).customer(crmAccount));
 
         // Get all the traCampaignList
         restTraCampaignMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/campaign/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))

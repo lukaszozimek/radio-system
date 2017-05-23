@@ -10,12 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -29,6 +31,7 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class TraCampaignServiceTest {
+    private static final String TEST_SHORTNAME = "test";
     @Autowired
     private TraCampaignService traCampaignService;
 
@@ -43,6 +46,8 @@ public class TraCampaignServiceTest {
 
     private CorNetwork corNetwork;
 
+    private CrmAccount crmAccount;
+
     private PodamFactory factory;
     private TraOrderService traOrderService;
 
@@ -52,6 +57,9 @@ public class TraCampaignServiceTest {
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setNetwork(corNetwork);
+        crmAccount = crmAccountRepository.save(crmAccount);
 
     }
 
@@ -60,6 +68,7 @@ public class TraCampaignServiceTest {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setNetwork(corNetwork);
+        campaign.setCustomer(crmAccount);
         campaign = traCampaignRepository.save(campaign);
 
         //then
@@ -76,6 +85,8 @@ public class TraCampaignServiceTest {
     public void shouldSaveCampaignWithOutOrder() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
 
         //then
@@ -92,8 +103,10 @@ public class TraCampaignServiceTest {
     public void shouldSaveCampaignWithOrders() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
         campaign.addOrders(traOrder);
 
@@ -115,6 +128,7 @@ public class TraCampaignServiceTest {
     public void shouldDeleteCampaign() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
         campaign = traCampaignRepository.save(campaign);
         //then
@@ -129,6 +143,7 @@ public class TraCampaignServiceTest {
     public void shoulGetCampaign() throws Exception {
         //when
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);
         campaign = traCampaignRepository.save(campaign);
 
@@ -145,9 +160,6 @@ public class TraCampaignServiceTest {
     public void shoulGetCustomerCampaign() throws Exception {
 
         //when
-        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
-        crmAccount = crmAccountRepository.save(crmAccount);
         TraCampaign traCampaign = factory.manufacturePojo(TraCampaign.class);
         traCampaign.setNetwork(corNetwork);
         traCampaign.setCustomer(crmAccount);
@@ -164,4 +176,48 @@ public class TraCampaignServiceTest {
         assertEquals(traCampaign.getNetwork(), fetchedEntity.get(0).getNetwork());
     }
 
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoTraCampaignWithSameShortNameInOneNetwork() {
+        //when
+        TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setShortName(TEST_SHORTNAME);
+        campaign.setCustomer(crmAccount);
+        campaign.setNetwork(corNetwork);
+        TraCampaign campaignSecond = factory.manufacturePojo(TraCampaign.class);
+        campaignSecond.setShortName(TEST_SHORTNAME);
+        campaignSecond.setCustomer(crmAccount);
+        campaignSecond.setNetwork(corNetwork);
+
+
+        //then
+        campaign = traCampaignService.saveCampaign(campaign);
+        campaignSecond = traCampaignService.saveCampaign(campaignSecond);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoTraCampaignWithSameShortNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        //when
+        TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
+        campaign.setShortName(TEST_SHORTNAME);
+        campaign.setCustomer(crmAccount);
+        campaign.setNetwork(corNetwork);
+
+        TraCampaign campaignSecond = factory.manufacturePojo(TraCampaign.class);
+        campaignSecond.setShortName(TEST_SHORTNAME);
+        campaignSecond.setCustomer(crmAccount);
+        campaignSecond.setNetwork(corNetworkSecond);
+
+
+        //then
+        campaign = traCampaignService.saveCampaign(campaign);
+        campaignSecond = traCampaignService.saveCampaign(campaignSecond);
+
+    }
 }

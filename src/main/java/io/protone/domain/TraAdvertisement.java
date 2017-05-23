@@ -27,7 +27,7 @@ public class TraAdvertisement implements Serializable {
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
     @Column(name = "description")

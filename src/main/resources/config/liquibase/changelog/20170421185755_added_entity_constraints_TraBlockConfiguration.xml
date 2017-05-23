@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraBlockConfiguration.
+    -->
+    <changeSet id="20170515200401-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_block_configuration"
+                                 constraintName="fk_tra_block_configuration_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="tra_block_configuration"
+                                 constraintName="fk_tra_block_configuration_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -102,7 +102,7 @@ public class CorPersonMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<CorPerson> entities = corPersonMapper.DTOs2DBs(corPersonDTOS);
+        List<CorPerson> entities = corPersonMapper.DTOs2DBs(corPersonDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -111,7 +111,7 @@ public class CorPersonMapperTest {
             assertNotNull(entity.getFirstName());
             assertNotNull(entity.getLastName());
             assertNotNull(entity.getDescription());
-            assertNull(entity.getNetwork());
+            assertNotNull(entity.getNetwork());
 
 
         });
@@ -119,14 +119,14 @@ public class CorPersonMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorPerson entity = corPersonMapper.DTO2DB(corPersonDTO);
+        CorPerson entity = corPersonMapper.DTO2DB(corPersonDTO, corNetwork);
 
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getFirstName());
         assertNotNull(entity.getId());
         assertNotNull(entity.getLastName());
 
-        assertNull(entity.getNetwork());
+        assertNotNull(entity.getNetwork());
     }
 
     @Test

@@ -44,10 +44,10 @@ public class TraAdvertisementService {
 
     public void deleteAdvertisement(Long id, String corNetwork) {
         TraAdvertisement traAdvertisement = traAdvertisementRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+        traAdvertisementRepository.delete(traAdvertisement);
         if (traAdvertisement.getMediaItem() != null) {
             libItemService.deleteItem(traAdvertisement.getMediaItem());
         }
-        traAdvertisementRepository.delete(traAdvertisement);
     }
 
     public TraAdvertisement getAdvertisement(Long id, String corNetwork) {

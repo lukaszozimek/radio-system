@@ -19,7 +19,8 @@ import java.util.Set;
  * A LibMediaItem.
  */
 @Entity
-@Table(name = "lib_media_item")
+@Table(name = "lib_media_item", uniqueConstraints =
+@UniqueConstraint(columnNames = {"idx","library_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibMediaItem implements Serializable {
 

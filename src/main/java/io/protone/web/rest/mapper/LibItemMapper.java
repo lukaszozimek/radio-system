@@ -1,13 +1,17 @@
 package io.protone.web.rest.mapper;
 
 import com.google.common.base.Strings;
+import io.protone.domain.CorPerson;
+import io.protone.web.rest.dto.cor.CorPersonDTO;
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTag;
 import io.protone.domain.LibMediaItem;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +31,10 @@ public interface LibItemMapper {
     List<LibMediaItemDTO> DBs2DTOs(List<LibMediaItem> dbs);
 
     LibMediaItem DTO2DB(LibMediaItemDTO dto, @Context CorNetwork networkId);
-
+    @AfterMapping
+    default void LibMediaItemDTOToLibMediaItemAfterMapping(LibMediaItemDTO dto, @MappingTarget LibMediaItem entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
     default List<LibMediaItem> DTOs2DBs(List<LibMediaItemDTO> dtos, CorNetwork networkId) {
         List<LibMediaItem> libMediaItems = new ArrayList<>();
         if (dtos.isEmpty() || dtos == null) {

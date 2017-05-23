@@ -16,7 +16,8 @@ import java.util.Set;
  * A CrmOpportunity.
  */
 @Entity
-@Table(name = "crm_opportunity")
+@Table(name = "crm_opportunity", uniqueConstraints =
+@UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmOpportunity implements Serializable {
 
@@ -30,7 +31,7 @@ public class CrmOpportunity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
     @Column(name = "last_try")
@@ -84,17 +85,21 @@ public class CrmOpportunity implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public CrmOpportunity name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getShortName() {
         return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public CrmOpportunity shortName(String shortName) {
@@ -102,12 +107,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public LocalDate getLastTry() {
         return lastTry;
+    }
+
+    public void setLastTry(LocalDate lastTry) {
+        this.lastTry = lastTry;
     }
 
     public CrmOpportunity lastTry(LocalDate lastTry) {
@@ -115,12 +120,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setLastTry(LocalDate lastTry) {
-        this.lastTry = lastTry;
-    }
-
     public LocalDate getCloseDate() {
         return closeDate;
+    }
+
+    public void setCloseDate(LocalDate closeDate) {
+        this.closeDate = closeDate;
     }
 
     public CrmOpportunity closeDate(LocalDate closeDate) {
@@ -128,12 +133,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setCloseDate(LocalDate closeDate) {
-        this.closeDate = closeDate;
-    }
-
     public Integer getProbability() {
         return probability;
+    }
+
+    public void setProbability(Integer probability) {
+        this.probability = probability;
     }
 
     public CrmOpportunity probability(Integer probability) {
@@ -141,12 +146,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setProbability(Integer probability) {
-        this.probability = probability;
-    }
-
     public CorDictionary getStage() {
         return stage;
+    }
+
+    public void setStage(CorDictionary corDictionary) {
+        this.stage = corDictionary;
     }
 
     public CrmOpportunity stage(CorDictionary corDictionary) {
@@ -154,12 +159,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setStage(CorDictionary corDictionary) {
-        this.stage = corDictionary;
-    }
-
     public CorUser getKeeper() {
         return keeper;
+    }
+
+    public void setKeeper(CorUser corUser) {
+        this.keeper = corUser;
     }
 
     public CrmOpportunity keeper(CorUser corUser) {
@@ -167,12 +172,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setKeeper(CorUser corUser) {
-        this.keeper = corUser;
-    }
-
     public CrmContact getContact() {
         return contact;
+    }
+
+    public void setContact(CrmContact crmContact) {
+        this.contact = crmContact;
     }
 
     public CrmOpportunity contact(CrmContact crmContact) {
@@ -180,12 +185,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setContact(CrmContact crmContact) {
-        this.contact = crmContact;
-    }
-
     public CrmAccount getAccount() {
         return account;
+    }
+
+    public void setAccount(CrmAccount crmAccount) {
+        this.account = crmAccount;
     }
 
     public CrmOpportunity account(CrmAccount crmAccount) {
@@ -193,12 +198,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setAccount(CrmAccount crmAccount) {
-        this.account = crmAccount;
-    }
-
     public CrmLead getLead() {
         return lead;
+    }
+
+    public void setLead(CrmLead crmLead) {
+        this.lead = crmLead;
     }
 
     public CrmOpportunity lead(CrmLead crmLead) {
@@ -206,12 +211,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setLead(CrmLead crmLead) {
-        this.lead = crmLead;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CrmOpportunity network(CorNetwork corNetwork) {
@@ -219,12 +224,12 @@ public class CrmOpportunity implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public Set<CrmTask> getTasks() {
         return tasks;
+    }
+
+    public void setTasks(Set<CrmTask> crmTasks) {
+        this.tasks = crmTasks;
     }
 
     public CrmOpportunity tasks(Set<CrmTask> crmTasks) {
@@ -242,10 +247,6 @@ public class CrmOpportunity implements Serializable {
         this.tasks.remove(crmTask);
         crmTask.setOpportunity(null);
         return this;
-    }
-
-    public void setTasks(Set<CrmTask> crmTasks) {
-        this.tasks = crmTasks;
     }
 
     @Override

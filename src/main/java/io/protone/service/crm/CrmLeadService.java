@@ -62,7 +62,7 @@ public class CrmLeadService {
             crmLead.person(corPerson);
         }
         log.debug("Persisting CrmLead: {}", crmLead);
-        crmLead = crmLeadRepository.save(crmLead);
+        crmLead = crmLeadRepository.saveAndFlush(crmLead);
         return crmLead;
     }
 

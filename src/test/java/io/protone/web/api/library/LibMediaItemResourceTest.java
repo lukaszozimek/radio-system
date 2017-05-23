@@ -242,7 +242,7 @@ public class LibMediaItemResourceTest {
     @Transactional
     public void updateLibMediaItem() throws Exception {
         // Initialize the database
-        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary));
+        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeUpdate = libMediaItemRepository.findAll().size();
 
         // Update the libMediaItem

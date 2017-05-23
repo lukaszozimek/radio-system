@@ -43,6 +43,8 @@ public class TraInvoiceServiceTest {
 
     private CorNetwork corNetwork;
 
+    private CrmAccount crmAccount;
+
     private PodamFactory factory;
 
     @Before
@@ -52,12 +54,17 @@ public class TraInvoiceServiceTest {
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
 
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setNetwork(corNetwork);
+        crmAccount = crmAccountRepository.save(crmAccount);
+
     }
 
     @Test
     public void shouldGetAllInvoice() throws Exception {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
+        traInvoice.setCustomer(crmAccount);
         traInvoice.setNetwork(corNetwork);
         traInvoice = traInvoiceRepository.save(traInvoice);
 
@@ -77,6 +84,7 @@ public class TraInvoiceServiceTest {
     public void shouldSaveInvoice() throws Exception {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
+        traInvoice.setCustomer(crmAccount);
         traInvoice.setNetwork(corNetwork);
 
         //then
@@ -93,6 +101,7 @@ public class TraInvoiceServiceTest {
     public void shouldDeleteInvoice() throws Exception {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
+        traInvoice.setCustomer(crmAccount);
         traInvoice.setNetwork(corNetwork);
         traInvoice = traInvoiceRepository.save(traInvoice);
         //then
@@ -107,6 +116,7 @@ public class TraInvoiceServiceTest {
     public void shouldGetInvoice() throws Exception {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
+        traInvoice.setCustomer(crmAccount);
         traInvoice.setNetwork(corNetwork);
         traInvoice = traInvoiceRepository.save(traInvoice);
 
@@ -125,9 +135,7 @@ public class TraInvoiceServiceTest {
     public void shouldGetInvoiceAssociatedWithCustomer() throws Exception {
 
         //when
-        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
-        crmAccount.setNetwork(corNetwork);
-        crmAccount = crmAccountRepository.save(crmAccount);
+
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
         traInvoice.setNetwork(corNetwork);
         traInvoice.setCustomer(crmAccount);

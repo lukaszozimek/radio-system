@@ -30,12 +30,12 @@ public class CorNetwork implements Serializable {
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "shortcut", length = 100, nullable = false)
+    @Column(name = "shortcut", length = 100, nullable = false, unique = true)
     private String shortcut;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
     @Column(name = "active")

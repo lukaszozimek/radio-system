@@ -41,7 +41,7 @@ public class TraCampaignService {
     public TraCampaign saveCampaign(TraCampaign campaign) {
         if (!campaign.getOrders().isEmpty() && campaign.getOrders() != null) {
             log.debug("Persisting TraOrders Associated with Tra Campaign: {}", campaign);
-            campaign.setOrders(campaign.getOrders().stream().map(traOrder -> traOrderService.saveOrder(traOrder)).collect(Collectors.toSet()));
+            campaign.setOrders(campaign.getOrders().stream().map(traOrder -> traOrderService.saveOrderLazy(traOrder)).collect(Collectors.toSet()));
         }
         log.debug("Persisting TraCampaign: {}", campaign);
         campaign = traCampaignRepository.saveAndFlush(campaign);

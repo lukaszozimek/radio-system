@@ -18,7 +18,9 @@ import java.util.Set;
  * A TraOrder.
  */
 @Entity
-@Table(name = "tra_order")
+@Table(name = "tra_order", uniqueConstraints =
+@UniqueConstraint(columnNames = {"name", "network_id"}))
+
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TraOrder implements Serializable {
 
@@ -32,7 +34,7 @@ public class TraOrder implements Serializable {
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
     @Column(name = "start_date")
@@ -90,17 +92,21 @@ public class TraOrder implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TraOrder name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public TraOrder startDate(LocalDate startDate) {
@@ -108,12 +114,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public TraOrder endDate(LocalDate endDate) {
@@ -121,12 +127,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public Long getCalculatedPrize() {
         return calculatedPrize;
+    }
+
+    public void setCalculatedPrize(Long calculatedPrize) {
+        this.calculatedPrize = calculatedPrize;
     }
 
     public TraOrder calculatedPrize(Long calculatedPrize) {
@@ -134,12 +140,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setCalculatedPrize(Long calculatedPrize) {
-        this.calculatedPrize = calculatedPrize;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
     }
 
     public TraOrder customer(CrmAccount crmAccount) {
@@ -147,12 +153,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setCustomer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
-    }
-
     public TraPrice getPrice() {
         return price;
+    }
+
+    public void setPrice(TraPrice traPrice) {
+        this.price = traPrice;
     }
 
     public TraOrder price(TraPrice traPrice) {
@@ -160,12 +166,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setPrice(TraPrice traPrice) {
-        this.price = traPrice;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraOrder network(CorNetwork corNetwork) {
@@ -173,12 +179,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorDictionary getStatus() {
         return status;
+    }
+
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraOrder status(CorDictionary corDictionary) {
@@ -186,12 +192,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setStatus(CorDictionary corDictionary) {
-        this.status = corDictionary;
-    }
-
     public TraAdvertisement getAdvertisment() {
         return advertisment;
+    }
+
+    public void setAdvertisment(TraAdvertisement traAdvertisement) {
+        this.advertisment = traAdvertisement;
     }
 
     public TraOrder advertisment(TraAdvertisement traAdvertisement) {
@@ -199,12 +205,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setAdvertisment(TraAdvertisement traAdvertisement) {
-        this.advertisment = traAdvertisement;
-    }
-
     public TraCampaign getCampaign() {
         return campaign;
+    }
+
+    public void setCampaign(TraCampaign traCampaign) {
+        this.campaign = traCampaign;
     }
 
     public TraOrder campaign(TraCampaign traCampaign) {
@@ -212,12 +218,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setCampaign(TraCampaign traCampaign) {
-        this.campaign = traCampaign;
-    }
-
     public TraInvoice getInvoice() {
         return invoice;
+    }
+
+    public void setInvoice(TraInvoice traInvoice) {
+        this.invoice = traInvoice;
     }
 
     public TraOrder invoice(TraInvoice traInvoice) {
@@ -225,12 +231,12 @@ public class TraOrder implements Serializable {
         return this;
     }
 
-    public void setInvoice(TraInvoice traInvoice) {
-        this.invoice = traInvoice;
-    }
-
     public Set<SchEmission> getEmissions() {
         return emissions;
+    }
+
+    public void setEmissions(Set<SchEmission> schEmissions) {
+        this.emissions = schEmissions;
     }
 
     public TraOrder emissions(Set<SchEmission> schEmissions) {
@@ -248,10 +254,6 @@ public class TraOrder implements Serializable {
         this.emissions.remove(schEmission);
         schEmission.setOrder(null);
         return this;
-    }
-
-    public void setEmissions(Set<SchEmission> schEmissions) {
-        this.emissions = schEmissions;
     }
 
     @Override

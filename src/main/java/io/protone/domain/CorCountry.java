@@ -22,10 +22,10 @@ public class CorCountry implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", nullable = false, unique = true)
     private String shortName;
 
     @OneToOne

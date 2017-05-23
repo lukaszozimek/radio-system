@@ -26,27 +26,27 @@ public class CorAddress implements Serializable {
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "street", length = 100, nullable = false)
+    @Column(name = "street", length = 100 )
     private String street;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "number", length = 100, nullable = false)
+    @Column(name = "number", length = 100)
     private String number;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "postal_code", length = 100, nullable = false)
+    @Column(name = "postal_code", length = 100)
     private String postalCode;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "city", length = 100, nullable = false)
+    @Column(name = "city", length = 100)
     private String city;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "country", length = 100, nullable = false)
+    @Column(name = "country", length = 100)
     private String country;
 
     @ManyToOne

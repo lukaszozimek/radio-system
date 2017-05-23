@@ -22,7 +22,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="short_name" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="external_id_1" type="varchar(255)">
@@ -46,7 +46,8 @@
             </column>
             <column name="person_id" type="bigint">
                 <constraints unique="true" nullable="true" />
-            </column>            <column name="addres_id" type="bigint">
+            </column>
+            <column name="addres_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
             <column name="network_id" type="bigint">
@@ -83,6 +84,6 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

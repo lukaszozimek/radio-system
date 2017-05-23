@@ -231,7 +231,7 @@ public class CrmContactTaskResourceImplTest {
         crmContactRepository.deleteAll();
         crmContactRepository.save(crmContact.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.contact(crmContact));
+        crmTaskRepository.saveAndFlush(crmTask.contact(crmContact).network(corNetwork));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Update the crmTask
@@ -310,7 +310,7 @@ public class CrmContactTaskResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmTaskDTO cfgMarkerConfigurationDTO = crmTaskMapper.DB2DTO(crmTask);
 
-        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(),crmContact.getShortName())
+        restCrmTaskMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact/{shortName}/task", corNetwork.getShortcut(), crmContact.getShortName())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cfgMarkerConfigurationDTO)))
             .andExpect(status().isBadRequest());

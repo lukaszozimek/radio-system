@@ -18,7 +18,11 @@ import java.util.Set;
  * A LibLibrary.
  */
 @Entity
-@Table(name = "lib_library")
+@Table(name = "lib_library", uniqueConstraints ={
+@UniqueConstraint(columnNames = {"shortcut", "network_id"}),
+@UniqueConstraint(columnNames = {"prefix", "network_id"}),
+@UniqueConstraint(columnNames = {"name", "network_id"})
+})
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibLibrary implements Serializable {
 
@@ -41,12 +45,12 @@ public class LibLibrary implements Serializable {
 
     @NotNull
     @Size(max = 3)
-    @Column(name = "shortcut", length = 3, nullable = false)
+    @Column(name = "shortcut", length = 3, nullable = false, unique = true)
     private String shortcut;
 
     @NotNull
     @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
     @NotNull

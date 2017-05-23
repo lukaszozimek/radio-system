@@ -43,7 +43,7 @@ public class CrmOpportunityService {
 
     public CrmOpportunity saveOpportunity(CrmOpportunity crmOpportunity) {
         log.debug("Persisting CrmOpportunity: {}", crmOpportunity);
-        return opportunityRepository.save(crmOpportunity);
+        return opportunityRepository.saveAndFlush(crmOpportunity);
     }
 
     public void deleteOpportunity(String shortcut, String corNetwork) {

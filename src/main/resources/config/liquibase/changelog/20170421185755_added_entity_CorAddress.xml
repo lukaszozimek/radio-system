@@ -22,31 +22,31 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="street" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="number" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="postal_code" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="city" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="country" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="network_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

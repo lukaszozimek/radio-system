@@ -30,6 +30,11 @@ public class TraOrderService {
 
     public TraOrder saveOrder(TraOrder traOrder) {
         log.debug("Persisting TraOrder: {}", traOrder);
+        return traOrderRepository.saveAndFlush(traOrder);
+    }
+
+    public TraOrder saveOrderLazy(TraOrder traOrder) {
+        log.debug("Persisting TraOrder: {}", traOrder);
         return traOrderRepository.save(traOrder);
     }
 

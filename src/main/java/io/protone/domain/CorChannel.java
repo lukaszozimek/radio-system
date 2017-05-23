@@ -17,7 +17,8 @@ import java.util.Set;
  * A CorChannel.
  */
 @Entity
-@Table(name = "cor_channel")
+@Table(name = "cor_channel", uniqueConstraints =
+@UniqueConstraint(columnNames = {"shortcut", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CorChannel implements Serializable {
 
@@ -64,17 +65,21 @@ public class CorChannel implements Serializable {
         return shortcut;
     }
 
+    public void setShortcut(String shortcut) {
+        this.shortcut = shortcut;
+    }
+
     public CorChannel shortcut(String shortcut) {
         this.shortcut = shortcut;
         return this;
     }
 
-    public void setShortcut(String shortcut) {
-        this.shortcut = shortcut;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CorChannel name(String name) {
@@ -82,12 +87,12 @@ public class CorChannel implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public CorChannel description(String description) {
@@ -95,12 +100,12 @@ public class CorChannel implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CorChannel network(CorNetwork corNetwork) {
@@ -108,12 +113,12 @@ public class CorChannel implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public Set<CorUser> getChannelUsers() {
         return channelUsers;
+    }
+
+    public void setChannelUsers(Set<CorUser> corUsers) {
+        this.channelUsers = corUsers;
     }
 
     public CorChannel channelUsers(Set<CorUser> corUsers) {
@@ -132,12 +137,6 @@ public class CorChannel implements Serializable {
         corUser.getChannels().remove(this);
         return this;
     }
-
-    public void setChannelUsers(Set<CorUser> corUsers) {
-        this.channelUsers = corUsers;
-    }
-
-
 
     public CorChannel removeChannelLibarary(LibLibrary libLibrary) {
         this.channelUsers.remove(libLibrary);

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -28,6 +29,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CrmContactServiceTest {
 
+    private static final String TEST_SHORTNAME = "TEST" ;
     @Autowired
     private CrmContactService crmContactService;
 
@@ -304,6 +306,46 @@ public class CrmContactServiceTest {
         //assert
         assertNull(localContact);
     }
+    @Test(expected = DataIntegrityViolationException.class)
+    public void shouldNotSaveTwoContactWithSameShortNameInOneNetwork() {
 
+        /// /when
+        CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
+        crmContact.setId(null);
+        crmContact.setShortName(TEST_SHORTNAME);
+        crmContact.setNetwork(corNetwork);
+        CrmContact crmContact1 = factory.manufacturePojo(CrmContact.class);
+        crmContact1.setId(null);
+        crmContact1.setShortName(TEST_SHORTNAME);
+        crmContact1.setNetwork(corNetwork);
+
+        crmContact = crmContactService.saveContact(crmContact);
+        crmContact1 = crmContactService.saveContact(crmContact1);
+
+
+    }
+
+    @Test
+    public void shouldSaveTwoContactWithSameShortNameInDifferentNetwork() {
+        //given
+        CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
+        corNetworkSecond.setId(null);
+        corNetworkSecond = corNetworkRepository.save(corNetworkSecond);
+
+        ///when
+        CrmContact crmContact = factory.manufacturePojo(CrmContact.class);
+        crmContact.setId(null);
+        crmContact.setShortName(TEST_SHORTNAME);
+        crmContact.setNetwork(corNetwork);
+        CrmContact crmContact1 = factory.manufacturePojo(CrmContact.class);
+        crmContact1.setId(null);
+        crmContact1.setShortName(TEST_SHORTNAME);
+        crmContact1.setNetwork(corNetworkSecond);
+
+        //then
+        crmContact = crmContactService.saveContact(crmContact);
+        crmContact1 = crmContactService.saveContact(crmContact1);
+
+    }
 
 }

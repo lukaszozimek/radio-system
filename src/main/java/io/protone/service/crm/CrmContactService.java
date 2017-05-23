@@ -62,7 +62,7 @@ public class CrmContactService {
             contact.person(corPerson);
         }
         log.debug("Persisting CrmContact: {}", contact);
-        contact = crmContactRepository.save(contact);
+        contact = crmContactRepository.saveAndFlush(contact);
         return contact;
     }
 

@@ -18,7 +18,8 @@ import java.util.Set;
  * A TraCampaign.
  */
 @Entity
-@Table(name = "tra_campaign")
+@Table(name = "tra_campaign", uniqueConstraints =
+@UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TraCampaign implements Serializable {
 
@@ -35,7 +36,7 @@ public class TraCampaign implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", nullable = false, unique = true)
     private String shortName;
 
     @Column(name = "start_date")
@@ -81,17 +82,21 @@ public class TraCampaign implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TraCampaign name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getShortName() {
         return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public TraCampaign shortName(String shortName) {
@@ -99,12 +104,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public TraCampaign startDate(LocalDate startDate) {
@@ -112,12 +117,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public TraCampaign endDate(LocalDate endDate) {
@@ -125,12 +130,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public Long getPrize() {
         return prize;
+    }
+
+    public void setPrize(Long prize) {
+        this.prize = prize;
     }
 
     public TraCampaign prize(Long prize) {
@@ -138,12 +143,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setPrize(Long prize) {
-        this.prize = prize;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
     }
 
     public TraCampaign customer(CrmAccount crmAccount) {
@@ -151,12 +156,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setCustomer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraCampaign network(CorNetwork corNetwork) {
@@ -164,12 +169,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorDictionary getStatus() {
         return status;
+    }
+
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraCampaign status(CorDictionary corDictionary) {
@@ -177,12 +182,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setStatus(CorDictionary corDictionary) {
-        this.status = corDictionary;
-    }
-
     public TraPrice getPrice() {
         return price;
+    }
+
+    public void setPrice(TraPrice traPrice) {
+        this.price = traPrice;
     }
 
     public TraCampaign price(TraPrice traPrice) {
@@ -190,12 +195,12 @@ public class TraCampaign implements Serializable {
         return this;
     }
 
-    public void setPrice(TraPrice traPrice) {
-        this.price = traPrice;
-    }
-
     public Set<TraOrder> getOrders() {
         return orders;
+    }
+
+    public void setOrders(Set<TraOrder> traOrders) {
+        this.orders = traOrders;
     }
 
     public TraCampaign orders(Set<TraOrder> traOrders) {
@@ -213,10 +218,6 @@ public class TraCampaign implements Serializable {
         this.orders.remove(traOrder);
         traOrder.setCampaign(null);
         return this;
-    }
-
-    public void setOrders(Set<TraOrder> traOrders) {
-        this.orders = traOrders;
     }
 
     @Override

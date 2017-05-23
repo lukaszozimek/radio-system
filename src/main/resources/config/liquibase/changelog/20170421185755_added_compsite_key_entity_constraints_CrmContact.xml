@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity CrmContact.
+    -->
+    <changeSet id="20170421185755-2" author="jhipster">
+
+
+        <addUniqueConstraint columnNames="short_name, network_id"
+                             constraintName="composite_key_constrain_crm_contact_short_name_network_id"
+                             tableName="crm_contact"
+        />
+
+    </changeSet>
+</databaseChangeLog>

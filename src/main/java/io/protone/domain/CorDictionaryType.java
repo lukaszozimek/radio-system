@@ -26,7 +26,7 @@ public class CorDictionaryType implements Serializable {
     @NotNull
     @Size(min = 0, max = 50)
     @Id
-    @Column(length = 50)
+    @Column(length = 50, nullable = false, unique = true)
     public String name;
 
     public String getName() {

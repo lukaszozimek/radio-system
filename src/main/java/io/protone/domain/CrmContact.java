@@ -16,7 +16,8 @@ import java.util.Set;
  * A CrmContact.
  */
 @Entity
-@Table(name = "crm_contact")
+@Table(name = "crm_contact", uniqueConstraints =
+@UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CrmContact implements Serializable {
 
@@ -27,7 +28,7 @@ public class CrmContact implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
     @Column(name = "external_id_1")

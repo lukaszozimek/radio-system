@@ -117,6 +117,7 @@ public class CorChannelResourceTest {
 
     @Test
     public void createCorChannel() throws Exception {
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         int databaseSizeBeforeCreate = corChannelRepository.findAll().size();
 
         // Create the CorChannel
@@ -176,6 +177,7 @@ public class CorChannelResourceTest {
 
     @Test
     public void checkNameIsRequired() throws Exception {
+
         int databaseSizeBeforeTest = corChannelRepository.findAll().size();
         // set the field null
         corChannel.setName(null);
@@ -195,6 +197,7 @@ public class CorChannelResourceTest {
     @Test
     public void getAllCorChannels() throws Exception {
         // Initialize the database
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
         // Get all the corChannelList
@@ -210,6 +213,7 @@ public class CorChannelResourceTest {
     @Test
     public void getCorChannel() throws Exception {
         // Initialize the database
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
         // Get the corChannel
@@ -233,6 +237,8 @@ public class CorChannelResourceTest {
     public void updateCorChannel() throws Exception {
 
         // Initialize the database
+
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 
@@ -260,6 +266,7 @@ public class CorChannelResourceTest {
 
     @Test
     public void updateNonExistingCorChannel() throws Exception {
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 
         // Create the CorChannel
@@ -279,6 +286,7 @@ public class CorChannelResourceTest {
     @Test
     public void deleteCorChannel() throws Exception {
         // Initialize the database
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         CorChannel localcorChannel = corChannelRepository.saveAndFlush(corChannel.shortcut("ops").network(corNetwork));
         int databaseSizeBeforeDelete = corChannelRepository.findAll().size();
 

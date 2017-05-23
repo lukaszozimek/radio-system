@@ -162,7 +162,7 @@ public class CorPropertyKeyResourceTest {
     @Transactional
     public void getAllCorPropertyKeys() throws Exception {
         // Initialize the database
-        CorPropertyKey propertyKey =   corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
+        CorPropertyKey propertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
 
         // Get all the corPropertyKeyList
         restCorPropertyKeyMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/network/dictionary/property/key?sort=id,desc", corNetwork.getShortcut()))
@@ -198,7 +198,7 @@ public class CorPropertyKeyResourceTest {
     @Transactional
     public void updateCorPropertyKey() throws Exception {
         // Initialize the database
-        corPropertyKeyRepository.saveAndFlush(corPropertyKey);
+        corPropertyKeyRepository.saveAndFlush(corPropertyKey.network(corNetwork));
         int databaseSizeBeforeUpdate = corPropertyKeyRepository.findAll().size();
 
         // Update the corPropertyKey

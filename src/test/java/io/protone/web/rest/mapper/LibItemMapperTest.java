@@ -119,7 +119,6 @@ public class LibItemMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        ///TODO: Network Constraing
         LibMediaItem entity = customItemMapperExt.DTO2DB(libMediaItemDTO, corNetwork);
 
         assertNotNull(entity.getId());
@@ -137,6 +136,8 @@ public class LibItemMapperTest {
         assertNotNull(entity.getTags());
         assertNotNull(entity.getTrack());
         assertNotNull(entity.getId());
+        assertNotNull(entity.getNetwork());
+
 
 
     }
@@ -162,6 +163,7 @@ public class LibItemMapperTest {
             assertNotNull(entity.getState());
             assertNotNull(entity.getTags());
             assertNotNull(entity.getTrack());
+            assertNotNull(entity.getNetwork());
         });
     }
 

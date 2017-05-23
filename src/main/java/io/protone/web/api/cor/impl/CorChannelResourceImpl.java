@@ -33,13 +33,13 @@ public class CorChannelResourceImpl implements CorChannelResource {
     private final Logger log = LoggerFactory.getLogger(CorChannelResourceImpl.class);
     private CorChannelService channelService;
 
-    private CorChannelMapper customCORChannelMapper;
+    private CorChannelMapper corChannelMapper;
 
     private CorNetworkService networkService;
 
-    public CorChannelResourceImpl(CorChannelService channelService, CorChannelMapper customCORChannelMapper, CorNetworkService networkService) {
+    public CorChannelResourceImpl(CorChannelService channelService, CorChannelMapper corChannelMapper, CorNetworkService networkService) {
         this.channelService = channelService;
-        this.customCORChannelMapper = customCORChannelMapper;
+        this.corChannelMapper = corChannelMapper;
         this.networkService = networkService;
     }
 
@@ -52,9 +52,9 @@ public class CorChannelResourceImpl implements CorChannelResource {
         }
         CorNetwork network = networkService.findNetwork(networkShortcut);
 
-        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
+        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
-        CorChannelDTO result = customCORChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getShortcut().toString()))
             .body(result);
@@ -68,9 +68,9 @@ public class CorChannelResourceImpl implements CorChannelResource {
         }
 
         CorNetwork network = networkService.findNetwork(networkShortcut);
-        CorChannel corChannel = customCORChannelMapper.DTO2DB(channelDTO, network);
+        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel);
-        CorChannelDTO result = customCORChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel" + result.getShortcut()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))
             .body(result);
@@ -82,14 +82,14 @@ public class CorChannelResourceImpl implements CorChannelResource {
         log.debug("REST request to get all CORChannels");
         List<CorChannel> corChannels = channelService.findAllChannel(networkShortcut, pagable);
         return ResponseEntity.ok()
-            .body(customCORChannelMapper.DBs2DTOs(corChannels));
+            .body(corChannelMapper.DBs2DTOs(corChannels));
     }
 
     @Override
     public ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get CORChannel : {}", channelShortcut);
         CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
-        CorChannelDTO corChannelDTO = customCORChannelMapper.DB2DTO(corChannel);
+        CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
             .map(result -> new ResponseEntity<>(
                 result,

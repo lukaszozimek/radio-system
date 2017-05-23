@@ -92,8 +92,7 @@ public class CorDictionaryPeopleResourceTest {
 
     @Before
     public void setup() {
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
+
         MockitoAnnotations.initMocks(this);
         CorDictionaryPeopleResourceImpl corPersonResource = new CorDictionaryPeopleResourceImpl();
         ReflectionTestUtils.setField(corPersonResource, "corPersonRepository", corPersonRepository);
@@ -107,6 +106,8 @@ public class CorDictionaryPeopleResourceTest {
     @Before
     @Transactional
     public void initTest() {
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
         corPerson = createEntity(em).network(corNetwork);
     }
 

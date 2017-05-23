@@ -1,121 +1,136 @@
 package io.protone.web.rest.dto.traffic;
 
 import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
+import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
+
 /**
  * TraEmissionDTO
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class TraEmissionDTO   {
-  @JsonProperty("advertismentId")
-  private Long advertismentId = null;
+public class TraEmissionDTO {
 
-  @JsonProperty("timeStart")
-  private Long timeStart = null;
+    @JsonProperty("id")
+    private Long id = null;
 
-  @JsonProperty("timeStop")
-  private Long timeStop = null;
+    @JsonProperty("advertiment")
+    private TraAdvertisementThinDTO advertiment = null;
 
-  public TraEmissionDTO advertismentId(Long advertismentId) {
-    this.advertismentId = advertismentId;
-    return this;
-  }
+    @JsonProperty("timeStart")
+    private Long timeStart = null;
 
-   /**
-   * Get advertismentId
-   * @return advertismentId
-  **/
-  @ApiModelProperty(value = "")
-  public Long getAdvertismentId() {
-    return advertismentId;
-  }
+    @JsonProperty("timeStop")
+    private Long timeStop = null;
 
-  public void setAdvertismentId(Long advertismentId) {
-    this.advertismentId = advertismentId;
-  }
-
-  public TraEmissionDTO timeStart(Long timeStart) {
-    this.timeStart = timeStart;
-    return this;
-  }
-
-   /**
-   * Get timeStart
-   * @return timeStart
-  **/
-  @ApiModelProperty(value = "")
-  public Long getTimeStart() {
-    return timeStart;
-  }
-
-  public void setTimeStart(Long timeStart) {
-    this.timeStart = timeStart;
-  }
-
-  public TraEmissionDTO timeStop(Long timeStop) {
-    this.timeStop = timeStop;
-    return this;
-  }
-
-   /**
-   * Get timeStop
-   * @return timeStop
-  **/
-  @ApiModelProperty(value = "")
-  public Long getTimeStop() {
-    return timeStop;
-  }
-
-  public void setTimeStop(Long timeStop) {
-    this.timeStop = timeStop;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public TraEmissionDTO advertisment(TraAdvertisementThinDTO advertisment) {
+        this.advertiment = advertisment;
+        return this;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    public Long getId() {
+        return id;
     }
-    TraEmissionDTO traEmissionDTO = (TraEmissionDTO) o;
-    return Objects.equals(this.advertismentId, traEmissionDTO.advertismentId) &&
-        Objects.equals(this.timeStart, traEmissionDTO.timeStart) &&
-        Objects.equals(this.timeStop, traEmissionDTO.timeStop);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(advertismentId, timeStart, timeStop);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TraEmissionDTO {\n");
-
-    sb.append("    advertismentId: ").append(toIndentedString(advertismentId)).append("\n");
-    sb.append("    timeStart: ").append(toIndentedString(timeStart)).append("\n");
-    sb.append("    timeStop: ").append(toIndentedString(timeStop)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
+    public void setId(Long id) {
+        this.id = id;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    /**
+     * Get advertiment
+     *
+     * @return advertiment
+     **/
+    @ApiModelProperty(value = "")
+    public TraAdvertisementThinDTO getAdvertiment() {
+        return advertiment;
+    }
+
+    public void setAdvertiment(TraAdvertisementThinDTO advertiment) {
+        this.advertiment = advertiment;
+    }
+
+    public TraEmissionDTO timeStart(Long timeStart) {
+        this.timeStart = timeStart;
+        return this;
+    }
+
+    /**
+     * Get timeStart
+     *
+     * @return timeStart
+     **/
+    @ApiModelProperty(value = "")
+    public Long getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(Long timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public TraEmissionDTO timeStop(Long timeStop) {
+        this.timeStop = timeStop;
+        return this;
+    }
+
+    /**
+     * Get timeStop
+     *
+     * @return timeStop
+     **/
+    @ApiModelProperty(value = "")
+    public Long getTimeStop() {
+        return timeStop;
+    }
+
+    public void setTimeStop(Long timeStop) {
+        this.timeStop = timeStop;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TraEmissionDTO traEmissionDTO = (TraEmissionDTO) o;
+        return Objects.equals(this.advertiment, traEmissionDTO.advertiment) &&
+            Objects.equals(this.timeStart, traEmissionDTO.timeStart) &&
+            Objects.equals(this.timeStop, traEmissionDTO.timeStop);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(advertiment, timeStart, timeStop);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class TraEmissionDTO {\n");
+
+        sb.append("    advertiment: ").append(toIndentedString(advertiment)).append("\n");
+        sb.append("    timeStart: ").append(toIndentedString(timeStart)).append("\n");
+        sb.append("    timeStop: ").append(toIndentedString(timeStop)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }
 

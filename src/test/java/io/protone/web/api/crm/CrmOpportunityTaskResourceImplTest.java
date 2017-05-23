@@ -228,7 +228,7 @@ public class CrmOpportunityTaskResourceImplTest {
         crmOpportunityRepository.deleteAll();
         crmOpportunityRepository.save(crmOpportunity.network(corNetwork));
         // Initialize the database
-        crmTaskRepository.saveAndFlush(crmTask.opportunity(crmOpportunity));
+        crmTaskRepository.saveAndFlush(crmTask.opportunity(crmOpportunity).network(corNetwork));
         int databaseSizeBeforeUpdate = crmTaskRepository.findAll().size();
 
         // Update the crmTask
