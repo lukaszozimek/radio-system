@@ -25,8 +25,8 @@ import javax.annotation.PreDestroy;
 
 @Configuration
 @EnableCaching
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
-@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
+@AutoConfigureAfter(value = {MetricsConfiguration.class})
+@AutoConfigureBefore(value = {WebConfigurer.class, DatabaseConfiguration.class})
 public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
@@ -52,6 +52,11 @@ public class CacheConfiguration {
 
     @Bean
     public HazelcastInstance hazelcastInstance(JHipsterProperties jHipsterProperties) {
+        //During test when spring context is switched hazelcast isn't shuteddown properly and this couse problem with duplicated instances and one random tests fail
+        HazelcastInstance hazelcast = Hazelcast.getHazelcastInstanceByName("protone");
+        if (hazelcast != null) {
+            hazelcast.shutdown();
+        }
         log.debug("Configuring Hazelcast");
         Config config = new Config();
         config.setInstanceName("protone");

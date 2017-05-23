@@ -23,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class TokenProvider {
-
+    public static final String NETWORK = "NETWORK";
+    public static final String CHANNEL = "CHANNEL";
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
@@ -69,8 +70,8 @@ public class TokenProvider {
         }
         CorUser corUser = corUserRepository.findOneByLogin(authentication.getName()).orElse(null);
         Map<String, Object> jwtHeader = new HashMap<>();
-        jwtHeader.put("NETWORK", corUser.getNetworks().stream().findFirst().get());
-        jwtHeader.put("CHANNEL", corUser.getChannels());
+        jwtHeader.put(NETWORK, corUser.getNetworks().stream().findFirst().get());
+        jwtHeader.put(CHANNEL, corUser.getChannels());
         return Jwts.builder()
             .setHeader(jwtHeader)
             .setSubject(authentication.getName())

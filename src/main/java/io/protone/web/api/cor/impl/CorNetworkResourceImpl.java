@@ -21,7 +21,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
+//TODO:// SECURITY BRIDGE!!! Limit Get all only to USER Context
 @RestController
 public class CorNetworkResourceImpl implements CorNetworkResource {
     private final Logger log = LoggerFactory.getLogger(CorNetworkResourceImpl.class);
