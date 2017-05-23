@@ -57,7 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-@ActiveProfiles("first")
+@ActiveProfiles("security")
 public class CorSecurityTest {
 
     private MockMvc restLibLibraryMockMvc;
