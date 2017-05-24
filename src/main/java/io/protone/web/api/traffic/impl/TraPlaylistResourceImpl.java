@@ -202,7 +202,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) {
         log.debug("REST request to shuffle TraAdvertisments : {}, for Channel {}, Network: {}", traShuffleAdvertismentDTO.getTraAdvertisementDTO(), channelShortcut, networkShortcut);
-        List<TraPlaylist> entities = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertismentDTO);
+        List<TraPlaylist> entities = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertismentDTO, networkShortcut, channelShortcut);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entities);
         return ResponseEntity.ok().body(response);
     }
