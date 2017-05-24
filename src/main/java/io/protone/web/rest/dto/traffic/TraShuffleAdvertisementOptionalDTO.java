@@ -1,11 +1,11 @@
-package io.protone.custom.service.dto;
+package io.protone.web.rest.dto.traffic;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by lukaszozimek on 06/03/2017.
  */
-public class TraShuffleAdvertisementOptionalPT {
+public class TraShuffleAdvertisementOptionalDTO {
 
     @JsonProperty("priority")
     private String priority;

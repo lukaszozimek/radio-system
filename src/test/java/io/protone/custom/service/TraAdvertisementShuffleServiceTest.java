@@ -47,7 +47,7 @@ public class TraAdvertisementShuffleServiceTest {/*
     @Test
     public void shuffleCommercials() throws Exception {
         //when
-        TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
+        TraShuffleAdvertisementDTO tarShuffleAdvertisementPT = new TraShuffleAdvertisementDTO();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
         tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
         tarShuffleAdvertisementPT.setNumber(2);
@@ -61,7 +61,7 @@ public class TraAdvertisementShuffleServiceTest {/*
     @Test
     public void shuffleCommercialsLessThanAvailableBlocks() throws Exception {
         //given
-        TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
+        TraShuffleAdvertisementDTO tarShuffleAdvertisementPT = new TraShuffleAdvertisementDTO();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
         tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
         tarShuffleAdvertisementPT.setNumber(3);
@@ -84,7 +84,7 @@ public class TraAdvertisementShuffleServiceTest {/*
         when(schEmissionRepository.findByBlock(any())).thenReturn(Lists.newArrayList(schEmission, schEmission1));
         when(customLibMediaItemMapper.DTO2DB(any())).thenReturn(new LibMediaItem().idx("1").length(2.0));
         //given
-        TraShuffleAdvertisementPT tarShuffleAdvertisementPT = new TraShuffleAdvertisementPT();
+        TraShuffleAdvertisementDTO tarShuffleAdvertisementPT = new TraShuffleAdvertisementDTO();
         tarShuffleAdvertisementPT.setFrom(ZonedDateTime.now().minusHours(4));
         tarShuffleAdvertisementPT.setTo(ZonedDateTime.now().plusDays(4));
         tarShuffleAdvertisementPT.setNumber(3);
