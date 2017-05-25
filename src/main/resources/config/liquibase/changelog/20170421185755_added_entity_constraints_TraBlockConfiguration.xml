@@ -7,7 +7,7 @@
         Added the constraints for entity TraBlockConfiguration.
     -->
     <changeSet id="20170515200401-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="tra_block_configuration"
                                  constraintName="fk_tra_block_configuration_network_id"
@@ -19,6 +19,20 @@
                                  constraintName="fk_tra_block_configuration_channel_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="block_start_sound_id"
+                                 baseTableName="tra_block_configuration"
+                                 constraintName="fk_tra_block_configuration_block_start_sound_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_media_item"/>
+
+        <addForeignKeyConstraint baseColumnNames="block_end_sound_id"
+                                 baseTableName="tra_block_configuration"
+                                 constraintName="fk_tra_block_configuration_block_end_sound_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_media_item"/>
+
+
 
     </changeSet>
 </databaseChangeLog>

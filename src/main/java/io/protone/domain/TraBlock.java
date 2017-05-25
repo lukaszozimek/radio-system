@@ -8,8 +8,8 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A TraBlock.
@@ -20,7 +20,6 @@ import java.util.Objects;
 public class TraBlock implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
@@ -34,6 +33,9 @@ public class TraBlock implements Serializable {
     @Column(name = "length")
     private Long length;
 
+    @Column(name = "sequence")
+    private Integer sequence;
+
     @Column(name = "start_block")
     private Long startBlock;
 
@@ -41,8 +43,15 @@ public class TraBlock implements Serializable {
     private Long stopBlock;
 
     @ManyToOne
-    @PodamExclude
     private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private LibMediaItem blockStartSound;
+
+    @ManyToOne
+    @PodamExclude
+    private LibMediaItem blockEndSound;
 
     @ManyToOne
     @PodamExclude
@@ -70,21 +79,17 @@ public class TraBlock implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public TraBlock name(String name) {
         this.name = name;
         return this;
     }
 
-    public Long getLength() {
-        return length;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
+    public Long getLength() {
+        return length;
     }
 
     public TraBlock length(Long length) {
@@ -92,12 +97,25 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public Long getStartBlock() {
-        return startBlock;
+    public void setLength(Long length) {
+        this.length = length;
     }
 
-    public void setStartBlock(Long startBlock) {
-        this.startBlock = startBlock;
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public TraBlock sequence(Integer sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    public Long getStartBlock() {
+        return startBlock;
     }
 
     public TraBlock startBlock(Long startBlock) {
@@ -105,12 +123,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public Long getStopBlock() {
-        return stopBlock;
+    public void setStartBlock(Long startBlock) {
+        this.startBlock = startBlock;
     }
 
-    public void setStopBlock(Long stopBlock) {
-        this.stopBlock = stopBlock;
+    public Long getStopBlock() {
+        return stopBlock;
     }
 
     public TraBlock stopBlock(Long stopBlock) {
@@ -118,12 +136,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
+    public void setStopBlock(Long stopBlock) {
+        this.stopBlock = stopBlock;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
+    public CorNetwork getNetwork() {
+        return network;
     }
 
     public TraBlock network(CorNetwork corNetwork) {
@@ -131,12 +149,38 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public CorChannel getChannel() {
-        return channel;
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
+    public LibMediaItem getBlockStartSound() {
+        return blockStartSound;
+    }
+
+    public TraBlock blockStartSound(LibMediaItem libMediaItem) {
+        this.blockStartSound = libMediaItem;
+        return this;
+    }
+
+    public void setBlockStartSound(LibMediaItem libMediaItem) {
+        this.blockStartSound = libMediaItem;
+    }
+
+    public LibMediaItem getBlockEndSound() {
+        return blockEndSound;
+    }
+
+    public TraBlock blockEndSound(LibMediaItem libMediaItem) {
+        this.blockEndSound = libMediaItem;
+        return this;
+    }
+
+    public void setBlockEndSound(LibMediaItem libMediaItem) {
+        this.blockEndSound = libMediaItem;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
     }
 
     public TraBlock channel(CorChannel corChannel) {
@@ -144,12 +188,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public TraPlaylist getBlock() {
-        return block;
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
-    public void setBlock(TraPlaylist traPlaylist) {
-        this.block = traPlaylist;
+    public TraPlaylist getBlock() {
+        return block;
     }
 
     public TraBlock block(TraPlaylist traPlaylist) {
@@ -157,12 +201,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public Set<TraEmission> getEmissions() {
-        return emissions;
+    public void setBlock(TraPlaylist traPlaylist) {
+        this.block = traPlaylist;
     }
 
-    public void setEmissions(Set<TraEmission> traEmissions) {
-        this.emissions = traEmissions;
+    public Set<TraEmission> getEmissions() {
+        return emissions;
     }
 
     public TraBlock emissions(Set<TraEmission> traEmissions) {
@@ -181,35 +225,30 @@ public class TraBlock implements Serializable {
         traEmission.setBlock(null);
         return this;
     }
+
+    public void setEmissions(Set<TraEmission> traEmissions) {
+        this.emissions = traEmissions;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TraBlock traBlock = (TraBlock) o;
-
-        if (!getId().equals(traBlock.getId())) return false;
-        if (!getName().equals(traBlock.getName())) return false;
-        if (!getLength().equals(traBlock.getLength())) return false;
-        if (!getStartBlock().equals(traBlock.getStartBlock())) return false;
-        if (!getStopBlock().equals(traBlock.getStopBlock())) return false;
-        if (!getNetwork().equals(traBlock.getNetwork())) return false;
-        if (!getChannel().equals(traBlock.getChannel())) return false;
-        if (!getBlock().equals(traBlock.getBlock())) return false;
-        return getEmissions().equals(traBlock.getEmissions());
+        if (traBlock.id == null || id == null) {
+            return false;
+        }
+        return Objects.equals(id, traBlock.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? getId().hashCode() : 0;
-        result = 31 * result + getName().hashCode();
-        result = 31 * result + length.hashCode();
-        result = 31 * result + startBlock.hashCode();
-        result = 31 * result + stopBlock.hashCode();
-
-        return result;
+        return Objects.hashCode(id);
     }
-
 
     @Override
     public String toString() {
@@ -217,6 +256,7 @@ public class TraBlock implements Serializable {
             "id=" + id +
             ", name='" + name + "'" +
             ", length='" + length + "'" +
+            ", sequence='" + sequence + "'" +
             ", startBlock='" + startBlock + "'" +
             ", stopBlock='" + stopBlock + "'" +
             '}';

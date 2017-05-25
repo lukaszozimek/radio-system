@@ -22,31 +22,43 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="day" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="name" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="length" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="start_block" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="sequence" type="integer">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="block_start_sound_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="block_end_sound_id" type="bigint">
+                <constraints nullable="true"/>
             </column>
 
             <column name="stop_block" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="network_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="channel_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->

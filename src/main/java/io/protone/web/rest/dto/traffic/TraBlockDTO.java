@@ -34,6 +34,10 @@ public class TraBlockDTO {
     private Long stopBlock = null;
 
 
+    @JsonProperty("sequence")
+    private Integer sequence = null;
+
+
     @JsonProperty("emissions")
     private List<TraEmissionDTO> emissions = new ArrayList<TraEmissionDTO>();
 
@@ -139,6 +143,18 @@ public class TraBlockDTO {
         this.startBlock = startBlock;
     }
 
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    public TraBlockDTO sequence(Integer sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -159,20 +175,21 @@ public class TraBlockDTO {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, name, length, emissions);
-    }
-
-    @Override
     public String toString() {
         return "TraBlockDTO{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", lengthmv=" + length +
+            ", length=" + length +
             ", startBlock=" + startBlock +
             ", stopBlock=" + stopBlock +
+            ", sequence=" + sequence +
             ", emissions=" + emissions +
             '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, length, emissions);
     }
 
     /**

@@ -38,6 +38,10 @@ public class TraBlockConfigurationDTO implements Serializable {
     private Long stopBlock = null;
 
     @NotNull
+    private Integer sequence = null;
+
+
+    @NotNull
     private CorDayOfWeekEnum day;
 
     public TraBlockConfigurationDTO description(String description) {
@@ -152,6 +156,19 @@ public class TraBlockConfigurationDTO implements Serializable {
         this.startBlock = startBlock;
     }
 
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    public TraBlockConfigurationDTO sequence(Integer sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -167,24 +184,22 @@ public class TraBlockConfigurationDTO implements Serializable {
             Objects.equals(this.length, traBlockConfigurationDTO.length) &&
             Objects.equals(this.day, traBlockConfigurationDTO.day);
     }
-
+    @Override
+    public String toString() {
+        return "TraBlockConfigurationDTO{" +
+            "description='" + description + '\'' +
+            ", id=" + id +
+            ", name='" + name + '\'' +
+            ", length=" + length +
+            ", startBlock=" + startBlock +
+            ", stopBlock=" + stopBlock +
+            ", sequence=" + sequence +
+            ", day=" + day +
+            '}';
+    }
     @Override
     public int hashCode() {
         return Objects.hash(description, id, name, length, day);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraBlockConfigurationDTO {\n");
-
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    length: ").append(toIndentedString(length)).append("\n");
-        sb.append("    dayOfWeek: ").append(toIndentedString(day)).append("\n");
-        sb.append("}");
-        return sb.toString();
     }
 
     /**

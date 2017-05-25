@@ -105,7 +105,9 @@ public class TraAdvertisementShuffleServiceTest {
         return traAdvertisements;
     }
 
+
     private List<TraBlock> buildTraBlocks() {
+
         return null;
     }
 
