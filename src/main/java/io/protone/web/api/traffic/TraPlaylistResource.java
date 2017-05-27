@@ -1,6 +1,6 @@
 package io.protone.web.api.traffic;
 
-import io.protone.web.rest.dto.scheduler.SchScheduleDTO;
+import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
@@ -139,5 +139,21 @@ public interface TraPlaylistResource {
     ResponseEntity<TraPlaylistDTO> updateChannelTrafficPlaylistUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException;
+    @ApiOperation(value = "updateAdvertisement", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 201, message = "Created", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/advertisment/shuffle",
+        produces = {"application/json"},
+        consumes = {"application/json"},
+        method = RequestMethod.GET)
+    ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                   @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException;
+
+
 
 }

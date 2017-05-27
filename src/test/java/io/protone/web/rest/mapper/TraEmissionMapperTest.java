@@ -65,6 +65,7 @@ public class TraEmissionMapperTest {
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getAdvertiment());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getTimeStart());
         assertNotNull(dto.getTimeStop());
 
@@ -80,6 +81,7 @@ public class TraEmissionMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
             assertNotNull(dto.getAdvertiment());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getTimeStart());
             assertNotNull(dto.getTimeStop());
         });
@@ -95,6 +97,7 @@ public class TraEmissionMapperTest {
         assertNotNull(entity.getTimeStart());
         assertNotNull(entity.getTimeStop());
         assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getChannel());
 
     }
@@ -111,6 +114,7 @@ public class TraEmissionMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getAdvertiment());
             assertNotNull(entity.getTimeStart());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getTimeStop());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());

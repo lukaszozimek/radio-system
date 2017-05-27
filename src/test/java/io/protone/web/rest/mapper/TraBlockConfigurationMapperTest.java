@@ -63,6 +63,7 @@ public class TraBlockConfigurationMapperTest {
         assertNotNull(dto.getId());
         assertNotNull(dto.getStartBlock());
         assertNotNull(dto.getStopBlock());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getName());
         assertNotNull(dto.getLength());
         assertNotNull(dto.getDay());
@@ -79,6 +80,7 @@ public class TraBlockConfigurationMapperTest {
             assertNotNull(dto.getId());
             assertNotNull(dto.getStartBlock());
             assertNotNull(dto.getStopBlock());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getName());
             assertNotNull(dto.getLength());
             assertNotNull(dto.getDay());
@@ -96,6 +98,7 @@ public class TraBlockConfigurationMapperTest {
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getDay());
         assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getSequence());
     }
 
     @Test
@@ -111,6 +114,7 @@ public class TraBlockConfigurationMapperTest {
             assertNotNull(entity.getStopBlock());
             assertNotNull(entity.getName());
             assertNotNull(entity.getLength());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getDay());
             assertNotNull(entity.getNetwork());

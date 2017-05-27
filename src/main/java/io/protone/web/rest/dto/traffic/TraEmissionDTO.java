@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * TraEmissionDTO
  */
@@ -24,6 +26,9 @@ public class TraEmissionDTO {
 
     @JsonProperty("timeStop")
     private Long timeStop = null;
+
+    @JsonProperty("sequence")
+    private Integer sequence = null;
 
     public TraEmissionDTO advertisment(TraAdvertisementThinDTO advertisment) {
         this.advertiment = advertisment;
@@ -102,6 +107,7 @@ public class TraEmissionDTO {
         TraEmissionDTO traEmissionDTO = (TraEmissionDTO) o;
         return Objects.equals(this.advertiment, traEmissionDTO.advertiment) &&
             Objects.equals(this.timeStart, traEmissionDTO.timeStart) &&
+            Objects.equals(this.sequence, traEmissionDTO.sequence) &&
             Objects.equals(this.timeStop, traEmissionDTO.timeStop);
     }
 
@@ -110,16 +116,28 @@ public class TraEmissionDTO {
         return Objects.hash(advertiment, timeStart, timeStop);
     }
 
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
+    public TraEmissionDTO sequence(Integer sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraEmissionDTO {\n");
-
-        sb.append("    advertiment: ").append(toIndentedString(advertiment)).append("\n");
-        sb.append("    timeStart: ").append(toIndentedString(timeStart)).append("\n");
-        sb.append("    timeStop: ").append(toIndentedString(timeStop)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "TraEmissionDTO{" +
+            "id=" + id +
+            ", advertiment=" + advertiment +
+            ", timeStart=" + timeStart +
+            ", timeStop=" + timeStop +
+            ", sequence=" + sequence +
+            '}';
     }
 
     /**

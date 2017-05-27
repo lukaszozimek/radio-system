@@ -4,10 +4,11 @@ name String
 length Long
 startBlock Long
 stopBlock Long
+sequence Integer
 
 }
 entity TraEmission{
-
+    sequence Integer
      timeStart Long
      timeStop Long
 
@@ -25,6 +26,7 @@ enum CorDayOfWeekEnum {
 entity TraBlock{
     name String
     length Long
+    sequence Integer
     startBlock Long
     stopBlock Long
 }
@@ -537,8 +539,8 @@ relationship OneToOne {
     CrmLead{person} to CorPerson,
     CrmLead{addres} to CorAddress
 }
-
 relationship ManyToOne {
+
     CorDictionary {dictionaryType}  to CorDictionaryType,
     CorDictionary {module} to CorModule,
     CorUserAuthority{user} to CorUser{authorities},
@@ -691,8 +693,12 @@ relationship ManyToOne {
     CorNotification{user} to CorUser,
 
     TraBlockConfiguration {network} to CorNetwork,
+    TraBlockConfiguration {blockStartSound} to LibMediaItem,
+    TraBlockConfiguration {blockEndSound} to LibMediaItem,
     TraEmission {network} to CorNetwork,
     TraBlock {network} to CorNetwork,
+    TraBlock {blockStartSound} to LibMediaItem,
+    TraBlock {blockEndSound} to LibMediaItem,
     TraPlaylist {network} to CorNetwork,
     TraBlockConfiguration {channel} to CorChannel,
     TraEmission {channel} to CorChannel,

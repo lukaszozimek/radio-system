@@ -1,14 +1,13 @@
 package io.protone.domain;
 
+import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-
-import io.protone.domain.enumeration.CorDayOfWeekEnum;
-import uk.co.jemos.podam.common.PodamExclude;
 
 /**
  * A TraBlockConfiguration.
@@ -42,9 +41,20 @@ public class TraBlockConfiguration implements Serializable {
     @Column(name = "stop_block")
     private Long stopBlock;
 
+    @Column(name = "sequence")
+    private Integer sequence;
+
     @ManyToOne
     @PodamExclude
     private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private LibMediaItem blockStartSound;
+
+    @ManyToOne
+    @PodamExclude
+    private LibMediaItem blockEndSound;
 
     @ManyToOne
     @PodamExclude
@@ -123,6 +133,19 @@ public class TraBlockConfiguration implements Serializable {
         this.stopBlock = stopBlock;
     }
 
+    public Integer getSequence() {
+        return sequence;
+    }
+
+    public TraBlockConfiguration sequence(Integer sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
     public CorNetwork getNetwork() {
         return network;
     }
@@ -134,6 +157,32 @@ public class TraBlockConfiguration implements Serializable {
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
+    }
+
+    public LibMediaItem getBlockStartSound() {
+        return blockStartSound;
+    }
+
+    public TraBlockConfiguration blockStartSound(LibMediaItem libMediaItem) {
+        this.blockStartSound = libMediaItem;
+        return this;
+    }
+
+    public void setBlockStartSound(LibMediaItem libMediaItem) {
+        this.blockStartSound = libMediaItem;
+    }
+
+    public LibMediaItem getBlockEndSound() {
+        return blockEndSound;
+    }
+
+    public TraBlockConfiguration blockEndSound(LibMediaItem libMediaItem) {
+        this.blockEndSound = libMediaItem;
+        return this;
+    }
+
+    public void setBlockEndSound(LibMediaItem libMediaItem) {
+        this.blockEndSound = libMediaItem;
     }
 
     public CorChannel getChannel() {
@@ -178,6 +227,7 @@ public class TraBlockConfiguration implements Serializable {
             ", length='" + length + "'" +
             ", startBlock='" + startBlock + "'" +
             ", stopBlock='" + stopBlock + "'" +
+            ", sequence='" + sequence + "'" +
             '}';
     }
 }

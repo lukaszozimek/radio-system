@@ -61,7 +61,8 @@ public class TraBlockConfigurationResourceImplTest {
 
     private static final Long DEFAULT_STOP_BLOCK = 1L;
     private static final Long UPDATED_STOP_BLOCK = 2L;
-
+    private static final Integer DEFAULT_SEQUENCE = 1;
+    private static final Integer UPDATED_SEQUENCE = 1;
     @Autowired
     private CorNetworkService corNetworkService;
 
@@ -104,6 +105,7 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfiguration traBlockConfiguration = new TraBlockConfiguration()
             .day(DEFAULT_DAY)
             .name(DEFAULT_NAME)
+            .sequence(DEFAULT_SEQUENCE)
             .length(DEFAULT_LENGTH)
             .startBlock(DEFAULT_START_BLOCK)
             .stopBlock(DEFAULT_STOP_BLOCK);
@@ -153,6 +155,7 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfiguration testTraBlockConfiguration = traBlockConfigurationList.get(traBlockConfigurationList.size() - 1);
         assertThat(testTraBlockConfiguration.getDay()).isEqualTo(DEFAULT_DAY);
         assertThat(testTraBlockConfiguration.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testTraBlockConfiguration.getSequence()).isEqualTo(DEFAULT_SEQUENCE);
         assertThat(testTraBlockConfiguration.getLength()).isEqualTo(DEFAULT_LENGTH);
         assertThat(testTraBlockConfiguration.getStartBlock()).isEqualTo(DEFAULT_START_BLOCK);
         assertThat(testTraBlockConfiguration.getStopBlock()).isEqualTo(DEFAULT_STOP_BLOCK);
@@ -192,6 +195,7 @@ public class TraBlockConfigurationResourceImplTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(traBlockConfiguration.getId().intValue())))
             .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].sequence").value(DEFAULT_SEQUENCE.intValue()))
             .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH.intValue())))
             .andExpect(jsonPath("$.[*].startBlock").value(hasItem(DEFAULT_START_BLOCK.intValue())))
             .andExpect(jsonPath("$.[*].stopBlock").value(hasItem(DEFAULT_STOP_BLOCK.intValue())));
@@ -211,6 +215,8 @@ public class TraBlockConfigurationResourceImplTest {
             .andExpect(jsonPath("$.day").value(DEFAULT_DAY.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.length").value(DEFAULT_LENGTH.intValue()))
+            .andExpect(jsonPath("$.sequence").value(DEFAULT_SEQUENCE.intValue()))
+
             .andExpect(jsonPath("$.startBlock").value(DEFAULT_START_BLOCK.intValue()))
             .andExpect(jsonPath("$.stopBlock").value(DEFAULT_STOP_BLOCK.intValue()));
     }
@@ -236,6 +242,7 @@ public class TraBlockConfigurationResourceImplTest {
             .day(UPDATED_DAY)
             .name(UPDATED_NAME)
             .length(UPDATED_LENGTH)
+            .sequence(UPDATED_SEQUENCE)
             .startBlock(UPDATED_START_BLOCK)
             .stopBlock(UPDATED_STOP_BLOCK);
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(updatedTraBlockConfiguration);

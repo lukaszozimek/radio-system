@@ -1,15 +1,16 @@
 package io.protone.web.api.traffic.impl;
 
+import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.domain.*;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.traffic.TraAdvertisementShuffleService;
 import io.protone.service.traffic.TraPlaylistService;
 import io.protone.web.api.traffic.TraPlaylistResource;
 import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
 import io.protone.web.rest.mapper.TraPlaylistMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
-import liquibase.util.csv.CSVWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +27,7 @@ import org.supercsv.prefs.CsvPreference;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.awt.print.Book;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -56,6 +55,9 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
 
     @Inject
     private CorChannelService corChannelService;
+
+    @Inject
+    private TraAdvertisementShuffleService traAdvertisementShuffleService;
 
     @Override
     public ResponseEntity<TraPlaylistDTO> creatChannelTrafficPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -149,9 +151,9 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
 
     @Override
     public void getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                                                                          HttpServletResponse response) throws IOException {
+                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                                          HttpServletResponse response) throws IOException {
         String csvFileName = date + ".csv";
 
         response.setContentType("text/csv");
@@ -192,6 +194,16 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
         TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    public ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                          @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException {
+        log.debug("REST request to shuffle TraAdvertisments : {}, for Channel {}, Network: {}", traShuffleAdvertismentDTO.getTraAdvertisementDTO(), channelShortcut, networkShortcut);
+        List<TraPlaylist> entities = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertismentDTO, networkShortcut, channelShortcut);
+        List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entities);
         return ResponseEntity.ok().body(response);
     }
 }
