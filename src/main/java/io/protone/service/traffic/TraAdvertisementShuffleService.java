@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.concurrent.ThreadLocalRandom.current;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -32,7 +33,7 @@ public class TraAdvertisementShuffleService {
     private TraAdvertisementService traAdvertisementService;
 
 
-    public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) {
+    public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
         TraAdvertisement traAdvertisement = traAdvertisementService.getAdvertisement(tarShuffleAdvertisementPT.getTraAdvertisementDTO().getId(), networkShortcut);
@@ -41,19 +42,17 @@ public class TraAdvertisementShuffleService {
         log.debug("Found number of Playlist in range : {}", traPlaylistListInRange.size());
         int numberOfCommercialsShuffled = 0;
         for (int i = 0; i < traPlaylistListInRange.size(); i++) {
-            log.debug("Start Looking in {}", traPlaylistListInRange.get(i));
+            log.warn("Start Looking in {}", traPlaylistListInRange.get(i));
             TraPlaylist traPlaylist = traPlaylistListInRange.get(i);
             int numberOfScheduledBlocks = traPlaylist.getPlaylists().size();
             log.debug("Has number of Blocks {}", numberOfScheduledBlocks);
-            if (numberOfCommercialsShuffled != tarShuffleAdvertisementPT.getNumber()) {
-                for (int currentBlockIndex = 0; currentBlockIndex < numberOfScheduledBlocks; i++) {
-                    int blockIndex = java.util.concurrent.ThreadLocalRandom.current().nextInt(numberOfScheduledBlocks);
+            for (int currentBlockIndex = 0; currentBlockIndex < numberOfScheduledBlocks; currentBlockIndex++) {
+                if (isNumberOfShuffeledCommercialsDifferentThenRequestedNumber(numberOfCommercialsShuffled, tarShuffleAdvertisementPT.getNumber())) {
+                    int blockIndex =current().nextInt(numberOfScheduledBlocks) ;
                     log.debug("Check is it possible to shuffle commercial in block: {}", blockIndex);
                     TraBlock traBlock = traPlaylist.getPlaylists().stream().collect(toList()).get(blockIndex);
-                    Set<TraEmission> traEmissionSet = traBlock.getEmissions();
-                    long numberOfAdvertisements = traEmissionSet.stream().filter(traEmission -> traEmission.getAdvertiment().getMediaItem().getIdx().equalsIgnoreCase(tarShuffleAdvertisementPT.getTraAdvertisementDTO().getMediaItemId().getIdx())).count();
-                    if (numberOfAdvertisements == 0) {
-                        if (traBlock.getEmissions().size() != 0) {
+                    if (isAdvertismentInBlock(traBlock.getEmissions(), tarShuffleAdvertisementPT.getTraAdvertisementDTO().getMediaItemId().getIdx())) {
+                        if (areEmissionsInBlock(traBlock)) {
                             log.debug("Block size is {}", traBlock.getEmissions().size());
                             Long lastTimeStop = traBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
                             if (lastTimeStop < traBlock.getLength() && (lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()) <= traBlock.getLength()) {
@@ -68,17 +67,30 @@ public class TraAdvertisementShuffleService {
                             traBlock.addEmissions(emisssion);
                             numberOfCommercialsShuffled++;
                         }
-
                     }
+                } else {
+                    break;
                 }
             }
-            else {
-                break;
-            }
+            log.warn("STOP Looking in {}", traPlaylistListInRange.get(i));
         }
         log.debug("Number shuffled: {}, Number unshuffled commercials : {}", numberOfCommercialsShuffled, tarShuffleAdvertisementPT.getNumber() - numberOfCommercialsShuffled);
         return traPlaylistListInRange;
     }
+
+    private boolean areEmissionsInBlock(TraBlock traBlock) {
+        return traBlock.getEmissions().size() != 0;
+    }
+
+    private boolean isNumberOfShuffeledCommercialsDifferentThenRequestedNumber(int numberOfCommercialsShuffled, int requestedNumber) {
+        return numberOfCommercialsShuffled != requestedNumber;
+    }
+
+    private boolean isAdvertismentInBlock(Set<TraEmission> traEmissionSet, String mediaItemIdx) {
+        return traEmissionSet.stream().filter(traEmission -> traEmission.getAdvertiment().getMediaItem().getIdx().equalsIgnoreCase(mediaItemIdx)).count() == 0;
+
+    }
+
 
 }
 

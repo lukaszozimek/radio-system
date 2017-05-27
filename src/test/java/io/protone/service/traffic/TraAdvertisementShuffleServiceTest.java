@@ -14,10 +14,10 @@ import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -27,9 +27,9 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.util.Assert.notNull;
 
 /**
@@ -44,11 +44,7 @@ public class TraAdvertisementShuffleServiceTest {
 
     private static final int DAILY_BLOCK_NUMBER = 96;
 
-    private static final int DAILY_EMISSION_NUMBER_MIDDEL = 300;
-
-    private static final int DAILY_EMISSION_NUMBER_FULL = 570;
-
-    private static final int DAILY_EMISSION_NUMBER_LOW = 100;
+    private static final int LARGE_NUMBER_TO_SHUFFLE = 20000;
 
     private static final LocalDate SCHEDULING_START = LocalDate.now().minusDays(14);
 
@@ -56,7 +52,6 @@ public class TraAdvertisementShuffleServiceTest {
 
     private static final long NUMBER_OF_PLAYLISTS = DAYS.between(SCHEDULING_START, SCHEDULING_END);
 
-    private static final long SUM_OF_BLOCK_IN_PLAYLISTS = DAILY_BLOCK_NUMBER * NUMBER_OF_PLAYLISTS;
 
     @Inject
     private TraAdvertisementShuffleService traAdvertisementShuffleService;
@@ -117,7 +112,7 @@ public class TraAdvertisementShuffleServiceTest {
     private List<TraPlaylist> traPlaylists;
 
     @Before
-    public void setup() {
+    public void setup() throws InterruptedException {
         buildMustHavePojos();
         traPlaylists = new ArrayList<>();
         mediaItemList = buildMediaItems();
@@ -129,27 +124,35 @@ public class TraAdvertisementShuffleServiceTest {
     }
 
     @Test
-    public void tryShuffleCommercial() {
+    public void tryShuffleCommercial() throws InterruptedException {
         //when
         TraShuffleAdvertisementDTO traShuffleAdvertisementDTO = new TraShuffleAdvertisementDTO();
         traShuffleAdvertisementDTO.setTraAdvertisementDTO(advertisementToShuffleDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
-        traShuffleAdvertisementDTO.setNumber(50);
+        traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);
 
         //then
         List<TraPlaylist> traPlaylists = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertisementDTO, corNetwork.getShortcut(), corChannel.getShortcut());
 
+        //assert
         notNull(traPlaylists);
-
+        traPlaylists.stream().forEach(traPlaylist -> {
+            traPlaylist.getPlaylists().stream().forEach(traBlock -> {
+                long numberFounded = traBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId().equals(advertisementToShuffleDTO.getId())).count();
+                assertTrue((numberFounded < 2 && numberFounded >= 0));
+                assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getMediaItem().getLength()).sum()));
+            });
+        });
     }
 
-    private List<LibMediaItem> buildMediaItems() {
+    private List<LibMediaItem> buildMediaItems() throws InterruptedException {
         List<LibMediaItem> libMediaItems = Lists.newArrayList();
         for (int i = 0; i < COMMERCIALS_AUDIO_FILES_NUMBER_IN_PLAYLIST_SCHEDULE; i++) {
+            Thread.sleep(1);
             LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
             libMediaItem.setIdx(String.valueOf(java.util.concurrent.ThreadLocalRandom.current().nextInt()));
-            libMediaItem.length(30000.0);
+            libMediaItem.length(java.util.concurrent.ThreadLocalRandom.current().nextDouble(30000.0));
             libMediaItem.network(corNetwork);
             libMediaItem.setLibrary(libLibrary);
             libMediaItems.add(libMediaItemRepository.saveAndFlush(libMediaItem));
@@ -179,14 +182,15 @@ public class TraAdvertisementShuffleServiceTest {
             trablock.setLength(Long.valueOf((3 * 60000)));
             trablock.setChannel(corChannel);
             trablock.setNetwork(corNetwork);
-            trablock.emissions(buildTraEmissionss(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 5), 5));
+            trablock.emissions(buildTraEmissionss(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 5), 5, trablock.getLength()));
             trablock = trablockRepository.saveAndFlush(trablock);
             traBlocks.add(trablock);
         }
         return traBlocks;
     }
 
-    private Set<TraEmission> buildTraEmissionss(int commercialsInBlock, int maxCommercialNumber) {
+    private Set<TraEmission> buildTraEmissionss(int commercialsInBlock, int maxCommercialNumber, Long blockLenght) {
+        Long currentLenght = blockLenght;
         Set<TraEmission> traEmissions = new HashSet<>();
         for (int i = 1; i < commercialsInBlock; i++) {
             TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
@@ -194,10 +198,12 @@ public class TraAdvertisementShuffleServiceTest {
             traEmission.sequence(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, maxCommercialNumber));
             traEmission.setChannel(corChannel);
             traEmission.setNetwork(corNetwork);
-            traEmission = traEmissionRepository.saveAndFlush(traEmission);
-            traEmissions.add(traEmission);
+            if (0 < (currentLenght - traEmission.getAdvertiment().getMediaItem().getLength().longValue())) {
+                traEmission = traEmissionRepository.saveAndFlush(traEmission);
+                currentLenght = currentLenght - traEmission.getAdvertiment().getMediaItem().getLength().longValue();
+                traEmissions.add(traEmission);
+            }
         }
-
         return traEmissions;
     }
 
@@ -241,5 +247,4 @@ public class TraAdvertisementShuffleServiceTest {
         advertisementToShuffleDTO = traAdvertisementMapper.DB2DTO(advertisementToShuffle);
 
     }
-
 }
