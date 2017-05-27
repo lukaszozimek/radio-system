@@ -12,6 +12,7 @@ import io.protone.repository.traffic.TraEmissionRepository;
 import io.protone.repository.traffic.TraPlaylistRepository;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
+import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+import static org.springframework.util.Assert.notNull;
 
 /**
  * Created by lukaszozimek on 06/03/2017.
@@ -55,6 +57,7 @@ public class TraAdvertisementShuffleServiceTest {
     private static final long NUMBER_OF_PLAYLISTS = DAYS.between(SCHEDULING_START, SCHEDULING_END);
 
     private static final long SUM_OF_BLOCK_IN_PLAYLISTS = DAILY_BLOCK_NUMBER * NUMBER_OF_PLAYLISTS;
+
     @Inject
     private TraAdvertisementShuffleService traAdvertisementShuffleService;
 
@@ -73,20 +76,23 @@ public class TraAdvertisementShuffleServiceTest {
     @Inject
     private CorNetworkRepository corNetworkRepository;
 
-
     @Inject
     private TraBlockRepository trablockRepository;
 
-    @Autowired
+    @Inject
     private TraPlaylistRepository traPlaylistRepository;
 
     @Inject
     private TraEmissionRepository traEmissionRepository;
+
     @Inject
     private LibLibraryRepository libLibraryRepository;
+
     @Inject
     private CrmAccountRepository crmAccountRepository;
 
+    @Inject
+    private TraAdvertisementMapper traAdvertisementMapper;
 
     private PodamFactory factory = new PodamFactoryImpl();
 
@@ -97,6 +103,10 @@ public class TraAdvertisementShuffleServiceTest {
     private LibLibrary libLibrary;
 
     private TraAdvertisementDTO advertisementToShuffleDTO;
+
+    private TraAdvertisement advertisementToShuffle;
+
+    private LibMediaItem libMediaItemToShuffle;
 
     private CrmAccount crmAccount;
 
@@ -125,6 +135,13 @@ public class TraAdvertisementShuffleServiceTest {
         traShuffleAdvertisementDTO.setTraAdvertisementDTO(advertisementToShuffleDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
+        traShuffleAdvertisementDTO.setNumber(50);
+
+        //then
+        List<TraPlaylist> traPlaylists = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertisementDTO, corNetwork.getShortcut(), corChannel.getShortcut());
+
+        notNull(traPlaylists);
+
     }
 
     private List<LibMediaItem> buildMediaItems() {
@@ -199,7 +216,8 @@ public class TraAdvertisementShuffleServiceTest {
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         libLibrary = factory.manufacturePojo(LibLibrary.class);
         crmAccount = factory.manufacturePojo(CrmAccount.class);
-
+        libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
+        advertisementToShuffle = factory.manufacturePojo(TraAdvertisement.class);
         corNetwork.setId(12L);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
         corChannel.setId(12L);
@@ -211,6 +229,17 @@ public class TraAdvertisementShuffleServiceTest {
 
         crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
+
+        libMediaItemToShuffle.setNetwork(corNetwork);
+        libMediaItemToShuffle.setLibrary(libLibrary);
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
+
+        advertisementToShuffle.setCustomer(crmAccount);
+        advertisementToShuffle.setNetwork(corNetwork);
+        advertisementToShuffle.setMediaItem(libMediaItemToShuffle);
+        advertisementToShuffle = traAdvertisementService.saveAdvertisement(advertisementToShuffle);
+        advertisementToShuffleDTO = traAdvertisementMapper.DB2DTO(advertisementToShuffle);
+
     }
 
 }
