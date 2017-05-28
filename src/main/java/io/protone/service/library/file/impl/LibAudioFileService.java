@@ -36,4 +36,9 @@ public class LibAudioFileService implements LibFileService {
     public byte[] download(String networkShortcut, String libraryShortcut, String idx) {
         return new byte[0];
     }
+
+    @Override
+    public void deleteFile() {
+
+    }
 }

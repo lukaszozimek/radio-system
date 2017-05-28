@@ -6,5 +6,9 @@ package io.protone.service.library.file;
 public interface LibFileService {
 
     void saveFile();
+
     byte[] download(String networkShortcut, String libraryShortcut, String idx);
+
+    void deleteFile();
+
 }

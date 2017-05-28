@@ -40,4 +40,9 @@ public class LibImageFileService implements LibFileService {
         return new byte[0];
     }
 
+    @Override
+    public void deleteFile() {
+
+    }
+
 }

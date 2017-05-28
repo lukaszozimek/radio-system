@@ -38,4 +38,9 @@ public class LibVideoFileService implements LibFileService {
         return new byte[0];
     }
 
+    @Override
+    public void deleteFile() {
+
+    }
+
 }
