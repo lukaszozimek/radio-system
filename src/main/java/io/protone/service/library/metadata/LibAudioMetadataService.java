@@ -1,10 +1,13 @@
-package io.protone.service.library;
+package io.protone.service.library.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 
 import java.util.*;
 
 import io.protone.service.constans.MarkerConstans;
+import io.protone.service.library.LibAlbumService;
+import io.protone.service.library.LibArtistService;
+import io.protone.service.library.LibMarkerService;
 import io.protone.service.metadata.ProtoneMetadataProperty;
 import io.protone.custom.utils.MediaUtils;
 import io.protone.domain.*;
@@ -17,21 +20,14 @@ import io.protone.repository.library.LibMediaItemRepository;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.XMPDM;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.sax.BodyContentHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static io.protone.service.constans.ServiceConstants.NO_DATA;
 
@@ -40,9 +36,9 @@ import static io.protone.service.constans.ServiceConstants.NO_DATA;
  */
 @Service
 @Transactional
-public class LibMetadataService {
+public class LibAudioMetadataService {
 
-    private final Logger log = LoggerFactory.getLogger(LibMetadataService.class);
+    private final Logger log = LoggerFactory.getLogger(LibAudioMetadataService.class);
 
     @Inject
     private MediaUtils mediaUtils;
@@ -67,7 +63,7 @@ public class LibMetadataService {
 
     private Map<String, String> metadataMap;
 
-    public LibMetadataService() {
+    public LibAudioMetadataService() {
         metadataMap = new HashMap<>();
         metadataMap.put(MarkerConstans.AUDe, MarkerConstans.AUDe);
         metadataMap.put(MarkerConstans.AUDs, MarkerConstans.AUDs);
@@ -78,14 +74,9 @@ public class LibMetadataService {
         metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
     }
 
-    public LibMediaItem resolveMetadata(MultipartFile file, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
-        log.debug("Start processing :" + file.getOriginalFilename());
-        InputStream byteArrayInputStream = new ByteArrayInputStream(file.getBytes());
-        Parser parser = new AutoDetectParser();
-        BodyContentHandler handler = new BodyContentHandler();
-        Metadata metadata = new Metadata();
-        ParseContext pcontext = new ParseContext();
-        parser.parse(byteArrayInputStream, handler, metadata, pcontext);
+    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
+        log.debug("Start processing :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
+
 
         mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
         if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.TITLE))) {
@@ -107,6 +98,7 @@ public class LibMetadataService {
             }
         } else {
             LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(NO_DATA), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
+            mediaItem.album(libAlbum);
         }
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
         if (metadata.get(XMPDM.DURATION) != null) {

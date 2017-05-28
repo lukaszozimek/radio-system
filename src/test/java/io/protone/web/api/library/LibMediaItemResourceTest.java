@@ -104,8 +104,7 @@ public class LibMediaItemResourceTest {
 
     private LibLibrary libLibrary;
 
-    @Mock
-    private S3Client s3Client;
+
 
     /**
      * Create an entity for this test.
@@ -131,7 +130,7 @@ public class LibMediaItemResourceTest {
 
         LibMediaItemResourceImpl libMediaItemResource = new LibMediaItemResourceImpl();
 
-        ReflectionTestUtils.setField(itemService, "s3Client", s3Client);
+   //     ReflectionTestUtils.setField(itemService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
         ReflectionTestUtils.setField(libMediaItemResource, "libMediaItemMapper", libMediaItemMapper);
         ReflectionTestUtils.setField(libMediaItemResource, "corNetworkService", corNetworkService);
@@ -296,7 +295,7 @@ public class LibMediaItemResourceTest {
     public void deleteLibMediaItem() throws Exception {
         // Initialize the database
         libMediaItemRepository.deleteAll();
-        doNothing().when(s3Client).delete(anyObject());
+      //  doNothing().when(s3Client).delete(anyObject());
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeDelete = libMediaItemRepository.findAll().size();
 
