@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.FetchType.EAGER;
+
 /**
  * A LibMediaItem.
  */
@@ -87,31 +89,31 @@ public class LibMediaItem implements Serializable {
     private CorNetwork network;
 
     @PodamExclude
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPerson> authors = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "composer")
+    @OneToMany(mappedBy = "composer",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPerson> composers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "mediaItem")
+    @OneToMany(mappedBy = "mediaItem",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LibMarker> markers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "tags")
+    @OneToMany(mappedBy = "tags",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorTag> tags = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "libItemPropertyValue")
+    @OneToMany(mappedBy = "libItemPropertyValue",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPropertyValue> properites = new HashSet<>();

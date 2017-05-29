@@ -112,6 +112,7 @@ public class LibAudioMetadataService {
         metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
+        mediaItem.network(corNetwork);
         log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;

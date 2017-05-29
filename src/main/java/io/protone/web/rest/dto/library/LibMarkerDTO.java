@@ -3,6 +3,7 @@ package io.protone.web.rest.dto.library;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.domain.enumeration.LibMarkerTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -16,47 +17,9 @@ public class LibMarkerDTO {
     @JsonProperty("id")
     private Long id = null;
 
-    /**
-     * Gets or Sets markerType
-     */
-    public enum MarkerTypeEnum {
-        BASIC("MT_BASIC"),
-
-        INTRO("MT_INTRO"),
-
-        FADE("MT_FADE"),
-
-        HOOK("MT_HOOK"),
-
-        LOOP("MT_LOOP"),
-
-        CUSTOM("MT_CUSTOM");
-
-        private String value;
-
-        MarkerTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        @JsonCreator
-        public static MarkerTypeEnum fromValue(String text) {
-            for (MarkerTypeEnum b : MarkerTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-    }
 
     @JsonProperty("markerType")
-    private MarkerTypeEnum markerType = null;
+    private LibMarkerTypeEnum markerType = null;
 
     @JsonProperty("mediaItemId")
     private Long mediaItemId = null;
@@ -86,7 +49,7 @@ public class LibMarkerDTO {
         this.id = id;
     }
 
-    public LibMarkerDTO markerType(MarkerTypeEnum markerType) {
+    public LibMarkerDTO markerType(LibMarkerTypeEnum markerType) {
         this.markerType = markerType;
         return this;
     }
@@ -97,11 +60,11 @@ public class LibMarkerDTO {
      * @return markerType
      **/
     @ApiModelProperty(required = true, value = "")
-    public MarkerTypeEnum getMarkerType() {
+    public LibMarkerTypeEnum getMarkerType() {
         return markerType;
     }
 
-    public void setMarkerType(MarkerTypeEnum markerType) {
+    public void setMarkerType(LibMarkerTypeEnum markerType) {
         this.markerType = markerType;
     }
 

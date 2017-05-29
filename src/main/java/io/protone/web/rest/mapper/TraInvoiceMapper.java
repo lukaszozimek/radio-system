@@ -45,41 +45,4 @@ public interface TraInvoiceMapper {
         entity.setNetwork(corNetwork);
     }
 
-    default LibMarkerDTO.MarkerTypeEnum mapLibMarkerPT_MarkerTypeEnum(LibMarkerTypeEnum value) {
-
-        if (value.compareTo(LibMarkerTypeEnum.MT_BASIC) == 0) {
-            return LibMarkerDTO.MarkerTypeEnum.BASIC;
-        } else if (value.compareTo(LibMarkerTypeEnum.MT_CUSTOM) == 0) {
-            return LibMarkerDTO.MarkerTypeEnum.CUSTOM;
-        } else if (value.compareTo(LibMarkerTypeEnum.MT_FADE) == 0) {
-            return LibMarkerDTO.MarkerTypeEnum.FADE;
-        } else if (value.compareTo(LibMarkerTypeEnum.MT_HOOK) == 0) {
-            return LibMarkerDTO.MarkerTypeEnum.HOOK;
-        } else if (value.compareTo(LibMarkerTypeEnum.MT_INTRO) == 0) {
-            return LibMarkerDTO.MarkerTypeEnum.INTRO;
-        } else if (value.compareTo(LibMarkerTypeEnum.MT_LOOP) == 0) {
-            return LibMarkerDTO.MarkerTypeEnum.LOOP;
-        } else {
-            return LibMarkerDTO.MarkerTypeEnum.CUSTOM;
-        }
-    }
-
-    default LibMarkerTypeEnum mapLibMarkerTypeEnum(LibMarkerDTO.MarkerTypeEnum value) {
-
-        if (value.compareTo(LibMarkerDTO.MarkerTypeEnum.BASIC) == 0) {
-            return LibMarkerTypeEnum.MT_BASIC;
-        } else if (value.compareTo(LibMarkerDTO.MarkerTypeEnum.CUSTOM) == 0) {
-            return LibMarkerTypeEnum.MT_CUSTOM;
-        } else if (value.compareTo(LibMarkerDTO.MarkerTypeEnum.FADE) == 0) {
-            return LibMarkerTypeEnum.MT_FADE;
-        } else if (value.compareTo(LibMarkerDTO.MarkerTypeEnum.HOOK) == 0) {
-            return LibMarkerTypeEnum.MT_HOOK;
-        } else if (value.compareTo(LibMarkerDTO.MarkerTypeEnum.INTRO) == 0) {
-            return LibMarkerTypeEnum.MT_INTRO;
-        } else if (value.compareTo(LibMarkerDTO.MarkerTypeEnum.LOOP) == 0) {
-            return LibMarkerTypeEnum.MT_LOOP;
-        } else {
-            return LibMarkerTypeEnum.MT_CUSTOM;
-        }
-    }
 }
