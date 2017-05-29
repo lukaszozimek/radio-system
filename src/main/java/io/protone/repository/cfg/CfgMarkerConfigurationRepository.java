@@ -1,13 +1,17 @@
 package io.protone.repository.cfg;
 
 import io.protone.domain.CfgMarkerConfiguration;
+import io.protone.domain.CorNetwork;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import org.springframework.data.jpa.repository.*;
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the CfgMarkerConfiguration entity.
  */
 @SuppressWarnings("unused")
-public interface CfgMarkerConfigurationRepository extends JpaRepository<CfgMarkerConfiguration,Long> {
+public interface CfgMarkerConfigurationRepository extends JpaRepository<CfgMarkerConfiguration, Long> {
+    CfgMarkerConfiguration findOneByIdAndNetwork(Long id, CorNetwork network);
 
+    List<CfgMarkerConfiguration> findByNetwork(CorNetwork network);
 }

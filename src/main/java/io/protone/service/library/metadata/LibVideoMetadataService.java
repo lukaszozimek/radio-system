@@ -1,23 +1,21 @@
 package io.protone.service.library.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-
-import java.util.*;
-
+import io.protone.custom.utils.MediaUtils;
+import io.protone.domain.*;
+import io.protone.domain.enumeration.LibAudioQualityEnum;
+import io.protone.domain.enumeration.LibItemStateEnum;
+import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.domain.enumeration.LibVideoQualityEnum;
+import io.protone.repository.cor.CorPropertyKeyRepository;
+import io.protone.repository.cor.CorPropertyValueRepository;
+import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.constans.MarkerConstans;
 import io.protone.service.cor.CorPropertyService;
 import io.protone.service.library.LibAlbumService;
 import io.protone.service.library.LibArtistService;
 import io.protone.service.library.LibMarkerService;
 import io.protone.service.metadata.ProtoneMetadataProperty;
-import io.protone.custom.utils.MediaUtils;
-import io.protone.domain.*;
-import io.protone.domain.enumeration.LibAudioQualityEnum;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.repository.cor.CorPropertyKeyRepository;
-import io.protone.repository.cor.CorPropertyValueRepository;
-import io.protone.repository.library.LibMediaItemRepository;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.XMPDM;
@@ -29,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.*;
 
 import static io.protone.service.constans.ServiceConstants.NO_DATA;
 
@@ -37,9 +36,9 @@ import static io.protone.service.constans.ServiceConstants.NO_DATA;
  */
 @Service
 @Transactional
-public class LibAudioMetadataService {
+public class LibVideoMetadataService {
 
-    private final Logger log = LoggerFactory.getLogger(LibAudioMetadataService.class);
+    private final Logger log = LoggerFactory.getLogger(LibVideoMetadataService.class);
 
     @Inject
     private MediaUtils mediaUtils;
@@ -51,29 +50,14 @@ public class LibAudioMetadataService {
     private LibAlbumService libAlbumService;
 
     @Inject
-    private LibMarkerService libMArkerService;
+    private CorPropertyService corPropertyService;
 
     @Inject
     private LibMediaItemRepository mediaItemRepository;
 
-    private Map<String, String> metadataMap;
 
-    @Inject
-    private CorPropertyService corPropertyService;
-
-    public LibAudioMetadataService() {
-        metadataMap = new HashMap<>();
-        metadataMap.put(MarkerConstans.AUDe, MarkerConstans.AUDe);
-        metadataMap.put(MarkerConstans.AUDs, MarkerConstans.AUDs);
-        metadataMap.put(MarkerConstans.TERs, MarkerConstans.TERs);
-        metadataMap.put(MarkerConstans.TERe, MarkerConstans.TERe);
-        metadataMap.put(MarkerConstans.SEGs, MarkerConstans.SEGs);
-        metadataMap.put(MarkerConstans.SEGe, MarkerConstans.SEGe);
-        metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
-    }
-
-    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject) throws TikaException, SAXException, IOException {
-        log.debug("Start processing Audio :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
+    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibVideoObject libVideoObject) throws TikaException, SAXException, IOException {
+        log.debug("Start processing Video :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
         mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
@@ -85,19 +69,6 @@ public class LibAudioMetadataService {
 
         metadata.remove(ProtoneMetadataProperty.TITLE.getName());
         mediaItem.setDescription(metadata.get(ProtoneMetadataProperty.COMMENTS));
-        LibArtist libArtist = libArtistService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
-        if (libArtist != null) {
-            mediaItem.setArtist(libArtist);
-        }
-        if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.ALBUM_NAME))) {
-            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(ProtoneMetadataProperty.ALBUM_NAME), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
-            if (libAlbum != null) {
-                mediaItem.album(libAlbum);
-            }
-        } else {
-            LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(NO_DATA), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
-            mediaItem.album(libAlbum);
-        }
         mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
         if (metadata.get(XMPDM.DURATION) != null) {
             mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
@@ -116,24 +87,16 @@ public class LibAudioMetadataService {
         LibMediaItem finalMediaItem = mediaItem;
 
 
-        audioObject.biTrate(1);
-        audioObject.setLength(mediaItem.getLength());
+        libVideoObject.biTrate(1);
+        libVideoObject.setLength(mediaItem.getLength().longValue());
         if (metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR) != null) {
-            audioObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
+            libVideoObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
             metadata.remove(ProtoneMetadataProperty.AUDIO_COMPRESSOR.getName());
         } else {
-            audioObject.setCodec(NO_DATA);
+            libVideoObject.setCodec(NO_DATA);
         }
-        audioObject.setQuality(LibAudioQualityEnum.AQ_ORIGINAL);
-        Set<LibMarker> markers = new HashSet<>();
-        metadataMap.keySet().stream().forEach(timer -> {
-            String timerValue = metadata.get(timer);
-            if (!Strings.isNullOrEmpty(timerValue)) {
-                markers.add(libMArkerService.saveLibMarker(timer, Long.valueOf(timerValue), finalMediaItem));
-                metadata.remove(timer);
-            }
-        });
-        mediaItem.markers(markers);
+        libVideoObject.setQuality(LibVideoQualityEnum.VQ_OTHER);
+
         Arrays.stream(metadata.names()).forEach(metadataName -> {
             corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork);
         });

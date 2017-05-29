@@ -6,7 +6,7 @@ import io.protone.util.TestUtil;
 import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import io.protone.repository.cfg.CustomCfgMarkerConfigurationRepository;
+import io.protone.repository.cfg.CfgMarkerConfigurationRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
@@ -60,7 +60,7 @@ public class LibraryMarkerConfigurationResourceImplTest {
     private static final LibMarkerTypeEnum UPDATED_TYPE = LibMarkerTypeEnum.MT_INTRO;
 
     @Autowired
-    private CustomCfgMarkerConfigurationRepository cfgMarkerConfigurationRepository;
+    private CfgMarkerConfigurationRepository cfgMarkerConfigurationRepository;
 
     @Autowired
     private CfgMarkerConfigurationMapper cfgMarkerConfigurationMapper;

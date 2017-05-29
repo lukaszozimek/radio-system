@@ -1,14 +1,26 @@
 package io.protone.service.library.file.impl;
 
 import io.protone.config.s3.S3Client;
-import io.protone.domain.LibLibrary;
-import io.protone.domain.LibMediaItem;
+import io.protone.config.s3.exceptions.DeleteException;
+import io.protone.config.s3.exceptions.DownloadException;
+import io.protone.config.s3.exceptions.S3Exception;
+import io.protone.config.s3.exceptions.UploadException;
+import io.protone.domain.*;
 import io.protone.repository.library.LibCloudObjectRepository;
-import io.protone.repository.library.LibImageObjectRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.library.LibVideoObjectRepository;
+import io.protone.security.SecurityUtils;
+import io.protone.service.constans.ServiceConstants;
+import io.protone.service.cor.CorUserService;
 import io.protone.service.library.file.LibFileService;
+import io.protone.service.library.metadata.LibVideoMetadataService;
+import io.protone.service.metadata.ProtoneMetadataProperty;
+import org.apache.commons.io.IOUtils;
+import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
@@ -16,6 +28,10 @@ import org.xml.sax.SAXException;
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by lukaszozimek on 28/05/2017.
@@ -23,11 +39,12 @@ import java.io.IOException;
 
 @Service(value = "libVideoFileService")
 public class LibVideoFileService implements LibFileService {
+    private final Logger log = LoggerFactory.getLogger(LibVideoFileService.class);
 
     public static final String VIDEO = "video";
 
     @Inject
-    private LibVideoObjectRepository audioObjectRepository;
+    private LibVideoObjectRepository libVideoObjectRepository;
 
     @Inject
     private LibCloudObjectRepository cloudObjectRepository;
@@ -36,24 +53,115 @@ public class LibVideoFileService implements LibFileService {
     private LibMediaItemRepository libMediaItemRepository;
 
     @Inject
+    private LibVideoMetadataService libMetadataService;
+
+    @Inject
     private S3Client s3Client;
+
+    @Inject
+    private CorUserService corUserService;
 
 
     @Override
     @Transactional
     public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibLibrary libraryDB) throws IOException, SAXException {
-        return null;
+        CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
+        LibMediaItem libMediaItem = new LibMediaItem();
+
+        String fileUUID = UUID.randomUUID().toString();
+        try {
+            log.debug("Uploading File to Storage: {} ", fileUUID);
+            s3Client.upload(fileUUID, bais, metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT));
+            LibCloudObject cloudObject = new LibCloudObject()
+                .uuid(fileUUID).contentType(metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT))
+                .originalName(originalFileName)
+                .original(Boolean.TRUE)
+                .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
+                .network(corNetwork)
+                .hash(ServiceConstants.NO_HASH);
+            log.debug("Persisting LibCloudObject: {}", cloudObject);
+            cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
+            LibVideoObject libVideoObject = new LibVideoObject();
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libVideoObject);
+            libVideoObject.setCloudObject(cloudObject);
+            libVideoObject.setMediaItem(libMediaItem);
+            log.debug("Persisting LibAudioObject: {}", libVideoObject);
+            libVideoObjectRepository.saveAndFlush(libVideoObject);
+        } catch (UploadException e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", originalFileName);
+
+        } catch (S3Exception e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", originalFileName);
+        } catch (TikaException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            log.error("There is a problem with processing the file  :{}", originalFileName);
+        } finally {
+            bais.close();
+            return libMediaItem;
+        }
     }
 
     @Override
     public byte[] download(LibMediaItem libMediaItem) throws IOException {
-        return new byte[0];
+        byte[] result = null;
+
+        if (libMediaItem == null) {
+            return result;
+        }
+        List<LibVideoObject> videoObjects = libVideoObjectRepository.findByMediaItem(libMediaItem);
+
+        if (videoObjects == null || videoObjects.size() == 0) {
+            return result;
+        }
+        LibVideoObject audioObject = videoObjects.iterator().next();
+
+        LibCloudObject cloudObject = audioObject.getCloudObject();
+
+        InputStream stream = null;
+        try {
+            stream = s3Client.download(cloudObject.getUuid());
+
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
+            responseHeaders.add("Content-Length", String.format("%d", cloudObject.getSize()));
+
+            responseHeaders.add("Content-Type", cloudObject.getContentType());
+
+            result = IOUtils.toByteArray(stream);
+        } catch (S3Exception e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", libMediaItem.getIdx());
+        } catch (DownloadException e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", libMediaItem.getIdx());
+        } finally {
+            stream.close();
+        }
+        return result;
     }
 
     @Override
     @Transactional
     public void deleteFile(LibMediaItem libMediaItem) {
-
+        if (libMediaItem != null) {
+            List<LibVideoObject> videoObjects = libVideoObjectRepository.findByMediaItem(libMediaItem);
+            if (videoObjects != null || !videoObjects.isEmpty()) {
+                for (LibVideoObject libVideoObject : videoObjects) {
+                    LibCloudObject cloudObject = libVideoObject.getCloudObject();
+                    try {
+                        s3Client.delete(cloudObject.getUuid());
+                        libVideoObjectRepository.delete(libVideoObject);
+                        libVideoObjectRepository.flush();
+                        cloudObjectRepository.delete(cloudObject);
+                        cloudObjectRepository.flush();
+                    } catch (DeleteException e) {
+                        e.printStackTrace();
+                    } catch (S3Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
 

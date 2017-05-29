@@ -6,7 +6,7 @@ import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.mapper.CfgMarkerConfigurationMapper;
 import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.cfg.CustomCfgMarkerConfigurationRepository;
+import io.protone.repository.cfg.CfgMarkerConfigurationRepository;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
     private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
-    private CustomCfgMarkerConfigurationRepository cfgMarkerConfigurationRepository;
+    private CfgMarkerConfigurationRepository cfgMarkerConfigurationRepository;
 
     @Inject
     private CorNetworkService corNetworkService;
