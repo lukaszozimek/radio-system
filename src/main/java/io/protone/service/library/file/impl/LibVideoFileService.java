@@ -20,6 +20,7 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,8 @@ import java.util.UUID;
  * Created by lukaszozimek on 28/05/2017.
  */
 
-@Service(value = "libVideoFileService")
+@Service("libVideoFileService")
+@Qualifier("libVideoFileService")
 public class LibVideoFileService implements LibFileService {
     private final Logger log = LoggerFactory.getLogger(LibVideoFileService.class);
 
@@ -72,13 +74,13 @@ public class LibVideoFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(fileUUID, bais, metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT));
+            s3Client.upload(fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
-                .uuid(fileUUID).contentType(metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT))
+                .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
                 .original(Boolean.TRUE)
                 .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
-                .network(corNetwork)
+                .network(libraryDB.getNetwork())
                 .hash(ServiceConstants.NO_HASH);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
@@ -115,9 +117,9 @@ public class LibVideoFileService implements LibFileService {
         if (videoObjects == null || videoObjects.size() == 0) {
             return result;
         }
-        LibVideoObject audioObject = videoObjects.iterator().next();
+        LibVideoObject libVideoObject = videoObjects.iterator().next();
 
-        LibCloudObject cloudObject = audioObject.getCloudObject();
+        LibCloudObject cloudObject = libVideoObject.getCloudObject();
 
         InputStream stream = null;
         try {

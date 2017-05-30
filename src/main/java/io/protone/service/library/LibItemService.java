@@ -1,16 +1,16 @@
 package io.protone.service.library;
 
-import io.protone.config.s3.S3Client;
-import io.protone.repository.library.*;
-import io.protone.service.cor.CorUserService;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.LibArtist;
+import io.protone.domain.LibLibrary;
+import io.protone.domain.LibMediaItem;
+import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.library.file.LibFileService;
-import io.protone.service.library.metadata.LibAudioMetadataService;
+import io.protone.service.library.file.impl.LibAudioFileService;
 import io.protone.service.metadata.ProtoneMetadataProperty;
 import io.protone.web.rest.mapper.LibItemMapper;
-import io.protone.domain.*;
-import io.protone.custom.utils.MediaUtils;
-import io.protone.security.SecurityUtils;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.HttpHeaders;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
@@ -18,6 +18,8 @@ import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,6 @@ import static io.protone.service.library.file.impl.LibImageFileService.IMAGE;
 import static io.protone.service.library.file.impl.LibVideoFileService.VIDEO;
 
 @Service
-@Transactional
 public class LibItemService {
 
     private final Logger log = LoggerFactory.getLogger(LibItemService.class);
@@ -65,13 +66,16 @@ public class LibItemService {
     @Inject
     private LibLabelService libLabelService;
 
-    @Named(value = "libAudioFileService")
+    @Autowired
+    @Qualifier("libAudioFileService")
     private LibFileService audioFileService;
 
-    @Named(value = "libVideoFileService")
+    @Autowired
+    @Qualifier("libVideoFileService")
     private LibFileService videoFileService;
 
-    @Named(value = "libImageFileService")
+    @Autowired
+    @Qualifier("libImageFileService")
     private LibFileService imageFileService;
 
     private Map<String, LibFileService> libFileServiceMap;
@@ -84,17 +88,20 @@ public class LibItemService {
         libFileServiceMap.put(IMAGE, imageFileService);
     }
 
+    @Transactional
     public LibMediaItem getMediaItem(String networkShortcut, String libraryShortcut, String idx) {
         Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
         return optionalItemDB.orElse(null);
     }
 
+    @Transactional
     public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
         List<LibMediaItem> itemsDB = itemRepository.findByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
         return itemsDB;
     }
 
 
+    @Transactional
     public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
         LibArtist artist = new LibArtist();
         if (libMediaItem.getArtist() != null) {
@@ -111,6 +118,7 @@ public class LibItemService {
         return itemRepository.saveAndFlush(libMediaItem);
     }
 
+    @Transactional
     public List<LibMediaItem> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, TikaException, SAXException {
 
         List<LibMediaItem> result = new ArrayList<>();
@@ -131,29 +139,27 @@ public class LibItemService {
             Metadata metadata = new Metadata();
             ParseContext pcontext = new ParseContext();
             parser.parse(bais, handler, metadata, pcontext);
-            LibMediaItem libMediaItem = libFileServiceMap.get(metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT)).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
+            LibMediaItem libMediaItem = libFileServiceMap.get(metadata.get(HttpHeaders.CONTENT_TYPE)).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
             result.add(libMediaItem);
 
         }
         return result;
     }
 
+    @Transactional
     public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
-        LibMediaItem itemDB = getItemFromDB(networkShortcut, libraryShortcut, idx);
+        LibMediaItem itemDB = getMediaItem(networkShortcut, libraryShortcut, idx);
         return libFileServiceMap.get(itemDB.getItemType()).download(itemDB);
     }
 
-    public LibMediaItem getItemFromDB(String networkShortcut, String libraryShortcut, String idx) {
-        Optional<LibMediaItem> optItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
-        return optItemDB.orElse(null);
-    }
 
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-        LibMediaItem itemToDelete = getItemFromDB(networkShortcut, libraryShortcut, idx);
+        LibMediaItem itemToDelete = getMediaItem(networkShortcut, libraryShortcut, idx);
         libFileServiceMap.get(itemToDelete.getItemType()).deleteFile(itemToDelete);
         itemRepository.delete(itemToDelete);
     }
 
+    @Transactional
     public void deleteItem(LibMediaItem libMediaItem) {
         libFileServiceMap.get(libMediaItem.getItemType()).deleteFile(libMediaItem);
         itemRepository.delete(libMediaItem);

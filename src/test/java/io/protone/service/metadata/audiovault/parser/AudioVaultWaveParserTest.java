@@ -18,7 +18,7 @@ public class AudioVaultWaveParserTest {
    // @Test
     public void parse() throws Exception {
         Parser parser = new AutoDetectParser();
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("audio/audiovault/M-3500.WAV");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audiovault/M-3500.WAV");
         BodyContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
         ParseContext pcontext = new ParseContext();
@@ -31,7 +31,7 @@ public class AudioVaultWaveParserTest {
 
         //TODO We need more example connected with MP2
         Parser parser = new AutoDetectParser();
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("audio/audiovault/2WW.mp2");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audiovault/2WW.mp2");
         BodyContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
         ParseContext pcontext = new ParseContext();

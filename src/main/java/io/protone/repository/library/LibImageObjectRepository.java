@@ -14,5 +14,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface LibImageObjectRepository extends JpaRepository<LibImageObject,Long> {
 
-    List<LibImageObject> findByMediaItem(LibMediaItem itemDB);
+  //  List<LibImageObject> findByMediaItem(LibMediaItem itemDB);
 }

@@ -60,7 +60,7 @@ public class LibVideoMetadataService {
         log.debug("Start processing Video :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
-        mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
+        mediaItem.setItemType(LibItemTypeEnum.IT_VIDEO);
         if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.TITLE))) {
             mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
         } else {
@@ -89,9 +89,9 @@ public class LibVideoMetadataService {
 
         libVideoObject.biTrate(1);
         libVideoObject.setLength(mediaItem.getLength().longValue());
-        if (metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR) != null) {
-            libVideoObject.setCodec(metadata.get(ProtoneMetadataProperty.AUDIO_COMPRESSOR));
-            metadata.remove(ProtoneMetadataProperty.AUDIO_COMPRESSOR.getName());
+        if (metadata.get(ProtoneMetadataProperty.VIDEO_COMPRESSOR) != null) {
+            libVideoObject.setCodec(metadata.get(ProtoneMetadataProperty.VIDEO_COMPRESSOR));
+            metadata.remove(ProtoneMetadataProperty.VIDEO_COMPRESSOR.getName());
         } else {
             libVideoObject.setCodec(NO_DATA);
         }

@@ -1,5 +1,6 @@
 package io.protone.service.library.file.impl;
 
+import com.google.common.collect.Lists;
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.DeleteException;
 import io.protone.config.s3.exceptions.DownloadException;
@@ -20,6 +21,7 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +38,8 @@ import java.util.UUID;
 /**
  * Created by lukaszozimek on 28/05/2017.
  */
-
-@Service(value = "libImageFileService")
+@Service("libImageFileService")
+@Qualifier("libImageFileService")
 public class LibImageFileService implements LibFileService {
     private final Logger log = LoggerFactory.getLogger(LibImageFileService.class);
 
@@ -110,7 +112,7 @@ public class LibImageFileService implements LibFileService {
         if (itemDB == null) {
             return result;
         }
-        List<LibImageObject> libImageObjects = libImageObjectRepository.findByMediaItem(itemDB);
+        List<LibImageObject> libImageObjects  =  Lists.newArrayList();//= libImageObjectRepository.findByMediaItem(itemDB);
 
         if (libImageObjects == null || libImageObjects.size() == 0) {
             return result;
@@ -144,7 +146,7 @@ public class LibImageFileService implements LibFileService {
     @Transactional
     public void deleteFile(LibMediaItem libMediaItem) {
         if (libMediaItem != null) {
-            List<LibImageObject> libImageObjects = libImageObjectRepository.findByMediaItem(libMediaItem);
+            List<LibImageObject> libImageObjects  = Lists.newArrayList();///libImageObjectRepository.findByMediaItem(libMediaItem);
             if (libImageObjects != null || !libImageObjects.isEmpty()) {
                 for (LibImageObject libImageObject : libImageObjects) {
                     LibCloudObject cloudObject = libImageObject.getCloudObject();
