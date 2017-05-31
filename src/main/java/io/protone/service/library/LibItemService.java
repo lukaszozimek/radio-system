@@ -6,8 +6,6 @@ import io.protone.domain.LibLibrary;
 import io.protone.domain.LibMediaItem;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.library.file.LibFileService;
-import io.protone.service.library.file.impl.LibAudioFileService;
-import io.protone.service.metadata.ProtoneMetadataProperty;
 import io.protone.web.rest.mapper.LibItemMapper;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.HttpHeaders;
@@ -28,7 +26,6 @@ import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;

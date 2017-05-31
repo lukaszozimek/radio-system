@@ -40,9 +40,9 @@ import static org.mockito.Mockito.when;
 /**
  * Created by lukaszozimek on 30/05/2017.
  */
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(classes = ProtoneApp.class)
-//@Transactional
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ProtoneApp.class)
+@Transactional
 public class LibImageFileServiceTest extends LibFileServiceBaseTest {
 
 

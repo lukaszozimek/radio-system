@@ -3,7 +3,10 @@ package io.protone.service.library.file.impl;
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
 import io.protone.config.s3.S3Client;
-import io.protone.domain.*;
+import io.protone.domain.CorAuthority;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CorUser;
+import io.protone.domain.LibLibrary;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.cor.CorUserRepository;
 import io.protone.repository.library.LibLibraryRepository;
@@ -23,9 +26,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import javax.inject.Inject;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,9 +69,13 @@ public class LibFileServiceBaseTest {
     protected LibLibrary libLibrary;
 
     protected PodamFactory factory;
+
     protected Metadata metadata;
+
     protected ParseContext pcontext;
+
     protected Parser parser;
+
     protected BodyContentHandler handler;
 
     @Before
