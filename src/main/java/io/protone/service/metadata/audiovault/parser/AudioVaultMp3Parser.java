@@ -23,10 +23,8 @@ import static io.protone.service.metadata.ProtoneMetadataProperty.*;
  * Created by lukaszozimek on 16/03/2017.
  */
 public class AudioVaultMp3Parser extends Mp3Parser {
-    private static final Set<MediaType> SUPPORTED_TYPES = Collections.singleton(MediaType.audio("av-mp3"));
-
     public static final String HELLO_MIME_TYPE = "audio/av-mp3";
-
+    private static final Set<MediaType> SUPPORTED_TYPES = Collections.singleton(MediaType.audio("av-mp3"));
     private static final String HEADER_TLM = "__HeaderTLM";
     private static final String BODY_TLM = "__BodyTLM";
     private static final String CATEGORY = "Category";
@@ -59,6 +57,20 @@ public class AudioVaultMp3Parser extends Mp3Parser {
     private static final String SCREENPLAY = "Screenplay";
     private static final String CAST = "Cast";
 
+    public static boolean checkFiledsNotNull(Object obj) {
+        for (Field f : obj.getClass().getDeclaredFields()) {
+            f.setAccessible(true);
+            try {
+                if (f.get(obj) != null && !(f.get(obj) instanceof List)) {
+                    return true;
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
     @Override
     public Set<MediaType> getSupportedTypes(ParseContext context) {
         return SUPPORTED_TYPES;
@@ -73,6 +85,7 @@ public class AudioVaultMp3Parser extends Mp3Parser {
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
         super.parse(inputStreamSupplier.get(), handler, metadata, context);
+        metadata.set("Content-Type", "audio/mp3");
         ID3TagsAndAudio id3TagsAndAudio = Mp3Parser.getAllTagHandlers(inputStreamSupplier.get(), handler);
 
         Field field = id3TagsAndAudio.getClass().getDeclaredFields()[0];
@@ -89,20 +102,6 @@ public class AudioVaultMp3Parser extends Mp3Parser {
                 }
             }
         }
-    }
-
-    public static boolean checkFiledsNotNull(Object obj) {
-        for (Field f : obj.getClass().getDeclaredFields()) {
-            f.setAccessible(true);
-            try {
-                if (f.get(obj) != null && !(f.get(obj) instanceof List)) {
-                    return true;
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
     }
 
     private void parseWithIDV2(InputStream stream, Metadata metadata) throws IOException {
@@ -125,6 +124,7 @@ public class AudioVaultMp3Parser extends Mp3Parser {
         String listChunkMetadataAtEnd = Arrays.toString(file.substring(endOfAvMetadata - 1104, endOfAvMetadata).split("TXXX"));
         parseAvChunksWithOutIDV2(listChunkMetadataAtStart, listChunkMetadataAtEnd, metadata);
     }
+
     private void parseAvChunksWithIDV2(String listChunkMetadataAtStart, Metadata metadata) {
 
         metadata.add(DATE_MODIFIED, getAudioVaultTag(listChunkMetadataAtStart, HEADER_TLM, HEADER_TLM.length(), 20));

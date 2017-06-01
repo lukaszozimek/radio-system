@@ -27,8 +27,6 @@ public class AudioVaultWaveParser extends AudioParser {
 
     private static final Set<MediaType> SUPPORTED_TYPES = Collections.singleton(MediaType.audio("av-wav"));
 
-    public static final String HELLO_MIME_TYPE = "audio/av-wav";
-
     @Override
     public Set<MediaType> getSupportedTypes(ParseContext context) {
         return SUPPORTED_TYPES;
@@ -42,11 +40,10 @@ public class AudioVaultWaveParser extends AudioParser {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
-        //      super.parse(inputStreamSupplier.get(), handler, metadata, context);
+        metadata.set("Content-Type", "audio/wav");
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
-        /// listBextAV(stream, metadata);
-        //  av10(stream, metadata);
+
 
     }
 

@@ -18,6 +18,7 @@ import io.protone.service.library.LibMarkerService;
 import io.protone.service.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TIFF;
 import org.apache.tika.metadata.XMPDM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,7 @@ public class LibVideoMetadataService {
 
     @Inject
     private LibMediaItemRepository mediaItemRepository;
+    private Integer DEFAULT_WIDTH = 0;
 
 
     public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibVideoObject libVideoObject) throws TikaException, SAXException, IOException {
@@ -95,10 +97,12 @@ public class LibVideoMetadataService {
         } else {
             libVideoObject.setCodec(NO_DATA);
         }
+        libVideoObject.setWidth(DEFAULT_WIDTH);//TODO: Remove Validtion on this field
+        libVideoObject.setHeight(DEFAULT_WIDTH); //TODO: Remove Validtion on this field
         libVideoObject.setQuality(LibVideoQualityEnum.VQ_OTHER);
 
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork);
+            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork));
         });
 
         log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);

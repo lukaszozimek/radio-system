@@ -135,7 +135,7 @@ public class LibAudioMetadataService {
         });
         mediaItem.markers(markers);
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork);
+            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork));
         });
 
         log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);

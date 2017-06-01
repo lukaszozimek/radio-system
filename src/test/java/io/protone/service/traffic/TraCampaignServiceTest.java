@@ -1,7 +1,10 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.TraCampaign;
+import io.protone.domain.TraOrder;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraCampaignRepository;
@@ -17,12 +20,9 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by lukaszozimek on 30/04/2017.

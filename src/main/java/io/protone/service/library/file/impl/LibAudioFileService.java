@@ -6,6 +6,7 @@ import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.*;
+import io.protone.domain.enumeration.LibObjectTypeEnum;
 import io.protone.repository.library.LibAudioObjectRepository;
 import io.protone.repository.library.LibCloudObjectRepository;
 import io.protone.repository.library.LibMediaItemRepository;
@@ -80,7 +81,8 @@ public class LibAudioFileService implements LibFileService {
                 .original(Boolean.TRUE)
                 .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
                 .network(libraryDB.getNetwork())
-                .hash(ServiceConstants.NO_HASH);
+                .hash(ServiceConstants.NO_HASH)
+                .objectType(LibObjectTypeEnum.OT_AUDIO);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibAudioObject audioObject = new LibAudioObject();

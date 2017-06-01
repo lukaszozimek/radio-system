@@ -6,6 +6,7 @@ import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.*;
+import io.protone.domain.enumeration.LibObjectTypeEnum;
 import io.protone.repository.library.LibCloudObjectRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.library.LibVideoObjectRepository;
@@ -41,10 +42,8 @@ import java.util.UUID;
 @Service("libVideoFileService")
 @Qualifier("libVideoFileService")
 public class LibVideoFileService implements LibFileService {
-    private final Logger log = LoggerFactory.getLogger(LibVideoFileService.class);
-
     public static final String VIDEO = "video";
-
+    private final Logger log = LoggerFactory.getLogger(LibVideoFileService.class);
     @Inject
     private LibVideoObjectRepository libVideoObjectRepository;
 
@@ -80,7 +79,7 @@ public class LibVideoFileService implements LibFileService {
                 .originalName(originalFileName)
                 .original(Boolean.TRUE)
                 .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
-                .network(libraryDB.getNetwork())
+                .network(libraryDB.getNetwork()).objectType(LibObjectTypeEnum.OT_VIDEO)
                 .hash(ServiceConstants.NO_HASH);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);

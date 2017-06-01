@@ -30,7 +30,7 @@ public class CorPropertyService {
     @Inject
     private CorPropertyKeyRepository corPropertyKeyRepository;
 
-    public void saveCorProperty(String metadataName, LibMediaItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
+    public CorPropertyValue saveCorProperty(String metadataName, LibMediaItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
         CorPropertyKey corPropertyKey;
         if (Strings.isNullOrEmpty(metadataName)) {
             corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);
@@ -41,7 +41,7 @@ public class CorPropertyService {
         log.debug("Persisting CorKey: {}", corPropertyKey);
         corPropertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey);
         log.debug("Persisting CorValues: {}", metadata.get(metadataName));
-        corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(libMediaItem).propertyKey(corPropertyKey));
+        return corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(libMediaItem).propertyKey(corPropertyKey));
 
     }
 }
