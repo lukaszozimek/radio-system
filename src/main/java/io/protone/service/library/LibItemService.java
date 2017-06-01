@@ -143,9 +143,8 @@ public class LibItemService {
             parser.parse(bais, handler, metadata, pcontext);
             String libItemType = contentTypeLibItemTypeMap.get(metadata.get(HttpHeaders.CONTENT_TYPE).split(CONTENT_TYPE_SEPARATOR)[0]);
             if (!Strings.isNullOrEmpty(libItemType)) {
-                LibFileService libFileService = libItemTypeFileServiceMap.get(libItemType);
                 log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-                LibMediaItem libMediaItem = libFileService.saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
+                LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
                 result.add(libMediaItem);
             } else {
                 log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
@@ -160,19 +159,19 @@ public class LibItemService {
     public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
         LibMediaItem itemDB = getMediaItem(networkShortcut, libraryShortcut, idx);
 
-        return libItemTypeFileServiceMap.get(itemDB.getItemType()).download(itemDB);
+        return libItemTypeFileServiceMap.get(itemDB.getItemType().name()).download(itemDB);
     }
 
 
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
         LibMediaItem itemToDelete = getMediaItem(networkShortcut, libraryShortcut, idx);
-        libItemTypeFileServiceMap.get(itemToDelete.getItemType()).deleteFile(itemToDelete);
+        libItemTypeFileServiceMap.get(itemToDelete.getItemType().name()).deleteFile(itemToDelete);
         itemRepository.delete(itemToDelete);
     }
 
     @Transactional
     public void deleteItem(LibMediaItem libMediaItem) {
-        libItemTypeFileServiceMap.get(libMediaItem.getItemType()).deleteFile(libMediaItem);
+        libItemTypeFileServiceMap.get(libMediaItem.getItemType().name()).deleteFile(libMediaItem);
         itemRepository.delete(libMediaItem);
     }
 

@@ -40,8 +40,6 @@ import static org.mockito.Mockito.when;
 /**
  * Created by lukaszozimek on 30/05/2017.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProtoneApp.class)
 public class LibFileServiceBaseTest {
 
     protected static final long SAMPLE_FILE_SIZE = 50000;
