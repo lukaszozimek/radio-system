@@ -158,7 +158,6 @@ public class LibItemService {
     @Transactional
     public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
         LibMediaItem itemDB = getMediaItem(networkShortcut, libraryShortcut, idx);
-
         return libItemTypeFileServiceMap.get(itemDB.getItemType().name()).download(itemDB);
     }
 

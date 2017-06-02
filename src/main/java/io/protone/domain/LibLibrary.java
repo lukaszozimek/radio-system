@@ -1,14 +1,11 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.LibCounterTypeEnum;
-import io.protone.domain.enumeration.LibObjectTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,11 +15,7 @@ import java.util.Set;
  * A LibLibrary.
  */
 @Entity
-@Table(name = "lib_library", uniqueConstraints ={
-@UniqueConstraint(columnNames = {"shortcut", "network_id"}),
-@UniqueConstraint(columnNames = {"prefix", "network_id"}),
-@UniqueConstraint(columnNames = {"name", "network_id"})
-})
+@Table(name = "lib_library")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibLibrary implements Serializable {
 
@@ -40,16 +33,11 @@ public class LibLibrary implements Serializable {
     private String prefix;
 
     @NotNull
-    @Column(name = "idx_length", nullable = false)
-    private Integer idxLength;
-
-    @NotNull
     @Size(max = 3)
     @Column(name = "shortcut", length = 3, nullable = false, unique = true)
     private String shortcut;
 
     @NotNull
-    @Size(max = 100)
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
@@ -57,22 +45,11 @@ public class LibLibrary implements Serializable {
     @Column(name = "counter", nullable = false)
     private Long counter;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "counter_type")
-    private LibCounterTypeEnum counterType;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "library_type", nullable = false)
-    private LibObjectTypeEnum libraryType;
-
     @Column(name = "description")
     private String description;
 
     @ManyToOne
-    @PodamExclude
     private CorNetwork network;
-
     @OneToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "lib_library_channel",
@@ -81,6 +58,14 @@ public class LibLibrary implements Serializable {
     @PodamExclude
     private Set<CorChannel> channels = new HashSet<>();
 
+    @PodamExclude
+    @OneToMany
+    @JoinTable(
+        name = "lib_library_lib_image_item",
+        joinColumns = @JoinColumn(name = "lib_library_id"),
+        inverseJoinColumns = @JoinColumn(name = "lib_image_item_id")
+    )
+    private Set<LibImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -101,19 +86,6 @@ public class LibLibrary implements Serializable {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
-    }
-
-    public Integer getIdxLength() {
-        return idxLength;
-    }
-
-    public LibLibrary idxLength(Integer idxLength) {
-        this.idxLength = idxLength;
-        return this;
-    }
-
-    public void setIdxLength(Integer idxLength) {
-        this.idxLength = idxLength;
     }
 
     public String getShortcut() {
@@ -153,32 +125,6 @@ public class LibLibrary implements Serializable {
 
     public void setCounter(Long counter) {
         this.counter = counter;
-    }
-
-    public LibCounterTypeEnum getCounterType() {
-        return counterType;
-    }
-
-    public LibLibrary counterType(LibCounterTypeEnum counterType) {
-        this.counterType = counterType;
-        return this;
-    }
-
-    public void setCounterType(LibCounterTypeEnum counterType) {
-        this.counterType = counterType;
-    }
-
-    public LibObjectTypeEnum getLibraryType() {
-        return libraryType;
-    }
-
-    public LibLibrary libraryType(LibObjectTypeEnum libraryType) {
-        this.libraryType = libraryType;
-        return this;
-    }
-
-    public void setLibraryType(LibObjectTypeEnum libraryType) {
-        this.libraryType = libraryType;
     }
 
     public String getDescription() {
@@ -258,12 +204,9 @@ public class LibLibrary implements Serializable {
         return "LibLibrary{" +
             "id=" + id +
             ", prefix='" + prefix + "'" +
-            ", idxLength='" + idxLength + "'" +
             ", shortcut='" + shortcut + "'" +
             ", name='" + name + "'" +
             ", counter='" + counter + "'" +
-            ", counterType='" + counterType + "'" +
-            ", libraryType='" + libraryType + "'" +
             ", description='" + description + "'" +
             '}';
     }

@@ -7,7 +7,7 @@
         Added the constraints for entity LibImageObject.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="cloud_object_id"
                                  baseTableName="lib_image_object"
                                  constraintName="fk_lib_image_object_cloud_object_id"
@@ -19,6 +19,10 @@
                                  constraintName="fk_lib_image_object_image_item_id"
                                  referencedColumnNames="id"
                                  referencedTableName="lib_image_item"/>
-
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="lib_audio_object"
+                                 constraintName="fk_lib_image_object_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
     </changeSet>
 </databaseChangeLog>

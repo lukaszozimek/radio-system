@@ -61,8 +61,6 @@ public class LibLibraryMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getDescription());
         assertNotNull(dto.getCounter());
-        assertNotNull(dto.getCounterType());
-        assertNotNull(dto.getLibraryType());
         assertNotNull(dto.getShortcut());
 
 
@@ -81,8 +79,6 @@ public class LibLibraryMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getDescription());
             assertNotNull(dto.getCounter());
-            assertNotNull(dto.getCounterType());
-            assertNotNull(dto.getLibraryType());
             assertNotNull(dto.getShortcut());
         });
     }
@@ -99,8 +95,6 @@ public class LibLibraryMapperTest {
         assertNotNull(entity.getShortcut());
         assertNotNull(entity.getName());
         assertNotNull(entity.getCounter());
-        assertNotNull(entity.getCounterType());
-        assertNotNull(entity.getLibraryType());
         assertNotNull(entity.getDescription());
 
         assertNotNull(entity.getNetwork());
@@ -118,8 +112,6 @@ public class LibLibraryMapperTest {
             assertNotNull(entity.getShortcut());
             assertNotNull(entity.getName());
             assertNotNull(entity.getCounter());
-            assertNotNull(entity.getCounterType());
-            assertNotNull(entity.getLibraryType());
             assertNotNull(entity.getDescription());
 
             assertNotNull(entity.getNetwork());

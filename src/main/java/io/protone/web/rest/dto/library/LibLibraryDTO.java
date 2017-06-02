@@ -26,14 +26,6 @@ public class LibLibraryDTO implements Serializable {
     @NotNull
     private Long counter;
 
-    private LibCounterTypeEnum counterType;
-
-    @NotNull
-    private LibObjectTypeEnum libraryType;
-
-    @NotNull
-    private Integer idxLength;
-
     @NotNull
     private String shortcut = null;
 
@@ -130,29 +122,6 @@ public class LibLibraryDTO implements Serializable {
         this.counter = counter;
     }
 
-    public LibCounterTypeEnum getCounterType() {
-        return counterType;
-    }
-
-    public void setCounterType(LibCounterTypeEnum counterType) {
-        this.counterType = counterType;
-    }
-
-    public LibObjectTypeEnum getLibraryType() {
-        return libraryType;
-    }
-
-    public void setLibraryType(LibObjectTypeEnum libraryType) {
-        this.libraryType = libraryType;
-    }
-
-    public Integer getIdxLength() {
-        return idxLength;
-    }
-
-    public void setIdxLength(Integer idxLength) {
-        this.idxLength = idxLength;
-    }
 
     public String getShortcut() {
         return shortcut;
@@ -183,12 +152,6 @@ public class LibLibraryDTO implements Serializable {
         if (getName() != null ? !getName().equals(libLibraryDTO.getName()) : libLibraryDTO.getName() != null) return false;
         if (getCounter() != null ? !getCounter().equals(libLibraryDTO.getCounter()) : libLibraryDTO.getCounter() != null)
             return false;
-        if (getCounterType() != null ? !getCounterType().equals(libLibraryDTO.getCounterType()) : libLibraryDTO.getCounterType() != null)
-            return false;
-        if (getLibraryType() != null ? !getLibraryType().equals(libLibraryDTO.getLibraryType()) : libLibraryDTO.getLibraryType() != null)
-            return false;
-        if (getIdxLength() != null ? !getIdxLength().equals(libLibraryDTO.getIdxLength()) : libLibraryDTO.getIdxLength() != null)
-            return false;
         if (getShortcut() != null ? !getShortcut().equals(libLibraryDTO.getShortcut()) : libLibraryDTO.getShortcut() != null)
             return false;
         if (getPrefix() != null ? !getPrefix().equals(libLibraryDTO.getPrefix()) : libLibraryDTO.getPrefix() != null)
@@ -205,9 +168,6 @@ public class LibLibraryDTO implements Serializable {
         result = 31 * result + (getPrefix() != null ? getPrefix().hashCode() : 0);
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getCounter() != null ? getCounter().hashCode() : 0);
-        result = 31 * result + (getCounterType() != null ? getCounterType().hashCode() : 0);
-        result = 31 * result + (getLibraryType() != null ? getLibraryType().hashCode() : 0);
-        result = 31 * result + (getIdxLength() != null ? getIdxLength().hashCode() : 0);
         result = 31 * result + (getShortcut() != null ? getShortcut().hashCode() : 0);
         result = 31 * result + (getPrefix() != null ? getPrefix().hashCode() : 0);
 
@@ -222,9 +182,6 @@ public class LibLibraryDTO implements Serializable {
             ", prefix='" + prefix + '\'' +
             ", name='" + name + '\'' +
             ", counter=" + counter +
-            ", counterType='" + counterType + '\'' +
-            ", libraryType='" + libraryType + '\'' +
-            ", idxLength=" + idxLength +
             ", shortcut='" + shortcut + '\'' +
             ", prefix='" + prefix + '\'' +
             ", description='" + description + '\'' +

@@ -123,12 +123,9 @@ public class LibraryResourceImplTest {
     public static LibLibrary createEntity(EntityManager em) {
         LibLibrary libLibrary = new LibLibrary()
             .prefix(DEFAULT_PREFIX)
-            .idxLength(DEFAULT_IDX_LENGTH)
             .shortcut(DEFAULT_SHORTCUT)
             .name(DEFAULT_NAME)
             .counter(DEFAULT_COUNTER)
-            .counterType(DEFAULT_COUNTER_TYPE)
-            .libraryType(DEFAULT_LIBRARY_TYPE)
             .description(DEFAULT_DESCRIPTION);
         return libLibrary;
     }
@@ -156,12 +153,9 @@ public class LibraryResourceImplTest {
         assertThat(libLibraryList).hasSize(databaseSizeBeforeCreate + 1);
         LibLibrary testLibLibrary = libLibraryList.get(libLibraryList.size() - 1);
         assertThat(testLibLibrary.getPrefix()).isEqualTo(DEFAULT_PREFIX);
-        assertThat(testLibLibrary.getIdxLength()).isEqualTo(DEFAULT_IDX_LENGTH);
         assertThat(testLibLibrary.getShortcut()).isEqualTo(DEFAULT_SHORTCUT);
         assertThat(testLibLibrary.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLibLibrary.getCounter()).isEqualTo(DEFAULT_COUNTER);
-        assertThat(testLibLibrary.getCounterType()).isEqualTo(DEFAULT_COUNTER_TYPE);
-        assertThat(testLibLibrary.getLibraryType()).isEqualTo(DEFAULT_LIBRARY_TYPE);
         assertThat(testLibLibrary.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
@@ -205,24 +199,6 @@ public class LibraryResourceImplTest {
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
     }
 
-    @Test
-    @Transactional
-    public void checkIdxLengthIsRequired() throws Exception {
-        int databaseSizeBeforeTest = libLibraryRepository.findAll().size();
-        // set the field null
-        libLibrary.setIdxLength(null);
-
-        // Create the LibLibrary, which fails.
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
-    }
 
     @Test
     @Transactional
@@ -281,24 +257,7 @@ public class LibraryResourceImplTest {
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
     }
 
-    @Test
-    @Transactional
-    public void checkLibraryTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = libLibraryRepository.findAll().size();
-        // set the field null
-        libLibrary.setLibraryType(null);
 
-        // Create the LibLibrary, which fails.
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
-    }
 
     @Test
     @Transactional
@@ -312,12 +271,9 @@ public class LibraryResourceImplTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
             .andExpect(jsonPath("$.[*].prefix").value(hasItem(DEFAULT_PREFIX.toString())))
-            .andExpect(jsonPath("$.[*].idxLength").value(hasItem(DEFAULT_IDX_LENGTH)))
             .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].counter").value(hasItem(DEFAULT_COUNTER.intValue())))
-            .andExpect(jsonPath("$.[*].counterType").value(hasItem(DEFAULT_COUNTER_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].libraryType").value(hasItem(DEFAULT_LIBRARY_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
@@ -333,12 +289,9 @@ public class LibraryResourceImplTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
             .andExpect(jsonPath("$.prefix").value(DEFAULT_PREFIX.toString()))
-            .andExpect(jsonPath("$.idxLength").value(DEFAULT_IDX_LENGTH))
             .andExpect(jsonPath("$.shortcut").value("123"))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.counter").value(DEFAULT_COUNTER.intValue()))
-            .andExpect(jsonPath("$.counterType").value(DEFAULT_COUNTER_TYPE.toString()))
-            .andExpect(jsonPath("$.libraryType").value(DEFAULT_LIBRARY_TYPE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
@@ -361,12 +314,9 @@ public class LibraryResourceImplTest {
         LibLibrary updatedLibLibrary = libLibraryRepository.findOne(libLibrary.getId());
         updatedLibLibrary
             .prefix(UPDATED_PREFIX)
-            .idxLength(UPDATED_IDX_LENGTH)
             .shortcut(UPDATED_SHORTCUT)
             .name(UPDATED_NAME)
             .counter(UPDATED_COUNTER)
-            .counterType(UPDATED_COUNTER_TYPE)
-            .libraryType(UPDATED_LIBRARY_TYPE)
             .description(UPDATED_DESCRIPTION);
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
 
@@ -380,12 +330,9 @@ public class LibraryResourceImplTest {
         assertThat(libLibraryList).hasSize(databaseSizeBeforeUpdate);
         LibLibrary testLibLibrary = libLibraryList.get(libLibraryList.size() - 1);
         assertThat(testLibLibrary.getPrefix()).isEqualTo(UPDATED_PREFIX);
-        assertThat(testLibLibrary.getIdxLength()).isEqualTo(UPDATED_IDX_LENGTH);
         assertThat(testLibLibrary.getShortcut()).isEqualTo(UPDATED_SHORTCUT);
         assertThat(testLibLibrary.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLibLibrary.getCounter()).isEqualTo(UPDATED_COUNTER);
-        assertThat(testLibLibrary.getCounterType()).isEqualTo(UPDATED_COUNTER_TYPE);
-        assertThat(testLibLibrary.getLibraryType()).isEqualTo(UPDATED_LIBRARY_TYPE);
         assertThat(testLibLibrary.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 

@@ -24,12 +24,10 @@ public class LibImageObject implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "width", nullable = false)
+    @Column(name = "width")
     private Integer width;
 
-    @NotNull
-    @Column(name = "height", nullable = false)
+    @Column(name = "height")
     private Integer height;
 
     @NotNull
@@ -40,6 +38,9 @@ public class LibImageObject implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private LibCloudObject cloudObject;
+
+    @ManyToOne
+    private CorNetwork network;
 
     @ManyToOne
     private LibImageItem imageItem;
@@ -102,6 +103,19 @@ public class LibImageObject implements Serializable {
 
     public void setCloudObject(LibCloudObject libCloudObject) {
         this.cloudObject = libCloudObject;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public LibImageObject network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibImageItem getImageItem() {

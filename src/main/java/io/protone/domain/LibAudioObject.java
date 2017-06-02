@@ -49,6 +49,9 @@ public class LibAudioObject implements Serializable {
     @ManyToOne
     private LibMediaItem mediaItem;
 
+    @ManyToOne
+    private CorNetwork network;
+
     public Long getId() {
         return id;
     }
@@ -133,6 +136,19 @@ public class LibAudioObject implements Serializable {
 
     public void setMediaItem(LibMediaItem libMediaItem) {
         this.mediaItem = libMediaItem;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public LibAudioObject network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     @Override
