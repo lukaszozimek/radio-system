@@ -210,18 +210,11 @@ public class LibItemServiceTest {
 
 
     @Test
-    @Ignore(value = "Test should be changed after adding relation between media item")
     public void shouldUploadImage() throws Exception {
 
         //when
-        LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItem.setLibrary(libLibrary);
-        libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setItemType(LibItemTypeEnum.IT_VIDEO);
-        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
-        when(audioFileService.saveFile(any(), any(), anyString(), anyLong(), any())).thenReturn(libMediaItem);
-
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/SAMPLE_MP3.mp3");
+        ReflectionTestUtils.setField(libItemService, "imageFileService", imageFileService);
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/SAMPLE_IMAGE.png");
         MultipartFile multipartFile = new MockMultipartFile("testFile", inputStream);
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
@@ -231,6 +224,7 @@ public class LibItemServiceTest {
         //assert
         assertNotNull(libMediaItems);
         assertEquals(1, libMediaItems.size());
+
 
 
     }

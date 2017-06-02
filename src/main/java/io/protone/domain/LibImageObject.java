@@ -1,13 +1,14 @@
 package io.protone.domain;
 
-import io.protone.domain.enumeration.LibImageSizeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import io.protone.domain.enumeration.LibImageSizeEnum;
 
 /**
  * A LibImageObject.
@@ -38,6 +39,9 @@ public class LibImageObject implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private LibCloudObject cloudObject;
+
+    @ManyToOne
+    private LibMediaItem mediaItem;
 
     @ManyToOne
     private CorNetwork network;
@@ -103,6 +107,19 @@ public class LibImageObject implements Serializable {
 
     public void setCloudObject(LibCloudObject libCloudObject) {
         this.cloudObject = libCloudObject;
+    }
+
+    public LibMediaItem getMediaItem() {
+        return mediaItem;
+    }
+
+    public LibImageObject mediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
+        return this;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public CorNetwork getNetwork() {

@@ -84,7 +84,7 @@ public class LibItemService {
         libItemTypeFileServiceMap = new HashMap<>();
         libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_AUDIO.name(), audioFileService);
         libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_VIDEO.name(), videoFileService);
-//        libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_I.name(), imageFileService); /// TODO: Add Image Enum
+        libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_IMAGE.name(), imageFileService);
         contentTypeLibItemTypeMap = new HashMap<>();
         contentTypeLibItemTypeMap.put(AUDIO, LibItemTypeEnum.IT_AUDIO.name());
         contentTypeLibItemTypeMap.put(VIDEO, LibItemTypeEnum.IT_VIDEO.name());

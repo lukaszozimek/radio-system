@@ -56,7 +56,7 @@ public class LibImageMetadataService {
         log.debug("Start processing Image :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
-        mediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
+        mediaItem.setItemType(LibItemTypeEnum.IT_IMAGE);
         if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.TITLE))) {
             mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
         } else {
@@ -81,10 +81,8 @@ public class LibImageMetadataService {
         log.debug("Persisting LibMediaItem: {}", mediaItem);
         mediaItem = mediaItemRepository.saveAndFlush(mediaItem);
         LibMediaItem finalMediaItem = mediaItem;
-
-
         Arrays.stream(metadata.names()).forEach(metadataName -> {
-            corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork);
+            finalMediaItem.addProperites(corPropertyService.saveCorProperty(metadataName, finalMediaItem, metadata, corNetwork));
         });
 
         log.debug("Resolved LibMediaItem with Metadata: {}", mediaItem);

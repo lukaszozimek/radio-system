@@ -55,7 +55,6 @@ public class LibVideoMetadataService {
 
     @Inject
     private LibMediaItemRepository mediaItemRepository;
-    private Integer DEFAULT_WIDTH = 0;
 
 
     public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibVideoObject libVideoObject) throws TikaException, SAXException, IOException {
@@ -97,8 +96,7 @@ public class LibVideoMetadataService {
         } else {
             libVideoObject.setCodec(NO_DATA);
         }
-        libVideoObject.setWidth(DEFAULT_WIDTH);//TODO: Remove Validtion on this field
-        libVideoObject.setHeight(DEFAULT_WIDTH); //TODO: Remove Validtion on this field
+
         libVideoObject.setQuality(LibVideoQualityEnum.VQ_OTHER);
 
         Arrays.stream(metadata.names()).forEach(metadataName -> {

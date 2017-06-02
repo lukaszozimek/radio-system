@@ -381,7 +381,7 @@ public class LibMediaItemResourceTest {
     @Test
     @Transactional
     public void shouldUploadMediaItemImage() throws Exception {
-        MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/SAMPLE_MP3.mp3"));
+        MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/SAMPLE_IMAGE.png"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
             .file(firstFile)).andExpect(status().is(200));
     }

@@ -1,7 +1,7 @@
 package io.protone.service.cor;
 
+import java.util.List;
 import io.protone.ProtoneApp;
-import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorNetworkRepository;
 import org.junit.Before;
@@ -47,7 +47,11 @@ public class CorNetworkServiceTest {
 
     @Test
     public void findAllNetworks() throws Exception {
-        //TODO: implement after upgrading to Junit5
+        List<CorNetwork> corNetworkList = corNetworkService.findAllNetworks();
+        assertNotNull(corNetworkList);
+        assertFalse(corNetworkList.isEmpty());
+        assertEquals( 1,corNetworkList.size());
+
     }
 
     @Test
@@ -76,6 +80,7 @@ public class CorNetworkServiceTest {
         assertNull(local);
 
     }
+
     @Test(expected = DataIntegrityViolationException.class)
     public void shouldNotSaveTwoNetworksWithSameShortName() {
 

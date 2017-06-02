@@ -12,7 +12,7 @@ import java.util.List;
  * Spring Data JPA repository for the LibImageObject entity.
  */
 @SuppressWarnings("unused")
-public interface LibImageObjectRepository extends JpaRepository<LibImageObject,Long> {
+public interface LibImageObjectRepository extends JpaRepository<LibImageObject, Long> {
+    List<LibImageObject> findByMediaItem(LibMediaItem itemDB);
 
-  //  List<LibImageObject> findByMediaItem(LibMediaItem itemDB);
 }

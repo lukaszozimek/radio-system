@@ -7,6 +7,7 @@ import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.*;
+import io.protone.domain.enumeration.LibObjectTypeEnum;
 import io.protone.repository.library.LibCloudObjectRepository;
 import io.protone.repository.library.LibImageObjectRepository;
 import io.protone.repository.library.LibMediaItemRepository;
@@ -74,20 +75,21 @@ public class LibImageFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(fileUUID, bais, metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT));
+            s3Client.upload(fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
-                .uuid(fileUUID).contentType(metadata.get(ProtoneMetadataProperty.CONTENT_TYPE_HINT))
+                .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
                 .original(Boolean.TRUE)
                 .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
                 .network(corNetwork)
+                .objectType(LibObjectTypeEnum.OT_IMAGE)
                 .hash(ServiceConstants.NO_HASH);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibImageObject libImageObject = new LibImageObject();
             libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libImageObject);
             libImageObject.setCloudObject(cloudObject);
-            // libImageObject.setMediaItem(libMediaItem);///TODO: ADD LibMediaItem
+            libImageObject.mediaItem(libMediaItem);
             log.debug("Persisting LibAudioObject: {}", libImageObject);
             libImageObjectRepository.saveAndFlush(libImageObject);
         } catch (UploadException e) {
@@ -112,7 +114,7 @@ public class LibImageFileService implements LibFileService {
         if (itemDB == null) {
             return result;
         }
-        List<LibImageObject> libImageObjects  =  Lists.newArrayList();//= libImageObjectRepository.findByMediaItem(itemDB);
+        List<LibImageObject> libImageObjects = libImageObjectRepository.findByMediaItem(itemDB);
 
         if (libImageObjects == null || libImageObjects.size() == 0) {
             return result;
@@ -146,7 +148,7 @@ public class LibImageFileService implements LibFileService {
     @Transactional
     public void deleteFile(LibMediaItem libMediaItem) {
         if (libMediaItem != null) {
-            List<LibImageObject> libImageObjects  = Lists.newArrayList();///libImageObjectRepository.findByMediaItem(libMediaItem);
+            List<LibImageObject> libImageObjects = libImageObjectRepository.findByMediaItem(libMediaItem);
             if (libImageObjects != null || !libImageObjects.isEmpty()) {
                 for (LibImageObject libImageObject : libImageObjects) {
                     LibCloudObject cloudObject = libImageObject.getCloudObject();
