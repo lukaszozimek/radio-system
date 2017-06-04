@@ -1,6 +1,7 @@
 package io.protone.service.traffic.mediaplan;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraAdvertisement;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static io.protone.util.TestUtil.parseInputStream;
+import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.junit.Assert.*;
 
 /**
@@ -38,7 +40,7 @@ public class ExcelMediaPlanTest {
         //   ReflectionTestUtils.setField(excelMediaPlan, "s3Client", s3Client);
         // ReflectionTestUtils.setField(excelMediaPlan, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
-        excelMediaPlan.saveMediaPlan(byteArrayInputStream, new CrmAccount(), "", new CorNetwork(), new TraAdvertisement().name("TESTOW REKLAMA"));
+        excelMediaPlan.saveMediaPlan(byteArrayInputStream, new CrmAccount(), "", new TraAdvertisement().name("TESTOW REKLAMA"), new CorNetwork().shortcut(TEST_NETWORK), new CorChannel().shortcut("tes"));
     }
 
 
