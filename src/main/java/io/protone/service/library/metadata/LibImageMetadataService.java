@@ -75,6 +75,7 @@ public class LibImageMetadataService {
         metadata.remove(ProtoneMetadataProperty.DURATION.getName());
         metadata.remove(ProtoneMetadataProperty.ALBUM_NAME);
         metadata.remove(ProtoneMetadataProperty.ARTIST.getName());
+
         mediaItem.setState(LibItemStateEnum.IS_NEW);
         mediaItem.setLibrary(libraryDB);
         mediaItem.network(corNetwork);

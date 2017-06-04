@@ -14,14 +14,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface LibAlbumMapper {
 
-    @Mapping(source = "cover.id", target = "coverId")
     @Mapping(source = "label.id", target = "labelId")
     @Mapping(source = "artist.id", target = "artistId")
     LibAlbumDTO DB2DTO(LibAlbum db);
 
     List<LibAlbumDTO> DBs2DTOs(List<LibAlbum> dbs);
 
-    @Mapping(source = "coverId", target = "cover")
     @Mapping(source = "labelId", target = "label")
     @Mapping(source = "artistId", target = "artist")
     LibAlbum DTO2DB(LibAlbumDTO dto, @Context CorNetwork network);

@@ -119,11 +119,11 @@ enum CorContactTypeEnum {
 
 
 entity CorPropertyKey {
-	key String required maxlength(100)
+	key String required
 }
 
 entity CorPropertyValue {
-	value String required maxlength(100)
+	value String required
 }
 
 entity CorNetwork {
@@ -220,13 +220,16 @@ entity LibMediaItem {
     itemType LibItemTypeEnum required
     length Double required
     state LibItemStateEnum required
-    command String
+    startCommand String
+    stopCommand String
     description String
 }
 
 enum LibItemTypeEnum {
 	IT_AUDIO,
     IT_VIDEO,
+    IT_IMAGE,
+    IT_DOCUMENT,
     IT_COMMAND,
     IT_OTHER
 }
@@ -265,20 +268,12 @@ enum LibMarkerTypeEnum {
 
 entity LibLibrary {
 	prefix String required maxlength(1)
-	idxLength Integer required
     shortcut String required maxlength(3)
-    name String required maxlength(100)
+    name String required
     counter Long required
-    counterType LibCounterTypeEnum
-    LibraryType LibObjectTypeEnum required
     description String
 }
 
-enum LibCounterTypeEnum {
-	CT_COUNTER,
-    CT_PREFIX_COUNTER,
-    CT_SHORTCUT_COUNTER
-}
 
 entity LibTrack {
     discNo Integer required
@@ -303,12 +298,13 @@ enum LibObjectTypeEnum {
 	OT_IMAGE,
     OT_AUDIO,
     OT_VIDEO,
+    OT_DOCUMENT,
     OT_FILE
 }
 
 entity LibImageObject {
-	width Integer required
-    height Integer required
+	width Integer
+    height Integer
     imageSize LibImageSizeEnum required
 }
 
@@ -336,11 +332,11 @@ enum LibAudioQualityEnum {
 }
 
 entity LibVideoObject {
-	width Integer required
-    height Integer required
-	length Long required
-    biTrate Integer required
-    codec String required maxlength(100)
+	width Integer
+    height Integer
+	length Long
+    biTrate Integer
+    codec String
     quality LibVideoQualityEnum
     aspecTratio LibAspecTratioEnum
 }
@@ -365,8 +361,8 @@ enum LibAspecTratioEnum {
 }
 
 entity LibImageItem {
-	idx String required maxlength(15)
-    name String required maxlength(100)
+    name String
+    publicUrl String
 }
 
 entity LibFileItem {
@@ -518,14 +514,13 @@ entity CorUserAuthority{
 
 }
 
-
 relationship OneToOne {
 
     TraAdvertisement{mediaItem} to LibMediaItem,
     LibImageObject{cloudObject} to LibCloudObject,
     LibAudioObject{cloudObject} to LibCloudObject,
     LibVideoObject{cloudObject} to LibCloudObject,
-    LibAlbum{cover} to LibImageItem,
+
 
     CorCountry{tax} to CorTax,
     CorCountry{currnecy} to CorCurrency,
@@ -588,6 +583,7 @@ relationship ManyToOne {
 
     LibMediaItem{Library} to LibLibrary,
     LibImageItem{Library} to LibLibrary,
+    LibImageItem{network} to CorNetwork,
     LibFileItem{Library} to LibLibrary,
 
     CorPerson{author} to LibMediaItem {author},
@@ -599,6 +595,11 @@ relationship ManyToOne {
 
     LibAudioObject{mediaItem} to LibMediaItem,
     LibVideoObject{mediaItem} to LibMediaItem,
+    LibImageObject{mediaItem} to LibMediaItem,
+    LibAudioObject{network} to CorNetwork,
+    LibVideoObject{network} to CorNetwork,
+    LibImageObject{network} to CorNetwork,
+    LibImageItem{network}    to CorNetwork,
     LibImageObject{imageItem} to LibImageItem,
     LibFileItem{parentFile} to LibFileItem,
 
@@ -609,7 +610,7 @@ relationship ManyToOne {
 
 
     CorDictionary{network} to CorNetwork,
-     CorCurrency {network} to CorNetwork,
+    CorCurrency {network} to CorNetwork,
 
     CrmContact {network} to CorNetwork,
 

@@ -33,7 +33,7 @@ public class LibImageObject implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "image_size", nullable = false)
+    @Column(name = "image_size")
     private LibImageSizeEnum imageSize;
 
     @OneToOne

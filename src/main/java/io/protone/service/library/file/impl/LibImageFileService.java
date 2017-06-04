@@ -7,6 +7,7 @@ import io.protone.config.s3.exceptions.DownloadException;
 import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.*;
+import io.protone.domain.enumeration.LibImageSizeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
 import io.protone.repository.library.LibCloudObjectRepository;
 import io.protone.repository.library.LibImageObjectRepository;
@@ -90,6 +91,7 @@ public class LibImageFileService implements LibFileService {
             libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libImageObject);
             libImageObject.setCloudObject(cloudObject);
             libImageObject.mediaItem(libMediaItem);
+            libImageObject.setImageSize(LibImageSizeEnum.IS_NORMAL);
             log.debug("Persisting LibAudioObject: {}", libImageObject);
             libImageObjectRepository.saveAndFlush(libImageObject);
         } catch (UploadException e) {

@@ -50,7 +50,7 @@ public class CorNetworkServiceTest {
         List<CorNetwork> corNetworkList = corNetworkService.findAllNetworks();
         assertNotNull(corNetworkList);
         assertFalse(corNetworkList.isEmpty());
-        assertEquals( 1,corNetworkList.size());
+        assertEquals( 2,corNetworkList.size());
 
     }
 

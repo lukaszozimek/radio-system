@@ -55,7 +55,6 @@ public class LibAlbumMapperTest {
 
 
         assertNotNull(dto.getArtistId());
-        assertNotNull(dto.getCoverId());
         assertNotNull(dto.getLabelId());
         assertNotNull(dto.getAlbumType());
         assertNotNull(dto.getDescription());
@@ -75,7 +74,6 @@ public class LibAlbumMapperTest {
         dtos.stream().forEach(dto -> {
 
             assertNotNull(dto.getArtistId());
-            assertNotNull(dto.getCoverId());
             assertNotNull(dto.getLabelId());
             assertNotNull(dto.getAlbumType());
             assertNotNull(dto.getDescription());
@@ -91,7 +89,6 @@ public class LibAlbumMapperTest {
     public void DTO2DB() throws Exception {
         LibAlbum entity = customLibAlbumMapper.DTO2DB(libAlbumDTO,corNetwork);
 
-        assertNotNull(entity.getCover());
         assertNotNull(entity.getLabel());
         assertNotNull(entity.getArtist());
         assertNotNull(entity.getId());
@@ -112,7 +109,6 @@ public class LibAlbumMapperTest {
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
 
-            assertNotNull(entity.getCover());
             assertNotNull(entity.getLabel());
             assertNotNull(entity.getArtist());
             assertNotNull(entity.getId());

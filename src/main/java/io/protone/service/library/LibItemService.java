@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static io.protone.service.library.file.impl.LibAudioFileService.AUDIO;
+import static io.protone.service.library.file.impl.LibImageFileService.IMAGE;
 import static io.protone.service.library.file.impl.LibVideoFileService.VIDEO;
 
 @Service
@@ -88,6 +89,7 @@ public class LibItemService {
         contentTypeLibItemTypeMap = new HashMap<>();
         contentTypeLibItemTypeMap.put(AUDIO, LibItemTypeEnum.IT_AUDIO.name());
         contentTypeLibItemTypeMap.put(VIDEO, LibItemTypeEnum.IT_VIDEO.name());
+        contentTypeLibItemTypeMap.put(IMAGE, LibItemTypeEnum.IT_IMAGE.name());
     }
 
     @Transactional
