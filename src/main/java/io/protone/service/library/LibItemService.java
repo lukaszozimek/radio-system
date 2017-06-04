@@ -1,48 +1,46 @@
 package io.protone.service.library;
 
-import io.protone.config.s3.S3Client;
-import io.protone.config.s3.exceptions.*;
-import io.protone.repository.library.*;
-import io.protone.service.constans.ServiceConstants;
-import io.protone.service.cor.CorUserService;
+import com.google.common.base.Strings;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.LibArtist;
+import io.protone.domain.LibLibrary;
+import io.protone.domain.LibMediaItem;
+import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.service.library.file.LibFileService;
 import io.protone.web.rest.mapper.LibItemMapper;
-import io.protone.domain.*;
-import io.protone.custom.utils.MediaUtils;
-import io.protone.security.SecurityUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.tika.detect.Detector;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.HttpHeaders;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.sax.BodyContentHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static io.protone.service.library.file.impl.LibAudioFileService.AUDIO;
+import static io.protone.service.library.file.impl.LibImageFileService.IMAGE;
+import static io.protone.service.library.file.impl.LibVideoFileService.VIDEO;
 
 @Service
-@Transactional
 public class LibItemService {
 
+    private static final String CONTENT_TYPE_SEPARATOR = "/";
     private final Logger log = LoggerFactory.getLogger(LibItemService.class);
-
-    @Inject
-    private S3Client s3Client;
-
     @Inject
     private LibLibraryService libraryService;
 
@@ -51,21 +49,6 @@ public class LibItemService {
 
     @Inject
     private LibItemMapper itemMapper;
-
-    @Inject
-    private LibCloudObjectRepository cloudObjectRepository;
-
-    @Inject
-    private MediaUtils mediaUtils;
-
-    @Inject
-    private LibAudioObjectRepository audioObjectRepository;
-
-    @Inject
-    private CorUserService corUserService;
-
-    @Inject
-    private LibMetadataService libMetadataService;
 
     @Inject
     private LibArtistService libArtistService;
@@ -82,17 +65,47 @@ public class LibItemService {
     @Inject
     private LibLabelService libLabelService;
 
+    @Autowired
+    @Qualifier("libAudioFileService")
+    private LibFileService audioFileService;
+
+    @Autowired
+    @Qualifier("libVideoFileService")
+    private LibFileService videoFileService;
+
+    @Autowired
+    @Qualifier("libImageFileService")
+    private LibFileService imageFileService;
+
+    private Map<String, LibFileService> libItemTypeFileServiceMap;
+    private Map<String, String> contentTypeLibItemTypeMap;
+
+    @PostConstruct
+    public void buildFileServiceMap() {
+        libItemTypeFileServiceMap = new HashMap<>();
+        libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_AUDIO.name(), audioFileService);
+        libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_VIDEO.name(), videoFileService);
+        libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_IMAGE.name(), imageFileService);
+        contentTypeLibItemTypeMap = new HashMap<>();
+        contentTypeLibItemTypeMap.put(AUDIO, LibItemTypeEnum.IT_AUDIO.name());
+        contentTypeLibItemTypeMap.put(VIDEO, LibItemTypeEnum.IT_VIDEO.name());
+        contentTypeLibItemTypeMap.put(IMAGE, LibItemTypeEnum.IT_IMAGE.name());
+    }
+
+    @Transactional
     public LibMediaItem getMediaItem(String networkShortcut, String libraryShortcut, String idx) {
         Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
         return optionalItemDB.orElse(null);
     }
 
+    @Transactional
     public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
         List<LibMediaItem> itemsDB = itemRepository.findByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
         return itemsDB;
     }
 
 
+    @Transactional
     public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
         LibArtist artist = new LibArtist();
         if (libMediaItem.getArtist() != null) {
@@ -109,7 +122,8 @@ public class LibItemService {
         return itemRepository.saveAndFlush(libMediaItem);
     }
 
-    public List<LibMediaItem> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException {
+    @Transactional
+    public List<LibMediaItem> upload(String networkShortcut, String libraryShortcut, MultipartFile[] files) throws IOException, TikaException, SAXException {
 
         List<LibMediaItem> result = new ArrayList<>();
 
@@ -120,144 +134,46 @@ public class LibItemService {
         if (libraryDB == null) {
             return result;
         }
+
         for (MultipartFile file : files) {
-
             String fileName = file.getOriginalFilename();
-            String fileUUID = UUID.randomUUID().toString();
-
             ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
-            AutoDetectParser parser = new AutoDetectParser();
-            Detector detector = parser.getDetector();
-            Metadata md = new Metadata();
-            md.add(Metadata.RESOURCE_NAME_KEY, fileName);
-            MediaType mediaType = detector.detect(bais, md);
-            String contentType = mediaType.toString();
-
-            try {
-
-                log.debug("Uploading Media Item: {} ", fileUUID);
-                s3Client.upload(fileUUID, bais, contentType);
-                LibCloudObject cloudObject = new LibCloudObject();
-                cloudObject.setUuid(fileUUID);
-                cloudObject.setContentType(contentType);
-                cloudObject.setOriginalName(fileName);
-                cloudObject.setOriginal(Boolean.TRUE);
-                cloudObject.setSize(file.getSize());
-                cloudObject.setCreateDate(ZonedDateTime.now());
-
-                CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
-                CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
-
-                cloudObject.setCreatedBy(currentUser);
-                cloudObject.setNetwork(libraryDB.getNetwork());
-                cloudObject.setHash(ServiceConstants.NO_HASH);
-                cloudObject.network(corNetwork);
-
-                log.debug("Persisting LibCloudObject: {}", cloudObject);
-                cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
-                LibMediaItem libMediaItem = new LibMediaItem();
-                LibAudioObject audioObject = new LibAudioObject();
-                libMediaItem = libMetadataService.resolveMetadata(file, libraryDB, corNetwork, libMediaItem, audioObject);
-
-                audioObject.setCloudObject(cloudObject);
-                audioObject.setMediaItem(libMediaItem);
-
-                log.debug("Persisting LibAudioObject: {}", audioObject);
-                audioObjectRepository.saveAndFlush(audioObject);
-
+            Parser parser = new AutoDetectParser();
+            BodyContentHandler handler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            ParseContext pcontext = new ParseContext();
+            parser.parse(bais, handler, metadata, pcontext);
+            String libItemType = contentTypeLibItemTypeMap.get(metadata.get(HttpHeaders.CONTENT_TYPE).split(CONTENT_TYPE_SEPARATOR)[0]);
+            if (!Strings.isNullOrEmpty(libItemType)) {
+                log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
+                LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
                 result.add(libMediaItem);
-            } catch (UploadException e) {
-                log.error("There is a problem with uploading file to S3 Storage :{}", fileName);
-
-            } catch (S3Exception e) {
-                log.error("There is a problem with uploading file to S3 Storage :{}", fileName);
-            } catch (TikaException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                log.error("There is a problem with processing the file  :{}", fileName);
-            } finally {
-                bais.close();
+            } else {
+                log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
             }
+
+
         }
         return result;
     }
 
+    @Transactional
     public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
-
-        byte[] result = null;
-
-        LibMediaItem itemDB = getItemFromDB(networkShortcut, libraryShortcut, idx);
-
-        if (itemDB == null) {
-            return result;
-        }
-        List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemDB);
-
-        if (audioObjects == null || audioObjects.size() == 0) {
-            return result;
-        }
-        LibAudioObject audioObject = audioObjects.iterator().next();
-
-        LibCloudObject cloudObject = audioObject.getCloudObject();
-
-        InputStream stream = null;
-        try {
-            stream = s3Client.download(cloudObject.getUuid());
-
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
-            responseHeaders.add("Content-Length", String.format("%d", cloudObject.getSize()));
-
-            responseHeaders.add("Content-Type", cloudObject.getContentType());
-
-            result = IOUtils.toByteArray(stream);
-        } catch (S3Exception e) {
-            log.error("There is a problem with uploading file to S3 Storage :{}", idx);
-        } catch (DownloadException e) {
-            log.error("There is a problem with uploading file to S3 Storage :{}", idx);
-        } finally {
-            stream.close();
-        }
-        return result;
+        LibMediaItem itemDB = getMediaItem(networkShortcut, libraryShortcut, idx);
+        return libItemTypeFileServiceMap.get(itemDB.getItemType().name()).download(itemDB);
     }
 
-    public LibMediaItem getItemFromDB(String networkShortcut, String libraryShortcut, String idx) {
-        Optional<LibMediaItem> optItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
-        return optItemDB.orElse(null);
-    }
 
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
-        LibMediaItem itemToDelete = getItemFromDB(networkShortcut, libraryShortcut, idx);
-        deleteItemFromMinio(itemToDelete);
+        LibMediaItem itemToDelete = getMediaItem(networkShortcut, libraryShortcut, idx);
+        libItemTypeFileServiceMap.get(itemToDelete.getItemType().name()).deleteFile(itemToDelete);
         itemRepository.delete(itemToDelete);
     }
 
+    @Transactional
     public void deleteItem(LibMediaItem libMediaItem) {
-        deleteItemFromMinio(libMediaItem);
+        libItemTypeFileServiceMap.get(libMediaItem.getItemType().name()).deleteFile(libMediaItem);
         itemRepository.delete(libMediaItem);
-    }
-
-    private void deleteItemFromMinio(LibMediaItem libMediaItem) {
-        if (libMediaItem != null) {
-
-            List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
-            if (audioObjects != null || !audioObjects.isEmpty()) {
-                for (LibAudioObject audioObject : audioObjects) {
-                    LibCloudObject cloudObject = audioObject.getCloudObject();
-                    try {
-                        s3Client.delete(cloudObject.getUuid());
-                        audioObjectRepository.delete(audioObject);
-                        audioObjectRepository.flush();
-                        cloudObjectRepository.delete(cloudObject);
-                        cloudObjectRepository.flush();
-                    } catch (DeleteException e) {
-                        e.printStackTrace();
-                    } catch (S3Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
     }
 
 

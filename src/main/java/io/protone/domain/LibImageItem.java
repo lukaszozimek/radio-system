@@ -4,8 +4,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -24,18 +22,17 @@ public class LibImageItem implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Size(max = 15)
-    @Column(name = "idx", length = 15, nullable = false)
-    private String idx;
-
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "public_url")
+    private String publicUrl;
 
     @ManyToOne
     private LibLibrary library;
+
+    @ManyToOne
+    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -43,19 +40,6 @@ public class LibImageItem implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getIdx() {
-        return idx;
-    }
-
-    public LibImageItem idx(String idx) {
-        this.idx = idx;
-        return this;
-    }
-
-    public void setIdx(String idx) {
-        this.idx = idx;
     }
 
     public String getName() {
@@ -71,6 +55,19 @@ public class LibImageItem implements Serializable {
         this.name = name;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public LibImageItem publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
     public LibLibrary getLibrary() {
         return library;
     }
@@ -82,6 +79,19 @@ public class LibImageItem implements Serializable {
 
     public void setLibrary(LibLibrary libLibrary) {
         this.library = libLibrary;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public LibImageItem network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     @Override
@@ -108,8 +118,8 @@ public class LibImageItem implements Serializable {
     public String toString() {
         return "LibImageItem{" +
             "id=" + id +
-            ", idx='" + idx + "'" +
             ", name='" + name + "'" +
+            ", publicUrl='" + publicUrl + "'" +
             '}';
     }
 }

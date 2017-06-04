@@ -22,25 +22,33 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="width" type="integer">
-                <constraints nullable="false" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="height" type="integer">
-                <constraints nullable="false" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="image_size" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true"/>
             </column>
             <column name="cloud_object_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints unique="true" nullable="true"/>
             </column>
+            <column name="media_item_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="network_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="image_item_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>

@@ -3,6 +3,7 @@ package io.protone.service.metadata.audiovault.parser;
 import io.protone.service.constans.MarkerConstans;
 import io.protone.service.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.HttpHeaders;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.ParseContext;
@@ -25,10 +26,7 @@ import static io.protone.service.metadata.ProtoneMetadataProperty.*;
  */
 public class AudioVaultMP2Parser extends MP4Parser {
     private static final Set<MediaType> SUPPORTED_TYPES = Collections.singleton(MediaType.audio("av-mp2"));
-
-    public static final String HELLO_MIME_TYPE = "audio/av-mp2";
-
-
+    
     @Override
     public Set<MediaType> getSupportedTypes(ParseContext context) {
         return SUPPORTED_TYPES;
@@ -42,12 +40,9 @@ public class AudioVaultMP2Parser extends MP4Parser {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
-
-        /// super.parse(inputStreamSupplier.get(), handler, metadata, context);
+        metadata.set("Content-Type", "audio/wav");
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
-        /// listBextAV(stream, metadata);
-        //  av10(stream, metadata);
 
     }
 

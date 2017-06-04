@@ -7,12 +7,6 @@
         Added the constraints for entity LibAlbum.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="cover_id"
-                                 baseTableName="lib_album"
-                                 constraintName="fk_lib_album_cover_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_image_item"/>
 
         <addForeignKeyConstraint baseColumnNames="label_id"
                                  baseTableName="lib_album"

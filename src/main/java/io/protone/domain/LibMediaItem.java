@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.FetchType.EAGER;
+
 /**
  * A LibMediaItem.
  */
@@ -87,34 +89,43 @@ public class LibMediaItem implements Serializable {
     private CorNetwork network;
 
     @PodamExclude
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPerson> authors = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "composer")
+    @OneToMany(mappedBy = "composer",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPerson> composers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "mediaItem")
+    @OneToMany(mappedBy = "mediaItem",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LibMarker> markers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "tags")
+    @OneToMany(mappedBy = "tags",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorTag> tags = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "libItemPropertyValue")
+    @OneToMany(mappedBy = "libItemPropertyValue",fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPropertyValue> properites = new HashSet<>();
+
+    @PodamExclude
+    @OneToMany
+    @JoinTable(
+        name = "lib_media_item_lib_image_item",
+        joinColumns = @JoinColumn(name = "lib_media_item_id"),
+        inverseJoinColumns = @JoinColumn(name = "lib_image_item_id")
+    )
+    private Set<LibImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -414,6 +425,14 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
+    public Set<LibImageItem> getImageItems() {
+        return imageItems;
+    }
+
+    public void setImageItems(Set<LibImageItem> imageItems) {
+        this.imageItems = imageItems;
+    }
+
     public void setProperites(Set<CorPropertyValue> corPropertyValues) {
         this.properites = corPropertyValues;
     }
@@ -442,13 +461,26 @@ public class LibMediaItem implements Serializable {
     public String toString() {
         return "LibMediaItem{" +
             "id=" + id +
-            ", idx='" + idx + "'" +
-            ", name='" + name + "'" +
-            ", itemType='" + itemType + "'" +
-            ", length='" + length + "'" +
-            ", state='" + state + "'" +
-            ", command='" + command + "'" +
-            ", description='" + description + "'" +
+            ", idx='" + idx + '\'' +
+            ", name='" + name + '\'' +
+            ", itemType=" + itemType +
+            ", length=" + length +
+            ", state=" + state +
+            ", command='" + command + '\'' +
+            ", description='" + description + '\'' +
+            ", library=" + library +
+            ", label=" + label +
+            ", artist=" + artist +
+            ", album=" + album +
+            ", track=" + track +
+            ", network=" + network +
+            ", authors=" + authors +
+            ", composers=" + composers +
+            ", markers=" + markers +
+            ", tags=" + tags +
+            ", properites=" + properites +
+            ", imageItems=" + imageItems +
             '}';
     }
+
 }

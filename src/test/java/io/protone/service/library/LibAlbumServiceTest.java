@@ -4,7 +4,6 @@ import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.library.LibAlbumRepository;
-import io.protone.service.library.LibAlbumService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

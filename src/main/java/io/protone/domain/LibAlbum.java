@@ -3,13 +3,16 @@ package io.protone.domain;
 import io.protone.domain.enumeration.LibAlbumTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A LibAlbum.
@@ -42,10 +45,6 @@ public class LibAlbum implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private LibImageItem cover;
-
     @ManyToOne
     private LibLabel label;
 
@@ -54,6 +53,15 @@ public class LibAlbum implements Serializable {
 
     @ManyToOne
     private CorNetwork network;
+
+    @PodamExclude
+    @OneToMany
+    @JoinTable(
+        name = "lib_album_lib_image_item",
+        joinColumns = @JoinColumn(name = "lib_album_id"),
+        inverseJoinColumns = @JoinColumn(name = "lib_image_item_id")
+    )
+    private Set<LibImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -115,17 +123,17 @@ public class LibAlbum implements Serializable {
         this.description = description;
     }
 
-    public LibImageItem getCover() {
-        return cover;
+    public Set<LibImageItem> getCover() {
+        return imageItems;
     }
 
-    public LibAlbum cover(LibImageItem libImageItem) {
-        this.cover = libImageItem;
+    public LibAlbum cover(Set<LibImageItem> libImageItem) {
+        this.imageItems = libImageItem;
         return this;
     }
 
-    public void setCover(LibImageItem libImageItem) {
-        this.cover = libImageItem;
+    public void setCover(Set<LibImageItem> libImageItem) {
+        this.imageItems = libImageItem;
     }
 
     public LibLabel getLabel() {

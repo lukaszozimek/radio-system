@@ -25,8 +25,8 @@ public class CorPropertyValue implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(max = 100)
-    @Column(name = "value", length = 100, nullable = false)
+
+    @Column(name = "value", nullable = false)
     private String value;
 
     @ManyToOne

@@ -6,8 +6,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -26,25 +24,19 @@ public class LibVideoObject implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "width", nullable = false)
+    @Column(name = "width")
     private Integer width;
 
-    @NotNull
-    @Column(name = "height", nullable = false)
+    @Column(name = "height")
     private Integer height;
 
-    @NotNull
-    @Column(name = "length", nullable = false)
+    @Column(name = "length")
     private Long length;
 
-    @NotNull
-    @Column(name = "bi_trate", nullable = false)
+    @Column(name = "bi_trate")
     private Integer biTrate;
 
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "codec", length = 100, nullable = false)
+    @Column(name = "codec")
     private String codec;
 
     @Enumerated(EnumType.STRING)
@@ -61,6 +53,9 @@ public class LibVideoObject implements Serializable {
 
     @ManyToOne
     private LibMediaItem mediaItem;
+
+    @ManyToOne
+    private CorNetwork network;
 
     public Long getId() {
         return id;
@@ -185,6 +180,19 @@ public class LibVideoObject implements Serializable {
 
     public void setMediaItem(LibMediaItem libMediaItem) {
         this.mediaItem = libMediaItem;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public LibVideoObject network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     @Override

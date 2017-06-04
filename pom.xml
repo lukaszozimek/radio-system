@@ -294,6 +294,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.16</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
 
         <!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
@@ -430,7 +435,6 @@
             <artifactId>podam</artifactId>
             <version>7.0.5.RELEASE</version>
         </dependency>
-
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>

@@ -76,11 +76,14 @@ public class JWTFilter extends GenericFilterBean {
     }
 
     private boolean checkIfUserCanAccesResource(HttpServletRequest httpServletRequest, String jwt) {
-        if (httpServletRequest.getPathInfo().equals("/api/v1/network")) {
+        if (httpServletRequest.getRequestURI().equals("/api/v1/network")) {
             return true;
         }
-        String newtworkShortcut = getNetworkShortcutFromPathParameter(httpServletRequest.getPathInfo());
-        String corChannelShortcut = getChannelShortcutFromPathParameter(httpServletRequest.getPathInfo());
+        if (httpServletRequest.getRequestURI().startsWith("/api/v1/user")) {
+            return true;
+        }
+        String newtworkShortcut = getNetworkShortcutFromPathParameter(httpServletRequest.getRequestURI());
+        String corChannelShortcut = getChannelShortcutFromPathParameter(httpServletRequest.getRequestURI());
 
         if (Strings.isNullOrEmpty(newtworkShortcut)) {
             return false;
