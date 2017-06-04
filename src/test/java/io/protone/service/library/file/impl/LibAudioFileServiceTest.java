@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import static io.protone.util.TestUtil.parseInputStream;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
