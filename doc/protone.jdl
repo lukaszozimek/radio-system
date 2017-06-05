@@ -215,8 +215,8 @@ enum LibArtistTypeEnum {
 }
 
 entity LibMediaItem {
-	idx String required maxlength(15)
-    name String required maxlength(100)
+	idx String required
+    name String required
     itemType LibItemTypeEnum required
     length Double required
     state LibItemStateEnum required

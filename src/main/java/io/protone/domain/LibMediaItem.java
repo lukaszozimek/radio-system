@@ -35,13 +35,11 @@ public class LibMediaItem implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(max = 15)
-    @Column(name = "idx", length = 15, nullable = false)
+    @Column(name = "idx", nullable = false)
     private String idx;
 
     @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull
