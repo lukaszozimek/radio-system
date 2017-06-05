@@ -2,9 +2,8 @@ package io.protone.service.traffic.mediaplan;
 
 import com.google.common.collect.Lists;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.*;
 
 import io.protone.domain.*;
 import io.protone.service.traffic.TraPlaylistService;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,11 +40,33 @@ public class ExcelMediaPlan {
 
         Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet);
         List<LocalDate> localDates = dateHashMap.values().stream().sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
-        List<TraPlaylist> traPlaylists = traPlaylistService.getTraPlaylistListInRange(localDates.get(0), localDates.get(localDates.lastIndexOf(localDates)), corNetwork.getShortcut(), corChannel.getShortcut());
 
-        ////Emission Cells
-        Map<LocalDate, List<TraEmission>> dateTraEmissionMap = findEmissions(sheet, dateHashMap, traAdvertisement, corNetwork, corChannel);
+        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(localDates.get(0), localDates.get(localDates.size() - 1), corNetwork.getShortcut(), corChannel.getShortcut());
 
+        List<TraPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traAdvertisement, corNetwork, corChannel);
+        List<TraPlaylist> mappedPlaylist = mapPlaylist(entiyPlaylists, paredFromMediaPlan);
+    }
+
+    private List<TraPlaylist> mapPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> paredFromMediaPlan) {
+        entiyPlaylists.sort(new Comparator<TraPlaylist>() {
+            @Override
+            public int compare(TraPlaylist o1, TraPlaylist o2) {
+                return o1.getPlaylistDate().compareTo(o2.getPlaylistDate());
+            }
+        });
+        paredFromMediaPlan.sort(new Comparator<TraPlaylist>() {
+            @Override
+            public int compare(TraPlaylist o1, TraPlaylist o2) {
+                return o1.getPlaylistDate().compareTo(o2.getPlaylistDate());
+            }
+        });
+        for (int i = 0; i < entiyPlaylists.size(); i++) {
+            TraPlaylist entityPlaylist = entiyPlaylists.get(i);
+            TraPlaylist paredPlaylist = paredFromMediaPlan.get(i);
+
+
+        }
+        return Lists.newArrayList();
     }
 
     private Map<Integer, LocalDate> findPlaylistInExcel(Sheet sheet) {
@@ -67,34 +87,51 @@ public class ExcelMediaPlan {
             }
         }
         return dateHashMap;
+    }
+
+    private List<TraPlaylist> buildPlaylist(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) {
+        List<TraPlaylist> traPlaylists = Lists.newArrayList();
+        int blockColumnIndex = CellReference.convertColStringToIndex("A"); /// Kolumna poczatkowa bloków
+        CellReference blockStrat = new CellReference("A10");//Pierwsza wartośc deklaracji blokwo
+        CellReference blockEnd = new CellReference("A47");//Pierwszej wartości deklaracji blokow
+        List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex);
+
+        dateHashMap.keySet().stream().forEach(columnIndex -> {
+            traPlaylists.add(new TraPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traAdvertisement, corNetwork, corChannel, parsedBlocks)));
+        });
+        return traPlaylists;
 
     }
 
-    private Map<LocalDate, List<TraBlock>> findBlocks() {
-        CellReference blockStrat = new CellReference("G10");//Pierwszej wartości
-
-        return new HashMap<>();
-
+    private List<TraBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex) {
+        String hourSeparator = "-";
+        List<TraBlock> blocks = Lists.newArrayList();
+        int startBlockIndex = blockCellStart.getRow();
+        int stopBlockIndex = blockCellEnd.getRow();
+        for (int rowIndex = startBlockIndex; rowIndex <= stopBlockIndex; rowIndex++) {
+            Cell blockEmission = sheet.getRow(rowIndex).getCell(blockColumnIndex);
+            String[] timeRange = blockEmission.toString().split(hourSeparator);
+            if (timeRange.length != 0) {
+                blocks.add(new TraBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.parse(timeRange[0]).toNanoOfDay()).stopBlock(LocalTime.parse(timeRange[1]).toNanoOfDay()));
+            }
+        }
+        return blocks;
     }
 
-    private Map<LocalDate, List<TraEmission>> findEmissions(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) {
-        Map<LocalDate, List<TraEmission>> dateTraEmissionMap = new HashMap<>();
-        CellReference emissionStart = new CellReference("G10");//Pierwszej wartości
-        CellReference emissionsStop = new CellReference("CW47"); //Adress komórki po przekątnej zakresu wartości
+
+    private Set<TraBlock> findEmissionsInDay(Sheet sheet, Integer columnIndex, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel, List<TraBlock> traBlocks) {
+
+        CellReference emissionStart = new CellReference("G10");//Pierwszej wartości emisji
+        CellReference emissionsStop = new CellReference("CW47"); //Adress komórki po przekątnej zakresu wartości emisji
         int startEmissionRowIndex = emissionStart.getRow();
         int emissionsStopRow = emissionsStop.getRow();
 
-        dateHashMap.keySet().stream().forEach(columnIndex -> {
-            List<TraEmission> traEmissions = Lists.newArrayList();
-            for (int rowIndex = startEmissionRowIndex; rowIndex < emissionsStopRow - startEmissionRowIndex; rowIndex++) {
-                Cell emissionCell = sheet.getRow(rowIndex).getCell(columnIndex);
-                if (emissionCell.toString().trim().equalsIgnoreCase("1.0")) { ///Parametr wypełnienia media planu
-                    traEmissions.add(new TraEmission().advertiment(traAdvertisement).network(corNetwork).channel(corChannel));
-                }
+        for (int rowIndex = startEmissionRowIndex; rowIndex <= emissionsStopRow; rowIndex++) {
+            Cell emissionCell = sheet.getRow(rowIndex).getCell(columnIndex);
+            if (emissionCell.toString().trim().equalsIgnoreCase("1.0")) { ///Parametr wypełnienia media planu
+                traBlocks.get(rowIndex - startEmissionRowIndex).addEmissions(new TraEmission().advertiment(traAdvertisement).network(corNetwork).channel(corChannel));
             }
-            dateTraEmissionMap.put(dateHashMap.get(columnIndex), traEmissions);
-
-        });
-        return dateTraEmissionMap;
+        }
+        return new HashSet<>(traBlocks);
     }
 }
