@@ -23,6 +23,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 import static io.protone.service.traffic.TraAdvertisementShuffleService.canAddEmissionToBlock;
@@ -46,8 +47,7 @@ public class ExcelMediaPlan {
 
         Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet);
         List<LocalDate> localDates = dateHashMap.values().stream().sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
-        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(localDates.get(0), localDates.get(localDates.size() - 1), corNetwork.getShortcut(), corChannel.getShortcut());
-
+        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(localDates.get(0), localDates.get(localDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
         List<TraPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traAdvertisement, corNetwork, corChannel);
         return mapPlaylist(entiyPlaylists, paredFromMediaPlan, traAdvertisement);
     }
@@ -59,42 +59,36 @@ public class ExcelMediaPlan {
             Optional<TraPlaylist> filteredPlaylist = parsedFromMediaPlan.stream().filter(parsedPlaylist -> parsedPlaylist.getPlaylistDate().equals(entiyPlaylist.getPlaylistDate())).findFirst();
             if (filteredPlaylist.isPresent()) {
                 log.debug("Found Playlist for Date {} ", filteredPlaylist.get().getPlaylistDate());
-                filteredPlaylist.get().getPlaylists().stream().forEach(parsedFormExcelTraBlock -> {
-
-                    long numberOfCommercialToPut = parsedFormExcelTraBlock.getEmissions().stream().count();
-                    Set<TraBlock> entityFilteredByRangeBlockSet = entiyPlaylist.getPlaylists().stream().filter(entityTraBlock -> isInRange(parsedFormExcelTraBlock.getStartBlock(), entityTraBlock.getStartBlock(), parsedFormExcelTraBlock.getStopBlock(), entityTraBlock.getStopBlock())).collect(toSet());
-                    if (isNotEmpty(entityFilteredByRangeBlockSet)) {
-                        log.debug("Found Block matching to range ");
-                        entityFilteredByRangeBlockSet.stream().forEach(filteredEntityTraBlock -> {
-                            if (isNotEmpty(filteredEntityTraBlock.getEmissions())) {
-                                Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
-                                Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
-                                for (int index = 0; index < numberOfCommercialToPut; index++)
+                filteredPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet()).forEach(parsedFormExcelTraBlock -> {
+                    if (parsedFormExcelTraBlock.getEmissions().stream().count() > 0) {
+                        Set<TraBlock> entityFilteredByRangeBlockSet = entiyPlaylist.getPlaylists().stream().filter(entityTraBlock -> isInRange(parsedFormExcelTraBlock.getStartBlock(), entityTraBlock.getStartBlock(), parsedFormExcelTraBlock.getStopBlock(), entityTraBlock.getStopBlock())).collect(toSet());
+                        if (isNotEmpty(entityFilteredByRangeBlockSet)) {
+                            log.debug("Found Block matching to range ");
+                            entityFilteredByRangeBlockSet.stream().forEach(filteredEntityTraBlock -> {
+                                if (isNotEmpty(filteredEntityTraBlock.getEmissions())) {
+                                    Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
+                                    Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
                                     if (canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), traAdvertisement.getMediaItem().getLength())) {
-                                        TraEmission emisssion = new TraEmission().sequence(lastSequence).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
+                                        TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                         filteredEntityTraBlock.addEmissions(emisssion);
-                                        if (entiyPlaylist.getPlaylists().removeIf(traBlock -> traBlock.getSequence().equals(filteredEntityTraBlock.getSequence()))) {
-                                            entiyPlaylist.addPlaylists(filteredEntityTraBlock);
-                                        }
                                     } else {
                                         log.debug("Can't put commercial because block size excide maximum number of seconds");
                                     }
-                            } else {
-                                log.debug("Block is empty");
-                                Long lastTimeStop = 0L;
-                                TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
-                                filteredEntityTraBlock.addEmissions(emisssion);
-                                if (entiyPlaylist.getPlaylists().removeIf(traBlock -> traBlock.getSequence().equals(filteredEntityTraBlock.getSequence()))) {
-                                    entiyPlaylist.addPlaylists(filteredEntityTraBlock);
+                                } else {
+                                    log.debug("Block is empty");
+                                    Long lastTimeStop = 0L;
+                                    TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
+                                    filteredEntityTraBlock.addEmissions(emisssion);
                                 }
-
-
-                            }
-                        });
+                            });
+                        }
                     }
                 });
+
             }
         });
+        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
+        entiyPlaylists.stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));//TEST
         return traPlaylists;
     }
 
@@ -130,9 +124,9 @@ public class ExcelMediaPlan {
         int blockColumnIndex = CellReference.convertColStringToIndex("A"); /// Kolumna poczatkowa bloków
         CellReference blockStrat = new CellReference("A10");//Pierwsza wartośc deklaracji blokwo
         CellReference blockEnd = new CellReference("A47");//Pierwszej wartości deklaracji blokow
-        List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex);
 
         dateHashMap.keySet().stream().forEach(columnIndex -> {
+            List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex);
             traPlaylists.add(new TraPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traAdvertisement, corNetwork, corChannel, parsedBlocks)));
         });
         return traPlaylists;
@@ -164,8 +158,9 @@ public class ExcelMediaPlan {
 
         for (int rowIndex = startEmissionRowIndex; rowIndex <= emissionsStopRow; rowIndex++) {
             Cell emissionCell = sheet.getRow(rowIndex).getCell(columnIndex);
-            if (emissionCell.toString().trim().equalsIgnoreCase("1.0")) { ///Parametr wypełnienia media planu
-                traBlocks.get(rowIndex - startEmissionRowIndex).addEmissions(new TraEmission().advertiment(traAdvertisement).network(corNetwork).channel(corChannel));
+            if (emissionCell.toString().trim().equals("1.0")) { ///Parametr wypełnienia media planu
+                TraBlock traBlock = traBlocks.get(rowIndex - startEmissionRowIndex);
+                traBlock.addEmissions(new TraEmission().advertiment(traAdvertisement).network(corNetwork).channel(corChannel));
             }
         }
         return new HashSet<>(traBlocks);
