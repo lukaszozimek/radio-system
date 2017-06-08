@@ -1,17 +1,17 @@
 package io.protone.service.traffic;
 
 import io.protone.config.s3.S3Client;
-import io.protone.config.s3.exceptions.S3Exception;
-import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraAdvertisement;
 import io.protone.domain.TraPlaylist;
+import io.protone.service.library.LibItemService;
 import io.protone.service.traffic.mediaplan.ExcelMediaPlan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
@@ -36,18 +36,17 @@ public class TraMediaPlanService {
     @Autowired
     private TraPlaylistService traPlaylistService;
 
-    public void saveMediaPlan(ByteArrayInputStream bais, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
-        String fileUUID = UUID.randomUUID().toString();
-        try {
-            log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.uploadMediaPlan(fileUUID, bais, "excel");
-            List<TraPlaylist> parseMediaPlanPlaylists = excelMediaPlan.parseMediaPlan(bais, traAdvertisement, corNetwork, corChannel);
+    @Autowired
+    private LibItemService libItemService;
 
-        } catch (UploadException e) {
-            e.printStackTrace();
-        } catch (S3Exception e) {
-            e.printStackTrace();
+    public void saveMediaPlan(MultipartFile[] multipartFiles, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
+        String fileUUID = UUID.randomUUID().toString();
+        for (MultipartFile multipartFile : multipartFiles) {
+            ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile.getBytes());
+            List<TraPlaylist> parseMediaPlanPlaylists = excelMediaPlan.parseMediaPlan(bais, traAdvertisement, corNetwork, corChannel);
+           // libItemService.upload(multipartFile, corNetwork.getShortcut(),);
         }
+
     }
 
 }

@@ -1,6 +1,5 @@
 package io.protone.service.traffic.mediaplan;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import io.protone.domain.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -9,7 +8,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.sis.internal.util.Cloner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
