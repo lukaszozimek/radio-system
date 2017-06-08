@@ -138,22 +138,25 @@ public class TraPlaylistBasedTest {
 
     protected Set<TraBlockConfiguration> buildBlockConfiguration(CorDayOfWeekEnum corDayOfWeekEnum) {
         Set<TraBlockConfiguration> traBlocks = new HashSet<>();
-        int hour = 0;
-        int minute =0;
-        for (int i = 1; i < DAILY_BLOCK_NUMBER; i++) {
-            TraBlockConfiguration trablock = factory.manufacturePojo(TraBlockConfiguration.class);
-            trablock.sequence(i);
-            trablock.setLength(Long.valueOf((3 * 60000)));
-            if (i % 4 == 0) {
-                trablock.setStartBlock(LocalTime.of(hour, 0).toNanoOfDay());
+        for (int hour = 0; hour < 24; hour++) {
+            for (int blockInHour = 0; blockInHour < 3; blockInHour++) {
+                TraBlockConfiguration trablock = factory.manufacturePojo(TraBlockConfiguration.class);
+                trablock.sequence(hour + blockInHour);
+                trablock.setLength(Long.valueOf((3 * 60000)));
+                if (blockInHour > 0) {
+                    trablock.setStartBlock(LocalTime.of(hour, blockInHour * 15).toNanoOfDay());
+
+                }
+                else {
+                    trablock.setStartBlock(LocalTime.of(hour, 0).toNanoOfDay());
+                }
                 trablock.setStopBlock(trablock.getStartBlock().longValue() + trablock.getLength());
-                hour++;
+                trablock.setChannel(corChannel);
+                trablock.setNetwork(corNetwork);
+                trablock.setDay(corDayOfWeekEnum);
+                trablock = trablockConfigurationRepository.saveAndFlush(trablock);
+                traBlocks.add(trablock);
             }
-            trablock.setChannel(corChannel);
-            trablock.setNetwork(corNetwork);
-            trablock.setDay(corDayOfWeekEnum);
-            trablock = trablockConfigurationRepository.saveAndFlush(trablock);
-            traBlocks.add(trablock);
         }
         return traBlocks;
     }

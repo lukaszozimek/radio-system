@@ -6,9 +6,9 @@ import org.springframework.web.cors.CorsConfiguration;
 
 /**
  * Properties specific to JHipster.
- *
  * <p>
- *     Properties are configured in the application.yml file.
+ * <p>
+ * Properties are configured in the application.yml file.
  * </p>
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
@@ -16,7 +16,9 @@ public class ApplicationProperties {
 
     private final S3 s3 = new S3();
 
-    public S3 getS3() { return s3; }
+    public S3 getS3() {
+        return s3;
+    }
 
     public static class S3 {
 
@@ -27,6 +29,8 @@ public class ApplicationProperties {
         private String password = "the_password";
 
         private String bucket = "the_bucket";
+
+        private String mediaPlanBucket = "";
 
         public String getUrl() {
             return url;
@@ -56,8 +60,13 @@ public class ApplicationProperties {
             return bucket;
         }
 
+
         public void setBucket(String bucket) {
             this.bucket = bucket;
+        }
+
+        public String getMediaPlanBucket() {
+            return mediaPlanBucket;
         }
     }
 }

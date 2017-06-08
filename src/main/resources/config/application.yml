@@ -108,3 +108,4 @@ application:
         username: protone-dev
         password: protone-dev
         bucket: protone-dev
+        media-plan-bucket: protone-media-plan
