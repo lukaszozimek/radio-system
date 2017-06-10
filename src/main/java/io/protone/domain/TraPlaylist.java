@@ -40,10 +40,13 @@ public class TraPlaylist implements Serializable {
     @PodamExclude
     private CorChannel channel;
 
-    @OneToMany(mappedBy = "block")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @PodamExclude
+    @OneToMany
+    @JoinTable(
+        name = "tra_playlist_tra_block",
+        joinColumns = @JoinColumn(name = "tra_playlist_id"),
+        inverseJoinColumns = @JoinColumn(name = "tra_block_id")
+    )
     private Set<TraBlock> playlists = new HashSet<>();
 
     public Long getId() {
@@ -104,13 +107,11 @@ public class TraPlaylist implements Serializable {
 
     public TraPlaylist addPlaylists(TraBlock traBlock) {
         this.playlists.add(traBlock);
-        traBlock.setBlock(this);
         return this;
     }
 
     public TraPlaylist removePlaylists(TraBlock traBlock) {
         this.playlists.remove(traBlock);
-        traBlock.setBlock(null);
         return this;
     }
 

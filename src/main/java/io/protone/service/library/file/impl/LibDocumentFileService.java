@@ -7,14 +7,14 @@ import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
-import io.protone.repository.library.LibAudioObjectRepository;
 import io.protone.repository.library.LibCloudObjectRepository;
+import io.protone.repository.library.LibDocumentObjectRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.security.SecurityUtils;
 import io.protone.service.constans.ServiceConstants;
 import io.protone.service.cor.CorUserService;
 import io.protone.service.library.file.LibFileService;
-import io.protone.service.library.metadata.LibAudioMetadataService;
+import io.protone.service.library.metadata.LibDocumentMetadataService;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -45,7 +45,7 @@ public class LibDocumentFileService implements LibFileService {
     private final Logger log = LoggerFactory.getLogger(LibDocumentFileService.class);
 
     @Inject
-    private LibAudioObjectRepository audioObjectRepository;
+    private LibDocumentObjectRepository libDocumentObjectRepository;
 
     @Inject
     private LibCloudObjectRepository cloudObjectRepository;
@@ -57,7 +57,7 @@ public class LibDocumentFileService implements LibFileService {
     private S3Client s3Client;
 
     @Inject
-    private LibAudioMetadataService libMetadataService;
+    private LibDocumentMetadataService libDocumentMetadataService;
 
     @Inject
     private CorUserService corUserService;
@@ -83,12 +83,12 @@ public class LibDocumentFileService implements LibFileService {
                 .objectType(LibObjectTypeEnum.OT_AUDIO);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
-            LibAudioObject audioObject = new LibAudioObject();
-            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, audioObject);
-            audioObject.setCloudObject(cloudObject);
-            audioObject.setMediaItem(libMediaItem);
-            log.debug("Persisting LibAudioObject: {}", audioObject);
-            audioObjectRepository.saveAndFlush(audioObject);
+            LibDocumentObject libDocumentObject = new LibDocumentObject();
+            libMediaItem = libDocumentMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libDocumentObject);
+            libDocumentObject.setCloudObject(cloudObject);
+            libDocumentObject.setMediaItem(libMediaItem);
+            log.debug("Persisting LibDocumentObject: {}", libDocumentObject);
+            libDocumentObjectRepository.saveAndFlush(libDocumentObject);
         } catch (UploadException e) {
             log.error("There is a problem with uploading file to S3 Storage :{}", originalFileName);
 
@@ -112,12 +112,12 @@ public class LibDocumentFileService implements LibFileService {
         if (itemDB == null) {
             return result;
         }
-        List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(itemDB);
+        List<LibDocumentObject> libDocumentObjects = libDocumentObjectRepository.findByMediaItem(itemDB);
 
-        if (audioObjects == null || audioObjects.size() == 0) {
+        if (libDocumentObjects == null || libDocumentObjects.size() == 0) {
             return result;
         }
-        LibAudioObject audioObject = audioObjects.iterator().next();
+        LibDocumentObject audioObject = libDocumentObjects.iterator().next();
 
         LibCloudObject cloudObject = audioObject.getCloudObject();
 
@@ -147,14 +147,14 @@ public class LibDocumentFileService implements LibFileService {
     public void deleteFile(LibMediaItem libMediaItem) {
         if (libMediaItem != null) {
 
-            List<LibAudioObject> audioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
-            if (audioObjects != null || !audioObjects.isEmpty()) {
-                for (LibAudioObject audioObject : audioObjects) {
+            List<LibDocumentObject> objects = libDocumentObjectRepository.findByMediaItem(libMediaItem);
+            if (objects != null || !objects.isEmpty()) {
+                for (LibDocumentObject audioObject : objects) {
                     LibCloudObject cloudObject = audioObject.getCloudObject();
                     try {
                         s3Client.delete(cloudObject.getUuid());
-                        audioObjectRepository.delete(audioObject);
-                        audioObjectRepository.flush();
+                        libDocumentObjectRepository.delete(audioObject);
+                        libDocumentObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);
                         cloudObjectRepository.flush();
                     } catch (DeleteException e) {

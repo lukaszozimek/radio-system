@@ -35,7 +35,7 @@ import static org.mockito.Mockito.when;
 @Transactional
 public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
 
-    private InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/SAMPLE_MP3.mp3");
+    private InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3");
 
     @Autowired
     @Qualifier("libAudioFileService")
@@ -77,7 +77,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shoulDownloadAudioFile() throws Exception {
         //when
-        when(s3Client.download(anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/SAMPLE_MP3.mp3"));
+        when(s3Client.download(anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3"));
         ReflectionTestUtils.setField(libAudioFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libAudioFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());

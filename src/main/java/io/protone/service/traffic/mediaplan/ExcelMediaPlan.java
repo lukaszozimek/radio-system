@@ -1,6 +1,7 @@
 package io.protone.service.traffic.mediaplan;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.protone.domain.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
@@ -35,11 +36,11 @@ public class ExcelMediaPlan {
     private final Logger log = LoggerFactory.getLogger(ExcelMediaPlan.class);
 
 
-    public List<TraPlaylist> parseMediaPlan(ByteArrayInputStream bais, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
+    public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream bais, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
         Workbook workbook = new HSSFWorkbook(bais);
         Sheet sheet = workbook.getSheetAt(0);
         Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet);
-        List<TraPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traAdvertisement, corNetwork, corChannel);
+        Set<TraMediaPlanPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traAdvertisement, corNetwork, corChannel);
         return paredFromMediaPlan;
     }
 
@@ -115,15 +116,15 @@ public class ExcelMediaPlan {
         return dateHashMap;
     }
 
-    private List<TraPlaylist> buildPlaylist(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) {
-        List<TraPlaylist> traPlaylists = Lists.newArrayList();
+    private Set<TraMediaPlanPlaylist> buildPlaylist(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) {
+        Set<TraMediaPlanPlaylist> traPlaylists = Sets.newHashSet();
         int blockColumnIndex = CellReference.convertColStringToIndex("A"); /// Kolumna poczatkowa bloków
         CellReference blockStrat = new CellReference("A10");//Pierwsza wartośc deklaracji blokwo
         CellReference blockEnd = new CellReference("A47");//Pierwszej wartości deklaracji blokow
 
         dateHashMap.keySet().stream().forEach(columnIndex -> {
             List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex);
-            traPlaylists.add(new TraPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traAdvertisement, corNetwork, corChannel, parsedBlocks)));
+            traPlaylists.add(new TraMediaPlanPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traAdvertisement, corNetwork, corChannel, parsedBlocks)));
         });
         return traPlaylists;
 

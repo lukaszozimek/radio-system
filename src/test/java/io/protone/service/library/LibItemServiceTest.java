@@ -69,6 +69,10 @@ public class LibItemServiceTest {
     @Autowired
     @Qualifier("libImageFileService")
     private LibFileService imageFileService;
+
+    @Autowired
+    @Qualifier("libDocumentFileService")
+    private LibFileService libDocumentFileService;
     @Autowired
     private CorUserRepository corUserRepository;
     @Mock
@@ -106,17 +110,16 @@ public class LibItemServiceTest {
 
         ReflectionTestUtils.setField(audioFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(audioFileService, "corUserService", corUserService);
-
         ReflectionTestUtils.setField(videoFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(videoFileService, "corUserService", corUserService);
-
         ReflectionTestUtils.setField(imageFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(imageFileService, "corUserService", corUserService);
-
+        ReflectionTestUtils.setField(libDocumentFileService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(libDocumentFileService, "corUserService", corUserService);
         ReflectionTestUtils.setField(libItemService, "audioFileService", audioFileService);
         ReflectionTestUtils.setField(libItemService, "videoFileService", videoFileService);
         ReflectionTestUtils.setField(libItemService, "imageFileService", imageFileService);
-
+        ReflectionTestUtils.setField(libItemService, "libDocumentFileService", libDocumentFileService);
 
     }
 
@@ -194,7 +197,7 @@ public class LibItemServiceTest {
     public void shouldUploadAudio() throws Exception {
         //when
         ReflectionTestUtils.setField(libItemService, "audioFileService", audioFileService);
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/SAMPLE_MP3.mp3");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3");
         MultipartFile multipartFile = new MockMultipartFile("testFile", inputStream);
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
@@ -211,10 +214,9 @@ public class LibItemServiceTest {
 
     @Test
     public void shouldUploadImage() throws Exception {
-
         //when
         ReflectionTestUtils.setField(libItemService, "imageFileService", imageFileService);
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/SAMPLE_IMAGE.png");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png");
         MultipartFile multipartFile = new MockMultipartFile("testFile", inputStream);
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
@@ -225,9 +227,22 @@ public class LibItemServiceTest {
         assertNotNull(libMediaItems);
         assertEquals(1, libMediaItems.size());
 
+    }
+    @Test
+    public void shouldUploadDocument() throws Exception {
+        //when
+        ReflectionTestUtils.setField(libItemService, "libDocumentFileService", libDocumentFileService);
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls");
+        MultipartFile multipartFile = new MockMultipartFile("testFile", inputStream);
+        MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
+        //then
+        List<LibMediaItem> libMediaItems = libItemService.upload(corNetwork.getShortcut(), libLibrary.getShortcut(), multipartFiles);
+
+        //assert
+        assertNotNull(libMediaItems);
+        assertEquals(1, libMediaItems.size());
 
     }
-
 
 }
