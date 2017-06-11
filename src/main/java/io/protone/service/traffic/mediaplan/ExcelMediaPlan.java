@@ -35,7 +35,7 @@ public class ExcelMediaPlan {
 
     private final Object lockObject = new Object();
     private final Logger log = LoggerFactory.getLogger(ExcelMediaPlan.class);
-
+    private final Long DEFAULT_START_STOP=0L;
 
     public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream bais, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
         Workbook workbook = new HSSFWorkbook(bais);
@@ -124,14 +124,14 @@ public class ExcelMediaPlan {
         CellReference blockEnd = new CellReference(traMediaPlanDescriptor.getBlockEndCell());//Pierwszej wartości deklaracji blokow
 
         dateHashMap.keySet().stream().forEach(columnIndex -> {
-            List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex, traMediaPlanDescriptor);
-            traPlaylists.add(new TraMediaPlanPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traMediaPlanDescriptor, corNetwork, corChannel, parsedBlocks)));
+            List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex, traMediaPlanDescriptor, corNetwork, corChannel);
+            traPlaylists.add(new TraMediaPlanPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traMediaPlanDescriptor, corNetwork, corChannel, parsedBlocks)).channel(corChannel).network(corNetwork));
         });
         return traPlaylists;
 
     }
 
-    private List<TraBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex, TraMediaPlanDescriptor traMediaPlanDescriptor) {
+    private List<TraBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) {
         String hourSeparator = traMediaPlanDescriptor.getBlockHourSeparator();
         List<TraBlock> blocks = Lists.newArrayList();
         int startBlockIndex = blockCellStart.getRow();
@@ -140,7 +140,7 @@ public class ExcelMediaPlan {
             Cell blockEmission = sheet.getRow(rowIndex).getCell(blockColumnIndex);
             String[] timeRange = blockEmission.toString().split(hourSeparator);
             if (timeRange.length != 0) {
-                blocks.add(new TraBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.parse(timeRange[0]).toNanoOfDay()).stopBlock(LocalTime.parse(timeRange[1]).toNanoOfDay()));
+                blocks.add(new TraBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.parse(timeRange[0]).toNanoOfDay()).stopBlock(LocalTime.parse(timeRange[1]).toNanoOfDay()).network(corNetwork).channel(corChannel));
             }
         }
         return blocks;
@@ -160,7 +160,7 @@ public class ExcelMediaPlan {
                 Double excelCellNumberOfEmission = Double.valueOf(emissionCell.toString().trim()); ///Parametr wypełnienia media planu
                 for (int numberOfEmission = 0; numberOfEmission < excelCellNumberOfEmission.intValue(); numberOfEmission++) {
                     TraBlock traBlock = traBlocks.get(rowIndex - startEmissionRowIndex);
-                    traBlock.addEmissions(new TraEmission().advertiment(traMediaPlanDescriptor.getTraAdvertisement()).network(corNetwork).channel(corChannel));
+                    traBlock.addEmissions(new TraEmission().timeStart(DEFAULT_START_STOP).timeStop(DEFAULT_START_STOP).advertiment(traMediaPlanDescriptor.getTraAdvertisement()).network(corNetwork).channel(corChannel));
                 }
             } catch (NumberFormatException e) {
                 log.debug("Can't parse value of cell as double");

@@ -1,9 +1,13 @@
 package io.protone.web.api.traffic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.ProtoneApp;
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraMediaPlan;
+import io.protone.domain.*;
+import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibLibraryRepository;
+import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraMediaPlanRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
@@ -12,7 +16,10 @@ import io.protone.util.TestUtil;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraMediaPlanResourceImpl;
 import io.protone.web.rest.dto.traffic.TraMediaPlanDTO;
+import io.protone.web.rest.dto.traffic.TraMediaPlanDescriptorDTO;
+import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
+import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import io.protone.web.rest.mapper.TraMediaPlanDescriptorMapper;
 import io.protone.web.rest.mapper.TraMediaPlanMapper;
 import org.junit.Before;
@@ -24,11 +31,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -67,11 +78,26 @@ public class TraMediaPlanResourceImplTest {
     @Inject
     private TraMediaPlanDescriptorMapper traMediaPlanDescriptorMapper;
 
+    @Inject
+    private TraAdvertisementMapper traAdvertisementMapper;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+
+    @Autowired
+    private TraAdvertisementRepository traAdvertisementRepository;
+
+    @Autowired
+    private LibLibraryRepository libLibraryRepository;
+
+    @Autowired
+    private CrmAccountRepository crmAccountRepository;
+
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
@@ -86,10 +112,54 @@ public class TraMediaPlanResourceImplTest {
 
     private CorChannel corChannel;
 
+    private TraMediaPlanDescriptorDTO mediaPlanDescriptor;
+    private TraAdvertisementThinDTO traAdvertisementThinDto;
+    private LibLibrary libLibrary;
+
+    private PodamFactory factory;
+    private CrmAccount crmAccount;
+    private LibMediaItem libMediaItem;
+
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+
+        factory = new PodamFactoryImpl();
+
         TraMediaPlanResourceImpl traMediaPlanResource = new TraMediaPlanResourceImpl();
+        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setShortcut("ppp");
+        libLibrary.network(corNetwork);
+        libLibrary.addChannel(corChannel);
+        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+
+
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.network(corNetwork);
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
+        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
+        libMediaItem.library(libLibrary);
+        libMediaItem.network(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+
+        TraAdvertisement traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
+
+        mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
+            .sheetIndexOfMediaPlan(0)
+            .playlistDatePattern("dd-MMM-yyyy")
+            .playlistDateStartColumn("G")
+            .playlistDateEndColumn("CW")
+            .playlistFirsValueCell("G8")
+            .blockStartCell("A10")
+            .blockEndCell("A47")
+            .blockStartColumn("A")
+            .blockHourSeparator("-")
+            .firstEmissionValueCell("G10")
+            .lastEmissionValueCell("CW47")
+            .traAdvertisment(traAdvertisementMapper.traAdvertisementThinPTFromTraAdvertisement(traAdvertisement));
 
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanMapper", traMediaPlanMapper);
@@ -131,12 +201,13 @@ public class TraMediaPlanResourceImplTest {
         int databaseSizeBeforeCreate = traMediaPlanRepository.findAll().size();
 
         // Create the TraMediaPlan
-        TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(traMediaPlan);
+        MockMultipartFile firstFile = new MockMultipartFile("file", Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls"));
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        restTraMediaPlanMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
-            .andExpect(status().isCreated());
+        restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
+            .file(firstFile).param("traMediaPlanDescriptorDTO", objectMapper.writeValueAsString(mediaPlanDescriptor)))
+            .andExpect(status().is(200))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
 
         // Validate the TraMediaPlan in the database
         List<TraMediaPlan> traMediaPlanList = traMediaPlanRepository.findAll();
@@ -145,26 +216,6 @@ public class TraMediaPlanResourceImplTest {
         assertThat(testTraMediaPlan.getName()).isEqualTo(DEFAULT_NAME);
     }
 
-    @Test
-    @Transactional
-    public void createTraMediaPlanWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = traMediaPlanRepository.findAll().size();
-
-        // Create the TraMediaPlan with an existing ID
-        TraMediaPlan existingTraMediaPlan = new TraMediaPlan();
-        existingTraMediaPlan.setId(1L);
-        TraMediaPlanDTO existingTraMediaPlanDTO = traMediaPlanMapper.DB2DTO(existingTraMediaPlan);
-
-        // An entity with an existing ID cannot be created, so this API call must fail
-        restTraMediaPlanMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraMediaPlanDTO)))
-            .andExpect(status().isBadRequest());
-
-        // Validate the Alice in the database
-        List<TraMediaPlan> traMediaPlanList = traMediaPlanRepository.findAll();
-        assertThat(traMediaPlanList).hasSize(databaseSizeBeforeCreate);
-    }
 
     @Test
     @Transactional

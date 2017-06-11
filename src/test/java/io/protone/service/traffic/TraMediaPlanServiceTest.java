@@ -1,22 +1,41 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
+import io.protone.domain.*;
+import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraMediaPlanRepository;
+import io.protone.service.library.LibItemService;
+import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
+import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
+import io.protone.web.rest.mapper.TraAdvertisementMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 10/06/2017.
@@ -29,6 +48,9 @@ public class TraMediaPlanServiceTest {
     private TraMediaPlanService traMediaPlanService;
 
     @Autowired
+    private TraAdvertisementMapper traAdvertisementMapper;
+
+    @Autowired
     private CorNetworkRepository corNetworkRepository;
 
 
@@ -36,7 +58,7 @@ public class TraMediaPlanServiceTest {
     private CorChannelRepository corChannelRepository;
 
     @Autowired
-    private TraMediaPlanRepository traPlaylistRepository;
+    private TraMediaPlanRepository traMediaPlanRepository;
 
     @Autowired
     private TraAdvertisementRepository traAdvertisementRepository;
@@ -47,34 +69,161 @@ public class TraMediaPlanServiceTest {
     @Autowired
     private LibMediaItemRepository libMediaItemRepository;
 
+    @Autowired
+    private LibLibraryRepository libLibraryRepository;
+
+    @Mock
+    private LibItemService libItemService;
+
     private CorNetwork corNetwork;
 
     private CorChannel corChannel;
 
     private PodamFactory factory;
 
-    @Test
-    public void saveMediaPlan() throws Exception {
+    private CrmAccount crmAccount;
+
+    private LibMediaItem libMediaItem;
+
+    private LibLibrary libLibrary;
+    private TraAdvertisementThinDTO traAdvertisementThinDTO;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+
+        factory = new PodamFactoryImpl();
+        corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corNetwork.setId(null);
+        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        corChannel.setId(null);
+        corChannel.setShortcut("HHH");
+        corChannel.network(corNetwork);
+        corChannelRepository.saveAndFlush(corChannel);
+
+        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setShortcut("ppp");
+        libLibrary.network(corNetwork);
+        libLibrary.addChannel(corChannel);
+        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+
+
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.network(corNetwork);
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
+        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
+        libMediaItem.library(libLibrary);
+        libMediaItem.network(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
     }
 
     @Test
-    public void updateMediaPlan() throws Exception {
+    public void shouldGetMediaPlan() throws Exception {
+        //when
+        TraMediaPlan mediaPlan = factory.manufacturePojo(TraMediaPlan.class);
+        mediaPlan.setNetwork(corNetwork);
+        mediaPlan.setChannel(corChannel);
+        mediaPlan.mediaItem(libMediaItem);
+        mediaPlan.account(crmAccount);
+        mediaPlan = traMediaPlanRepository.save(mediaPlan);
+
+        //then
+        List<TraMediaPlan> fetchedEntity = traMediaPlanService.getMediaPlans(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertEquals(1, fetchedEntity.size());
+        assertEquals(mediaPlan.getId(), fetchedEntity.get(0).getId());
+        assertEquals(mediaPlan.getAccount(), fetchedEntity.get(0).getAccount());
+        assertEquals(mediaPlan.getMediaItem(), fetchedEntity.get(0).getMediaItem());
+        assertEquals(mediaPlan.getNetwork(), fetchedEntity.get(0).getNetwork());
+
     }
 
     @Test
-    public void getMediaPlans() throws Exception {
+    public void shouldSaveMediaPlan() throws Exception {
+        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
+
+        //when
+        MultipartFile multipartFile = new MockMultipartFile("test", "test", "", Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls"));
+        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
+
+        LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItemToShuffle.setNetwork(corNetwork);
+        libMediaItemToShuffle.setLibrary(libLibrary);
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
+
+        TraAdvertisement advertisementToShuffle = factory.manufacturePojo(TraAdvertisement.class);
+        advertisementToShuffle.setCustomer(crmAccount);
+        advertisementToShuffle.setNetwork(corNetwork);
+        advertisementToShuffle.setMediaItem(libMediaItemToShuffle);
+        advertisementToShuffle = traAdvertisementRepository.saveAndFlush(advertisementToShuffle);
+
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
+            .sheetIndexOfMediaPlan(0)
+            .playlistDatePattern("dd-MMM-yyyy")
+            .playlistDateStartColumn("G")
+            .playlistDateEndColumn("CW")
+            .playlistFirsValueCell("G8")
+            .blockStartCell("A10")
+            .blockEndCell("A47")
+            .blockStartColumn("A")
+            .blockHourSeparator("-")
+            .firstEmissionValueCell("G10")
+            .lastEmissionValueCell("CW47")
+            .traAdvertisment(advertisementToShuffle);
+
+        //then
+        TraMediaPlan fetchedEntity = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getName());
+        assertEquals("test", fetchedEntity.getName());
+
     }
 
     @Test
-    public void deleteMediaPlan() throws Exception {
+    public void shouldDeletePlaylist() throws Exception {
+        //when
+        TraMediaPlan mediaPlan = factory.manufacturePojo(TraMediaPlan.class);
+        mediaPlan.mediaItem(libMediaItem);
+        mediaPlan.account(crmAccount);
+        mediaPlan.setNetwork(corNetwork);
+        mediaPlan.setChannel(corChannel);
+        mediaPlan = traMediaPlanRepository.save(mediaPlan);
+        //then
+        traMediaPlanService.deleteMediaPlan(mediaPlan.getId(), corChannel.getShortcut(), corNetwork.getShortcut());
+        TraMediaPlan fetchedEntity = traMediaPlanService.getMediaPlan(mediaPlan.getId(), corChannel.getShortcut(), corNetwork.getShortcut());
+
+        //assert
+        assertNull(fetchedEntity);
     }
 
     @Test
-    public void getMediaPlan() throws Exception {
+    public void shouldGetPlaylist() throws Exception {
+        //when
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class);
+        traMediaPlan.mediaItem(libMediaItem);
+        traMediaPlan.account(crmAccount);
+        traMediaPlan.setNetwork(corNetwork);
+        traMediaPlan.setChannel(corChannel);
+        traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
+
+        //then
+        TraMediaPlan fetchedEntity = traMediaPlanService.getMediaPlan(traMediaPlan.getId(), corNetwork.getShortcut(), corChannel.getShortcut());
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertEquals(traMediaPlan.getId(), fetchedEntity.getId());
+        assertEquals(traMediaPlan.getMediaItem(), fetchedEntity.getMediaItem());
+        assertEquals(traMediaPlan.getNetwork(), fetchedEntity.getNetwork());
+
     }
 
-    @Test
-    public void getCustomerMediaPlan() throws Exception {
-    }
 
 }

@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 08/06/2017.
@@ -48,9 +49,12 @@ public class TraMediaPlanService {
         ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile.getBytes());
         Set<TraMediaPlanPlaylist> parseMediaPlanPlaylists = excelMediaPlan.parseMediaPlan(bais, traMediaPlanDescriptor, corNetwork, corChannel);
         LibMediaItem libMediaItem = libItemService.upload(corNetwork.getShortcut(), MEDIA_PLAN_LIBRARY_SHORTCUT, multipartFile);
-        parseMediaPlanPlaylists = traPlaylistService.savePlaylist(parseMediaPlanPlaylists);
         mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getTraAdvertisement().getCustomer()).name(multipartFile.getOriginalFilename()).playlists(parseMediaPlanPlaylists);
-        return traMediaPlanRepository.saveAndFlush(mediaPlan);
+        mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
+        TraMediaPlan finalMediaPlan = mediaPlan;
+        parseMediaPlanPlaylists = traPlaylistService.savePlaylist(parseMediaPlanPlaylists.stream().map(traMediaPlanPlaylist -> traMediaPlanPlaylist.mediaPlan(finalMediaPlan)).collect(Collectors.toSet()));
+        return traMediaPlanRepository.saveAndFlush(mediaPlan.playlists(parseMediaPlanPlaylists));
+
     }
 
     @Transactional

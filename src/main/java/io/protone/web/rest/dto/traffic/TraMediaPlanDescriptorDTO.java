@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by lukaszozimek on 10/06/2017.
  */
-public class TraMediaPlanDescriptorDTO implements Serializable{
+public class TraMediaPlanDescriptorDTO implements Serializable {
 
     @NotNull
     private String blockStartCell;
@@ -36,6 +36,15 @@ public class TraMediaPlanDescriptorDTO implements Serializable{
 
     @NotNull
     private TraAdvertisementThinDTO traAdvertisement;
+    @NotNull
+    private String blockStartColumn;
+    @NotNull
+    private String firstEmissionValueCell;
+    @NotNull
+    private String lastEmissionValueCell;
+
+    public TraMediaPlanDescriptorDTO() {
+    }
 
     public String getBlockStartCell() {
         return blockStartCell;
@@ -150,7 +159,7 @@ public class TraMediaPlanDescriptorDTO implements Serializable{
 
     @Override
     public String toString() {
-        return "TraMediaPlanDescriptorDTO{" +
+        return "{" +
             "blockStartCell='" + blockStartCell + '\'' +
             ", blockEndCell='" + blockEndCell + '\'' +
             ", blockHourSeparator='" + blockHourSeparator + '\'' +
@@ -161,5 +170,89 @@ public class TraMediaPlanDescriptorDTO implements Serializable{
             ", sheetIndexOfMediaPlan=" + sheetIndexOfMediaPlan +
             ", traAdvertisement=" + traAdvertisement +
             '}';
+    }
+
+    public TraMediaPlanDescriptorDTO sheetIndexOfMediaPlan(int sheetIndexOfMediaPlan) {
+        this.sheetIndexOfMediaPlan = sheetIndexOfMediaPlan;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO playlistDatePattern(String playlistDatePattern) {
+        this.playlistDatePattern = playlistDatePattern;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO playlistDateStartColumn(String playlistDateStartColumn) {
+        this.playlistDateStartColumn = playlistDateStartColumn;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO playlistDateEndColumn(String playlistDateEndColumn) {
+        this.playlistDateEndColumn = playlistDateEndColumn;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO playlistFirsValueCell(String playlistFirsValueCell) {
+        this.playlistFirsValueCell = playlistFirsValueCell;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO blockStartCell(String blockStartCell) {
+        this.blockStartCell = blockStartCell;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO blockEndCell(String blockEndCell) {
+        this.blockEndCell = blockEndCell;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO blockStartColumn(String blockStartColumn) {
+        this.blockStartColumn = blockStartColumn;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO blockHourSeparator(String blockHourSeparator) {
+        this.blockHourSeparator = blockHourSeparator;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO firstEmissionValueCell(String firstEmissionValueCell) {
+        this.firstEmissionValueCell = firstEmissionValueCell;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO lastEmissionValueCell(String lastEmissionValueCell) {
+        this.lastEmissionValueCell = lastEmissionValueCell;
+        return this;
+    }
+
+    public TraMediaPlanDescriptorDTO traAdvertisment(TraAdvertisementThinDTO traAdvertisementThinDto) {
+        this.traAdvertisement = traAdvertisementThinDto;
+        return this;
+    }
+
+    public String getBlockStartColumn() {
+        return blockStartColumn;
+    }
+
+    public void setBlockStartColumn(String blockStartColumn) {
+        this.blockStartColumn = blockStartColumn;
+    }
+
+    public String getFirstEmissionValueCell() {
+        return firstEmissionValueCell;
+    }
+
+    public void setFirstEmissionValueCell(String firstEmissionValueCell) {
+        this.firstEmissionValueCell = firstEmissionValueCell;
+    }
+
+    public String getLastEmissionValueCell() {
+        return lastEmissionValueCell;
+    }
+
+    public void setLastEmissionValueCell(String lastEmissionValueCell) {
+        this.lastEmissionValueCell = lastEmissionValueCell;
     }
 }

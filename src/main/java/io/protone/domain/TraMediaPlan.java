@@ -31,7 +31,7 @@ public class TraMediaPlan implements Serializable {
 
     @OneToOne
     @PodamExclude
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, nullable = false)
     private LibMediaItem mediaItem;
 
     @ManyToOne

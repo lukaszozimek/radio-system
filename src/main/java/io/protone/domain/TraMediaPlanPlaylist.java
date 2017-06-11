@@ -25,7 +25,7 @@ public class TraMediaPlanPlaylist implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "playlist_date")
+    @Column(name = "playlist_date", nullable = false)
     private LocalDate playlistDate;
 
     @ManyToOne

@@ -1,6 +1,7 @@
 package io.protone.web.api.traffic.impl;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraMediaPlan;
@@ -24,11 +25,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -37,6 +40,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by lukaszozimek on 14.05.2017.
@@ -66,12 +70,13 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     @Override
     public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                  @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @PathParam("parsingInfo") String traMediaPlanDescriptorDTO,
-                                                                                  @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException {
+                                                                                  @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO") String traMediaPlanDescriptorDTO,
+                                                                                  @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-
-        TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = new Gson().fromJson(traMediaPlanDescriptorDTO, TraMediaPlanDescriptorDTO.class);
-        validator.validate(traMediaPlanDescriptorDeserialized, TraMediaPlanDescriptorDTO.class);
+        ObjectMapper mapper = new ObjectMapper();
+        TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = mapper.readValue(traMediaPlanDescriptorDTO, new TypeReference<TraMediaPlanDescriptorDTO>() {
+        });
+        Set<ConstraintViolation<TraMediaPlanDescriptorDTO>> constraintViolations = validator.validate(traMediaPlanDescriptorDeserialized);
         TraMediaPlanDescriptor traMediaPlanDescriptor = traMediaPlanDescriptorMapper.DTO2DB(traMediaPlanDescriptorDeserialized);
         if (traMediaPlanDescriptor == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanDTO", "wrongSchema", "Can't add Element if TraMediaPlanDescriptorDTO doesn't exist")).body(null);

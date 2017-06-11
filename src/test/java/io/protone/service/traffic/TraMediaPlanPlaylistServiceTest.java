@@ -1,12 +1,12 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraMediaPlanPlaylist;
+import io.protone.domain.*;
+import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraMediaPlanRepository;
@@ -55,14 +55,32 @@ public class TraMediaPlanPlaylistServiceTest {
     @Autowired
     private LibMediaItemRepository libMediaItemRepository;
 
+    @Autowired
+    private LibLibraryRepository libLibraryRepository;
+
+    @Autowired
+    private TraMediaPlanRepository traMediaPlanRepository;
+
+
     private CorNetwork corNetwork;
 
     private CorChannel corChannel;
 
     private PodamFactory factory;
 
+    private LibLibrary libLibrary;
+
+
+    private CrmAccount crmAccount;
+
+    private LibMediaItem libMediaItem;
+
+    private TraMediaPlan traMediaPlan;
+
+
     @Before
     public void setup() {
+
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
@@ -73,15 +91,42 @@ public class TraMediaPlanPlaylistServiceTest {
         corChannel.setShortcut("HHH");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
+        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setShortcut("ppp");
+        libLibrary.network(corNetwork);
+        libLibrary.addChannel(corChannel);
+        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+
+
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.network(corNetwork);
+        crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
+        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
+        libMediaItem.library(libLibrary);
+        libMediaItem.network(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+
+        traMediaPlan = factory.manufacturePojo(TraMediaPlan.class);
+        traMediaPlan.setId(null);
+        traMediaPlan.channel(corChannel);
+        traMediaPlan.network(corNetwork);
+        traMediaPlan.account(crmAccount);
+        traMediaPlan.mediaItem(libMediaItem);
+
+        traMediaPlan = traMediaPlanRepository.saveAndFlush(traMediaPlan);
+
     }
 
     @Test
     public void savePlaylist() throws Exception {
         //when
         TraMediaPlanPlaylist traPlaylist = factory.manufacturePojo(TraMediaPlanPlaylist.class);
-        Set<TraMediaPlanPlaylist> traMediaPlanPlaylistSet = Sets.newSet(traPlaylist);
         traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
+        traPlaylist.setMediaPlan(traMediaPlan);
+        Set<TraMediaPlanPlaylist> traMediaPlanPlaylistSet = Sets.newSet(traPlaylist);
+
         //then
         Set<TraMediaPlanPlaylist> traMediaPlanPlaylists = traMediaPlanPlaylistService.savePlaylist(traMediaPlanPlaylistSet);
 

@@ -6,10 +6,7 @@ import io.swagger.annotations.*;
 import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
@@ -35,12 +32,11 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
-        consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                           @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @PathParam("parsingInfo") String traMediaPlanDescriptorDTO,
-                                                                           @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException;
+                                                                           @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO") String traMediaPlanDescriptorDTO,
+                                                                           @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException;
 
 
     @ApiOperation(value = "deleteChannelTrafficMediaPlan", notes = "", response = Void.class, tags = {"TRAFFIC",})
