@@ -3,11 +3,11 @@ package io.protone.service.traffic;
 import io.protone.ProtoneApp;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.service.library.LibItemService;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
+import io.protone.service.library.LibItemService;
 import org.apache.commons.lang.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,6 +57,7 @@ public class TraAdvertisementServiceTest {
     private CorNetwork corNetwork;
 
     private CrmAccount crmAccount;
+
     private LibMediaItem libMediaItem;
 
     private PodamFactory factory;

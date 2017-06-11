@@ -3,8 +3,8 @@ package io.protone.service.traffic;
 import io.protone.domain.TraAdvertisement;
 import io.protone.domain.TraBlock;
 import io.protone.domain.TraEmission;
-import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.domain.TraPlaylist;
+import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,6 @@ public class TraAdvertisementShuffleService {
 
     @Inject
     private TraPlaylistService traPlaylistService;
-
 
     @Inject
     private TraAdvertisementService traAdvertisementService;

@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
@@ -61,14 +62,13 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     @Inject
     private TraMediaPlanDescriptorMapper traMediaPlanDescriptorMapper;
 
-    @Inject
-    private Validator validator;
 
     @Override
     public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @PathParam("parsingInfo") String traMediaPlanDescriptorDTO,
                                                                                   @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
         TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = new Gson().fromJson(traMediaPlanDescriptorDTO, TraMediaPlanDescriptorDTO.class);
         validator.validate(traMediaPlanDescriptorDeserialized, TraMediaPlanDescriptorDTO.class);

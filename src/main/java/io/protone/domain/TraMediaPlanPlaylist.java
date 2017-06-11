@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -30,12 +29,15 @@ public class TraMediaPlanPlaylist implements Serializable {
     private LocalDate playlistDate;
 
     @ManyToOne
+    @PodamExclude
     private TraMediaPlan mediaPlan;
 
     @ManyToOne
+    @PodamExclude
     private CorChannel channel;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
 

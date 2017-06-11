@@ -4,10 +4,7 @@ import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.errors.*;
 import io.protone.config.ApplicationProperties;
-import io.protone.config.s3.exceptions.DeleteException;
-import io.protone.config.s3.exceptions.DownloadException;
-import io.protone.config.s3.exceptions.S3Exception;
-import io.protone.config.s3.exceptions.UploadException;
+import io.protone.config.s3.exceptions.*;
 import org.springframework.stereotype.Component;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -41,6 +38,60 @@ public class S3Client {
         }
 
         return client;
+    }
+
+    public String makeBucket(String bucketName) throws CreateBucketException {
+        try {
+            getClient().makeBucket(bucketName);
+            return bucketName;
+        } catch (InvalidBucketNameException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (IOException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InternalException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (S3Exception e) {
+            throw new CreateBucketException(e.getMessage());
+        }
+    }
+
+    public String removeBucket(String bucketName) throws DeleteBucketException {
+        try {
+            getClient().removeBucket(bucketName);
+            return bucketName;
+        } catch (InvalidBucketNameException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (IOException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (InternalException e) {
+            throw new DeleteBucketException(e.getMessage());
+        } catch (S3Exception e) {
+            throw new DeleteBucketException(e.getMessage());
+        }
     }
 
     public void upload(String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {

@@ -3,6 +3,7 @@ package io.protone.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,21 +30,26 @@ public class TraMediaPlan implements Serializable {
     private String name;
 
     @OneToOne
+    @PodamExclude
     @JoinColumn(unique = true)
     private LibMediaItem mediaItem;
 
     @ManyToOne
+    @PodamExclude
     private CorChannel channel;
 
     @ManyToOne
+    @PodamExclude
     private CrmAccount account;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @OneToMany(mappedBy = "mediaPlan")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @PodamExclude
     private Set<TraMediaPlanPlaylist> playlists = new HashSet<>();
 
     public Long getId() {
