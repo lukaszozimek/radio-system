@@ -1,12 +1,19 @@
 package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.domain.CorChannel;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraMediaPlan;
 import io.protone.repository.traffic.TraMediaPlanRepository;
+import io.protone.service.cor.CorChannelService;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.service.traffic.TraMediaPlanService;
 import io.protone.util.TestUtil;
+import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraMediaPlanResourceImpl;
 import io.protone.web.rest.dto.traffic.TraMediaPlanDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
+import io.protone.web.rest.mapper.TraMediaPlanDescriptorMapper;
 import io.protone.web.rest.mapper.TraMediaPlanMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,10 +25,12 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -43,8 +52,20 @@ public class TraMediaPlanResourceImplTest {
     @Autowired
     private TraMediaPlanRepository traMediaPlanRepository;
 
-    @Autowired
+    @Inject
+    private TraMediaPlanService traMediaPlanService;
+
+    @Inject
     private TraMediaPlanMapper traMediaPlanMapper;
+
+    @Inject
+    private CorNetworkService corNetworkService;
+
+    @Inject
+    private CorChannelService corChannelService;
+
+    @Inject
+    private TraMediaPlanDescriptorMapper traMediaPlanDescriptorMapper;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -61,11 +82,20 @@ public class TraMediaPlanResourceImplTest {
     private MockMvc restTraMediaPlanMockMvc;
 
     private TraMediaPlan traMediaPlan;
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         TraMediaPlanResourceImpl traMediaPlanResource = new TraMediaPlanResourceImpl();
+
+        ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
+        ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanMapper", traMediaPlanMapper);
+        ReflectionTestUtils.setField(traMediaPlanResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traMediaPlanResource, "corChannelService", corChannelService);
+        ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanDescriptorMapper", traMediaPlanDescriptorMapper);
         this.restTraMediaPlanMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -86,7 +116,13 @@ public class TraMediaPlanResourceImplTest {
 
     @Before
     public void initTest() {
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
         traMediaPlan = createEntity(em);
+        traMediaPlan.setChannel(corChannel);
+        traMediaPlan.setNetwork(corNetwork);
     }
 
     @Test
@@ -97,7 +133,7 @@ public class TraMediaPlanResourceImplTest {
         // Create the TraMediaPlan
         TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(traMediaPlan);
 
-        restTraMediaPlanMockMvc.perform(post("/api/tra-media-plans")
+        restTraMediaPlanMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
             .andExpect(status().isCreated());
@@ -120,7 +156,7 @@ public class TraMediaPlanResourceImplTest {
         TraMediaPlanDTO existingTraMediaPlanDTO = traMediaPlanMapper.DB2DTO(existingTraMediaPlan);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraMediaPlanMockMvc.perform(post("/api/tra-media-plans")
+        restTraMediaPlanMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingTraMediaPlanDTO)))
             .andExpect(status().isBadRequest());
@@ -137,7 +173,7 @@ public class TraMediaPlanResourceImplTest {
         traMediaPlanRepository.saveAndFlush(traMediaPlan);
 
         // Get all the traMediaPlanList
-        restTraMediaPlanMockMvc.perform(get("/api/tra-media-plans?sort=id,desc"))
+        restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(traMediaPlan.getId().intValue())))
@@ -151,7 +187,7 @@ public class TraMediaPlanResourceImplTest {
         traMediaPlanRepository.saveAndFlush(traMediaPlan);
 
         // Get the traMediaPlan
-        restTraMediaPlanMockMvc.perform(get("/api/tra-media-plans/{id}", traMediaPlan.getId()))
+        restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(traMediaPlan.getId().intValue()))
@@ -162,7 +198,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void getNonExistingTraMediaPlan() throws Exception {
         // Get the traMediaPlan
-        restTraMediaPlanMockMvc.perform(get("/api/tra-media-plans/{id}", Long.MAX_VALUE))
+        restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -179,7 +215,7 @@ public class TraMediaPlanResourceImplTest {
             .name(UPDATED_NAME);
         TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(updatedTraMediaPlan);
 
-        restTraMediaPlanMockMvc.perform(put("/api/tra-media-plans")
+        restTraMediaPlanMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
             .andExpect(status().isOk());
@@ -200,7 +236,7 @@ public class TraMediaPlanResourceImplTest {
         TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(traMediaPlan);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraMediaPlanMockMvc.perform(put("/api/tra-media-plans")
+        restTraMediaPlanMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
             .andExpect(status().isCreated());
@@ -218,7 +254,7 @@ public class TraMediaPlanResourceImplTest {
         int databaseSizeBeforeDelete = traMediaPlanRepository.findAll().size();
 
         // Get the traMediaPlan
-        restTraMediaPlanMockMvc.perform(delete("/api/tra-media-plans/{id}", traMediaPlan.getId())
+        restTraMediaPlanMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
