@@ -3,6 +3,7 @@ package io.protone.service.traffic.mediaplan;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.protone.domain.*;
+import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
@@ -36,11 +37,11 @@ public class ExcelMediaPlan {
     private final Logger log = LoggerFactory.getLogger(ExcelMediaPlan.class);
 
 
-    public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream bais, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
+    public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream bais, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
         Workbook workbook = new HSSFWorkbook(bais);
-        Sheet sheet = workbook.getSheetAt(0);
-        Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet);
-        Set<TraMediaPlanPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traAdvertisement, corNetwork, corChannel);
+        Sheet sheet = workbook.getSheetAt(traMediaPlanDescriptor.getSheetIndexOfMediaPlan());
+        Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet, traMediaPlanDescriptor);
+        Set<TraMediaPlanPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traMediaPlanDescriptor, corNetwork, corChannel);
         return paredFromMediaPlan;
     }
 
@@ -96,18 +97,18 @@ public class ExcelMediaPlan {
         return (parsedStartBlock <= entityStratBlock && entityStratBlock <= parsedEndBlock);
     }
 
-    private Map<Integer, LocalDate> findPlaylistInExcel(Sheet sheet) {
+    private Map<Integer, LocalDate> findPlaylistInExcel(Sheet sheet, TraMediaPlanDescriptor traMediaPlanDescriptor) {
         Map<Integer, LocalDate> dateHashMap = new HashMap<>();
-        int startIndex = CellReference.convertColStringToIndex("G"); //Kolumna poczatkowa dat
-        int stopIndex = CellReference.convertColStringToIndex("CW"); //Kolumna koncowa dat
-        CellReference cellReference = new CellReference("G8"); //Kolumna adres kolumny pierwszej daty
+        int startIndex = CellReference.convertColStringToIndex(traMediaPlanDescriptor.getPlaylistDateStartColumn()); //Kolumna poczatkowa dat
+        int stopIndex = CellReference.convertColStringToIndex(traMediaPlanDescriptor.getPlaylistDateEndColumn()); //Kolumna koncowa dat
+        CellReference cellReference = new CellReference(traMediaPlanDescriptor.getPlaylistFirsValueCell()); //Kolumna adres kolumny pierwszej daty
         Row row = sheet.getRow(cellReference.getRow());
 
         for (int i = startIndex; i < (stopIndex - startIndex); i++) {
 
             Cell cell = row.getCell(i);
             try {
-                dateHashMap.put(row.getCell(i).getColumnIndex(), LocalDate.parse(cell.toString(), DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+                dateHashMap.put(row.getCell(i).getColumnIndex(), LocalDate.parse(cell.toString(), DateTimeFormatter.ofPattern(traMediaPlanDescriptor.getPlaylistDatePattern())));
 
             } catch (DateTimeParseException ex) {
                 log.debug("Excel Column doesn't have valid date time Pattern ");
@@ -116,22 +117,22 @@ public class ExcelMediaPlan {
         return dateHashMap;
     }
 
-    private Set<TraMediaPlanPlaylist> buildPlaylist(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel) {
+    private Set<TraMediaPlanPlaylist> buildPlaylist(Sheet sheet, Map<Integer, LocalDate> dateHashMap, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) {
         Set<TraMediaPlanPlaylist> traPlaylists = Sets.newHashSet();
-        int blockColumnIndex = CellReference.convertColStringToIndex("A"); /// Kolumna poczatkowa bloków
-        CellReference blockStrat = new CellReference("A10");//Pierwsza wartośc deklaracji blokwo
-        CellReference blockEnd = new CellReference("A47");//Pierwszej wartości deklaracji blokow
+        int blockColumnIndex = CellReference.convertColStringToIndex(traMediaPlanDescriptor.getBlockStartColumn()); /// Kolumna poczatkowa bloków
+        CellReference blockStrat = new CellReference(traMediaPlanDescriptor.getBlockStartCell());//Pierwsza wartośc deklaracji blokwo
+        CellReference blockEnd = new CellReference(traMediaPlanDescriptor.getBlockEndCell());//Pierwszej wartości deklaracji blokow
 
         dateHashMap.keySet().stream().forEach(columnIndex -> {
-            List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex);
-            traPlaylists.add(new TraMediaPlanPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traAdvertisement, corNetwork, corChannel, parsedBlocks)));
+            List<TraBlock> parsedBlocks = parseBlocks(sheet, blockStrat, blockEnd, blockColumnIndex, traMediaPlanDescriptor);
+            traPlaylists.add(new TraMediaPlanPlaylist().playlistDate(dateHashMap.get(columnIndex)).playlists(findEmissionsInDay(sheet, columnIndex, traMediaPlanDescriptor, corNetwork, corChannel, parsedBlocks)));
         });
         return traPlaylists;
 
     }
 
-    private List<TraBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex) {
-        String hourSeparator = "-";
+    private List<TraBlock> parseBlocks(Sheet sheet, CellReference blockCellStart, CellReference blockCellEnd, int blockColumnIndex, TraMediaPlanDescriptor traMediaPlanDescriptor) {
+        String hourSeparator = traMediaPlanDescriptor.getBlockHourSeparator();
         List<TraBlock> blocks = Lists.newArrayList();
         int startBlockIndex = blockCellStart.getRow();
         int stopBlockIndex = blockCellEnd.getRow();
@@ -146,18 +147,23 @@ public class ExcelMediaPlan {
     }
 
 
-    private Set<TraBlock> findEmissionsInDay(Sheet sheet, Integer columnIndex, TraAdvertisement traAdvertisement, CorNetwork corNetwork, CorChannel corChannel, List<TraBlock> traBlocks) {
+    private Set<TraBlock> findEmissionsInDay(Sheet sheet, Integer columnIndex, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel, List<TraBlock> traBlocks) {
 
-        CellReference emissionStart = new CellReference("G10");//Pierwszej wartości emisji
-        CellReference emissionsStop = new CellReference("CW47"); //Adress komórki po przekątnej zakresu wartości emisji
+        CellReference emissionStart = new CellReference(traMediaPlanDescriptor.getFirstEmissionValueCell());//Pierwszej wartości emisji
+        CellReference emissionsStop = new CellReference(traMediaPlanDescriptor.getLastEmissionValueCell()); //Adress komórki po przekątnej zakresu wartości emisji
         int startEmissionRowIndex = emissionStart.getRow();
         int emissionsStopRow = emissionsStop.getRow();
 
         for (int rowIndex = startEmissionRowIndex; rowIndex <= emissionsStopRow; rowIndex++) {
             Cell emissionCell = sheet.getRow(rowIndex).getCell(columnIndex);
-            if (emissionCell.toString().trim().equals("1.0")) { ///Parametr wypełnienia media planu
-                TraBlock traBlock = traBlocks.get(rowIndex - startEmissionRowIndex);
-                traBlock.addEmissions(new TraEmission().advertiment(traAdvertisement).network(corNetwork).channel(corChannel));
+            try {
+                Double excelCellNumberOfEmission = Double.valueOf(emissionCell.toString().trim()); ///Parametr wypełnienia media planu
+                for (int numberOfEmission = 0; numberOfEmission < excelCellNumberOfEmission.intValue(); numberOfEmission++) {
+                    TraBlock traBlock = traBlocks.get(rowIndex - startEmissionRowIndex);
+                    traBlock.addEmissions(new TraEmission().advertiment(traMediaPlanDescriptor.getTraAdvertisement()).network(corNetwork).channel(corChannel));
+                }
+            } catch (NumberFormatException e) {
+                log.debug("Can't parse value of cell as double");
             }
         }
         return new HashSet<>(traBlocks);
@@ -165,7 +171,9 @@ public class ExcelMediaPlan {
 
 
     public class PlaylistDiff {
+
         private List<TraPlaylist> entityPlaylist;
+
         private List<TraPlaylist> parsedFromExcel;
 
         public List<TraPlaylist> getEntityPlaylist() {

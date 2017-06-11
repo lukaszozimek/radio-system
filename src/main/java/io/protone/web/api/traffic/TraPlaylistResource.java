@@ -1,7 +1,7 @@
 package io.protone.web.api.traffic;
 
-import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
+import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +25,7 @@ import java.util.List;
 
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface TraPlaylistResource {
-    @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "creatChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraPlaylistDTO.class),
@@ -41,7 +41,7 @@ public interface TraPlaylistResource {
                                                                         @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteSchedulerPlaylistForChannel", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "deleteChannelTrafficPlaylist", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -56,7 +56,7 @@ public interface TraPlaylistResource {
                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
@@ -69,7 +69,7 @@ public interface TraPlaylistResource {
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "date", required = true) @Valid @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
@@ -82,7 +82,7 @@ public interface TraPlaylistResource {
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "getAllChannelTrafficPlaylistInRange", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
@@ -96,7 +96,7 @@ public interface TraPlaylistResource {
                                                                                      @ApiParam(value = "fromDate", required = true) @PathVariable("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                                                                      @ApiParam(value = "toDate", required = true) @PathVariable("toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate);
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "createChannelTrafficPlaylistInRange", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
@@ -110,7 +110,7 @@ public interface TraPlaylistResource {
                                                                                       @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody List<TraPlaylistDTO> traPlaylistDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "getDownloadChannelTrafficPlaylist", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Void.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
@@ -119,13 +119,13 @@ public interface TraPlaylistResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}/download",
         produces = {"application/json"},
         method = RequestMethod.GET)
-   void getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                                                                   HttpServletResponse response) throws IOException;
+    void getDownloadChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                   @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                                   HttpServletResponse response) throws IOException;
 
 
-    @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "updateChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraPlaylistDTO.class),
@@ -139,7 +139,8 @@ public interface TraPlaylistResource {
     ResponseEntity<TraPlaylistDTO> updateChannelTrafficPlaylistUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                         @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException;
-    @ApiOperation(value = "updateAdvertisement", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
+
+    @ApiOperation(value = "shuffleCommercial", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraPlaylistDTO.class),
@@ -153,7 +154,6 @@ public interface TraPlaylistResource {
     ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException;
-
 
 
 }

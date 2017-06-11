@@ -7,6 +7,7 @@ import io.protone.domain.TraPlaylist;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.service.traffic.TraPlaylistService;
 import io.protone.service.traffic.base.TraPlaylistBasedTest;
+import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -37,7 +38,6 @@ import static org.junit.Assert.*;
 @Transactional
 public class ExcelMediaPlanTest extends TraPlaylistBasedTest {
 
-    private InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
 
     @Autowired
     private ExcelMediaPlan excelMediaPlan;
@@ -68,12 +68,27 @@ public class ExcelMediaPlanTest extends TraPlaylistBasedTest {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
         final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 75;
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
+            .sheetIndexOfMediaPlan(0)
+            .playlistDatePattern("dd-MMM-yyyy")
+            .playlistDateStartColumn("G")
+            .playlistDateEndColumn("CW")
+            .playlistFirsValueCell("G8")
+            .blockStartCell("A10")
+            .blockEndCell("A47")
+            .blockStartColumn("A")
+            .blockHourSeparator("-")
+            .firstEmissionValueCell("G10")
+            .lastEmissionValueCell("CW47")
+            .traAdvertisment(advertisementToShuffle);
+
 
         //when
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
 
         //then
-        Set<TraMediaPlanPlaylist> playlistOverview = excelMediaPlan.parseMediaPlan(byteArrayInputStream, advertisementToShuffle, corNetwork, corChannel);
+        Set<TraMediaPlanPlaylist> playlistOverview = excelMediaPlan.parseMediaPlan(byteArrayInputStream, mediaPlanDescriptor, corNetwork, corChannel);
 
         //get Emission Flat structure
         playlistOverview.stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
@@ -86,16 +101,28 @@ public class ExcelMediaPlanTest extends TraPlaylistBasedTest {
 
     @Test
     public void shouldMapFullMediaPlanWithPlaylistWhenPlaylistIsEmpty() throws Exception {
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
+            .sheetIndexOfMediaPlan(0)
+            .playlistDatePattern("dd-MMM-yyyy")
+            .playlistDateStartColumn("G")
+            .playlistDateEndColumn("CW")
+            .playlistFirsValueCell("G8")
+            .blockStartCell("A10")
+            .blockEndCell("A47")
+            .blockStartColumn("A")
+            .blockHourSeparator("-")
+            .firstEmissionValueCell("G10")
+            .lastEmissionValueCell("CW47")
+            .traAdvertisment(advertisementToShuffle);
         //when
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
-
 
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
         List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
 
-
-        Set<TraMediaPlanPlaylist> parsedMediaPlanPlaylist = excelMediaPlan.parseMediaPlan(byteArrayInputStream, advertisementToShuffle, corNetwork, corChannel);
+        Set<TraMediaPlanPlaylist> parsedMediaPlanPlaylist = excelMediaPlan.parseMediaPlan(byteArrayInputStream, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
         parsedMediaPlanPlaylist.stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
         List<LocalDate> playListsDates = parsedMediaPlanPlaylist.stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());

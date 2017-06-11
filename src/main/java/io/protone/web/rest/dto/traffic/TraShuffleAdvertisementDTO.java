@@ -2,23 +2,26 @@ package io.protone.web.rest.dto.traffic;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  * Created by lukaszozimek on 06/03/2017.
  */
-public class TraShuffleAdvertisementDTO {
+public class TraShuffleAdvertisementDTO implements Serializable {
 
-    @JsonProperty("advertisement")
+
+    @NotNull
     private TraAdvertisementDTO traAdvertisementDTO;
 
-    @JsonProperty("from")
+    @NotNull
     private LocalDate from;
 
-    @JsonProperty("to")
+    @NotNull
     private LocalDate to;
 
-    @JsonProperty("number")
+    @NotNull
     private int number;
 
     @JsonProperty("optional")

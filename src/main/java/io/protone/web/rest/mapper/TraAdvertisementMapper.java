@@ -1,8 +1,10 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.TraAdvertisement;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
-import io.protone.domain.*;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -43,9 +45,25 @@ public interface TraAdvertisementMapper {
         entity.setNetwork(corNetwork);
     }
 
+    @Mapping(source = "customerId", target = "customer")
     TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinDTO coreUserThinPT);
 
+    @Mapping(source = "customer", target = "customerId")
     TraAdvertisementThinDTO traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
 
+    default CrmAccount crmAccountFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        CrmAccount crmAccount = new CrmAccount();
+        crmAccount.setId(id);
+        return crmAccount;
+    }
 
+    default Long idFromCrmAccount(CrmAccount account) {
+        if (account == null) {
+            return null;
+        }
+        return account.getId();
+    }
 }
