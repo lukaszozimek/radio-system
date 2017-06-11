@@ -1,5 +1,6 @@
 package io.protone.web.rest.dto.traffic;
 
+import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ public class TraMediaPlanDTO implements Serializable {
     private String name;
 
     @NotNull
-    private Long mediaItemId;
+    private LibMediaItemThinDTO mediaItemId;
 
     @NotNull
     private TraCustomerThinDTO traCustomerThinDTO;
@@ -48,11 +49,11 @@ public class TraMediaPlanDTO implements Serializable {
         this.name = name;
     }
 
-    public Long getMediaItemId() {
+    public LibMediaItemThinDTO getMediaItemId() {
         return mediaItemId;
     }
 
-    public void setMediaItemId(Long mediaItemId) {
+    public void setMediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
     }
 
@@ -74,7 +75,8 @@ public class TraMediaPlanDTO implements Serializable {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (mediaItemId != null ? !mediaItemId.equals(that.mediaItemId) : that.mediaItemId != null) return false;
-        if (traCustomerThinDTO != null ? !traCustomerThinDTO.equals(that.traCustomerThinDTO) : that.traCustomerThinDTO != null) return false;
+        if (traCustomerThinDTO != null ? !traCustomerThinDTO.equals(that.traCustomerThinDTO) : that.traCustomerThinDTO != null)
+            return false;
         return mediaPlanPlaylistDTOS != null ? mediaPlanPlaylistDTOS.equals(that.mediaPlanPlaylistDTOS) : that.mediaPlanPlaylistDTOS == null;
     }
 

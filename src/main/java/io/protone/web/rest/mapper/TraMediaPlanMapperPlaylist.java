@@ -1,10 +1,9 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.domain.*;
-import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
-import org.mapstruct.*;
+import io.protone.domain.TraMediaPlanPlaylist;
+import io.protone.domain.TraPlaylist;
+import org.mapstruct.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +16,7 @@ public interface TraMediaPlanMapperPlaylist {
 
     TraPlaylist mediaPlanPlaylistToTraPlaylist(TraMediaPlanPlaylist traMediaPlanPlaylist);
 
-    List<TraPlaylist> mediaPlanPlaylistToTraPlaylist(Set<TraMediaPlanPlaylist> traMediaPlanPlaylists);
+    List<TraPlaylist> mediaPlanPlaylistsToTraPlaylists(Set<TraMediaPlanPlaylist> traMediaPlanPlaylists);
 
     TraMediaPlanPlaylist traPlaylistToTraMediaPlanPlaylist(TraPlaylist traPlaylist);
 

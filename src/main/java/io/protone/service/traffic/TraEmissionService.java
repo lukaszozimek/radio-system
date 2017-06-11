@@ -14,13 +14,12 @@ import java.util.Set;
  */
 @Service
 public class TraEmissionService {
+
     @Autowired
     private TraEmissionRepository traEmissionRepository;
 
-
     @Transactional
     public Set<TraEmission> saveTraEmissions(Set<TraEmission> traEmissions) {
-
         return Sets.newHashSet(traEmissionRepository.save(traEmissions));
     }
 }

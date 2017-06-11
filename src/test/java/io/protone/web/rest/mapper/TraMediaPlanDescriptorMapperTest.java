@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by lukaszozimek on 11/06/2017.
  */
@@ -37,5 +39,16 @@ public class TraMediaPlanDescriptorMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
+
+        assertNotNull(traMediaPlanDescriptor.getBlockStartCell());
+        assertNotNull(traMediaPlanDescriptor.getBlockEndCell());
+        assertNotNull(traMediaPlanDescriptor.getBlockHourSeparator());
+        assertNotNull(traMediaPlanDescriptor.getPlaylistDateStartColumn());
+        assertNotNull(traMediaPlanDescriptor.getPlaylistDateEndColumn());
+        assertNotNull(traMediaPlanDescriptor.getPlaylistFirsValueCell());
+        assertNotNull(traMediaPlanDescriptor.getPlaylistDatePattern());
+        assertNotNull(traMediaPlanDescriptor.getSheetIndexOfMediaPlan());
+        assertNotNull(traMediaPlanDescriptor.getTraAdvertisement());
+
     }
 }

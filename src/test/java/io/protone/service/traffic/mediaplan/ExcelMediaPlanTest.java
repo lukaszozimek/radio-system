@@ -129,7 +129,7 @@ public class ExcelMediaPlanTest extends TraPlaylistBasedTest {
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //then
-        ExcelMediaPlan.PlaylistDiff playlistOverview = excelMediaPlan.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistToTraPlaylist(parsedMediaPlanPlaylist), advertisementToShuffle);
+        ExcelMediaPlan.PlaylistDiff playlistOverview = excelMediaPlan.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(parsedMediaPlanPlaylist), advertisementToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));

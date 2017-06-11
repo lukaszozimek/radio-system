@@ -1,5 +1,7 @@
 package io.protone.web.rest.dto.traffic.thin;
 
+import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -13,7 +15,7 @@ public class TraMediaPlanThinDTO implements Serializable {
     private String name;
 
     @NotNull
-    private Long mediaItemId;
+    private LibMediaItemThinDTO mediaItemId;
 
     @NotNull
     private TraCustomerThinDTO traCustomerThinDTO;
@@ -34,11 +36,11 @@ public class TraMediaPlanThinDTO implements Serializable {
         this.name = name;
     }
 
-    public Long getMediaItemId() {
+    public LibMediaItemThinDTO getMediaItemId() {
         return mediaItemId;
     }
 
-    public void setMediaItemId(Long mediaItemId) {
+    public void setMediaItemId(LibMediaItemThinDTO mediaItemId) {
         this.mediaItemId = mediaItemId;
     }
 

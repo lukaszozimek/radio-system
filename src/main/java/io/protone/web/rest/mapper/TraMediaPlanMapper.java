@@ -18,9 +18,11 @@ public interface TraMediaPlanMapper {
 
     @Mapping(source = "account", target = "traCustomerThinDTO")
     @Mapping(source = "playlists", target = "mediaPlanPlaylistDTOS")
+    @Mapping(source = "mediaItem", target = "mediaItemId")
     TraMediaPlanDTO DB2DTO(TraMediaPlan traMediaPlan);
 
     @Mapping(source = "account", target = "traCustomerThinDTO")
+    @Mapping(source = "mediaItem", target = "mediaItemId")
     TraMediaPlanThinDTO DBThin2DTOThin(TraMediaPlan traMediaPlan);
 
     List<TraMediaPlanDTO> DBs2DTOs(List<TraMediaPlan> traMediaPlans);
@@ -29,6 +31,7 @@ public interface TraMediaPlanMapper {
 
     @Mapping(source = "traCustomerThinDTO", target = "account")
     @Mapping(source = "mediaPlanPlaylistDTOS", target = "playlists")
+    @Mapping(source = "mediaItemId", target = "mediaItem")
     TraMediaPlan DTO2DB(TraMediaPlanDTO traMediaPlanDTO, @Context CorNetwork network, @Context CorChannel corChannel);
 
     default List<TraMediaPlan> DTOs2DBs(List<TraMediaPlanDTO> traMediaPlanDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
