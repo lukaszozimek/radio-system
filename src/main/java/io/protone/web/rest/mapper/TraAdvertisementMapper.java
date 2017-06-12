@@ -46,9 +46,11 @@ public interface TraAdvertisementMapper {
     }
 
     @Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "mediaItemId", target = "mediaItem")
     TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinDTO coreUserThinPT);
 
     @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "mediaItem", target = "mediaItemId")
     TraAdvertisementThinDTO traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
 
     default CrmAccount crmAccountFromId(Long id) {

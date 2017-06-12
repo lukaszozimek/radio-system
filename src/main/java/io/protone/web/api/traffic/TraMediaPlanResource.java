@@ -80,6 +80,7 @@ public interface TraMediaPlanResource {
                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable);
 
+
     @ApiOperation(value = "updateChannelTrafficMediaPlan", notes = "", response = TraMediaPlanDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraMediaPlanDTO.class),

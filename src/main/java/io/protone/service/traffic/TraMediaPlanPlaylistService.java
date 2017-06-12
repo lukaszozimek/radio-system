@@ -31,5 +31,13 @@ public class TraMediaPlanPlaylistService {
         }).collect(toSet());
     }
 
+    @Transactional
+    public void deletePlaylist(Set<TraMediaPlanPlaylist> traPlaylistLists) {
+        traPlaylistLists.stream().forEach(traPlaylistList -> {
+            traBlockService.deleteBlockSet(traPlaylistList.getPlaylists());
+            traMediaPlanPlaylistRepository.delete(traPlaylistList);
+        });
+    }
+
 
 }

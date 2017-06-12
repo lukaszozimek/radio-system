@@ -23,17 +23,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-import static io.protone.service.traffic.TraAdvertisementShuffleService.canAddEmissionToBlock;
-import static java.util.stream.Collectors.toSet;
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
-
 /**
  * Created by lukaszozimek on 04/06/2017.
  */
 @Service
 public class ExcelMediaPlan {
 
-    private final Object lockObject = new Object();
     private final Logger log = LoggerFactory.getLogger(ExcelMediaPlan.class);
     private final Long DEFAULT_START_STOP=0L;
 
@@ -43,58 +38,6 @@ public class ExcelMediaPlan {
         Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet, traMediaPlanDescriptor);
         Set<TraMediaPlanPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traMediaPlanDescriptor, corNetwork, corChannel);
         return paredFromMediaPlan;
-    }
-
-    public PlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, TraAdvertisement traAdvertisement) {
-        log.debug("Start mapping entity Playlist with parsed Playlists");
-        List<TraPlaylist> traPlaylists = entiyPlaylists;
-        List<TraPlaylist> traPlaylistsExcel = Lists.newArrayList(parsedFromMediaPlan.iterator());
-        traPlaylists.forEach(entiyPlaylist -> {
-            entiyPlaylist.setPlaylists(entiyPlaylist.getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet()));
-            Optional<TraPlaylist> filteredPlaylist = traPlaylistsExcel.stream().filter(parsedPlaylist -> parsedPlaylist.getPlaylistDate().equals(entiyPlaylist.getPlaylistDate())).findFirst();
-            if (filteredPlaylist.isPresent()) {
-                log.debug("Found Playlist for Date {} ", filteredPlaylist.get().getPlaylistDate());
-                filteredPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet()).forEach(parsedFormExcelTraBlock -> {
-                    if (parsedFormExcelTraBlock.getEmissions().stream().count() > 0) {
-                        Set<TraBlock> entityFilteredByRangeBlockSet = entiyPlaylist.getPlaylists().stream().filter(entityTraBlock -> isInRange(parsedFormExcelTraBlock.getStartBlock(), entityTraBlock.getStartBlock(), parsedFormExcelTraBlock.getStopBlock())).collect(toSet());
-                        if (isNotEmpty(entityFilteredByRangeBlockSet)) {
-                            log.debug("Found Block matching to range ");
-                            entityFilteredByRangeBlockSet.stream().forEach(filteredEntityTraBlock -> {
-                                if (isNotEmpty(parsedFormExcelTraBlock.getEmissions())) {
-                                    if (isNotEmpty(filteredEntityTraBlock.getEmissions())) {
-                                        Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
-                                        Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
-                                        if (canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), traAdvertisement.getMediaItem().getLength())) {
-                                            TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
-                                            filteredEntityTraBlock.addEmissions(emisssion);
-                                            synchronized (lockObject) {
-                                                parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
-                                            }
-                                        } else {
-                                            log.debug("Can't put commercial because block size excide maximum number of seconds");
-                                        }
-                                    } else {
-                                        log.debug("Block is empty");
-                                        Long lastTimeStop = 0L;
-                                        TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
-                                        filteredEntityTraBlock.addEmissions(emisssion);
-                                        synchronized (lockObject) {
-                                            parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-
-            }
-        });
-        return new PlaylistDiff(traPlaylists, traPlaylistsExcel);
-    }
-
-    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long parsedEndBlock) {
-        return (parsedStartBlock <= entityStratBlock && entityStratBlock <= parsedEndBlock);
     }
 
     private Map<Integer, LocalDate> findPlaylistInExcel(Sheet sheet, TraMediaPlanDescriptor traMediaPlanDescriptor) {
@@ -170,24 +113,6 @@ public class ExcelMediaPlan {
     }
 
 
-    public class PlaylistDiff {
 
-        private List<TraPlaylist> entityPlaylist;
-
-        private List<TraPlaylist> parsedFromExcel;
-
-        public List<TraPlaylist> getEntityPlaylist() {
-            return entityPlaylist;
-        }
-
-        public List<TraPlaylist> getParsedFromExcel() {
-            return parsedFromExcel;
-        }
-
-        public PlaylistDiff(List<TraPlaylist> entityPlaylist, List<TraPlaylist> parsedFromExcel) {
-            this.entityPlaylist = entityPlaylist;
-            this.parsedFromExcel = parsedFromExcel;
-        }
-    }
 
 }

@@ -56,7 +56,7 @@ public interface TraPlaylistResource {
                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
 
-    @ApiOperation(value = "getChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
@@ -69,7 +69,7 @@ public interface TraPlaylistResource {
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                      @ApiParam(value = "date", required = true) @Valid @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
-    @ApiOperation(value = "getAllChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllChannelTrafficPlaylist", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraPlaylistDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDTO.class),
@@ -154,6 +154,7 @@ public interface TraPlaylistResource {
     ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException;
+
 
 
 }

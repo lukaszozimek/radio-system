@@ -55,6 +55,11 @@ public class TraBlockService {
     }
 
     @Transactional
+    public void deleteBlockSet(Set<TraBlock> traBlocks) {
+
+    }
+
+    @Transactional
     public Set<TraBlock> buildBlocks(LocalDate localDate, String networkshortcut) {
         List<TraBlockConfiguration> traBlockConfigurations = traBlockConfigurationService.getAllBlockConfigurationsByDay(networkshortcut, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
         if (traBlockConfigurations.isEmpty()) {

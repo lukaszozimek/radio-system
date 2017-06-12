@@ -11,6 +11,7 @@ import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraMediaPlanRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.library.LibItemService;
 import io.protone.service.traffic.TraMediaPlanService;
 import io.protone.util.TestUtil;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
@@ -25,6 +26,7 @@ import io.protone.web.rest.mapper.TraMediaPlanMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,15 +40,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.io.InputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -99,6 +106,8 @@ public class TraMediaPlanResourceImplTest {
     @Autowired
     private LibMediaItemRepository libMediaItemRepository;
 
+    @Mock
+    private LibItemService libItemService;
     @Autowired
     private ExceptionTranslator exceptionTranslator;
 
@@ -119,7 +128,7 @@ public class TraMediaPlanResourceImplTest {
     private PodamFactory factory;
     private CrmAccount crmAccount;
     private LibMediaItem libMediaItem;
-
+    private TraAdvertisement traAdvertisement;
 
     @Before
     public void setup() {
@@ -144,7 +153,7 @@ public class TraMediaPlanResourceImplTest {
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
-        TraAdvertisement traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
+        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
 
         mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
@@ -161,6 +170,7 @@ public class TraMediaPlanResourceImplTest {
             .lastEmissionValueCell("CW47")
             .traAdvertisment(traAdvertisementMapper.traAdvertisementThinPTFromTraAdvertisement(traAdvertisement));
 
+        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanMapper", traMediaPlanMapper);
         ReflectionTestUtils.setField(traMediaPlanResource, "corNetworkService", corNetworkService);
@@ -199,9 +209,11 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void createTraMediaPlan() throws Exception {
         int databaseSizeBeforeCreate = traMediaPlanRepository.findAll().size();
+        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
 
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         // Create the TraMediaPlan
-        MockMultipartFile firstFile = new MockMultipartFile("file", Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls"));
+        MockMultipartFile firstFile = new MockMultipartFile("file", DEFAULT_NAME, "", inputStream);
         ObjectMapper objectMapper = new ObjectMapper();
 
         restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())

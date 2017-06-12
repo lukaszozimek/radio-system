@@ -70,7 +70,11 @@ public class TraMediaPlanService {
 
     @Transactional
     public void deleteMediaPlan(Long id, String corNetwork, String corChannel) {
-        traMediaPlanRepository.deleteByIdAndNetwork_ShortcutAndChannel_Shortcut(id, corNetwork, corChannel);
+        TraMediaPlan traMediaPlan = traMediaPlanRepository.findByIdAndNetwork_ShortcutAndChannel_Shortcut(id, corNetwork, corChannel);
+        libItemService.deleteItem(traMediaPlan.getMediaItem());
+        traPlaylistService.deletePlaylist(traMediaPlan.getPlaylists());
+        traMediaPlanRepository.delete(traMediaPlan);
+
     }
 
     @Transactional
@@ -82,6 +86,7 @@ public class TraMediaPlanService {
     public List<TraMediaPlan> getCustomerMediaPlan(String customerShortcut, String corNetwork, String corChannel, Pageable pageable) {
         return traMediaPlanRepository.findAllByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(customerShortcut, corNetwork, corChannel, pageable);
     }
+
 
 
 }

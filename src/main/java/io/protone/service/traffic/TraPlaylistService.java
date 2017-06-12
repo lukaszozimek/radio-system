@@ -4,9 +4,7 @@ package io.protone.service.traffic;
 import com.google.common.collect.Lists;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.TraBlockConfiguration;
 import io.protone.domain.TraPlaylist;
-import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.repository.traffic.TraPlaylistRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
@@ -15,17 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 15/05/2017.
@@ -45,6 +35,11 @@ public class TraPlaylistService {
     @Autowired
     private TraBlockService traBlockService;
 
+    @Autowired
+    private TraPlaylistMediaPlanMappingService traPlaylistMediaPlanMappingService;
+
+    @Autowired
+    private TraMediaPlanService traMediaPlanService;
 
     @Transactional
     public TraPlaylist savePlaylist(TraPlaylist traPlaylistList) {
@@ -83,7 +78,9 @@ public class TraPlaylistService {
 
     @Transactional
     public void deleteOneTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
-        traPlaylistRepository.deleteByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+        traBlockService.deleteBlockSet(traPlaylist.getPlaylists());
+        traPlaylistRepository.delete(traPlaylist);
     }
 
     private TraPlaylist createIfNotExist(LocalDate localDate, String networkshortcut, String channelShortcut) {

@@ -16,7 +16,6 @@ import io.protone.service.traffic.TraPlaylistService;
 import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import org.assertj.core.util.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -146,8 +145,7 @@ public class TraPlaylistBasedTest {
                 if (blockInHour > 0) {
                     trablock.setStartBlock(LocalTime.of(hour, blockInHour * 15).toNanoOfDay());
 
-                }
-                else {
+                } else {
                     trablock.setStartBlock(LocalTime.of(hour, 0).toNanoOfDay());
                 }
                 trablock.setStopBlock(trablock.getStartBlock().longValue() + trablock.getLength());
@@ -218,5 +216,16 @@ public class TraPlaylistBasedTest {
         advertisementToShuffle = traAdvertisementService.saveAdvertisement(advertisementToShuffle);
         advertisementToShuffleDTO = traAdvertisementMapper.DB2DTO(advertisementToShuffle);
 
+    }
+
+    protected void buildBlockConfiguration() {
+
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_MONDAY));
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_TUESDAY));
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_WEDNESDAY));
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_THURSDAY));
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_FRIDAY));
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_SATURDAY));
+        trablockConfigurationRepository.save(buildBlockConfiguration(CorDayOfWeekEnum.DW_SUNDAY));
     }
 }
