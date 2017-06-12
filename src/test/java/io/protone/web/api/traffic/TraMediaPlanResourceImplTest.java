@@ -18,7 +18,6 @@ import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraMediaPlanResourceImpl;
 import io.protone.web.rest.dto.traffic.TraMediaPlanDTO;
 import io.protone.web.rest.dto.traffic.TraMediaPlanDescriptorDTO;
-import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import io.protone.web.rest.mapper.TraMediaPlanDescriptorMapper;
@@ -53,6 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -122,12 +122,15 @@ public class TraMediaPlanResourceImplTest {
     private CorChannel corChannel;
 
     private TraMediaPlanDescriptorDTO mediaPlanDescriptor;
-    private TraAdvertisementThinDTO traAdvertisementThinDto;
+
     private LibLibrary libLibrary;
 
     private PodamFactory factory;
+
     private CrmAccount crmAccount;
+
     private LibMediaItem libMediaItem;
+
     private TraAdvertisement traAdvertisement;
 
     @Before
@@ -137,12 +140,8 @@ public class TraMediaPlanResourceImplTest {
         factory = new PodamFactoryImpl();
 
         TraMediaPlanResourceImpl traMediaPlanResource = new TraMediaPlanResourceImpl();
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
-        libLibrary.setShortcut("ppp");
-        libLibrary.network(corNetwork);
-        libLibrary.addChannel(corChannel);
-        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
-
+        libLibrary = new LibLibrary().shortcut("tes").network(corNetwork);
+        libLibrary.setId(1L);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
@@ -233,7 +232,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void getAllTraMediaPlans() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan);
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.mediaItem(libMediaItem).channel(corChannel).network(corNetwork).account(crmAccount));
 
         // Get all the traMediaPlanList
         restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -247,7 +246,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void getTraMediaPlan() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan);
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.mediaItem(libMediaItem).channel(corChannel).network(corNetwork).account(crmAccount));
 
         // Get the traMediaPlan
         restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId()))
@@ -269,7 +268,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void updateTraMediaPlan() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan);
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.mediaItem(libMediaItem).channel(corChannel).network(corNetwork).account(crmAccount));
         int databaseSizeBeforeUpdate = traMediaPlanRepository.findAll().size();
 
         // Update the traMediaPlan
@@ -292,28 +291,10 @@ public class TraMediaPlanResourceImplTest {
 
     @Test
     @Transactional
-    public void updateNonExistingTraMediaPlan() throws Exception {
-        int databaseSizeBeforeUpdate = traMediaPlanRepository.findAll().size();
-
-        // Create the TraMediaPlan
-        TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(traMediaPlan);
-
-        // If the entity doesn't have an ID, it will be created instead of just being updated
-        restTraMediaPlanMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
-            .andExpect(status().isCreated());
-
-        // Validate the TraMediaPlan in the database
-        List<TraMediaPlan> traMediaPlanList = traMediaPlanRepository.findAll();
-        assertThat(traMediaPlanList).hasSize(databaseSizeBeforeUpdate + 1);
-    }
-
-    @Test
-    @Transactional
     public void deleteTraMediaPlan() throws Exception {
         // Initialize the database
-        traMediaPlanRepository.saveAndFlush(traMediaPlan);
+        doNothing().when(libItemService).deleteItem(any(LibMediaItem.class));
+        traMediaPlanRepository.saveAndFlush(traMediaPlan.mediaItem(libMediaItem).channel(corChannel).network(corNetwork).account(crmAccount));
         int databaseSizeBeforeDelete = traMediaPlanRepository.findAll().size();
 
         // Get the traMediaPlan

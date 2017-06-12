@@ -56,7 +56,8 @@ public class TraBlockService {
 
     @Transactional
     public void deleteBlockSet(Set<TraBlock> traBlocks) {
-
+        traBlocks.stream().forEach(traBlock -> traEmissionService.deleteTraEmissions(traBlock.getEmissions()));
+        traBlockRepository.deleteInBatch(traBlocks);
     }
 
     @Transactional

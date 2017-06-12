@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -79,6 +80,9 @@ public class TraPlaylistService {
     @Transactional
     public void deleteOneTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
         TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+        if (traPlaylist == null) {
+            throw new EntityNotFoundException();
+        }
         traBlockService.deleteBlockSet(traPlaylist.getPlaylists());
         traPlaylistRepository.delete(traPlaylist);
     }

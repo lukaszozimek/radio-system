@@ -8,7 +8,6 @@ import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.library.file.LibFileService;
-import io.protone.service.library.file.impl.LibDocumentFileService;
 import io.protone.service.library.metadata.document.SupportedDocumentContentTypes;
 import io.protone.web.rest.mapper.LibItemMapper;
 import org.apache.tika.exception.TikaException;
@@ -86,6 +85,7 @@ public class LibItemService {
     private LibFileService libDocumentFileService;
 
     private Map<String, LibFileService> libItemTypeFileServiceMap;
+
     private Map<String, String> contentTypeLibItemTypeMap;
 
     @PostConstruct

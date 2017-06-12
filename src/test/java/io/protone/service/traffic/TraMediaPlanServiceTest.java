@@ -35,6 +35,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 /**
@@ -118,6 +119,8 @@ public class TraMediaPlanServiceTest {
         libMediaItem.library(libLibrary);
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
+
     }
 
     @Test
@@ -145,7 +148,6 @@ public class TraMediaPlanServiceTest {
 
     @Test
     public void shouldSaveMediaPlan() throws Exception {
-        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
 
         //when
         MultipartFile multipartFile = new MockMultipartFile("test", "test", "", Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls"));
@@ -188,17 +190,18 @@ public class TraMediaPlanServiceTest {
     }
 
     @Test
-    public void shouldDeletePlaylist() throws Exception {
+    public void shouldDeleteMediaPlan() throws Exception {
+        doNothing().when(libItemService).deleteItem(any(LibMediaItem.class));
         //when
         TraMediaPlan mediaPlan = factory.manufacturePojo(TraMediaPlan.class);
         mediaPlan.mediaItem(libMediaItem);
         mediaPlan.account(crmAccount);
         mediaPlan.setNetwork(corNetwork);
         mediaPlan.setChannel(corChannel);
-        mediaPlan = traMediaPlanRepository.save(mediaPlan);
+        mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
         //then
-        traMediaPlanService.deleteMediaPlan(mediaPlan.getId(), corChannel.getShortcut(), corNetwork.getShortcut());
-        TraMediaPlan fetchedEntity = traMediaPlanService.getMediaPlan(mediaPlan.getId(), corChannel.getShortcut(), corNetwork.getShortcut());
+        traMediaPlanService.deleteMediaPlan(mediaPlan.getId(), corNetwork.getShortcut(), corChannel.getShortcut() );
+        TraMediaPlan fetchedEntity = traMediaPlanService.getMediaPlan(mediaPlan.getId(), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);

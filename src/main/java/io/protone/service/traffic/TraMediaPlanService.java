@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
@@ -71,6 +72,9 @@ public class TraMediaPlanService {
     @Transactional
     public void deleteMediaPlan(Long id, String corNetwork, String corChannel) {
         TraMediaPlan traMediaPlan = traMediaPlanRepository.findByIdAndNetwork_ShortcutAndChannel_Shortcut(id, corNetwork, corChannel);
+        if (traMediaPlan == null) {
+            throw new EntityNotFoundException();
+        }
         libItemService.deleteItem(traMediaPlan.getMediaItem());
         traPlaylistService.deletePlaylist(traMediaPlan.getPlaylists());
         traMediaPlanRepository.delete(traMediaPlan);
@@ -86,7 +90,6 @@ public class TraMediaPlanService {
     public List<TraMediaPlan> getCustomerMediaPlan(String customerShortcut, String corNetwork, String corChannel, Pageable pageable) {
         return traMediaPlanRepository.findAllByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(customerShortcut, corNetwork, corChannel, pageable);
     }
-
 
 
 }

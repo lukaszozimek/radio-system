@@ -25,6 +25,6 @@ public class TraEmissionService {
 
     @Transactional
     public void deleteTraEmissions(Set<TraEmission> traEmissions) {
-        traEmissionRepository.delete(traEmissions);
+        traEmissionRepository.deleteInBatch(traEmissions);
     }
 }

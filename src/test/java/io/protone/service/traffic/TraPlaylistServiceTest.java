@@ -122,10 +122,10 @@ public class TraPlaylistServiceTest {
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
-        traPlaylist = traPlaylistRepository.save(traPlaylist);
+        traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         //then
-        traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corChannel.getShortcut(), corNetwork.getShortcut());
-        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corChannel.getShortcut(), corNetwork.getShortcut());
+        traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
