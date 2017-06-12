@@ -3,6 +3,7 @@ package io.protone.service.traffic;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import io.protone.domain.*;
+import io.protone.service.traffic.mediaplan.diff.TraPlaylistDiff;
 import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class TraPlaylistMediaPlanMappingService {
     @Autowired
     private TraMediaPlanMapperPlaylist traMediaPlanMapperPlaylistMapper;
 
-    public TraPlaylistMediaPlanMappingService.PlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(Long mediaPlanId, Long advertismentId, String networkShortcut, String channelShortcut) {
+    public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(Long mediaPlanId, Long advertismentId, String networkShortcut, String channelShortcut) {
         TraAdvertisement traAdvertisement = traAdvertisementService.getAdvertisement(advertismentId, networkShortcut);
         TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(mediaPlanId, networkShortcut, channelShortcut);
         List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
@@ -49,7 +50,7 @@ public class TraPlaylistMediaPlanMappingService {
     }
 
     @VisibleForTesting
-    public TraPlaylistMediaPlanMappingService.PlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, TraAdvertisement traAdvertisement) {
+    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, TraAdvertisement traAdvertisement) {
         log.debug("Start mapping entity Playlist with parsed Playlists");
         List<TraPlaylist> traPlaylists = entiyPlaylists;
         List<TraPlaylist> traPlaylistsExcel = Lists.newArrayList(parsedFromMediaPlan.iterator());
@@ -94,30 +95,11 @@ public class TraPlaylistMediaPlanMappingService {
 
             }
         });
-        return new TraPlaylistMediaPlanMappingService.PlaylistDiff(traPlaylists, traPlaylistsExcel);
+        return new TraPlaylistDiff(traPlaylists, traPlaylistsExcel);
     }
 
     private boolean isInRange(long parsedStartBlock, long entityStratBlock, long parsedEndBlock) {
         return (parsedStartBlock <= entityStratBlock && entityStratBlock <= parsedEndBlock);
     }
 
-    public class PlaylistDiff {
-
-        private List<TraPlaylist> entityPlaylist;
-
-        private List<TraPlaylist> parsedFromExcel;
-
-        public List<TraPlaylist> getEntityPlaylist() {
-            return entityPlaylist;
-        }
-
-        public List<TraPlaylist> getParsedFromExcel() {
-            return parsedFromExcel;
-        }
-
-        public PlaylistDiff(List<TraPlaylist> entityPlaylist, List<TraPlaylist> parsedFromExcel) {
-            this.entityPlaylist = entityPlaylist;
-            this.parsedFromExcel = parsedFromExcel;
-        }
-    }
 }

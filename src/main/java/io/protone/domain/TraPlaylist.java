@@ -1,6 +1,5 @@
 package io.protone.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -9,8 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A TraPlaylist.
@@ -49,6 +48,7 @@ public class TraPlaylist implements Serializable {
     )
     private Set<TraBlock> playlists = new HashSet<>();
 
+    public TraPlaylist(){}
     public Long getId() {
         return id;
     }

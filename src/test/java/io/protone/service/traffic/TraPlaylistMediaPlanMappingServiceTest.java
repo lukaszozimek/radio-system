@@ -8,6 +8,7 @@ import io.protone.domain.TraPlaylist;
 import io.protone.service.library.LibItemService;
 import io.protone.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
+import io.protone.service.traffic.mediaplan.diff.TraPlaylistDiff;
 import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -101,7 +102,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //then
-        TraPlaylistMediaPlanMappingService.PlaylistDiff playlistOverview = traPlaylistMediaPlanMappingService.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), advertisementToShuffle);
+        TraPlaylistDiff playlistOverview = traPlaylistMediaPlanMappingService.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), advertisementToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
