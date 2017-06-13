@@ -3,8 +3,9 @@ package io.protone.service.traffic;
 import io.protone.domain.*;
 import io.protone.repository.traffic.TraMediaPlanRepository;
 import io.protone.service.library.LibItemService;
-import io.protone.service.traffic.mediaplan.ExcelMediaPlan;
+import io.protone.service.traffic.mediaplan.TraExcelMediaXlsPlan;
 import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ public class TraMediaPlanService {
     private TraMediaPlanRepository traMediaPlanRepository;
 
     @Autowired
-    private ExcelMediaPlan excelMediaPlan;
+    private TraExcelMediaXlsPlan traExcelMediaXlsPlan;
 
     @Autowired
     private TraMediaPlanPlaylistService traPlaylistService;
@@ -45,11 +46,11 @@ public class TraMediaPlanService {
     private LibItemService libItemService;
 
     @Transactional
-    public TraMediaPlan saveMediaPlan(MultipartFile multipartFile, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException, TikaException {
+    public TraMediaPlan saveMediaPlan(MultipartFile multipartFile, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException, TikaException, InvalidFormatException {
         TraMediaPlan mediaPlan = new TraMediaPlan();
         ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile.getBytes());
-        Set<TraMediaPlanPlaylist> parseMediaPlanPlaylists = excelMediaPlan.parseMediaPlan(bais, traMediaPlanDescriptor, corNetwork, corChannel);
         LibMediaItem libMediaItem = libItemService.upload(corNetwork.getShortcut(), MEDIA_PLAN_LIBRARY_SHORTCUT, multipartFile);
+        Set<TraMediaPlanPlaylist> parseMediaPlanPlaylists = traExcelMediaXlsPlan.parseMediaPlan(bais, traMediaPlanDescriptor, corNetwork, corChannel);
         mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getTraAdvertisement().getCustomer()).name(multipartFile.getOriginalFilename()).playlists(parseMediaPlanPlaylists);
         mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
         TraMediaPlan finalMediaPlan = mediaPlan;

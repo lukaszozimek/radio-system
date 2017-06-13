@@ -10,6 +10,8 @@ import io.protone.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.protone.service.traffic.mediaplan.diff.TraPlaylistDiff;
 import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.tika.exception.TikaException;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,9 +24,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,8 +37,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static io.protone.util.TestUtil.parseInputStream;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -114,5 +117,97 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         assertTrue(formPlaylistOverview.isEmpty());
     }
 
+    @Test
+    public void shouldMapFullMediaPlanEurozetWithPlaylistWhenPlaylistIsEmpty() throws Exception {
+        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
+            .sheetIndexOfMediaPlan(0)
+            .playlistDatePattern("dd-MMM-yyyy")
+            .playlistDateStartColumn("G")
+            .playlistDateEndColumn("AW")
+            .playlistFirsValueCell("G22")
+            .blockStartCell("A26")
+            .blockEndCell("A63")
+            .blockStartColumn("A")
+            .blockHourSeparator("-")
+            .firstEmissionValueCell("G26")
+            .lastEmissionValueCell("AV64")
+            .traAdvertisment(advertisementToShuffle);
+
+        //when
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
+        MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
+        List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
+        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
+        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
+
+        TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
+        //collect emissions number from parsed excel
+        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
+        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
+
+        //then
+        TraPlaylistDiff playlistOverview = traPlaylistMediaPlanMappingService.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), advertisementToShuffle);
+
+        //transform to flat emission structure
+        playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
+        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
+
+        //assert
+        assertEquals(playlistOverview.getEntityPlaylist().size(), playlistOverview.getParsedFromExcel().size());
+        assertEquals(parsedEmssionFlatList.size(), entityEmssionFlatList.size());
+        assertTrue(formPlaylistOverview.isEmpty());
+    }
+
+    @Test
+    public void shouldMapMediaPlanWithNoteEmptyBlocks() throws IOException, TikaException, SAXException, InvalidFormatException {
+        LocalDate localDate = LocalDate.of(2017, 06, 12);
+        List<TraPlaylist> entiyPlaylists = Lists.newArrayList();
+        for (int i = 0; i < 35; i++) {
+            entiyPlaylists.add(buildTraPlaylistWithEmissions(localDate.plusDays(i)));
+
+        }
+        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
+            .sheetIndexOfMediaPlan(0)
+            .playlistDatePattern("dd-MMM-yyyy")
+            .playlistDateStartColumn("G")
+            .playlistDateEndColumn("AW")
+            .playlistFirsValueCell("G22")
+            .blockStartCell("A26")
+            .blockEndCell("A63")
+            .blockStartColumn("A")
+            .blockHourSeparator("-")
+            .firstEmissionValueCell("G26")
+            .lastEmissionValueCell("AV64")
+            .traAdvertisment(advertisementToShuffle);
+
+        //when
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
+        MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
+        List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
+        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
+        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
+
+        TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
+        //collect emissions number from parsed excel
+        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
+        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+
+        //then
+        TraPlaylistDiff playlistOverview = traPlaylistMediaPlanMappingService.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), advertisementToShuffle);
+
+        //transform to flat emission structure
+        playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
+        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
+
+        //assert
+
+        assertFalse(formPlaylistOverview.isEmpty());
+
+    }
 
 }

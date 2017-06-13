@@ -4,12 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.protone.domain.*;
 import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellReference;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,13 +24,13 @@ import java.util.*;
  * Created by lukaszozimek on 04/06/2017.
  */
 @Service
-public class ExcelMediaPlan {
+public class TraExcelMediaXlsPlan {
 
-    private final Logger log = LoggerFactory.getLogger(ExcelMediaPlan.class);
-    private final Long DEFAULT_START_STOP=0L;
+    private final Logger log = LoggerFactory.getLogger(TraExcelMediaXlsPlan.class);
+    private final Long DEFAULT_START_STOP = 0L;
 
-    public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream bais, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException {
-        Workbook workbook = new HSSFWorkbook(bais);
+    public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream byteArrayInputStream, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException, InvalidFormatException {
+        Workbook workbook = WorkbookFactory.create(byteArrayInputStream);
         Sheet sheet = workbook.getSheetAt(traMediaPlanDescriptor.getSheetIndexOfMediaPlan());
         Map<Integer, LocalDate> dateHashMap = findPlaylistInExcel(sheet, traMediaPlanDescriptor);
         Set<TraMediaPlanPlaylist> paredFromMediaPlan = buildPlaylist(sheet, dateHashMap, traMediaPlanDescriptor, corNetwork, corChannel);
@@ -82,8 +79,8 @@ public class ExcelMediaPlan {
         for (int rowIndex = startBlockIndex; rowIndex <= stopBlockIndex; rowIndex++) {
             Cell blockEmission = sheet.getRow(rowIndex).getCell(blockColumnIndex);
             String[] timeRange = blockEmission.toString().split(hourSeparator);
-            if (timeRange.length != 0) {
-                blocks.add(new TraBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.parse(timeRange[0]).toNanoOfDay()).stopBlock(LocalTime.parse(timeRange[1]).toNanoOfDay()).network(corNetwork).channel(corChannel));
+            if (timeRange.length != 1) {
+                blocks.add(new TraBlock().sequence(rowIndex - startBlockIndex).startBlock(LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeRange[0])).toNanoOfDay()).stopBlock(LocalTime.from(DateTimeFormatter.ofPattern("HH:mm").parse(timeRange[1])).toNanoOfDay()).network(corNetwork).channel(corChannel));
             }
         }
         return blocks;
@@ -111,8 +108,6 @@ public class ExcelMediaPlan {
         }
         return new HashSet<>(traBlocks);
     }
-
-
 
 
 }

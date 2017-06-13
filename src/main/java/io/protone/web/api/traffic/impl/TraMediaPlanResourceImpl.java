@@ -17,6 +17,7 @@ import io.protone.web.rest.mapper.TraMediaPlanDescriptorMapper;
 import io.protone.web.rest.mapper.TraMediaPlanMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import javax.validation.*;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -71,12 +69,11 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO") String traMediaPlanDescriptorDTO,
-                                                                                  @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+                                                                                  @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException {
         ObjectMapper mapper = new ObjectMapper();
         TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = mapper.readValue(traMediaPlanDescriptorDTO, new TypeReference<TraMediaPlanDescriptorDTO>() {
         });
-        Set<ConstraintViolation<TraMediaPlanDescriptorDTO>> constraintViolations = validator.validate(traMediaPlanDescriptorDeserialized);
+        validate(traMediaPlanDescriptorDeserialized);
         TraMediaPlanDescriptor traMediaPlanDescriptor = traMediaPlanDescriptorMapper.DTO2DB(traMediaPlanDescriptorDeserialized);
         if (traMediaPlanDescriptor == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanDTO", "wrongSchema", "Can't add Element if TraMediaPlanDescriptorDTO doesn't exist")).body(null);
@@ -140,5 +137,16 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return ResponseEntity.ok()
             .body(response);
+    }
+
+    private TraMediaPlanDescriptorDTO validate(TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO) throws IOException {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<TraMediaPlanDescriptorDTO>> constraintViolations = validator.validate(traMediaPlanDescriptorDTO);
+        if (constraintViolations.isEmpty()) {
+            return traMediaPlanDescriptorDTO;
+        } else {
+            throw new ValidationException();
+        }
+
     }
 }

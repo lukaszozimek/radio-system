@@ -159,6 +159,31 @@ public class TraPlaylistBasedTest {
         return traBlocks;
     }
 
+    protected Set<TraBlock> buildBlockWithEmission() {
+        Set<TraBlock> traBlocks = new HashSet<>();
+        for (int hour = 0; hour < 24; hour++) {
+            for (int blockInHour = 0; blockInHour < 3; blockInHour++) {
+                TraBlock trablock = factory.manufacturePojo(TraBlock.class);
+                trablock.sequence(hour + blockInHour);
+                trablock.setLength(Long.valueOf((3 * 60000)));
+                if (blockInHour > 0) {
+                    trablock.setStartBlock(LocalTime.of(hour, blockInHour * 15).toNanoOfDay());
+
+                } else {
+                    trablock.setStartBlock(LocalTime.of(hour, 0).toNanoOfDay());
+                }
+                trablock.emissions(buildTraEmissionss(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 3), 5, trablock.getLength()));
+
+                trablock.setStopBlock(trablock.getStartBlock().longValue() + trablock.getLength());
+                trablock.setChannel(corChannel);
+                trablock.setNetwork(corNetwork);
+                trablock = trablockRepository.saveAndFlush(trablock);
+                traBlocks.add(trablock);
+            }
+        }
+        return traBlocks;
+    }
+
     protected Set<TraEmission> buildTraEmissionss(int commercialsInBlock, int maxCommercialNumber, Long blockLenght) {
         Long currentLenght = blockLenght;
         Set<TraEmission> traEmissions = new HashSet<>();
@@ -186,7 +211,15 @@ public class TraPlaylistBasedTest {
         traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         return traPlaylist;
     }
-
+    protected TraPlaylist buildTraPlaylistWithEmissions(LocalDate date) {
+        TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
+        traPlaylist.playlists(buildBlockWithEmission());
+        traPlaylist.setPlaylistDate(date);
+        traPlaylist.setChannel(corChannel);
+        traPlaylist.setNetwork(corNetwork);
+        traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
+        return traPlaylist;
+    }
     protected void buildMustHavePojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
         corNetwork = factory.manufacturePojo(CorNetwork.class);

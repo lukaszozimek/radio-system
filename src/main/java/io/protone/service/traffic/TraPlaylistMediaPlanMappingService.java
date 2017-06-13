@@ -70,6 +70,7 @@ public class TraPlaylistMediaPlanMappingService {
                                         Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
                                         Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
                                         if (canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), traAdvertisement.getMediaItem().getLength())) {
+                                            log.debug("Put commercial into block");
                                             TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                             filteredEntityTraBlock.addEmissions(emisssion);
                                             synchronized (lockObject) {
@@ -80,6 +81,7 @@ public class TraPlaylistMediaPlanMappingService {
                                         }
                                     } else {
                                         log.debug("Block is empty");
+                                        log.debug("Put commercial into block");
                                         Long lastTimeStop = 0L;
                                         TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                         filteredEntityTraBlock.addEmissions(emisssion);

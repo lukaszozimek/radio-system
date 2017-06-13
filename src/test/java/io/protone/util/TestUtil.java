@@ -122,7 +122,7 @@ public class TestUtil {
     }
 
     public static ByteArrayOutputStream parseInputStream(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[8192];
+        byte[] buffer = new byte[4096];
         int bytesRead;
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         while ((bytesRead = inputStream.read(buffer)) != -1) {
