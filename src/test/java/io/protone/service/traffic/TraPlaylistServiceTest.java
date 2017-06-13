@@ -125,7 +125,7 @@ public class TraPlaylistServiceTest {
         traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         //then
         traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
-        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);

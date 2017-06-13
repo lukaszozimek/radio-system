@@ -55,8 +55,10 @@ public class TraPlaylistService {
         for (int i = 0; i < difference; i++) {
             TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(i), networkshortcut, channelShortcut);
             if (traPlaylist == null) {
-                TraPlaylist createdPlaylist = createIfNotExist(from.plusDays(i), networkshortcut, channelShortcut);
-                createdPlaylist = savePlaylist(createdPlaylist);
+                TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(i), networkshortcut, channelShortcut);
+                traPlaylists.add(createdPlaylist);
+            } else if (traPlaylist.getPlaylists().isEmpty()) {
+                TraPlaylist createdPlaylist = createPlaylistIfBlockConfigurationWasnNotProvided(from.plusDays(i), traPlaylist);
                 traPlaylists.add(createdPlaylist);
             } else {
                 traPlaylists.add(traPlaylist);
@@ -68,7 +70,16 @@ public class TraPlaylistService {
 
     @Transactional
     public TraPlaylist getTraPlaylistList(LocalDate date, String networkshortcut, String channelShortcut) {
-        return traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+        TraPlaylist traPlaylist = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(date, networkshortcut, channelShortcut);
+        if (traPlaylist == null) {
+            TraPlaylist createdPlaylist = createIfNotExist(date, networkshortcut, channelShortcut);
+            createdPlaylist = savePlaylist(createdPlaylist);
+            return createdPlaylist;
+        } else if (traPlaylist.getPlaylists().isEmpty()) {
+            TraPlaylist createdPlaylist = createPlaylistIfBlockConfigurationWasnNotProvided(date, traPlaylist);
+            return createdPlaylist;
+        }
+        return traPlaylist;
     }
 
     @Transactional
@@ -87,10 +98,27 @@ public class TraPlaylistService {
         traPlaylistRepository.delete(traPlaylist);
     }
 
+    private TraPlaylist createPlaylistIfWasNotCreatedEarlier(LocalDate localDate, String networkshortcut, String channelShortcut) {
+        TraPlaylist createdPlaylist = createIfNotExist(localDate, networkshortcut, channelShortcut);
+        return savePlaylist(createdPlaylist);
+    }
+
+    private TraPlaylist createPlaylistIfBlockConfigurationWasnNotProvided(LocalDate localDate, TraPlaylist traPlaylistWithoutBlocks) {
+        TraPlaylist createdPlaylist = createBlocksIfConfigurationWasNotProvided(localDate, traPlaylistWithoutBlocks);
+        return savePlaylist(createdPlaylist);
+    }
+
     private TraPlaylist createIfNotExist(LocalDate localDate, String networkshortcut, String channelShortcut) {
         CorNetwork corNetwork = corNetworkService.findNetwork(networkshortcut);
         CorChannel corChannel = corChannelService.findChannel(networkshortcut, channelShortcut);
         return new TraPlaylist().network(corNetwork).channel(corChannel).playlistDate(localDate).playlists(traBlockService.buildBlocks(localDate, networkshortcut));
+    }
+
+    private TraPlaylist createBlocksIfConfigurationWasNotProvided(LocalDate localDate, TraPlaylist traPlaylistWithoutBlocks) {
+
+        TraPlaylist traPlaylist = new TraPlaylist().network(traPlaylistWithoutBlocks.getNetwork()).channel((traPlaylistWithoutBlocks.getChannel())).playlistDate((traPlaylistWithoutBlocks.getPlaylistDate())).playlists(traBlockService.buildBlocks(localDate, traPlaylistWithoutBlocks.getNetwork().getShortcut()));
+        traPlaylist.setId(traPlaylistWithoutBlocks.getId());
+        return traPlaylist;
     }
 
 }

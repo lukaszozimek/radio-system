@@ -195,7 +195,6 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
         traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
-        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
 
         //then
         TraPlaylistDiff playlistOverview = traPlaylistMediaPlanMappingService.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), advertisementToShuffle);
@@ -205,7 +204,6 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
 
         //assert
-
         assertFalse(formPlaylistOverview.isEmpty());
 
     }

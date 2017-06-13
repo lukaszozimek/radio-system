@@ -10,7 +10,6 @@ import io.protone.service.traffic.TraPlaylistService;
 import io.protone.util.TestUtil;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraPlaylistResourceImpl;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraPlaylistMapper;
@@ -21,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -37,8 +35,8 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -220,8 +218,11 @@ public class TraPlaylistResourceImplTest {
     @Transactional
     public void getNonExistingTraPlaylist() throws Exception {
         // Get the traPlaylist
-        restTraPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), LocalDate.now()))
-            .andExpect(status().isNotFound());
+        LocalDate localDate = LocalDate.now();
+        restTraPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(notNullValue()))
+            .andExpect(jsonPath("$.playlistDate").value(localDate.toString()));
     }
 
     @Test
