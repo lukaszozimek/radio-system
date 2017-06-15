@@ -92,9 +92,7 @@
         <!-- Spring properties -->
         <springfox.version>2.6.1</springfox.version>
         <tika.version>1.14</tika.version>
-
         <poi.version>3.16</poi.version>
-
         <poi.commons.collection.version>4.1</poi.commons.collection.version>
     </properties>
 
