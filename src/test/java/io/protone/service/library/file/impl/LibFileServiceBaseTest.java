@@ -102,13 +102,4 @@ public class LibFileServiceBaseTest {
         pcontext = new ParseContext();
     }
 
-    protected ByteArrayOutputStream parseInputStream(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            output.write(buffer, 0, bytesRead);
-        }
-        return output;
-    }
 }

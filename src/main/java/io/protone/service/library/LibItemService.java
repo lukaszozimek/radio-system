@@ -8,6 +8,7 @@ import io.protone.domain.LibMediaItem;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.library.file.LibFileService;
+import io.protone.service.library.metadata.document.SupportedDocumentContentTypes;
 import io.protone.web.rest.mapper.LibItemMapper;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.HttpHeaders;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static io.protone.service.library.file.impl.LibAudioFileService.AUDIO;
+import static io.protone.service.library.file.impl.LibDocumentFileService.DOCUMENT;
 import static io.protone.service.library.file.impl.LibImageFileService.IMAGE;
 import static io.protone.service.library.file.impl.LibVideoFileService.VIDEO;
 
@@ -40,6 +42,7 @@ import static io.protone.service.library.file.impl.LibVideoFileService.VIDEO;
 public class LibItemService {
 
     private static final String CONTENT_TYPE_SEPARATOR = "/";
+
     private final Logger log = LoggerFactory.getLogger(LibItemService.class);
     @Inject
     private LibLibraryService libraryService;
@@ -77,7 +80,12 @@ public class LibItemService {
     @Qualifier("libImageFileService")
     private LibFileService imageFileService;
 
+    @Autowired
+    @Qualifier("libDocumentFileService")
+    private LibFileService libDocumentFileService;
+
     private Map<String, LibFileService> libItemTypeFileServiceMap;
+
     private Map<String, String> contentTypeLibItemTypeMap;
 
     @PostConstruct
@@ -86,10 +94,12 @@ public class LibItemService {
         libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_AUDIO.name(), audioFileService);
         libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_VIDEO.name(), videoFileService);
         libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_IMAGE.name(), imageFileService);
+        libItemTypeFileServiceMap.put(LibItemTypeEnum.IT_DOCUMENT.name(), libDocumentFileService);
         contentTypeLibItemTypeMap = new HashMap<>();
         contentTypeLibItemTypeMap.put(AUDIO, LibItemTypeEnum.IT_AUDIO.name());
         contentTypeLibItemTypeMap.put(VIDEO, LibItemTypeEnum.IT_VIDEO.name());
         contentTypeLibItemTypeMap.put(IMAGE, LibItemTypeEnum.IT_IMAGE.name());
+        contentTypeLibItemTypeMap.put(DOCUMENT, LibItemTypeEnum.IT_DOCUMENT.name());
     }
 
     @Transactional
@@ -143,7 +153,7 @@ public class LibItemService {
             Metadata metadata = new Metadata();
             ParseContext pcontext = new ParseContext();
             parser.parse(bais, handler, metadata, pcontext);
-            String libItemType = contentTypeLibItemTypeMap.get(metadata.get(HttpHeaders.CONTENT_TYPE).split(CONTENT_TYPE_SEPARATOR)[0]);
+            String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
             if (!Strings.isNullOrEmpty(libItemType)) {
                 log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
                 LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
@@ -155,6 +165,30 @@ public class LibItemService {
 
         }
         return result;
+    }
+
+    @Transactional
+    public LibMediaItem upload(String networkShortcut, String libraryShortcut, MultipartFile file) throws IOException, TikaException, SAXException {
+        LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        if (libraryDB == null) {
+            return null;
+        }
+        String fileName = file.getOriginalFilename();
+        ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+        Parser parser = new AutoDetectParser();
+        BodyContentHandler handler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        ParseContext pcontext = new ParseContext();
+        parser.parse(bais, handler, metadata, pcontext);
+        String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
+        if (!Strings.isNullOrEmpty(libItemType)) {
+            log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
+            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
+            return libMediaItem;
+        } else {
+            log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
+        }
+        return null;
     }
 
     @Transactional
@@ -174,6 +208,20 @@ public class LibItemService {
     public void deleteItem(LibMediaItem libMediaItem) {
         libItemTypeFileServiceMap.get(libMediaItem.getItemType().name()).deleteFile(libMediaItem);
         itemRepository.delete(libMediaItem);
+    }
+
+    private String resolveType(Metadata metadata) {
+        if (contentTypeLibItemTypeMap.containsKey(metadata.get(HttpHeaders.CONTENT_TYPE).split(CONTENT_TYPE_SEPARATOR)[0])) {
+            return metadata.get(HttpHeaders.CONTENT_TYPE).split(CONTENT_TYPE_SEPARATOR)[0];
+        }
+        if (isDocumentType(metadata.get(HttpHeaders.CONTENT_TYPE))) {
+            return DOCUMENT;
+        }
+        return "";
+    }
+
+    private boolean isDocumentType(String contentType) {
+        return Arrays.stream(SupportedDocumentContentTypes.values()).anyMatch(supportedDocumentContentTypes -> supportedDocumentContentTypes.getName().equalsIgnoreCase(contentType));
     }
 
 

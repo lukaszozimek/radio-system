@@ -57,10 +57,6 @@ public class TraBlock implements Serializable {
     @PodamExclude
     private CorChannel channel;
 
-    @ManyToOne
-    @PodamExclude
-    private TraPlaylist block;
-
     @OneToMany(mappedBy = "block")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -190,19 +186,6 @@ public class TraBlock implements Serializable {
 
     public void setChannel(CorChannel corChannel) {
         this.channel = corChannel;
-    }
-
-    public TraPlaylist getBlock() {
-        return block;
-    }
-
-    public TraBlock block(TraPlaylist traPlaylist) {
-        this.block = traPlaylist;
-        return this;
-    }
-
-    public void setBlock(TraPlaylist traPlaylist) {
-        this.block = traPlaylist;
     }
 
     public Set<TraEmission> getEmissions() {

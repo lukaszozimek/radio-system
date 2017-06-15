@@ -122,10 +122,10 @@ public class TraPlaylistServiceTest {
         TraPlaylist traPlaylist = factory.manufacturePojo(TraPlaylist.class);
         traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
-        traPlaylist = traPlaylistRepository.save(traPlaylist);
+        traPlaylist = traPlaylistRepository.saveAndFlush(traPlaylist);
         //then
-        traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corChannel.getShortcut(), corNetwork.getShortcut());
-        TraPlaylist fetchedEntity = traPlaylistService.getTraPlaylistList(traPlaylist.getPlaylistDate(), corChannel.getShortcut(), corNetwork.getShortcut());
+        traPlaylistService.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        TraPlaylist fetchedEntity = traPlaylistRepository.findOneByPlaylistDateAndNetwork_ShortcutAndChannel_Shortcut(traPlaylist.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNull(fetchedEntity);
@@ -160,13 +160,13 @@ public class TraPlaylistServiceTest {
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
         TraPlaylist traPlaylist1 = factory.manufacturePojo(TraPlaylist.class);
-        traPlaylist1.setPlaylistDate(LocalDate.now().plusMonths(1));
+        traPlaylist1.setPlaylistDate(LocalDate.now().plusDays(2));
         traPlaylist1.setNetwork(corNetwork);
         traPlaylist1.setChannel(corChannel);
         traPlaylist1 = traPlaylistRepository.save(traPlaylist1);
 
         //then
-        List<TraPlaylist> fetchedEntity = traPlaylistService.getTraPlaylistListInRange(traPlaylist.getPlaylistDate(), traPlaylist1.getPlaylistDate().plusMonths(1), corNetwork.getShortcut(), corChannel.getShortcut());
+        List<TraPlaylist> fetchedEntity = traPlaylistService.getTraPlaylistListInRange(traPlaylist.getPlaylistDate(), traPlaylist1.getPlaylistDate(), corNetwork.getShortcut(), corChannel.getShortcut());
 
 
         //assert

@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import static io.protone.util.TestUtil.parseInputStream;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -48,7 +49,7 @@ import static org.mockito.Mockito.when;
 public class LibImageFileServiceTest extends LibFileServiceBaseTest {
 
 
-    private InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/SAMPLE_IMAGE.png");
+    private InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png");
 
     @Autowired
     @Qualifier("libImageFileService")
@@ -85,7 +86,7 @@ public class LibImageFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shoulDownloadImageFile() throws Exception {
         //when
-        when(s3Client.download(anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/SAMPLE_IMAGE.png"));
+        when(s3Client.download(anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
         ReflectionTestUtils.setField(libImageFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libImageFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());

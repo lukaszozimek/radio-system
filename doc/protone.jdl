@@ -30,6 +30,12 @@ entity TraBlock{
     startBlock Long
     stopBlock Long
 }
+entity TraMediaPlan{
+    name String
+}
+entity TraMediaPlanPlaylist{
+    playlistDate LocalDate
+}
 entity TraPlaylist{
     playlistDate LocalDate
 }
@@ -294,6 +300,7 @@ entity LibCloudObject {
     createDate ZonedDateTime
 }
 
+
 enum LibObjectTypeEnum {
 	OT_IMAGE,
     OT_AUDIO,
@@ -341,6 +348,9 @@ entity LibVideoObject {
     aspecTratio LibAspecTratioEnum
 }
 
+entity LibDocumentObject {
+
+}
 enum LibVideoQualityEnum {
     VQ_2160P,
     VQ_1440P,
@@ -520,8 +530,8 @@ relationship OneToOne {
     LibImageObject{cloudObject} to LibCloudObject,
     LibAudioObject{cloudObject} to LibCloudObject,
     LibVideoObject{cloudObject} to LibCloudObject,
-
-
+    LibDocumentObject{cloudObject} to LibCloudObject,
+    TraMediaPlan {mediaItem} to LibMediaItem,
     CorCountry{tax} to CorTax,
     CorCountry{currnecy} to CorCurrency,
     CrmContact{addres} to CorAddress,
@@ -535,7 +545,6 @@ relationship OneToOne {
     CrmLead{addres} to CorAddress
 }
 relationship ManyToOne {
-
     CorDictionary {dictionaryType}  to CorDictionaryType,
     CorDictionary {module} to CorModule,
     CorUserAuthority{user} to CorUser{authorities},
@@ -595,9 +604,13 @@ relationship ManyToOne {
 
     LibAudioObject{mediaItem} to LibMediaItem,
     LibVideoObject{mediaItem} to LibMediaItem,
+    LibDocumentObject{mediaItem} to LibMediaItem,
+
     LibImageObject{mediaItem} to LibMediaItem,
     LibAudioObject{network} to CorNetwork,
     LibVideoObject{network} to CorNetwork,
+    LibDocumentObject{network} to CorNetwork,
+
     LibImageObject{network} to CorNetwork,
     LibImageItem{network}    to CorNetwork,
     LibImageObject{imageItem} to LibImageItem,
@@ -708,7 +721,13 @@ relationship ManyToOne {
 
     TraEmission {advertiment} to TraAdvertisement,
     TraEmission {block} to TraBlock{emissions},
-    TraBlock {block} to TraPlaylist{playlists}
+
+    TraMediaPlanPlaylist {mediaPlan} to TraMediaPlan{playlists},
+    TraMediaPlan {channel} to CorChannel,
+    TraMediaPlan {account} to CrmAccount,
+    TraMediaPlanPlaylist {channel} to CorChannel,
+    TraMediaPlan {network} to CorNetwork,
+    TraMediaPlanPlaylist {network} to CorNetwork
 }
 relationship ManyToMany {
 

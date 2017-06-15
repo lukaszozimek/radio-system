@@ -1,6 +1,5 @@
 package io.protone.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -9,8 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A TraPlaylist.
@@ -40,12 +39,16 @@ public class TraPlaylist implements Serializable {
     @PodamExclude
     private CorChannel channel;
 
-    @OneToMany(mappedBy = "block")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @PodamExclude
+    @OneToMany
+    @JoinTable(
+        name = "tra_playlist_tra_block",
+        joinColumns = @JoinColumn(name = "tra_playlist_id"),
+        inverseJoinColumns = @JoinColumn(name = "tra_block_id")
+    )
     private Set<TraBlock> playlists = new HashSet<>();
 
+    public TraPlaylist(){}
     public Long getId() {
         return id;
     }
@@ -104,13 +107,11 @@ public class TraPlaylist implements Serializable {
 
     public TraPlaylist addPlaylists(TraBlock traBlock) {
         this.playlists.add(traBlock);
-        traBlock.setBlock(this);
         return this;
     }
 
     public TraPlaylist removePlaylists(TraBlock traBlock) {
         this.playlists.remove(traBlock);
-        traBlock.setBlock(null);
         return this;
     }
 

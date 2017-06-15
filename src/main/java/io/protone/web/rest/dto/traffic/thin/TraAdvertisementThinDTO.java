@@ -5,14 +5,14 @@ import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
+import java.io.Serializable;
 
 /**
  * TraAdvertisementDTO
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class TraAdvertisementThinDTO {
+public class TraAdvertisementThinDTO implements Serializable {
     @JsonProperty("id")
     private Long id = null;
 
@@ -30,6 +30,13 @@ public class TraAdvertisementThinDTO {
 
     @JsonProperty("typeId")
     private CorDictionaryDTO typeId;
+
+
+    @JsonProperty("customerId")
+    private Integer customerId;
+
+    public TraAdvertisementThinDTO() {
+    }
 
 
     public TraAdvertisementThinDTO type(CorDictionaryDTO typePT) {
@@ -141,51 +148,55 @@ public class TraAdvertisementThinDTO {
         this.name = name;
     }
 
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TraAdvertisementThinDTO traAdvertisementPT = (TraAdvertisementThinDTO) o;
-        return
-            Objects.equals(this.description, traAdvertisementPT.description) &&
-                Objects.equals(this.id, traAdvertisementPT.id) &&
-                Objects.equals(this.industryId, traAdvertisementPT.industryId) &&
-                Objects.equals(this.mediaItemId, traAdvertisementPT.mediaItemId) &&
-                Objects.equals(this.name, traAdvertisementPT.name);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraAdvertisementThinDTO that = (TraAdvertisementThinDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (industryId != null ? !industryId.equals(that.industryId) : that.industryId != null) return false;
+        if (mediaItemId != null ? !mediaItemId.equals(that.mediaItemId) : that.mediaItemId != null) return false;
+        if (typeId != null ? !typeId.equals(that.typeId) : that.typeId != null) return false;
+        if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, id, industryId, mediaItemId, name);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (industryId != null ? industryId.hashCode() : 0);
+        result = 31 * result + (mediaItemId != null ? mediaItemId.hashCode() : 0);
+        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
+        result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraAdvertisementDTO {\n");
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    industryId: ").append(toIndentedString(industryId)).append("\n");
-        sb.append("    mediaItemId: ").append(toIndentedString(mediaItemId)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+        return "TraAdvertisementThinDTO{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", industryId=" + industryId +
+            ", mediaItemId=" + mediaItemId +
+            ", typeId=" + typeId +
+            ", customerId=" + customerId +
+            '}';
     }
 }
 

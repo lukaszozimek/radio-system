@@ -1,6 +1,5 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.domain.*;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
@@ -8,6 +7,7 @@ import io.protone.service.traffic.TraAdvertisementShuffleService;
 import io.protone.service.traffic.TraPlaylistService;
 import io.protone.web.api.traffic.TraPlaylistResource;
 import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
+import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
 import io.protone.web.rest.mapper.TraPlaylistMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -206,4 +206,5 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entities);
         return ResponseEntity.ok().body(response);
     }
+
 }
