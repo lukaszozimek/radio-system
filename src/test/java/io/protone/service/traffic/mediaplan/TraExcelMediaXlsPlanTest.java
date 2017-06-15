@@ -80,9 +80,9 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         assertEquals(NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1, formPlaylistOverview.size());
     }
     @Test
-    public void saveMediaPlaN3() throws Exception {
+    public void saveMediaPlanXlsxAndCommercialNumberGraterThan1() throws Exception {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
-        final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 75;
+        final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 80;
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
             .sheetIndexOfMediaPlan(0)
@@ -100,7 +100,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_2.xlsx");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
 
         //then
