@@ -1,12 +1,12 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.web.api.cor.CorDictionaryCountryResource;
-import io.protone.web.rest.dto.cor.CorCountryDTO;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.CorCountryMapper;
 import io.protone.domain.CorCountry;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorCountryRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorDictionaryCountryResource;
+import io.protone.web.rest.dto.cor.CorCountryDTO;
+import io.protone.web.rest.mapper.CorCountryMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
 
     @Override
     public ResponseEntity<CorCountryDTO> createCountryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confCountryPt", required = true) @Valid @RequestBody CorCountryDTO countryPt) throws URISyntaxException {
-        log.debug("REST request to save CorCountry : {}", countryPt);
+        log.debug("REST request to saveCorContact CorCountry : {}", countryPt);
         if (countryPt.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorCountry", "idexists", "A new CorCountry cannot already have an ID")).body(null);
         }

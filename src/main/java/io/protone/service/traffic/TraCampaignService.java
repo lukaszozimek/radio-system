@@ -1,10 +1,7 @@
 package io.protone.service.traffic;
 
 import io.protone.domain.TraCampaign;
-import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraCampaignRepository;
-import io.protone.service.crm.CrmCustomerService;
-import io.protone.web.rest.mapper.TraCampaignMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +24,6 @@ public class TraCampaignService {
 
     @Inject
     private TraCampaignRepository traCampaignRepository;
-
-    @Inject
-    private CrmAccountRepository crmAccountRepository;
 
     @Inject
     private TraOrderService traOrderService;

@@ -1,11 +1,11 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraAdvertisement;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraAdvertisementService;
 import io.protone.web.api.traffic.TraAdvertisementResource;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -59,7 +59,7 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
     @Override
     public ResponseEntity<TraAdvertisementDTO> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "traAdvertisementDTO", required = true) @Valid @RequestBody TraAdvertisementDTO traAdvertisementDTO) throws URISyntaxException {
-        log.debug("REST request to save TraAdvertisement : {}, for Network: {}", traAdvertisementDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraAdvertisement : {}, for Network: {}", traAdvertisementDTO, networkShortcut);
         if (traAdvertisementDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraAdvertisement", "idexists", "A new TraAdvertisement cannot already have an ID")).body(null);
         }

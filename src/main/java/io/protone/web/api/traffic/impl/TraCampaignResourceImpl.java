@@ -1,10 +1,11 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.web.api.traffic.TraCampaignResource;
-import io.protone.web.rest.dto.traffic.TraCampaignDTO;
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraCampaign;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraCampaignService;
+import io.protone.web.api.traffic.TraCampaignResource;
+import io.protone.web.rest.dto.traffic.TraCampaignDTO;
 import io.protone.web.rest.mapper.TraCampaignMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -71,7 +72,7 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
 
     @Override
     public ResponseEntity<TraCampaignDTO> createCampaignUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traCampaignDTO", required = true) @Valid @RequestBody TraCampaignDTO traCampaignDTO) throws URISyntaxException {
-        log.debug("REST request to save TraCampaign : {}, for Network: {}", traCampaignDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraCampaign : {}, for Network: {}", traCampaignDTO, networkShortcut);
         if (traCampaignDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCampaign", "idexists", "A new TraCampaign cannot already have an ID")).body(null);
         }

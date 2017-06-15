@@ -1,12 +1,12 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.web.api.cor.CorPropertyKeyResource;
-import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.protone.domain.CorNetwork;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.CorPropertyKeyMapper;
 import io.protone.domain.CorPropertyKey;
 import io.protone.repository.cor.CorPropertyKeyRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorPropertyKeyResource;
+import io.protone.web.rest.dto.cor.CorKeyDTO;
+import io.protone.web.rest.mapper.CorPropertyKeyMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -89,7 +89,7 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
 
     @Override
     public ResponseEntity<CorKeyDTO> createPropertyKeyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "propertyKeyDTO", required = true) @Valid @RequestBody CorKeyDTO propertyKeyDTO) throws URISyntaxException {
-        log.debug("REST request to save CorPropertyKey : {}", propertyKeyDTO);
+        log.debug("REST request to saveCorContact CorPropertyKey : {}", propertyKeyDTO);
         if (propertyKeyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPropertyKey", "idexists", "A new cORPropertyKey cannot already have an ID")).body(null);
         }

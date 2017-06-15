@@ -63,7 +63,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     public ResponseEntity<TraPlaylistDTO> creatChannelTrafficPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                @Valid @RequestBody TraPlaylistDTO traPlaylistDTO) throws URISyntaxException {
-        log.debug("REST request to save TraPlaylist : {}, for Channel {} Network: {}", traPlaylistDTO, channelShortcut, networkShortcut);
+        log.debug("REST request to saveCorContact TraPlaylist : {}, for Channel {} Network: {}", traPlaylistDTO, channelShortcut, networkShortcut);
         if (traPlaylistDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraPlaylist", "idexists", "A new TraPlaylist cannot already have an ID")).body(null);
         }
@@ -133,7 +133,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     public ResponseEntity<List<TraPlaylistDTO>> createChannelTrafficPlaylistInRangeUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                              @ApiParam(value = "traPlaylistDTO", required = true) @Valid @RequestBody List<TraPlaylistDTO> traPlaylistDTOs) throws URISyntaxException {
-        log.debug("REST request to save List of TraPlaylist : {}, for Channel {} Network: {}", traPlaylistDTOs, channelShortcut, networkShortcut);
+        log.debug("REST request to saveCorContact List of TraPlaylist : {}, for Channel {} Network: {}", traPlaylistDTOs, channelShortcut, networkShortcut);
         List<TraPlaylistDTO> traPlaylistDTOS = new ArrayList<>();
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);

@@ -1,12 +1,11 @@
 package io.protone.service.library;
 
 import io.protone.domain.LibLabel;
-import io.protone.domain.LibTrack;
 import io.protone.repository.library.LibLabelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.util.Optional;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Service
 public class LibLabelService {
 
-    @Autowired
+    @Inject
     private LibLabelRepository libLabelRepository;
 
 

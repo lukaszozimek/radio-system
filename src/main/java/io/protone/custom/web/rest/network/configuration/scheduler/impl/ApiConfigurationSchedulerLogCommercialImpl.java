@@ -1,16 +1,13 @@
 package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 
-import java.util.List;
-import java.util.Optional;
-
-import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfCommercialLogPT;
-import io.protone.web.rest.mapper.ConfCommercialLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogCommercial;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.enumeration.CfgLogTypeEnum;
 import io.protone.repository.cfg.CfgExternalSystemLogRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.rest.mapper.ConfCommercialLogMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -23,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ApiConfigurationSchedulerLogCommercialImpl implements ApiConfigurationSchedulerLogCommercial {
@@ -56,7 +55,7 @@ public class ApiConfigurationSchedulerLogCommercialImpl implements ApiConfigurat
 
     @Override
     public ResponseEntity<ConfCommercialLogPT> createCommercialLogConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confMusicLogPT", required = true) @RequestBody ConfCommercialLogPT confMusicLogPT) {
-        log.debug("REST request to save CfgExternalSystemLog : {}", confMusicLogPT);
+        log.debug("REST request to saveCorContact CfgExternalSystemLog : {}", confMusicLogPT);
         if (confMusicLogPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CfgExternalSystemLog", "idexists", "A new CfgExternalSystemLog cannot already have an ID")).body(null);
         }

@@ -1,9 +1,8 @@
 package io.protone.service.traffic;
 
-import io.protone.service.library.LibItemService;
-import io.protone.repository.traffic.TraAdvertisementRepository;
-import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.domain.TraAdvertisement;
+import io.protone.repository.traffic.TraAdvertisementRepository;
+import io.protone.service.library.LibItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +24,6 @@ public class TraAdvertisementService {
 
     @Inject
     private TraAdvertisementRepository traAdvertisementRepository;
-
-    @Inject
-    private CrmAccountMapper customCrmAccountMapper;
 
     @Inject
     private LibItemService libItemService;

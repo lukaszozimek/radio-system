@@ -1,8 +1,9 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.web.rest.dto.crm.CrmTaskDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmTask;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
+import io.protone.web.rest.dto.crm.thin.CrmTaskThinDTO;
 import org.mapstruct.*;
 
 import java.util.HashSet;
@@ -12,19 +13,28 @@ import java.util.Set;
 /**
  * Created by lukaszozimek on 19.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {CorUserMapper.class, CrmTaskCommentMapper.class})
 public interface CrmTaskMapper {
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
-    CrmTaskDTO DB2DTO(CrmTask cORAddress);
+    @Mapping(source = "comments", target = "comments")
+    CrmTaskDTO DB2DTO(CrmTask crmTask);
 
-    List<CrmTaskDTO> DBs2DTOs(Set<CrmTask> cORAddresses);
+    List<CrmTaskDTO> DBs2DTOs(Set<CrmTask> crmTasks);
 
-    List<CrmTaskDTO> DBs2DTOs(List<CrmTask> cORAddresses);
+    List<CrmTaskDTO> DBs2DTOs(List<CrmTask> crmTasks);
+
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
+    CrmTaskThinDTO DB2ThinDTO(CrmTask crmTask);
+
+    List<CrmTaskThinDTO> DBs2ThinDTOs(Set<CrmTaskThinDTO> crmTasks);
+
+    @Mapping(source = "createdBy", target = "createdBy")
+    @Mapping(source = "assignedTo", target = "assignedTo")
+    @Mapping(source = "comments", target = "comments")
     CrmTask DTO2DB(CrmTaskDTO cORAddressDTO, @Context CorNetwork corNetwork);
 
     default Set<CrmTask> DTOs2DBs(List<CrmTaskDTO> crmTaskDTOS, CorNetwork corNetwork) {

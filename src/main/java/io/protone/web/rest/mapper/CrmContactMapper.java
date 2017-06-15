@@ -1,7 +1,9 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmContact;
 import io.protone.web.rest.dto.crm.CrmContactDTO;
+import io.protone.web.rest.dto.crm.thin.CrmContactThinDTO;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -22,7 +24,18 @@ public interface CrmContactMapper {
     @Mapping(source = "area", target = "area")
     CrmContactDTO DB2DTO(CrmContact crmAccount);
 
-    List<CrmContactDTO> DBs2DTOs(List<CrmContact> crmAccounts);
+    List<CrmContactDTO> DBs2DTOs(List<CrmContact> crmContacts);
+
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "keeper", target = "account")
+    @Mapping(source = "range", target = "range")
+    @Mapping(source = "size", target = "size")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmContactThinDTO DB2ThinDTO(CrmContact crmContact);
+
+    List<CrmContactThinDTO> DBs2ThinDTOs(List<CrmContact> crmContacts);
 
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")

@@ -1,11 +1,11 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.web.api.traffic.TraOrderResource;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraOrder;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraOrderService;
-import io.protone.domain.CorNetwork;
+import io.protone.web.api.traffic.TraOrderResource;
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.mapper.TraOrderMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -56,7 +56,7 @@ public class TraOrderResourceImpl implements TraOrderResource {
 
     @Override
     public ResponseEntity<TraOrderDTO> createAnOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traOrderDTO", required = true) @Valid @RequestBody TraOrderDTO traOrderDTO) throws URISyntaxException {
-        log.debug("REST request to save TraOrder : {}, for Network: {}", traOrderDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraOrder : {}, for Network: {}", traOrderDTO, networkShortcut);
         if (traOrderDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraOrder cannot already have an ID")).body(null);
         }

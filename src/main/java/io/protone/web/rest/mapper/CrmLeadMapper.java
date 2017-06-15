@@ -1,7 +1,9 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.domain.*;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmLead;
 import io.protone.web.rest.dto.crm.CrmLeadDTO;
+import io.protone.web.rest.dto.crm.thin.CrmLeadThinDTO;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -23,6 +25,19 @@ public interface CrmLeadMapper {
     CrmLeadDTO DB2DTO(CrmLead crmLead);
 
     List<CrmLeadDTO> DBs2DTOs(List<CrmLead> crmLeads);
+
+    @Mapping(source = "leadStatus", target = "status")
+    @Mapping(source = "leadSource", target = "source")
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "keeper", target = "owner")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmLeadThinDTO DB2ThinDTO(CrmLead crmLead);
+
+
+    List<CrmLeadThinDTO> DBs2ThinDTOs(List<CrmLead> crmLeads);
+
 
     @Mapping(source = "status", target = "leadStatus")
     @Mapping(source = "source", target = "leadSource")

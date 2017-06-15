@@ -1,12 +1,12 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.service.cor.CorChannelService;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.dto.cor.CorChannelDTO;
-import io.protone.web.rest.mapper.CorChannelMapper;
-import io.protone.web.api.cor.CorChannelResource;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
+import io.protone.service.cor.CorChannelService;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorChannelResource;
+import io.protone.web.rest.dto.cor.CorChannelDTO;
+import io.protone.web.rest.mapper.CorChannelMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -62,7 +62,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
 
     @Override
     public ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException {
-        log.debug("REST request to save CORChannel : {}", channelDTO);
+        log.debug("REST request to saveCorContact CORChannel : {}", channelDTO);
         if (channelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
         }

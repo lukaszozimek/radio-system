@@ -5,20 +5,22 @@ package io.protone.web.api.cor.impl;
  */
 
 import io.github.jhipster.web.util.ResponseUtil;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.cor.CorMailService;
-import io.protone.service.cor.CorUserService;
-import io.protone.web.api.cor.CorUserConfigurationResource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorUserRepository;
+import io.protone.service.cor.CorMailService;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.service.cor.CorUserService;
+import io.protone.web.api.cor.CorUserConfigurationResource;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -88,7 +90,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     @Override
     public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                               @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
-        log.debug("REST request to save User : {}", corUserDTO);
+        log.debug("REST request to saveCorContact User : {}", corUserDTO);
 
         if (corUserDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "createExistingUser", "")).body(null);

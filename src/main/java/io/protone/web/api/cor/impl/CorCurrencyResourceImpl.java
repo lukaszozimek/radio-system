@@ -1,12 +1,12 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.web.api.cor.CorCurrencyResource;
-import io.protone.web.rest.dto.cor.CorCurrencyDTO;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.CorCurrencyMapper;
 import io.protone.domain.CorCurrency;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorCurrencyRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorCurrencyResource;
+import io.protone.web.rest.dto.cor.CorCurrencyDTO;
+import io.protone.web.rest.mapper.CorCurrencyMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -85,7 +85,7 @@ public class CorCurrencyResourceImpl implements CorCurrencyResource {
     @Override
     public ResponseEntity<CorCurrencyDTO> createCurrencyUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "taxDTO", required = true)
     @Valid @RequestBody CorCurrencyDTO corCurrencyDTO) throws URISyntaxException {
-        log.debug("REST request to save CorCurrency : {}", corCurrencyDTO);
+        log.debug("REST request to saveCorContact CorCurrency : {}", corCurrencyDTO);
         if (corCurrencyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("corCurrency", "idexists", "A new corCurrency cannot already have an ID")).body(null);
         }

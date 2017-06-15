@@ -1,12 +1,13 @@
 package io.protone.web.api.crm.impl;
 
-import io.protone.web.api.crm.CrmLeadResource;
-import io.protone.web.rest.dto.crm.CrmLeadDTO;
-import io.protone.service.crm.CrmLeadService;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmLead;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.crm.CrmLeadService;
+import io.protone.web.api.crm.CrmLeadResource;
 import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.crm.CrmLeadDTO;
+import io.protone.web.rest.dto.crm.thin.CrmLeadThinDTO;
 import io.protone.web.rest.mapper.CrmLeadMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -58,7 +59,7 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
 
     @Override
     public ResponseEntity<CrmLeadDTO> createLeadUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmLeadDTO", required = true) @Valid @RequestBody CrmLeadDTO crmLeadDTO) throws URISyntaxException {
-        log.debug("REST request to save CrmLead : {}, for Network: {}", crmLeadDTO, networkShortcut);
+        log.debug("REST request to saveCorContact CrmLead : {}, for Network: {}", crmLeadDTO, networkShortcut);
         if (crmLeadDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmLead", "idexists", "A new CrmLead cannot already have an ID")).body(null);
         }
@@ -71,11 +72,11 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
     }
 
     @Override
-    public ResponseEntity<List<CrmLeadDTO>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<CrmLeadThinDTO>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmLead, for Network: {}", networkShortcut);
         List<CrmLead> entity = crmLeadService.getAllLeads(networkShortcut, pagable);
-        List<CrmLeadDTO> response = crmLeadMapper.DBs2DTOs(entity);
+        List<CrmLeadThinDTO> response = crmLeadMapper.DBs2ThinDTOs(entity);
 
         return ResponseEntity.ok().body(response);
     }

@@ -1,6 +1,7 @@
 package io.protone.web.api.crm;
 
 import io.protone.web.rest.dto.crm.CrmAccountDTO;
+import io.protone.web.rest.dto.crm.thin.CrmAccountThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +57,8 @@ public interface CrmCustomerResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmAccountDTO>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<CrmAccountThinDTO>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getCustomer", notes = "", response = CrmAccountDTO.class, tags = {"CRM"})

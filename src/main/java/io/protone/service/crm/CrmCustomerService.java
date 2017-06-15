@@ -1,11 +1,12 @@
 package io.protone.service.crm;
 
-import io.protone.service.cor.CorPersonService;
-import io.protone.repository.cor.CorAddressRepository;
+import io.protone.domain.CorAddress;
+import io.protone.domain.CorPerson;
+import io.protone.domain.CrmAccount;
+import io.protone.domain.CrmTask;
 import io.protone.repository.crm.CrmAccountRepository;
-import io.protone.repository.crm.CrmTaskRepository;
-import io.protone.web.rest.mapper.CrmTaskMapper;
-import io.protone.domain.*;
+import io.protone.service.cor.CorAddressService;
+import io.protone.service.cor.CorPersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -27,18 +28,14 @@ public class CrmCustomerService {
     @Inject
     private CrmAccountRepository accountRepository;
 
-
     @Inject
-    private CorAddressRepository addressRepository;
+    private CorAddressService corAddressService;
 
     @Inject
     private CorPersonService personService;
 
     @Inject
-    private CrmTaskRepository crmTaskRepository;
-
-    @Inject
-    private CrmTaskMapper customCrmTaskMapper;
+    private CrmTaskService crmTaskService;
 
     public List<CrmAccount> getAllCustomers(String corNetwork, Pageable pageable) {
         return accountRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -47,7 +44,7 @@ public class CrmCustomerService {
     public CrmAccount saveCustomer(CrmAccount crmAccount) {
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         if (crmAccount.getAddres() != null) {
-            CorAddress address = addressRepository.save(crmAccount.getAddres());
+            CorAddress address = corAddressService.saveCoreAdress(crmAccount.getAddres());
             crmAccount.setAddres(address);
         }
         if (crmAccount.getPerson() != null) {
@@ -60,7 +57,7 @@ public class CrmCustomerService {
     }
 
     public void deleteCustomer(String shortName, String corNetwork) {
-        crmTaskRepository.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
+        crmTaskService.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
         accountRepository.deleteByShortNameAndNetwork_Shortcut(shortName, corNetwork);
     }
 
@@ -72,23 +69,20 @@ public class CrmCustomerService {
     public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmAccount != null) {
-            crmTask.setAccount(crmAccount);
-            crmTask.setNetwork(crmAccount.getNetwork());
-            CrmTask task = crmTaskRepository.save(crmTask);
-            log.debug("Persisting CrmTask: {}, for CrmAccount: ", task);
-            crmAccount.addTasks(task);
-            accountRepository.save(crmAccount);
-            return task;
+            CrmTask crmTask1 = crmTaskService.saveOrUpdateTaskAssociatiedWithCustomer(crmAccount, crmTask);
+            crmAccount.addTasks(crmTask1);
+            accountRepository.saveAndFlush(crmAccount);
+            return crmTask1;
         }
         return null;
     }
 
     public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+        return crmTaskService.findAllByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     public CrmTask getTaskAssociatedWithContact(Long taskId, String corNetwork) {
-        return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
 
@@ -96,6 +90,6 @@ public class CrmCustomerService {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         crmAccount.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         accountRepository.save(crmAccount);
-        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 }

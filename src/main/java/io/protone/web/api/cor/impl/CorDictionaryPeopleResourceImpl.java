@@ -1,12 +1,12 @@
 package io.protone.web.api.cor.impl;
 
 import io.protone.domain.CorNetwork;
-import io.protone.web.rest.dto.cor.CorPersonDTO;
+import io.protone.domain.CorPerson;
 import io.protone.repository.cor.CorPersonRepository;
 import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.CorPersonMapper;
 import io.protone.web.api.cor.CorDictionaryPeopleResource;
-import io.protone.domain.CorPerson;
+import io.protone.web.rest.dto.cor.CorPersonDTO;
+import io.protone.web.rest.mapper.CorPersonMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class CorDictionaryPeopleResourceImpl implements CorDictionaryPeopleResou
     @Override
     public ResponseEntity<CorPersonDTO> createPersonUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                               @ApiParam(value = "personDTO", required = true) @Valid @RequestBody CorPersonDTO personDTO) throws URISyntaxException {
-        log.debug("REST request to save CorPerson : {}", personDTO);
+        log.debug("REST request to saveCorContact CorPerson : {}", personDTO);
         if (personDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORPerson", "idexists", "A new cORPerson cannot already have an ID")).body(null);
         }

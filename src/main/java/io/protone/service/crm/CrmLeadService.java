@@ -1,12 +1,13 @@
 package io.protone.service.crm;
 
-import io.protone.service.cor.CorPersonService;
-import io.protone.repository.cor.CorAddressRepository;
+import io.protone.domain.CorAddress;
+import io.protone.domain.CorPerson;
+import io.protone.domain.CrmLead;
+import io.protone.domain.CrmTask;
 import io.protone.repository.crm.CrmLeadRepository;
-import io.protone.repository.crm.CrmTaskRepository;
+import io.protone.service.cor.CorAddressService;
+import io.protone.service.cor.CorPersonService;
 import io.protone.web.rest.mapper.CrmLeadMapper;
-import io.protone.web.rest.mapper.CrmTaskMapper;
-import io.protone.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -33,13 +34,10 @@ public class CrmLeadService {
     private CrmLeadRepository crmLeadRepository;
 
     @Inject
-    private CorAddressRepository addressRepository;
+    private CorAddressService corAddressService;
 
     @Inject
-    private CrmTaskRepository crmTaskRepository;
-
-    @Inject
-    private CrmTaskMapper customCrmTaskMapper;
+    private CrmTaskService crmTaskService;
 
     @Inject
     private CorPersonService corPersonService;
@@ -53,7 +51,7 @@ public class CrmLeadService {
 
         log.debug("Persisting CorAddress: {}", crmLead.getAddres());
         if (crmLead.getAddres() != null) {
-            CorAddress address = addressRepository.save(crmLead.getAddres());
+            CorAddress address = corAddressService.saveCoreAdress(crmLead.getAddres());
             crmLead.setAddres(address);
         }
         if (crmLead.getPerson() != null) {
@@ -67,7 +65,7 @@ public class CrmLeadService {
     }
 
     public void deleteLead(String shortcut, String corNetwork) {
-        crmTaskRepository.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmTaskService.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
         crmLeadRepository.deleteByShortnameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
@@ -76,11 +74,11 @@ public class CrmLeadService {
     }
 
     public List<CrmTask> getTasksAssociatedWithLead(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+        return crmTaskService.findAllByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     public CrmTask getTaskAssociatedWithLead(Long taskId, String corNetwork) {
-        return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
 
@@ -88,20 +86,17 @@ public class CrmLeadService {
         CrmLead crmContact = crmLeadRepository.findOneByShortnameAndNetwork_Shortcut(shortcut, corNetwork);
         crmContact.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         crmLeadRepository.save(crmContact);
-        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
 
     }
 
     public CrmTask saveOrUpdateTaskAssociatiedWithLead(CrmTask crmTask, String shortcut, String corNetwork) {
         CrmLead crmLead = crmLeadRepository.findOneByShortnameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmLead != null) {
-            crmTask.setLead(crmLead);
-            crmTask.setNetwork(crmLead.getNetwork());
-            CrmTask task = crmTaskRepository.save(crmTask);
-            log.debug("Persisting CrmTask: {}, for CrmLead: ", task);
-            crmLead.addTasks(task);
-            crmLeadRepository.save(crmLead);
-            return task;
+            CrmTask crmTask1 = crmTaskService.saveOrUpdateTaskAssociatiedWithLead(crmLead, crmTask);
+            crmLead.addTasks(crmTask1);
+            crmLeadRepository.saveAndFlush(crmLead);
+            return crmTask1;
         }
         return null;
     }

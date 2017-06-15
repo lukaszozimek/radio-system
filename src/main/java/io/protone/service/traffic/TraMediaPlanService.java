@@ -9,13 +9,13 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,16 +33,16 @@ public class TraMediaPlanService {
 
     private static final String MEDIA_PLAN_LIBRARY_SHORTCUT = "mpl";
 
-    @Autowired
+    @Inject
     private TraMediaPlanRepository traMediaPlanRepository;
 
-    @Autowired
+    @Inject
     private TraExcelMediaXlsPlan traExcelMediaXlsPlan;
 
-    @Autowired
+    @Inject
     private TraMediaPlanPlaylistService traPlaylistService;
 
-    @Autowired
+    @Inject
     private LibItemService libItemService;
 
     @Transactional

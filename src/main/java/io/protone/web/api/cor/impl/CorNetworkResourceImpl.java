@@ -1,10 +1,10 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.web.api.cor.CorNetworkResource;
+import io.protone.domain.CorNetwork;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorNetworkResource;
 import io.protone.web.rest.dto.cor.CorNetworkDTO;
 import io.protone.web.rest.mapper.CorNetworkMapper;
-import io.protone.domain.CorNetwork;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
 
     @Override
     public ResponseEntity<CorNetworkDTO> createNetworkUsingPOST(@ApiParam(value = "network", required = true) @Valid @RequestBody CorNetworkDTO network) throws URISyntaxException {
-        log.debug("REST request to save CorNetwork : {}", network);
+        log.debug("REST request to saveCorContact CorNetwork : {}", network);
         if (network.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("corNetwork", "idexists", "A new corNetwork cannot already have an ID")).body(null);
         }

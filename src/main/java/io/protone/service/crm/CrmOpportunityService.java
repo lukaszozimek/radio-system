@@ -1,8 +1,5 @@
 package io.protone.service.crm;
 
-import io.protone.repository.crm.CrmTaskRepository;
-import io.protone.web.rest.mapper.CrmTaskMapper;
-import io.protone.web.rest.mapper.CrmOpportunityMapper;
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
 import io.protone.repository.crm.CrmOpportunityRepository;
@@ -29,13 +26,7 @@ public class CrmOpportunityService {
     private CrmOpportunityRepository opportunityRepository;
 
     @Inject
-    private CrmOpportunityMapper customCrmOpportunityMapper;
-
-    @Inject
-    private CrmTaskMapper customCrmTaskMapper;
-
-    @Inject
-    private CrmTaskRepository crmTaskRepository;
+    private CrmTaskService crmTaskService;
 
     public List<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
         return opportunityRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -58,23 +49,20 @@ public class CrmOpportunityService {
     public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmTask crmTask, String shortcut, String corNetwork) {
         CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmOpportunity != null) {
-            crmTask.setOpportunity(crmOpportunity);
-            crmTask.setNetwork(crmOpportunity.getNetwork());
-            CrmTask task = crmTaskRepository.save(crmTask);
-            log.debug("Persisting CrmTask: {}, for CrmOpportunity: ", task);
+            CrmTask task = crmTaskService.saveOrUpdateTaskAssociatiedWithOpportunity(crmOpportunity, crmTask);
             crmOpportunity.addTasks(task);
-            opportunityRepository.save(crmOpportunity);
+            opportunityRepository.saveAndFlush(crmOpportunity);
             return task;
         }
         return null;
     }
 
     public List<CrmTask> getTasksAssociatedWithOpportunity(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+        return crmTaskService.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     public CrmTask getTaskAssociatedWithOpportunity(Long taskId, String corNetwork) {
-        return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
 
@@ -82,6 +70,6 @@ public class CrmOpportunityService {
         CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         crmOpportunity.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         opportunityRepository.save(crmOpportunity);
-        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 }

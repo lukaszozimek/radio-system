@@ -1,12 +1,13 @@
 package io.protone.web.api.crm.impl;
 
-import io.protone.web.api.crm.CrmContactResource;
-import io.protone.web.rest.dto.crm.CrmContactDTO;
-import io.protone.service.crm.CrmContactService;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmContact;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.crm.CrmContactService;
+import io.protone.web.api.crm.CrmContactResource;
 import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.crm.CrmContactDTO;
+import io.protone.web.rest.dto.crm.thin.CrmContactThinDTO;
 import io.protone.web.rest.mapper.CrmContactMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -55,7 +56,7 @@ public class CrmContactResourceImpl implements CrmContactResource {
 
     @Override
     public ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException {
-        log.debug("REST request to save CrmContact : {}, for Network: {}", crmContactDTO, networkShortcut);
+        log.debug("REST request to saveCorContact CrmContact : {}, for Network: {}", crmContactDTO, networkShortcut);
         if (crmContactDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmContact", "idexists", "A new CrmContact cannot already have an ID")).body(null);
         }
@@ -69,11 +70,11 @@ public class CrmContactResourceImpl implements CrmContactResource {
     }
 
     @Override
-    public ResponseEntity<List<CrmContactDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmContact, for Network: {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        List<CrmContactDTO> response = crmContactMapper.DBs2DTOs(crmContactService.getAllContact(corNetwork.getShortcut(), pagable));
+        List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactService.getAllContact(corNetwork.getShortcut(), pagable));
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

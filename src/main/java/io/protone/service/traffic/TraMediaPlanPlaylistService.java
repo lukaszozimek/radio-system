@@ -2,10 +2,10 @@ package io.protone.service.traffic;
 
 import io.protone.domain.TraMediaPlanPlaylist;
 import io.protone.repository.traffic.TraMediaPlanPlaylistRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -16,10 +16,10 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class TraMediaPlanPlaylistService {
 
-    @Autowired
+    @Inject
     private TraMediaPlanPlaylistRepository traMediaPlanPlaylistRepository;
 
-    @Autowired
+    @Inject
     private TraBlockService traBlockService;
 
 

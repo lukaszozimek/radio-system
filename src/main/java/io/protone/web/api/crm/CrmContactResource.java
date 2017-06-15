@@ -1,10 +1,14 @@
 package io.protone.web.api.crm;
 
 import io.protone.web.rest.dto.crm.CrmContactDTO;
+import io.protone.web.rest.dto.crm.thin.CrmContactThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
@@ -52,8 +56,8 @@ public interface CrmContactResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmContactDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getContactId", notes = "", response = CrmContactDTO.class, tags = {"TRAFFIC", "CRM",})
     @ApiResponses(value = {

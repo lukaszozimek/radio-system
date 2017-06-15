@@ -1,12 +1,12 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.web.api.traffic.TraDiscountResource;
-import io.protone.web.rest.dto.traffic.TraDiscountDTO;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.TraDiscountMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraDiscount;
 import io.protone.repository.traffic.TraDiscountRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.traffic.TraDiscountResource;
+import io.protone.web.rest.dto.traffic.TraDiscountDTO;
+import io.protone.web.rest.mapper.TraDiscountMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -94,7 +94,7 @@ public class TraDiscountResourceImpl implements TraDiscountResource {
     @Override
     public ResponseEntity<TraDiscountDTO> createDiscountUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "discountPT", required = true) @RequestBody TraDiscountDTO discountPT) throws URISyntaxException {
-        log.debug("REST request to save TraDiscount : {}", discountPT);
+        log.debug("REST request to saveCorContact TraDiscount : {}", discountPT);
         if (discountPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraDiscount", "idexists", "A new TraDiscount cannot already have an ID")).body(null);
         }

@@ -1,26 +1,26 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.domain.*;
+import io.protone.domain.CorChannel;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraBlockConfiguration;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraBlockConfigurationService;
 import io.protone.web.api.traffic.TraBlockConfigurationResource;
-import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
-import io.protone.web.rest.dto.traffic.TraCustomerDTO;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.mapper.TraBlockConfigurationMapper;
 import io.protone.web.rest.util.HeaderUtil;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -53,7 +53,7 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
     public ResponseEntity<TraBlockConfigurationDTO> creatTrafficBlockConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                             @Valid @RequestBody TraBlockConfigurationDTO traBlockConfigurationDTO) throws URISyntaxException {
-        log.debug("REST request to save TraOrder : {}, for Network: {}", traBlockConfigurationDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraOrder : {}, for Network: {}", traBlockConfigurationDTO, networkShortcut);
         if (traBlockConfigurationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraOrder", "idexists", "A new TraBlockConfiguration cannot already have an ID")).body(null);
         }

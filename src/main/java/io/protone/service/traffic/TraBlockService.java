@@ -5,11 +5,11 @@ import io.protone.domain.TraBlock;
 import io.protone.domain.TraBlockConfiguration;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.repository.traffic.TraBlockRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -22,13 +22,13 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class TraBlockService {
 
-    @Autowired
+    @Inject
     private TraBlockRepository traBlockRepository;
 
-    @Autowired
+    @Inject
     private TraEmissionService traEmissionService;
 
-    @Autowired
+    @Inject
     private TraBlockConfigurationService traBlockConfigurationService;
 
     private Map<DayOfWeek, CorDayOfWeekEnum> corDayOfWeekEnumMap;

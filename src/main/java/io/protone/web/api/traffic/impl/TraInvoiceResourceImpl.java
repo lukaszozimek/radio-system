@@ -1,11 +1,11 @@
 package io.protone.web.api.traffic.impl;
 
-import io.protone.web.api.traffic.TraInvoiceResource;
-import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.TraInvoice;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraInvoiceService;
-import io.protone.domain.CorNetwork;
+import io.protone.web.api.traffic.TraInvoiceResource;
+import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
 import io.protone.web.rest.mapper.TraInvoiceMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -73,7 +73,7 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
 
     @Override
     public ResponseEntity<TraInvoiceDTO> createInvoiceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "traInvoiceDTO", required = true) @Valid @RequestBody TraInvoiceDTO traInvoiceDTO) throws URISyntaxException {
-        log.debug("REST request to save TraInvoice : {}, for Network: {}", traInvoiceDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraInvoice : {}, for Network: {}", traInvoiceDTO, networkShortcut);
         if (traInvoiceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraInvoice", "idexists", "A new TraInvoice cannot already have an ID")).body(null);
         }

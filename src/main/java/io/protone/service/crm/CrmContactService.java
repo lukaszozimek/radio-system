@@ -1,12 +1,12 @@
 package io.protone.service.crm;
 
-import io.protone.service.cor.CorPersonService;
-import io.protone.domain.*;
-import io.protone.repository.cor.CorAddressRepository;
-import io.protone.repository.cor.CorContactRepository;
-import io.protone.repository.cor.CorPersonRepository;
+import io.protone.domain.CorAddress;
+import io.protone.domain.CorPerson;
+import io.protone.domain.CrmContact;
+import io.protone.domain.CrmTask;
 import io.protone.repository.crm.CrmContactRepository;
-import io.protone.repository.crm.CrmTaskRepository;
+import io.protone.service.cor.CorAddressService;
+import io.protone.service.cor.CorPersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -25,24 +25,17 @@ import java.util.List;
 public class CrmContactService {
     private final Logger log = LoggerFactory.getLogger(CrmContactService.class);
 
-
     @Inject
     private CrmContactRepository crmContactRepository;
 
     @Inject
-    private CrmTaskRepository crmTaskRepository;
+    private CrmTaskService crmTaskService;
 
     @Inject
     private CorPersonService corPersonService;
 
     @Inject
-    private CorPersonRepository personRepository;
-
-    @Inject
-    private CorContactRepository corContactRepository;
-
-    @Inject
-    private CorAddressRepository addressRepository;
+    private CorAddressService corAddressService;
 
 
     public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
@@ -50,14 +43,11 @@ public class CrmContactService {
     }
 
     public CrmContact saveContact(CrmContact contact) {
-
-        log.debug("Persisting CorAddress: {}", contact.getAddres());
         if (contact.getAddres() != null) {
-            CorAddress address = addressRepository.save(contact.getAddres());
+            CorAddress address = corAddressService.saveCoreAdress(contact.getAddres());
             contact.setAddres(address);
         }
         if (contact.getPerson() != null) {
-
             CorPerson corPerson = corPersonService.savePerson(contact.getPerson());
             contact.person(corPerson);
         }
@@ -67,7 +57,7 @@ public class CrmContactService {
     }
 
     public void deleteContact(String shortcut, String corNetwork) {
-        crmTaskRepository.deleteByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmTaskService.deleteByContactByShortNameAndNetworkByShortcut(shortcut, corNetwork);
         crmContactRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
@@ -76,11 +66,11 @@ public class CrmContactService {
     }
 
     public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+        return crmTaskService.findAllByContactByShortNameAndNetworkByShortcut(shortcut, corNetwork, pageable);
     }
 
     public CrmTask getTaskAssociatedWithContact(Long taskId, String corNetwork) {
-        return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
 
@@ -88,20 +78,15 @@ public class CrmContactService {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         crmContact.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         crmContactRepository.save(crmContact);
-        crmTaskRepository.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
-
+        crmTaskService.deleteCrmTask(taskId, corNetwork);
     }
 
     public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmContact != null) {
-            crmTask.setContact(crmContact);
-            crmTask.setNetwork(crmContact.getNetwork());
-            CrmTask task = crmTaskRepository.save(crmTask);
-            log.debug("Persisting CrmTask: {}, for CrmContact: ", task);
-            crmContact.addTasks(task);
-            crmContactRepository.save(crmContact);
-            return task;
+            CrmTask crmTask1 = crmTaskService.saveOrUpdateTaskAssociatiedWithContact(crmContact, crmTask);
+            crmContact.addTasks(crmTask1);
+            crmContactRepository.saveAndFlush(crmContact);
         }
         return null;
     }

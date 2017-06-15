@@ -1,9 +1,11 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.domain.CorNetwork;
+import io.protone.domain.CrmAccount;
 import io.protone.web.rest.dto.crm.CrmAccountDTO;
+import io.protone.web.rest.dto.crm.thin.CrmAccountThinDTO;
 import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
-import io.protone.domain.*;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -24,6 +26,18 @@ public interface CrmAccountMapper {
     CrmAccountDTO DB2DTO(CrmAccount crmAccount);
 
     List<CrmAccountDTO> DBs2DTOs(List<CrmAccount> crmAccounts);
+
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "keeper", target = "account")
+    @Mapping(source = "range", target = "range")
+    @Mapping(source = "size", target = "size")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmAccountThinDTO DB2ThinDTO(CrmAccount crmAccount);
+
+    List<CrmAccountThinDTO> DBs2ThinDTOs(List<CrmAccount> crmAccounts);
+
 
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")

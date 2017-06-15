@@ -7,9 +7,9 @@ import io.protone.service.traffic.mediaplan.diff.TraPlaylistDiff;
 import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -29,15 +29,16 @@ public class TraPlaylistMediaPlanMappingService {
     private final Object lockObject = new Object();
     private final Logger log = LoggerFactory.getLogger(TraPlaylistMediaPlanMappingService.class);
 
-    @Autowired
+    @Inject
     private TraMediaPlanService traMediaPlanService;
 
-    @Autowired
+    @Inject
     private TraPlaylistService traPlaylistService;
 
-    @Autowired
+    @Inject
     private TraAdvertisementService traAdvertisementService;
-    @Autowired
+
+    @Inject
     private TraMediaPlanMapperPlaylist traMediaPlanMapperPlaylistMapper;
 
     public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(Long mediaPlanId, Long advertismentId, String networkShortcut, String channelShortcut) {

@@ -1,14 +1,14 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.domain.CorModule;
-import io.protone.web.api.cor.CorDictionaryResource;
-import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.CorDictionaryMapper;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorDictionaryType;
+import io.protone.domain.CorModule;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cor.CorDictionaryRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorDictionaryResource;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
+import io.protone.web.rest.mapper.CorDictionaryMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
                                                                            @ApiParam(value = "module", required = true) @PathVariable("module") String module,
                                                                            @ApiParam(value = "type", required = true) @PathVariable("type") String type,
                                                                            @ApiParam(value = "corDictionaryDTO", required = true) @Valid @RequestBody CorDictionaryDTO corDictionaryDTO) throws URISyntaxException {
-        log.debug("REST request to save CorDictionary : {}", corDictionaryDTO);
+        log.debug("REST request to saveCorContact CorDictionary : {}", corDictionaryDTO);
         if (corDictionaryDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorDictionary", "idexists", "A new CorDictionary cannot already have an ID")).body(null);
         }

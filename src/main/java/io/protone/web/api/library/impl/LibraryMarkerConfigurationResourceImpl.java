@@ -1,12 +1,12 @@
 package io.protone.web.api.library.impl;
 
-import io.protone.web.api.library.LibraryMarkerConfigurationResource;
-import io.protone.web.rest.dto.library.LibMarkerConfigurationDTO;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.mapper.CfgMarkerConfigurationMapper;
 import io.protone.domain.CfgMarkerConfiguration;
 import io.protone.domain.CorNetwork;
 import io.protone.repository.cfg.CfgMarkerConfigurationRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.library.LibraryMarkerConfigurationResource;
+import io.protone.web.rest.dto.library.LibMarkerConfigurationDTO;
+import io.protone.web.rest.mapper.CfgMarkerConfigurationMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
 
     @Override
     public ResponseEntity<LibMarkerConfigurationDTO> createMarkerConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerConfigurationPT", required = true) @Valid @RequestBody LibMarkerConfigurationDTO markerConfigurationPT) throws URISyntaxException {
-        log.debug("REST request to save ConfMarkerConfiguration : {}", markerConfigurationPT);
+        log.debug("REST request to saveCorContact ConfMarkerConfiguration : {}", markerConfigurationPT);
 
         if (markerConfigurationPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cFGMarkerConfiguration", "idexists", "A new cFGMarkerConfiguration cannot already have an ID")).body(null);

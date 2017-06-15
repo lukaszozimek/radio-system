@@ -1,6 +1,7 @@
 package io.protone.web.api.crm;
 
 import io.protone.web.rest.dto.crm.CrmLeadDTO;
+import io.protone.web.rest.dto.crm.thin.CrmLeadThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +54,8 @@ public interface CrmLeadResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/lead",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmLeadDTO>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<CrmLeadThinDTO>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getLead", notes = "", response = CrmLeadDTO.class, tags = {"CRM"})

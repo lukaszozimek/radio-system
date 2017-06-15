@@ -1,12 +1,13 @@
 package io.protone.web.api.crm.impl;
 
-import io.protone.web.api.crm.CrmOpportunityResource;
-import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
-import io.protone.service.crm.CrmOpportunityService;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmOpportunity;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.crm.CrmOpportunityService;
+import io.protone.web.api.crm.CrmOpportunityResource;
 import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
+import io.protone.web.rest.dto.crm.thin.CrmOpportunityThinDTO;
 import io.protone.web.rest.mapper.CrmOpportunityMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -59,7 +60,7 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
 
     @Override
     public ResponseEntity<CrmOpportunityDTO> createOpportunityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmOpportunityDTO", required = true) @Valid @RequestBody CrmOpportunityDTO crmOpportunityDTO) throws URISyntaxException {
-        log.debug("REST request to save CrmOpportunity : {}, for Network: {}", crmOpportunityDTO, networkShortcut);
+        log.debug("REST request to saveCorContact CrmOpportunity : {}, for Network: {}", crmOpportunityDTO, networkShortcut);
         if (crmOpportunityDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmOpportunity", "idexists", "A new CrmOpportunity cannot already have an ID")).body(null);
         }
@@ -74,11 +75,11 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
     }
 
     @Override
-    public ResponseEntity<List<CrmOpportunityDTO>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<CrmOpportunityThinDTO>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmOpportunity, for Network: {}", networkShortcut);
         List<CrmOpportunity> entity = crmOpportunityService.getAllOpportunity(networkShortcut, pagable);
-        List<CrmOpportunityDTO> response = crmOpportunityMapper.DBs2DTOs(entity);
+        List<CrmOpportunityThinDTO> response = crmOpportunityMapper.DBs2ThinDTOs(entity);
 
         return ResponseEntity.ok().body(response);
     }

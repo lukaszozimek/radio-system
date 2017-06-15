@@ -1,12 +1,12 @@
 package io.protone.web.api.traffic.impl;
 
 
-import io.protone.web.api.traffic.TraCustomerResource;
-import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
+import io.protone.web.api.traffic.TraCustomerResource;
+import io.protone.web.rest.dto.traffic.TraCustomerDTO;
 import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -57,7 +57,7 @@ public class TraCustomerResourceImpl implements TraCustomerResource {
     @Override
     public ResponseEntity<TraCustomerDTO> createTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestBody TraCustomerDTO traCustomerDTO) throws URISyntaxException {
-        log.debug("REST request to save TraCustomer : {}, for Network: {}", traCustomerDTO, networkShortcut);
+        log.debug("REST request to saveCorContact TraCustomer : {}, for Network: {}", traCustomerDTO, networkShortcut);
         if (traCustomerDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraCustomer", "idexists", "A new TraCustomer cannot already have an ID")).body(null);
         }

@@ -1,12 +1,13 @@
 package io.protone.web.api.crm.impl;
 
-import io.protone.web.api.crm.CrmContactTaskResource;
-import io.protone.web.rest.dto.crm.CrmTaskDTO;
-import io.protone.service.crm.CrmContactService;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmTask;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.crm.CrmContactService;
+import io.protone.web.api.crm.CrmContactTaskResource;
 import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
+import io.protone.web.rest.dto.traffic.CrmTaskCommentDTO;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -73,7 +74,7 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
     public ResponseEntity<CrmTaskDTO> createContactActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                      @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException {
-        log.debug("REST request to save CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", crmTaskDTO, shortName, networkShortcut);
+        log.debug("REST request to saveCorContact CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", crmTaskDTO, shortName, networkShortcut);
         if (crmTaskDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
@@ -107,5 +108,30 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public ResponseEntity<List<CrmTaskCommentDTO>> getContactTaskCommentsUsingGET(String networkShortcut, String shortName, Long taskId, Long id, Pageable pagable) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CrmTaskCommentDTO> createContactActivtyCommentUsigPOST(String networkShortcut, String shortName, Long taskId, CrmTaskCommentDTO taskCommentDTO) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CrmTaskCommentDTO> editContactActivtyCommentUsigPUT(String networkShortcut, String shortName, Long taskId, CrmTaskCommentDTO taskCommentDTO) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CrmTaskCommentDTO> getContactTaskCommentUsingGET(String networkShortcut, String shortName, Long taskId, Long id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteContactTaskCommentUsingDELETE(String networkShortcut, String shortName, Long taskId, Long id) {
+        return null;
     }
 }

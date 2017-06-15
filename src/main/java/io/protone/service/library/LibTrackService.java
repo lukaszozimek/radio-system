@@ -2,11 +2,10 @@ package io.protone.service.library;
 
 import io.protone.domain.LibTrack;
 import io.protone.repository.library.LibTrackRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
+import javax.inject.Inject;
 import java.util.Optional;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Service
 public class LibTrackService {
 
-    @Autowired
+    @Inject
     private LibTrackRepository libTrackRepository;
 
     @Transactional

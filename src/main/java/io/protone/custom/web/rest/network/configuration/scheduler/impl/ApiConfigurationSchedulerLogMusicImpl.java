@@ -1,14 +1,14 @@
 package io.protone.custom.web.rest.network.configuration.scheduler.impl;
 
 
-import io.protone.service.cor.CorNetworkService;
 import io.protone.custom.service.dto.ConfMusicLogPT;
-import io.protone.web.rest.mapper.ConfMusicLogMapper;
 import io.protone.custom.web.rest.network.configuration.scheduler.ApiConfigurationSchedulerLogMusic;
 import io.protone.domain.CfgExternalSystemLog;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.enumeration.CfgLogTypeEnum;
 import io.protone.repository.cfg.CfgExternalSystemLogRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.rest.mapper.ConfMusicLogMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class ApiConfigurationSchedulerLogMusicImpl implements ApiConfigurationSc
 
     @Override
     public ResponseEntity<ConfMusicLogPT> createMusicLogConfigurationUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "confMusicLogPT", required = true) @RequestBody ConfMusicLogPT confMusicLogPT) {
-        log.debug("REST request to save CfgExternalSystemLog : {}", confMusicLogPT);
+        log.debug("REST request to saveCorContact CfgExternalSystemLog : {}", confMusicLogPT);
         if (confMusicLogPT.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CfgExternalSystemLog", "idexists", "A new CfgExternalSystemLog cannot already have an ID")).body(null);
         }

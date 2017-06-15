@@ -3,12 +3,11 @@ package io.protone.service.traffic;
 import io.protone.domain.TraBlockConfiguration;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.repository.traffic.TraBlockConfigurationRepository;
-import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
 @Service
 public class TraBlockConfigurationService {
 
-    @Autowired
+    @Inject
     private TraBlockConfigurationRepository traBlockConfigurationRepository;
 
 

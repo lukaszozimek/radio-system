@@ -8,11 +8,11 @@ import io.protone.domain.TraPlaylist;
 import io.protone.repository.traffic.TraPlaylistRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -24,22 +24,22 @@ import java.util.List;
 @Service
 public class TraPlaylistService {
 
-    @Autowired
+    @Inject
     private CorNetworkService corNetworkService;
 
-    @Autowired
+    @Inject
     private CorChannelService corChannelService;
 
-    @Autowired
+    @Inject
     private TraPlaylistRepository traPlaylistRepository;
 
-    @Autowired
+    @Inject
     private TraBlockService traBlockService;
 
-    @Autowired
+    @Inject
     private TraPlaylistMediaPlanMappingService traPlaylistMediaPlanMappingService;
 
-    @Autowired
+    @Inject
     private TraMediaPlanService traMediaPlanService;
 
     @Transactional

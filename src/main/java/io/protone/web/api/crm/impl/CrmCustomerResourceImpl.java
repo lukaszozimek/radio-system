@@ -1,12 +1,13 @@
 package io.protone.web.api.crm.impl;
 
-import io.protone.web.rest.dto.crm.CrmAccountDTO;
-import io.protone.web.api.crm.CrmCustomerResource;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
+import io.protone.web.api.crm.CrmCustomerResource;
 import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.crm.CrmAccountDTO;
+import io.protone.web.rest.dto.crm.thin.CrmAccountThinDTO;
 import io.protone.web.rest.mapper.CrmAccountMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -55,7 +56,7 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
 
     @Override
     public ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
-        log.debug("REST request to save CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
+        log.debug("REST request to saveCorContact CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
         if (crmAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
         }
@@ -68,11 +69,11 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     }
 
     @Override
-    public ResponseEntity<List<CrmAccountDTO>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<CrmAccountThinDTO>> getAllCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount, for Network: {}", networkShortcut);
         List<CrmAccount> entity = crmCustomerService.getAllCustomers(networkShortcut, pagable);
-        List<CrmAccountDTO> response = crmAccountMapper.DBs2DTOs(entity);
+        List<CrmAccountThinDTO> response = crmAccountMapper.DBs2ThinDTOs(entity);
 
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(

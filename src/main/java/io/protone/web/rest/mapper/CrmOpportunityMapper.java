@@ -1,7 +1,8 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
 import io.protone.domain.*;
+import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
+import io.protone.web.rest.dto.crm.thin.CrmOpportunityThinDTO;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -20,8 +21,17 @@ public interface CrmOpportunityMapper {
     @Mapping(source = "account.id", target = "accountId")
     @Mapping(source = "lead.id", target = "leadId")
     CrmOpportunityDTO DB2DTO(CrmOpportunity crmOpportunity);
-
     List<CrmOpportunityDTO> DBs2DTOs(List<CrmOpportunity> crmOpportunities);
+
+    @Mapping(source = "stage", target = "stage")
+    @Mapping(source = "keeper", target = "opportunityOwner")
+    @Mapping(source = "contact.id", target = "contactId")
+    @Mapping(source = "account.id", target = "accountId")
+    @Mapping(source = "lead.id", target = "leadId")
+    CrmOpportunityThinDTO DB2ThinDTO(CrmOpportunity crmOpportunity);
+
+    List<CrmOpportunityThinDTO> DBs2ThinDTOs(List<CrmOpportunity> crmOpportunities);
+
 
     @Mapping(source = "stage", target = "stage")
     @Mapping(source = "opportunityOwner", target = "keeper")

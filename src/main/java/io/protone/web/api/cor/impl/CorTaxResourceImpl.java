@@ -1,12 +1,12 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.repository.cor.CorTaxRepository;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.rest.dto.cor.CorTaxDTO;
-import io.protone.web.rest.mapper.CorTaxMapper;
-import io.protone.web.api.cor.CorTaxResource;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
+import io.protone.repository.cor.CorTaxRepository;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.web.api.cor.CorTaxResource;
+import io.protone.web.rest.dto.cor.CorTaxDTO;
+import io.protone.web.rest.mapper.CorTaxMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -83,7 +83,7 @@ public class CorTaxResourceImpl implements CorTaxResource {
 
     @Override
     public ResponseEntity<CorTaxDTO> createTaxUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "taxDTO", required = true) @RequestBody CorTaxDTO taxDTO) throws URISyntaxException {
-        log.debug("REST request to save CorTax : {}", taxDTO);
+        log.debug("REST request to saveCorContact CorTax : {}", taxDTO);
         if (taxDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CorTax", "idexists", "A new CorTax cannot already have an ID")).body(null);
         }

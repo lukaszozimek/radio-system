@@ -1,7 +1,6 @@
 package io.protone.config.audit;
 
 import io.protone.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
@@ -60,8 +59,8 @@ public class AuditEventConverter {
     }
 
     /**
-     * Internal conversion. This method will allow to save additional data.
-     * By default, it will save the object as string
+     * Internal conversion. This method will allow to saveCorContact additional data.
+     * By default, it will saveCorContact the object as string
      *
      * @param data the data to convert
      * @return a map of String, String
