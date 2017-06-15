@@ -11,10 +11,8 @@ import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.cor.CorUserService;
 import io.protone.service.library.file.LibFileService;
-import io.protone.web.api.library.impl.LibMediaItemResourceImpl;
 import org.assertj.core.util.Arrays;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -37,7 +35,8 @@ import java.util.Optional;
 
 import static io.protone.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -234,6 +233,22 @@ public class LibItemServiceTest {
         ReflectionTestUtils.setField(libItemService, "libDocumentFileService", libDocumentFileService);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls");
         MultipartFile multipartFile = new MockMultipartFile("testFile", inputStream);
+        MultipartFile[] multipartFiles = Arrays.array(multipartFile);
+
+        //then
+        List<LibMediaItem> libMediaItems = libItemService.upload(corNetwork.getShortcut(), libLibrary.getShortcut(), multipartFiles);
+
+        //assert
+        assertNotNull(libMediaItems);
+        assertEquals(1, libMediaItems.size());
+
+    }
+    @Test
+    public void shouldUploadDocumentXlsx() throws Exception {
+        //when
+        ReflectionTestUtils.setField(libItemService, "libDocumentFileService", libDocumentFileService);
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document_2.xlsx");
+        MultipartFile multipartFile = new MockMultipartFile("testFileXlsx", inputStream);
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
         //then
