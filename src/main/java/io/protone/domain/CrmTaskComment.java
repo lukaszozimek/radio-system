@@ -2,6 +2,7 @@ package io.protone.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,12 +27,15 @@ public class CrmTaskComment implements Serializable {
     private String comment;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
+    @PodamExclude
     private CrmTask taskComment;
 
     @ManyToOne
+    @PodamExclude
     private CorUser createdBy;
 
     public Long getId() {
