@@ -29,9 +29,6 @@ public class CrmOpportunityService {
     @Inject
     private CrmTaskService crmTaskService;
 
-    @Inject
-    private CrmTaskCommentService crmTaskCommentService;
-
     public List<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
         return opportunityRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
     }
@@ -77,18 +74,20 @@ public class CrmOpportunityService {
         crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
-    public void deleteOpportunityTaskComment(String shortName, Long id, String networkShortcut) {
+
+    public void deleteOpportunityTaskComment(Long taskId, Long id, String networkShortcut) {
+        crmTaskService.deleteCustomerTaskComment(taskId, id, networkShortcut);
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTaskAndOpportunity(Long id, String networkShortcut) {
-        return null;
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
+        return crmTaskService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndOpportunity(CrmTaskComment requestEnitity, String shortName, String networkShortcut) {
-        return null;
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
+        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndOpportunity(String shortName, String networkShortcut, Pageable pagable) {
-        return null;
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 }

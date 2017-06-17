@@ -29,6 +29,7 @@ import static org.junit.Assert.*;
 public class CrmCustomerServiceTest {
 
     private static final String TEST_SHORTNAME = "TEST";
+
     @Autowired
     private CrmCustomerService crmCustomerService;
 
@@ -232,7 +233,7 @@ public class CrmCustomerServiceTest {
         CrmTask crmTask1 = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmAccount.getShortName(), crmAccount.getNetwork().getShortcut());
 
         //then
-        List<CrmTask> localTask = crmCustomerService.getTasksAssociatedWithContact(crmAccount.getShortName(), crmAccount.getNetwork().getShortcut(), new PageRequest(0, 10));
+        List<CrmTask> localTask = crmCustomerService.getTasksAssociatedWithAccount(crmAccount.getShortName(), crmAccount.getNetwork().getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(localTask);
@@ -255,7 +256,7 @@ public class CrmCustomerServiceTest {
         CrmTask crmTask1 = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmAccount.getShortName(), crmAccount.getNetwork().getShortcut());
 
         //then
-        CrmTask localTask = crmCustomerService.getTaskAssociatedWithContact(crmTask1.getId(), crmAccount.getNetwork().getShortcut());
+        CrmTask localTask = crmCustomerService.getTaskAssociatedWithAccount(crmTask1.getId(), crmAccount.getNetwork().getShortcut());
 
         //assert
         assertNotNull(localTask);
@@ -280,7 +281,7 @@ public class CrmCustomerServiceTest {
         // then
         crmCustomerService.deleteCustomerTask(crmAccount.getShortName(), crmTask1.getId(), crmAccount.getNetwork().getShortcut());
 
-        CrmTask localTask = crmCustomerService.getTaskAssociatedWithContact(crmTask1.getId(), crmAccount.getNetwork().getShortcut());
+        CrmTask localTask = crmCustomerService.getTaskAssociatedWithAccount(crmTask1.getId(), crmAccount.getNetwork().getShortcut());
         CrmAccount localContact = crmCustomerService.getCustomer(crmAccount.getShortName(), crmAccount.getNetwork().getShortcut());
 
         //assert

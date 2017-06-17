@@ -107,9 +107,9 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
     }
 
     @Override
-    public ResponseEntity<List<CrmTaskCommentDTO>> getLeadTaskCommentsUsingGET(String networkShortcut, String shortName, Long taskId, Long id, Pageable pagable) {
-        log.debug("REST request to get all  CrmLead CrmTask, for CrmLead: {} and Network: {}");
-        List<CrmTaskComment> crmTasks = crmLeadService.getTaskCommentsAssociatedWithTaskAndLead(shortName, networkShortcut, pagable);
+    public ResponseEntity<List<CrmTaskCommentDTO>> getLeadTaskCommentsUsingGET(String networkShortcut, String shortName, Long taskId, Pageable pagable) {
+        log.debug("REST request to get all  CrmLead CrmTaskComment, for CrmLead: {} and Network: {}");
+        List<CrmTaskComment> crmTasks = crmLeadService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
         List<CrmTaskCommentDTO> response = crmTaskCommentMapper.DBs2DTOs(crmTasks);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -120,13 +120,13 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
 
     @Override
     public ResponseEntity<CrmTaskCommentDTO> createLeadActivtyCommentUsigPOST(String networkShortcut, String shortName, Long taskId, CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", taskCommentDTO, shortName, networkShortcut);
+        log.debug("REST request to saveCorContact CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", taskCommentDTO, shortName, networkShortcut);
         if (taskCommentDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTaskAndLead(requestEnitity, shortName, networkShortcut);
+        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/ap«i/v1/network/" + networkShortcut + "/crm/lead/" + shortName + "/task/" + response.getId()))
             .body(response);
@@ -134,21 +134,21 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
 
     @Override
     public ResponseEntity<CrmTaskCommentDTO> editLeadActivtyCommentUsigPUT(String networkShortcut, String shortName, Long taskId, CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
-        log.debug("REST request to update CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", taskCommentDTO, shortName, networkShortcut);
+        log.debug("REST request to update CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", taskCommentDTO, shortName, networkShortcut);
         if (taskCommentDTO.getId() == null) {
             return createLeadActivtyCommentUsigPOST(networkShortcut, shortName, taskId, taskCommentDTO);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTaskAndLead(requestEnitity, shortName, networkShortcut);
+        CrmTaskComment entity = crmLeadService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<CrmTaskCommentDTO> getLeadTaskCommentUsingGET(String networkShortcut, String shortName, Long taskId, Long id) {
-        log.debug("REST request to get CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", networkShortcut, shortName, networkShortcut);
-        CrmTaskComment entity = crmLeadService.getTaskCommentAssociatedWithTaskAndLead(id, networkShortcut);
+        log.debug("REST request to get CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", networkShortcut, shortName, networkShortcut);
+        CrmTaskComment entity = crmLeadService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -159,10 +159,9 @@ public class CrmLeadTaskResourceImpl implements CrmLeadTaskResource {
 
     @Override
     public ResponseEntity<Void> deleteLeadTaskCommentUsingDELETE(String networkShortcut, String shortName, Long taskId, Long id) {
-        log.debug("REST request to delete CrmLead CrmTask : {}, for CrmLead: {} and Network: {}", networkShortcut, shortName, networkShortcut);
-
-        crmLeadService.deleteLeadTaskComment(shortName, id, networkShortcut);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", id.toString())).build();
+        log.debug("REST request to delete CrmLead CrmTaskComment : {}, for CrmLead: {} and Network: {}", networkShortcut, shortName, networkShortcut);
+        crmLeadService.deleteLeadTaskComment(taskId, id, networkShortcut);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTaskComment", id.toString())).build();
 
     }
 }

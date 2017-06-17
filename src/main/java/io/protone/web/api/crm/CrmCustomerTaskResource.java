@@ -30,8 +30,8 @@ public interface CrmCustomerTaskResource {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskThinDTO>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable);
+                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "updateCustomerActivity", notes = "", response = CrmTaskDTO.class, tags = {"CRM"})
@@ -106,7 +106,6 @@ public interface CrmCustomerTaskResource {
     ResponseEntity<List<CrmTaskCommentDTO>> getCustomerTaskCommentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                             @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "createCustomerActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})

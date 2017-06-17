@@ -29,7 +29,7 @@ public interface CrmLeadTaskResource {
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskDTO>> getAllLeadActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                  @ApiParam(value = "pagable", required = true)  Pageable pagable);
+                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "updateLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -44,7 +44,7 @@ public interface CrmLeadTaskResource {
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskDTO> updateLeadActivityUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                          @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
+                                                          @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "createLeadActivity", notes = "", response = CrmTaskDTO.class, tags = {"CRM"})
@@ -60,7 +60,7 @@ public interface CrmLeadTaskResource {
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskDTO> createLeadActivityUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                           @ApiParam(value = "crmTaskDTO", required = true)@Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
+                                                           @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskDTO crmTaskDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteLeadActivity", notes = "", response = Void.class, tags = {"CRM"})
@@ -100,10 +100,9 @@ public interface CrmLeadTaskResource {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<CrmTaskCommentDTO>> getLeadTaskCommentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                            @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
-                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable);
+                                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                        @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
+                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "createLeadActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -116,9 +115,9 @@ public interface CrmLeadTaskResource {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<CrmTaskCommentDTO> createLeadActivtyCommentUsigPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                           @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                           @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
+                                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                       @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
+                                                                       @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "editLeadActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -131,9 +130,9 @@ public interface CrmLeadTaskResource {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<CrmTaskCommentDTO> editLeadActivtyCommentUsigPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                        @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                        @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
+                                                                    @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                    @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
+                                                                    @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "getLeadTaskComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -145,9 +144,9 @@ public interface CrmLeadTaskResource {
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<CrmTaskCommentDTO> getLeadTaskCommentUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                                     @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                     @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
+                                                                 @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                 @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
+                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
     @ApiOperation(value = "deleteLeadTaskComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -159,10 +158,9 @@ public interface CrmLeadTaskResource {
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLeadTaskCommentUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                              @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
-                                                              @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                              @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
-
+                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                          @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
+                                                          @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
 }

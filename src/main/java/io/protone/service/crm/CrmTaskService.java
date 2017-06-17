@@ -20,7 +20,10 @@ public class CrmTaskService {
 
     @Inject
     private CrmTaskRepository crmTaskRepository;
-    
+
+    @Inject
+    private CrmTaskCommentService crmTaskCommentService;
+
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithContact(CrmContact contact, CrmTask crmTask) {
         crmTask.setContact(contact);
@@ -101,6 +104,34 @@ public class CrmTaskService {
 
     public List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    }
+
+    public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {
+        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, networkShortcut);
+        crmTask.getComments().removeIf(crmTaskComment -> crmTaskComment.getId() == id);
+        crmTaskRepository.save(crmTask);
+        crmTaskCommentService.deleteByCrmTaskIdAndCommentId(taskId, id, networkShortcut);
+
+    }
+
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
+        return crmTaskCommentService.findByCrmTaskId(taskId, id, networkShortcut);
+    }
+
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
+        CrmTask crmTask = crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, networkShortcut);
+        if (requestEnitity != null) {
+            CrmTaskComment crmTaskComment = crmTaskCommentService.saveCrmTaskComment(requestEnitity);
+            crmTask.addComments(crmTaskComment);
+            crmTaskRepository.saveAndFlush(crmTask);
+            return crmTaskComment;
+        }
+        return null;
+
+    }
+
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+        return crmTaskCommentService.findByCrmTaskId(taskId, networkShortcut, pagable);
     }
 
 }

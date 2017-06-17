@@ -98,18 +98,20 @@ public class CrmLeadService {
         return null;
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndLead(String shortName, String networkShortcut, Pageable pagable) {
-        return null;
+
+    public void deleteLeadTaskComment(Long taskId, Long id, String networkShortcut) {
+        crmTaskService.deleteCustomerTaskComment(taskId, id, networkShortcut);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndLead(CrmTaskComment requestEnitity, String shortName, String networkShortcut) {
-        return null;
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
+        return crmTaskService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTaskAndLead(Long id, String networkShortcut) {
-        return null;
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
+        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public void deleteLeadTaskComment(String shortName, Long id, String networkShortcut) {
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 }

@@ -110,7 +110,7 @@ public class CrmOpportunityTaskResourceImpl implements CrmOpportunityTaskResourc
     @Override
     public ResponseEntity<List<CrmTaskCommentDTO>> getOpportunityTaskCommentsUsingGET(String networkShortcut, String shortName, Long taskId, Long id, Pageable pagable) {
         log.debug("REST request to get all CrmTaskComment, for CrmTask : {},  CrmOpportunity: {} and Network: {}", taskId, shortName, networkShortcut);
-        List<CrmTaskComment> crmTasks = crmOpportunityService.getTaskCommentsAssociatedWithTaskAndOpportunity(shortName, networkShortcut, pagable);
+        List<CrmTaskComment> crmTasks = crmOpportunityService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
         List<CrmTaskCommentDTO> crmTaskDTOS = crmTaskCommentMapper.DBs2DTOs(crmTasks);
         return Optional.ofNullable(crmTaskDTOS)
             .map(result -> new ResponseEntity<>(
@@ -127,9 +127,9 @@ public class CrmOpportunityTaskResourceImpl implements CrmOpportunityTaskResourc
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTaskAndOpportunity(requestEnitity, shortName, networkShortcut);
+        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/opportunity/" + shortName + "/task/" + response.getId()))
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/opportunity/" + shortName + "/task/" + "/"+response.getId()))
             .body(response);
     }
 
@@ -142,7 +142,7 @@ public class CrmOpportunityTaskResourceImpl implements CrmOpportunityTaskResourc
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CrmTaskComment requestEnitity = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTaskAndOpportunity(requestEnitity, shortName, networkShortcut);
+        CrmTaskComment entity = crmOpportunityService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
@@ -150,7 +150,7 @@ public class CrmOpportunityTaskResourceImpl implements CrmOpportunityTaskResourc
     @Override
     public ResponseEntity<CrmTaskCommentDTO> getOpportunityTaskCommentUsingGET(String networkShortcut, String shortName, Long taskId, Long id) {
         log.debug("REST request to get CrmTaskComment{}, for CrmTask : {}, CrmOpportunity: {} and Network: {}", id, taskId, shortName, networkShortcut);
-        CrmTaskComment entity = crmOpportunityService.getTaskCommentAssociatedWithTaskAndOpportunity(id, networkShortcut);
+        CrmTaskComment entity = crmOpportunityService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
@@ -162,7 +162,7 @@ public class CrmOpportunityTaskResourceImpl implements CrmOpportunityTaskResourc
     @Override
     public ResponseEntity<Void> deleteOpportunityTaskCommentUsingDELETE(String networkShortcut, String shortName, Long taskId, Long id) {
         log.debug("REST request to delete CrmOpportunity CrmTask : {}, for CrmOpportunity: {} and Network: {}", id, shortName, networkShortcut);
-        crmOpportunityService.deleteOpportunityTaskComment(shortName, id, networkShortcut);
+        crmOpportunityService.deleteOpportunityTaskComment(taskId, id, networkShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", id.toString())).build();
 
     }

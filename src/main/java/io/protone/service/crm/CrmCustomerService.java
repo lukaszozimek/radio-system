@@ -34,6 +34,7 @@ public class CrmCustomerService {
     @Inject
     private CrmTaskService crmTaskService;
 
+
     public List<CrmAccount> getAllCustomers(String corNetwork, Pageable pageable) {
         return accountRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
     }
@@ -90,20 +91,19 @@ public class CrmCustomerService {
         crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
-    public void deleteCustomerTaskComment(String shortName, Long id, String networkShortcut) {
+    public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {
+        crmTaskService.deleteCustomerTaskComment(taskId, id, networkShortcut);
     }
 
-    public CrmTaskComment getTaskCommentAssociatedWithTaskAndAccount(Long id, String networkShortcut) {
-        return null;
+    public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
+        return crmTaskService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
     }
 
-    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndAccount(CrmTaskComment requestEnitity, String shortName, String networkShortcut) {
-        return null;
-
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
+        return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndAccount(String shortName, String networkShortcut, Pageable pagable) {
-        return null;
-
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+        return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 }
