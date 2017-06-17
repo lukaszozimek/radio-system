@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CrmOpportunityMapperTest {
+
+
     @Autowired
     private CrmOpportunityMapper customCrmOpportunityMapper;
 
@@ -146,6 +148,12 @@ public class CrmOpportunityMapperTest {
         assertNotNull(entity.getTasks());
         assertNotNull(entity.getNetwork());
     }
+    @Test
+    public void DB2ThinDTO() throws Exception {
+    }
 
+    @Test
+    public void DBs2ThinDTOs() throws Exception {
+    }
 
 }
