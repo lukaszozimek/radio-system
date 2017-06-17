@@ -118,7 +118,7 @@ public interface CrmLeadTaskResource {
     ResponseEntity<CrmTaskCommentDTO> createLeadActivtyCommentUsigPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                           @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO);
+                                                                           @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "editLeadActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -133,7 +133,7 @@ public interface CrmLeadTaskResource {
     ResponseEntity<CrmTaskCommentDTO> editLeadActivtyCommentUsigPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                         @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                        @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO);
+                                                                        @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "getLeadTaskComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {

@@ -1,12 +1,10 @@
 package io.protone.service.crm;
 
-import io.protone.domain.CorAddress;
-import io.protone.domain.CorPerson;
-import io.protone.domain.CrmContact;
-import io.protone.domain.CrmTask;
+import io.protone.domain.*;
 import io.protone.repository.crm.CrmContactRepository;
 import io.protone.service.cor.CorAddressService;
 import io.protone.service.cor.CorPersonService;
+import io.protone.web.rest.dto.traffic.CrmTaskCommentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -88,6 +86,21 @@ public class CrmContactService {
             crmContact.addTasks(crmTask1);
             crmContactRepository.saveAndFlush(crmContact);
         }
+        return null;
+    }
+
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndContact(String shortName, String networkShortcut, Pageable pagable) {
+        return null;
+    }
+
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndContact(CrmTaskCommentDTO taskCommentDTO, String shortName, String shortcut) {
+        return null;
+    }
+
+    public void deleteContactTaskComment(String shortName, Long id, String networkShortcut) {
+    }
+
+    public CrmTaskComment getTaskCommentAssociatedWithTaskAndContact(Long id, String networkShortcut) {
         return null;
     }
 }

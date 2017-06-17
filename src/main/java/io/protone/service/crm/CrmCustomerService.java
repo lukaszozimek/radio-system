@@ -1,9 +1,6 @@
 package io.protone.service.crm;
 
-import io.protone.domain.CorAddress;
-import io.protone.domain.CorPerson;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.CrmTask;
+import io.protone.domain.*;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.service.cor.CorAddressService;
 import io.protone.service.cor.CorPersonService;
@@ -77,11 +74,11 @@ public class CrmCustomerService {
         return null;
     }
 
-    public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
+    public List<CrmTask> getTasksAssociatedWithAccount(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskService.findAllByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
-    public CrmTask getTaskAssociatedWithContact(Long taskId, String corNetwork) {
+    public CrmTask getTaskAssociatedWithAccount(Long taskId, String corNetwork) {
         return crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
@@ -91,5 +88,22 @@ public class CrmCustomerService {
         crmAccount.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         accountRepository.save(crmAccount);
         crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+    }
+
+    public void deleteCustomerTaskComment(String shortName, Long id, String networkShortcut) {
+    }
+
+    public CrmTaskComment getTaskCommentAssociatedWithTaskAndAccount(Long id, String networkShortcut) {
+        return null;
+    }
+
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndAccount(CrmTaskComment requestEnitity, String shortName, String networkShortcut) {
+        return null;
+
+    }
+
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndAccount(String shortName, String networkShortcut, Pageable pagable) {
+        return null;
+
     }
 }

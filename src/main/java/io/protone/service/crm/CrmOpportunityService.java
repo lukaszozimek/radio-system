@@ -2,6 +2,7 @@ package io.protone.service.crm;
 
 import io.protone.domain.CrmOpportunity;
 import io.protone.domain.CrmTask;
+import io.protone.domain.CrmTaskComment;
 import io.protone.repository.crm.CrmOpportunityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class CrmOpportunityService {
 
     @Inject
     private CrmTaskService crmTaskService;
+
+    @Inject
+    private CrmTaskCommentService crmTaskCommentService;
 
     public List<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
         return opportunityRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -71,5 +75,20 @@ public class CrmOpportunityService {
         crmOpportunity.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
         opportunityRepository.save(crmOpportunity);
         crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+    }
+
+    public void deleteOpportunityTaskComment(String shortName, Long id, String networkShortcut) {
+    }
+
+    public CrmTaskComment getTaskCommentAssociatedWithTaskAndOpportunity(Long id, String networkShortcut) {
+        return null;
+    }
+
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndOpportunity(CrmTaskComment requestEnitity, String shortName, String networkShortcut) {
+        return null;
+    }
+
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndOpportunity(String shortName, String networkShortcut, Pageable pagable) {
+        return null;
     }
 }

@@ -117,7 +117,7 @@ public interface CrmContactTaskResource {
     ResponseEntity<CrmTaskCommentDTO> createContactActivtyCommentUsigPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                               @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                               @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                              @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO);
+                                                                              @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "editContactActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -132,7 +132,7 @@ public interface CrmContactTaskResource {
     ResponseEntity<CrmTaskCommentDTO> editContactActivtyCommentUsigPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                           @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO);
+                                                                           @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "getContactTaskComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {

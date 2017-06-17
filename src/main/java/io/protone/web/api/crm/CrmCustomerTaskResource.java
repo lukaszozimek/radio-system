@@ -1,6 +1,7 @@
 package io.protone.web.api.crm;
 
 import io.protone.web.rest.dto.crm.CrmTaskDTO;
+import io.protone.web.rest.dto.crm.thin.CrmTaskThinDTO;
 import io.protone.web.rest.dto.traffic.CrmTaskCommentDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public interface CrmCustomerTaskResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}/task",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<CrmTaskDTO>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<CrmTaskThinDTO>> getAllCustomerActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
@@ -121,7 +122,7 @@ public interface CrmCustomerTaskResource {
     ResponseEntity<CrmTaskCommentDTO> createCustomerActivtyCommentUsigPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                           @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO);
+                                                                           @ApiParam(value = "crmTaskDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "editCustomerActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {
@@ -136,7 +137,7 @@ public interface CrmCustomerTaskResource {
     ResponseEntity<CrmTaskCommentDTO> editCustomerActivtyCommentUsigPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                         @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                        @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO);
+                                                                        @ApiParam(value = "taskCommentDTO", required = true) @Valid @RequestBody CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException;
 
     @ApiOperation(value = "getCustomerTaskComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})
     @ApiResponses(value = {

@@ -20,7 +20,7 @@ public class CrmTaskService {
 
     @Inject
     private CrmTaskRepository crmTaskRepository;
-
+    
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithContact(CrmContact contact, CrmTask crmTask) {
         crmTask.setContact(contact);
@@ -102,4 +102,5 @@ public class CrmTaskService {
     public List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
+
 }

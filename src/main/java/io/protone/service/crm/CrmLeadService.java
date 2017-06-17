@@ -1,9 +1,6 @@
 package io.protone.service.crm;
 
-import io.protone.domain.CorAddress;
-import io.protone.domain.CorPerson;
-import io.protone.domain.CrmLead;
-import io.protone.domain.CrmTask;
+import io.protone.domain.*;
 import io.protone.repository.crm.CrmLeadRepository;
 import io.protone.service.cor.CorAddressService;
 import io.protone.service.cor.CorPersonService;
@@ -101,4 +98,18 @@ public class CrmLeadService {
         return null;
     }
 
+    public List<CrmTaskComment> getTaskCommentsAssociatedWithTaskAndLead(String shortName, String networkShortcut, Pageable pagable) {
+        return null;
+    }
+
+    public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTaskAndLead(CrmTaskComment requestEnitity, String shortName, String networkShortcut) {
+        return null;
+    }
+
+    public CrmTaskComment getTaskCommentAssociatedWithTaskAndLead(Long id, String networkShortcut) {
+        return null;
+    }
+
+    public void deleteLeadTaskComment(String shortName, Long id, String networkShortcut) {
+    }
 }

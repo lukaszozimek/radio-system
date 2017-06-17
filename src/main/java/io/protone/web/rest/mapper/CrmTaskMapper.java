@@ -30,7 +30,9 @@ public interface CrmTaskMapper {
     @Mapping(source = "assignedTo", target = "assignedTo")
     CrmTaskThinDTO DB2ThinDTO(CrmTask crmTask);
 
-    List<CrmTaskThinDTO> DBs2ThinDTOs(Set<CrmTaskThinDTO> crmTasks);
+    List<CrmTaskThinDTO> DBs2ThinDTOs(Set<CrmTask> crmTasks);
+
+    List<CrmTaskThinDTO> DBs2ThinDTOs(List<CrmTask> crmTasks);
 
     @Mapping(source = "createdBy", target = "createdBy")
     @Mapping(source = "assignedTo", target = "assignedTo")
