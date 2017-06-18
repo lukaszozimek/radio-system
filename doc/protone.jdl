@@ -690,7 +690,7 @@ relationship ManyToOne {
     CrmTask{status} to CorDictionary,
     CrmTask{network} to CorNetwork,
     TraOrder{advertisment}to TraAdvertisement,
-    SchEmission {order} to TraOrder {emissions},
+    TraEmission {order} to TraOrder {emissions},
     TraOrder {campaign} to TraCampaign {orders} ,
     TraOrder {invoice} to TraInvoice {orders},
 
