@@ -103,7 +103,7 @@ public class CrmLeadTaskCommentResourceImplTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -116,21 +116,25 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Before
     public void initTest() {
         crmLead = CrmLeadResourceImplTest.createEntity(em).network(corNetwork);
+        crmTask = CrmLeadTaskResourceImplTest.createEntity(em);
         crmTaskComment = createEntity(em);
     }
 
     @Test
     @Transactional
     public void createCrmTaskComment() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         int databaseSizeBeforeCreate = crmTaskCommentRepository.findAll().size();
 
         // Create the CrmTaskComment
         CrmTaskCommentDTO crmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(crmTaskComment);
 
-        restCrmTaskCommentMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment")
+        restCrmTaskCommentMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskCommentDTO)))
             .andExpect(status().isCreated());
@@ -145,8 +149,11 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Test
     @Transactional
     public void createCrmTaskCommentWithExistingId() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         int databaseSizeBeforeCreate = crmTaskCommentRepository.findAll().size();
 
@@ -156,7 +163,7 @@ public class CrmLeadTaskCommentResourceImplTest {
         CrmTaskCommentDTO existingCrmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(existingCrmTaskComment);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmTaskCommentMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment")
+        restCrmTaskCommentMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingCrmTaskCommentDTO)))
             .andExpect(status().isBadRequest());
@@ -169,14 +176,17 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Test
     @Transactional
     public void getAllCrmTaskComments() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment);
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
 
         // Get all the crmTaskCommentList
-        restCrmTaskCommentMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment?sort=id,desc"))
+        restCrmTaskCommentMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment?sort=id,desc", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(crmTaskComment.getId().intValue())))
@@ -186,14 +196,17 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Test
     @Transactional
     public void getCrmTaskComment() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment);
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
 
         // Get the crmTaskComment
-        restCrmTaskCommentMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment/{id}", crmTaskComment.getId()))
+        restCrmTaskCommentMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId(), crmTaskComment.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(crmTaskComment.getId().intValue()))
@@ -204,18 +217,21 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Transactional
     public void getNonExistingCrmTaskComment() throws Exception {
         // Get the crmTaskComment
-        restCrmTaskCommentMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment/{id}", Long.MAX_VALUE))
+        restCrmTaskCommentMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
     public void updateCrmTaskComment() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment);
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
         int databaseSizeBeforeUpdate = crmTaskCommentRepository.findAll().size();
 
         // Update the crmTaskComment
@@ -224,7 +240,7 @@ public class CrmLeadTaskCommentResourceImplTest {
             .comment(UPDATED_COMMENT);
         CrmTaskCommentDTO crmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(updatedCrmTaskComment);
 
-        restCrmTaskCommentMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment")
+        restCrmTaskCommentMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskCommentDTO)))
             .andExpect(status().isOk());
@@ -239,8 +255,11 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingCrmTaskComment() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         int databaseSizeBeforeUpdate = crmTaskCommentRepository.findAll().size();
 
@@ -248,7 +267,7 @@ public class CrmLeadTaskCommentResourceImplTest {
         CrmTaskCommentDTO crmTaskCommentDTO = crmTaskCommentMapper.DB2DTO(crmTaskComment);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restCrmTaskCommentMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment")
+        restCrmTaskCommentMockMvc.perform(put("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(crmTaskCommentDTO)))
             .andExpect(status().isCreated());
@@ -261,15 +280,18 @@ public class CrmLeadTaskCommentResourceImplTest {
     @Test
     @Transactional
     public void deleteCrmTaskComment() throws Exception {
+        crmTaskRepository.deleteAll();
         crmLeadRepository.deleteAll();
-        crmLead = crmLeadRepository.save(crmLead.network(corNetwork));
+
+        crmLead = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork));
+        crmTask = crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).lead(crmLead));
 
         // Initialize the database
-        crmTaskCommentRepository.saveAndFlush(crmTaskComment);
+        crmTaskCommentRepository.saveAndFlush(crmTaskComment.network(corNetwork).taskComment(crmTask));
         int databaseSizeBeforeDelete = crmTaskCommentRepository.findAll().size();
 
         // Get the crmTaskComment
-        restCrmTaskCommentMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment/{id}", crmTaskComment.getId())
+        restCrmTaskCommentMockMvc.perform(delete("/api/v1/network/{networkShortcut}/crm/lead/{shortName}/task/{taskId}/comment/{id}", corNetwork.getShortcut(), crmLead.getShortname(), crmTask.getId(), crmTaskComment.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

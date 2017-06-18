@@ -30,7 +30,6 @@ public interface CrmOpportunityTaskCommentResource {
     ResponseEntity<List<CrmTaskCommentDTO>> getOpportunityTaskCommentsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
-                                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "createOpportunityActivtyComment", notes = "", response = CrmTaskCommentDTO.class, tags = {"CRM"})

@@ -115,7 +115,7 @@ public class CrmTaskService {
     }
 
     public CrmTaskComment getTaskCommentAssociatedWithTask(String networkShortcut, Long taskId, Long id) {
-        return crmTaskCommentService.findByCrmTaskId(taskId, id, networkShortcut);
+        return crmTaskCommentService.findByCrmTaskId(id, taskId, networkShortcut);
     }
 
     public CrmTaskComment saveOrUpdateTaskCommentAssociatedWithTask(CrmTaskComment requestEnitity, Long taskId, String networkShortcut) {
