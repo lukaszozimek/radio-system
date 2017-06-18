@@ -85,6 +85,7 @@ public class CrmContactService {
             CrmTask crmTask1 = crmTaskService.saveOrUpdateTaskAssociatiedWithContact(crmContact, crmTask);
             crmContact.addTasks(crmTask1);
             crmContactRepository.saveAndFlush(crmContact);
+            return crmTask1;
         }
         return null;
     }
