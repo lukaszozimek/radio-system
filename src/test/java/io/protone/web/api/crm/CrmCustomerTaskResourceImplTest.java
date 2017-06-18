@@ -1,10 +1,6 @@
 package io.protone.web.api.crm;
 
 import io.protone.ProtoneApp;
-import io.protone.web.api.cor.CorNetworkResourceIntTest;
-import io.protone.web.api.crm.impl.CrmCustomerTaskResourceImpl;
-import io.protone.web.rest.dto.crm.CrmTaskDTO;
-import io.protone.util.TestUtil;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.CrmTask;
@@ -12,6 +8,10 @@ import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.crm.CrmTaskRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
+import io.protone.util.TestUtil;
+import io.protone.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.web.api.crm.impl.CrmCustomerTaskResourceImpl;
+import io.protone.web.rest.dto.crm.CrmTaskDTO;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +36,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 02/05/2017.
@@ -182,7 +180,6 @@ public class CrmCustomerTaskResourceImplTest {
     @Transactional
     public void getAllCrmTasks() throws Exception {
         crmAccountRepository.deleteAll();
-
         crmAccountRepository.save(crmAccount.network(corNetwork));
         // Initialize the database
         crmTaskRepository.saveAndFlush(crmTask.network(corNetwork).account(crmAccount));

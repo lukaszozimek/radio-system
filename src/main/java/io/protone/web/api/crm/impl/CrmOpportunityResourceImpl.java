@@ -5,7 +5,6 @@ import io.protone.domain.CrmOpportunity;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmOpportunityService;
 import io.protone.web.api.crm.CrmOpportunityResource;
-import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
 import io.protone.web.rest.dto.crm.thin.CrmOpportunityThinDTO;
 import io.protone.web.rest.mapper.CrmOpportunityMapper;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 @RestController
 public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
-    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CrmOpportunityResourceImpl.class);
 
     @Inject
     private CrmOpportunityService crmOpportunityService;

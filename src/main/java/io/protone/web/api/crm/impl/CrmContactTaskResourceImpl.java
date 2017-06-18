@@ -2,14 +2,10 @@ package io.protone.web.api.crm.impl;
 
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmTask;
-import io.protone.domain.CrmTaskComment;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmContactService;
 import io.protone.web.api.crm.CrmContactTaskResource;
-import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.web.rest.dto.crm.CrmTaskDTO;
-import io.protone.web.rest.dto.traffic.CrmTaskCommentDTO;
-import io.protone.web.rest.mapper.CrmTaskCommentMapper;
 import io.protone.web.rest.mapper.CrmTaskMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -31,7 +27,7 @@ import java.util.Optional;
 
 @RestController
 public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
-    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CrmContactTaskResourceImpl.class);
 
     @Inject
     private CrmContactService crmContactService;
@@ -42,8 +38,6 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
     @Inject
     private CrmTaskMapper crmTaskMapper;
 
-    @Inject
-    private CrmTaskCommentMapper crmTaskCommentMapper;
 
     @Override
     public ResponseEntity<List<CrmTaskDTO>> getAllContactActivitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -115,62 +109,5 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Override
-    public ResponseEntity<List<CrmTaskCommentDTO>> getContactTaskCommentsUsingGET(String networkShortcut, String shortName, Long taskId, Long id, Pageable pagable) {
-        log.debug("REST request to get all CrmContact CrmTask,for CrmContact: {} and Network: {}", shortName, networkShortcut);
-        List<CrmTaskComment> reposesEntity = crmContactService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
-        List<CrmTaskCommentDTO> response = crmTaskCommentMapper.DBs2DTOs(reposesEntity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 
-    @Override
-    public ResponseEntity<CrmTaskCommentDTO> createContactActivtyCommentUsigPOST(String networkShortcut, String shortName, Long taskId, CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
-        log.debug("REST request to saveCorContact CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", taskCommentDTO, shortName, networkShortcut);
-        if (taskCommentDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmTask", "idexists", "A new CrmTask cannot already have an ID")).body(null);
-        }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CrmTaskComment crmTaskComment = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment reposesEntity = crmContactService.saveOrUpdateTaskCommentAssociatedWithTask(crmTaskComment, taskId, corNetwork.getShortcut());
-        CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(reposesEntity);
-        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/contact/" + shortName + "/task/" + crmTaskComment.getId()))
-            .body(response);
-    }
-
-    @Override
-    public ResponseEntity<CrmTaskCommentDTO> editContactActivtyCommentUsigPUT(String networkShortcut, String shortName, Long taskId, CrmTaskCommentDTO taskCommentDTO) throws URISyntaxException {
-        log.debug("REST request to update CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", taskCommentDTO, shortName, networkShortcut);
-        if (taskCommentDTO.getId() == null) {
-            return createContactActivtyCommentUsigPOST(networkShortcut, shortName, taskId, taskCommentDTO);
-        }
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CrmTaskComment crmTaskComment = crmTaskCommentMapper.DTO2DB(taskCommentDTO, corNetwork);
-        CrmTaskComment reposesEntity = crmContactService.saveOrUpdateTaskCommentAssociatedWithTask(crmTaskComment, taskId, networkShortcut);
-        CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(reposesEntity);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @Override
-    public ResponseEntity<CrmTaskCommentDTO> getContactTaskCommentUsingGET(String networkShortcut, String shortName, Long taskId, Long id) {
-        log.debug("REST request to get CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", id, shortName, networkShortcut);
-        CrmTaskComment reposesEntity = crmContactService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
-        CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(reposesEntity);
-        return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @Override
-    public ResponseEntity<Void> deleteContactTaskCommentUsingDELETE(String networkShortcut, String shortName, Long taskId, Long id) {
-        log.debug("REST request to delete CrmContact CrmTask : {}, for CrmContact: {} and Network: {}", id, shortName, networkShortcut);
-        crmContactService.deleteCustomerTaskComment(taskId, id, networkShortcut);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmTask", id.toString())).build();
-
-    }
 }

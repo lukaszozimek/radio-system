@@ -5,7 +5,6 @@ import io.protone.domain.CrmAccount;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmCustomerService;
 import io.protone.web.api.crm.CrmCustomerResource;
-import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.web.rest.dto.crm.CrmAccountDTO;
 import io.protone.web.rest.dto.crm.thin.CrmAccountThinDTO;
 import io.protone.web.rest.mapper.CrmAccountMapper;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 @RestController
 public class CrmCustomerResourceImpl implements CrmCustomerResource {
-    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CrmCustomerResourceImpl.class);
 
     @Inject
     private CrmCustomerService crmCustomerService;

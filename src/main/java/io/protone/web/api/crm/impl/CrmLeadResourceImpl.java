@@ -5,7 +5,6 @@ import io.protone.domain.CrmLead;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.crm.CrmLeadService;
 import io.protone.web.api.crm.CrmLeadResource;
-import io.protone.web.api.library.impl.LibraryMarkerConfigurationResourceImpl;
 import io.protone.web.rest.dto.crm.CrmLeadDTO;
 import io.protone.web.rest.dto.crm.thin.CrmLeadThinDTO;
 import io.protone.web.rest.mapper.CrmLeadMapper;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 @RestController
 public class CrmLeadResourceImpl implements CrmLeadResource {
-    private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(CrmLeadResourceImpl.class);
 
     @Inject
     private CrmLeadService crmLeadService;
