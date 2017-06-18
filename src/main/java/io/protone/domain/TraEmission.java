@@ -35,6 +35,10 @@ public class TraEmission implements Serializable {
 
     @ManyToOne
     @PodamExclude
+    private TraOrder order;
+
+    @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
@@ -94,6 +98,19 @@ public class TraEmission implements Serializable {
 
     public void setTimeStop(Long timeStop) {
         this.timeStop = timeStop;
+    }
+
+    public TraOrder getOrder() {
+        return order;
+    }
+
+    public TraEmission order(TraOrder traOrder) {
+        this.order = traOrder;
+        return this;
+    }
+
+    public void setOrder(TraOrder traOrder) {
+        this.order = traOrder;
     }
 
     public CorNetwork getNetwork() {
@@ -156,6 +173,7 @@ public class TraEmission implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         TraEmission traEmission = (TraEmission) o;
         if (traEmission.id == null || id == null) {
             return false;

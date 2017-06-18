@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity TraOrder.
     -->
-    <changeSet id="20170421185755-2" author="jhipster">
+    <changeSet id="20170525201839-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="tra_order"

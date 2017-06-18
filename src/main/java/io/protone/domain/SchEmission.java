@@ -67,9 +67,6 @@ public class SchEmission implements Serializable {
     @ManyToOne
     private SchBlock block;
 
-    @ManyToOne
-    private TraOrder order;
-
     public Long getId() {
         return id;
     }
@@ -245,19 +242,6 @@ public class SchEmission implements Serializable {
 
     public void setBlock(SchBlock schBlock) {
         this.block = schBlock;
-    }
-
-    public TraOrder getOrder() {
-        return order;
-    }
-
-    public SchEmission order(TraOrder traOrder) {
-        this.order = traOrder;
-        return this;
-    }
-
-    public void setOrder(TraOrder traOrder) {
-        this.order = traOrder;
     }
 
     @Override
