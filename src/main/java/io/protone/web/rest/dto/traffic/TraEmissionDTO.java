@@ -1,12 +1,10 @@
 package io.protone.web.rest.dto.traffic;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * TraEmissionDTO
@@ -20,6 +18,7 @@ public class TraEmissionDTO {
 
     @JsonProperty("advertiment")
     private TraAdvertisementThinDTO advertiment = null;
+
 
     @JsonProperty("timeStart")
     private Long timeStart = null;

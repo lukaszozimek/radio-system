@@ -1,7 +1,10 @@
 package io.protone.web.rest.mapper;
 
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraCampaign;
+import io.protone.domain.TraInvoice;
+import io.protone.domain.TraOrder;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.domain.*;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -10,14 +13,14 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertisementMapper.class, CrmAccountMapper.class})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertisementMapper.class, CrmAccountMapper.class, TraEmissionMapper.class})
 public interface TraOrderMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")
     @Mapping(source = "advertisment", target = "advertismentId")
     @Mapping(source = "campaign.id", target = "campaignId")
     @Mapping(source = "invoice.id", target = "invoiceId")
-    @Mapping(target = "emissions", ignore = true)
+    @Mapping(source = "emissions", target = "emissions")
     TraOrderDTO DB2DTO(TraOrder traOrder);
 
     List<TraOrderDTO> DBs2DTOs(List<TraOrder> traOrders);
@@ -27,7 +30,7 @@ public interface TraOrderMapper {
     @Mapping(source = "advertismentId", target = "advertisment")
     @Mapping(source = "invoiceId", target = "invoice")
     @Mapping(source = "campaignId", target = "campaign")
-    @Mapping(target = "emissions", ignore = true)
+    @Mapping(source = "emissions", target = "emissions")
     TraOrder DTO2DB(TraOrderDTO traOrderDTO, @Context CorNetwork corNetwork);
 
     default List<TraOrder> DTOs2DBs(List<TraOrderDTO> traOrderDTOS, CorNetwork networkId) {

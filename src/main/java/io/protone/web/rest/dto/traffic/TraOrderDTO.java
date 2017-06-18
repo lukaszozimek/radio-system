@@ -40,7 +40,7 @@ public class TraOrderDTO {
 
     private CorDictionaryDTO statusId = null;
 
-    private List<SchEmissionPT> schEmissionPT = new ArrayList<SchEmissionPT>();
+    private List<TraEmissionDTO> emissions = new ArrayList<TraEmissionDTO>();
 
     private Long invoiceId = null;
 
@@ -227,26 +227,26 @@ public class TraOrderDTO {
      * @return status
      **/
     @ApiModelProperty(required = true, value = "")
-    public List<SchEmissionPT> getEmissions() {
-        return schEmissionPT;
+    public List<TraEmissionDTO> getEmissions() {
+        return emissions;
     }
 
-    public void setEmissions(List<SchEmissionPT> emissions) {
-        this.schEmissionPT = emissions;
+    public void setEmissions(List<TraEmissionDTO> emissions) {
+        this.emissions = emissions;
     }
 
-    public TraOrderDTO addEmission(SchEmissionPT emission) {
-        this.schEmissionPT.add(emission);
+    public TraOrderDTO addEmission(TraEmissionDTO emission) {
+        this.emissions.add(emission);
         return this;
     }
 
     public TraOrderDTO removeEmission(SchEmissionPT emission) {
-        this.schEmissionPT.remove(emission);
+        this.emissions.remove(emission);
         return this;
     }
 
-    public TraOrderDTO emissions(List<SchEmissionPT> emissions) {
-        this.schEmissionPT = emissions;
+    public TraOrderDTO emissions(List<TraEmissionDTO> emissions) {
+        this.emissions = emissions;
         return this;
     }
 
@@ -281,13 +281,13 @@ public class TraOrderDTO {
             Objects.equals(this.id, traOrderDTO.id) &&
             Objects.equals(this.name, traOrderDTO.name) &&
             Objects.equals(this.startDate, traOrderDTO.startDate) &&
-            Objects.equals(this.schEmissionPT, traOrderDTO.schEmissionPT) &&
+            Objects.equals(this.emissions, traOrderDTO.emissions) &&
             Objects.equals(this.advertismentId, traOrderDTO.advertismentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, campaignId, customerId, endDate, id, name, startDate, schEmissionPT, advertismentId);
+        return Objects.hash(calculatedPrize, campaignId, customerId, endDate, id, name, startDate, emissions, advertismentId);
     }
 
     @Override
@@ -302,7 +302,7 @@ public class TraOrderDTO {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
-        sb.append("    emissions: ").append(toIndentedString(schEmissionPT)).append("\n");
+        sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    advertisment: ").append(toIndentedString(advertismentId)).append("\n");
 
         sb.append("}");
