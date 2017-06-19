@@ -1,6 +1,5 @@
 package io.protone.service.library.file.impl;
 
-import com.google.common.collect.Lists;
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.DeleteException;
 import io.protone.config.s3.exceptions.DownloadException;
@@ -17,7 +16,6 @@ import io.protone.service.constans.ServiceConstants;
 import io.protone.service.cor.CorUserService;
 import io.protone.service.library.file.LibFileService;
 import io.protone.service.library.metadata.LibImageMetadataService;
-import io.protone.service.metadata.ProtoneMetadataProperty;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -76,7 +74,7 @@ public class LibImageFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)

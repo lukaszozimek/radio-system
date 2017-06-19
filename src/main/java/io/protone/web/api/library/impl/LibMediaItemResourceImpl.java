@@ -1,11 +1,11 @@
 package io.protone.web.api.library.impl;
 
-import io.protone.web.rest.dto.library.LibMediaItemDTO;
+import io.protone.domain.CorNetwork;
 import io.protone.domain.LibMediaItem;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.library.LibItemService;
 import io.protone.web.api.library.LibMediaItemResource;
-import io.protone.domain.CorNetwork;
+import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.web.rest.mapper.LibItemMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -150,6 +150,19 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
         LibMediaItem entity = libItemService.getMediaItem(networkShortcut, libraryPrefix, idx);
         LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public ResponseEntity<LibMediaItemDTO> uploadItemImagesByNetworShortcutAndLibraryPrefix(String networkShortcut, String libraryPrefix, String idx, MultipartFile[] files) {
+     /*   List<LibMediaItem> entities = libItemService.upload(networkShortcut, libraryPrefix, files);
+        List<LibMediaItemDTO> response = libMediaItemMapper.DBs2DTOs(entities);
+
+    */
+        return Optional.ofNullable(new LibMediaItemDTO())
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))

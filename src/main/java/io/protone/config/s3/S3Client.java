@@ -121,6 +121,33 @@ public class S3Client {
         }
     }
 
+    public void upload(String bucketName, String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {
+
+        try {
+            getClient().putObject(bucketName, uuid, bais, bais.available(), contentType);
+        } catch (InvalidBucketNameException e) {
+            throw new UploadException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new UploadException(e.getMessage());
+        } catch (IOException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new UploadException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new UploadException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new UploadException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InternalException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InvalidArgumentException e) {
+            throw new UploadException(e.getMessage());
+        }
+    }
+
 
     public InputStream download(String uuid) throws DownloadException, S3Exception {
         try {

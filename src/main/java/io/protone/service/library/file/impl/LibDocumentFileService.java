@@ -72,7 +72,7 @@ public class LibDocumentFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
