@@ -1,6 +1,8 @@
 package io.protone.web.api.library;
 
 import io.protone.ProtoneApp;
+import io.protone.config.s3.S3Client;
+import io.protone.config.s3.exceptions.CreateBucketException;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.library.impl.LibraryResourceImpl;
 import io.protone.web.rest.dto.library.LibLibraryDTO;
@@ -17,6 +19,7 @@ import io.protone.web.rest.mapper.LibLibraryMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +37,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -76,6 +81,9 @@ public class LibraryResourceImplTest {
     @Autowired
     private LibLibraryService libLibraryService;
 
+    @Mock
+    private S3Client s3Client;
+
     @Autowired
     private CorNetworkService corNetworkService;
 
@@ -94,25 +102,8 @@ public class LibraryResourceImplTest {
     private MockMvc restLibLibraryMockMvc;
 
     private LibLibrary libLibrary;
+
     private CorNetwork corNetwork;
-
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
-        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
-
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-
-        this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -131,6 +122,26 @@ public class LibraryResourceImplTest {
     }
 
     @Before
+    public void setup() throws CreateBucketException {
+        MockitoAnnotations.initMocks(this);
+        LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
+
+        ReflectionTestUtils.setField(libLibraryService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
+        ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
+
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+
+        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
+        this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         libLibrary = createEntity(em).network(corNetwork);
     }
@@ -143,7 +154,7 @@ public class LibraryResourceImplTest {
         // Create the LibLibrary
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isCreated());
@@ -170,7 +181,7 @@ public class LibraryResourceImplTest {
         LibLibraryDTO existingLibLibraryDTO = libLibraryMapper.DB2DTO(existingLibLibrary);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(existingLibLibraryDTO)))
             .andExpect(status().isBadRequest());
@@ -190,7 +201,7 @@ public class LibraryResourceImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isBadRequest());
@@ -210,7 +221,7 @@ public class LibraryResourceImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isBadRequest());
@@ -229,7 +240,7 @@ public class LibraryResourceImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isBadRequest());
@@ -248,7 +259,7 @@ public class LibraryResourceImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isBadRequest());
@@ -258,7 +269,6 @@ public class LibraryResourceImplTest {
     }
 
 
-
     @Test
     @Transactional
     public void getAllLibLibraries() throws Exception {
@@ -266,7 +276,7 @@ public class LibraryResourceImplTest {
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library?sort=id,desc",corNetwork.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library?sort=id,desc", corNetwork.getShortcut()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
@@ -284,7 +294,7 @@ public class LibraryResourceImplTest {
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123"));
 
         // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}",corNetwork.getShortcut(), "123"))
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), "123"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
@@ -299,7 +309,7 @@ public class LibraryResourceImplTest {
     @Transactional
     public void getNonExistingLibLibrary() throws Exception {
         // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}",corNetwork.getShortcut(), Long.MAX_VALUE))
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), Long.MAX_VALUE))
             .andExpect(status().isNotFound());
     }
 
@@ -320,7 +330,7 @@ public class LibraryResourceImplTest {
             .description(UPDATED_DESCRIPTION);
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
 
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isOk());
@@ -345,7 +355,7 @@ public class LibraryResourceImplTest {
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library",corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
             .andExpect(status().isCreated());
@@ -363,7 +373,7 @@ public class LibraryResourceImplTest {
         int databaseSizeBeforeDelete = libLibraryRepository.findAll().size();
 
         // Get the libLibrary
-        restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}",corNetwork.getShortcut(), libLibrary.getShortcut())
+        restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), libLibrary.getShortcut())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 

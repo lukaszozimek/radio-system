@@ -1,5 +1,6 @@
 package io.protone.web.api.library.impl;
 
+import io.protone.config.s3.exceptions.CreateBucketException;
 import io.protone.web.api.library.LibraryResource;
 import io.protone.web.rest.dto.library.LibLibraryDTO;
 import io.protone.service.library.LibLibraryService;
@@ -40,7 +41,7 @@ public class LibraryResourceImpl implements LibraryResource {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<LibLibraryDTO> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException {
+    public ResponseEntity<LibLibraryDTO> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to update library: {}", library);
 
         if (library.getId() == null) {
@@ -64,7 +65,7 @@ public class LibraryResourceImpl implements LibraryResource {
     }
 
     @Override
-    public ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException {
+    public ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to create library: {}", library);
         if (library.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);
@@ -109,7 +110,7 @@ public class LibraryResourceImpl implements LibraryResource {
     @Override
     public ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException {
+                                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to update library: {}", library);
 
         if (library.getId() == null) {
@@ -126,7 +127,7 @@ public class LibraryResourceImpl implements LibraryResource {
     @Override
     public ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException {
+                                                                          @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to create library: {}", library);
         if (library.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);

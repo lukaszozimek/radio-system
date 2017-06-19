@@ -42,7 +42,10 @@ public class S3Client {
 
     public String makeBucket(String bucketName) throws CreateBucketException {
         try {
-            getClient().makeBucket(bucketName);
+            boolean isExist = getClient().bucketExists(bucketName);
+            if (!isExist) {
+                getClient().makeBucket(bucketName);
+            }
             return bucketName;
         } catch (InvalidBucketNameException e) {
             throw new CreateBucketException(e.getMessage());
