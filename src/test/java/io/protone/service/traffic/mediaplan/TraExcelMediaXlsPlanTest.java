@@ -61,7 +61,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
 
 
         //when
@@ -96,7 +96,8 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
+
 
 
         //when
@@ -131,7 +132,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
 
 
         //when
@@ -166,7 +167,8 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G26")
             .lastEmissionValueCell("AV64")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
+
 
 
         //when

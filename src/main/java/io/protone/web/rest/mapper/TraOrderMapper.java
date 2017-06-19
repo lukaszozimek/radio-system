@@ -5,6 +5,7 @@ import io.protone.domain.TraCampaign;
 import io.protone.domain.TraInvoice;
 import io.protone.domain.TraOrder;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
+import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,15 @@ public interface TraOrderMapper {
     @Mapping(source = "emissions", target = "emissions")
     TraOrderDTO DB2DTO(TraOrder traOrder);
 
+    @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "status", target = "statusId")
+    @Mapping(source = "advertisment", target = "advertismentId")
+    @Mapping(source = "campaign.id", target = "campaignId")
+    @Mapping(source = "invoice.id", target = "invoiceId")
+    TraOrderThinDTO DB2ThinDTO(TraOrder traOrder);
+
+    List<TraOrderThinDTO> DBs2ThinDTOs(List<TraOrder> traOrder);
+
     List<TraOrderDTO> DBs2DTOs(List<TraOrder> traOrders);
 
     @Mapping(source = "customerId", target = "customer")
@@ -32,6 +42,13 @@ public interface TraOrderMapper {
     @Mapping(source = "campaignId", target = "campaign")
     @Mapping(source = "emissions", target = "emissions")
     TraOrder DTO2DB(TraOrderDTO traOrderDTO, @Context CorNetwork corNetwork);
+
+    @Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "statusId", target = "status")
+    @Mapping(source = "advertismentId", target = "advertisment")
+    @Mapping(source = "invoiceId", target = "invoice")
+    @Mapping(source = "campaignId", target = "campaign")
+    TraOrder DTO2DB(TraOrderThinDTO traOrderDTO);
 
     default List<TraOrder> DTOs2DBs(List<TraOrderDTO> traOrderDTOS, CorNetwork networkId) {
         List<TraOrder> crmLeads = new ArrayList<>();

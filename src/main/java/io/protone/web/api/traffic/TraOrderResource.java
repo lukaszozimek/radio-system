@@ -1,6 +1,7 @@
 package io.protone.web.api.traffic;
 
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
+import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +54,8 @@ public interface TraOrderResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraOrderDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                             @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<TraOrderThinDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getAnOrder", notes = "", response = TraOrderDTO.class, tags = {"TRAFFIC",})

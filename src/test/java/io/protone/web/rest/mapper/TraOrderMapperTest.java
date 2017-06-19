@@ -1,11 +1,12 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.domain.*;
+import io.protone.web.rest.dto.cor.CorDictionaryDTO;
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
+import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,8 @@ public class TraOrderMapperTest {
 
     private TraOrderDTO traOrderDTO;
 
+    private TraOrderThinDTO traOrderThinDTO;
+
     private List<TraOrderDTO> orderPTS = new ArrayList<>();
 
     private List<TraOrder> traOrders = new ArrayList<>();
@@ -59,6 +62,7 @@ public class TraOrderMapperTest {
         traOrder.setInvoice(factory.manufacturePojo(TraInvoice.class));
         traOrder.getInvoice().setId(1L);
         traOrders.add(traOrder);
+        traOrderThinDTO =factory.manufacturePojo(TraOrderThinDTO.class);
         traOrderDTO = factory.manufacturePojo(TraOrderDTO.class);
         traOrderDTO.getId();
         traOrderDTO.setAdvertismentId(factory.manufacturePojo(TraAdvertisementThinDTO.class));
@@ -108,6 +112,24 @@ public class TraOrderMapperTest {
             assertNotNull(dto.getCalculatedPrize());
         });
     }
+
+    @Test
+    public void ThinDTO2DB() throws Exception {
+        TraOrder entity = customTraOrderMapper.DTO2DB(traOrderThinDTO);
+
+
+        assertNotNull(entity.getId());
+        assertNotNull(entity.getAdvertisment());
+        assertNotNull(entity.getCampaign());
+        assertNotNull(entity.getCustomer());
+        assertNotNull(entity.getStatus());
+        assertNotNull(entity.getId());
+        assertNotNull(entity.getName());
+        assertNotNull(entity.getStartDate());
+        assertNotNull(entity.getEndDate());
+        assertNotNull(entity.getCalculatedPrize());
+    }
+
 
     @Test
     public void DBs2DTOs() throws Exception {

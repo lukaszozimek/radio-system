@@ -1,14 +1,17 @@
 package io.protone.web.api.traffic;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.protone.ProtoneApp;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.crm.CrmAccountRepository;
-import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraMediaPlanRepository;
+import io.protone.repository.traffic.TraOrderRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.library.LibItemService;
@@ -22,6 +25,7 @@ import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import io.protone.web.rest.mapper.TraMediaPlanDescriptorMapper;
 import io.protone.web.rest.mapper.TraMediaPlanMapper;
+import io.protone.web.rest.mapper.TraOrderMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,14 +102,15 @@ public class TraMediaPlanResourceImplTest {
     private TraAdvertisementRepository traAdvertisementRepository;
 
     @Autowired
-    private LibLibraryRepository libLibraryRepository;
-
-    @Autowired
     private CrmAccountRepository crmAccountRepository;
 
     @Autowired
     private LibMediaItemRepository libMediaItemRepository;
+    @Autowired
+    private TraOrderRepository traOrderRepository;
 
+    @Autowired
+    private TraOrderMapper traOrderMapper;
     @Mock
     private LibItemService libItemService;
     @Autowired
@@ -132,6 +137,7 @@ public class TraMediaPlanResourceImplTest {
     private LibMediaItem libMediaItem;
 
     private TraAdvertisement traAdvertisement;
+    private TraOrder traOrder;
 
     @Before
     public void setup() {
@@ -154,6 +160,11 @@ public class TraMediaPlanResourceImplTest {
 
         traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
+        traOrder.setAdvertisment(traAdvertisement);
+        traOrder.setNetwork(corNetwork);
+        traOrder = traOrderRepository.saveAndFlush(traOrder);
 
         mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
             .sheetIndexOfMediaPlan(0)
@@ -167,7 +178,7 @@ public class TraMediaPlanResourceImplTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(traAdvertisementMapper.traAdvertisementThinPTFromTraAdvertisement(traAdvertisement));
+            .order(traOrderMapper.DB2ThinDTO(traOrder));
 
         ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
@@ -214,6 +225,10 @@ public class TraMediaPlanResourceImplTest {
         // Create the TraMediaPlan
         MockMultipartFile firstFile = new MockMultipartFile("file", DEFAULT_NAME, "", inputStream);
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
 
         restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
             .file(firstFile).param("traMediaPlanDescriptorDTO", objectMapper.writeValueAsString(mediaPlanDescriptor)))

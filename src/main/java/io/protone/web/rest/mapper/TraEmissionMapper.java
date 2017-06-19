@@ -1,13 +1,11 @@
 package io.protone.web.rest.mapper;
 
-import io.protone.domain.*;
-import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
-import io.protone.web.rest.dto.traffic.TraDiscountDTO;
+import io.protone.domain.CorChannel;
+import io.protone.domain.CorNetwork;
+import io.protone.domain.TraEmission;
+import io.protone.domain.TraOrder;
 import io.protone.web.rest.dto.traffic.TraEmissionDTO;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +15,12 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {TraAdvertisementMapper.class})
 public interface TraEmissionMapper {
-
+    @Mapping(source = "order", target = "orderId")
     TraEmissionDTO DB2DTO(TraEmission traEmission);
 
     List<TraEmissionDTO> DBs2DTOs(List<TraEmission> traEmissions);
 
+    @Mapping(source = "orderId", target = "order")
     TraEmission DTO2DB(TraEmissionDTO traEmissionDTO, @Context CorNetwork network, @Context CorChannel corChannel);
 
     default List<TraEmission> DTOs2DBs(List<TraEmissionDTO> traEmissionDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {
@@ -30,9 +29,23 @@ public interface TraEmissionMapper {
             return null;
         }
         for (TraEmissionDTO dto : traEmissionDTOS) {
-            traEmissions.add(DTO2DB(dto, network,corChannel));
+            traEmissions.add(DTO2DB(dto, network, corChannel));
         }
         return traEmissions;
+    }
+
+
+    default TraOrder TraOrderFromLong(Long orderId) {
+        TraOrder traOrder = new TraOrder();
+        traOrder.setId(orderId);
+        return traOrder;
+    }
+
+    default Long LongFromTraOrder(TraOrder traOrder) {
+        if (traOrder == null) {
+            return null;
+        }
+        return traOrder.getId();
     }
 
     @AfterMapping

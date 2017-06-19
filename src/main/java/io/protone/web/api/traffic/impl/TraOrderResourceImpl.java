@@ -6,6 +6,7 @@ import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraOrderService;
 import io.protone.web.api.traffic.TraOrderResource;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
+import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;
 import io.protone.web.rest.mapper.TraOrderMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.swagger.annotations.ApiParam;
@@ -70,11 +71,11 @@ public class TraOrderResourceImpl implements TraOrderResource {
     }
 
     @Override
-    public ResponseEntity<List<TraOrderDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraOrderThinDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraOrder, for Network: {}", networkShortcut);
         List<TraOrder> entity = traOrderService.getAllOrders(networkShortcut, pagable);
-        List<TraOrderDTO> response = traOrderMapper.DBs2DTOs(entity);
+        List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

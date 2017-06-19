@@ -10,6 +10,7 @@ import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraMediaPlanRepository;
+import io.protone.repository.traffic.TraOrderRepository;
 import io.protone.service.library.LibItemService;
 import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
@@ -73,6 +74,9 @@ public class TraMediaPlanServiceTest {
     @Autowired
     private LibLibraryRepository libLibraryRepository;
 
+    @Autowired
+    private TraOrderRepository traOrderRepository;
+
     @Mock
     private LibItemService libItemService;
 
@@ -87,6 +91,9 @@ public class TraMediaPlanServiceTest {
     private LibMediaItem libMediaItem;
 
     private LibLibrary libLibrary;
+
+    private TraOrder traOrder;
+
     private TraAdvertisementThinDTO traAdvertisementThinDTO;
 
     @Before
@@ -119,6 +126,10 @@ public class TraMediaPlanServiceTest {
         libMediaItem.library(libLibrary);
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+
+        traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.network(corNetwork);
+
         ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
 
     }
@@ -163,6 +174,10 @@ public class TraMediaPlanServiceTest {
         advertisementToShuffle.setNetwork(corNetwork);
         advertisementToShuffle.setMediaItem(libMediaItemToShuffle);
         advertisementToShuffle = traAdvertisementRepository.saveAndFlush(advertisementToShuffle);
+        traOrder.advertisment(advertisementToShuffle);
+        traOrder.setNetwork(corNetwork);
+        traOrder.setCustomer(crmAccount);
+        traOrder = traOrderRepository.save(traOrder);
 
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
             .sheetIndexOfMediaPlan(0)
@@ -176,7 +191,7 @@ public class TraMediaPlanServiceTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
 
         //then
         TraMediaPlan fetchedEntity = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
@@ -200,7 +215,7 @@ public class TraMediaPlanServiceTest {
         mediaPlan.setChannel(corChannel);
         mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
         //then
-        traMediaPlanService.deleteMediaPlan(mediaPlan.getId(), corNetwork.getShortcut(), corChannel.getShortcut() );
+        traMediaPlanService.deleteMediaPlan(mediaPlan.getId(), corNetwork.getShortcut(), corChannel.getShortcut());
         TraMediaPlan fetchedEntity = traMediaPlanService.getMediaPlan(mediaPlan.getId(), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //assert

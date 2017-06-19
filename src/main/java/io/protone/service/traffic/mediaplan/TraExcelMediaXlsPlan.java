@@ -100,7 +100,7 @@ public class TraExcelMediaXlsPlan {
                 Double excelCellNumberOfEmission = Double.valueOf(emissionCell.toString().trim()); ///Parametr wypełnienia media planu
                 for (int numberOfEmission = 0; numberOfEmission < excelCellNumberOfEmission.intValue(); numberOfEmission++) {
                     TraBlock traBlock = traBlocks.get(rowIndex - startEmissionRowIndex);
-                    traBlock.addEmissions(new TraEmission().timeStart(DEFAULT_START_STOP).timeStop(DEFAULT_START_STOP).advertiment(traMediaPlanDescriptor.getTraAdvertisement()).network(corNetwork).channel(corChannel));
+                    traBlock.addEmissions(new TraEmission().timeStart(DEFAULT_START_STOP).timeStop(DEFAULT_START_STOP).advertiment(traMediaPlanDescriptor.getOrder().getAdvertisment()).network(corNetwork).channel(corChannel).order(traMediaPlanDescriptor.getOrder()));
                 }
             } catch (NumberFormatException e) {
                 log.debug("Can't parse value of cell as double");

@@ -1,7 +1,10 @@
 package io.protone.web.api.traffic.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraMediaPlan;
@@ -70,8 +73,13 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO") String traMediaPlanDescriptorDTO,
                                                                                   @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException {
-        ObjectMapper mapper = new ObjectMapper();
-        TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = mapper.readValue(traMediaPlanDescriptorDTO, new TypeReference<TraMediaPlanDescriptorDTO>() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+
+        TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = objectMapper.readValue(traMediaPlanDescriptorDTO, new TypeReference<TraMediaPlanDescriptorDTO>() {
         });
         validate(traMediaPlanDescriptorDeserialized);
         TraMediaPlanDescriptor traMediaPlanDescriptor = traMediaPlanDescriptorMapper.DTO2DB(traMediaPlanDescriptorDeserialized);

@@ -51,7 +51,7 @@ public class TraMediaPlanService {
         ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile.getBytes());
         LibMediaItem libMediaItem = libItemService.upload(corNetwork.getShortcut(), MEDIA_PLAN_LIBRARY_SHORTCUT, multipartFile);
         Set<TraMediaPlanPlaylist> parseMediaPlanPlaylists = traExcelMediaXlsPlan.parseMediaPlan(bais, traMediaPlanDescriptor, corNetwork, corChannel);
-        mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getTraAdvertisement().getCustomer()).name(multipartFile.getOriginalFilename()).playlists(parseMediaPlanPlaylists);
+        mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getOrder().getAdvertisment().getCustomer()).name(multipartFile.getOriginalFilename()).playlists(parseMediaPlanPlaylists);
         mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
         TraMediaPlan finalMediaPlan = mediaPlan;
         parseMediaPlanPlaylists = traPlaylistService.savePlaylist(parseMediaPlanPlaylists.stream().map(traMediaPlanPlaylist -> traMediaPlanPlaylist.mediaPlan(finalMediaPlan)).collect(Collectors.toSet()));

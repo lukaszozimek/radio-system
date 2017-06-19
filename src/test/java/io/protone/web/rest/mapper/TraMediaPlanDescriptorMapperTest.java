@@ -48,7 +48,7 @@ public class TraMediaPlanDescriptorMapperTest {
         assertNotNull(traMediaPlanDescriptor.getPlaylistFirsValueCell());
         assertNotNull(traMediaPlanDescriptor.getPlaylistDatePattern());
         assertNotNull(traMediaPlanDescriptor.getSheetIndexOfMediaPlan());
-        assertNotNull(traMediaPlanDescriptor.getTraAdvertisement());
+        assertNotNull(traMediaPlanDescriptor.getOrder());
 
     }
 }

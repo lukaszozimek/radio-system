@@ -1,12 +1,13 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.TraCampaign;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibLibraryRepository;
+import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraCampaignRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,12 +45,27 @@ public class TraCampaignServiceTest {
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
+
+    @Autowired
+    private TraAdvertisementRepository traAdvertisementRepository;
+    @Autowired
+    private CorChannelRepository corChannelRepository;
+    @Autowired
+    private LibLibraryRepository libLibraryRepository;
+
     private CorNetwork corNetwork;
 
     private CrmAccount crmAccount;
 
+    private LibLibrary libLibrary;
+
+    private CorChannel corChannel;
+
+    private TraAdvertisement traAdvertisement;
+
     private PodamFactory factory;
-    private TraOrderService traOrderService;
 
     @Before
     public void setUp() throws Exception {
@@ -60,6 +76,28 @@ public class TraCampaignServiceTest {
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.save(crmAccount);
+
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        corChannel.setId(null);
+        corChannel.setShortcut("HHH");
+        corChannel.network(corNetwork);
+        corChannelRepository.saveAndFlush(corChannel);
+
+        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setShortcut("ppp");
+        libLibrary.network(corNetwork);
+        libLibrary.addChannel(corChannel);
+        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItemToShuffle.setNetwork(corNetwork);
+        libMediaItemToShuffle.setLibrary(libLibrary);
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
+
+        traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
+        traAdvertisement.setCustomer(crmAccount);
+        traAdvertisement.setNetwork(corNetwork);
+        traAdvertisement.setMediaItem(libMediaItemToShuffle);
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
 
     }
 
@@ -102,9 +140,12 @@ public class TraCampaignServiceTest {
     @Test
     public void shouldSaveCampaignWithOrders() throws Exception {
         //when
+
+
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
         TraCampaign campaign = factory.manufacturePojo(TraCampaign.class);
         campaign.setCustomer(crmAccount);
         campaign.setNetwork(corNetwork);

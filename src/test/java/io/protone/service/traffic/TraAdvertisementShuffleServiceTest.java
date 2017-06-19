@@ -1,32 +1,22 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
-import io.protone.repository.cor.CorChannelRepository;
-import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.repository.crm.CrmAccountRepository;
-import io.protone.repository.library.LibLibraryRepository;
-import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.repository.traffic.TraBlockRepository;
-import io.protone.repository.traffic.TraEmissionRepository;
-import io.protone.repository.traffic.TraPlaylistRepository;
+import io.protone.domain.TraEmission;
+import io.protone.domain.TraPlaylist;
 import io.protone.service.traffic.base.TraPlaylistBasedTest;
-import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
-import io.protone.web.rest.mapper.TraAdvertisementMapper;
-import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.Assert.assertNotNull;
@@ -71,7 +61,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
     public void tryShuffleCommercial() throws InterruptedException {
         //when
         TraShuffleAdvertisementDTO traShuffleAdvertisementDTO = new TraShuffleAdvertisementDTO();
-        traShuffleAdvertisementDTO.setTraAdvertisementDTO(advertisementToShuffleDTO);
+        traShuffleAdvertisementDTO.setTraOrderThinDTO(traOrderThinDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
         traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);
@@ -83,7 +73,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
         notNull(traPlaylists);
         traPlaylists.stream().forEach(traPlaylist -> {
             traPlaylist.getPlaylists().stream().forEach(traBlock -> {
-                long numberFounded = traBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId().equals(advertisementToShuffleDTO.getId())).count();
+                long numberFounded = traBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId().equals(traOrderThinDTO.getAdvertismentId().getId())).count();
                 assertTrue((numberFounded < 2 && numberFounded >= 0));
                 assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getMediaItem().getLength()).sum()));
                 assertNotNull(traBlock.getNetwork());

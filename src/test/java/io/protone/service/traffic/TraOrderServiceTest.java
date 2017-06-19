@@ -1,11 +1,13 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.domain.TraOrder;
+import io.protone.domain.*;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibLibraryRepository;
+import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraOrderRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,11 +45,26 @@ public class TraOrderServiceTest {
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
+    @Autowired
+    private LibLibraryRepository libLibraryRepository;
+
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
+
+    @Autowired
+    private TraAdvertisementRepository traAdvertisementRepository;
+
+    @Autowired
+    private CorChannelRepository corChannelRepository;
+
     private CorNetwork corNetwork;
 
     private CrmAccount crmAccount;
 
     private PodamFactory factory;
+    private CorChannel corChannel;
+    private LibLibrary libLibrary;
+    private TraAdvertisement traAdvertisement;
 
     @Before
     public void setUp() throws Exception {
@@ -59,7 +76,31 @@ public class TraOrderServiceTest {
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.save(crmAccount);
+        crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setNetwork(corNetwork);
+        crmAccount = crmAccountRepository.save(crmAccount);
 
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        corChannel.setId(null);
+        corChannel.setShortcut("HHH");
+        corChannel.network(corNetwork);
+        corChannelRepository.saveAndFlush(corChannel);
+
+        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary.setShortcut("ppp");
+        libLibrary.network(corNetwork);
+        libLibrary.addChannel(corChannel);
+        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItemToShuffle.setNetwork(corNetwork);
+        libMediaItemToShuffle.setLibrary(libLibrary);
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
+
+        traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
+        traAdvertisement.setCustomer(crmAccount);
+        traAdvertisement.setNetwork(corNetwork);
+        traAdvertisement.setMediaItem(libMediaItemToShuffle);
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
     }
 
     @Test
@@ -68,6 +109,7 @@ public class TraOrderServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
@@ -85,8 +127,10 @@ public class TraOrderServiceTest {
     public void shouldSaveOrder() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
 
         //then
         TraOrder fetchedEntity = traOrderService.saveOrder(traOrder);
@@ -104,6 +148,7 @@ public class TraOrderServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
         //then
         traOrderService.deleteOrder(traOrder.getId(), corNetwork.getShortcut());
@@ -117,8 +162,10 @@ public class TraOrderServiceTest {
     public void shouldGetOrder() throws Exception {
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
+
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
@@ -136,8 +183,10 @@ public class TraOrderServiceTest {
 
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
-        traOrder.setNetwork(corNetwork);
+
         traOrder.setCustomer(crmAccount);
+        traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
@@ -156,8 +205,10 @@ public class TraOrderServiceTest {
 
         //when
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
+
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
 
         TraOrder traOrderSecond = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
         traOrderSecond.setCustomer(crmAccount);
@@ -182,10 +233,12 @@ public class TraOrderServiceTest {
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
         traOrder.setCustomer(crmAccount);
         traOrder.setNetwork(corNetwork);
+        traOrder.setAdvertisment(traAdvertisement);
 
         TraOrder traOrderSecond = factory.manufacturePojo(TraOrder.class).name(TEST_NAME);
         traOrderSecond.setCustomer(crmAccount);
         traOrderSecond.setNetwork(corNetworkSecond);
+        traOrderSecond.setAdvertisment(traAdvertisement);
 
 
         //then

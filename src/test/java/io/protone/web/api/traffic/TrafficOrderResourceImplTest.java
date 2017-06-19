@@ -2,18 +2,19 @@ package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
 import io.protone.domain.*;
-import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.web.api.cor.CorNetworkResourceIntTest;
-import io.protone.web.api.crm.CrmCustomerResourceImplTest;
-import io.protone.web.api.library.LibMediaItemResourceTest;
-import io.protone.web.api.traffic.impl.TraOrderResourceImpl;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.util.TestUtil;
+import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.crm.CrmAccountRepository;
+import io.protone.repository.library.LibLibraryRepository;
+import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.repository.traffic.TraOrderRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraOrderService;
+import io.protone.util.TestUtil;
+import io.protone.web.api.crm.CrmCustomerResourceImplTest;
+import io.protone.web.api.library.LibMediaItemResourceTest;
+import io.protone.web.api.traffic.impl.TraOrderResourceImpl;
+import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraOrderMapper;
 import org.junit.Before;
@@ -30,6 +31,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -107,6 +109,12 @@ public class TrafficOrderResourceImplTest {
     private LibLibrary libLibrary;
 
     private CrmAccount crmAccount;
+    private PodamFactoryImpl factory;
+    private CorChannel corChannel;
+    @Autowired
+    private CorChannelRepository corChannelRepository;
+    @Autowired
+    private LibLibraryRepository libLibraryRepository;
 
     /**
      * Create an entity for this test.
@@ -127,23 +135,27 @@ public class TrafficOrderResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        factory = new PodamFactoryImpl();
         TraOrderResourceImpl traOrderResource = new TraOrderResourceImpl();
 
+
+        traOrderRepository.deleteAllInBatch();
         traAdvertisementRepository.deleteAllInBatch();
         libMediaItemRepository.deleteAllInBatch();
         crmAccountRepository.deleteAllInBatch();
 
-
-
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
+
         libLibrary = new LibLibrary();
         libLibrary.setId(1L);
         libLibrary.setShortcut("tes");
+
         libMediaItem = LibMediaItemResourceTest.createEntity(em);
         libMediaItem.setNetwork(corNetwork);
         libMediaItem.setLibrary(libLibrary);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+
         crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(libMediaItem).customer(crmAccount).network(corNetwork));
 
@@ -294,7 +306,7 @@ public class TrafficOrderResourceImplTest {
         traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
+        traOrderRepository.saveAndFlush(traOrder);
 
         // Get the traOrder
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/{id}", corNetwork.getShortcut(), traOrder.getId()))
@@ -323,7 +335,7 @@ public class TrafficOrderResourceImplTest {
         traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder.network(corNetwork).advertisment(traAdvertisement).customer(crmAccount));
+        traOrderRepository.saveAndFlush(traOrder);
         int databaseSizeBeforeUpdate = traOrderRepository.findAll().size();
 
         // Update the traOrder
@@ -377,7 +389,7 @@ public class TrafficOrderResourceImplTest {
         traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder.network(corNetwork));
+        traOrderRepository.saveAndFlush(traOrder);
         int databaseSizeBeforeDelete = traOrderRepository.findAll().size();
 
         // Get the traOrder
@@ -396,7 +408,7 @@ public class TrafficOrderResourceImplTest {
         traOrder = createEntity(em).network(corNetwork).advertisment(traAdvertisement).customer(crmAccount);
 
         // Initialize the database
-        traOrderRepository.saveAndFlush(traOrder.customer(crmAccount).network(corNetwork));
+        traOrderRepository.saveAndFlush(traOrder);
 
         // Get all the traOrderList
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))

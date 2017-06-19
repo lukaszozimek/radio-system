@@ -6,6 +6,7 @@ import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;
+import io.protone.repository.traffic.TraOrderRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.library.LibItemService;
@@ -106,6 +107,10 @@ public class TraMediaPlanMappingResourceImplTest {
 
     @Autowired
     private TraPlaylistMapper traPlaylistMapper;
+
+    @Autowired
+    private TraOrderRepository traOrderRepository;
+
     private MockMvc restTraMediaPlanMappingMockMvc;
 
     private TraMediaPlan traMediaPlan;
@@ -123,6 +128,8 @@ public class TraMediaPlanMappingResourceImplTest {
     private LibMediaItem libMediaItem;
 
     private TraAdvertisement traAdvertisement;
+
+    private TraOrder traOrder;
 
     @Before
     public void setup() {
@@ -146,10 +153,14 @@ public class TraMediaPlanMappingResourceImplTest {
         traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
 
+        traOrder = factory.manufacturePojo(TraOrder.class);
+        traOrder.setCustomer(crmAccount);
+        traOrder.setAdvertisment(traAdvertisement);
+        traOrder.setNetwork(corNetwork);
+        traOrder = traOrderRepository.saveAndFlush(traOrder);
 
         ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMediaPlanMappingService", traPlaylistMediaPlanMappingService);
-
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMediaPlanMappingService", traPlaylistMediaPlanMappingService);
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMapper", traPlaylistMapper);
 
@@ -198,7 +209,7 @@ public class TraMediaPlanMappingResourceImplTest {
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(traAdvertisement);
+            .order(traOrder);
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         // Create the TraMediaPlan

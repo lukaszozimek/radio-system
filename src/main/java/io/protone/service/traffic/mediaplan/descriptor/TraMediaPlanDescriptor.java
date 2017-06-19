@@ -1,6 +1,6 @@
 package io.protone.service.traffic.mediaplan.descriptor;
 
-import io.protone.domain.TraAdvertisement;
+import io.protone.domain.TraOrder;
 
 /**
  * Created by lukaszozimek on 11/06/2017.
@@ -29,7 +29,7 @@ public class TraMediaPlanDescriptor {
 
     private String lastEmissionValueCell;
 
-    private TraAdvertisement traAdvertisement;
+    private TraOrder order;
 
     public String getBlockStartCell() {
         return blockStartCell;
@@ -135,73 +135,6 @@ public class TraMediaPlanDescriptor {
         return this;
     }
 
-    public void setTraAdvertisement(TraAdvertisement traAdvertisement) {
-        this.traAdvertisement = traAdvertisement;
-    }
-
-    public TraMediaPlanDescriptor traAdvertisment(TraAdvertisement traAdvertisement) {
-        this.traAdvertisement = traAdvertisement;
-        return this;
-    }
-
-    public TraAdvertisement getTraAdvertisement() {
-        return traAdvertisement;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        TraMediaPlanDescriptor that = (TraMediaPlanDescriptor) o;
-
-        if (blockStartCell != null ? !blockStartCell.equals(that.blockStartCell) : that.blockStartCell != null)
-            return false;
-        if (blockEndCell != null ? !blockEndCell.equals(that.blockEndCell) : that.blockEndCell != null) return false;
-        if (blockHourSeparator != null ? !blockHourSeparator.equals(that.blockHourSeparator) : that.blockHourSeparator != null)
-            return false;
-        if (playlistDateStartColumn != null ? !playlistDateStartColumn.equals(that.playlistDateStartColumn) : that.playlistDateStartColumn != null)
-            return false;
-        if (playlistDateEndColumn != null ? !playlistDateEndColumn.equals(that.playlistDateEndColumn) : that.playlistDateEndColumn != null)
-            return false;
-        if (playlistFirsValueCell != null ? !playlistFirsValueCell.equals(that.playlistFirsValueCell) : that.playlistFirsValueCell != null)
-            return false;
-        if (playlistDatePattern != null ? !playlistDatePattern.equals(that.playlistDatePattern) : that.playlistDatePattern != null)
-            return false;
-        if (sheetIndexOfMediaPlan != null ? !sheetIndexOfMediaPlan.equals(that.sheetIndexOfMediaPlan) : that.sheetIndexOfMediaPlan != null)
-            return false;
-        return traAdvertisement != null ? traAdvertisement.equals(that.traAdvertisement) : that.traAdvertisement == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = blockStartCell != null ? blockStartCell.hashCode() : 0;
-        result = 31 * result + (blockEndCell != null ? blockEndCell.hashCode() : 0);
-        result = 31 * result + (blockHourSeparator != null ? blockHourSeparator.hashCode() : 0);
-        result = 31 * result + (playlistDateStartColumn != null ? playlistDateStartColumn.hashCode() : 0);
-        result = 31 * result + (playlistDateEndColumn != null ? playlistDateEndColumn.hashCode() : 0);
-        result = 31 * result + (playlistFirsValueCell != null ? playlistFirsValueCell.hashCode() : 0);
-        result = 31 * result + (playlistDatePattern != null ? playlistDatePattern.hashCode() : 0);
-        result = 31 * result + (sheetIndexOfMediaPlan != null ? sheetIndexOfMediaPlan.hashCode() : 0);
-        result = 31 * result + (traAdvertisement != null ? traAdvertisement.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "TraMediaPlanDescriptorDTO{" +
-            "blockStartCell='" + blockStartCell + '\'' +
-            ", blockEndCell='" + blockEndCell + '\'' +
-            ", blockHourSeparator='" + blockHourSeparator + '\'' +
-            ", playlistDateStartColumn='" + playlistDateStartColumn + '\'' +
-            ", playlistDateEndColumn='" + playlistDateEndColumn + '\'' +
-            ", playlistFirsValueCell='" + playlistFirsValueCell + '\'' +
-            ", playlistDatePattern='" + playlistDatePattern + '\'' +
-            ", sheetIndexOfMediaPlan=" + sheetIndexOfMediaPlan +
-            ", traAdvertisement=" + traAdvertisement +
-            '}';
-    }
-
     public String getBlockStartColumn() {
         return blockStartColumn;
     }
@@ -236,9 +169,89 @@ public class TraMediaPlanDescriptor {
     public void setLastEmissionValueCell(String lastEmissionValueCell) {
         this.lastEmissionValueCell = lastEmissionValueCell;
     }
+
     public TraMediaPlanDescriptor lastEmissionValueCell(String lastEmissionValueCell) {
         this.lastEmissionValueCell = lastEmissionValueCell;
         return this;
+    }
+
+    public TraOrder getOrder() {
+        return order;
+    }
+
+    public void setOrder(TraOrder order) {
+        this.order = order;
+    }
+
+    public TraMediaPlanDescriptor order(TraOrder traOrder) {
+        this.order = traOrder;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraMediaPlanDescriptor that = (TraMediaPlanDescriptor) o;
+
+        if (blockStartColumn != null ? !blockStartColumn.equals(that.blockStartColumn) : that.blockStartColumn != null)
+            return false;
+        if (blockStartCell != null ? !blockStartCell.equals(that.blockStartCell) : that.blockStartCell != null)
+            return false;
+        if (blockEndCell != null ? !blockEndCell.equals(that.blockEndCell) : that.blockEndCell != null) return false;
+        if (blockHourSeparator != null ? !blockHourSeparator.equals(that.blockHourSeparator) : that.blockHourSeparator != null)
+            return false;
+        if (playlistDateStartColumn != null ? !playlistDateStartColumn.equals(that.playlistDateStartColumn) : that.playlistDateStartColumn != null)
+            return false;
+        if (playlistDateEndColumn != null ? !playlistDateEndColumn.equals(that.playlistDateEndColumn) : that.playlistDateEndColumn != null)
+            return false;
+        if (playlistFirsValueCell != null ? !playlistFirsValueCell.equals(that.playlistFirsValueCell) : that.playlistFirsValueCell != null)
+            return false;
+        if (playlistDatePattern != null ? !playlistDatePattern.equals(that.playlistDatePattern) : that.playlistDatePattern != null)
+            return false;
+        if (sheetIndexOfMediaPlan != null ? !sheetIndexOfMediaPlan.equals(that.sheetIndexOfMediaPlan) : that.sheetIndexOfMediaPlan != null)
+            return false;
+        if (firstEmissionValueCell != null ? !firstEmissionValueCell.equals(that.firstEmissionValueCell) : that.firstEmissionValueCell != null)
+            return false;
+        if (lastEmissionValueCell != null ? !lastEmissionValueCell.equals(that.lastEmissionValueCell) : that.lastEmissionValueCell != null)
+            return false;
+        return order != null ? order.equals(that.order) : that.order == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = blockStartColumn != null ? blockStartColumn.hashCode() : 0;
+        result = 31 * result + (blockStartCell != null ? blockStartCell.hashCode() : 0);
+        result = 31 * result + (blockEndCell != null ? blockEndCell.hashCode() : 0);
+        result = 31 * result + (blockHourSeparator != null ? blockHourSeparator.hashCode() : 0);
+        result = 31 * result + (playlistDateStartColumn != null ? playlistDateStartColumn.hashCode() : 0);
+        result = 31 * result + (playlistDateEndColumn != null ? playlistDateEndColumn.hashCode() : 0);
+        result = 31 * result + (playlistFirsValueCell != null ? playlistFirsValueCell.hashCode() : 0);
+        result = 31 * result + (playlistDatePattern != null ? playlistDatePattern.hashCode() : 0);
+        result = 31 * result + (sheetIndexOfMediaPlan != null ? sheetIndexOfMediaPlan.hashCode() : 0);
+        result = 31 * result + (firstEmissionValueCell != null ? firstEmissionValueCell.hashCode() : 0);
+        result = 31 * result + (lastEmissionValueCell != null ? lastEmissionValueCell.hashCode() : 0);
+        result = 31 * result + (order != null ? order.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TraMediaPlanDescriptor{" +
+            "blockStartColumn='" + blockStartColumn + '\'' +
+            ", blockStartCell='" + blockStartCell + '\'' +
+            ", blockEndCell='" + blockEndCell + '\'' +
+            ", blockHourSeparator='" + blockHourSeparator + '\'' +
+            ", playlistDateStartColumn='" + playlistDateStartColumn + '\'' +
+            ", playlistDateEndColumn='" + playlistDateEndColumn + '\'' +
+            ", playlistFirsValueCell='" + playlistFirsValueCell + '\'' +
+            ", playlistDatePattern='" + playlistDatePattern + '\'' +
+            ", sheetIndexOfMediaPlan=" + sheetIndexOfMediaPlan +
+            ", firstEmissionValueCell='" + firstEmissionValueCell + '\'' +
+            ", lastEmissionValueCell='" + lastEmissionValueCell + '\'' +
+            ", order=" + order +
+            '}';
     }
 
 }

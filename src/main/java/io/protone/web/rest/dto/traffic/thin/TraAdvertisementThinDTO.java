@@ -31,7 +31,6 @@ public class TraAdvertisementThinDTO implements Serializable {
     @JsonProperty("typeId")
     private CorDictionaryDTO typeId;
 
-
     @JsonProperty("customerId")
     private Integer customerId;
 

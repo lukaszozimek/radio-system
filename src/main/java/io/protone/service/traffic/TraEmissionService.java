@@ -24,6 +24,11 @@ public class TraEmissionService {
     }
 
     @Transactional
+    public TraEmission saveTraEmission(TraEmission traEmission) {
+        return traEmissionRepository.saveAndFlush(traEmission);
+    }
+
+    @Transactional
     public void deleteTraEmissions(Set<TraEmission> traEmissions) {
         traEmissionRepository.deleteInBatch(traEmissions);
     }

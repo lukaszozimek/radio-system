@@ -35,7 +35,7 @@ public class TraAdvertisementShuffleService {
     public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
-        TraAdvertisement traAdvertisement = traAdvertisementService.getAdvertisement(tarShuffleAdvertisementPT.getTraAdvertisementDTO().getId(), networkShortcut);
+        TraAdvertisement traAdvertisement = traAdvertisementService.getAdvertisement(tarShuffleAdvertisementPT.getTraOrderThinDTO().getAdvertismentId().getId(), networkShortcut);
         log.debug("Found advertisment {}", traAdvertisement.getId());
         List<TraPlaylist> traPlaylistListInRange = traPlaylistService.getTraPlaylistListInRange(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), networkShortcut, channelShortcut);
         log.debug("Found number of Playlist in range : {}", traPlaylistListInRange.size());
@@ -50,7 +50,7 @@ public class TraAdvertisementShuffleService {
                     int blockIndex = current().nextInt(numberOfScheduledBlocks);
                     log.debug("Check is it possible to shuffle commercial in block: {}", blockIndex);
                     TraBlock traBlock = traPlaylist.getPlaylists().stream().collect(toList()).get(blockIndex);
-                    if (isAdvertismentInBlock(traBlock.getEmissions(), tarShuffleAdvertisementPT.getTraAdvertisementDTO().getMediaItemId().getIdx())) {
+                    if (isAdvertismentInBlock(traBlock.getEmissions(), tarShuffleAdvertisementPT.getTraOrderThinDTO().getAdvertismentId().getMediaItemId().getIdx())) {
                         if (areEmissionsInBlock(traBlock)) {
                             log.debug("Block size is {}", traBlock.getEmissions().size());
                             Long lastTimeStop = traBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();

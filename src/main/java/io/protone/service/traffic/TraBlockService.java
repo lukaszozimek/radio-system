@@ -47,8 +47,9 @@ public class TraBlockService {
 
     @Transactional
     public Set<TraBlock> traSaveBlockSet(Set<TraBlock> traBlocks) {
+        traBlockRepository.save(traBlocks);
         Set<TraBlock> localTraBlock = traBlocks.stream().map(traBlock -> {
-            traBlock.emissions(traEmissionService.saveTraEmissions(traBlock.getEmissions()));
+            traBlock.setEmissions(traBlock.getEmissions().stream().map(traEmission -> traEmissionService.saveTraEmission(traEmission.block(traBlock))).collect(toSet()));
             return traBlock;
         }).collect(toSet());
         return Sets.newHashSet(traBlockRepository.save(localTraBlock));

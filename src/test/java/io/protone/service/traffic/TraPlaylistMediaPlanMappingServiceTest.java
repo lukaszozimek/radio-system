@@ -86,7 +86,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
@@ -129,7 +129,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_2.xlsx");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(parseInputStream(inputStream).toByteArray());
@@ -171,7 +171,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
             .blockHourSeparator("-")
             .firstEmissionValueCell("G26")
             .lastEmissionValueCell("AV64")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
 
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
@@ -221,7 +221,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
             .blockHourSeparator("-")
             .firstEmissionValueCell("G26")
             .lastEmissionValueCell("AV64")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
 
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
@@ -268,7 +268,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
             .blockHourSeparator("-")
             .firstEmissionValueCell("G10")
             .lastEmissionValueCell("CW47")
-            .traAdvertisment(advertisementToShuffle);
+            .order(traOrder);
 
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_2.xlsx");
