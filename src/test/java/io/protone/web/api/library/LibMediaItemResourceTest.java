@@ -7,18 +7,17 @@ import io.protone.config.s3.exceptions.DeleteException;
 import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
 import io.protone.domain.*;
-import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.domain.enumeration.LibItemStateEnum;
+import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.cor.CorUserRepository;
+import io.protone.repository.library.LibMediaItemRepository;
+import io.protone.service.cor.CorNetworkService;
 import io.protone.service.cor.CorUserService;
 import io.protone.service.library.LibItemService;
 import io.protone.service.library.file.LibFileService;
-import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.util.TestUtil;
 import io.protone.web.api.library.impl.LibMediaItemResourceImpl;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.service.cor.CorNetworkService;
+import io.protone.web.rest.dto.library.LibMediaItemDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.LibItemMapper;
 import org.junit.Before;
@@ -44,8 +43,6 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +53,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -170,8 +166,8 @@ public class LibMediaItemResourceTest {
         corUser.setChannels(null);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser = corUserRepository.saveAndFlush(corUser);
-        doNothing().when(s3Client).delete(anyObject());
-        doNothing().when(s3Client).upload(anyString(), anyObject(), anyString());
+        doNothing().when(s3Client).delete(anyString(), anyObject());
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
         LibMediaItemResourceImpl libMediaItemResource = new LibMediaItemResourceImpl();
 
@@ -353,10 +349,10 @@ public class LibMediaItemResourceTest {
     public void deleteLibMediaItem() throws Exception {
         // Initialize the database
         libMediaItemRepository.deleteAll();
-        doNothing().when(s3Client).delete(anyObject());
+        doNothing().when(s3Client).delete(anyString(), anyObject());
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeDelete = libMediaItemRepository.findAll().size();
-        doNothing().when(s3Client).delete(anyObject());
+        doNothing().when(s3Client).delete(anyString(), anyObject());
         // Get the libMediaItem
         restLibMediaItemMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{id}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getIdx())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
@@ -394,6 +390,7 @@ public class LibMediaItemResourceTest {
             .file(firstFile)).andExpect(status().is(200))
             .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_IMAGE.toString()));
     }
+
     @Test
     @Transactional
     public void shouldUploadMediaItemDocument() throws Exception {
@@ -402,7 +399,6 @@ public class LibMediaItemResourceTest {
             .file(firstFile)).andExpect(status().is(200))
             .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_DOCUMENT.toString()));
     }
-
 
 
     @Test

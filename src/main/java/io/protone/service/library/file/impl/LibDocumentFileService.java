@@ -123,7 +123,7 @@ public class LibDocumentFileService implements LibFileService {
 
         InputStream stream = null;
         try {
-            stream = s3Client.download(cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getLibrary().getShortcut(),cloudObject.getUuid());
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
@@ -152,7 +152,7 @@ public class LibDocumentFileService implements LibFileService {
                 for (LibDocumentObject audioObject : objects) {
                     LibCloudObject cloudObject = audioObject.getCloudObject();
                     try {
-                        s3Client.delete(cloudObject.getUuid());
+                        s3Client.delete(libMediaItem.getLibrary().getShortcut(),cloudObject.getUuid());
                         libDocumentObjectRepository.delete(audioObject);
                         libDocumentObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);

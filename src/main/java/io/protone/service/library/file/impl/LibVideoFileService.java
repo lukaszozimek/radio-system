@@ -72,7 +72,7 @@ public class LibVideoFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
@@ -121,7 +121,7 @@ public class LibVideoFileService implements LibFileService {
 
         InputStream stream = null;
         try {
-            stream = s3Client.download(cloudObject.getUuid());
+            stream = s3Client.download(libMediaItem.getLibrary().getShortcut(),cloudObject.getUuid());
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
@@ -149,7 +149,7 @@ public class LibVideoFileService implements LibFileService {
                 for (LibVideoObject libVideoObject : videoObjects) {
                     LibCloudObject cloudObject = libVideoObject.getCloudObject();
                     try {
-                        s3Client.delete(cloudObject.getUuid());
+                        s3Client.delete(libMediaItem.getLibrary().getShortcut(), cloudObject.getUuid());
                         libVideoObjectRepository.delete(libVideoObject);
                         libVideoObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);

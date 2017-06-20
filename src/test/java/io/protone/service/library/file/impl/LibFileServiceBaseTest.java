@@ -1,7 +1,6 @@
 package io.protone.service.library.file.impl;
 
 import com.google.common.collect.Sets;
-import io.protone.ProtoneApp;
 import io.protone.config.s3.S3Client;
 import io.protone.domain.CorAuthority;
 import io.protone.domain.CorNetwork;
@@ -17,18 +16,12 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 
 import static io.protone.security.AuthoritiesConstants.ADMIN;
@@ -91,8 +84,8 @@ public class LibFileServiceBaseTest {
         corUser.setChannels(null);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser = corUserRepository.saveAndFlush(corUser);
-        doNothing().when(s3Client).delete(anyObject());
-        doNothing().when(s3Client).upload(anyString(), anyObject(), anyString());
+        doNothing().when(s3Client).delete(anyString(),anyObject());
+        doNothing().when(s3Client).upload(anyString(),anyString(), anyObject(), anyString());
 
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
 
