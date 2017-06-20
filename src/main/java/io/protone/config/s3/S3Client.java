@@ -203,4 +203,30 @@ public class S3Client {
             throw new DeleteException(e.getMessage());
         }
     }
+
+    public String getCover(String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
+        try {
+            return getClient().presignedGetObject(minioBucket, uuid);
+        } catch (InvalidBucketNameException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (IOException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InternalException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InvalidExpiresRangeException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        }
+    }
 }
