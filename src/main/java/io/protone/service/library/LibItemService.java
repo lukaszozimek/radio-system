@@ -67,6 +67,8 @@ public class LibItemService {
 
     @Inject
     private LibLabelService libLabelService;
+    @Inject
+    private LibImageItemService libImageItemService;
 
     @Autowired
     @Qualifier("libAudioFileService")
@@ -116,7 +118,7 @@ public class LibItemService {
 
 
     @Transactional
-    public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
+    public LibMediaItem update(MultipartFile[] covers, LibMediaItem libMediaItem, CorNetwork corNetwork) {
         LibArtist artist = new LibArtist();
         if (libMediaItem.getArtist() != null) {
             artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
