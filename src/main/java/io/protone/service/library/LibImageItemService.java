@@ -3,6 +3,7 @@ package io.protone.service.library;
 import io.protone.config.s3.S3Client;
 import io.protone.config.s3.exceptions.S3Exception;
 import io.protone.config.s3.exceptions.UploadException;
+import io.protone.config.s3.exceptions.UrlGenerationResourceException;
 import io.protone.domain.*;
 import io.protone.domain.enumeration.LibImageSizeEnum;
 import io.protone.domain.enumeration.LibObjectTypeEnum;
@@ -100,4 +101,20 @@ public class LibImageItemService {
             return libImageItem;
         }
     }
+
+    public LibMediaItem getValidLinkToResours(LibMediaItem libMediaItem) {
+        LibMediaItem mediaItemLocal = libMediaItem;
+        libMediaItem.getImageItems().stream().forEach(libImageItem -> {
+            try {
+                libImageItem.setPublicUrl(s3Client.getCover(libImageItem.getLibrary().getShortcut(), libImageItem.getName()));
+            } catch (S3Exception e) {
+                e.printStackTrace();
+            } catch (UrlGenerationResourceException e) {
+                e.printStackTrace();
+            }
+        });
+        //TODO:put to cache?
+        return mediaItemLocal;
+    }
+
 }

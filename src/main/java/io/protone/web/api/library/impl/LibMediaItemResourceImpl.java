@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.protone.config.ProtoneObjectMapper;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibMediaItem;
 import io.protone.service.cor.CorNetworkService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.validation.*;
 import javax.websocket.server.PathParam;
@@ -55,19 +57,15 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     @Inject
     private CorNetworkService corNetworkService;
 
+    @Inject
+    private ObjectMapper objectMapper;
+
     @Override
     public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                               @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                               @ApiParam(value = "mediaItem", required = true) String mediaItem,
                                                                                               @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
-
-        LibMediaItemDTO libMediaItemDTO = objectMapper.readValue(mediaItem, new TypeReference<LibMediaItemDTO>() {
-        });
+        LibMediaItemDTO libMediaItemDTO = deserializeDtoObjectFromRequestPart(mediaItem);
         validate(libMediaItemDTO);
 
         if (libMediaItemDTO.getId() == null) {
@@ -203,5 +201,11 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
             throw new ValidationException();
         }
 
+    }
+
+    private LibMediaItemDTO deserializeDtoObjectFromRequestPart(String mediaItem) throws IOException {
+        LibMediaItemDTO libMediaItemDTO = objectMapper.readValue(mediaItem, new TypeReference<LibMediaItemDTO>() {
+        });
+        return libMediaItemDTO;
     }
 }
