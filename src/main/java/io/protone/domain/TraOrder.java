@@ -22,7 +22,7 @@ import java.util.Set;
 @UniqueConstraint(columnNames = {"name", "network_id"}))
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraOrder implements Serializable {
+public class TraOrder extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

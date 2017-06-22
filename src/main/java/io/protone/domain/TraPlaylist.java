@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "tra_playlist", uniqueConstraints =
 @UniqueConstraint(columnNames = {"playlist_date", "network_id", "channel_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraPlaylist implements Serializable {
+public class TraPlaylist extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

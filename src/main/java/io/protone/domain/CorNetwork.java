@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "cor_network")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorNetwork implements Serializable {
+public class CorNetwork extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

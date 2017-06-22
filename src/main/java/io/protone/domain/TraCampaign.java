@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(name = "tra_campaign", uniqueConstraints =
 @UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraCampaign implements Serializable {
+public class TraCampaign extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

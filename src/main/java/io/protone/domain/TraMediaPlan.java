@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tra_media_plan")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraMediaPlan implements Serializable {
+public class TraMediaPlan extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

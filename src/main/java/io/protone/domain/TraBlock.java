@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tra_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraBlock implements Serializable {
+public class TraBlock extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -75,17 +75,21 @@ public class TraBlock implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TraBlock name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public TraBlock length(Long length) {
@@ -93,12 +97,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
     public Integer getSequence() {
         return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
     }
 
     public TraBlock sequence(Integer sequence) {
@@ -106,12 +110,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
     public Long getStartBlock() {
         return startBlock;
+    }
+
+    public void setStartBlock(Long startBlock) {
+        this.startBlock = startBlock;
     }
 
     public TraBlock startBlock(Long startBlock) {
@@ -119,12 +123,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setStartBlock(Long startBlock) {
-        this.startBlock = startBlock;
-    }
-
     public Long getStopBlock() {
         return stopBlock;
+    }
+
+    public void setStopBlock(Long stopBlock) {
+        this.stopBlock = stopBlock;
     }
 
     public TraBlock stopBlock(Long stopBlock) {
@@ -132,12 +136,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setStopBlock(Long stopBlock) {
-        this.stopBlock = stopBlock;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraBlock network(CorNetwork corNetwork) {
@@ -145,12 +149,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public LibMediaItem getBlockStartSound() {
         return blockStartSound;
+    }
+
+    public void setBlockStartSound(LibMediaItem libMediaItem) {
+        this.blockStartSound = libMediaItem;
     }
 
     public TraBlock blockStartSound(LibMediaItem libMediaItem) {
@@ -158,12 +162,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setBlockStartSound(LibMediaItem libMediaItem) {
-        this.blockStartSound = libMediaItem;
-    }
-
     public LibMediaItem getBlockEndSound() {
         return blockEndSound;
+    }
+
+    public void setBlockEndSound(LibMediaItem libMediaItem) {
+        this.blockEndSound = libMediaItem;
     }
 
     public TraBlock blockEndSound(LibMediaItem libMediaItem) {
@@ -171,12 +175,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setBlockEndSound(LibMediaItem libMediaItem) {
-        this.blockEndSound = libMediaItem;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     public TraBlock channel(CorChannel corChannel) {
@@ -184,12 +188,12 @@ public class TraBlock implements Serializable {
         return this;
     }
 
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
-    }
-
     public Set<TraEmission> getEmissions() {
         return emissions;
+    }
+
+    public void setEmissions(Set<TraEmission> traEmissions) {
+        this.emissions = traEmissions;
     }
 
     public TraBlock emissions(Set<TraEmission> traEmissions) {
@@ -207,10 +211,6 @@ public class TraBlock implements Serializable {
         this.emissions.remove(traEmission);
         traEmission.setBlock(null);
         return this;
-    }
-
-    public void setEmissions(Set<TraEmission> traEmissions) {
-        this.emissions = traEmissions;
     }
 
     @Override
