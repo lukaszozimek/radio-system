@@ -7,7 +7,7 @@
         Added the constraints for entity TraCampaign.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="tra_campaign"
                                  constraintName="fk_tra_campaign_customer_id"
@@ -32,5 +32,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="tra_price"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="tra_campaign"
+                                 constraintName="fk_tra_campaign_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

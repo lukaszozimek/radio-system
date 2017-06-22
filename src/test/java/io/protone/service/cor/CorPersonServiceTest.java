@@ -52,6 +52,7 @@ public class CorPersonServiceTest {
         assertNotNull(corPerson);
         assertNotNull(corPerson.getId());
         assertNotNull(corPerson.getContacts());
+        assertNotNull(corPerson.getCreatedBy());
         assertFalse(corPerson.getContacts().isEmpty());
         assertNotNull(corPerson.getContacts().stream().findFirst().get().getId());
     }
@@ -64,6 +65,7 @@ public class CorPersonServiceTest {
         //assert
         assertNotNull(corPerson);
         assertNotNull(corPerson.getId());
+        assertNotNull(corPerson.getCreatedBy());
         assertNull(corPerson.getContacts());
 
     }

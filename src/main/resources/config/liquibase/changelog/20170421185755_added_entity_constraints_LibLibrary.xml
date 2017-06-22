@@ -7,12 +7,23 @@
         Added the constraints for entity LibLibrary.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="lib_library"
                                  constraintName="fk_lib_library_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="lib_library"
+                                 constraintName="fk_lib_library_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="lib_library"
+                                 constraintName="fk_lib_library_last_modified_by_idy"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

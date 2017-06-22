@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "crm_task")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CrmTask implements Serializable {
+public class CrmTask extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,10 +38,6 @@ public class CrmTask implements Serializable {
 
     @Column(name = "comment")
     private String comment;
-
-    @ManyToOne
-    @PodamExclude
-    private CorUser createdBy;
 
     @ManyToOne
     @PodamExclude
@@ -139,19 +135,6 @@ public class CrmTask implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public CorUser getCreatedBy() {
-        return createdBy;
-    }
-
-    public CrmTask createdBy(CorUser corUser) {
-        this.createdBy = corUser;
-        return this;
-    }
-
-    public void setCreatedBy(CorUser corUser) {
-        this.createdBy = corUser;
     }
 
     public CorUser getAssignedTo() {

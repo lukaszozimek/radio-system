@@ -7,7 +7,7 @@
         Added the constraints for entity LibMediaItem.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="library_id"
                                  baseTableName="lib_media_item"
                                  constraintName="fk_lib_media_item_library_id"
@@ -44,5 +44,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

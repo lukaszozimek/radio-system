@@ -165,7 +165,6 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void createCorUserWithExistingId() throws Exception {
 
-        corUserRepository.deleteAll();
         int databaseSizeBeforeCreate = corUserRepository.findAll().size();
 
         // Create the CorDictionary with an existing ID
@@ -188,7 +187,6 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void getAllCorUsers() throws Exception {
         // Initialize the database
-        corUserRepository.deleteAll();
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
         // Get all the corDictionaryList
@@ -203,7 +201,6 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void getCorUser() throws Exception {
 
-        corUserRepository.deleteAll();
         // Initialize the database
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
 
@@ -227,7 +224,6 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void updateCorUser() throws Exception {
 
-        corUserRepository.deleteAll();
         // Initialize the database
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
         int databaseSizeBeforeUpdate = corUserRepository.findAll().size();
@@ -257,7 +253,6 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void checkLoginIsRequired() throws Exception {
 
-        corUserRepository.deleteAll();
         int databaseSizeBeforeTest = corUserRepository.findAll().size();
         // set the field null
         corUser.setLogin(null);
@@ -306,7 +301,6 @@ public class CorUserConfigurationResourceTest {
     @Transactional
     public void deleteCorDictionary() throws Exception {
 
-        corUserRepository.deleteAll();
         // Initialize the database
         corUserRepository.saveAndFlush(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
         int databaseSizeBeforeDelete = corUserRepository.findAll().size();

@@ -7,7 +7,7 @@
         Added the constraints for entity CorCountry.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="tax_id"
                                  baseTableName="cor_country"
                                  constraintName="fk_cor_country_tax_id"
@@ -25,6 +25,18 @@
                                  constraintName="fk_cor_country_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="cor_country"
+                                 constraintName="fk_cor_country_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="cor_country"
+                                 constraintName="fk_cor_country_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
 
     </changeSet>
 </databaseChangeLog>

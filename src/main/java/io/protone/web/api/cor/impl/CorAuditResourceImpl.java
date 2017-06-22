@@ -1,6 +1,7 @@
-package io.protone.web.rest;
+package io.protone.web.api.cor.impl;
 
 import io.protone.service.AuditEventService;
+import io.protone.web.api.cor.CorAuditResource;
 import io.protone.web.rest.util.PaginationUtil;
 
 import io.github.jhipster.web.util.ResponseUtil;
@@ -20,12 +21,12 @@ import java.util.List;
 /**
  * REST controller for getting the audit events.
  */
-@RequestMapping("/management/audits")
-public class AuditResource {
+@RequestMapping("/api/v1/network/{networkShortcut}/management/audits")
+public class CorAuditResourceImpl implements CorAuditResource {
 
     private final AuditEventService auditEventService;
 
-    public AuditResource(AuditEventService auditEventService) {
+    public CorAuditResourceImpl(AuditEventService auditEventService) {
         this.auditEventService = auditEventService;
     }
 
@@ -47,7 +48,7 @@ public class AuditResource {
      * GET  /audits : get a page of AuditEvents between the fromDate and toDate.
      *
      * @param fromDate the start of the time period of AuditEvents to get
-     * @param toDate the end of the time period of AuditEvents to get
+     * @param toDate   the end of the time period of AuditEvents to get
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers

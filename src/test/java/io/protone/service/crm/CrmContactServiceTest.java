@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CrmContactServiceTest {
 
-    private static final String TEST_SHORTNAME = "TEST" ;
+    private static final String TEST_SHORTNAME = "TEST";
     @Autowired
     private CrmContactService crmContactService;
 
@@ -67,6 +67,7 @@ public class CrmContactServiceTest {
         assertNotNull(crmContactList);
         assertEquals(1, crmContactList.size());
         assertNotNull(crmContactList.get(0).getId());
+        assertNotNull(crmContactList.get(0).getCreatedBy());
     }
 
     @Test
@@ -93,6 +94,8 @@ public class CrmContactServiceTest {
             assertNotNull(corContact.getId());
         });
 
+        assertNotNull(localCrmContact.getCreatedBy());
+
 
     }
 
@@ -118,6 +121,8 @@ public class CrmContactServiceTest {
             assertNotNull(corContact.getId());
         });
 
+        assertNotNull(localCrmContact.getCreatedBy());
+
 
     }
 
@@ -135,6 +140,8 @@ public class CrmContactServiceTest {
         assertNotNull(localCrmContact);
         assertNotNull(localCrmContact.getId());
         assertNull(localCrmContact.getPerson());
+
+        assertNotNull(localCrmContact.getCreatedBy());
 
     }
 
@@ -157,7 +164,9 @@ public class CrmContactServiceTest {
         assertNotNull(localCrmContact);
         assertNotNull(localCrmContact.getId());
         assertNotNull(localCrmContact.getPerson().getId());
+        assertNotNull(localCrmContact.getPerson().getCreatedBy());
         assertNull(localCrmContact.getPerson().getContacts());
+
 
     }
 
@@ -198,6 +207,7 @@ public class CrmContactServiceTest {
         assertNotNull(crmTask1.getId());
         assertNotNull(crmTask1.getContact());
         assertEquals(crmTask1.getContact().getId(), crmContact.getId());
+        assertEquals(crmTask1.getCreatedBy().getId(), crmContact.getCreatedBy().getId());
 
         assertNotNull(localContact.getTasks());
         assertEquals(1, localContact.getTasks().size());
@@ -306,6 +316,7 @@ public class CrmContactServiceTest {
         //assert
         assertNull(localContact);
     }
+
     @Test(expected = DataIntegrityViolationException.class)
     public void shouldNotSaveTwoContactWithSameShortNameInOneNetwork() {
 

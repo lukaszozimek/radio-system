@@ -38,8 +38,13 @@
             </column>
 
             <column name="created_by_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false"/>
             </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by_id" type="bigint"/>
+            <column name="last_modified_date" type="timestamp"/>
 
             <column name="assigned_to_id" type="bigint">
                 <constraints nullable="true" />

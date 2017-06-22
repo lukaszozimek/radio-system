@@ -43,7 +43,7 @@
             <column name="lang_key" type="varchar(5)"/>
             <column name="activation_key" type="varchar(20)"/>
             <column name="reset_key" type="varchar(20)"/>
-            <column name="created_by" type="varchar(50)">
+            <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
@@ -52,7 +52,7 @@
             <column name="reset_date" type="timestamp">
                 <constraints nullable="true"/>
             </column>
-            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_by_id" type="bigint"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
         <createIndex indexName="idx_user_login"
@@ -177,13 +177,13 @@
             <column name="network_users_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="created_by" type="varchar(50)">
+            <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_by_id" type="bigint"/>
             <column name="last_modified_date" type="timestamp"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
@@ -214,13 +214,13 @@
             <column name="channel_libraries_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="created_by" type="varchar(50)">
+            <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_by_id" type="bigint"/>
             <column name="last_modified_date" type="timestamp"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
@@ -272,27 +272,17 @@
             <column name="resetkey" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-
-            <column name="createdby" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="createddate" type="date">
-                <constraints nullable="true"/>
-            </column>
-
             <column name="resetdate" type="timestamp">
                 <constraints nullable="true"/>
             </column>
-
-            <column name="lastmodifiedby" type="varchar(255)">
-                <constraints nullable="true"/>
+            <column name="created_by_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
-
-            <column name="lastmodifieddate" type="date">
-                <constraints nullable="true"/>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
             </column>
-
+            <column name="last_modified_by_id" type="bigint"/>
+            <column name="last_modified_date" type="timestamp"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
@@ -317,6 +307,7 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <addPrimaryKey columnNames="user_id, authority_id" tableName="cor_user_authority"/>
+
         <createTable tableName="cor_user_channel">
             <column name="channels_id" type="bigint">
                 <constraints nullable="false"/>
@@ -352,6 +343,15 @@
             <column name="dictionary_type_name" type="varchar(250)">
                 <constraints nullable="true"/>
             </column>
+            <column name="created_by_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by_id" type="bigint"/>
+            <column name="last_modified_date" type="timestamp"/>
+
             <column name="module_name" type="varchar(250)">
                 <constraints nullable="false"/>
             </column>
@@ -371,6 +371,43 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="cor_dictionary"
+                                 constraintName="fk_cor_dictionary_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="cor_dictionary"
+                                 constraintName="fk_cor_dictionary_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="cor_network"
+                                 constraintName="fk_cor_network_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="cor_network"
+                                 constraintName="fk_cor_network_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="cor_channel"
+                                 constraintName="fk_cor_channel_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="cor_channel"
+                                 constraintName="fk_cor_channel_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
         <addForeignKeyConstraint baseColumnNames="dictionary_type_name"
                                  baseTableName="cor_dictionary"
                                  constraintName="fk_cor_dictionary_type__name"
@@ -391,6 +428,7 @@
                                  constraintName="fk_cor_user_channel_cor_users_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
+
         <addForeignKeyConstraint baseColumnNames="channels_id"
                                  baseTableName="cor_user_channel"
                                  constraintName="fk_cor_user_channel_channels_id"
@@ -401,6 +439,7 @@
                                  constraintName="fk_cor_user_network_cor_users_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
+
         <addForeignKeyConstraint baseColumnNames="networks_id"
                                  baseTableName="cor_user_network"
                                  constraintName="fk_cor_user_network_networks_id"
@@ -411,6 +450,7 @@
                                  constraintName="fk_cor_channel_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
+
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="cor_user_authority"
                                  constraintName="fk_cor_user_authority_user_id"
