@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_document_object")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibDocumentObject implements Serializable {
+public class LibDocumentObject extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

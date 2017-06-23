@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 29.04.2017.
@@ -207,6 +208,8 @@ public class CrmCustomerServiceTest {
         assertNotNull(crmTask1.getId());
         assertNotNull(crmTask1.getCreatedBy());
         assertNotNull(crmTask1.getAccount());
+        assertNotNull(crmTask1.getCreatedBy());
+
         assertEquals(crmTask1.getAccount().getId(), crmAccount.getId());
 
         assertNotNull(customer.getTasks());
@@ -249,6 +252,8 @@ public class CrmCustomerServiceTest {
         assertNotNull(localTask);
         assertEquals(1, localTask.size());
         assertEquals(crmTask1.getId(), localTask.get(0).getId());
+
+        assertNotNull(localTask.get(0).getCreatedBy());
     }
 
     @Test
@@ -270,6 +275,7 @@ public class CrmCustomerServiceTest {
 
         //assert
         assertNotNull(localTask);
+        assertNotNull(localTask.getCreatedBy());
         assertEquals(crmTask1.getId(), localTask.getId());
 
     }

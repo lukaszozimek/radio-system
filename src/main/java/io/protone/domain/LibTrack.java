@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_track")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibTrack implements Serializable {
+public class LibTrack  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

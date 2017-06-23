@@ -1,6 +1,6 @@
 package io.protone.web.api.cor.impl;
 
-import io.protone.service.AuditEventService;
+import io.protone.service.cor.CorAuditEventService;
 import io.protone.web.api.cor.CorAuditResource;
 import io.protone.web.rest.util.PaginationUtil;
 
@@ -24,9 +24,9 @@ import java.util.List;
 @RequestMapping("/api/v1/network/{networkShortcut}/management/audits")
 public class CorAuditResourceImpl implements CorAuditResource {
 
-    private final AuditEventService auditEventService;
+    private final CorAuditEventService auditEventService;
 
-    public CorAuditResourceImpl(AuditEventService auditEventService) {
+    public CorAuditResourceImpl(CorAuditEventService auditEventService) {
         this.auditEventService = auditEventService;
     }
 

@@ -138,6 +138,8 @@ public class TraOrderServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
+
         assertNotNull(fetchedEntity.getName(), traOrder.getName());
         assertEquals(traOrder.getNetwork(), fetchedEntity.getNetwork());
     }
@@ -173,6 +175,7 @@ public class TraOrderServiceTest {
 
         //assert
         assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traOrder.getId(), fetchedEntity.getId());
         assertEquals(traOrder.getNetwork(), fetchedEntity.getNetwork());
 

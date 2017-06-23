@@ -17,7 +17,7 @@ import java.util.Objects;
 @Table(name = "lib_artist", uniqueConstraints =
 @UniqueConstraint(columnNames = {"name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibArtist implements Serializable {
+public class LibArtist  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

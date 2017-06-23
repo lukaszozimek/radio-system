@@ -73,6 +73,7 @@ public class LibMarkerServiceTest {
         //assert
         assertNotNull(libMarker);
         assertNotNull(libMarker.getId());
+        assertNotNull(libMarker.getCreatedBy());
         assertEquals(SAMPLE_MARKER_NAME, libMarker.getName());
         assertEquals(SAMPLE_MARKER_START_TIME, libMarker.getStartTime());
         assertEquals(libMediaItem, libMarker.getMediaItem());

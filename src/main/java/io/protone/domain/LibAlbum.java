@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "lib_album")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibAlbum implements Serializable {
+public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

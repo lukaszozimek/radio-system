@@ -77,7 +77,7 @@ public class LibDocumentFileService implements LibFileService {
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
                 .original(Boolean.TRUE)
-                .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
+                .size(size)
                 .network(libraryDB.getNetwork())
                 .hash(ServiceConstants.NO_HASH)
                 .objectType(LibObjectTypeEnum.OT_AUDIO);

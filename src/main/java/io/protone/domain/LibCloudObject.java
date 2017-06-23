@@ -17,7 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_cloud_object")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibCloudObject implements Serializable {
+public class LibCloudObject extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,14 +57,10 @@ public class LibCloudObject implements Serializable {
     @Column(name = "hash", length = 100, nullable = false)
     private String hash;
 
-    @Column(name = "create_date")
-    private ZonedDateTime createDate;
 
     @ManyToOne
     private CorNetwork network;
 
-    @ManyToOne
-    private CorUser createdBy;
 
     public Long getId() {
         return id;
@@ -165,19 +161,6 @@ public class LibCloudObject implements Serializable {
         this.hash = hash;
     }
 
-    public ZonedDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public LibCloudObject createDate(ZonedDateTime createDate) {
-        this.createDate = createDate;
-        return this;
-    }
-
-    public void setCreateDate(ZonedDateTime createDate) {
-        this.createDate = createDate;
-    }
-
     public CorNetwork getNetwork() {
         return network;
     }
@@ -189,19 +172,6 @@ public class LibCloudObject implements Serializable {
 
     public void setNetwork(CorNetwork corNetwork) {
         this.network = corNetwork;
-    }
-
-    public CorUser getCreatedBy() {
-        return createdBy;
-    }
-
-    public LibCloudObject createdBy(CorUser corUser) {
-        this.createdBy = corUser;
-        return this;
-    }
-
-    public void setCreatedBy(CorUser corUser) {
-        this.createdBy = corUser;
     }
 
     @Override
@@ -235,7 +205,6 @@ public class LibCloudObject implements Serializable {
             ", size='" + size + "'" +
             ", original='" + original + "'" +
             ", hash='" + hash + "'" +
-            ", createDate='" + createDate + "'" +
             '}';
     }
 }

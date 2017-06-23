@@ -78,7 +78,7 @@ public class LibVideoFileService implements LibFileService {
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
                 .original(Boolean.TRUE)
-                .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
+                .size(size)
                 .network(libraryDB.getNetwork()).objectType(LibObjectTypeEnum.OT_VIDEO)
                 .hash(ServiceConstants.NO_HASH);
             log.debug("Persisting LibCloudObject: {}", cloudObject);

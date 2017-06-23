@@ -69,33 +69,36 @@ public class CrmOpportunityServiceTest {
     @Test
     public void shouldGetAllOpportunites() throws Exception {
         //when
-        CrmOpportunity crmContact = factory.manufacturePojo(CrmOpportunity.class);
-        crmContact.setId(null);
-        crmContact.setNetwork(corNetwork);
-        crmOpportunityRepository.saveAndFlush(crmContact);
+        CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity.setId(null);
+        crmOpportunity.setNetwork(corNetwork);
+        crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        List<CrmOpportunity> crmContactList = crmOpportunityService.getAllOpportunity(corNetwork.getShortcut(), new PageRequest(0, 10));
+        List<CrmOpportunity> allOpportunity = crmOpportunityService.getAllOpportunity(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(crmContactList);
-        assertEquals(1, crmContactList.size());
-        assertNotNull(crmContactList.get(0).getId());
+        assertNotNull(allOpportunity);
+        assertEquals(1, allOpportunity.size());
+        assertNotNull(allOpportunity.get(0).getId());
+        assertNotNull(allOpportunity.get(0).getCreatedBy());
+
     }
 
     @Test
     public void shouldSaveCrmOpportunity() throws Exception {
         //when
-        CrmOpportunity localCrmContact = factory.manufacturePojo(CrmOpportunity.class);
-        localCrmContact.setId(null);
-        localCrmContact.setNetwork(corNetwork);
+        CrmOpportunity crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
+        crmOpportunity.setId(null);
+        crmOpportunity.setNetwork(corNetwork);
 
         //then
-        localCrmContact = crmOpportunityService.saveOpportunity(localCrmContact);
+        crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
 
         //assert
-        assertNotNull(localCrmContact);
-        assertNotNull(localCrmContact.getId());
+        assertNotNull(crmOpportunity);
+        assertNotNull(crmOpportunity.getId());
+        assertNotNull(crmOpportunity.getCreatedBy());
 
 
     }
@@ -119,6 +122,7 @@ public class CrmOpportunityServiceTest {
         assertNotNull(crmOpportunity);
         assertNotNull(crmOpportunity.getId());
         assertNotNull(crmOpportunity.getLead());
+        assertNotNull(crmOpportunity.getCreatedBy());
         assertEquals(crmOpportunity.getLead().getId(), crmLead.getId());
 
     }
@@ -142,6 +146,7 @@ public class CrmOpportunityServiceTest {
         assertNotNull(localOppotunity);
         assertNotNull(localOppotunity.getId());
         assertNotNull(localOppotunity.getContact());
+        assertNotNull(localOppotunity.getCreatedBy());
         assertEquals(localOppotunity.getContact().getId(), crmContact.getId());
 
 
@@ -166,7 +171,9 @@ public class CrmOpportunityServiceTest {
         //assert
         assertNotNull(localOppotunity);
         assertNotNull(localOppotunity.getId());
+        assertNotNull(localOppotunity.getCreatedBy());
         assertNotNull(localOppotunity.getAccount());
+        assertNotNull(localOppotunity.getAccount().getCreatedBy());
         assertEquals(localOppotunity.getAccount().getId(), crmAccount.getId());
 
     }

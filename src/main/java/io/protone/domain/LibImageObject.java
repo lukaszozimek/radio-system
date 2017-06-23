@@ -16,7 +16,7 @@ import io.protone.domain.enumeration.LibImageSizeEnum;
 @Entity
 @Table(name = "lib_image_object")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibImageObject implements Serializable {
+public class LibImageObject  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

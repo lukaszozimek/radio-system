@@ -59,7 +59,7 @@ public class LibLabelServiceTest {
 
         assertNotNull(savedLibLabel.get());
         assertNotNull(savedLibLabel.get().getId());
-
+        assertNotNull(savedLibLabel.get().getCreatedBy());
     }
 
     @Test

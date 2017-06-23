@@ -93,6 +93,7 @@ public class TraInvoiceServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traInvoice.getPaymentDay(), fetchedEntity.getPaymentDay());
         assertEquals(traInvoice.getNetwork(), fetchedEntity.getNetwork());
     }
@@ -125,6 +126,7 @@ public class TraInvoiceServiceTest {
 
         //assert
         assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traInvoice.getId(), fetchedEntity.getId());
         assertEquals(traInvoice.getPaymentDay(), fetchedEntity.getPaymentDay());
         assertEquals(traInvoice.getNetwork(), fetchedEntity.getNetwork());

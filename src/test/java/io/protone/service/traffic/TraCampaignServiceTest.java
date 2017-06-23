@@ -50,8 +50,10 @@ public class TraCampaignServiceTest {
 
     @Autowired
     private TraAdvertisementRepository traAdvertisementRepository;
+
     @Autowired
     private CorChannelRepository corChannelRepository;
+
     @Autowired
     private LibLibraryRepository libLibraryRepository;
 
@@ -133,6 +135,7 @@ public class TraCampaignServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(true, fetchedEntity.getOrders().isEmpty());
         assertEquals(campaign.getNetwork(), fetchedEntity.getNetwork());
     }
@@ -157,6 +160,7 @@ public class TraCampaignServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(campaign.getNetwork(), fetchedEntity.getNetwork());
 
         assertNotNull(fetchedEntity.getOrders());
@@ -193,6 +197,7 @@ public class TraCampaignServiceTest {
 
         //assert
         assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(campaign.getId(), fetchedEntity.getId());
         assertEquals(campaign.getNetwork(), fetchedEntity.getNetwork());
     }

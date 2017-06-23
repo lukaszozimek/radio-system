@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name = "lib_label", uniqueConstraints =
 @UniqueConstraint(columnNames = {"name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibLabel implements Serializable {
+public class LibLabel  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

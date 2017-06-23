@@ -1,4 +1,4 @@
-package io.protone.service;
+package io.protone.service.cor;
 
 import io.protone.config.audit.AuditEventConverter;
 import io.protone.repository.PersistenceAuditEventRepository;
@@ -19,13 +19,13 @@ import java.util.Optional;
  */
 @Service
 @Transactional
-public class AuditEventService {
+public class CorAuditEventService {
 
     private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
     private final AuditEventConverter auditEventConverter;
 
-    public AuditEventService(
+    public CorAuditEventService(
         PersistenceAuditEventRepository persistenceAuditEventRepository,
         AuditEventConverter auditEventConverter) {
 

@@ -81,7 +81,7 @@ public class LibImageFileService implements LibFileService {
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
                 .original(Boolean.TRUE)
-                .size(size).createDate(ZonedDateTime.now()).createdBy(currentUser)
+                .size(size)
                 .network(corNetwork)
                 .objectType(LibObjectTypeEnum.OT_IMAGE)
                 .hash(ServiceConstants.NO_HASH);

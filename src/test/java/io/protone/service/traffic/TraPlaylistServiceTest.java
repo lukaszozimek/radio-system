@@ -236,7 +236,8 @@ public class TraPlaylistServiceTest {
         assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getId());
         assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getEmissions());
         assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getEmissions().stream().findAny().get().getId());
-
+        assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getCreatedBy());
+        assertNotNull(fetchedEntity.getPlaylists().stream().findAny().filter(traBlock1 -> !traBlock1.getEmissions().isEmpty()).get().getEmissions().stream().findFirst().get().getCreatedBy());
         assertEquals(1, fetchedEntity.getPlaylists().size());
         assertEquals(1, fetchedEntity.getPlaylists().stream().findAny().get().getEmissions().size());
         assertEquals(1, fetchedEntity.getPlaylists().stream().findAny().get().getEmissions().size());
