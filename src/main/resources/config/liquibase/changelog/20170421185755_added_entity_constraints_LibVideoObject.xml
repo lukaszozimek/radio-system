@@ -19,11 +19,23 @@
                                  constraintName="fk_lib_video_object_media_item_id"
                                  referencedColumnNames="id"
                                  referencedTableName="lib_media_item"/>
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="lib_audio_object"
                                  constraintName="fk_lib_video_object_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="lib_video_object"
+                                 constraintName="fk_lib_video_object_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="lib_video_object"
+                                 constraintName="fk_lib_video_object_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>
