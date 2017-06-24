@@ -5,6 +5,7 @@ import io.protone.domain.CorUser;
 import io.protone.service.cor.CorUserService;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -21,24 +22,20 @@ public class SpringSecurityAuditorAware implements AuditorAware<CorUser> {
     @Inject
     private CorUserService corUserService;
 
-    //TODO: NOT GOOD SOULTION. WE SHOULD Groom this issue.
-    //TODO: PUTING THIS INTO THE METHOD couse stackoverflow exception
-    private CorUser defaultUser;
-
-    @PostConstruct
-    public void postInitializeBean() {
-        defaultUser = corUserService.getUserWithAuthorities(DEFAULT_SYSTEM_USER_ID);
-    }
-
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW) // https://stackoverflow.com/questions/34753357/java-lang-stackoverflowerror-when-trying-to-update-any-entity-with-createdby
     public CorUser getCurrentAuditor() {
         String userName = SecurityUtils.getCurrentUserLogin();
         if (!Strings.isNullOrEmpty(userName)) {
             CorUser corUser = corUserService.getUserWithAuthoritiesByLogin(userName).orElse(null);
-            return corUser != null ? corUser : defaultUser;
+            return corUser != null ? corUser : getDefaultUser();
 
         }
-        return defaultUser;
+        return getDefaultUser();
+    }
+
+    private CorUser getDefaultUser() {
+        return corUserService.getUserWithAuthorities(DEFAULT_SYSTEM_USER_ID);
     }
 
 
