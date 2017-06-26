@@ -1,6 +1,8 @@
 package io.protone.web.rest.vm;
 
 import io.protone.config.Constants;
+import io.protone.web.rest.dto.cor.CorManagedUserDTO;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -16,7 +18,7 @@ public class LoginVM {
     private String username;
 
     @NotNull
-    @Size(min = ManagedUserVM.PASSWORD_MIN_LENGTH, max = ManagedUserVM.PASSWORD_MAX_LENGTH)
+    @Size(min = CorManagedUserDTO.PASSWORD_MIN_LENGTH, max = CorManagedUserDTO.PASSWORD_MAX_LENGTH)
     private String password;
 
     private Boolean rememberMe;

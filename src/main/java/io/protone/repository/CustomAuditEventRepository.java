@@ -1,8 +1,7 @@
 package io.protone.repository;
 
 import io.protone.config.audit.AuditEventConverter;
-import io.protone.domain.PersistentAuditEvent;
-
+import io.protone.domain.CorPersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Repository;
@@ -38,14 +37,14 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     @Override
     public List<AuditEvent> find(Date after) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents =
+        Iterable<CorPersistentAuditEvent> persistentAuditEvents =
             persistenceAuditEventRepository.findByAuditEventDateAfter(LocalDateTime.from(after.toInstant()));
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
 
     @Override
     public List<AuditEvent> find(String principal, Date after) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents;
+        Iterable<CorPersistentAuditEvent> persistentAuditEvents;
         if (principal == null && after == null) {
             persistentAuditEvents = persistenceAuditEventRepository.findAll();
         } else if (after == null) {
@@ -59,7 +58,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
 
     @Override
     public List<AuditEvent> find(String principal, Date after, String type) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents =
+        Iterable<CorPersistentAuditEvent> persistentAuditEvents =
             persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfterAndAuditEventType(principal, LocalDateTime.from(after.toInstant()), type);
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
@@ -70,13 +69,13 @@ public class CustomAuditEventRepository implements AuditEventRepository {
         if (!AUTHORIZATION_FAILURE.equals(event.getType()) &&
             !ANONYMOUS_USER.equals(event.getPrincipal())) {
 
-            PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
-            persistentAuditEvent.setPrincipal(event.getPrincipal());
-            persistentAuditEvent.setAuditEventType(event.getType());
+            CorPersistentAuditEvent corPersistentAuditEvent = new CorPersistentAuditEvent();
+            corPersistentAuditEvent.setPrincipal(event.getPrincipal());
+            corPersistentAuditEvent.setAuditEventType(event.getType());
             Instant instant = Instant.ofEpochMilli(event.getTimestamp().getTime());
-            persistentAuditEvent.setAuditEventDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
-            persistentAuditEvent.setData(auditEventConverter.convertDataToStrings(event.getData()));
-            persistenceAuditEventRepository.save(persistentAuditEvent);
+            corPersistentAuditEvent.setAuditEventDate(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()));
+            corPersistentAuditEvent.setData(auditEventConverter.convertDataToStrings(event.getData()));
+            persistenceAuditEventRepository.save(corPersistentAuditEvent);
         }
     }
 }

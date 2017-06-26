@@ -201,8 +201,6 @@ public class TraMediaPlanServiceTest {
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getCreatedBy());
         assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getCreatedBy());
-        assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getPlaylists().stream().findAny().get().getCreatedBy());
-        assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getPlaylists().stream().filter(traBlock -> !traBlock.getEmissions().isEmpty()).findFirst().get().getCreatedBy());
         assertNotNull(fetchedEntity.getName());
         assertEquals("test", fetchedEntity.getName());
 

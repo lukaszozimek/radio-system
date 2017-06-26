@@ -1,6 +1,5 @@
 package io.protone.repository.cor;
 
-import io.protone.domain.Authority;
 import io.protone.domain.CorAuthority;
 import org.springframework.data.jpa.repository.JpaRepository;
 

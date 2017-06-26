@@ -3,7 +3,7 @@ package io.protone.web.api.cor;
 import io.protone.ProtoneApp;
 import io.protone.config.audit.AuditEventConverter;
 import io.protone.domain.CorNetwork;
-import io.protone.domain.PersistentAuditEvent;
+import io.protone.domain.CorPersistentAuditEvent;
 import io.protone.repository.PersistenceAuditEventRepository;
 import io.protone.service.cor.CorAuditEventService;
 import io.protone.web.api.cor.impl.CorAuditResourceImpl;
@@ -58,7 +58,7 @@ public class CorAuditResourceTest {
     @Inject
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    private PersistentAuditEvent auditEvent;
+    private CorPersistentAuditEvent auditEvent;
 
     private MockMvc restAuditMockMvc;
     private CorNetwork corNetwork;
@@ -81,7 +81,7 @@ public class CorAuditResourceTest {
     @Before
     public void initTest() {
         auditEventRepository.deleteAll();
-        auditEvent = new PersistentAuditEvent();
+        auditEvent = new CorPersistentAuditEvent();
         auditEvent.setAuditEventType(SAMPLE_TYPE);
         auditEvent.setPrincipal(SAMPLE_PRINCIPAL);
         auditEvent.setAuditEventDate(SAMPLE_TIMESTAMP);
