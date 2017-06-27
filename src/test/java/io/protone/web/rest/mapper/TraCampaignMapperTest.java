@@ -6,7 +6,6 @@ import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.traffic.TraCampaignDTO;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.domain.*;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +21,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28.04.2017.

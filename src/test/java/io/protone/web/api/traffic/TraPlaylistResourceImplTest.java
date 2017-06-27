@@ -2,7 +2,6 @@ package io.protone.web.api.traffic;
 
 import com.google.common.collect.Lists;
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.repository.traffic.TraPlaylistRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;

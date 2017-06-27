@@ -1,6 +1,5 @@
 package io.protone.web.rest.mapper;
 
-import io.jsonwebtoken.lang.Assert;
 import io.protone.ProtoneApp;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;

@@ -1,11 +1,11 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.util.TestUtil;
+import io.protone.core.repository.cor.CorDictionaryRepository;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.cor.CorDictionaryRepository;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.util.TestUtil;
 import io.protone.web.api.cor.impl.CorDictionaryResourceImpl;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;

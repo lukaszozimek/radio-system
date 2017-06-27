@@ -1,10 +1,10 @@
 package io.protone.service.library;
 
 import io.protone.ProtoneApp;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.LibAlbum;
 import io.protone.domain.LibTrack;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.library.LibAlbumRepository;
 import io.protone.repository.library.LibTrackRepository;
 import org.junit.Before;
@@ -17,10 +17,10 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 05/05/2017.

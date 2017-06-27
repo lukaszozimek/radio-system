@@ -13,6 +13,6 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-io.protone.service.metadata.audiovault.parser.AudioVaultWaveParser
-io.protone.service.metadata.audiovault.parser.AudioVaultMp3Parser
-io.protone.service.metadata.audiovault.parser.AudioVaultMP2Parser
+io.protone.library.service.metadata.parser.AudioVaultWaveParser
+io.protone.library.service.metadata.parser.AudioVaultMp3Parser
+io.protone.library.service.metadata.parser.AudioVaultMP2Parser

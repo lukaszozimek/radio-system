@@ -1,7 +1,6 @@
 package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
@@ -12,7 +11,7 @@ import io.protone.service.cor.CorNetworkService;
 import io.protone.service.library.LibItemService;
 import io.protone.service.traffic.TraMediaPlanService;
 import io.protone.service.traffic.TraPlaylistMediaPlanMappingService;
-import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
+import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.protone.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.web.api.traffic.impl.TraMediaPlanMappingResourceImpl;
 import io.protone.web.rest.errors.ExceptionTranslator;

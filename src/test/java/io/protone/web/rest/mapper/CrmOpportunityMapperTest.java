@@ -3,7 +3,6 @@ package io.protone.web.rest.mapper;
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
-import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28.04.2017.

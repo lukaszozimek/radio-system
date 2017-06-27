@@ -2,7 +2,6 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.library.LibMediaItemDTO;
-import io.protone.domain.*;
 import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;

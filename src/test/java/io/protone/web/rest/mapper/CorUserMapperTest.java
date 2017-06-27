@@ -2,7 +2,6 @@ package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 27/04/2017.

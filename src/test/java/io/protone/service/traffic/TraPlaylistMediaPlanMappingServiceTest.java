@@ -1,11 +1,10 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.service.library.LibItemService;
 import io.protone.service.traffic.base.TraPlaylistBasedTest;
-import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
-import io.protone.service.traffic.mediaplan.diff.TraPlaylistDiff;
+import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
+import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
 import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;

@@ -1,5 +1,6 @@
 package io.protone.custom.service;
 
+import io.protone.core.repository.cor.CorChannelRepository;
 import io.protone.custom.service.dto.SchPlaylistPT;
 import io.protone.custom.service.mapper.CustomSchBlockMapper;
 import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
@@ -7,7 +8,6 @@ import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchPlaylist;
-import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.custom.CustomSchPlaylistRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;

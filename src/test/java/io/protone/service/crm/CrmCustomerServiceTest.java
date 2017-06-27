@@ -1,8 +1,7 @@
 package io.protone.service.crm;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
-import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 29.04.2017.

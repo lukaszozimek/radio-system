@@ -2,9 +2,8 @@ package io.protone.service.traffic;
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
-import io.protone.repository.cor.CorChannelRepository;
-import io.protone.repository.cor.CorNetworkRepository;
+import io.protone.core.repository.cor.CorChannelRepository;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;

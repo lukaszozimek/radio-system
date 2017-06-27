@@ -1,13 +1,11 @@
 package io.protone.service.traffic.base;
 
-import io.protone.domain.*;
+import io.protone.core.repository.cor.CorChannelRepository;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.enumeration.CorDayOfWeekEnum;
-import io.protone.repository.cor.CorChannelRepository;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.repository.traffic.*;
 import io.protone.service.traffic.TraAdvertisementService;
 import io.protone.service.traffic.TraPlaylistService;
 import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;

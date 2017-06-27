@@ -1,10 +1,8 @@
 package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.SchEventPT;
-import io.protone.domain.CorChannel;
 import io.protone.domain.SchTemplate;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

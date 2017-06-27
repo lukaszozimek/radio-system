@@ -2,11 +2,11 @@ package io.protone.web.api.cor;
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.service.cor.CorUserService;
-import io.protone.service.cor.CorMailService;
+import io.protone.core.repository.cor.CorNetworkRepository;
+import io.protone.core.repository.cor.CorUserRepository;
 import io.protone.domain.CorUser;
-import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.repository.cor.CorUserRepository;
+import io.protone.service.cor.CorMailService;
+import io.protone.service.cor.CorUserService;
 import io.protone.web.api.cor.impl.CorUserResourceImpl;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -20,10 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.persistence.EntityManager;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
  * Created by lukaszozimek on 05.05.2017.

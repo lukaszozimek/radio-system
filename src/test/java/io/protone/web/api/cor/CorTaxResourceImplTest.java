@@ -1,13 +1,13 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.web.rest.dto.cor.CorTaxDTO;
-import io.protone.util.TestUtil;
+import io.protone.core.repository.cor.CorTaxRepository;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorTax;
-import io.protone.repository.cor.CorTaxRepository;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.util.TestUtil;
 import io.protone.web.api.cor.impl.CorTaxResourceImpl;
+import io.protone.web.rest.dto.cor.CorTaxDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.CorTaxMapper;
 import org.junit.Before;
@@ -33,7 +33,8 @@ import java.util.List;
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

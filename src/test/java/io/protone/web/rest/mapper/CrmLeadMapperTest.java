@@ -1,9 +1,8 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.web.rest.dto.crm.CrmLeadDTO;
-import io.protone.domain.*;
 import io.protone.web.rest.dto.cor.thin.CoreUserThinDTO;
+import io.protone.web.rest.dto.crm.CrmLeadDTO;
 import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;

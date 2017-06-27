@@ -1,7 +1,6 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.web.rest.dto.traffic.TraEmissionDTO;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;
 import org.junit.Before;

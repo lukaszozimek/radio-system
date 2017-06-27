@@ -2,9 +2,9 @@ package io.protone.web.api.cor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.ProtoneApp;
+import io.protone.application.security.jwt.TokenProvider;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.security.jwt.TokenProvider;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.library.LibLibraryService;

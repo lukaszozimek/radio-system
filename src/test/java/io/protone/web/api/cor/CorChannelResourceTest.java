@@ -1,13 +1,13 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.util.TestUtil;
+import io.protone.core.repository.cor.CorChannelRepository;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.cor.CorChannelRepository;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.util.TestUtil;
 import io.protone.web.api.cor.impl.CorChannelResourceImpl;
 import io.protone.web.rest.dto.cor.CorChannelDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
@@ -31,7 +31,8 @@ import java.util.List;
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

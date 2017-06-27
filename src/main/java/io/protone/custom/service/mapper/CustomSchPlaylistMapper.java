@@ -4,7 +4,6 @@ import io.protone.custom.service.dto.SchPlaylistPT;
 import io.protone.domain.CorChannel;
 import io.protone.domain.SchPlaylist;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 

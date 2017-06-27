@@ -1,8 +1,8 @@
 package io.protone.service.library;
 
 import io.protone.ProtoneApp;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.cor.CorNetworkRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

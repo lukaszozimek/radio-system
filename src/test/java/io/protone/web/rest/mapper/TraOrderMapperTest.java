@@ -1,7 +1,6 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.web.rest.dto.cor.CorDictionaryDTO;
 import io.protone.web.rest.dto.traffic.TraOrderDTO;
 import io.protone.web.rest.dto.traffic.thin.TraAdvertisementThinDTO;

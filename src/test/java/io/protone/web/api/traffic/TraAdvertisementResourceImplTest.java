@@ -1,17 +1,16 @@
 package io.protone.web.api.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.web.api.crm.CrmCustomerResourceImplTest;
-import io.protone.web.api.library.LibMediaItemResourceTest;
-import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
-import io.protone.util.TestUtil;
-import io.protone.web.api.traffic.impl.TraAdvertisementResourceImpl;
 import io.protone.repository.traffic.TraAdvertisementRepository;
 import io.protone.service.cor.CorNetworkService;
 import io.protone.service.traffic.TraAdvertisementService;
+import io.protone.util.TestUtil;
+import io.protone.web.api.crm.CrmCustomerResourceImplTest;
+import io.protone.web.api.library.LibMediaItemResourceTest;
+import io.protone.web.api.traffic.impl.TraAdvertisementResourceImpl;
+import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.TraAdvertisementMapper;
 import org.junit.Before;
@@ -35,10 +34,9 @@ import java.util.List;
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 02/05/2017.

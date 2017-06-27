@@ -1,8 +1,6 @@
-
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
 import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
-import io.protone.domain.*;
 import io.protone.web.rest.mapper.TraInvoiceMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 28.04.2017.

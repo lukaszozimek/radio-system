@@ -1,16 +1,16 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.service.cor.CorMailService;
-import io.protone.service.cor.CorUserService;
-import io.protone.web.api.cor.impl.CorUserConfigurationResourceImpl;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.util.TestUtil;
+import io.protone.core.repository.cor.CorUserRepository;
 import io.protone.domain.CorDictionary;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorUser;
-import io.protone.repository.cor.CorUserRepository;
+import io.protone.service.cor.CorMailService;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.service.cor.CorUserService;
+import io.protone.util.TestUtil;
+import io.protone.web.api.cor.impl.CorUserConfigurationResourceImpl;
+import io.protone.web.rest.dto.cor.CorUserDTO;
 import io.protone.web.rest.errors.ExceptionTranslator;
 import io.protone.web.rest.mapper.CorUserMapper;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -41,10 +41,9 @@ import java.util.List;
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Created by lukaszozimek on 05.05.2017.

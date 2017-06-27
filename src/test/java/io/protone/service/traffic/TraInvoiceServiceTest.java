@@ -1,10 +1,10 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CrmAccount;
 import io.protone.domain.TraInvoice;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.traffic.TraInvoiceRepository;
 import org.junit.Before;

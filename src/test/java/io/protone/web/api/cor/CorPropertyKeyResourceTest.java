@@ -1,16 +1,17 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.web.api.cor.impl.CorPropertyKeyResourceImpl;
-import io.protone.web.rest.dto.cor.CorKeyDTO;
-import io.protone.util.TestUtil;
+import io.protone.core.repository.cor.CorNetworkRepository;
+import io.protone.core.repository.cor.CorPropertyKeyRepository;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.CorPropertyKey;
-import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.repository.cor.CorPropertyKeyRepository;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.util.TestUtil;
+import io.protone.web.api.cor.impl.CorPropertyKeyResourceImpl;
+import io.protone.web.rest.dto.cor.CorKeyDTO;
 import io.protone.web.rest.mapper.CorPropertyKeyMapper;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +30,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

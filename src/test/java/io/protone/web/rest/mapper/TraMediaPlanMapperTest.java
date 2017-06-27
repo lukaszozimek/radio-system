@@ -1,7 +1,6 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.web.rest.dto.library.thin.LibMediaItemThinDTO;
 import io.protone.web.rest.dto.traffic.TraMediaPlanDTO;
 import io.protone.web.rest.dto.traffic.thin.TraCustomerThinDTO;
@@ -18,7 +17,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 11/06/2017.

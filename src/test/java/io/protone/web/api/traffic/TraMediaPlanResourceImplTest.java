@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
 import io.protone.domain.enumeration.LibItemTypeEnum;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;

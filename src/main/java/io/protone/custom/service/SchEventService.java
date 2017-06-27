@@ -1,12 +1,12 @@
 package io.protone.custom.service;
 
+import io.protone.core.repository.cor.CorChannelRepository;
 import io.protone.custom.service.dto.SchEventPT;
 import io.protone.custom.service.mapper.CustomSchTemplateMapper;
 import io.protone.custom.utils.BlockUtils;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchTemplate;
-import io.protone.repository.cor.CorChannelRepository;
 import io.protone.repository.custom.CustomSchTemplateRepository;
 import io.protone.service.cor.CorChannelService;
 import io.protone.service.cor.CorNetworkService;

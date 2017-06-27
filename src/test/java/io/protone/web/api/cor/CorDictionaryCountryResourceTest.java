@@ -1,14 +1,14 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
-import io.protone.web.api.cor.impl.CorDictionaryCountryResourceImpl;
-import io.protone.web.rest.dto.cor.CorCountryDTO;
-import io.protone.util.TestUtil;
+import io.protone.core.repository.cor.CorCountryRepository;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorCountry;
 import io.protone.domain.CorNetwork;
-import io.protone.repository.cor.CorCountryRepository;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.service.cor.CorNetworkService;
+import io.protone.util.TestUtil;
+import io.protone.web.api.cor.impl.CorDictionaryCountryResourceImpl;
+import io.protone.web.rest.dto.cor.CorCountryDTO;
 import io.protone.web.rest.mapper.CorCountryMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,8 @@ import java.util.List;
 import static io.protone.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

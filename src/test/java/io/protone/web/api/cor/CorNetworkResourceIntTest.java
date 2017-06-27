@@ -1,12 +1,12 @@
 package io.protone.web.api.cor;
 
 import io.protone.ProtoneApp;
+import io.protone.core.repository.cor.CorNetworkRepository;
+import io.protone.domain.CorNetwork;
+import io.protone.service.cor.CorNetworkService;
+import io.protone.util.TestUtil;
 import io.protone.web.api.cor.impl.CorNetworkResourceImpl;
 import io.protone.web.rest.dto.cor.CorNetworkDTO;
-import io.protone.util.TestUtil;
-import io.protone.domain.CorNetwork;
-import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.service.cor.CorNetworkService;
 import io.protone.web.rest.mapper.CorNetworkMapper;
 import org.junit.Before;
 import org.junit.Test;

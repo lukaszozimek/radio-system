@@ -2208,7 +2208,7 @@
 	};
 
 
-	// @const
+	// @constans
 	api.each(['TOP', 'CENTER', 'BOTTOM'], function (x, i){
 		api.each(['LEFT', 'CENTER', 'RIGHT'], function (y, j){
 			Image[x+'_'+y] = i*3 + j;

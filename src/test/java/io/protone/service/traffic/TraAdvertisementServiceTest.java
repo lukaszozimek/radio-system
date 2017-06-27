@@ -1,9 +1,8 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
-import io.protone.domain.*;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.crm.CrmAccountRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.repository.traffic.TraAdvertisementRepository;

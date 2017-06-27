@@ -1,7 +1,7 @@
 package io.protone.web.rest.mapper;
 
 import io.protone.ProtoneApp;
-import io.protone.service.traffic.mediaplan.descriptor.TraMediaPlanDescriptor;
+import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.protone.web.rest.dto.traffic.TraMediaPlanDescriptorDTO;
 import org.junit.Before;
 import org.junit.Test;

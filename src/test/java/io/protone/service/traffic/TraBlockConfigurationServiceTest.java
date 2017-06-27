@@ -1,11 +1,11 @@
 package io.protone.service.traffic;
 
 import io.protone.ProtoneApp;
+import io.protone.core.repository.cor.CorChannelRepository;
+import io.protone.core.repository.cor.CorNetworkRepository;
 import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.TraBlockConfiguration;
-import io.protone.repository.cor.CorChannelRepository;
-import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.traffic.TraBlockConfigurationRepository;
 import org.junit.Before;
 import org.junit.Test;

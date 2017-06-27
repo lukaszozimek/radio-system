@@ -2,15 +2,13 @@ package io.protone.service.library;
 
 import com.google.common.collect.Sets;
 import io.protone.ProtoneApp;
-import io.protone.config.s3.S3Client;
-import io.protone.domain.*;
+import io.protone.application.config.s3.S3Client;
+import io.protone.core.repository.cor.CorNetworkRepository;
+import io.protone.core.repository.cor.CorUserRepository;
 import io.protone.domain.enumeration.LibItemTypeEnum;
-import io.protone.repository.cor.CorNetworkRepository;
-import io.protone.repository.cor.CorUserRepository;
 import io.protone.repository.library.LibLibraryRepository;
 import io.protone.repository.library.LibMediaItemRepository;
 import io.protone.service.cor.CorUserService;
-import io.protone.service.library.file.LibFileService;
 import org.assertj.core.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +23,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import service.file.LibFileService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -33,7 +32,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-import static io.protone.security.AuthoritiesConstants.ADMIN;
+import static io.protone.application.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
