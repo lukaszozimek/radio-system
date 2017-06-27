@@ -119,6 +119,7 @@ public class LibLibraryServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertNotNull(fetchedEntity.getName(), libLibrary.getName());
         assertNotNull(fetchedEntity.getShortcut(), libLibrary.getShortcut());
         assertEquals(libLibrary.getNetwork(), fetchedEntity.getNetwork());

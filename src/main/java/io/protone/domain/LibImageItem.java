@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_image_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibImageItem implements Serializable {
+public class LibImageItem extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

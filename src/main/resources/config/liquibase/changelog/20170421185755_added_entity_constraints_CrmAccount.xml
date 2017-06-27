@@ -7,7 +7,7 @@
         Added the constraints for entity CrmAccount.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="person_id"
                                  baseTableName="crm_account"
                                  constraintName="fk_crm_account_person_id"
@@ -67,6 +67,18 @@
                                  constraintName="fk_crm_account_area_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crm_account_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="crm_account"
+                                 constraintName="fk_crm_account_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
 
     </changeSet>
 </databaseChangeLog>

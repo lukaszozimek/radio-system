@@ -2,20 +2,18 @@ package io.protone.web.api.cor.impl;
 
 
 import com.codahale.metrics.annotation.Timed;
-import io.protone.service.cor.CorMailService;
-import io.protone.service.cor.CorUserService;
-import io.protone.web.api.cor.CorUserResource;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.web.rest.dto.cor.CorManagedUserDTO;
-import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.domain.CorUser;
 import io.protone.repository.cor.CorNetworkRepository;
 import io.protone.repository.cor.CorUserRepository;
 import io.protone.security.SecurityUtils;
-import io.protone.web.rest.dto.UserDTO;
+import io.protone.service.cor.CorMailService;
+import io.protone.service.cor.CorUserService;
+import io.protone.web.api.cor.CorUserResource;
+import io.protone.web.rest.dto.cor.CorManagedUserDTO;
+import io.protone.web.rest.dto.cor.CorUserDTO;
+import io.protone.web.rest.mapper.CorNetworkMapper;
 import io.protone.web.rest.util.HeaderUtil;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
-import io.protone.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,7 +143,7 @@ public class CorUserResourceImpl implements CorUserResource {
     @PostMapping("/account")
     @Timed
     @Override
-    public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> saveAccount(@Valid @RequestBody CorUserDTO userDTO) {
         Optional<CorUser> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists", "Email already in use")).body(null);
@@ -218,8 +216,8 @@ public class CorUserResourceImpl implements CorUserResource {
 
     private boolean checkPasswordLength(String password) {
         return (!StringUtils.isEmpty(password) &&
-            password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
-            password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH);
+            password.length() >= CorManagedUserDTO.PASSWORD_MIN_LENGTH &&
+            password.length() <= CorManagedUserDTO.PASSWORD_MAX_LENGTH);
     }
 
 

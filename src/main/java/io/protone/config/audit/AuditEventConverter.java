@@ -1,6 +1,6 @@
 package io.protone.config.audit;
 
-import io.protone.domain.PersistentAuditEvent;
+import io.protone.domain.CorPersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
@@ -13,32 +13,32 @@ import java.util.*;
 public class AuditEventConverter {
 
     /**
-     * Convert a list of PersistentAuditEvent to a list of AuditEvent
+     * Convert a list of CorPersistentAuditEvent to a list of AuditEvent
      *
      * @param persistentAuditEvents the list to convert
      * @return the converted list.
      */
-    public List<AuditEvent> convertToAuditEvent(Iterable<PersistentAuditEvent> persistentAuditEvents) {
+    public List<AuditEvent> convertToAuditEvent(Iterable<CorPersistentAuditEvent> persistentAuditEvents) {
         if (persistentAuditEvents == null) {
             return Collections.emptyList();
         }
         List<AuditEvent> auditEvents = new ArrayList<>();
-        for (PersistentAuditEvent persistentAuditEvent : persistentAuditEvents) {
-            auditEvents.add(convertToAuditEvent(persistentAuditEvent));
+        for (CorPersistentAuditEvent corPersistentAuditEvent : persistentAuditEvents) {
+            auditEvents.add(convertToAuditEvent(corPersistentAuditEvent));
         }
         return auditEvents;
     }
 
     /**
-     * Convert a PersistentAuditEvent to an AuditEvent
+     * Convert a CorPersistentAuditEvent to an AuditEvent
      *
-     * @param persistentAuditEvent the event to convert
+     * @param corPersistentAuditEvent the event to convert
      * @return the converted list.
      */
-    public AuditEvent convertToAuditEvent(PersistentAuditEvent persistentAuditEvent) {
-        Instant instant = persistentAuditEvent.getAuditEventDate().atZone(ZoneId.systemDefault()).toInstant();
-        return new AuditEvent(Date.from(instant), persistentAuditEvent.getPrincipal(),
-            persistentAuditEvent.getAuditEventType(), convertDataToObjects(persistentAuditEvent.getData()));
+    public AuditEvent convertToAuditEvent(CorPersistentAuditEvent corPersistentAuditEvent) {
+        Instant instant = corPersistentAuditEvent.getAuditEventDate().atZone(ZoneId.systemDefault()).toInstant();
+        return new AuditEvent(Date.from(instant), corPersistentAuditEvent.getPrincipal(),
+            corPersistentAuditEvent.getAuditEventType(), convertDataToObjects(corPersistentAuditEvent.getData()));
     }
 
     /**

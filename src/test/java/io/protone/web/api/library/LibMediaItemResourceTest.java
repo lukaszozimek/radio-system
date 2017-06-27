@@ -352,7 +352,6 @@ public class LibMediaItemResourceTest {
     @Transactional
     public void deleteLibMediaItem() throws Exception {
         // Initialize the database
-        libMediaItemRepository.deleteAll();
         doNothing().when(s3Client).delete(anyObject());
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeDelete = libMediaItemRepository.findAll().size();

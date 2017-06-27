@@ -62,7 +62,7 @@ public class TraBlockConfigurationServiceTest {
     }
 
     @Test
-    public void shouldGetOrders() throws Exception {
+    public void shouldGetBlocksConfiguration() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setNetwork(corNetwork);
@@ -81,7 +81,7 @@ public class TraBlockConfigurationServiceTest {
     }
 
     @Test
-    public void shouldSaveOrder() throws Exception {
+    public void shouldSaveBlockConfiguration() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setChannel(corChannel);
@@ -93,12 +93,13 @@ public class TraBlockConfigurationServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertNotNull(fetchedEntity.getName(), traBlockConfiguration.getName());
         assertEquals(traBlockConfiguration.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
-    public void shouldDeleteOrder() throws Exception {
+    public void shouldDeleteBlockConfiguration() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setChannel(corChannel);
@@ -113,7 +114,7 @@ public class TraBlockConfigurationServiceTest {
     }
 
     @Test
-    public void shouldGetOrder() throws Exception {
+    public void shouldGetBlockConfiguration() throws Exception {
         //when
         TraBlockConfiguration traBlockConfiguration = factory.manufacturePojo(TraBlockConfiguration.class);
         traBlockConfiguration.setChannel(corChannel);

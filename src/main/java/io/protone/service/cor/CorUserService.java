@@ -275,7 +275,7 @@ public class CorUserService {
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         ZonedDateTime now = ZonedDateTime.now();
-        List<CorUser> users = userRepository.findAllByActivatedIsFalseAndCreateddateBefore(now.minusDays(3));
+        List<CorUser> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
         for (CorUser user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);

@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_audio_object")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibAudioObject implements Serializable {
+public class LibAudioObject extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

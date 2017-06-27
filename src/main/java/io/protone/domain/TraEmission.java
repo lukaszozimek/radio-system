@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tra_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraEmission implements Serializable {
+public class TraEmission extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

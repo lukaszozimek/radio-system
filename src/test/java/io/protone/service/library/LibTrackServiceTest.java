@@ -70,6 +70,7 @@ public class LibTrackServiceTest {
         Optional<LibTrack> saveLibTrack = libTrackService.saveLibTrack(libTrack);
 
         assertNotNull(saveLibTrack.get());
+        assertNotNull(saveLibTrack.get().getCreatedBy());
         assertNotNull(saveLibTrack.get().getId());
 
     }

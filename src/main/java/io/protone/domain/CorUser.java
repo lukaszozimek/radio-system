@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "cor_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorUser implements Serializable {
+public class CorUser extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,10 +29,10 @@ public class CorUser implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "login",nullable = false)
+    @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "passwordhash",nullable = false)
+    @Column(name = "passwordhash", nullable = false)
     private String passwordhash;
 
     @Column(name = "firstname")
@@ -41,7 +41,7 @@ public class CorUser implements Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "email",nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "imageurl")
@@ -59,20 +59,9 @@ public class CorUser implements Serializable {
     @Column(name = "resetkey")
     private String resetkey;
 
-    @Column(name = "createdby")
-    private String createdby;
-
-    @Column(name = "createddate")
-    private LocalDate createddate;
-
     @Column(name = "resetdate")
     private ZonedDateTime resetdate;
 
-    @Column(name = "lastmodifiedby")
-    private String lastmodifiedby;
-
-    @Column(name = "lastmodifieddate")
-    private LocalDate lastmodifieddate;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -88,15 +77,15 @@ public class CorUser implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_channel",
-        joinColumns = @JoinColumn(name="cor_users_id", referencedColumnName="id"),
-        inverseJoinColumns = @JoinColumn(name="channels_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     private Set<CorChannel> channels = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_network",
-        joinColumns = @JoinColumn(name="cor_users_id", referencedColumnName="id"),
-        inverseJoinColumns = @JoinColumn(name="networks_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "networks_id", referencedColumnName = "id"))
     private Set<CorNetwork> networks = new HashSet<>();
 
     public Long getId() {
@@ -111,17 +100,21 @@ public class CorUser implements Serializable {
         return login;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public CorUser login(String login) {
         this.login = login;
         return this;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPasswordhash() {
         return passwordhash;
+    }
+
+    public void setPasswordhash(String passwordhash) {
+        this.passwordhash = passwordhash;
     }
 
     public CorUser passwordhash(String passwordhash) {
@@ -129,12 +122,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setPasswordhash(String passwordhash) {
-        this.passwordhash = passwordhash;
-    }
-
     public String getFirstname() {
         return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public CorUser firstname(String firstname) {
@@ -142,12 +135,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
     public String getLastname() {
         return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public CorUser lastname(String lastname) {
@@ -155,12 +148,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public CorUser email(String email) {
@@ -168,21 +161,17 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getImageurl() {
         return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
     public CorUser imageurl(String imageurl) {
         this.imageurl = imageurl;
         return this;
-    }
-
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
     }
 
     public Boolean isActivated() {
@@ -202,17 +191,21 @@ public class CorUser implements Serializable {
         return langkey;
     }
 
+    public void setLangkey(String langkey) {
+        this.langkey = langkey;
+    }
+
     public CorUser langkey(String langkey) {
         this.langkey = langkey;
         return this;
     }
 
-    public void setLangkey(String langkey) {
-        this.langkey = langkey;
-    }
-
     public String getActivationkey() {
         return activationkey;
+    }
+
+    public void setActivationkey(String activationkey) {
+        this.activationkey = activationkey;
     }
 
     public CorUser activationkey(String activationkey) {
@@ -220,12 +213,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setActivationkey(String activationkey) {
-        this.activationkey = activationkey;
-    }
-
     public String getResetkey() {
         return resetkey;
+    }
+
+    public void setResetkey(String resetkey) {
+        this.resetkey = resetkey;
     }
 
     public CorUser resetkey(String resetkey) {
@@ -233,38 +226,13 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setResetkey(String resetkey) {
-        this.resetkey = resetkey;
-    }
-
-    public String getCreatedby() {
-        return createdby;
-    }
-
-    public CorUser createdby(String createdby) {
-        this.createdby = createdby;
-        return this;
-    }
-
-    public void setCreatedby(String createdby) {
-        this.createdby = createdby;
-    }
-
-    public LocalDate getCreateddate() {
-        return createddate;
-    }
-
-    public CorUser createddate(LocalDate createddate) {
-        this.createddate = createddate;
-        return this;
-    }
-
-    public void setCreateddate(LocalDate createddate) {
-        this.createddate = createddate;
-    }
 
     public ZonedDateTime getResetdate() {
         return resetdate;
+    }
+
+    public void setResetdate(ZonedDateTime resetdate) {
+        this.resetdate = resetdate;
     }
 
     public CorUser resetdate(ZonedDateTime resetdate) {
@@ -272,38 +240,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setResetdate(ZonedDateTime resetdate) {
-        this.resetdate = resetdate;
-    }
-
-    public String getLastmodifiedby() {
-        return lastmodifiedby;
-    }
-
-    public CorUser lastmodifiedby(String lastmodifiedby) {
-        this.lastmodifiedby = lastmodifiedby;
-        return this;
-    }
-
-    public void setLastmodifiedby(String lastmodifiedby) {
-        this.lastmodifiedby = lastmodifiedby;
-    }
-
-    public LocalDate getLastmodifieddate() {
-        return lastmodifieddate;
-    }
-
-    public CorUser lastmodifieddate(LocalDate lastmodifieddate) {
-        this.lastmodifieddate = lastmodifieddate;
-        return this;
-    }
-
-    public void setLastmodifieddate(LocalDate lastmodifieddate) {
-        this.lastmodifieddate = lastmodifieddate;
-    }
-
     public Set<CorAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public void setAuthorities(Set<CorAuthority> corUserAuthorities) {
+        this.authorities = corUserAuthorities;
     }
 
     public CorUser authorities(Set<CorAuthority> corUserAuthorities) {
@@ -311,12 +253,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setAuthorities(Set<CorAuthority> corUserAuthorities) {
-        this.authorities = corUserAuthorities;
-    }
-
     public Set<CorChannel> getChannels() {
         return channels;
+    }
+
+    public void setChannels(Set<CorChannel> corChannels) {
+        this.channels = corChannels;
     }
 
     public CorUser channels(Set<CorChannel> corChannels) {
@@ -336,12 +278,12 @@ public class CorUser implements Serializable {
         return this;
     }
 
-    public void setChannels(Set<CorChannel> corChannels) {
-        this.channels = corChannels;
-    }
-
     public Set<CorNetwork> getNetworks() {
         return networks;
+    }
+
+    public void setNetworks(Set<CorNetwork> corNetworks) {
+        this.networks = corNetworks;
     }
 
     public CorUser networks(Set<CorNetwork> corNetworks) {
@@ -359,10 +301,6 @@ public class CorUser implements Serializable {
         this.networks.remove(corNetwork);
         corNetwork.addNetworkUsers(null);
         return this;
-    }
-
-    public void setNetworks(Set<CorNetwork> corNetworks) {
-        this.networks = corNetworks;
     }
 
     @Override
@@ -399,11 +337,7 @@ public class CorUser implements Serializable {
             ", langkey='" + langkey + "'" +
             ", activationkey='" + activationkey + "'" +
             ", resetkey='" + resetkey + "'" +
-            ", createdby='" + createdby + "'" +
-            ", createddate='" + createddate + "'" +
             ", resetdate='" + resetdate + "'" +
-            ", lastmodifiedby='" + lastmodifiedby + "'" +
-            ", lastmodifieddate='" + lastmodifieddate + "'" +
             '}';
     }
 }

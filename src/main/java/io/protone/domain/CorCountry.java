@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "cor_country")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorCountry implements Serializable {
+public class CorCountry extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

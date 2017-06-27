@@ -65,6 +65,7 @@ public class CorChannelServiceTest {
         assertEquals(corChannels.size(), 1);
         assertEquals(corChannels.get(0).getId(), corChannel.getId());
 
+        assertNotNull(corChannels.get(0).getCreatedBy());
     }
 
     @Test
@@ -85,6 +86,7 @@ public class CorChannelServiceTest {
         localChannel = corChannelService.save(localChannel);
         assertNotNull(localChannel);
         assertNotNull(localChannel.getId());
+        assertNotNull(localChannel.getCreatedBy());
 
     }
 

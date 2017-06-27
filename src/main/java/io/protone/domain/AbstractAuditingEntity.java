@@ -7,10 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import uk.co.jemos.podam.common.PodamExclude;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
@@ -26,30 +25,34 @@ public abstract class AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @CreatedBy
-    @Column(name = "created_by", nullable = false, length = 50, updatable = false)
+    @ManyToOne
+    @JoinColumn(name="created_by_id", referencedColumnName="id",updatable = false, nullable = false)
     @JsonIgnore
-    private String createdBy;
+    @PodamExclude
+    private CorUser createdBy;
 
     @CreatedDate
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     @JsonIgnore
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @LastModifiedBy
-    @Column(name = "last_modified_by", length = 50)
+    @ManyToOne
+    @JoinColumn(name="last_modified_by_id", referencedColumnName="id", nullable = false)
     @JsonIgnore
-    private String lastModifiedBy;
+    @PodamExclude
+    private CorUser lastModifiedBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
     @JsonIgnore
     private ZonedDateTime lastModifiedDate = ZonedDateTime.now();
 
-    public String getCreatedBy() {
+    public CorUser getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(CorUser createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -61,11 +64,11 @@ public abstract class AbstractAuditingEntity implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public String getLastModifiedBy() {
+    public CorUser getLastModifiedBy() {
         return lastModifiedBy;
     }
 
-    public void setLastModifiedBy(String lastModifiedBy) {
+    public void setLastModifiedBy(CorUser lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 

@@ -7,7 +7,7 @@
         Added the constraints for entity TraInvoice.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="tra_invoice"
                                  constraintName="fk_tra_invoice_customer_id"
@@ -26,5 +26,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="tra_invoice"
+                                 constraintName="fk_tra_invoice_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="tra_invoice"
+                                 constraintName="fk_tra_invoice_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

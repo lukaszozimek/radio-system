@@ -63,6 +63,8 @@ public class LibArtistServiceTest {
         //assert
         assertNotNull(exisiting);
         assertEquals(libArtist.getId(), exisiting.getId());
+        assertNotNull(libArtist.getCreatedBy());
+
     }
 
     @Test

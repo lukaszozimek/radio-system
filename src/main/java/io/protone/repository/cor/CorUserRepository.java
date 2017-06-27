@@ -14,6 +14,7 @@ import java.util.Set;
  * Created by lukaszozimek on 27/02/2017.
  */
 public interface CorUserRepository extends JpaRepository<CorUser, Long> {
+
     Optional<CorUser> findOneByActivationkey(String activationKey);
 
     Optional<CorUser> findOneByResetkey(String resetKey);
@@ -32,6 +33,6 @@ public interface CorUserRepository extends JpaRepository<CorUser, Long> {
 
     CorUser findOneWithAuthoritiesById(Long id);
 
-    List<CorUser> findAllByActivatedIsFalseAndCreateddateBefore(ZonedDateTime zonedDateTime);
+    List<CorUser> findAllByActivatedIsFalseAndCreatedDateBefore(ZonedDateTime zonedDateTime);
 
 }

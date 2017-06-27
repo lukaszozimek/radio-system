@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_marker")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibMarker implements Serializable {
+public class LibMarker  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

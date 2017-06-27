@@ -122,6 +122,7 @@ public class TraAdvertisementServiceTest {
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traAdvertisement.getNetwork(), fetchedEntity.getNetwork());
         assertNotNull(fetchedEntity.getMediaItem());
         assertEquals(libMediaItem.getId(), fetchedEntity.getMediaItem().getId());
@@ -158,6 +159,7 @@ public class TraAdvertisementServiceTest {
 
         //assert
         assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traAdvertisement.getId(), fetchedEntity.getId());
         assertEquals(traAdvertisement.getNetwork(), fetchedEntity.getNetwork());
     }

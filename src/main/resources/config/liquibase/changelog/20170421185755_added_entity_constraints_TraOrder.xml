@@ -7,7 +7,7 @@
         Added the constraints for entity TraOrder.
     -->
     <changeSet id="20170525201839-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="customer_id"
                                  baseTableName="tra_order"
                                  constraintName="fk_tra_order_customer_id"
@@ -50,5 +50,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="tra_invoice"/>
 
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="tra_order"
+                                 constraintName="fk_tra_order_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

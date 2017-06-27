@@ -156,6 +156,7 @@ public class LibItemServiceTest {
 
         //assert
         assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(libMediaItem.getId(), fetchedEntity.getId());
         assertEquals(libMediaItem.getNetwork(), fetchedEntity.getNetwork());
 

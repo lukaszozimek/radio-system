@@ -7,10 +7,16 @@
         Added the constraints for entity CrmTask.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="crm_task"
                                  constraintName="fk_crm_task_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="crm_task"
+                                 constraintName="fk_crm_task_last_modified_by_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
 

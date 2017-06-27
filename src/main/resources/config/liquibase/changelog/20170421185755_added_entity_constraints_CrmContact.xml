@@ -7,7 +7,7 @@
         Added the constraints for entity CrmContact.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="addres_id"
                                  baseTableName="crm_contact"
                                  constraintName="fk_crm_contact_addres_id"
@@ -67,6 +67,18 @@
                                  constraintName="fk_crm_contact_status_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_last_modified_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_created_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
 
     </changeSet>
 </databaseChangeLog>

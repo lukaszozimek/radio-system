@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "cor_dictionary")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorDictionary implements Serializable {
+public class CorDictionary  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -86,7 +86,13 @@ public class CrmLeadServiceTest {
         assertNotNull(crmLead);
         assertNotNull(crmLead.getId());
         assertNotNull(crmLead.getPerson().getId());
+        assertNotNull(crmLead.getPerson().getCreatedBy());
+        assertNotNull(crmLead.getPerson().getCreatedBy().getId());
         assertNotNull(crmLead.getAddres().getId());
+        assertNotNull(crmLead.getAddres().getCreatedBy());
+        assertNotNull(crmLead.getAddres().getCreatedBy().getId());
+        assertNotNull(crmLead.getCreatedBy());
+
         crmLead.getPerson().getContacts().stream().forEach(corContact -> {
             assertNotNull(corContact.getId());
         });
@@ -110,10 +116,12 @@ public class CrmLeadServiceTest {
         //assert
         assertNotNull(crmLead);
         assertNotNull(crmLead.getId());
+        assertNotNull(crmLead.getCreatedBy());
         assertNotNull(crmLead.getPerson().getId());
         assertNull(crmLead.getAddres());
         crmLead.getPerson().getContacts().stream().forEach(corContact -> {
             assertNotNull(corContact.getId());
+            assertNotNull(corContact.getCreatedBy());
         });
 
 
@@ -132,6 +140,7 @@ public class CrmLeadServiceTest {
         //assert
         assertNotNull(crmLead);
         assertNotNull(crmLead.getId());
+        assertNotNull(crmLead.getCreatedBy());
         assertNull(crmLead.getPerson());
 
     }
@@ -189,7 +198,7 @@ public class CrmLeadServiceTest {
 
         //then
         CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), crmLead.getNetwork().getShortcut());
-        CrmLead customer = crmLeadService.getLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut());
+        CrmLead lead = crmLeadService.getLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut());
 
         //assert
         assertNotNull(crmTask1);
@@ -197,9 +206,10 @@ public class CrmLeadServiceTest {
         assertNotNull(crmTask1.getLead());
         assertEquals(crmTask1.getLead().getId(), crmLead.getId());
 
-        assertNotNull(customer.getTasks());
-        assertEquals(1, customer.getTasks().size());
-        assertEquals(crmTask1.getId(), customer.getTasks().stream().findFirst().get().getId());
+        assertNotNull(lead.getTasks());
+        assertEquals(1, lead.getTasks().size());
+        assertEquals(crmTask1.getId(), lead.getTasks().stream().findFirst().get().getId());
+        assertNotNull(lead.getTasks().stream().findFirst().get().getCreatedBy());
     }
 
     @Test

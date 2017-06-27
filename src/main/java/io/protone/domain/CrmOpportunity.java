@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "crm_opportunity", uniqueConstraints =
 @UniqueConstraint(columnNames = {"short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CrmOpportunity implements Serializable {
+public class CrmOpportunity extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

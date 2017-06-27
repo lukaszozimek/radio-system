@@ -22,9 +22,9 @@ import static javax.persistence.FetchType.EAGER;
  */
 @Entity
 @Table(name = "lib_media_item", uniqueConstraints =
-@UniqueConstraint(columnNames = {"idx","library_id", "network_id"}))
+@UniqueConstraint(columnNames = {"idx", "library_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibMediaItem implements Serializable {
+public class LibMediaItem extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -87,31 +87,31 @@ public class LibMediaItem implements Serializable {
     private CorNetwork network;
 
     @PodamExclude
-    @OneToMany(mappedBy = "author",fetch = EAGER)
+    @OneToMany(mappedBy = "author", fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPerson> authors = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "composer",fetch = EAGER)
+    @OneToMany(mappedBy = "composer", fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPerson> composers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "mediaItem",fetch = EAGER)
+    @OneToMany(mappedBy = "mediaItem", fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<LibMarker> markers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "tags",fetch = EAGER)
+    @OneToMany(mappedBy = "tags", fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorTag> tags = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "libItemPropertyValue",fetch = EAGER)
+    @OneToMany(mappedBy = "libItemPropertyValue", fetch = EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorPropertyValue> properites = new HashSet<>();
@@ -137,17 +137,21 @@ public class LibMediaItem implements Serializable {
         return idx;
     }
 
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
+
     public LibMediaItem idx(String idx) {
         this.idx = idx;
         return this;
     }
 
-    public void setIdx(String idx) {
-        this.idx = idx;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LibMediaItem name(String name) {
@@ -155,12 +159,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LibItemTypeEnum getItemType() {
         return itemType;
+    }
+
+    public void setItemType(LibItemTypeEnum itemType) {
+        this.itemType = itemType;
     }
 
     public LibMediaItem itemType(LibItemTypeEnum itemType) {
@@ -168,12 +172,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setItemType(LibItemTypeEnum itemType) {
-        this.itemType = itemType;
-    }
-
     public Double getLength() {
         return length;
+    }
+
+    public void setLength(Double length) {
+        this.length = length;
     }
 
     public LibMediaItem length(Double length) {
@@ -181,12 +185,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setLength(Double length) {
-        this.length = length;
-    }
-
     public LibItemStateEnum getState() {
         return state;
+    }
+
+    public void setState(LibItemStateEnum state) {
+        this.state = state;
     }
 
     public LibMediaItem state(LibItemStateEnum state) {
@@ -194,12 +198,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setState(LibItemStateEnum state) {
-        this.state = state;
-    }
-
     public String getCommand() {
         return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public LibMediaItem command(String command) {
@@ -207,12 +211,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LibMediaItem description(String description) {
@@ -220,12 +224,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LibLibrary getLibrary() {
         return library;
+    }
+
+    public void setLibrary(LibLibrary libLibrary) {
+        this.library = libLibrary;
     }
 
     public LibMediaItem library(LibLibrary libLibrary) {
@@ -233,12 +237,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
-        this.library = libLibrary;
-    }
-
     public LibLabel getLabel() {
         return label;
+    }
+
+    public void setLabel(LibLabel libLabel) {
+        this.label = libLabel;
     }
 
     public LibMediaItem label(LibLabel libLabel) {
@@ -246,12 +250,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setLabel(LibLabel libLabel) {
-        this.label = libLabel;
-    }
-
     public LibArtist getArtist() {
         return artist;
+    }
+
+    public void setArtist(LibArtist libArtist) {
+        this.artist = libArtist;
     }
 
     public LibMediaItem artist(LibArtist libArtist) {
@@ -259,12 +263,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setArtist(LibArtist libArtist) {
-        this.artist = libArtist;
-    }
-
     public LibAlbum getAlbum() {
         return album;
+    }
+
+    public void setAlbum(LibAlbum libAlbum) {
+        this.album = libAlbum;
     }
 
     public LibMediaItem album(LibAlbum libAlbum) {
@@ -272,12 +276,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setAlbum(LibAlbum libAlbum) {
-        this.album = libAlbum;
-    }
-
     public LibTrack getTrack() {
         return track;
+    }
+
+    public void setTrack(LibTrack libTrack) {
+        this.track = libTrack;
     }
 
     public LibMediaItem track(LibTrack libTrack) {
@@ -285,12 +289,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setTrack(LibTrack libTrack) {
-        this.track = libTrack;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibMediaItem network(CorNetwork corNetwork) {
@@ -298,12 +302,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public Set<CorPerson> getAuthors() {
         return authors;
+    }
+
+    public void setAuthors(Set<CorPerson> corPeople) {
+        this.authors = corPeople;
     }
 
     public LibMediaItem authors(Set<CorPerson> corPeople) {
@@ -323,12 +327,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setAuthors(Set<CorPerson> corPeople) {
-        this.authors = corPeople;
-    }
-
     public Set<CorPerson> getComposers() {
         return composers;
+    }
+
+    public void setComposers(Set<CorPerson> corPeople) {
+        this.composers = corPeople;
     }
 
     public LibMediaItem composers(Set<CorPerson> corPeople) {
@@ -348,12 +352,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setComposers(Set<CorPerson> corPeople) {
-        this.composers = corPeople;
-    }
-
     public Set<LibMarker> getMarkers() {
         return markers;
+    }
+
+    public void setMarkers(Set<LibMarker> libMarkers) {
+        this.markers = libMarkers;
     }
 
     public LibMediaItem markers(Set<LibMarker> libMarkers) {
@@ -373,12 +377,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setMarkers(Set<LibMarker> libMarkers) {
-        this.markers = libMarkers;
-    }
-
     public Set<CorTag> getTags() {
         return tags;
+    }
+
+    public void setTags(Set<CorTag> corTags) {
+        this.tags = corTags;
     }
 
     public LibMediaItem tags(Set<CorTag> corTags) {
@@ -398,12 +402,12 @@ public class LibMediaItem implements Serializable {
         return this;
     }
 
-    public void setTags(Set<CorTag> corTags) {
-        this.tags = corTags;
-    }
-
     public Set<CorPropertyValue> getProperites() {
         return properites;
+    }
+
+    public void setProperites(Set<CorPropertyValue> corPropertyValues) {
+        this.properites = corPropertyValues;
     }
 
     public LibMediaItem properites(Set<CorPropertyValue> corPropertyValues) {
@@ -429,10 +433,6 @@ public class LibMediaItem implements Serializable {
 
     public void setImageItems(Set<LibImageItem> imageItems) {
         this.imageItems = imageItems;
-    }
-
-    public void setProperites(Set<CorPropertyValue> corPropertyValues) {
-        this.properites = corPropertyValues;
     }
 
     @Override

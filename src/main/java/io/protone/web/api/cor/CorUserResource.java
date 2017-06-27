@@ -2,7 +2,6 @@ package io.protone.web.api.cor;
 
 import io.protone.web.rest.dto.cor.CorManagedUserDTO;
 import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.web.rest.dto.UserDTO;
 import io.protone.web.rest.vm.KeyAndPasswordVM;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ public interface CorUserResource {
 
     ResponseEntity<CorUserDTO> getAccount();
 
-    ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO);
+    ResponseEntity<String> saveAccount(@Valid @RequestBody CorUserDTO userDTO);
 
     ResponseEntity changePassword(@RequestBody String password);
 

@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "cor_address")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorAddress implements Serializable {
+public class CorAddress extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

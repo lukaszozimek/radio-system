@@ -20,7 +20,7 @@ import java.util.Set;
 @Table(name = "cor_channel", uniqueConstraints =
 @UniqueConstraint(columnNames = {"shortcut", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorChannel implements Serializable {
+public class CorChannel extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

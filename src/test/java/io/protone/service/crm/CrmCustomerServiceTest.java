@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 29.04.2017.
@@ -87,8 +88,11 @@ public class CrmCustomerServiceTest {
         //assert
         assertNotNull(crmAccount);
         assertNotNull(crmAccount.getId());
+        assertNotNull(crmAccount.getCreatedBy());
         assertNotNull(crmAccount.getPerson().getId());
         assertNotNull(crmAccount.getAddres().getId());
+        assertNotNull(crmAccount.getAddres().getCreatedBy());
+
         crmAccount.getPerson().getContacts().stream().forEach(corContact -> {
             assertNotNull(corContact.getId());
         });
@@ -112,10 +116,13 @@ public class CrmCustomerServiceTest {
         //assert
         assertNotNull(crmAccount);
         assertNotNull(crmAccount.getId());
+        assertNotNull(crmAccount.getCreatedBy());
         assertNotNull(crmAccount.getPerson().getId());
         assertNull(crmAccount.getAddres());
         crmAccount.getPerson().getContacts().stream().forEach(corContact -> {
             assertNotNull(corContact.getId());
+            assertNotNull(corContact.getCreatedBy());
+
         });
 
 
@@ -134,7 +141,9 @@ public class CrmCustomerServiceTest {
         //assert
         assertNotNull(crmAccount);
         assertNotNull(crmAccount.getId());
+        assertNotNull(crmAccount.getCreatedBy());
         assertNull(crmAccount.getPerson());
+
 
     }
 
@@ -156,6 +165,7 @@ public class CrmCustomerServiceTest {
         //assert
         assertNotNull(crmAccount);
         assertNotNull(crmAccount.getId());
+        assertNotNull(crmAccount.getCreatedBy());
         assertNotNull(crmAccount.getPerson().getId());
         assertNull(crmAccount.getPerson().getContacts());
 
@@ -196,7 +206,10 @@ public class CrmCustomerServiceTest {
         //assert
         assertNotNull(crmTask1);
         assertNotNull(crmTask1.getId());
+        assertNotNull(crmTask1.getCreatedBy());
         assertNotNull(crmTask1.getAccount());
+        assertNotNull(crmTask1.getCreatedBy());
+
         assertEquals(crmTask1.getAccount().getId(), crmAccount.getId());
 
         assertNotNull(customer.getTasks());
@@ -239,6 +252,8 @@ public class CrmCustomerServiceTest {
         assertNotNull(localTask);
         assertEquals(1, localTask.size());
         assertEquals(crmTask1.getId(), localTask.get(0).getId());
+
+        assertNotNull(localTask.get(0).getCreatedBy());
     }
 
     @Test
@@ -260,6 +275,7 @@ public class CrmCustomerServiceTest {
 
         //assert
         assertNotNull(localTask);
+        assertNotNull(localTask.getCreatedBy());
         assertEquals(crmTask1.getId(), localTask.getId());
 
     }

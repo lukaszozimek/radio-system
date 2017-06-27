@@ -71,6 +71,8 @@ public class CorNetworkServiceTest {
         local = corNetworkService.save(corNetwork);
 
         assertNotNull(local.getId());
+        assertNotNull(local.getCreatedBy());
+
     }
 
     @Test
