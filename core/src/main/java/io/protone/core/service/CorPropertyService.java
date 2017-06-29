@@ -1,28 +1,28 @@
 package io.protone.core.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import io.protone.core.domain.CorMediaItem;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorPropertyKey;
+import io.protone.core.domain.CorPropertyValue;
 import io.protone.core.repository.CorPropertyKeyRepository;
 import io.protone.core.repository.CorPropertyValueRepository;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorPropertyKey;
-import io.protone.domain.CorPropertyValue;
-import io.protone.domain.LibMediaItem;
 import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import service.file.impl.LibAudioFileService;
 
 import javax.inject.Inject;
 
-import static io.protone.service.constans.ServiceConstants.NO_DATA;
+import static io.protone.core.constans.ServiceConstants.NO_DATA;
+
 
 /**
  * Created by lukaszozimek on 29/05/2017.
  */
 @Service
 public class CorPropertyService {
-    private final Logger log = LoggerFactory.getLogger(LibAudioFileService.class);
+    private final Logger log = LoggerFactory.getLogger(CorPropertyService.class);
 
     @Inject
     private CorPropertyValueRepository corPropertyValueRepository;
@@ -30,7 +30,7 @@ public class CorPropertyService {
     @Inject
     private CorPropertyKeyRepository corPropertyKeyRepository;
 
-    public CorPropertyValue saveCorProperty(String metadataName, LibMediaItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
+    public CorPropertyValue saveCorProperty(String metadataName, CorMediaItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
         CorPropertyKey corPropertyKey;
         if (Strings.isNullOrEmpty(metadataName)) {
             corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);

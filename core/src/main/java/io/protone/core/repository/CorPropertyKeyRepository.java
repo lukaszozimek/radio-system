@@ -1,6 +1,7 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorPropertyKey;
+
+import io.protone.core.domain.CorPropertyKey;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

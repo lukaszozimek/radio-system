@@ -4,14 +4,11 @@ package io.protone.custom.service.dto.thin;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.custom.service.dto.SchBlockPT;
-import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.domain.enumeration.SchStartTypeEnum;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A DTO for the SchEvent entity.
@@ -33,40 +30,6 @@ public class SchEventThinPT implements Serializable {
     private Long scheduledLength = 0L;
 
     private Long length = 0L;
-
-    public enum SchEventTypeEnum {
-        MUSIC_IMPORT("ET_MUSIC_IMPORT"),
-
-        COMMERCIAL_IMPORT("ET_COMMERCIAL_IMPORT"),
-
-        AUTOMATION("ET_AUTOMATION"),
-
-        AUDIO("ET_AUDIO"),
-
-        OTHER("ET_OTHER");
-
-        private String value;
-
-        SchEventTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        @JsonCreator
-        public static SchEventThinPT.SchEventTypeEnum fromValue(String text) {
-            for (SchEventThinPT.SchEventTypeEnum b : SchEventThinPT.SchEventTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-    }
 
     public Long getId() {
         return id;
@@ -132,7 +95,6 @@ public class SchEventThinPT implements Serializable {
         return this;
     }
 
-
     public SchEventThinPT name(String name) {
         this.name = name;
         return this;
@@ -148,13 +110,11 @@ public class SchEventThinPT implements Serializable {
         return this;
     }
 
-
     public SchEventThinPT scheduledLength(Long scheduledLength) {
         this.scheduledLength = scheduledLength;
         this.length = scheduledLength;
         return this;
     }
-
 
     public SchEventThinPT length(Long length) {
         this.length = length;
@@ -204,5 +164,39 @@ public class SchEventThinPT implements Serializable {
         sb.append(", scheduledLength=").append(scheduledLength);
         sb.append('}');
         return sb.toString();
+    }
+
+    public enum SchEventTypeEnum {
+        MUSIC_IMPORT("ET_MUSIC_IMPORT"),
+
+        COMMERCIAL_IMPORT("ET_COMMERCIAL_IMPORT"),
+
+        AUTOMATION("ET_AUTOMATION"),
+
+        AUDIO("ET_AUDIO"),
+
+        OTHER("ET_OTHER");
+
+        private String value;
+
+        SchEventTypeEnum(String value) {
+            this.value = value;
+        }
+
+        @JsonCreator
+        public static SchEventThinPT.SchEventTypeEnum fromValue(String text) {
+            for (SchEventThinPT.SchEventTypeEnum b : SchEventThinPT.SchEventTypeEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
+        }
     }
 }

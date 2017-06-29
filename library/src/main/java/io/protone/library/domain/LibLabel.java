@@ -1,5 +1,7 @@
 package io.protone.library.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

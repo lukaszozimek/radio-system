@@ -1,6 +1,7 @@
 package io.protone.library.repository;
 
-import io.protone.domain.LibCloudObject;
+
+import io.protone.library.domain.LibCloudObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

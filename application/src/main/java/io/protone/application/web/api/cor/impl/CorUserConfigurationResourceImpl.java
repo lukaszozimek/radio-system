@@ -5,15 +5,15 @@ package io.protone.application.web.api.cor.impl;
  */
 
 import io.github.jhipster.web.util.ResponseUtil;
+import io.protone.application.web.api.cor.CorUserConfigurationResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.api.dto.CorUserDTO;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.core.repository.CorUserRepository;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorUser;
-import io.protone.service.cor.CorMailService;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.cor.CorUserService;
-import io.protone.web.api.cor.CorUserConfigurationResource;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.web.rest.util.HeaderUtil;
+import io.protone.core.service.CorMailService;
+import io.protone.core.service.CorNetworkService;
+import io.protone.core.service.CorUserService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

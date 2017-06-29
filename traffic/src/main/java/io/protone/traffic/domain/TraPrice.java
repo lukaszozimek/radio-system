@@ -1,5 +1,7 @@
 package io.protone.traffic.domain;
 
+import io.protone.core.domain.CorCurrency;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -67,17 +69,21 @@ public class TraPrice implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TraPrice name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getValidFrom() {
         return validFrom;
+    }
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
     }
 
     public TraPrice validFrom(LocalDate validFrom) {
@@ -85,12 +91,12 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public void setValidFrom(LocalDate validFrom) {
-        this.validFrom = validFrom;
-    }
-
     public LocalDate getValidTo() {
         return validTo;
+    }
+
+    public void setValidTo(LocalDate validTo) {
+        this.validTo = validTo;
     }
 
     public TraPrice validTo(LocalDate validTo) {
@@ -98,12 +104,12 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public void setValidTo(LocalDate validTo) {
-        this.validTo = validTo;
-    }
-
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public TraPrice price(BigDecimal price) {
@@ -111,12 +117,12 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public Integer getBaseLength() {
         return baseLength;
+    }
+
+    public void setBaseLength(Integer baseLength) {
+        this.baseLength = baseLength;
     }
 
     public TraPrice baseLength(Integer baseLength) {
@@ -124,12 +130,12 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public void setBaseLength(Integer baseLength) {
-        this.baseLength = baseLength;
-    }
-
     public BigDecimal getPriceAlternative() {
         return priceAlternative;
+    }
+
+    public void setPriceAlternative(BigDecimal priceAlternative) {
+        this.priceAlternative = priceAlternative;
     }
 
     public TraPrice priceAlternative(BigDecimal priceAlternative) {
@@ -137,12 +143,12 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public void setPriceAlternative(BigDecimal priceAlternative) {
-        this.priceAlternative = priceAlternative;
-    }
-
     public CorCurrency getCurrency() {
         return currency;
+    }
+
+    public void setCurrency(CorCurrency corCurrency) {
+        this.currency = corCurrency;
     }
 
     public TraPrice currency(CorCurrency corCurrency) {
@@ -150,21 +156,17 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public void setCurrency(CorCurrency corCurrency) {
-        this.currency = corCurrency;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraPrice network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

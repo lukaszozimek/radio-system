@@ -1,6 +1,7 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.web.rest.dto.traffic.TraPlaylistDiffDTO;
+
+import io.protone.traffic.api.dto.TraPlaylistDiffDTO;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

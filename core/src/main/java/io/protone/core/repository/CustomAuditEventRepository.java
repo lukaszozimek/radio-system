@@ -1,7 +1,8 @@
 package io.protone.core.repository;
 
-import io.protone.application.config.audit.AuditEventConverter;
-import io.protone.domain.CorPersistentAuditEvent;
+
+import io.protone.core.domain.CorPersistentAuditEvent;
+import io.protone.core.service.AuditEventConverter;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.stereotype.Repository;

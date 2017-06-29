@@ -1,6 +1,7 @@
 package io.protone.traffic.service.mediaplan.diff;
 
-import io.protone.domain.TraPlaylist;
+
+import io.protone.traffic.domain.TraPlaylist;
 
 import java.util.List;
 
@@ -12,20 +13,20 @@ public class TraPlaylistDiff {
 
     private List<TraPlaylist> parsedFromExcel;
 
-    public List<TraPlaylist> getEntityPlaylist() {
-        return entityPlaylist;
-    }
-
-    public List<TraPlaylist> getParsedFromExcel() {
-        return parsedFromExcel;
-    }
-
     public TraPlaylistDiff() {
     }
 
     public TraPlaylistDiff(List<TraPlaylist> entityPlaylist, List<TraPlaylist> parsedFromExcel) {
         this.entityPlaylist = entityPlaylist;
         this.parsedFromExcel = parsedFromExcel;
+    }
+
+    public List<TraPlaylist> getEntityPlaylist() {
+        return entityPlaylist;
+    }
+
+    public List<TraPlaylist> getParsedFromExcel() {
+        return parsedFromExcel;
     }
 
     @Override

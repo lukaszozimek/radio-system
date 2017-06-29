@@ -1,6 +1,10 @@
 package io.protone.traffic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmAccount;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -63,7 +67,6 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
     @ManyToOne
     @PodamExclude
     private TraPrice price;
-
     @OneToMany(mappedBy = "campaign")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

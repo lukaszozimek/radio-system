@@ -1,14 +1,20 @@
 package io.protone.application.web.api.traffic.impl;
 
-import io.protone.service.cor.CorChannelService;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.traffic.TraAdvertisementShuffleService;
-import io.protone.service.traffic.TraPlaylistService;
-import io.protone.web.api.traffic.TraPlaylistResource;
-import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
-import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
-import io.protone.web.rest.mapper.TraPlaylistMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.traffic.TraPlaylistResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorChannelService;
+import io.protone.core.service.CorNetworkService;
+import io.protone.traffic.api.dto.TraPlaylistDTO;
+import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
+import io.protone.traffic.domain.TraBlock;
+import io.protone.traffic.domain.TraEmission;
+import io.protone.traffic.domain.TraPlaylist;
+import io.protone.traffic.mapper.TraPlaylistMapper;
+import io.protone.traffic.service.TraAdvertisementShuffleService;
+import io.protone.traffic.service.TraPlaylistService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

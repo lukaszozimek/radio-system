@@ -1,15 +1,15 @@
 package io.protone.application.web.api.cor.impl;
 
+import io.protone.application.web.api.cor.CorDictionaryResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorDictionaryType;
+import io.protone.core.domain.CorModule;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.repository.CorDictionaryRepository;
-import io.protone.domain.CorDictionary;
-import io.protone.domain.CorDictionaryType;
-import io.protone.domain.CorModule;
-import io.protone.domain.CorNetwork;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.api.cor.CorDictionaryResource;
-import io.protone.web.rest.dto.cor.CorDictionaryDTO;
-import io.protone.web.rest.mapper.CorDictionaryMapper;
-import io.protone.web.rest.util.HeaderUtil;
+import io.protone.core.service.CorNetworkService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

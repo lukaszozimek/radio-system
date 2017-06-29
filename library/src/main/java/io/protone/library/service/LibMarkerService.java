@@ -1,9 +1,10 @@
 package io.protone.library.service;
 
-import io.protone.domain.LibMarker;
-import io.protone.domain.LibMediaItem;
-import io.protone.domain.enumeration.LibMarkerTypeEnum;
-import io.protone.repository.library.LibMarkerRepository;
+
+import io.protone.library.domain.LibMarker;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.enumeration.LibMarkerTypeEnum;
+import io.protone.library.repository.LibMarkerRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

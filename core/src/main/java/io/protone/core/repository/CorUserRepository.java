@@ -1,7 +1,8 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorUser;
+
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

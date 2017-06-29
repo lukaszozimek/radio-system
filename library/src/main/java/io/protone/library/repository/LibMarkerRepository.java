@@ -1,6 +1,7 @@
 package io.protone.library.repository;
 
-import io.protone.domain.LibMarker;
+
+import io.protone.library.domain.LibMarker;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

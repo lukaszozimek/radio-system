@@ -1,6 +1,7 @@
 package io.protone.crm.service;
 
-import io.protone.repository.crm.CrmTaskRepository;
+import io.protone.crm.domain.*;
+import io.protone.crm.repostiory.CrmTaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

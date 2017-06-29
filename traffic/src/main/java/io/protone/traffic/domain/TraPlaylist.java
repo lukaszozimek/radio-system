@@ -1,5 +1,8 @@
 package io.protone.traffic.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -61,17 +64,21 @@ public class TraPlaylist extends AbstractAuditingEntity implements Serializable 
         return playlistDate;
     }
 
+    public void setPlaylistDate(LocalDate playlistDate) {
+        this.playlistDate = playlistDate;
+    }
+
     public TraPlaylist playlistDate(LocalDate playlistDate) {
         this.playlistDate = playlistDate;
         return this;
     }
 
-    public void setPlaylistDate(LocalDate playlistDate) {
-        this.playlistDate = playlistDate;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraPlaylist network(CorNetwork corNetwork) {
@@ -79,12 +86,12 @@ public class TraPlaylist extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     public TraPlaylist channel(CorChannel corChannel) {
@@ -92,12 +99,12 @@ public class TraPlaylist extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
-    }
-
     public Set<TraBlock> getPlaylists() {
         return playlists;
+    }
+
+    public void setPlaylists(Set<TraBlock> traBlocks) {
+        this.playlists = traBlocks;
     }
 
     public TraPlaylist playlists(Set<TraBlock> traBlocks) {
@@ -113,10 +120,6 @@ public class TraPlaylist extends AbstractAuditingEntity implements Serializable 
     public TraPlaylist removePlaylists(TraBlock traBlock) {
         this.playlists.remove(traBlock);
         return this;
-    }
-
-    public void setPlaylists(Set<TraBlock> traBlocks) {
-        this.playlists = traBlocks;
     }
 
     @Override

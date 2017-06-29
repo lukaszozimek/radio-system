@@ -1,6 +1,7 @@
 package io.protone.application.web.api.cor;
 
-import io.protone.web.rest.dto.cor.CorUserDTO;
+
+import io.protone.core.api.dto.CorUserDTO;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

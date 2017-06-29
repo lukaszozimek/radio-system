@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
@@ -31,6 +32,9 @@ public class TraAdvertisementShuffleService {
     @Inject
     private TraAdvertisementService traAdvertisementService;
 
+    public static boolean canAddEmissionToBlock(long lastTimeStop, long blockLenght, Double mediaItemLenght) {
+        return lastTimeStop < blockLenght && (lastTimeStop + mediaItemLenght.longValue()) <= blockLenght;
+    }
 
     public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException {
         log.debug("Start shuffling commercial");
@@ -76,10 +80,6 @@ public class TraAdvertisementShuffleService {
         }
         log.debug("Number shuffled: {}, Number unshuffled commercials : {}", numberOfCommercialsShuffled, tarShuffleAdvertisementPT.getNumber() - numberOfCommercialsShuffled);
         return traPlaylistListInRange;
-    }
-
-    public static boolean canAddEmissionToBlock(long lastTimeStop, long blockLenght, Double mediaItemLenght) {
-        return lastTimeStop < blockLenght && (lastTimeStop + mediaItemLenght.longValue()) <= blockLenght;
     }
 
     private boolean areEmissionsInBlock(TraBlock traBlock) {

@@ -1,7 +1,9 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibAspecTratioEnum;
-import io.protone.domain.enumeration.LibVideoQualityEnum;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.enumeration.LibAspecTratioEnum;
+import io.protone.library.domain.enumeration.LibVideoQualityEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -69,17 +71,21 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return width;
     }
 
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
     public LibVideoObject width(Integer width) {
         this.width = width;
         return this;
     }
 
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
     public Integer getHeight() {
         return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 
     public LibVideoObject height(Integer height) {
@@ -87,12 +93,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public LibVideoObject length(Long length) {
@@ -100,12 +106,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
     public Integer getBiTrate() {
         return biTrate;
+    }
+
+    public void setBiTrate(Integer biTrate) {
+        this.biTrate = biTrate;
     }
 
     public LibVideoObject biTrate(Integer biTrate) {
@@ -113,12 +119,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setBiTrate(Integer biTrate) {
-        this.biTrate = biTrate;
-    }
-
     public String getCodec() {
         return codec;
+    }
+
+    public void setCodec(String codec) {
+        this.codec = codec;
     }
 
     public LibVideoObject codec(String codec) {
@@ -126,12 +132,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setCodec(String codec) {
-        this.codec = codec;
-    }
-
     public LibVideoQualityEnum getQuality() {
         return quality;
+    }
+
+    public void setQuality(LibVideoQualityEnum quality) {
+        this.quality = quality;
     }
 
     public LibVideoObject quality(LibVideoQualityEnum quality) {
@@ -139,12 +145,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setQuality(LibVideoQualityEnum quality) {
-        this.quality = quality;
-    }
-
     public LibAspecTratioEnum getAspecTratio() {
         return aspecTratio;
+    }
+
+    public void setAspecTratio(LibAspecTratioEnum aspecTratio) {
+        this.aspecTratio = aspecTratio;
     }
 
     public LibVideoObject aspecTratio(LibAspecTratioEnum aspecTratio) {
@@ -152,12 +158,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setAspecTratio(LibAspecTratioEnum aspecTratio) {
-        this.aspecTratio = aspecTratio;
-    }
-
     public LibCloudObject getCloudObject() {
         return cloudObject;
+    }
+
+    public void setCloudObject(LibCloudObject libCloudObject) {
+        this.cloudObject = libCloudObject;
     }
 
     public LibVideoObject cloudObject(LibCloudObject libCloudObject) {
@@ -165,12 +171,12 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setCloudObject(LibCloudObject libCloudObject) {
-        this.cloudObject = libCloudObject;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public LibVideoObject mediaItem(LibMediaItem libMediaItem) {
@@ -178,21 +184,17 @@ public class LibVideoObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibVideoObject network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

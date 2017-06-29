@@ -1,13 +1,14 @@
 package io.protone.application.web.api.library.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.LibLibrary;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.library.LibLibraryService;
-import io.protone.web.api.library.LibraryResource;
-import io.protone.web.rest.dto.library.LibLibraryDTO;
-import io.protone.web.rest.mapper.LibLibraryMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.library.LibraryResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.library.api.dto.LibLibraryDTO;
+import io.protone.library.domain.LibLibrary;
+import io.protone.library.mapper.LibLibraryMapper;
+import io.protone.library.service.LibLibraryService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,8 @@
 package io.protone.application.web.api.crm;
 
-import io.protone.web.rest.dto.crm.CrmAccountDTO;
-import io.protone.web.rest.dto.crm.thin.CrmAccountThinDTO;
+
+import io.protone.crm.api.dto.CrmAccountDTO;
+import io.protone.crm.api.dto.thin.CrmAccountThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

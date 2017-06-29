@@ -1,16 +1,18 @@
 package io.protone.library.service.metadata;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import io.protone.custom.utils.MediaUtils;
-import io.protone.domain.enumeration.LibAudioQualityEnum;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorPropertyService;
+import io.protone.library.constans.MarkerConstans;
+import io.protone.library.domain.*;
+import io.protone.library.domain.enumeration.LibAudioQualityEnum;
+import io.protone.library.domain.enumeration.LibItemStateEnum;
+import io.protone.library.domain.enumeration.LibItemTypeEnum;
+import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibAlbumService;
 import io.protone.library.service.LibArtistService;
 import io.protone.library.service.LibMarkerService;
-import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.service.constans.MarkerConstans;
-import io.protone.service.cor.CorPropertyService;
+import io.protone.library.util.MediaUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.XMPDM;
@@ -24,7 +26,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.*;
 
-import static io.protone.service.constans.ServiceConstants.NO_DATA;
+import static io.protone.core.constans.ServiceConstants.NO_DATA;
+
 
 /**
  * Created by lukaszozimek on 14/03/2017.

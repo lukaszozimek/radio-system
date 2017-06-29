@@ -1,6 +1,8 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibAudioQualityEnum;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.enumeration.LibAudioQualityEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -64,17 +66,21 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return length;
     }
 
+    public void setLength(Double length) {
+        this.length = length;
+    }
+
     public LibAudioObject length(Double length) {
         this.length = length;
         return this;
     }
 
-    public void setLength(Double length) {
-        this.length = length;
-    }
-
     public Integer getBiTrate() {
         return biTrate;
+    }
+
+    public void setBiTrate(Integer biTrate) {
+        this.biTrate = biTrate;
     }
 
     public LibAudioObject biTrate(Integer biTrate) {
@@ -82,12 +88,12 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setBiTrate(Integer biTrate) {
-        this.biTrate = biTrate;
-    }
-
     public String getCodec() {
         return codec;
+    }
+
+    public void setCodec(String codec) {
+        this.codec = codec;
     }
 
     public LibAudioObject codec(String codec) {
@@ -95,12 +101,12 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setCodec(String codec) {
-        this.codec = codec;
-    }
-
     public LibAudioQualityEnum getQuality() {
         return quality;
+    }
+
+    public void setQuality(LibAudioQualityEnum quality) {
+        this.quality = quality;
     }
 
     public LibAudioObject quality(LibAudioQualityEnum quality) {
@@ -108,12 +114,12 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setQuality(LibAudioQualityEnum quality) {
-        this.quality = quality;
-    }
-
     public LibCloudObject getCloudObject() {
         return cloudObject;
+    }
+
+    public void setCloudObject(LibCloudObject libCloudObject) {
+        this.cloudObject = libCloudObject;
     }
 
     public LibAudioObject cloudObject(LibCloudObject libCloudObject) {
@@ -121,12 +127,12 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setCloudObject(LibCloudObject libCloudObject) {
-        this.cloudObject = libCloudObject;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public LibAudioObject mediaItem(LibMediaItem libMediaItem) {
@@ -134,21 +140,17 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibAudioObject network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

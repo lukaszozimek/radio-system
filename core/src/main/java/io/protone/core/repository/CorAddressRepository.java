@@ -1,6 +1,6 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorAddress;
+import io.protone.core.domain.CorAddress;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -1,13 +1,14 @@
 package io.protone.application.web.api.crm.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmTaskComment;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.crm.CrmCustomerService;
-import io.protone.web.api.crm.CrmCustomerTaskCommentResource;
-import io.protone.web.rest.dto.traffic.CrmTaskCommentDTO;
-import io.protone.web.rest.mapper.CrmTaskCommentMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.crm.CrmCustomerTaskCommentResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.crm.api.dto.CrmTaskCommentDTO;
+import io.protone.crm.domain.CrmTaskComment;
+import io.protone.crm.mapper.CrmTaskCommentMapper;
+import io.protone.crm.service.CrmCustomerService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

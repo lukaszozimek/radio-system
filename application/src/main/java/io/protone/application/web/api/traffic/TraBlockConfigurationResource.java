@@ -1,7 +1,8 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.domain.enumeration.CorDayOfWeekEnum;
-import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
+
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.traffic.api.dto.TraBlockConfigurationDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

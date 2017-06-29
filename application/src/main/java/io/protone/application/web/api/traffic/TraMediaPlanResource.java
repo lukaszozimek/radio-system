@@ -1,7 +1,8 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.web.rest.dto.traffic.TraMediaPlanDTO;
-import io.protone.web.rest.dto.traffic.thin.TraMediaPlanThinDTO;
+
+import io.protone.traffic.api.dto.TraMediaPlanDTO;
+import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
 import io.swagger.annotations.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;

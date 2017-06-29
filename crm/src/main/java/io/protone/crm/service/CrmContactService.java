@@ -1,8 +1,14 @@
 package io.protone.crm.service;
 
-import io.protone.repository.crm.CrmContactRepository;
-import io.protone.service.cor.CorAddressService;
-import io.protone.service.cor.CorPersonService;
+
+import io.protone.core.domain.CorAddress;
+import io.protone.core.domain.CorPerson;
+import io.protone.core.service.CorAddressService;
+import io.protone.core.service.CorPersonService;
+import io.protone.crm.domain.CrmContact;
+import io.protone.crm.domain.CrmTask;
+import io.protone.crm.domain.CrmTaskComment;
+import io.protone.crm.repostiory.CrmContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

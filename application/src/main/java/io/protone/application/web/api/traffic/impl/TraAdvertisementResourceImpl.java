@@ -1,13 +1,14 @@
 package io.protone.application.web.api.traffic.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraAdvertisement;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.traffic.TraAdvertisementService;
-import io.protone.web.api.traffic.TraAdvertisementResource;
-import io.protone.web.rest.dto.traffic.TraAdvertisementDTO;
-import io.protone.web.rest.mapper.TraAdvertisementMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.traffic.TraAdvertisementResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.traffic.api.dto.TraAdvertisementDTO;
+import io.protone.traffic.domain.TraAdvertisement;
+import io.protone.traffic.mapper.TraAdvertisementMapper;
+import io.protone.traffic.service.TraAdvertisementService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

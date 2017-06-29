@@ -1,8 +1,9 @@
 package io.protone.traffic.service;
 
-import io.protone.domain.TraAdvertisement;
-import io.protone.repository.traffic.TraAdvertisementRepository;
-import io.protone.service.library.LibItemService;
+
+import io.protone.library.service.LibItemService;
+import io.protone.traffic.domain.TraAdvertisement;
+import io.protone.traffic.repository.TraAdvertisementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

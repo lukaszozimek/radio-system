@@ -1,7 +1,8 @@
 package io.protone.library.service.file;
 
-import io.protone.domain.LibLibrary;
-import io.protone.domain.LibMediaItem;
+
+import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaItem;
 import org.apache.tika.metadata.Metadata;
 import org.xml.sax.SAXException;
 

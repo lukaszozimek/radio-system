@@ -1,7 +1,7 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.web.rest.dto.cor.CorTaxDTO;
-import io.protone.web.rest.dto.traffic.TraDiscountDTO;
+
+import io.protone.traffic.api.dto.TraDiscountDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +57,7 @@ public interface TraDiscountResource {
                                                           @ApiParam(value = "discountPT", required = true) @RequestBody TraDiscountDTO discountPT) throws URISyntaxException;
 
 
-    @ApiOperation(value = "createDiscount", notes = "", response = CorTaxDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "createDiscount", notes = "", response = TraDiscountDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraDiscountDTO.class),
         @ApiResponse(code = 201, message = "Created", response = TraDiscountDTO.class),

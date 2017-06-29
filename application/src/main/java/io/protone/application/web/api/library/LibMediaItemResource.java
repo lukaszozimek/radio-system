@@ -1,6 +1,7 @@
 package io.protone.application.web.api.library;
 
-import io.protone.web.rest.dto.library.LibMediaItemDTO;
+
+import io.protone.library.api.dto.LibMediaItemDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

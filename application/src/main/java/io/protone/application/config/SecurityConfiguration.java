@@ -1,7 +1,9 @@
 package io.protone.application.config;
 
 import io.github.jhipster.security.Http401UnauthorizedEntryPoint;
-import io.protone.application.security.AuthoritiesConstants;
+import io.protone.application.security.jwt.JWTConfigurer;
+import io.protone.application.security.jwt.TokenProvider;
+import io.protone.core.security.AuthoritiesConstants;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

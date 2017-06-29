@@ -1,20 +1,26 @@
 package io.protone.library.service.file.impl;
 
-import io.protone.application.config.s3.S3Client;
-import io.protone.application.config.s3.exceptions.DeleteException;
-import io.protone.application.config.s3.exceptions.DownloadException;
-import io.protone.application.config.s3.exceptions.S3Exception;
-import io.protone.application.config.s3.exceptions.UploadException;
-import io.protone.application.security.SecurityUtils;
-import io.protone.domain.enumeration.LibImageSizeEnum;
-import io.protone.domain.enumeration.LibObjectTypeEnum;
+import io.protone.core.constans.ServiceConstants;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
+import io.protone.core.s3.S3Client;
+import io.protone.core.s3.exceptions.DeleteException;
+import io.protone.core.s3.exceptions.DownloadException;
+import io.protone.core.s3.exceptions.S3Exception;
+import io.protone.core.s3.exceptions.UploadException;
+import io.protone.core.security.SecurityUtils;
+import io.protone.core.service.CorUserService;
+import io.protone.library.domain.LibCloudObject;
+import io.protone.library.domain.LibImageObject;
+import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.enumeration.LibImageSizeEnum;
+import io.protone.library.domain.enumeration.LibObjectTypeEnum;
+import io.protone.library.repository.LibCloudObjectRepository;
+import io.protone.library.repository.LibImageObjectRepository;
+import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.file.LibFileService;
 import io.protone.library.service.metadata.LibImageMetadataService;
-import io.protone.repository.library.LibCloudObjectRepository;
-import io.protone.repository.library.LibImageObjectRepository;
-import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.service.constans.ServiceConstants;
-import io.protone.service.cor.CorUserService;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -39,10 +45,8 @@ import java.util.UUID;
 @Service("libImageFileService")
 @Qualifier("libImageFileService")
 public class LibImageFileService implements LibFileService {
-    private final Logger log = LoggerFactory.getLogger(LibImageFileService.class);
-
     public static final String IMAGE = "image";
-
+    private final Logger log = LoggerFactory.getLogger(LibImageFileService.class);
     @Inject
     private CorUserService corUserService;
 

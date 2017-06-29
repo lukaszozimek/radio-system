@@ -1,5 +1,8 @@
 package io.protone.traffic.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -62,17 +65,21 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         return playlistDate;
     }
 
+    public void setPlaylistDate(LocalDate playlistDate) {
+        this.playlistDate = playlistDate;
+    }
+
     public TraMediaPlanPlaylist playlistDate(LocalDate playlistDate) {
         this.playlistDate = playlistDate;
         return this;
     }
 
-    public void setPlaylistDate(LocalDate playlistDate) {
-        this.playlistDate = playlistDate;
-    }
-
     public TraMediaPlan getMediaPlan() {
         return mediaPlan;
+    }
+
+    public void setMediaPlan(TraMediaPlan traMediaPlan) {
+        this.mediaPlan = traMediaPlan;
     }
 
     public TraMediaPlanPlaylist mediaPlan(TraMediaPlan traMediaPlan) {
@@ -80,12 +87,12 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         return this;
     }
 
-    public void setMediaPlan(TraMediaPlan traMediaPlan) {
-        this.mediaPlan = traMediaPlan;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     public TraMediaPlanPlaylist channel(CorChannel corChannel) {
@@ -93,12 +100,12 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         return this;
     }
 
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraMediaPlanPlaylist network(CorNetwork corNetwork) {
@@ -106,21 +113,17 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public Set<TraBlock> getPlaylists() {
         return playlists;
+    }
+
+    public void setPlaylists(Set<TraBlock> playlists) {
+        this.playlists = playlists;
     }
 
     public TraMediaPlanPlaylist playlists(Set<TraBlock> playlists) {
         this.playlists = playlists;
         return this;
-    }
-
-    public void setPlaylists(Set<TraBlock> playlists) {
-        this.playlists = playlists;
     }
 
     public TraMediaPlanPlaylist addPlaylists(TraBlock traBlock) {

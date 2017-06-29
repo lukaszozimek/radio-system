@@ -1,7 +1,7 @@
 package io.protone.core.service;
 
+import io.protone.core.domain.CorChannel;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.domain.CorChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

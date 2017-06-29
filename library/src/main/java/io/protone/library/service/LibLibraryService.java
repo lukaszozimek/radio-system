@@ -1,9 +1,10 @@
 package io.protone.library.service;
 
-import io.protone.core.repository.cor.CorNetworkRepository;
-import io.protone.domain.LibLibrary;
-import io.protone.repository.library.LibLibraryRepository;
-import io.protone.web.rest.mapper.LibLibraryMapper;
+
+import io.protone.core.repository.CorNetworkRepository;
+import io.protone.library.domain.LibLibrary;
+import io.protone.library.mapper.LibLibraryMapper;
+import io.protone.library.repository.LibLibraryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;

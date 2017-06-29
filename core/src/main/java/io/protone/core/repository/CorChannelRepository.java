@@ -1,7 +1,7 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

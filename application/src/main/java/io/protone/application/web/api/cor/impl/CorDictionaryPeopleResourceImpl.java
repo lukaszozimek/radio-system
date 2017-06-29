@@ -1,13 +1,13 @@
 package io.protone.application.web.api.cor.impl;
 
+import io.protone.application.web.api.cor.CorDictionaryPeopleResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.api.dto.CorPersonDTO;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorPerson;
+import io.protone.core.mapper.CorPersonMapper;
 import io.protone.core.repository.CorPersonRepository;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorPerson;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.api.cor.CorDictionaryPeopleResource;
-import io.protone.web.rest.dto.cor.CorPersonDTO;
-import io.protone.web.rest.mapper.CorPersonMapper;
-import io.protone.web.rest.util.HeaderUtil;
+import io.protone.core.service.CorNetworkService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

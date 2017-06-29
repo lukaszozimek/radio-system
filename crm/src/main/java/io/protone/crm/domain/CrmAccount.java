@@ -1,6 +1,7 @@
 package io.protone.crm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -62,7 +63,7 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private TraDiscount discount;
+    private CorDiscount discount;
 
     @ManyToOne
     @PodamExclude
@@ -219,15 +220,15 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public TraDiscount getDiscount() {
+    public CorDiscount getDiscount() {
         return discount;
     }
 
-    public void setDiscount(TraDiscount traDiscount) {
+    public void setDiscount(CorDiscount traDiscount) {
         this.discount = traDiscount;
     }
 
-    public CrmAccount discount(TraDiscount traDiscount) {
+    public CrmAccount discount(CorDiscount traDiscount) {
         this.discount = traDiscount;
         return this;
     }

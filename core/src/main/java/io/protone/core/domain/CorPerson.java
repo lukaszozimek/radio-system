@@ -48,11 +48,11 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private LibMediaItem author;
+    private CorMediaItem author;
 
     @ManyToOne
     @PodamExclude
-    private LibMediaItem composer;
+    private CorMediaItem composer;
 
     @OneToMany(mappedBy = "person")
     @JsonIgnore
@@ -71,17 +71,21 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public CorPerson firstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public CorPerson lastName(String lastName) {
@@ -89,12 +93,12 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public CorPerson description(String description) {
@@ -102,12 +106,12 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CorPerson network(CorNetwork corNetwork) {
@@ -115,38 +119,38 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public LibMediaItem getAuthor() {
+    public CorMediaItem getAuthor() {
         return author;
     }
 
-    public CorPerson author(LibMediaItem libMediaItem) {
+    public void setAuthor(CorMediaItem libMediaItem) {
+        this.author = libMediaItem;
+    }
+
+    public CorPerson author(CorMediaItem libMediaItem) {
         this.author = libMediaItem;
         return this;
     }
 
-    public void setAuthor(LibMediaItem libMediaItem) {
-        this.author = libMediaItem;
-    }
-
-    public LibMediaItem getComposer() {
+    public CorMediaItem getComposer() {
         return composer;
     }
 
-    public CorPerson composer(LibMediaItem libMediaItem) {
+    public void setComposer(CorMediaItem libMediaItem) {
         this.composer = libMediaItem;
-        return this;
     }
 
-    public void setComposer(LibMediaItem libMediaItem) {
+    public CorPerson composer(CorMediaItem libMediaItem) {
         this.composer = libMediaItem;
+        return this;
     }
 
     public Set<CorContact> getContacts() {
         return contacts;
+    }
+
+    public void setContacts(Set<CorContact> corContacts) {
+        this.contacts = corContacts;
     }
 
     public CorPerson contacts(Set<CorContact> corContacts) {
@@ -164,10 +168,6 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
         this.contacts.remove(corContact);
         corContact.setPerson(null);
         return this;
-    }
-
-    public void setContacts(Set<CorContact> corContacts) {
-        this.contacts = corContacts;
     }
 
     @Override

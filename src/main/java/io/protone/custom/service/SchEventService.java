@@ -8,12 +8,12 @@ import io.protone.domain.CorChannel;
 import io.protone.domain.CorNetwork;
 import io.protone.domain.SchTemplate;
 import io.protone.repository.custom.CustomSchTemplateRepository;
-import io.protone.service.cor.CorChannelService;
-import io.protone.service.cor.CorNetworkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import service.cor.CorChannelService;
+import service.cor.CorNetworkService;
 
 import javax.inject.Inject;
 import java.util.ArrayList;

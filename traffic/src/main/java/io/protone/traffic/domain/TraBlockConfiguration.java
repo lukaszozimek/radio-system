@@ -1,6 +1,11 @@
 package io.protone.traffic.domain;
 
-import io.protone.domain.enumeration.CorDayOfWeekEnum;
+
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -72,17 +77,21 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return day;
     }
 
+    public void setDay(CorDayOfWeekEnum day) {
+        this.day = day;
+    }
+
     public TraBlockConfiguration day(CorDayOfWeekEnum day) {
         this.day = day;
         return this;
     }
 
-    public void setDay(CorDayOfWeekEnum day) {
-        this.day = day;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public TraBlockConfiguration name(String name) {
@@ -90,12 +99,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public TraBlockConfiguration length(Long length) {
@@ -103,12 +112,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
     public Long getStartBlock() {
         return startBlock;
+    }
+
+    public void setStartBlock(Long startBlock) {
+        this.startBlock = startBlock;
     }
 
     public TraBlockConfiguration startBlock(Long startBlock) {
@@ -116,12 +125,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setStartBlock(Long startBlock) {
-        this.startBlock = startBlock;
-    }
-
     public Long getStopBlock() {
         return stopBlock;
+    }
+
+    public void setStopBlock(Long stopBlock) {
+        this.stopBlock = stopBlock;
     }
 
     public TraBlockConfiguration stopBlock(Long stopBlock) {
@@ -129,12 +138,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setStopBlock(Long stopBlock) {
-        this.stopBlock = stopBlock;
-    }
-
     public Integer getSequence() {
         return sequence;
+    }
+
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
     }
 
     public TraBlockConfiguration sequence(Integer sequence) {
@@ -142,12 +151,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraBlockConfiguration network(CorNetwork corNetwork) {
@@ -155,12 +164,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public LibMediaItem getBlockStartSound() {
         return blockStartSound;
+    }
+
+    public void setBlockStartSound(LibMediaItem libMediaItem) {
+        this.blockStartSound = libMediaItem;
     }
 
     public TraBlockConfiguration blockStartSound(LibMediaItem libMediaItem) {
@@ -168,12 +177,12 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setBlockStartSound(LibMediaItem libMediaItem) {
-        this.blockStartSound = libMediaItem;
-    }
-
     public LibMediaItem getBlockEndSound() {
         return blockEndSound;
+    }
+
+    public void setBlockEndSound(LibMediaItem libMediaItem) {
+        this.blockEndSound = libMediaItem;
     }
 
     public TraBlockConfiguration blockEndSound(LibMediaItem libMediaItem) {
@@ -181,21 +190,17 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public void setBlockEndSound(LibMediaItem libMediaItem) {
-        this.blockEndSound = libMediaItem;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     public TraBlockConfiguration channel(CorChannel corChannel) {
         this.channel = corChannel;
         return this;
-    }
-
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
     }
 
     @Override

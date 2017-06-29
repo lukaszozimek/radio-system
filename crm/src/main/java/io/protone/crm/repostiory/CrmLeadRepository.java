@@ -1,7 +1,7 @@
 package io.protone.crm.repostiory;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmLead;
+import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmLead;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

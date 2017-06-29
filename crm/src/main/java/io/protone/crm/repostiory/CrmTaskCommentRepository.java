@@ -1,6 +1,7 @@
 package io.protone.crm.repostiory;
 
-import io.protone.domain.CrmTaskComment;
+
+import io.protone.crm.domain.CrmTaskComment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

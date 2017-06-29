@@ -1,6 +1,7 @@
 package io.protone.application.web.api.cor;
 
-import io.protone.web.rest.dto.cor.CorKeyDTO;
+
+import io.protone.core.api.dto.CorKeyDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

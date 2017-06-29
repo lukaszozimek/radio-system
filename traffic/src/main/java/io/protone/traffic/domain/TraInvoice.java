@@ -1,6 +1,10 @@
 package io.protone.traffic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmAccount;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -83,17 +87,21 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return price;
     }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public TraInvoice price(BigDecimal price) {
         this.price = price;
         return this;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public LocalDate getPaymentDay() {
         return paymentDay;
+    }
+
+    public void setPaymentDay(LocalDate paymentDay) {
+        this.paymentDay = paymentDay;
     }
 
     public TraInvoice paymentDay(LocalDate paymentDay) {
@@ -101,12 +109,12 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setPaymentDay(LocalDate paymentDay) {
-        this.paymentDay = paymentDay;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
     }
 
     public TraInvoice customer(CrmAccount crmAccount) {
@@ -114,12 +122,12 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setCustomer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraInvoice network(CorNetwork corNetwork) {
@@ -127,12 +135,12 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorDictionary getStatus() {
         return status;
+    }
+
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraInvoice status(CorDictionary corDictionary) {
@@ -140,12 +148,12 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setStatus(CorDictionary corDictionary) {
-        this.status = corDictionary;
-    }
-
     public Set<TraOrder> getOrders() {
         return orders;
+    }
+
+    public void setOrders(Set<TraOrder> traOrders) {
+        this.orders = traOrders;
     }
 
     public TraInvoice orders(Set<TraOrder> traOrders) {
@@ -163,10 +171,6 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         this.orders.remove(traOrder);
         traOrder.setInvoice(null);
         return this;
-    }
-
-    public void setOrders(Set<TraOrder> traOrders) {
-        this.orders = traOrders;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibMarkerTypeEnum;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.library.domain.enumeration.LibMarkerTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -54,17 +55,21 @@ public class LibMarker  extends AbstractAuditingEntity implements Serializable {
         return markerType;
     }
 
+    public void setMarkerType(LibMarkerTypeEnum markerType) {
+        this.markerType = markerType;
+    }
+
     public LibMarker markerType(LibMarkerTypeEnum markerType) {
         this.markerType = markerType;
         return this;
     }
 
-    public void setMarkerType(LibMarkerTypeEnum markerType) {
-        this.markerType = markerType;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LibMarker name(String name) {
@@ -72,12 +77,12 @@ public class LibMarker  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
     }
 
     public LibMarker startTime(Long startTime) {
@@ -85,21 +90,17 @@ public class LibMarker  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setStartTime(Long startTime) {
-        this.startTime = startTime;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public LibMarker mediaItem(LibMediaItem libMediaItem) {
         this.mediaItem = libMediaItem;
         return this;
-    }
-
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
     }
 
     @Override

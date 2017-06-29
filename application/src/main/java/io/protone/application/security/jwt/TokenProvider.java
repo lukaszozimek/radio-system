@@ -2,8 +2,8 @@ package io.protone.application.security.jwt;
 
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.*;
+import io.protone.core.domain.CorUser;
 import io.protone.core.repository.CorUserRepository;
-import io.protone.domain.CorUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,24 +23,18 @@ import java.util.stream.Collectors;
 public class TokenProvider {
     public static final String NETWORK = "NETWORK";
     public static final String CHANNEL = "CHANNEL";
-    private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
-
     private static final String AUTHORITIES_KEY = "auth";
-
-    private String secretKey;
-
-    private long tokenValidityInMilliseconds;
-
-    private long tokenValidityInMillisecondsForRememberMe;
-
+    private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
     private final JHipsterProperties jHipsterProperties;
+    private String secretKey;
+    private long tokenValidityInMilliseconds;
+    private long tokenValidityInMillisecondsForRememberMe;
+    @Inject
+    private CorUserRepository corUserRepository;
 
     public TokenProvider(JHipsterProperties jHipsterProperties) {
         this.jHipsterProperties = jHipsterProperties;
     }
-
-    @Inject
-    private CorUserRepository corUserRepository;
 
     @PostConstruct
     public void init() {

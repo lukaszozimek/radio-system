@@ -1,6 +1,7 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.web.rest.dto.traffic.TraCampaignDTO;
+
+import io.protone.traffic.api.dto.TraCampaignDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

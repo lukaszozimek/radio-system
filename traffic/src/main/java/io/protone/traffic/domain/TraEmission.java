@@ -1,5 +1,8 @@
 package io.protone.traffic.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -65,17 +68,21 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return sequence;
     }
 
+    public void setSequence(Integer sequence) {
+        this.sequence = sequence;
+    }
+
     public TraEmission sequence(Integer sequence) {
         this.sequence = sequence;
         return this;
     }
 
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
     public Long getTimeStart() {
         return timeStart;
+    }
+
+    public void setTimeStart(Long timeStart) {
+        this.timeStart = timeStart;
     }
 
     public TraEmission timeStart(Long timeStart) {
@@ -83,12 +90,12 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setTimeStart(Long timeStart) {
-        this.timeStart = timeStart;
-    }
-
     public Long getTimeStop() {
         return timeStop;
+    }
+
+    public void setTimeStop(Long timeStop) {
+        this.timeStop = timeStop;
     }
 
     public TraEmission timeStop(Long timeStop) {
@@ -96,12 +103,12 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setTimeStop(Long timeStop) {
-        this.timeStop = timeStop;
-    }
-
     public TraOrder getOrder() {
         return order;
+    }
+
+    public void setOrder(TraOrder traOrder) {
+        this.order = traOrder;
     }
 
     public TraEmission order(TraOrder traOrder) {
@@ -109,12 +116,12 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setOrder(TraOrder traOrder) {
-        this.order = traOrder;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraEmission network(CorNetwork corNetwork) {
@@ -122,12 +129,12 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel corChannel) {
+        this.channel = corChannel;
     }
 
     public TraEmission channel(CorChannel corChannel) {
@@ -135,12 +142,12 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setChannel(CorChannel corChannel) {
-        this.channel = corChannel;
-    }
-
     public TraAdvertisement getAdvertiment() {
         return advertiment;
+    }
+
+    public void setAdvertiment(TraAdvertisement traAdvertisement) {
+        this.advertiment = traAdvertisement;
     }
 
     public TraEmission advertiment(TraAdvertisement traAdvertisement) {
@@ -148,21 +155,17 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setAdvertiment(TraAdvertisement traAdvertisement) {
-        this.advertiment = traAdvertisement;
-    }
-
     public TraBlock getBlock() {
         return block;
+    }
+
+    public void setBlock(TraBlock traBlock) {
+        this.block = traBlock;
     }
 
     public TraEmission block(TraBlock traBlock) {
         this.block = traBlock;
         return this;
-    }
-
-    public void setBlock(TraBlock traBlock) {
-        this.block = traBlock;
     }
 
     @Override

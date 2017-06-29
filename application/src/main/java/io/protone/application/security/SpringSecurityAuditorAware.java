@@ -1,8 +1,9 @@
 package io.protone.application.security;
 
 import com.google.common.base.Strings;
-import io.protone.domain.CorUser;
-import io.protone.service.cor.CorUserService;
+import io.protone.core.domain.CorUser;
+import io.protone.core.security.SecurityUtils;
+import io.protone.core.service.CorUserService;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;

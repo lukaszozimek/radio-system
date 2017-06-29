@@ -1,15 +1,14 @@
 package io.protone.library.service;
 
 import com.google.common.base.Strings;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.LibArtist;
-import io.protone.domain.LibLibrary;
-import io.protone.domain.LibMediaItem;
-import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibArtist;
+import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.enumeration.LibItemTypeEnum;
+import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.file.LibFileService;
 import io.protone.library.service.metadata.document.SupportedDocumentContentTypes;
-import io.protone.repository.library.LibMediaItemRepository;
-import io.protone.web.rest.mapper.LibItemMapper;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.HttpHeaders;
 import org.apache.tika.metadata.Metadata;
@@ -50,8 +49,6 @@ public class LibItemService {
     @Inject
     private LibMediaItemRepository itemRepository;
 
-    @Inject
-    private LibItemMapper itemMapper;
 
     @Inject
     private LibArtistService libArtistService;

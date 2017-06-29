@@ -1,7 +1,8 @@
 package io.protone.library.repository;
 
-import io.protone.domain.LibImageObject;
-import io.protone.domain.LibMediaItem;
+
+import io.protone.library.domain.LibImageObject;
+import io.protone.library.domain.LibMediaItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,8 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibObjectTypeEnum;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -73,17 +75,21 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
         return uuid;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public LibCloudObject uuid(String uuid) {
         this.uuid = uuid;
         return this;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public LibObjectTypeEnum getObjectType() {
         return objectType;
+    }
+
+    public void setObjectType(LibObjectTypeEnum objectType) {
+        this.objectType = objectType;
     }
 
     public LibCloudObject objectType(LibObjectTypeEnum objectType) {
@@ -91,12 +97,12 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setObjectType(LibObjectTypeEnum objectType) {
-        this.objectType = objectType;
-    }
-
     public String getOriginalName() {
         return originalName;
+    }
+
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 
     public LibCloudObject originalName(String originalName) {
@@ -104,12 +110,12 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setOriginalName(String originalName) {
-        this.originalName = originalName;
-    }
-
     public String getContentType() {
         return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public LibCloudObject contentType(String contentType) {
@@ -117,21 +123,17 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
     public Long getSize() {
         return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     public LibCloudObject size(Long size) {
         this.size = size;
         return this;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
     }
 
     public Boolean isOriginal() {
@@ -151,26 +153,26 @@ public class LibCloudObject extends AbstractAuditingEntity implements Serializab
         return hash;
     }
 
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
     public LibCloudObject hash(String hash) {
         this.hash = hash;
         return this;
-    }
-
-    public void setHash(String hash) {
-        this.hash = hash;
     }
 
     public CorNetwork getNetwork() {
         return network;
     }
 
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
+    }
+
     public LibCloudObject network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

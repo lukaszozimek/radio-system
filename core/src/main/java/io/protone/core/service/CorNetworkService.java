@@ -1,7 +1,7 @@
 package io.protone.core.service;
 
+import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
-import io.protone.domain.CorNetwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

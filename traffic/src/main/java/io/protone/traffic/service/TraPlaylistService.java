@@ -2,12 +2,12 @@ package io.protone.traffic.service;
 
 
 import com.google.common.collect.Lists;
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraPlaylist;
-import io.protone.repository.traffic.TraPlaylistRepository;
-import io.protone.service.cor.CorChannelService;
-import io.protone.service.cor.CorNetworkService;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorChannelService;
+import io.protone.core.service.CorNetworkService;
+import io.protone.traffic.domain.TraPlaylist;
+import io.protone.traffic.repository.TraPlaylistRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

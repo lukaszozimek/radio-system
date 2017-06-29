@@ -139,12 +139,6 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorChannel removeChannelLibarary(LibLibrary libLibrary) {
-        this.channelUsers.remove(libLibrary);
-        libLibrary.getChannels().remove(this);
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -1,16 +1,9 @@
 package io.protone.custom.service;
 
-import io.protone.core.repository.cor.CorChannelRepository;
-import io.protone.custom.service.dto.SchPlaylistPT;
-import io.protone.custom.service.mapper.CustomSchBlockMapper;
-import io.protone.custom.service.mapper.CustomSchPlaylistMapper;
-import io.protone.custom.utils.BlockUtils;
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.SchPlaylist;
-import io.protone.repository.custom.CustomSchPlaylistRepository;
-import io.protone.service.cor.CorChannelService;
-import io.protone.service.cor.CorNetworkService;
+
+import io.protone.core.repository.CorChannelRepository;
+import io.protone.core.service.CorChannelService;
+import io.protone.core.service.CorNetworkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,10 +28,10 @@ public class SchPlaylistService {
     private CorChannelService channelService;
 
     @Inject
-    private CustomSchPlaylistRepository playlistRepository;
+    private SchPlaylistRepository playlistRepository;
 
     @Inject
-    private CustomSchPlaylistMapper playlistMapper;
+    private SchPlaylistMapper playlistMapper;
 
     @Inject
     private CorChannelRepository channelRepository;
@@ -47,7 +40,7 @@ public class SchPlaylistService {
     private SchBlockService blockService;
 
     @Inject
-    private CustomSchBlockMapper blockMapper;
+    private SchBlockMapper blockMapper;
 
     @Inject
     private BlockUtils blockUtils;

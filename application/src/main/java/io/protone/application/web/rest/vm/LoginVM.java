@@ -1,7 +1,7 @@
 package io.protone.application.web.rest.vm;
 
 import io.protone.application.config.Constants;
-import io.protone.web.rest.dto.cor.CorManagedUserDTO;
+import io.protone.core.api.dto.CorManagedUserDTO;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

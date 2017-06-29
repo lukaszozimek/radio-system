@@ -1,5 +1,7 @@
 package io.protone.library.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -44,17 +46,21 @@ public class LibDocumentObject extends AbstractAuditingEntity implements Seriali
         return cloudObject;
     }
 
+    public void setCloudObject(LibCloudObject libCloudObject) {
+        this.cloudObject = libCloudObject;
+    }
+
     public LibDocumentObject cloudObject(LibCloudObject libCloudObject) {
         this.cloudObject = libCloudObject;
         return this;
     }
 
-    public void setCloudObject(LibCloudObject libCloudObject) {
-        this.cloudObject = libCloudObject;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public LibDocumentObject mediaItem(LibMediaItem libMediaItem) {
@@ -62,21 +68,17 @@ public class LibDocumentObject extends AbstractAuditingEntity implements Seriali
         return this;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibDocumentObject network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

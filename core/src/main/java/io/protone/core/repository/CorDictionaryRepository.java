@@ -1,7 +1,8 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorDictionary;
-import io.protone.domain.CorNetwork;
+
+import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

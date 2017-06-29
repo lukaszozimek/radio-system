@@ -1,7 +1,8 @@
 package io.protone.library.repository;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.LibArtist;
+
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibArtist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

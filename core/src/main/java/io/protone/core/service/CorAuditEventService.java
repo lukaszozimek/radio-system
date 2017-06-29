@@ -1,7 +1,7 @@
 package io.protone.core.service;
 
-import io.protone.application.config.audit.AuditEventConverter;
-import io.protone.repository.PersistenceAuditEventRepository;
+
+import io.protone.core.repository.PersistenceAuditEventRepository;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -2,7 +2,6 @@ package io.protone.custom.service.mapper;
 
 import io.protone.custom.service.dto.SchEmissionPT;
 import io.protone.custom.service.dto.thin.SchLibItemThinPT;
-import io.protone.domain.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

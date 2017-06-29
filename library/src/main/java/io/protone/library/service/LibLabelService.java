@@ -1,7 +1,8 @@
 package io.protone.library.service;
 
-import io.protone.domain.LibLabel;
-import io.protone.repository.library.LibLabelRepository;
+
+import io.protone.library.domain.LibLabel;
+import io.protone.library.repository.LibLabelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,9 +1,10 @@
 package io.protone.application.security;
 
+import io.protone.core.domain.CorUser;
 import io.protone.core.repository.CorUserRepository;
-import io.protone.domain.CorUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,18 +26,15 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
 
-    private final CorUserRepository userRepository;
-
-    public DomainUserDetailsService(CorUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private CorUserRepository corUserRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String login) {
         log.debug("Authenticating {}", login);
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        Optional<CorUser> userFromDatabase = userRepository.findOneWithAuthoritiesByLogin(lowercaseLogin);
+        Optional<CorUser> userFromDatabase = corUserRepository.findOneWithAuthoritiesByLogin(lowercaseLogin);
         return userFromDatabase.map(user -> {
             if (!user.isActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");

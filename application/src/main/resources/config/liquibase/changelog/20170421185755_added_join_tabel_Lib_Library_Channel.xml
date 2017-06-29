@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity LibMediaItem.
+    -->
+    <changeSet id="20170421185755-1" author="jhipster">
+        <createTable tableName="lib_library_channel">
+            <column name="channels_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lib_library_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="lib_library_id, channels_id" tableName="lib_library_channel"/>
+        <addForeignKeyConstraint baseColumnNames="lib_library_id"
+                                 baseTableName="lib_library_channel"
+                                 constraintName="fk_lib_library_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_library"/>
+
+        <addForeignKeyConstraint baseColumnNames="channels_id"
+                                 baseTableName="lib_library_channel"
+                                 constraintName="fk_channel_lib_library__id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+    </changeSet>
+</databaseChangeLog>

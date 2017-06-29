@@ -2,8 +2,9 @@ package io.protone.traffic.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
+import io.protone.traffic.domain.*;
+import io.protone.traffic.mapper.TraMediaPlanMapperPlaylist;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
-import io.protone.web.rest.mapper.TraMediaPlanMapperPlaylist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

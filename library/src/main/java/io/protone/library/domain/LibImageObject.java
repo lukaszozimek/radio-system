@@ -1,6 +1,8 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibImageSizeEnum;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.enumeration.LibImageSizeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -60,17 +62,21 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return width;
     }
 
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
     public LibImageObject width(Integer width) {
         this.width = width;
         return this;
     }
 
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
     public Integer getHeight() {
         return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 
     public LibImageObject height(Integer height) {
@@ -78,12 +84,12 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
     public LibImageSizeEnum getImageSize() {
         return imageSize;
+    }
+
+    public void setImageSize(LibImageSizeEnum imageSize) {
+        this.imageSize = imageSize;
     }
 
     public LibImageObject imageSize(LibImageSizeEnum imageSize) {
@@ -91,12 +97,12 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setImageSize(LibImageSizeEnum imageSize) {
-        this.imageSize = imageSize;
-    }
-
     public LibCloudObject getCloudObject() {
         return cloudObject;
+    }
+
+    public void setCloudObject(LibCloudObject libCloudObject) {
+        this.cloudObject = libCloudObject;
     }
 
     public LibImageObject cloudObject(LibCloudObject libCloudObject) {
@@ -104,12 +110,12 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setCloudObject(LibCloudObject libCloudObject) {
-        this.cloudObject = libCloudObject;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public LibImageObject mediaItem(LibMediaItem libMediaItem) {
@@ -117,12 +123,12 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibImageObject network(CorNetwork corNetwork) {
@@ -130,21 +136,17 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public LibImageItem getImageItem() {
         return imageItem;
+    }
+
+    public void setImageItem(LibImageItem libImageItem) {
+        this.imageItem = libImageItem;
     }
 
     public LibImageObject imageItem(LibImageItem libImageItem) {
         this.imageItem = libImageItem;
         return this;
-    }
-
-    public void setImageItem(LibImageItem libImageItem) {
-        this.imageItem = libImageItem;
     }
 
     @Override

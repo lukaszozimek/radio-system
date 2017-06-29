@@ -1,5 +1,7 @@
 package io.protone.library.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -46,17 +48,21 @@ public class LibImageItem extends AbstractAuditingEntity implements Serializable
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public LibImageItem name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPublicUrl() {
         return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
     }
 
     public LibImageItem publicUrl(String publicUrl) {
@@ -64,12 +70,12 @@ public class LibImageItem extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setPublicUrl(String publicUrl) {
-        this.publicUrl = publicUrl;
-    }
-
     public LibLibrary getLibrary() {
         return library;
+    }
+
+    public void setLibrary(LibLibrary libLibrary) {
+        this.library = libLibrary;
     }
 
     public LibImageItem library(LibLibrary libLibrary) {
@@ -77,21 +83,17 @@ public class LibImageItem extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
-        this.library = libLibrary;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibImageItem network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

@@ -1,14 +1,15 @@
 package io.protone.application.web.api.traffic.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraOrder;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.traffic.TraOrderService;
-import io.protone.web.api.traffic.TraOrderResource;
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;
-import io.protone.web.rest.mapper.TraOrderMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.traffic.TraOrderResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.traffic.api.dto.TraOrderDTO;
+import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
+import io.protone.traffic.domain.TraOrder;
+import io.protone.traffic.mapper.TraOrderMapper;
+import io.protone.traffic.service.TraOrderService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

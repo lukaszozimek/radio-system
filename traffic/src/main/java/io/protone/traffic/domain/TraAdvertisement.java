@@ -1,5 +1,10 @@
 package io.protone.traffic.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmAccount;
+import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -66,17 +71,21 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TraAdvertisement name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public TraAdvertisement description(String description) {
@@ -84,12 +93,12 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem libMediaItem) {
+        this.mediaItem = libMediaItem;
     }
 
     public TraAdvertisement mediaItem(LibMediaItem libMediaItem) {
@@ -97,12 +106,12 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
     }
 
     public TraAdvertisement customer(CrmAccount crmAccount) {
@@ -110,12 +119,12 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public void setCustomer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraAdvertisement network(CorNetwork corNetwork) {
@@ -123,12 +132,12 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorDictionary getIndustry() {
         return industry;
+    }
+
+    public void setIndustry(CorDictionary corDictionary) {
+        this.industry = corDictionary;
     }
 
     public TraAdvertisement industry(CorDictionary corDictionary) {
@@ -136,21 +145,17 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public void setIndustry(CorDictionary corDictionary) {
-        this.industry = corDictionary;
-    }
-
     public CorDictionary getType() {
         return type;
+    }
+
+    public void setType(CorDictionary corDictionary) {
+        this.type = corDictionary;
     }
 
     public TraAdvertisement type(CorDictionary corDictionary) {
         this.type = corDictionary;
         return this;
-    }
-
-    public void setType(CorDictionary corDictionary) {
-        this.type = corDictionary;
     }
 
     @Override

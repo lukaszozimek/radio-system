@@ -1,6 +1,7 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibFileTypeEnum;
+
+import io.protone.library.domain.enumeration.LibFileTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -57,17 +58,21 @@ public class LibFileItem implements Serializable {
         return idx;
     }
 
+    public void setIdx(String idx) {
+        this.idx = idx;
+    }
+
     public LibFileItem idx(String idx) {
         this.idx = idx;
         return this;
     }
 
-    public void setIdx(String idx) {
-        this.idx = idx;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LibFileItem name(String name) {
@@ -75,12 +80,12 @@ public class LibFileItem implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LibFileTypeEnum getType() {
         return type;
+    }
+
+    public void setType(LibFileTypeEnum type) {
+        this.type = type;
     }
 
     public LibFileItem type(LibFileTypeEnum type) {
@@ -88,12 +93,12 @@ public class LibFileItem implements Serializable {
         return this;
     }
 
-    public void setType(LibFileTypeEnum type) {
-        this.type = type;
-    }
-
     public LibLibrary getLibrary() {
         return library;
+    }
+
+    public void setLibrary(LibLibrary libLibrary) {
+        this.library = libLibrary;
     }
 
     public LibFileItem library(LibLibrary libLibrary) {
@@ -101,21 +106,17 @@ public class LibFileItem implements Serializable {
         return this;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
-        this.library = libLibrary;
-    }
-
     public LibFileItem getParentFile() {
         return parentFile;
+    }
+
+    public void setParentFile(LibFileItem libFileItem) {
+        this.parentFile = libFileItem;
     }
 
     public LibFileItem parentFile(LibFileItem libFileItem) {
         this.parentFile = libFileItem;
         return this;
-    }
-
-    public void setParentFile(LibFileItem libFileItem) {
-        this.parentFile = libFileItem;
     }
 
     @Override

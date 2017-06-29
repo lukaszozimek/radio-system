@@ -1,5 +1,7 @@
 package io.protone.library.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -65,17 +67,21 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return discNo;
     }
 
+    public void setDiscNo(Integer discNo) {
+        this.discNo = discNo;
+    }
+
     public LibTrack discNo(Integer discNo) {
         this.discNo = discNo;
         return this;
     }
 
-    public void setDiscNo(Integer discNo) {
-        this.discNo = discNo;
-    }
-
     public Integer getTrackNo() {
         return trackNo;
+    }
+
+    public void setTrackNo(Integer trackNo) {
+        this.trackNo = trackNo;
     }
 
     public LibTrack trackNo(Integer trackNo) {
@@ -83,12 +89,12 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setTrackNo(Integer trackNo) {
-        this.trackNo = trackNo;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LibTrack name(String name) {
@@ -96,12 +102,12 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public LibTrack length(Long length) {
@@ -109,12 +115,12 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LibTrack description(String description) {
@@ -122,12 +128,12 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LibAlbum getAlbum() {
         return album;
+    }
+
+    public void setAlbum(LibAlbum libAlbum) {
+        this.album = libAlbum;
     }
 
     public LibTrack album(LibAlbum libAlbum) {
@@ -135,12 +141,12 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setAlbum(LibAlbum libAlbum) {
-        this.album = libAlbum;
-    }
-
     public LibArtist getArtist() {
         return artist;
+    }
+
+    public void setArtist(LibArtist libArtist) {
+        this.artist = libArtist;
     }
 
     public LibTrack artist(LibArtist libArtist) {
@@ -148,21 +154,17 @@ public class LibTrack  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setArtist(LibArtist libArtist) {
-        this.artist = libArtist;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibTrack network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

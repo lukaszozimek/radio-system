@@ -1,7 +1,8 @@
 package io.protone.crm.service;
 
-import io.protone.domain.CrmTaskComment;
-import io.protone.repository.crm.CrmTaskCommentRepository;
+
+import io.protone.crm.domain.CrmTaskComment;
+import io.protone.crm.repostiory.CrmTaskCommentRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

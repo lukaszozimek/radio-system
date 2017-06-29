@@ -1,14 +1,15 @@
 package io.protone.application.web.api.crm.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmOpportunity;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.crm.CrmOpportunityService;
-import io.protone.web.api.crm.CrmOpportunityResource;
-import io.protone.web.rest.dto.crm.CrmOpportunityDTO;
-import io.protone.web.rest.dto.crm.thin.CrmOpportunityThinDTO;
-import io.protone.web.rest.mapper.CrmOpportunityMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.crm.CrmOpportunityResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.crm.api.dto.CrmOpportunityDTO;
+import io.protone.crm.api.dto.thin.CrmOpportunityThinDTO;
+import io.protone.crm.domain.CrmOpportunity;
+import io.protone.crm.mapper.CrmOpportunityMapper;
+import io.protone.crm.service.CrmOpportunityService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

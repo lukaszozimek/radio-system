@@ -1,8 +1,9 @@
 package io.protone.application.web.api.cor;
 
-import io.protone.web.rest.dto.cor.CorManagedUserDTO;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.web.rest.vm.KeyAndPasswordVM;
+
+import io.protone.application.web.rest.vm.KeyAndPasswordVM;
+import io.protone.core.api.dto.CorManagedUserDTO;
+import io.protone.core.api.dto.CorUserDTO;
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

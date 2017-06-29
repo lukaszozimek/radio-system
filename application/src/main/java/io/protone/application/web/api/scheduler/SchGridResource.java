@@ -1,6 +1,7 @@
 package io.protone.application.web.api.scheduler;
 
-import io.protone.web.rest.dto.scheduler.SchGridDTO;
+
+import io.protone.scheduler.api.dto.SchGridDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,8 @@
 package io.protone.custom.service.mapper;
 
-import io.protone.custom.service.dto.SchEventPT;
-import io.protone.domain.SchTemplate;
+
+import io.protone.scheduler.api.dto.dto.SchEventPT;
+import io.protone.scheduler.domain.SchTemplate;
 import org.mapstruct.Mapper;
 
 import java.util.List;

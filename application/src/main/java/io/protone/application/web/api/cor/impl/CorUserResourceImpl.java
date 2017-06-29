@@ -2,18 +2,18 @@ package io.protone.application.web.api.cor.impl;
 
 
 import com.codahale.metrics.annotation.Timed;
-import io.protone.application.security.SecurityUtils;
+import io.protone.application.web.api.cor.CorUserResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.vm.KeyAndPasswordVM;
+import io.protone.core.api.dto.CorManagedUserDTO;
+import io.protone.core.api.dto.CorUserDTO;
+import io.protone.core.domain.CorUser;
+import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
-import io.protone.domain.CorUser;
-import io.protone.service.cor.CorMailService;
-import io.protone.service.cor.CorUserService;
-import io.protone.web.api.cor.CorUserResource;
-import io.protone.web.rest.dto.cor.CorManagedUserDTO;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.web.rest.mapper.CorNetworkMapper;
-import io.protone.web.rest.util.HeaderUtil;
-import io.protone.web.rest.vm.KeyAndPasswordVM;
+import io.protone.core.security.SecurityUtils;
+import io.protone.core.service.CorMailService;
+import io.protone.core.service.CorUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,14 +1,14 @@
 package io.protone.application.web.api.traffic.impl;
 
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CrmAccount;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.crm.CrmCustomerService;
-import io.protone.web.api.traffic.TraCustomerResource;
-import io.protone.web.rest.dto.traffic.TraCustomerDTO;
-import io.protone.web.rest.mapper.CrmAccountMapper;
-import io.protone.web.rest.util.HeaderUtil;
+import io.protone.application.web.api.traffic.TraCustomerResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.crm.domain.CrmAccount;
+import io.protone.crm.service.CrmCustomerService;
+import io.protone.traffic.api.dto.TraCustomerDTO;
+import io.protone.traffic.mapper.TraCustomerMapper;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class TraCustomerResourceImpl implements TraCustomerResource {
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CrmAccountMapper accountMapper;
+    private TraCustomerMapper accountMapper;
 
     @Override
     public ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

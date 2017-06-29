@@ -1,8 +1,9 @@
 package io.protone.application.web.api.scheduler.impl;
 
-import io.protone.web.api.scheduler.SchPlaylistResource;
-import io.protone.web.rest.dto.scheduler.SchEmissionDTO;
-import io.protone.web.rest.dto.scheduler.SchPlaylistDTO;
+
+import io.protone.application.web.api.scheduler.SchPlaylistResource;
+import io.protone.scheduler.api.dto.SchEmissionDTO;
+import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.swagger.annotations.ApiParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

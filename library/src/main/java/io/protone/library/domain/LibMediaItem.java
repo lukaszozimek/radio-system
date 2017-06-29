@@ -1,8 +1,9 @@
 package io.protone.library.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.domain.enumeration.LibItemStateEnum;
-import io.protone.domain.enumeration.LibItemTypeEnum;
+import io.protone.core.domain.*;
+import io.protone.library.domain.enumeration.LibItemStateEnum;
+import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -23,15 +24,10 @@ import static javax.persistence.FetchType.EAGER;
 @Table(name = "lib_media_item", uniqueConstraints =
 @UniqueConstraint(columnNames = {"idx", "library_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibMediaItem extends AbstractAuditingEntity implements Serializable {
+public class LibMediaItem extends CorMediaItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    @PodamExclude
-    private Long id;
 
     @NotNull
     @Column(name = "idx", nullable = false)
@@ -124,13 +120,6 @@ public class LibMediaItem extends AbstractAuditingEntity implements Serializable
     )
     private Set<LibImageItem> imageItems = new HashSet<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getIdx() {
         return idx;

@@ -1,13 +1,14 @@
 package io.protone.application.web.api.traffic.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraInvoice;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.traffic.TraInvoiceService;
-import io.protone.web.api.traffic.TraInvoiceResource;
-import io.protone.web.rest.dto.traffic.TraInvoiceDTO;
-import io.protone.web.rest.mapper.TraInvoiceMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.traffic.TraInvoiceResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.traffic.api.dto.TraInvoiceDTO;
+import io.protone.traffic.domain.TraInvoice;
+import io.protone.traffic.mapper.TraInvoiceMapper;
+import io.protone.traffic.service.TraInvoiceService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

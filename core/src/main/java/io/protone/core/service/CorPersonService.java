@@ -1,8 +1,8 @@
 package io.protone.core.service;
 
+import io.protone.core.domain.CorContact;
+import io.protone.core.domain.CorPerson;
 import io.protone.core.repository.CorPersonRepository;
-import io.protone.domain.CorContact;
-import io.protone.domain.CorPerson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

@@ -1,23 +1,22 @@
 package io.protone.core.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import com.google.common.collect.Sets;
-import io.protone.application.security.AuthoritiesConstants;
-import io.protone.application.security.SecurityUtils;
+import io.protone.core.api.dto.CorNetworkDTO;
+import io.protone.core.api.dto.CorUserDTO;
+import io.protone.core.domain.CorAuthority;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
+import io.protone.core.mapper.CorChannelMapper;
+import io.protone.core.mapper.CorNetworkMapper;
+import io.protone.core.mapper.CorUserMapper;
 import io.protone.core.repository.CorAuthorityRepository;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
-import io.protone.domain.CorAuthority;
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorUser;
-import io.protone.service.util.RandomUtil;
-import io.protone.web.rest.dto.cor.CorNetworkDTO;
-import io.protone.web.rest.dto.cor.CorUserDTO;
-import io.protone.web.rest.mapper.CorChannelMapper;
-import io.protone.web.rest.mapper.CorNetworkMapper;
-import io.protone.web.rest.mapper.CorUserMapper;
+import io.protone.core.security.AuthoritiesConstants;
+import io.protone.core.security.SecurityUtils;
+import io.protone.core.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -247,7 +247,7 @@ public class CorUserService {
     }
 
     public List<CorUserDTO> getAllManagedUsers(CorNetwork corNetwork) {
-        return userRepository.findByNetworks(Sets.newHashSet(corNetwork)).stream().map(corUserMapper::DB2DTO).collect(toList());
+        return userRepository.findByNetworks(newHashSet(corNetwork)).stream().map(corUserMapper::DB2DTO).collect(toList());
     }
 
     public Optional<CorUser> getUserWithAuthoritiesByLogin(String login) {
@@ -282,6 +282,6 @@ public class CorUserService {
     }
 
     public Optional<CorUser> getUserWithAuthoritiesByLoginAndNetwork(String login, CorNetwork corNetwork) {
-        return userRepository.findOneWithAuthoritiesByLoginAndNetworks(login, Sets.newHashSet(corNetwork));
+        return userRepository.findOneWithAuthoritiesByLoginAndNetworks(login, newHashSet(corNetwork));
     }
 }

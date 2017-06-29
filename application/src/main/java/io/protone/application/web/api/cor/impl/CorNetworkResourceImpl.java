@@ -1,11 +1,12 @@
 package io.protone.application.web.api.cor.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.api.cor.CorNetworkResource;
-import io.protone.web.rest.dto.cor.CorNetworkDTO;
-import io.protone.web.rest.mapper.CorNetworkMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.cor.CorNetworkResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.api.dto.CorNetworkDTO;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.mapper.CorNetworkMapper;
+import io.protone.core.service.CorNetworkService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

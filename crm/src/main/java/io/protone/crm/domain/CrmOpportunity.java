@@ -1,6 +1,10 @@
 package io.protone.crm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;

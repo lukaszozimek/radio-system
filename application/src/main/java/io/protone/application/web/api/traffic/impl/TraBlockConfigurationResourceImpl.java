@@ -1,16 +1,17 @@
 package io.protone.application.web.api.traffic.impl;
 
-import io.protone.domain.CorChannel;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.TraBlockConfiguration;
-import io.protone.domain.enumeration.CorDayOfWeekEnum;
-import io.protone.service.cor.CorChannelService;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.traffic.TraBlockConfigurationService;
-import io.protone.web.api.traffic.TraBlockConfigurationResource;
-import io.protone.web.rest.dto.traffic.TraBlockConfigurationDTO;
-import io.protone.web.rest.mapper.TraBlockConfigurationMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.traffic.TraBlockConfigurationResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.core.service.CorChannelService;
+import io.protone.core.service.CorNetworkService;
+import io.protone.traffic.api.dto.TraBlockConfigurationDTO;
+import io.protone.traffic.domain.TraBlockConfiguration;
+import io.protone.traffic.mapper.TraBlockConfigurationMapper;
+import io.protone.traffic.service.TraBlockConfigurationService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package io.protone.core.service;
 
 import io.github.jhipster.config.JHipsterProperties;
-import io.protone.domain.CorUser;
+import io.protone.core.domain.CorUser;
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +25,9 @@ import java.util.Locale;
 @Service
 public class CorMailService {
 
-    private final Logger log = LoggerFactory.getLogger(CorMailService.class);
-
     private static final String USER = "user";
-
     private static final String BASE_URL = "baseUrl";
-
+    private final Logger log = LoggerFactory.getLogger(CorMailService.class);
     private final JHipsterProperties jHipsterProperties;
 
     private final JavaMailSender javaMailSender;

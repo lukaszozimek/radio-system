@@ -1,6 +1,9 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibAlbumTypeEnum;
+
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.enumeration.LibAlbumTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -75,17 +78,21 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return albumType;
     }
 
+    public void setAlbumType(LibAlbumTypeEnum albumType) {
+        this.albumType = albumType;
+    }
+
     public LibAlbum albumType(LibAlbumTypeEnum albumType) {
         this.albumType = albumType;
         return this;
     }
 
-    public void setAlbumType(LibAlbumTypeEnum albumType) {
-        this.albumType = albumType;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LibAlbum name(String name) {
@@ -93,12 +100,12 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getReleaseDate() {
         return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public LibAlbum releaseDate(LocalDate releaseDate) {
@@ -106,12 +113,12 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LibAlbum description(String description) {
@@ -119,12 +126,12 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Set<LibImageItem> getCover() {
         return imageItems;
+    }
+
+    public void setCover(Set<LibImageItem> libImageItem) {
+        this.imageItems = libImageItem;
     }
 
     public LibAlbum cover(Set<LibImageItem> libImageItem) {
@@ -132,12 +139,12 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setCover(Set<LibImageItem> libImageItem) {
-        this.imageItems = libImageItem;
-    }
-
     public LibLabel getLabel() {
         return label;
+    }
+
+    public void setLabel(LibLabel libLabel) {
+        this.label = libLabel;
     }
 
     public LibAlbum label(LibLabel libLabel) {
@@ -145,12 +152,12 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setLabel(LibLabel libLabel) {
-        this.label = libLabel;
-    }
-
     public LibArtist getArtist() {
         return artist;
+    }
+
+    public void setArtist(LibArtist libArtist) {
+        this.artist = libArtist;
     }
 
     public LibAlbum artist(LibArtist libArtist) {
@@ -158,21 +165,17 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setArtist(LibArtist libArtist) {
-        this.artist = libArtist;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibAlbum network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

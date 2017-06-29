@@ -1,7 +1,7 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorTax;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorTax;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

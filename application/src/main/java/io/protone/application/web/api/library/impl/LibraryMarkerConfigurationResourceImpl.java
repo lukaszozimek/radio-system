@@ -1,13 +1,14 @@
 package io.protone.application.web.api.library.impl;
 
-import io.protone.domain.CfgMarkerConfiguration;
-import io.protone.domain.CorNetwork;
-import io.protone.repository.cfg.CfgMarkerConfigurationRepository;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.api.library.LibraryMarkerConfigurationResource;
-import io.protone.web.rest.dto.library.LibMarkerConfigurationDTO;
-import io.protone.web.rest.mapper.CfgMarkerConfigurationMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.library.LibraryMarkerConfigurationResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.library.api.dto.LibMarkerConfigurationDTO;
+import io.protone.library.domain.LibMarkerConfiguration;
+import io.protone.library.mapper.LibMarkerConfigurationMapper;
+import io.protone.library.repository.LibMarkerConfigurationRepository;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +31,13 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
     private final Logger log = LoggerFactory.getLogger(LibraryMarkerConfigurationResourceImpl.class);
 
     @Inject
-    private CfgMarkerConfigurationRepository cfgMarkerConfigurationRepository;
+    private LibMarkerConfigurationRepository libMarkerConfigurationRepository;
 
     @Inject
     private CorNetworkService corNetworkService;
 
     @Inject
-    private CfgMarkerConfigurationMapper cfgMarkerConfigurationMapper;
+    private LibMarkerConfigurationMapper libMarkerConfigurationMapper;
 
     @Override
     public ResponseEntity<LibMarkerConfigurationDTO> updateMarkerConfigurationUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerConfigurationDTO", required = true) @Valid @RequestBody LibMarkerConfigurationDTO markerConfigurationPT) throws URISyntaxException {
@@ -46,9 +47,9 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        CfgMarkerConfiguration cFGMarkerConfiguration = cfgMarkerConfigurationMapper.DTO2DB(markerConfigurationPT, corNetwork);
-        cFGMarkerConfiguration = cfgMarkerConfigurationRepository.save(cFGMarkerConfiguration);
-        LibMarkerConfigurationDTO result = cfgMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
+        LibMarkerConfiguration cFGMarkerConfiguration = libMarkerConfigurationMapper.DTO2DB(markerConfigurationPT, corNetwork);
+        cFGMarkerConfiguration = libMarkerConfigurationRepository.save(cFGMarkerConfiguration);
+        LibMarkerConfigurationDTO result = libMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("cfgMarkerConfiguration", result.getId().toString()))
             .body(result);
@@ -63,9 +64,9 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        CfgMarkerConfiguration cFGMarkerConfiguration = cfgMarkerConfigurationMapper.DTO2DB(markerConfigurationPT, corNetwork);
-        cFGMarkerConfiguration = cfgMarkerConfigurationRepository.save(cFGMarkerConfiguration);
-        LibMarkerConfigurationDTO result = cfgMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
+        LibMarkerConfiguration cFGMarkerConfiguration = libMarkerConfigurationMapper.DTO2DB(markerConfigurationPT, corNetwork);
+        cFGMarkerConfiguration = libMarkerConfigurationRepository.save(cFGMarkerConfiguration);
+        LibMarkerConfigurationDTO result = libMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
         return ResponseEntity
             .created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))
             .body(result);
@@ -74,7 +75,7 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
     @Override
     public ResponseEntity<Void> deleteMarkerConfigurationUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerName", required = true) @PathVariable("id") String id) {
         log.debug("REST request to delete ConfMarkerConfiguration.id : {}", id);
-        cfgMarkerConfigurationRepository.delete(Long.parseLong(id));
+        libMarkerConfigurationRepository.delete(Long.parseLong(id));
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("cFGMarkerConfiguration", id.toString())).build();
 
     }
@@ -84,8 +85,8 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
                                                                                              @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to getAll ConfMarkerConfiguration");
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        List<CfgMarkerConfiguration> cFGMarkerConfigurations = cfgMarkerConfigurationRepository.findByNetwork(corNetwork);
-        return ResponseEntity.ok().body(cfgMarkerConfigurationMapper.DBs2DTOs(cFGMarkerConfigurations));
+        List<LibMarkerConfiguration> cFGMarkerConfigurations = libMarkerConfigurationRepository.findByNetwork(corNetwork);
+        return ResponseEntity.ok().body(libMarkerConfigurationMapper.DBs2DTOs(cFGMarkerConfigurations));
 
     }
 
@@ -93,8 +94,8 @@ public class LibraryMarkerConfigurationResourceImpl implements LibraryMarkerConf
     public ResponseEntity<LibMarkerConfigurationDTO> getMarkerConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "markerName", required = true) @PathVariable("id") String id) {
         log.debug("REST request to get ConfMarkerConfiguration.id : {}", id);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CfgMarkerConfiguration cFGMarkerConfiguration = cfgMarkerConfigurationRepository.findOneByIdAndNetwork(Long.parseLong(id), corNetwork);
-        LibMarkerConfigurationDTO cFGMarkerConfigurationDTO = cfgMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
+        LibMarkerConfiguration cFGMarkerConfiguration = libMarkerConfigurationRepository.findOneByIdAndNetwork(Long.parseLong(id), corNetwork);
+        LibMarkerConfigurationDTO cFGMarkerConfigurationDTO = libMarkerConfigurationMapper.DB2DTO(cFGMarkerConfiguration);
         return Optional.ofNullable(cFGMarkerConfigurationDTO)
             .map(result -> new ResponseEntity<>(
                 result,

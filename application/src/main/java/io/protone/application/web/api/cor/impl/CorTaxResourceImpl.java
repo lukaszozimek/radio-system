@@ -1,13 +1,13 @@
 package io.protone.application.web.api.cor.impl;
 
+import io.protone.application.web.api.cor.CorTaxResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.api.dto.CorTaxDTO;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorTax;
+import io.protone.core.mapper.CorTaxMapper;
 import io.protone.core.repository.CorTaxRepository;
-import io.protone.domain.CorNetwork;
-import io.protone.domain.CorTax;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.web.api.cor.CorTaxResource;
-import io.protone.web.rest.dto.cor.CorTaxDTO;
-import io.protone.web.rest.mapper.CorTaxMapper;
-import io.protone.web.rest.util.HeaderUtil;
+import io.protone.core.service.CorNetworkService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

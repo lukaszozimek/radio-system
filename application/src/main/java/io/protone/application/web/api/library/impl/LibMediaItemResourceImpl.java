@@ -1,13 +1,14 @@
 package io.protone.application.web.api.library.impl;
 
-import io.protone.domain.CorNetwork;
-import io.protone.domain.LibMediaItem;
-import io.protone.service.cor.CorNetworkService;
-import io.protone.service.library.LibItemService;
-import io.protone.web.api.library.LibMediaItemResource;
-import io.protone.web.rest.dto.library.LibMediaItemDTO;
-import io.protone.web.rest.mapper.LibItemMapper;
-import io.protone.web.rest.util.HeaderUtil;
+
+import io.protone.application.web.api.library.LibMediaItemResource;
+import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorNetworkService;
+import io.protone.library.api.dto.LibMediaItemDTO;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.service.LibItemService;
 import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;

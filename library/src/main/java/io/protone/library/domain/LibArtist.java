@@ -1,6 +1,8 @@
 package io.protone.library.domain;
 
-import io.protone.domain.enumeration.LibArtistTypeEnum;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.enumeration.LibArtistTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -53,17 +55,21 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public LibArtist name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LibArtistTypeEnum getType() {
         return type;
+    }
+
+    public void setType(LibArtistTypeEnum type) {
+        this.type = type;
     }
 
     public LibArtist type(LibArtistTypeEnum type) {
@@ -71,12 +77,12 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setType(LibArtistTypeEnum type) {
-        this.type = type;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LibArtist description(String description) {
@@ -84,21 +90,17 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibArtist network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override

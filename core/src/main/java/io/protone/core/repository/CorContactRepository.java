@@ -1,6 +1,7 @@
 package io.protone.core.repository;
 
-import io.protone.domain.CorContact;
+
+import io.protone.core.domain.CorContact;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -1,6 +1,7 @@
 package io.protone.traffic.repository;
 
-import io.protone.domain.TraMediaPlanPlaylist;
+
+import io.protone.traffic.domain.TraMediaPlanPlaylist;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

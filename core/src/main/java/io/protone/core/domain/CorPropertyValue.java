@@ -32,7 +32,7 @@ public class CorPropertyValue implements Serializable {
     private CorPropertyKey propertyKey;
 
     @ManyToOne
-    private LibMediaItem libItemPropertyValue;
+    private CorMediaItem libItemPropertyValue;
 
     public Long getId() {
         return id;
@@ -46,17 +46,21 @@ public class CorPropertyValue implements Serializable {
         return value;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public CorPropertyValue value(String value) {
         this.value = value;
         return this;
     }
 
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public CorPropertyKey getPropertyKey() {
         return propertyKey;
+    }
+
+    public void setPropertyKey(CorPropertyKey corPropertyKey) {
+        this.propertyKey = corPropertyKey;
     }
 
     public CorPropertyValue propertyKey(CorPropertyKey corPropertyKey) {
@@ -64,21 +68,17 @@ public class CorPropertyValue implements Serializable {
         return this;
     }
 
-    public void setPropertyKey(CorPropertyKey corPropertyKey) {
-        this.propertyKey = corPropertyKey;
-    }
-
-    public LibMediaItem getLibItemPropertyValue() {
+    public CorMediaItem getLibItemPropertyValue() {
         return libItemPropertyValue;
     }
 
-    public CorPropertyValue libItemPropertyValue(LibMediaItem libMediaItem) {
+    public void setLibItemPropertyValue(CorMediaItem libMediaItem) {
         this.libItemPropertyValue = libMediaItem;
-        return this;
     }
 
-    public void setLibItemPropertyValue(LibMediaItem libMediaItem) {
+    public CorPropertyValue libItemPropertyValue(CorMediaItem libMediaItem) {
         this.libItemPropertyValue = libMediaItem;
+        return this;
     }
 
     @Override

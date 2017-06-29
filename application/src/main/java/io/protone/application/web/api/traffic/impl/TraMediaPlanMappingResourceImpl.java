@@ -1,10 +1,11 @@
 package io.protone.application.web.api.traffic.impl;
 
-import io.protone.service.traffic.TraPlaylistMediaPlanMappingService;
+
+import io.protone.application.web.api.traffic.TraMediaPlanMappingResource;
+import io.protone.traffic.api.dto.TraPlaylistDiffDTO;
+import io.protone.traffic.mapper.TraPlaylistMapper;
+import io.protone.traffic.service.TraPlaylistMediaPlanMappingService;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
-import io.protone.web.api.traffic.TraMediaPlanMappingResource;
-import io.protone.web.rest.dto.traffic.TraPlaylistDiffDTO;
-import io.protone.web.rest.mapper.TraPlaylistMapper;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

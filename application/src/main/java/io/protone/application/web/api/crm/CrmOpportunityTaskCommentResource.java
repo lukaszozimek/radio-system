@@ -1,6 +1,7 @@
 package io.protone.application.web.api.crm;
 
-import io.protone.web.rest.dto.traffic.CrmTaskCommentDTO;
+
+import io.protone.crm.api.dto.CrmTaskCommentDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

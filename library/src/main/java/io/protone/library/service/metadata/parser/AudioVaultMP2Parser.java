@@ -1,7 +1,7 @@
 package io.protone.library.service.metadata.parser;
 
+import io.protone.library.constans.MarkerConstans;
 import io.protone.library.service.metadata.ProtoneMetadataProperty;
-import io.protone.service.constans.MarkerConstans;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MediaType;

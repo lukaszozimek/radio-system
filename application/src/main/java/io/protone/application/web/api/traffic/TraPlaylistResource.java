@@ -1,7 +1,8 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.web.rest.dto.traffic.TraPlaylistDTO;
-import io.protone.web.rest.dto.traffic.TraShuffleAdvertisementDTO;
+
+import io.protone.traffic.api.dto.TraPlaylistDTO;
+import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;

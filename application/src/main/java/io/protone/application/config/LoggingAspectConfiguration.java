@@ -1,7 +1,7 @@
 package io.protone.application.config;
 
 import io.github.jhipster.config.JHipsterConstants;
-import io.protone.aop.logging.LoggingAspect;
+import io.protone.application.aop.logging.LoggingAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;

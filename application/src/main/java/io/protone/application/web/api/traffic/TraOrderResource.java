@@ -1,7 +1,8 @@
 package io.protone.application.web.api.traffic;
 
-import io.protone.web.rest.dto.traffic.TraOrderDTO;
-import io.protone.web.rest.dto.traffic.thin.TraOrderThinDTO;
+
+import io.protone.traffic.api.dto.TraOrderDTO;
+import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,8 @@
 package io.protone.library.service;
 
-import io.protone.domain.LibTrack;
-import io.protone.repository.library.LibTrackRepository;
+
+import io.protone.library.domain.LibTrack;
+import io.protone.library.repository.LibTrackRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

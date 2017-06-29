@@ -1,6 +1,7 @@
 package io.protone.core.domain;
 
-import io.protone.domain.enumeration.CorContactTypeEnum;
+
+import io.protone.core.domain.enumeration.CorContactTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -57,17 +58,21 @@ public class CorContact extends AbstractAuditingEntity implements Serializable {
         return contact;
     }
 
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
     public CorContact contact(String contact) {
         this.contact = contact;
         return this;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
     public CorContactTypeEnum getContactType() {
         return contactType;
+    }
+
+    public void setContactType(CorContactTypeEnum contactType) {
+        this.contactType = contactType;
     }
 
     public CorContact contactType(CorContactTypeEnum contactType) {
@@ -75,12 +80,12 @@ public class CorContact extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setContactType(CorContactTypeEnum contactType) {
-        this.contactType = contactType;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public CorContact network(CorNetwork corNetwork) {
@@ -88,21 +93,17 @@ public class CorContact extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorPerson getPerson() {
         return person;
+    }
+
+    public void setPerson(CorPerson corPerson) {
+        this.person = corPerson;
     }
 
     public CorContact person(CorPerson corPerson) {
         this.person = corPerson;
         return this;
-    }
-
-    public void setPerson(CorPerson corPerson) {
-        this.person = corPerson;
     }
 
     @Override
