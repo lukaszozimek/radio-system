@@ -114,11 +114,11 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_media_item_lib_image_item",
+        name = "lib_media_item_cor_image_item",
         joinColumns = @JoinColumn(name = "lib_media_item_id"),
-        inverseJoinColumns = @JoinColumn(name = "lib_image_item_id")
+        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
-    private Set<LibImageItem> imageItems = new HashSet<>();
+    private Set<CorImageItem> imageItems = new HashSet<>();
 
 
     public String getIdx() {
@@ -415,11 +415,11 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
         return this;
     }
 
-    public Set<LibImageItem> getImageItems() {
+    public Set<CorImageItem> getImageItems() {
         return imageItems;
     }
 
-    public void setImageItems(Set<LibImageItem> imageItems) {
+    public void setImageItems(Set<CorImageItem> imageItems) {
         this.imageItems = imageItems;
     }
 

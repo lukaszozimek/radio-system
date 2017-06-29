@@ -2,6 +2,7 @@ package io.protone.library.service;
 
 import com.google.common.base.Strings;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorImageItemService;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
@@ -49,7 +50,6 @@ public class LibItemService {
     @Inject
     private LibMediaItemRepository itemRepository;
 
-
     @Inject
     private LibArtistService libArtistService;
 
@@ -64,8 +64,9 @@ public class LibItemService {
 
     @Inject
     private LibLabelService libLabelService;
+
     @Inject
-    private LibImageItemService libImageItemService;
+    private CorImageItemService libImageItemService;
 
     @Autowired
     @Qualifier("libAudioFileService")
@@ -116,6 +117,22 @@ public class LibItemService {
 
     @Transactional
     public LibMediaItem update(MultipartFile[] covers, LibMediaItem libMediaItem, CorNetwork corNetwork) {
+        LibArtist artist = new LibArtist();
+        if (libMediaItem.getArtist() != null) {
+            artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
+            libMediaItem.setArtist(artist);
+        }
+        if (libMediaItem.getAlbum() != null) {
+            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum(), artist, corNetwork));
+        }
+        libMediaItem.setLabel(libLabelService.saveLibLabel(libMediaItem.getLabel()).orElse(null));
+        libMediaItem.setTrack(libTrackService.saveLibTrack(libMediaItem.getTrack()).orElse(null));
+        libMediaItem.setMarkers(libMarkerService.saveLibMarkers(libMediaItem.getMarkers()).orElse(null));
+
+        return itemRepository.saveAndFlush(libMediaItem);
+    }
+    @Transactional
+    public LibMediaItem update( LibMediaItem libMediaItem, CorNetwork corNetwork) {
         LibArtist artist = new LibArtist();
         if (libMediaItem.getArtist() != null) {
             artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);

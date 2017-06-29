@@ -227,10 +227,9 @@ public class LibMediaItemResourceTest {
         List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
         assertThat(libMediaItemList).hasSize(databaseSizeBeforeTest);
     }
-
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    public void checkNameIsWithoutImageRequired() throws Exception {
         int databaseSizeBeforeTest = libMediaItemRepository.findAll().size();
         // set the field null
         libMediaItem.setName(null);
@@ -242,6 +241,29 @@ public class LibMediaItemResourceTest {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libMediaItemDTO)))
                 .andExpect(status().isBadRequest());
+
+        List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
+        assertThat(libMediaItemList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = libMediaItemRepository.findAll().size();
+        // set the field null
+        libMediaItem.setName(null);
+
+        // Create the LibMediaItem, which fails.
+        LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(libMediaItem);
+        MockMultipartFile emptyFile = new MockMultipartFile("covers", new byte[0]);
+        MockMultipartFile jsonFile = new MockMultipartFile("mediaItem", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaItemDTO));
+
+
+        restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getIdx())
+                .file(emptyFile)
+                .file(jsonFile)).andExpect(status().isBadRequest());
+
 
         List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
         assertThat(libMediaItemList).hasSize(databaseSizeBeforeTest);
@@ -294,10 +316,9 @@ public class LibMediaItemResourceTest {
         restLibMediaItemMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{id}", corNetwork.getShortcut(), libLibrary.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
-
     @Test
     @Transactional
-    public void updateLibMediaItem() throws Exception {
+    public void updateLibMediaItemWithoutImages() throws Exception {
         // Initialize the database
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeUpdate = libMediaItemRepository.findAll().size();
@@ -318,6 +339,46 @@ public class LibMediaItemResourceTest {
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(libMediaItemDTO)))
                 .andExpect(status().isOk());
+
+        // Validate the LibMediaItem in the database
+        List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();
+        assertThat(libMediaItemList).hasSize(databaseSizeBeforeUpdate);
+        LibMediaItem testLibMediaItem = libMediaItemList.get(libMediaItemList.size() - 1);
+        assertThat(testLibMediaItem.getIdx()).isEqualTo(UPDATED_IDX);
+        assertThat(testLibMediaItem.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testLibMediaItem.getItemType()).isEqualTo(UPDATED_ITEM_TYPE);
+        assertThat(testLibMediaItem.getLength()).isEqualTo(UPDATED_LENGTH);
+        assertThat(testLibMediaItem.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testLibMediaItem.getCommand()).isEqualTo(UPDATED_COMMAND);
+        assertThat(testLibMediaItem.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+    }
+    @Test
+    @Transactional
+    public void updateLibMediaItem() throws Exception {
+        // Initialize the database
+        libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
+        int databaseSizeBeforeUpdate = libMediaItemRepository.findAll().size();
+
+        // Update the libMediaItem
+        LibMediaItem updatedLibMediaItem = libMediaItemRepository.findOne(libMediaItem.getId());
+        updatedLibMediaItem
+                .idx(UPDATED_IDX)
+                .name(UPDATED_NAME)
+                .itemType(UPDATED_ITEM_TYPE)
+                .length(UPDATED_LENGTH)
+                .state(UPDATED_STATE)
+                .command(UPDATED_COMMAND)
+                .description(UPDATED_DESCRIPTION);
+        LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(updatedLibMediaItem);
+        MockMultipartFile emptyFile = new MockMultipartFile("covers", new byte[0]);
+        MockMultipartFile jsonFile = new MockMultipartFile("mediaItem", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaItemDTO));
+
+
+        restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getIdx())
+                .file(emptyFile)
+                .file(jsonFile)).andExpect(status().isOk());
+
 
         // Validate the LibMediaItem in the database
         List<LibMediaItem> libMediaItemList = libMediaItemRepository.findAll();

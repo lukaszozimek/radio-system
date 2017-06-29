@@ -1,11 +1,11 @@
 package io.protone.library.mapper;
 
 
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
-import io.protone.library.domain.LibImageItem;
 import io.protone.library.domain.LibLabel;
 import io.protone.library.domain.enumeration.LibAlbumTypeEnum;
 import org.mapstruct.*;
@@ -45,11 +45,11 @@ public interface LibAlbumMapper {
         entity.setNetwork(corNetwork);
     }
 
-    default LibImageItem mapLIBImage(Long id) {
+    default CorImageItem mapCorImageItem(Long id) {
         if (id == null) {
             return null;
         }
-        LibImageItem lIBImageItem = new LibImageItem();
+        CorImageItem lIBImageItem = new CorImageItem();
         lIBImageItem.setId(id);
         return lIBImageItem;
     }

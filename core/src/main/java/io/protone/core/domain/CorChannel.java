@@ -42,6 +42,11 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    @PodamExclude
+    private CorImageItem corImageItem;
+
     @ManyToOne
     @PodamExclude
     @JsonIgnore

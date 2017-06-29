@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -60,6 +61,10 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     @Column(name = "resetdate")
     private ZonedDateTime resetdate;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    @PodamExclude
+    private CorImageItem corImageItem;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)

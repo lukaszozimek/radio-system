@@ -47,9 +47,6 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
     @ManyToOne
     private CorNetwork network;
 
-    @ManyToOne
-    private LibImageItem imageItem;
-
     public Long getId() {
         return id;
     }
@@ -136,18 +133,6 @@ public class LibImageObject  extends AbstractAuditingEntity implements Serializa
         return this;
     }
 
-    public LibImageItem getImageItem() {
-        return imageItem;
-    }
-
-    public void setImageItem(LibImageItem libImageItem) {
-        this.imageItem = libImageItem;
-    }
-
-    public LibImageObject imageItem(LibImageItem libImageItem) {
-        this.imageItem = libImageItem;
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

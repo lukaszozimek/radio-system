@@ -1,16 +1,20 @@
 package io.protone.library.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibArtistTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A LibArtist.
@@ -42,6 +46,15 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     private CorNetwork network;
+
+    @PodamExclude
+    @OneToMany
+    @JoinTable(
+            name = "lib_artist_cor_image_item",
+            joinColumns = @JoinColumn(name = "lib_artist_id"),
+            inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
+    )
+    private Set<CorImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -89,7 +102,13 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
         this.description = description;
         return this;
     }
+    public Set<CorImageItem> getImageItems() {
+        return imageItems;
+    }
 
+    public void setImageItems(Set<CorImageItem> imageItems) {
+        this.imageItems = imageItems;
+    }
     public CorNetwork getNetwork() {
         return network;
     }
@@ -132,4 +151,6 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
             ", description='" + description + "'" +
             '}';
     }
+
+
 }

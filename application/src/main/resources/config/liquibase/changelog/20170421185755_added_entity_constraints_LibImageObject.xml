@@ -14,12 +14,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_cloud_object"/>
 
-        <addForeignKeyConstraint baseColumnNames="image_item_id"
-                                 baseTableName="lib_image_object"
-                                 constraintName="fk_lib_image_object_image_item_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_image_item"/>
-
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="lib_image_object"
                                  constraintName="fk_lib_image_object_network_id"

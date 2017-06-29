@@ -44,6 +44,11 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    @PodamExclude
+    private CorImageItem corImageItem;
+
     @ManyToMany(mappedBy = "networks")
     @JsonIgnore
     @PodamExclude

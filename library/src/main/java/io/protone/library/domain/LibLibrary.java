@@ -2,6 +2,7 @@ package io.protone.library.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -65,11 +66,11 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_library_lib_image_item",
+        name = "lib_library_cor_image_item",
         joinColumns = @JoinColumn(name = "lib_library_id"),
-        inverseJoinColumns = @JoinColumn(name = "lib_image_item_id")
+        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
-    private Set<LibImageItem> imageItems = new HashSet<>();
+    private Set<CorImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;

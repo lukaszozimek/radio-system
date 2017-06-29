@@ -1,6 +1,5 @@
 package io.protone.application.web.api.traffic.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.application.web.api.traffic.TraMediaPlanResource;
 import io.protone.application.web.rest.util.HeaderUtil;
@@ -70,12 +69,10 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     @Override
     public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                  @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO") String traMediaPlanDescriptorDTO,
+                                                                                  @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO")@Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
                                                                                   @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException {
-        TraMediaPlanDescriptorDTO traMediaPlanDescriptorDeserialized = objectMapper.readValue(traMediaPlanDescriptorDTO, new TypeReference<TraMediaPlanDescriptorDTO>() {
-        });
-        validate(traMediaPlanDescriptorDeserialized);
-        TraMediaPlanDescriptor traMediaPlanDescriptor = traMediaPlanDescriptorMapper.DTO2DB(traMediaPlanDescriptorDeserialized);
+
+        TraMediaPlanDescriptor traMediaPlanDescriptor = traMediaPlanDescriptorMapper.DTO2DB(traMediaPlanDescriptorDTO);
         if (traMediaPlanDescriptor == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraMediaPlanDTO", "wrongSchema", "Can't add Element if TraMediaPlanDescriptorDTO doesn't exist")).body(null);
         }

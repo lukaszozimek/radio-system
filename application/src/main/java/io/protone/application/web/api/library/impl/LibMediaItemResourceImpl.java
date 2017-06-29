@@ -1,13 +1,10 @@
 package io.protone.application.web.api.library.impl;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.application.web.api.library.LibMediaItemResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
-import io.protone.core.util.ProtoneObjectMapper;
 import io.protone.library.api.dto.LibMediaItemDTO;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.mapper.LibItemMapper;
@@ -26,12 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
+import javax.validation.*;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
@@ -57,33 +50,39 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     @Inject
     private CorNetworkService corNetworkService;
 
-    private ObjectMapper objectMapper;
-
-
-    @PostConstruct
-    public void initialize() {
-        objectMapper = new ProtoneObjectMapper();
-    }
-
     @Override
-    public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                              @ApiParam(value = "mediaItem", required = true) String mediaItem,
-                                                                                              @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
-        LibMediaItemDTO libMediaItemDTO = deserializeDtoObjectFromRequestPart(mediaItem);
-        validate(libMediaItemDTO);
+    public ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                        @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
+                                                                                                        @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
+                                                                                                        @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
 
-        if (libMediaItemDTO.getId() == null) {
+        if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
 
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        LibMediaItem requestEntity = libMediaItemMapper.DTO2DB(libMediaItemDTO, corNetwork);
+        LibMediaItem requestEntity = libMediaItemMapper.DTO2DB(mediaItem, corNetwork);
         LibMediaItem entity = libItemService.update(covers, requestEntity, corNetwork);
         LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
         return ResponseEntity.ok()
                 .body(response);
     }
+
+    @Override
+    public ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(String networkShortcut, String libraryPrefix, String idx, LibMediaItemDTO mediaItem) throws IOException {
+        if (mediaItem.getId() == null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
+
+        }
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        LibMediaItem requestEntity = libMediaItemMapper.DTO2DB(mediaItem, corNetwork);
+        LibMediaItem entity = libItemService.update(requestEntity, corNetwork);
+        LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
+        return ResponseEntity.ok()
+                .body(response);
+    }
+
 
     @Override
     public ResponseEntity<List<LibMediaItemDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -208,9 +207,4 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
     }
 
-    private LibMediaItemDTO deserializeDtoObjectFromRequestPart(String mediaItem) throws IOException {
-        LibMediaItemDTO libMediaItemDTO = objectMapper.readValue(mediaItem, new TypeReference<LibMediaItemDTO>() {
-        });
-        return libMediaItemDTO;
-    }
 }

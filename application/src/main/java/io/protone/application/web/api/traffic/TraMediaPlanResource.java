@@ -2,6 +2,7 @@ package io.protone.application.web.api.traffic;
 
 
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
+import io.protone.traffic.api.dto.TraMediaPlanDescriptorDTO;
 import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
 import io.swagger.annotations.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -37,7 +38,7 @@ public interface TraMediaPlanResource {
         method = RequestMethod.POST)
     ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                           @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO") String traMediaPlanDescriptorDTO,
+                                                                           @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO")@Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
                                                                            @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException;
 
 

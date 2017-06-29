@@ -2,6 +2,7 @@ package io.protone.library.domain;
 
 
 import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibAlbumTypeEnum;
 import org.hibernate.annotations.Cache;
@@ -60,11 +61,11 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_album_lib_image_item",
+        name = "lib_album_cor_image_item",
         joinColumns = @JoinColumn(name = "lib_album_id"),
-        inverseJoinColumns = @JoinColumn(name = "lib_image_item_id")
+        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
-    private Set<LibImageItem> imageItems = new HashSet<>();
+    private Set<CorImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -126,15 +127,15 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public Set<LibImageItem> getCover() {
+    public Set<CorImageItem> getCover() {
         return imageItems;
     }
 
-    public void setCover(Set<LibImageItem> libImageItem) {
+    public void setCover(Set<CorImageItem> libImageItem) {
         this.imageItems = libImageItem;
     }
 
-    public LibAlbum cover(Set<LibImageItem> libImageItem) {
+    public LibAlbum cover(Set<CorImageItem> libImageItem) {
         this.imageItems = libImageItem;
         return this;
     }

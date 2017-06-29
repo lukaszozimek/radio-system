@@ -8,28 +8,5 @@
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="library_id"
-                                 baseTableName="lib_image_item"
-                                 constraintName="fk_lib_image_item_library_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="lib_library"/>
-
-        <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_image_item"
-                                 constraintName="fk_lib_image_item_network_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_network"/>
-
-        <addForeignKeyConstraint baseColumnNames="created_by_id"
-                                 baseTableName="lib_image_item"
-                                 constraintName="fk_lib_image_item_created_by_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
-
-        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
-                                 baseTableName="lib_image_item"
-                                 constraintName="fk_lib_image_item_modified_by_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>
