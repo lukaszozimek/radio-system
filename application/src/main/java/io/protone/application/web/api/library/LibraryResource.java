@@ -1,6 +1,7 @@
 package io.protone.application.web.api.library;
 
 
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.api.dto.LibLibraryDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public interface LibraryResource {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<LibLibraryDTO> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
+                                                        @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "getAllLibraries", notes = "", response = LibLibraryDTO.class, responseContainer = "List", tags = {"LIBRARY", "CORE",})
@@ -57,7 +58,7 @@ public interface LibraryResource {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
+                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags = {"LIBRARY",})
@@ -112,7 +113,7 @@ public interface LibraryResource {
         method = RequestMethod.PUT)
     ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                  @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
+                                                                  @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "createLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
@@ -128,7 +129,7 @@ public interface LibraryResource {
         method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException;
+                                                                   @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "deleteLibraryForChannel", notes = "", response = Void.class, tags = {"LIBRARY",})

@@ -6,10 +6,12 @@ import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -29,7 +31,9 @@ public interface TraAdvertisementResource {
         consumes = {"application/json"},
         method = RequestMethod.PUT)
     ResponseEntity<TraAdvertisementDTO> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                    @ApiParam(value = "traAdvertisementDTO", required = true) @RequestBody TraAdvertisementDTO traAdvertisementDTO) throws URISyntaxException;
+                                                                    @ApiParam(value = "traAdvertisementDTO", required = true) @RequestPart("traAdvertisementDTO") String traAdvertisementDTO,
+                                                                    @ApiParam(value = "commercial") @RequestPart("commercial") MultipartFile commercial
+    ) throws URISyntaxException, IOException;
 
 
     @ApiOperation(value = "createAdvertisement", notes = "", response = TraAdvertisementDTO.class, tags = {"TRAFFIC",})
@@ -44,7 +48,8 @@ public interface TraAdvertisementResource {
         consumes = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraAdvertisementDTO> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "traAdvertisementDTO", required = true) @RequestBody TraAdvertisementDTO traAdvertisementDTO) throws URISyntaxException;
+                                                                     @ApiParam(value = "traAdvertisementDTO", required = true) @RequestPart("traAdvertisementDTO") String traAdvertisementDTO,
+                                                                     @ApiParam(value = "commercial") @RequestPart("commercial") MultipartFile commercial) throws URISyntaxException, IOException;
 
 
     @ApiOperation(value = "getAllAdvertisements", notes = "", response = TraAdvertisementDTO.class, responseContainer = "List", tags = {"TRAFFIC",})

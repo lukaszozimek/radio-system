@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * LibMediaItemDTO
@@ -58,6 +57,8 @@ public class LibMediaItemDTO implements Serializable {
 
     private LibTrackDTO track = null;
 
+    private List<LibImageItemDTO> libImageItem = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -65,6 +66,7 @@ public class LibMediaItemDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public LibMediaItemDTO album(LibAlbumDTO album) {
         this.album = album;
@@ -421,75 +423,98 @@ public class LibMediaItemDTO implements Serializable {
         this.track = track;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        LibMediaItemDTO libMediaItemDTO = (LibMediaItemDTO) o;
-        return Objects.equals(this.album, libMediaItemDTO.album) &&
-            Objects.equals(this.artist, libMediaItemDTO.artist) &&
-            Objects.equals(this.authors, libMediaItemDTO.authors) &&
-            Objects.equals(this.composers, libMediaItemDTO.composers) &&
-            Objects.equals(this.idx, libMediaItemDTO.idx) &&
-            Objects.equals(this.label, libMediaItemDTO.label) &&
-            Objects.equals(this.length, libMediaItemDTO.length) &&
-            Objects.equals(this.library, libMediaItemDTO.library) &&
-            Objects.equals(this.markers, libMediaItemDTO.markers) &&
-            Objects.equals(this.name, libMediaItemDTO.name) &&
-            Objects.equals(this.properties, libMediaItemDTO.properties) &&
-            Objects.equals(this.itemType, libMediaItemDTO.itemType) &&
-            Objects.equals(this.state, libMediaItemDTO.state) &&
-            Objects.equals(this.stream, libMediaItemDTO.stream) &&
-            Objects.equals(this.tags, libMediaItemDTO.tags) &&
-            Objects.equals(this.id, libMediaItemDTO.id) &&
-            Objects.equals(this.track, libMediaItemDTO.track);
+    public List<LibImageItemDTO> getLibImageItem() {
+        return libImageItem;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(album, artist, authors, composers, idx, label, length, library, markers, name, properties, itemType, state, stream, tags, track, id);
+    public void setLibImageItem(List<LibImageItemDTO> libImageItem) {
+        this.libImageItem = libImageItem;
+    }
+
+    public LibMediaItemDTO addImage(LibImageItemDTO libImageItemDTO) {
+        this.libImageItem.add(libImageItemDTO);
+        return this;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class LibMediaItemDTO {\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    album: ").append(toIndentedString(album)).append("\n");
-        sb.append("    artist: ").append(toIndentedString(artist)).append("\n");
-        sb.append("    authors: ").append(toIndentedString(authors)).append("\n");
-        sb.append("    composers: ").append(toIndentedString(composers)).append("\n");
-        sb.append("    idx: ").append(toIndentedString(idx)).append("\n");
-        sb.append("    label: ").append(toIndentedString(label)).append("\n");
-        sb.append("    length: ").append(toIndentedString(length)).append("\n");
-        sb.append("    library: ").append(toIndentedString(library)).append("\n");
-        sb.append("    markers: ").append(toIndentedString(markers)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
-        sb.append("    itemType: ").append(toIndentedString(itemType)).append("\n");
-        sb.append("    state: ").append(toIndentedString(state)).append("\n");
-        sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
-        sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
-        sb.append("    track: ").append(toIndentedString(track)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "LibMediaItemDTO{" +
+            "id=" + id +
+            ", album=" + album +
+            ", artist=" + artist +
+            ", authors=" + authors +
+            ", composers=" + composers +
+            ", idx='" + idx + '\'' +
+            ", command='" + command + '\'' +
+            ", description='" + description + '\'' +
+            ", label=" + label +
+            ", length=" + length +
+            ", library=" + library +
+            ", markers=" + markers +
+            ", name='" + name + '\'' +
+            ", properties=" + properties +
+            ", itemType=" + itemType +
+            ", state=" + state +
+            ", stream='" + stream + '\'' +
+            ", tags=" + tags +
+            ", track=" + track +
+            ", libImageItem=" + libImageItem +
+            '}';
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LibMediaItemDTO that = (LibMediaItemDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (album != null ? !album.equals(that.album) : that.album != null) return false;
+        if (artist != null ? !artist.equals(that.artist) : that.artist != null) return false;
+        if (authors != null ? !authors.equals(that.authors) : that.authors != null) return false;
+        if (composers != null ? !composers.equals(that.composers) : that.composers != null) return false;
+        if (idx != null ? !idx.equals(that.idx) : that.idx != null) return false;
+        if (command != null ? !command.equals(that.command) : that.command != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (label != null ? !label.equals(that.label) : that.label != null) return false;
+        if (length != null ? !length.equals(that.length) : that.length != null) return false;
+        if (library != null ? !library.equals(that.library) : that.library != null) return false;
+        if (markers != null ? !markers.equals(that.markers) : that.markers != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (properties != null ? !properties.equals(that.properties) : that.properties != null) return false;
+        if (itemType != that.itemType) return false;
+        if (state != that.state) return false;
+        if (stream != null ? !stream.equals(that.stream) : that.stream != null) return false;
+        if (tags != null ? !tags.equals(that.tags) : that.tags != null) return false;
+        if (track != null ? !track.equals(that.track) : that.track != null) return false;
+        return libImageItem != null ? libImageItem.equals(that.libImageItem) : that.libImageItem == null;
     }
 
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (album != null ? album.hashCode() : 0);
+        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (authors != null ? authors.hashCode() : 0);
+        result = 31 * result + (composers != null ? composers.hashCode() : 0);
+        result = 31 * result + (idx != null ? idx.hashCode() : 0);
+        result = 31 * result + (command != null ? command.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (label != null ? label.hashCode() : 0);
+        result = 31 * result + (length != null ? length.hashCode() : 0);
+        result = 31 * result + (library != null ? library.hashCode() : 0);
+        result = 31 * result + (markers != null ? markers.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (properties != null ? properties.hashCode() : 0);
+        result = 31 * result + (itemType != null ? itemType.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (stream != null ? stream.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        result = 31 * result + (track != null ? track.hashCode() : 0);
+        result = 31 * result + (libImageItem != null ? libImageItem.hashCode() : 0);
+        return result;
+    }
 
 }
 

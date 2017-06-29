@@ -1,10 +1,13 @@
 package io.protone.application.web.api.traffic.impl;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.application.web.api.traffic.TraAdvertisementResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
+import io.protone.core.util.ProtoneObjectMapper;
 import io.protone.traffic.api.dto.TraAdvertisementDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.mapper.TraAdvertisementMapper;
@@ -16,11 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -39,27 +44,40 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
     @Inject
     private CorNetworkService corNetworkService;
 
+    @Inject
+    private ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void initialize() {
+        objectMapper = new ProtoneObjectMapper();
+    }
+
     @Override
     public ResponseEntity<TraAdvertisementDTO> updateAdvertisementUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "traAdvertisementDTO", required = true) @Valid @RequestBody TraAdvertisementDTO traAdvertisementDTO) throws URISyntaxException {
+                                                                           @ApiParam(value = "traAdvertisementDTO", required = true) @RequestPart("traAdvertisementDTO") String traAdvertisementDTOString,
+                                                                           @ApiParam(value = "commercial") @RequestPart("commercial") MultipartFile commercial) throws URISyntaxException, IOException {
+        TraAdvertisementDTO traAdvertisementDTO = deserializeDtoObjectFromRequestPart(traAdvertisementDTOString);
         log.debug("REST request to update TraAdvertisement : {}, for Network: {}", traAdvertisementDTO, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (traAdvertisementDTO.getId() == null) {
-            return createAdvertisementUsingPOST(networkShortcut, traAdvertisementDTO);
+            return createAdvertisementUsingPOST(networkShortcut, traAdvertisementDTOString, commercial);
         }
         TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementDTO, corNetwork);
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);
         TraAdvertisementDTO response = traAdvertisementMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<TraAdvertisementDTO> createAdvertisementUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                            @ApiParam(value = "traAdvertisementDTO", required = true) @Valid @RequestBody TraAdvertisementDTO traAdvertisementDTO) throws URISyntaxException {
+                                                                            @ApiParam(value = "traAdvertisementDTO", required = true) @RequestPart("traAdvertisementDTO") String traAdvertisementDTOString,
+                                                                            @ApiParam(value = "commercial") @RequestPart("commercial") MultipartFile commercial) throws URISyntaxException, IOException {
+        TraAdvertisementDTO traAdvertisementDTO = deserializeDtoObjectFromRequestPart(traAdvertisementDTOString);
+
         log.debug("REST request to saveCorContact TraAdvertisement : {}, for Network: {}", traAdvertisementDTO, networkShortcut);
         if (traAdvertisementDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraAdvertisement", "idexists", "A new TraAdvertisement cannot already have an ID")).body(null);
@@ -69,7 +87,7 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);
         TraAdvertisementDTO response = traAdvertisementMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/advertisement/" + response.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -79,10 +97,10 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
         List<TraAdvertisement> entity = traAdvertisementService.getAllAdvertisement(networkShortcut, pagable);
         List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -98,10 +116,10 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
         TraAdvertisement entity = traAdvertisementService.getAdvertisement(idx, networkShortcut);
         TraAdvertisementDTO response = traAdvertisementMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -112,10 +130,16 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
         List<TraAdvertisement> entity = traAdvertisementService.getCustomerAdvertisements(customerShortcut, networkShortcut, pagable);
         List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    private TraAdvertisementDTO deserializeDtoObjectFromRequestPart(String traAdvertisment) throws IOException {
+        TraAdvertisementDTO traAdvertisementDTO = objectMapper.readValue(traAdvertisment, new TypeReference<TraAdvertisementDTO>() {
+        });
+        return traAdvertisementDTO;
     }
 
 }

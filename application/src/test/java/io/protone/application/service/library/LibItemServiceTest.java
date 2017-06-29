@@ -108,7 +108,7 @@ public class LibItemServiceTest {
         corUser.setChannels(null);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser = corUserRepository.saveAndFlush(corUser);
-        doNothing().when(s3Client).delete(anyObject());
+        doNothing().when(s3Client).delete(anyString(), anyObject());
         doNothing().when(s3Client).upload(anyString(), anyObject(), anyString());
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
 

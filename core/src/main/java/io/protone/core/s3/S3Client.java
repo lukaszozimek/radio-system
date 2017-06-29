@@ -42,7 +42,10 @@ public class S3Client {
 
     public String makeBucket(String bucketName) throws CreateBucketException {
         try {
-            getClient().makeBucket(bucketName);
+            boolean isExist = getClient().bucketExists(bucketName);
+            if (!isExist) {
+                getClient().makeBucket(bucketName);
+            }
             return bucketName;
         } catch (InvalidBucketNameException e) {
             throw new CreateBucketException(e.getMessage());
@@ -121,11 +124,38 @@ public class S3Client {
         }
     }
 
+    public void upload(String bucketName, String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {
 
-    public InputStream download(String uuid) throws DownloadException, S3Exception {
         try {
-            ObjectStat so = getClient().statObject(applicationProperties.getS3().getBucket(), uuid);
-            return getClient().getObject(applicationProperties.getS3().getBucket(), uuid);
+            getClient().putObject(bucketName, uuid, bais, bais.available(), contentType);
+        } catch (InvalidBucketNameException e) {
+            throw new UploadException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new UploadException(e.getMessage());
+        } catch (IOException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new UploadException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new UploadException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new UploadException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InternalException e) {
+            throw new UploadException(e.getMessage());
+        } catch (InvalidArgumentException e) {
+            throw new UploadException(e.getMessage());
+        }
+    }
+
+
+    public InputStream download(String minioBucket, String uuid) throws DownloadException, S3Exception {
+        try {
+            ObjectStat so = getClient().statObject(minioBucket, uuid);
+            return getClient().getObject(minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new DownloadException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -149,10 +179,10 @@ public class S3Client {
         }
     }
 
-    public void delete(String uuid) throws DeleteException, S3Exception {
+    public void delete(String minioBucket, String uuid) throws DeleteException, S3Exception {
         try {
-            ObjectStat so = getClient().statObject(applicationProperties.getS3().getBucket(), uuid);
-            getClient().removeObject(applicationProperties.getS3().getBucket(), uuid);
+            ObjectStat so = getClient().statObject(minioBucket, uuid);
+            getClient().removeObject(minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new DeleteException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -171,6 +201,32 @@ public class S3Client {
             throw new DeleteException(e.getMessage());
         } catch (InternalException e) {
             throw new DeleteException(e.getMessage());
+        }
+    }
+
+    public String getCover(String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
+        try {
+            return getClient().presignedGetObject(minioBucket, uuid);
+        } catch (InvalidBucketNameException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (IOException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InternalException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InvalidExpiresRangeException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
         }
     }
 }

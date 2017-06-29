@@ -72,7 +72,7 @@ public class LibVideoFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shouldDownloadVideoFile() throws Exception {
         //when
-        when(s3Client.download(anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
+        when(s3Client.download(anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
         ReflectionTestUtils.setField(libVideoFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libVideoFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());

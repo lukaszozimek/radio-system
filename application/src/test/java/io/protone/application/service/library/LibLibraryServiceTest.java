@@ -4,17 +4,22 @@ package io.protone.application.service.library;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.s3.S3Client;
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.service.LibLibraryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -22,6 +27,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 29/04/2017.
@@ -42,16 +49,23 @@ public class LibLibraryServiceTest {
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
+    @Mock
+    private S3Client s3Client;
+
     private CorNetwork corNetwork;
 
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
+        ReflectionTestUtils.setField(libLibraryService, "s3Client", s3Client);
 
     }
 
@@ -128,7 +142,7 @@ public class LibLibraryServiceTest {
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void shouldNotSaveTwoLibraryWithSameShortNameInOneNetwork() {
+    public void shouldNotSaveTwoLibraryWithSameShortNameInOneNetwork() throws CreateBucketException {
 
         /// /when
         LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
@@ -147,7 +161,7 @@ public class LibLibraryServiceTest {
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void shouldNotSaveTwoLibraryWithSameNameInOneNetwork() {
+    public void shouldNotSaveTwoLibraryWithSameNameInOneNetwork() throws CreateBucketException {
 
         /// /when
         LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
@@ -166,7 +180,7 @@ public class LibLibraryServiceTest {
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void shouldNotSaveTwoLibraryWithSamePrefixInOneNetwork() {
+    public void shouldNotSaveTwoLibraryWithSamePrefixInOneNetwork() throws CreateBucketException {
 
         /// /when
         LibLibrary libLibrary = factory.manufacturePojo(LibLibrary.class);
@@ -185,7 +199,7 @@ public class LibLibraryServiceTest {
     }
 
     @Test
-    public void shouldSaveTwoLibraryWithSameShortNameInDifferentNetwork() {
+    public void shouldSaveTwoLibraryWithSameShortNameInDifferentNetwork() throws CreateBucketException {
         //given
         CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
         corNetworkSecond.setId(null);

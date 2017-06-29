@@ -71,7 +71,7 @@ public class LibDocumentFileServiceTest extends LibFileServiceBaseTest {
     public void shoulDownloadDocumentFile() throws Exception {
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls");
-        when(s3Client.download(anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
+        when(s3Client.download(anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
         ReflectionTestUtils.setField(libDocumentFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libDocumentFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());

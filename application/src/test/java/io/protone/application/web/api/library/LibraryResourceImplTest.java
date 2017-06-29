@@ -6,6 +6,7 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.library.impl.LibraryResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibLibraryDTO;
 import io.protone.library.domain.LibLibrary;
@@ -17,6 +18,7 @@ import io.protone.library.service.LibLibraryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +36,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -76,6 +80,9 @@ public class LibraryResourceImplTest {
     @Autowired
     private LibLibraryService libLibraryService;
 
+    @Mock
+    private S3Client s3Client;
+
     @Autowired
     private CorNetworkService corNetworkService;
 
@@ -94,6 +101,7 @@ public class LibraryResourceImplTest {
     private MockMvc restLibLibraryMockMvc;
 
     private LibLibrary libLibrary;
+
     private CorNetwork corNetwork;
 
     /**
@@ -113,17 +121,17 @@ public class LibraryResourceImplTest {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws Exception{
         MockitoAnnotations.initMocks(this);
         LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-
+        ReflectionTestUtils.setField(libLibraryService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
         ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
 
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
         corNetwork.setId(1L);
-
+        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
         this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

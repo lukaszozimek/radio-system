@@ -2,6 +2,8 @@ package io.protone.library.service;
 
 
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.s3.S3Client;
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.mapper.LibLibraryMapper;
 import io.protone.library.repository.LibLibraryRepository;
@@ -28,6 +30,8 @@ public class LibLibraryService {
 
     @Inject
     private LibLibraryMapper customLibLibraryMapper;
+    @Inject
+    private S3Client s3Client;
 
     public List<LibLibrary> findLibraries(String networkShortcut, Pageable pageable) {
         return libraryRepository.findAllByNetwork_Shortcut(networkShortcut, pageable);
@@ -55,10 +59,10 @@ public class LibLibraryService {
         libraryRepository.deleteByNetwork_ShortcutAndChannels_ShortcutInAndShortcut(networkShortcut, channelShortcut, libraryShortcut);
     }
 
-    public LibLibrary createOrUpdateLibrary(LibLibrary libLibrary) {
+    public LibLibrary createOrUpdateLibrary(LibLibrary libLibrary) throws CreateBucketException {
         log.debug("Persisting LibLibrary: {}", libLibrary);
+        s3Client.makeBucket(libLibrary.getShortcut());
         libLibrary = libraryRepository.saveAndFlush(libLibrary);
-
         return libLibrary;
     }
 
