@@ -14,7 +14,6 @@
     <artifactId>protone</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Protone</name>
 
     <prerequisites>
         <maven>3.0.0</maven>
@@ -27,7 +26,6 @@
         <module>scheduler</module>
         <module>playout</module>
         <module>application</module>
-        <module>tools</module>
     </modules>
     <properties>
         <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
