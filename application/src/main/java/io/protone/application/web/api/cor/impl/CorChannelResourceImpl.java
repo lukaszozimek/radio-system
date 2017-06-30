@@ -17,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -49,7 +51,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
                                                                @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException {
         log.debug("REST request to update CORChannel : {}", channelDTO);
         if (channelDTO.getId() == null) {
-            return createChannelUsingPOST(networkShortcut, channelDTO);
+            return createChannelUsingPOST(networkShortcut, channelDTO, null);
         }
         CorNetwork network = networkService.findNetwork(networkShortcut);
 
@@ -57,12 +59,19 @@ public class CorChannelResourceImpl implements CorChannelResource {
         corChannel = channelService.save(corChannel);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getShortcut().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getShortcut().toString()))
+                .body(result);
     }
 
     @Override
-    public ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException {
+    public ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(String networkShortcut, String channelShortcut, CorChannelDTO channelDTO, MultipartFile logo) throws URISyntaxException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "channelDTO", required = true) @Valid @RequestPart("channelDTO") CorChannelDTO channelDTO,
+                                                                @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException {
         log.debug("REST request to saveCorContact CORChannel : {}", channelDTO);
         if (channelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
@@ -73,8 +82,8 @@ public class CorChannelResourceImpl implements CorChannelResource {
         corChannel = channelService.save(corChannel);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel" + result.getShortcut()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))
+                .body(result);
     }
 
     @Override
@@ -83,7 +92,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
         log.debug("REST request to get all CORChannels");
         List<CorChannel> corChannels = channelService.findAllChannel(networkShortcut, pagable);
         return ResponseEntity.ok()
-            .body(corChannelMapper.DBs2DTOs(corChannels));
+                .body(corChannelMapper.DBs2DTOs(corChannels));
     }
 
     @Override
@@ -92,10 +101,10 @@ public class CorChannelResourceImpl implements CorChannelResource {
         CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

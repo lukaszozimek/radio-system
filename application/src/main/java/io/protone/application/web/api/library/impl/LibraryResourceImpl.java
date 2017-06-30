@@ -18,7 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -42,18 +45,28 @@ public class LibraryResourceImpl implements LibraryResource {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<LibLibraryDTO> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException, CreateBucketException {
+    public ResponseEntity<LibLibraryDTO> updateLibraryWithOutCoverUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "library", required = true)
+                                                                           @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException, CreateBucketException {
         log.debug("REST request to update library: {}", library);
 
         if (library.getId() == null) {
-            return createLibraryUsingPOST(networkShortcut, library);
+            return createLibraryUsingPOST(networkShortcut, library, null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         LibLibrary entity = libLibraryMapper.DTO2DB(library, corNetwork);
         LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
         LibLibraryDTO libraryDAO = libLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
-            .body(libraryDAO);
+                .body(libraryDAO);
+    }
+
+    @Override
+    public ResponseEntity<LibLibraryDTO> updateLibraryWithCoverUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                         @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
+                                                                         @ApiParam(value = "cover", required = true) @RequestPart("cover") MultipartFile logo) throws URISyntaxException, CreateBucketException {
+        return null;
     }
 
     @Override
@@ -62,21 +75,23 @@ public class LibraryResourceImpl implements LibraryResource {
         log.debug("REST request to get all LibLibraryDTO");
         List<LibLibrary> libraries = libLibraryService.findLibraries(networkShortcut, pagable);
         return ResponseEntity.ok()
-            .body(libLibraryMapper.DBs2DTOs(libraries));
+                .body(libLibraryMapper.DBs2DTOs(libraries));
     }
 
     @Override
-    public ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
-        log.debug("REST request to create library: {}", library);
-        if (library.getId() != null) {
+    public ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
+                                                                @ApiParam(value = "cover", required = true) @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException {
+        log.debug("REST request to create library: {}", libraryDTO);
+        if (libraryDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLibrary", "idexists", "A new libLibrary cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        LibLibrary entity = libLibraryMapper.DTO2DB(library, corNetwork);
+        LibLibrary entity = libLibraryMapper.DTO2DB(libraryDTO, corNetwork);
         LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
         LibLibraryDTO libraryDAO = libLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/library/" + libraryDAO.getShortcut()))
-            .body(libraryDAO);
+                .body(libraryDAO);
     }
 
     @Override
@@ -92,10 +107,10 @@ public class LibraryResourceImpl implements LibraryResource {
         LibLibrary library = libLibraryService.findLibrary(networkShortcut, libraryPrefix);
         LibLibraryDTO dto = libLibraryMapper.DB2DTO(library);
         return Optional.ofNullable(dto)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -105,13 +120,13 @@ public class LibraryResourceImpl implements LibraryResource {
         log.debug("REST request to get all LibLibraryDTO");
         List<LibLibrary> libraries = libLibraryService.findLibrariesByChannel(networkShortcut, channelShortcut, pagable);
         return ResponseEntity.ok()
-            .body(libLibraryMapper.DBs2DTOs(libraries));
+                .body(libLibraryMapper.DBs2DTOs(libraries));
     }
 
     @Override
-    public ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
+    public ResponseEntity<LibLibraryDTO> updateLibraryWithoutCoverForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                     @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to update library: {}", library);
 
         if (library.getId() == null) {
@@ -122,7 +137,16 @@ public class LibraryResourceImpl implements LibraryResource {
         LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
         LibLibraryDTO libraryDAO = libLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
-            .body(libraryDAO);
+                .body(libraryDAO);
+    }
+
+    @Override
+    public ResponseEntity<LibLibraryDTO> updateLibraryWithCoverForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                   @ApiParam(value = "library", required = true) @Valid @RequestPart("library") LibLibraryDTO library,
+                                                                                   @ApiParam(value = "cover", required = true) @Valid @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException {
+        return null;
     }
 
     @Override
@@ -138,7 +162,7 @@ public class LibraryResourceImpl implements LibraryResource {
         LibLibrary resultDB = libLibraryService.createOrUpdateLibrary(entity);
         LibLibraryDTO libraryDAO = libLibraryMapper.DB2DTO(resultDB);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/library/" + libraryDAO.getShortcut()))
-            .body(libraryDAO);
+                .body(libraryDAO);
     }
 
     @Override
@@ -146,7 +170,7 @@ public class LibraryResourceImpl implements LibraryResource {
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix) {
         log.debug("REST request to delete LIBLibrary : {}", libraryPrefix);
-        libLibraryService.deleteLibrary(libraryPrefix,channelShortcut, networkShortcut);
+        libLibraryService.deleteLibrary(libraryPrefix, channelShortcut, networkShortcut);
         return ResponseEntity.ok().build();
 
     }
@@ -159,9 +183,9 @@ public class LibraryResourceImpl implements LibraryResource {
         LibLibrary library = libLibraryService.findLibraryByChannel(networkShortcut, channelShortcut, libraryPrefix);
         LibLibraryDTO dto = libLibraryMapper.DB2DTO(library);
         return Optional.ofNullable(dto)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

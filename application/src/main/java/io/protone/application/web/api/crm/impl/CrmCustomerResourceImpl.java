@@ -18,7 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -41,12 +43,12 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     private CrmAccountMapper crmAccountMapper;
 
     @Override
-    public ResponseEntity<CrmAccountDTO> updateCustomerUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
+    public ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
 
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (crmAccountDTO.getId() == null) {
-            return createCustomerUsingPOST(networkShortcut, crmAccountDTO);
+            return createCustomerUsingPOST(networkShortcut, crmAccountDTO, null);
         }
         CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
@@ -55,7 +57,17 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     }
 
     @Override
-    public ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
+    public ResponseEntity<CrmAccountDTO> updateCustomerWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                           @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
+                                                                           @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                 @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
+                                                                 @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException {
         log.debug("REST request to saveCorContact CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
         if (crmAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
@@ -65,7 +77,7 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
         CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + crmAccount.getShortName()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -76,10 +88,10 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
         List<CrmAccountThinDTO> response = crmAccountMapper.DBs2ThinDTOs(entity);
 
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -88,10 +100,10 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
         CrmAccount entity = crmCustomerService.getCustomer(shortName, networkShortcut);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

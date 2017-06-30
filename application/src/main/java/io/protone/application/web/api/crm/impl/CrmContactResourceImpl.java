@@ -18,7 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -42,11 +44,11 @@ public class CrmContactResourceImpl implements CrmContactResource {
 
 
     @Override
-    public ResponseEntity<CrmContactDTO> updateContactUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException {
+    public ResponseEntity<CrmContactDTO> updateContactWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException {
         log.debug("REST request to update CrmContact : {}, for Network: {}", crmContactDTO, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (crmContactDTO.getId() == null) {
-            return createContactUsingPOST(networkShortcut, crmContactDTO);
+            return createContactUsingPOST(networkShortcut, crmContactDTO, null);
         }
         CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corNetwork);
         CrmContact crmContact = crmContactService.saveContact(contact);
@@ -55,7 +57,17 @@ public class CrmContactResourceImpl implements CrmContactResource {
     }
 
     @Override
-    public ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestBody CrmContactDTO crmContactDTO) throws URISyntaxException {
+    public ResponseEntity<CrmContactDTO> updateContactWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
+                                                                          @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
+                                                                          @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
+                                                                @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException {
         log.debug("REST request to saveCorContact CrmContact : {}, for Network: {}", crmContactDTO, networkShortcut);
         if (crmContactDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmContact", "idexists", "A new CrmContact cannot already have an ID")).body(null);
@@ -65,7 +77,7 @@ public class CrmContactResourceImpl implements CrmContactResource {
         crmContactService.saveContact(contact);
         CrmContactDTO response = crmContactMapper.DB2DTO(contact);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/contact/" + crmContactDTO.getShortName()))
-            .body(response);
+                .body(response);
 
     }
 
@@ -76,10 +88,10 @@ public class CrmContactResourceImpl implements CrmContactResource {
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactService.getAllContact(corNetwork.getShortcut(), pagable));
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
 
@@ -89,10 +101,10 @@ public class CrmContactResourceImpl implements CrmContactResource {
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmContactDTO response = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, corNetwork.getShortcut()));
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

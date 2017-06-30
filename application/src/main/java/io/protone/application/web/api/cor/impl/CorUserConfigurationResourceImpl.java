@@ -20,7 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -89,7 +91,8 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     @Override
     public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                              @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
+                                              @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
+                                              @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException {
         log.debug("REST request to saveCorContact User : {}", corUserDTO);
 
         if (corUserDTO.getId() != null) {
@@ -98,18 +101,18 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
         //Lowercase the user login before comparing with database
         if (userRepository.findOneByLogin(corUserDTO.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
-                .body(null);
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
+                    .body(null);
         } else if (userRepository.findOneByEmail(corUserDTO.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
-                .body(null);
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
+                    .body(null);
         } else {
             CorUser newUser = userService.createUser(corUserDTO);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
-                .body(newUser);
+                    .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
+                    .body(newUser);
         }
     }
 
@@ -127,7 +130,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     public ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                          @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
         if (corUserDTO.getId() == null) {
-            return createUserUsingPOST(networkShortcut, corUserDTO);
+            return createUserUsingPOST(networkShortcut, corUserDTO, null);
         }
         log.debug("REST request to update User : {}", corUserDTO);
         Optional<CorUser> existingUser = userRepository.findOneByEmail(corUserDTO.getEmail());
@@ -141,7 +144,15 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
         Optional<CorUserDTO> updatedUser = Optional.of(userService.updateUser(corUserDTO));
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
-            HeaderUtil.createAlert("userManagement.updated", corUserDTO.getLogin()));
+                HeaderUtil.createAlert("userManagement.updated", corUserDTO.getLogin()));
+    }
+
+    @Override
+    public ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "login", required = true) @PathVariable("login") String login,
+                                                                    @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
+                                                                    @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException {
+        return null;
     }
 
 
@@ -164,8 +175,8 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
         log.debug("REST request to get User : {}", login);
         CorNetwork network = corNetworkService.findNetwork(networkShortcut);
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByLoginAndNetwork(login, network)
-                .map(CorUserDTO::new));
+                userService.getUserWithAuthoritiesByLoginAndNetwork(login, network)
+                        .map(CorUserDTO::new));
     }
 
     /**

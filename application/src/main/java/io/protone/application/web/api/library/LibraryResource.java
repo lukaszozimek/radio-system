@@ -6,10 +6,8 @@ import io.protone.library.api.dto.LibLibraryDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
@@ -18,115 +16,153 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface LibraryResource {
 
-    @ApiOperation(value = "updateLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
+    @ApiOperation(value = "updateLibraryWithOutCover", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.PUT)
-    ResponseEntity<LibLibraryDTO> updateLibraryUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<LibLibraryDTO> updateLibraryWithOutCoverUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                    @ApiParam(value = "libraryDTO", required = true) @Valid @RequestBody LibLibraryDTO libraryDTO) throws URISyntaxException, CreateBucketException;
+
+
+    @ApiOperation(value = "updateLibraryWithCover", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<LibLibraryDTO> updateLibraryWithCoverUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                 @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                 @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
+                                                                 @ApiParam(value = "cover", required = true) @RequestPart("cover") MultipartFile cover
+
+    ) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "getAllLibraries", notes = "", response = LibLibraryDTO.class, responseContainer = "List", tags = {"LIBRARY", "CORE",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<List<LibLibraryDTO>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "createLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.POST)
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
+                                                         @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
+                                                         @ApiParam(value = "cover", required = true) @RequestPart("cover") MultipartFile cover
+    ) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "deleteLibrary", notes = "", response = Void.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
+            @ApiResponse(code = 200, message = "OK", response = Void.class),
+            @ApiResponse(code = 204, message = "No Content", response = Void.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}",
-        produces = {"application/json"},
-        method = RequestMethod.DELETE)
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
 
     @ApiOperation(value = "getLibrary", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<LibLibraryDTO> getLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                      @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
     @ApiOperation(value = "getAllLibrariesForChannel", notes = "", response = LibLibraryDTO.class, responseContainer = "List", tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<List<LibLibraryDTO>> getAllLibrariesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "updateLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
+    @ApiOperation(value = "updateLibraryWithoutCoverForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.PUT)
-    ResponseEntity<LibLibraryDTO> updateLibraryForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                  @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
+    ResponseEntity<LibLibraryDTO> updateLibraryWithoutCoverForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                              @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
+
+
+    @ApiOperation(value = "updateLibraryWithCoverForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<LibLibraryDTO> updateLibraryWithCoverForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                            @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+
+                                                                            @ApiParam(value = "library", required = true) @Valid @RequestPart("library") LibLibraryDTO library,
+                                                                           @ApiParam(value = "cover", required = true) @Valid @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException;
 
 
     @ApiOperation(value = "createLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.POST)
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                    @ApiParam(value = "library", required = true) @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException;
@@ -134,13 +170,13 @@ public interface LibraryResource {
 
     @ApiOperation(value = "deleteLibraryForChannel", notes = "", response = Void.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
+            @ApiResponse(code = 200, message = "OK", response = Void.class),
+            @ApiResponse(code = 204, message = "No Content", response = Void.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
-        produces = {"application/json"},
-        method = RequestMethod.DELETE)
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLibraryForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                             @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
@@ -148,13 +184,13 @@ public interface LibraryResource {
 
     @ApiOperation(value = "getLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = LibLibraryDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = LibLibraryDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = LibLibraryDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<LibLibraryDTO> getLibraryForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
