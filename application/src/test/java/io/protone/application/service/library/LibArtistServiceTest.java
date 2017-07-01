@@ -1,6 +1,7 @@
 package io.protone.application.service.library;
 
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
@@ -28,6 +29,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class LibArtistServiceTest {
+
 
     private static final String TEST_NAME = "TEST";
     @Autowired
@@ -151,5 +153,8 @@ public class LibArtistServiceTest {
 
 
     }
-
+    @Test
+    public void shouldSaveArtistWithImage() throws Exception {
+        Assert.notNull(null);
+    }
 }

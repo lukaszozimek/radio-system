@@ -4,12 +4,15 @@ package io.protone.application.web.api.crm;
 import io.protone.crm.api.dto.CrmAccountDTO;
 import io.protone.crm.api.dto.thin.CrmAccountThinDTO;
 import io.swagger.annotations.*;
+import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -29,7 +32,7 @@ public interface CrmCustomerResource {
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException;
+                                                                      @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "updateCustomerWithoutAvatar", notes = "", response = CrmAccountDTO.class, tags = {"CRM"})
@@ -46,7 +49,7 @@ public interface CrmCustomerResource {
     ResponseEntity<CrmAccountDTO> updateCustomerWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                     @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
-                                                                    @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException;
+                                                                    @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "createCustomer", notes = "", response = CrmAccountDTO.class, tags = {"CRM"})
@@ -62,7 +65,7 @@ public interface CrmCustomerResource {
             method = RequestMethod.POST)
     ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                           @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
-                                                          @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException;
+                                                          @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "getAllCustomers", notes = "", response = CrmAccountDTO.class, responseContainer = "List", tags = {"CRM"})

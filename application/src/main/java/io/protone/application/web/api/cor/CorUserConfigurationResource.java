@@ -3,11 +3,14 @@ package io.protone.application.web.api.cor;
 
 import io.protone.core.api.dto.CorUserDTO;
 import io.swagger.annotations.*;
+import org.apache.tika.exception.TikaException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -51,7 +54,7 @@ public interface CorUserConfigurationResource {
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                  @ApiParam(value = "contactStatusPT", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException;
+                                                  @ApiParam(value = "contactStatusPT", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
     @ApiOperation(value = "updateUserWithAvatar", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {
@@ -81,7 +84,7 @@ public interface CorUserConfigurationResource {
             method = RequestMethod.POST)
     ResponseEntity<CorUserDTO> createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                    @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
-                                                   @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException;
+                                                   @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "deleteUser", notes = "", response = Void.class, tags = {"DICTIONARY", "CONFIGURATION",})

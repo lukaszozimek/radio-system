@@ -1,6 +1,7 @@
 package io.protone.application.service.crm;
 
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAddress;
 import io.protone.core.domain.CorNetwork;
@@ -10,6 +11,7 @@ import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.crm.service.CrmCustomerService;
+import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,10 +20,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.xml.sax.SAXException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -327,8 +331,9 @@ public class CrmCustomerServiceTest {
         //assert
         assertNull(localContact);
     }
+
     @Test(expected = DataIntegrityViolationException.class)
-    public void shouldNotSaveTwoCustomerWithSameShortNameInOneNetwork() {
+    public void shouldNotSaveTwoCustomerWithSameShortNameInOneNetwork() throws TikaException, IOException, SAXException {
 
         /// /when
         CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
@@ -347,7 +352,7 @@ public class CrmCustomerServiceTest {
     }
 
     @Test
-    public void shouldSaveTwoCustomerWithSameShortNameInDifferentNetwork() {
+    public void shouldSaveTwoCustomerWithSameShortNameInDifferentNetwork() throws TikaException, IOException, SAXException {
         //given
         CorNetwork corNetworkSecond = factory.manufacturePojo(CorNetwork.class);
         corNetworkSecond.setId(null);
@@ -367,6 +372,15 @@ public class CrmCustomerServiceTest {
         crmAccount = crmCustomerService.saveCustomer(crmAccount);
         crmAccount1 = crmCustomerService.saveCustomer(crmAccount1);
 
+    }
+
+    @Test
+    public void shouldSaveCrmContactWithImage() {
+        Assert.notNull(null);
+
+        //given
+        ///when
+        //then
     }
 
 }

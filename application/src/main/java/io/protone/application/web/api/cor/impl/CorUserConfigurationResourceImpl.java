@@ -15,6 +15,7 @@ import io.protone.core.service.CorMailService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.core.service.CorUserService;
 import io.swagger.annotations.ApiParam;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -92,7 +95,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     @Override
     public ResponseEntity createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                               @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
-                                              @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException {
+                                              @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact User : {}", corUserDTO);
 
         if (corUserDTO.getId() != null) {
@@ -108,7 +111,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
                     .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
                     .body(null);
         } else {
-            CorUser newUser = userService.createUser(corUserDTO);
+            CorUser newUser = userService.createUser(corUserDTO,avatar);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                     .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
@@ -128,7 +131,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     @Override
     public ResponseEntity<CorUserDTO> updateUserUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException {
+                                                         @ApiParam(value = "corUserDTO", required = true) @Valid @RequestBody CorUserDTO corUserDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         if (corUserDTO.getId() == null) {
             return createUserUsingPOST(networkShortcut, corUserDTO, null);
         }

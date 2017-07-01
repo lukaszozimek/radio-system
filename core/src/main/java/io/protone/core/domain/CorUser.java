@@ -43,9 +43,6 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "imageurl")
-    private String imageurl;
-
     @Column(name = "activated")
     private Boolean activated;
 
@@ -164,18 +161,7 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public String getImageurl() {
-        return imageurl;
-    }
 
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
-    }
-
-    public CorUser imageurl(String imageurl) {
-        this.imageurl = imageurl;
-        return this;
-    }
 
     public Boolean isActivated() {
         return activated;
@@ -348,7 +334,6 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
                 ", firstname='" + firstname + "'" +
                 ", lastname='" + lastname + "'" +
                 ", email='" + email + "'" +
-                ", imageurl='" + imageurl + "'" +
                 ", activated='" + activated + "'" +
                 ", langkey='" + langkey + "'" +
                 ", activationkey='" + activationkey + "'" +

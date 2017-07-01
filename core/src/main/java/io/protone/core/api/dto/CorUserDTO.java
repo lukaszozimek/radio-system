@@ -55,7 +55,7 @@ public class CorUserDTO  implements Serializable{
         this.id = corUser.getId();
         this.activated = corUser.isActivated();
         this.authorities = corUser.getAuthorities().stream().map(authority -> authority.getName().toString()).collect(toList());
-        this.imageurl = corUser.getImageurl();
+        this.imageurl = corUser.getCorImageItem().getPublicUrl();
         this.email = corUser.getEmail();
         this.firstName = corUser.getFirstname();
         this.langKey = corUser.getLangkey();

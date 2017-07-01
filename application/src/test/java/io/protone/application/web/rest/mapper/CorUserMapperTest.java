@@ -101,7 +101,7 @@ public class CorUserMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getLogin());
         assertNotNull(entity.getEmail());
-        assertNotNull(entity.getImageurl());
+        assertNotNull(entity.getCorImageItem());
         assertNotNull(entity.isActivated());
         assertNotNull(entity.getAuthorities());
 
@@ -120,7 +120,7 @@ public class CorUserMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getLogin());
             assertNotNull(entity.getEmail());
-            assertNotNull(entity.getImageurl());
+            assertNotNull(entity.getCorImageItem());
             assertNotNull(entity.isActivated());
             assertNotNull(entity.getAuthorities());
 

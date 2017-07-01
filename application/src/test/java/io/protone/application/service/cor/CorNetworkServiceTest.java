@@ -1,5 +1,6 @@
 package io.protone.application.service.cor;
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
@@ -27,6 +28,7 @@ import static org.junit.Assert.*;
 @Transactional
 public class CorNetworkServiceTest {
 
+
     private static final String TEST_NAME = "tet";
     @Autowired
     private CorNetworkService corNetworkService;
@@ -51,7 +53,7 @@ public class CorNetworkServiceTest {
         List<CorNetwork> corNetworkList = corNetworkService.findAllNetworks();
         assertNotNull(corNetworkList);
         assertFalse(corNetworkList.isEmpty());
-        assertEquals( 2,corNetworkList.size());
+        assertEquals(2, corNetworkList.size());
 
     }
 
@@ -115,6 +117,12 @@ public class CorNetworkServiceTest {
 
         corNetwork = corNetworkService.save(corNetwork);
         corNetwork1 = corNetworkService.save(corNetwork1);
+
+    }
+
+    @Test
+    public void shouldSaveCorNetworkWithImage() throws Exception {
+        Assert.notNull(null);
 
     }
 }

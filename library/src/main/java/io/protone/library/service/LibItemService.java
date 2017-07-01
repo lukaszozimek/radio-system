@@ -128,7 +128,7 @@ public class LibItemService {
             libMediaItem.setArtist(artist);
         }
         if (libMediaItem.getAlbum() != null) {
-            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum(), artist, corNetwork));
+            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum().getName(), artist.getName(), corNetwork));
         }
         libMediaItem.setLabel(libLabelService.saveLibLabel(libMediaItem.getLabel()).orElse(null));
         libMediaItem.setTrack(libTrackService.saveLibTrack(libMediaItem.getTrack()).orElse(null));

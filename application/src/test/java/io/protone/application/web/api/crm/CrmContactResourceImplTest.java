@@ -44,6 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CrmContactResourceImplTest {
+
+
     private static final String DEFAULT_SHORT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_NAME = "BBBBBBBBBB";
 
@@ -336,7 +338,9 @@ public class CrmContactResourceImplTest {
         List<CrmContact> crmContactList = crmContactRepository.findAll();
         assertThat(crmContactList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
+    @Test
+    public void updateContactWithAvatar() throws Exception {
+    }
     @Test
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CrmContact.class);

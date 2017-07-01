@@ -1,6 +1,7 @@
 package io.protone.application.service.library;
 
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
@@ -25,6 +26,7 @@ import javax.transaction.Transactional;
 @Transactional
 public class LibAlbumServiceTest {
 
+
     @Autowired
     private LibAlbumService libAlbumService;
 
@@ -47,11 +49,19 @@ public class LibAlbumServiceTest {
     }
 
     @Test
-    public void findOrSaveOne() throws Exception {
+    public void shouldFindAlbum() throws Exception {
+        Assert.notNull(null);
+    }
+
+
+    @Test
+    public void shouldSaveDefaultAlbum() throws Exception {
+        Assert.notNull(null);
     }
 
     @Test
-    public void findOrSaveOne1() throws Exception {
+    public void shouldSaveAlbumWithImage() throws Exception {
+        Assert.notNull(null);
     }
 
 }

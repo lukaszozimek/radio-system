@@ -52,7 +52,7 @@ public class CrmCustomerService {
         return accountRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
     }
 
-    public CrmAccount saveCustomer(CrmAccount crmAccount, MultipartFile avatar) throws IOException, TikaException, SAXException {
+    public CrmAccount saveCustomer(CrmAccount crmAccount) {
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         if (crmAccount.getAddres() != null) {
             CorAddress address = corAddressService.saveCoreAdress(crmAccount.getAddres());
@@ -62,14 +62,17 @@ public class CrmCustomerService {
             CorPerson corPerson = personService.savePerson(crmAccount.getPerson());
             crmAccount.person(corPerson);
         }
-        log.debug("Persisting CorImage: {}", avatar);
-        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
-        crmAccount.avatar(corImageItem);
         log.debug("Persisting CrmAccount: {}", crmAccount);
         crmAccount = accountRepository.saveAndFlush(crmAccount);
         return crmAccount;
     }
 
+    public CrmAccount saveCustomerWithImage(CrmAccount crmAccount, MultipartFile avatar) throws IOException, TikaException, SAXException {
+        log.debug("Persisting CorImage: {}", avatar);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        crmAccount.setCorImageItem(corImageItem);
+        return this.saveCustomer(crmAccount);
+    }
 
     public void deleteCustomer(String shortName, String corNetwork) {
         crmTaskService.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);

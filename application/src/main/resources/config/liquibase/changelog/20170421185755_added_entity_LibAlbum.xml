@@ -42,7 +42,7 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="cor_image_item_id" type="bigint">
+            <column name="main_image_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
 

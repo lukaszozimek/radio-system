@@ -63,6 +63,11 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     @PodamExclude
+    private CorImageItem corImageItem;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    @PodamExclude
     private CorPerson person;
 
     @ManyToOne
@@ -315,6 +320,18 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public CrmContact crmContact(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+        return this;
+    }
+
+    public CorImageItem getCorImageItem() {
+        return corImageItem;
+    }
+
+    public void setCorImageItem(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+    }
     public CorDictionary getStatus() {
         return status;
     }
@@ -376,14 +393,15 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CrmContact{" +
-            "id=" + id +
-            ", shortName='" + shortName + "'" +
-            ", externalId1='" + externalId1 + "'" +
-            ", externalId2='" + externalId2 + "'" +
-            ", paymentDate='" + paymentDate + "'" +
-            ", name='" + name + "'" +
-            ", paymentDelay='" + paymentDelay + "'" +
-            ", vatNumber='" + vatNumber + "'" +
-            '}';
+                "id=" + id +
+                ", shortName='" + shortName + "'" +
+                ", externalId1='" + externalId1 + "'" +
+                ", externalId2='" + externalId2 + "'" +
+                ", paymentDate='" + paymentDate + "'" +
+                ", name='" + name + "'" +
+                ", paymentDelay='" + paymentDelay + "'" +
+                ", vatNumber='" + vatNumber + "'" +
+                '}';
     }
+
 }

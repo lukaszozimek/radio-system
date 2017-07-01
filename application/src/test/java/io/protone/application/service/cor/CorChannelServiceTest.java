@@ -1,6 +1,7 @@
 package io.protone.application.service.cor;
 
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -137,6 +138,12 @@ public class CorChannelServiceTest {
         corChannel = corChannelService.save(corChannel);
         corChannel1 = corChannelService.save(corChannel1);
 
+
+    }
+
+    @Test
+    public void shouldSaveCorChannelWithImage() throws Exception {
+        Assert.notNull(null);
 
     }
 

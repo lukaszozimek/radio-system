@@ -130,7 +130,6 @@ public class CorUserService {
         newUser.setFirstname(firstName);
         newUser.setLastname(lastName);
         newUser.setEmail(email);
-        newUser.setImageurl(imageUrl);
         if (Strings.isNullOrEmpty(langKey)) {
             newUser.setLangkey("en");
         } else {
@@ -162,7 +161,6 @@ public class CorUserService {
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setCorImageItem(corImageItem);
-        user.setImageurl(userDTO.getImageurl());
         user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
         userDTO.getChannel().stream().forEach(coreChannelPT -> {
             user.addChannel(corChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
@@ -215,7 +213,6 @@ public class CorUserService {
                     user.setFirstname(userDTO.getFirstName());
                     user.setLastname(userDTO.getLastName());
                     user.setEmail(userDTO.getEmail());
-                    user.setImageurl(userDTO.getImageurl());
                     user.setActivated(userDTO.getActivated());
                     user.setLangkey(userDTO.getLangKey());
                     user.getChannels().clear();

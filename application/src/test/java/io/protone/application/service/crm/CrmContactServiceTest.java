@@ -1,6 +1,7 @@
 package io.protone.application.service.crm;
 
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAddress;
 import io.protone.core.domain.CorNetwork;
@@ -365,4 +366,12 @@ public class CrmContactServiceTest {
 
     }
 
+    @Test
+    public void shouldSaveCrmContactWithImage() {
+        Assert.notNull(null);
+
+        //given
+        ///when
+        //then
+    }
 }

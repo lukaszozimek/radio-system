@@ -105,7 +105,6 @@ public class CorUserConfigurationResourceTest {
         user.setEmail("test@test.com");
         user.setFirstname("test");
         user.setLastname("test");
-        user.setImageurl("http://placehold.it/50x50");
         user.setLangkey("en");
         user.setNetworks(Sets.newLinkedHashSet(network));
         return user;

@@ -11,6 +11,7 @@ import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.mapper.CrmAccountMapper;
 import io.protone.crm.service.CrmCustomerService;
 import io.swagger.annotations.ApiParam;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -43,7 +46,7 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     private CrmAccountMapper crmAccountMapper;
 
     @Override
-    public ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException {
+    public ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
 
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
@@ -60,21 +63,30 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     public ResponseEntity<CrmAccountDTO> updateCustomerWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                            @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
-                                                                           @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException {
-        return null;
+                                                                           @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
+        log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
+
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        if (crmAccountDTO.getId() == null) {
+            return createCustomerUsingPOST(networkShortcut, crmAccountDTO, null);
+        }
+        CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
+        CrmAccount entity = crmCustomerService.saveCustomerWithImage(crmAccount, avatar);
+        CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override
     public ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
-                                                                 @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException {
+                                                                 @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
         if (crmAccountDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmAccount", "idexists", "A new CrmAccount cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmAccount crmAccount = crmAccountMapper.DTO2DB(crmAccountDTO, corNetwork);
-        CrmAccount entity = crmCustomerService.saveCustomer(crmAccount);
+        CrmAccount entity = crmCustomerService.saveCustomerWithImage(crmAccount, avatar);
         CrmAccountDTO response = crmAccountMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + crmAccount.getShortName()))
                 .body(response);

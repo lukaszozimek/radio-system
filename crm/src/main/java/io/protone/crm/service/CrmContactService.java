@@ -2,6 +2,7 @@ package io.protone.crm.service;
 
 
 import io.protone.core.domain.CorAddress;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.service.CorAddressService;
 import io.protone.core.service.CorImageItemService;
@@ -11,14 +12,17 @@ import io.protone.crm.domain.CrmContact;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.domain.CrmTaskComment;
 import io.protone.crm.repostiory.CrmContactRepository;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -54,18 +58,21 @@ public class CrmContactService {
             CorAddress address = corAddressService.saveCoreAdress(contact.getAddres());
             contact.setAddres(address);
         }
+
         if (contact.getPerson() != null) {
             CorPerson corPerson = corPersonService.savePerson(contact.getPerson());
             contact.person(corPerson);
         }
+
         log.debug("Persisting CrmContact: {}", contact);
         contact = crmContactRepository.saveAndFlush(contact);
         return contact;
     }
 
-    public CrmContact saveContact(CrmContact contact, MultipartFile avatar) {
-
-        return contact;
+    public CrmContact saveContactWithImage(CrmContact contact, MultipartFile avatar) throws IOException, TikaException, SAXException {
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        contact.setCorImageItem(corImageItem);
+        return this.saveContact(contact);
     }
 
     public void deleteContact(String shortcut, String corNetwork) {
