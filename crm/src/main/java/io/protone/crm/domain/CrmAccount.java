@@ -89,6 +89,12 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorDictionary area;
 
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    @PodamExclude
+    private CorImageItem corImageItem;
+
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     @PodamExclude
@@ -204,6 +210,19 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
 
     public CrmAccount addres(CorAddress corAddress) {
         this.addres = corAddress;
+        return this;
+    }
+
+    public CorImageItem getCorImageItem() {
+        return corImageItem;
+    }
+
+    public void setCorImageItem(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+    }
+
+    public CrmAccount avatar(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
         return this;
     }
 
@@ -359,13 +378,14 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CrmAccount{" +
-            "id=" + id +
-            ", shortName='" + shortName + "'" +
-            ", externalId1='" + externalId1 + "'" +
-            ", externalId2='" + externalId2 + "'" +
-            ", name='" + name + "'" +
-            ", paymentDelay='" + paymentDelay + "'" +
-            ", vatNumber='" + vatNumber + "'" +
-            '}';
+                "id=" + id +
+                ", shortName='" + shortName + "'" +
+                ", externalId1='" + externalId1 + "'" +
+                ", externalId2='" + externalId2 + "'" +
+                ", name='" + name + "'" +
+                ", paymentDelay='" + paymentDelay + "'" +
+                ", vatNumber='" + vatNumber + "'" +
+                '}';
     }
+
 }

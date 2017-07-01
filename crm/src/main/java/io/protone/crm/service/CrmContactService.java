@@ -4,7 +4,9 @@ package io.protone.crm.service;
 import io.protone.core.domain.CorAddress;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.service.CorAddressService;
+import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPersonService;
+import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmContact;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.domain.CrmTaskComment;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -39,6 +42,8 @@ public class CrmContactService {
     @Inject
     private CorAddressService corAddressService;
 
+    @Inject
+    private CorImageItemService corImageItemService;
 
     public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
         return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -55,6 +60,11 @@ public class CrmContactService {
         }
         log.debug("Persisting CrmContact: {}", contact);
         contact = crmContactRepository.saveAndFlush(contact);
+        return contact;
+    }
+
+    public CrmContact saveContact(CrmContact contact, MultipartFile avatar) {
+
         return contact;
     }
 

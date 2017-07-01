@@ -2,6 +2,7 @@ package io.protone.library.service;
 
 
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.service.CorImageItemService;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.domain.enumeration.LibArtistTypeEnum;
 import io.protone.library.repository.LibArtistRepository;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 
@@ -23,6 +25,8 @@ public class LibArtistService {
     @Inject
     private LibArtistRepository libArtistRepository;
 
+    @Inject
+    private CorImageItemService corImageItemService;
 
     public LibArtist findOrSaveOne(String name, CorNetwork network) {
         if (name != null && network != null) {
@@ -34,6 +38,10 @@ public class LibArtistService {
             log.debug("Persisting new LibArtist: {}", name);
             return libArtistRepository.saveAndFlush(new LibArtist().name(name).type(LibArtistTypeEnum.AT_OTHER).network(network));
         }
+        return null;
+    }
+    public LibArtist save(LibArtist libArtist , MultipartFile avatar, CorNetwork network) {
+
         return null;
     }
 }

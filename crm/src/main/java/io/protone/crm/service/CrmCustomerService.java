@@ -2,20 +2,26 @@ package io.protone.crm.service;
 
 
 import io.protone.core.domain.CorAddress;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.service.CorAddressService;
+import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPersonService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.domain.CrmTaskComment;
 import io.protone.crm.repostiory.CrmAccountRepository;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,12 +45,14 @@ public class CrmCustomerService {
     @Inject
     private CrmTaskService crmTaskService;
 
+    @Inject
+    private CorImageItemService corImageItemService;
 
     public List<CrmAccount> getAllCustomers(String corNetwork, Pageable pageable) {
         return accountRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
     }
 
-    public CrmAccount saveCustomer(CrmAccount crmAccount) {
+    public CrmAccount saveCustomer(CrmAccount crmAccount, MultipartFile avatar) throws IOException, TikaException, SAXException {
         log.debug("Persisting CorAddress: {}", crmAccount.getAddres());
         if (crmAccount.getAddres() != null) {
             CorAddress address = corAddressService.saveCoreAdress(crmAccount.getAddres());
@@ -54,10 +62,14 @@ public class CrmCustomerService {
             CorPerson corPerson = personService.savePerson(crmAccount.getPerson());
             crmAccount.person(corPerson);
         }
+        log.debug("Persisting CorImage: {}", avatar);
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        crmAccount.avatar(corImageItem);
         log.debug("Persisting CrmAccount: {}", crmAccount);
         crmAccount = accountRepository.saveAndFlush(crmAccount);
         return crmAccount;
     }
+
 
     public void deleteCustomer(String shortName, String corNetwork) {
         crmTaskService.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);

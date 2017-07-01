@@ -66,7 +66,7 @@ public class LibItemService {
     private LibLabelService libLabelService;
 
     @Inject
-    private CorImageItemService libImageItemService;
+    private CorImageItemService corImageItemService;
 
     @Autowired
     @Qualifier("libAudioFileService")
@@ -117,22 +117,11 @@ public class LibItemService {
 
     @Transactional
     public LibMediaItem update(MultipartFile[] covers, LibMediaItem libMediaItem, CorNetwork corNetwork) {
-        LibArtist artist = new LibArtist();
-        if (libMediaItem.getArtist() != null) {
-            artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);
-            libMediaItem.setArtist(artist);
-        }
-        if (libMediaItem.getAlbum() != null) {
-            libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum(), artist, corNetwork));
-        }
-        libMediaItem.setLabel(libLabelService.saveLibLabel(libMediaItem.getLabel()).orElse(null));
-        libMediaItem.setTrack(libTrackService.saveLibTrack(libMediaItem.getTrack()).orElse(null));
-        libMediaItem.setMarkers(libMarkerService.saveLibMarkers(libMediaItem.getMarkers()).orElse(null));
-
-        return itemRepository.saveAndFlush(libMediaItem);
+        return libMediaItem;
     }
+
     @Transactional
-    public LibMediaItem update( LibMediaItem libMediaItem, CorNetwork corNetwork) {
+    public LibMediaItem update(LibMediaItem libMediaItem, CorNetwork corNetwork) {
         LibArtist artist = new LibArtist();
         if (libMediaItem.getArtist() != null) {
             artist = libArtistService.findOrSaveOne(libMediaItem.getArtist().getName(), corNetwork);

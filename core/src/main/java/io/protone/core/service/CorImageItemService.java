@@ -7,6 +7,7 @@ import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.s3.exceptions.S3Exception;
 import io.protone.core.s3.exceptions.UploadException;
+import io.protone.core.s3.exceptions.UrlGenerationResourceException;
 import io.protone.core.security.SecurityUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -24,7 +25,12 @@ import org.xml.sax.SAXException;
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 20.06.2017.
@@ -44,6 +50,14 @@ public class CorImageItemService {
     @Inject
     private CorImageItemRepository corImageItemRepository;
 
+
+    public Set<CorImageItem> saveImageItems(MultipartFile[] images) throws TikaException, SAXException, IOException {
+        Set<CorImageItem> corImageItemSet = new HashSet<>();
+        for (MultipartFile image : images) {
+            corImageItemSet.add(saveImageItem(image));
+        }
+        return corImageItemSet;
+    }
 
     public CorImageItem saveImageItem(MultipartFile image) throws TikaException, SAXException, IOException {
         if (image.isEmpty() || image == null) {
@@ -75,9 +89,9 @@ public class CorImageItemService {
         }
     }
 
-    public CorImageItem getValidLinkToResours(CorImageItem libMediaItem) {
-
-        return new CorImageItem();
+    public CorImageItem getValidLinkToResource(CorImageItem libMediaItem) throws UrlGenerationResourceException, S3Exception {
+        String publicUrl = s3Client.getCover(libMediaItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, libMediaItem.getName());
+        return libMediaItem.publicUrl(publicUrl);
     }
 
 }

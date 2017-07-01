@@ -69,9 +69,9 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "cor_user_authority",
-        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "name")})
+            name = "cor_user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "name")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<CorAuthority> authorities = new HashSet<>();
@@ -80,15 +80,15 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_channel",
-        joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     private Set<CorChannel> channels = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_network",
-        joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "networks_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "networks_id", referencedColumnName = "id"))
     private Set<CorNetwork> networks = new HashSet<>();
 
     public Long getId() {
@@ -243,6 +243,19 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public CorUser avatar(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+        return this;
+    }
+
+    public CorImageItem getCorImageItem() {
+        return corImageItem;
+    }
+
+    public void setCorImageItem(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+    }
+
     public Set<CorAuthority> getAuthorities() {
         return authorities;
     }
@@ -329,18 +342,20 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CorUser{" +
-            "id=" + id +
-            ", login='" + login + "'" +
-            ", passwordhash='" + passwordhash + "'" +
-            ", firstname='" + firstname + "'" +
-            ", lastname='" + lastname + "'" +
-            ", email='" + email + "'" +
-            ", imageurl='" + imageurl + "'" +
-            ", activated='" + activated + "'" +
-            ", langkey='" + langkey + "'" +
-            ", activationkey='" + activationkey + "'" +
-            ", resetkey='" + resetkey + "'" +
-            ", resetdate='" + resetdate + "'" +
-            '}';
+                "id=" + id +
+                ", login='" + login + "'" +
+                ", passwordhash='" + passwordhash + "'" +
+                ", firstname='" + firstname + "'" +
+                ", lastname='" + lastname + "'" +
+                ", email='" + email + "'" +
+                ", imageurl='" + imageurl + "'" +
+                ", activated='" + activated + "'" +
+                ", langkey='" + langkey + "'" +
+                ", activationkey='" + activationkey + "'" +
+                ", resetkey='" + resetkey + "'" +
+                ", resetdate='" + resetdate + "'" +
+                '}';
     }
+
+
 }

@@ -3,10 +3,7 @@ package io.protone.core.service;
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import io.protone.core.api.dto.CorNetworkDTO;
 import io.protone.core.api.dto.CorUserDTO;
-import io.protone.core.domain.CorAuthority;
-import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorUser;
+import io.protone.core.domain.*;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.mapper.CorUserMapper;
@@ -17,6 +14,7 @@ import io.protone.core.repository.CorUserRepository;
 import io.protone.core.security.AuthoritiesConstants;
 import io.protone.core.security.SecurityUtils;
 import io.protone.core.util.RandomUtil;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
+import javax.inject.Inject;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -67,17 +69,19 @@ public class CorUserService {
     @Autowired
     private CorChannelMapper corChannelMapper;
 
+    @Inject
+    private CorImageItemService corImageItemService;
 
     public Optional<CorUser> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         Optional<CorUser> corUser = userRepository.findOneByActivationkey(key)
-            .map(user -> {
-                // activate given user for the registration key.
-                user.setActivated(true);
-                user.setActivationkey(null);
-                log.debug("Activated user: {}", user);
-                return user;
-            });
+                .map(user -> {
+                    // activate given user for the registration key.
+                    user.setActivated(true);
+                    user.setActivationkey(null);
+                    log.debug("Activated user: {}", user);
+                    return user;
+                });
         if (corUser.isPresent()) {
             CorNetwork network = corNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
 
@@ -89,26 +93,26 @@ public class CorUserService {
         log.debug("Reset user password for reset key {}", key);
 
         return userRepository.findOneByResetkey(key)
-            .filter(user -> {
-                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-                return user.getResetdate().isAfter(oneDayAgo);
-            })
-            .map(user -> {
-                user.setPasswordhash(passwordEncoder.encode(newPassword));
-                user.setResetkey(null);
-                user.setResetdate(null);
-                return user;
-            });
+                .filter(user -> {
+                    ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
+                    return user.getResetdate().isAfter(oneDayAgo);
+                })
+                .map(user -> {
+                    user.setPasswordhash(passwordEncoder.encode(newPassword));
+                    user.setResetkey(null);
+                    user.setResetdate(null);
+                    return user;
+                });
     }
 
     public Optional<CorUser> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
-            .filter(CorUser::isActivated)
-            .map(user -> {
-                user.setResetkey(RandomUtil.generateResetKey());
-                user.setResetdate(ZonedDateTime.now());
-                return user;
-            });
+                .filter(CorUser::isActivated)
+                .map(user -> {
+                    user.setResetkey(RandomUtil.generateResetKey());
+                    user.setResetdate(ZonedDateTime.now());
+                    return user;
+                });
     }
 
     public CorUser createUser(String login, String password, String firstName, String lastName, String email,
@@ -148,7 +152,8 @@ public class CorUserService {
         return newUser;
     }
 
-    public CorUser createUser(CorUserDTO userDTO) {
+    public CorUser createUser(CorUserDTO userDTO, MultipartFile avatar) throws IOException, TikaException, SAXException {
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
         CorUser user = new CorUser();
         CorUser userCreator = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
 
@@ -156,6 +161,7 @@ public class CorUserService {
         user.setFirstname(userDTO.getFirstName());
         user.setLastname(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
+        user.setCorImageItem(corImageItem);
         user.setImageurl(userDTO.getImageurl());
         user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
         userDTO.getChannel().stream().forEach(coreChannelPT -> {
@@ -170,7 +176,7 @@ public class CorUserService {
         if (userDTO.getAuthorities() != null) {
             Set<CorAuthority> authorities = new HashSet<>();
             userDTO.getAuthorities().forEach(
-                authority -> authorities.add(authorityRepository.findOne(authority))
+                    authority -> authorities.add(authorityRepository.findOne(authority))
             );
             user.setAuthorities(authorities);
         }
@@ -203,29 +209,29 @@ public class CorUserService {
     public CorUserDTO updateUser(CorUserDTO userDTO) {
 
         CorUser corUser = Optional.of(userRepository
-            .findOne(userDTO.getId()))
-            .map(user -> {
-                user.setLogin(userDTO.getLogin());
-                user.setFirstname(userDTO.getFirstName());
-                user.setLastname(userDTO.getLastName());
-                user.setEmail(userDTO.getEmail());
-                user.setImageurl(userDTO.getImageurl());
-                user.setActivated(userDTO.getActivated());
-                user.setLangkey(userDTO.getLangKey());
-                user.getChannels().clear();
-                Set<CorChannel> corChannels = user.getChannels();
-                corChannels.clear();
-                userDTO.getChannel().stream()
-                    .map(channelPT -> corChannelRepository.findOne(channelPT.getId()))
-                    .forEach(corChannels::add);
-                Set<CorAuthority> managedAuthorities = user.getAuthorities();
-                managedAuthorities.clear();
-                userDTO.getAuthorities().stream()
-                    .map(authorityRepository::findOne)
-                    .forEach(managedAuthorities::add);
-                log.debug("Changed Information for User: {}", user);
-                return user;
-            }).get();
+                .findOne(userDTO.getId()))
+                .map(user -> {
+                    user.setLogin(userDTO.getLogin());
+                    user.setFirstname(userDTO.getFirstName());
+                    user.setLastname(userDTO.getLastName());
+                    user.setEmail(userDTO.getEmail());
+                    user.setImageurl(userDTO.getImageurl());
+                    user.setActivated(userDTO.getActivated());
+                    user.setLangkey(userDTO.getLangKey());
+                    user.getChannels().clear();
+                    Set<CorChannel> corChannels = user.getChannels();
+                    corChannels.clear();
+                    userDTO.getChannel().stream()
+                            .map(channelPT -> corChannelRepository.findOne(channelPT.getId()))
+                            .forEach(corChannels::add);
+                    Set<CorAuthority> managedAuthorities = user.getAuthorities();
+                    managedAuthorities.clear();
+                    userDTO.getAuthorities().stream()
+                            .map(authorityRepository::findOne)
+                            .forEach(managedAuthorities::add);
+                    log.debug("Changed Information for User: {}", user);
+                    return user;
+                }).get();
         corUser = userRepository.saveAndFlush(corUser);
         return corUserMapper.DB2DTO(corUser);
     }

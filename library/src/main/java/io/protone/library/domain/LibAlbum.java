@@ -24,7 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name = "lib_album")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
+public class LibAlbum extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,6 +49,9 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToOne
+    private CorImageItem mainImage;
+
     @ManyToOne
     private LibLabel label;
 
@@ -61,9 +64,9 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_album_cor_image_item",
-        joinColumns = @JoinColumn(name = "lib_album_id"),
-        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
+            name = "lib_album_cor_image_item",
+            joinColumns = @JoinColumn(name = "lib_album_id"),
+            inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
     private Set<CorImageItem> imageItems = new HashSet<>();
 
@@ -140,6 +143,19 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public LibAlbum mainImage(CorImageItem mainImage) {
+        this.mainImage = mainImage;
+        return this;
+    }
+
+    public CorImageItem getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(CorImageItem mainImage) {
+        this.mainImage = mainImage;
+    }
+
     public LibLabel getLabel() {
         return label;
     }
@@ -202,11 +218,12 @@ public class LibAlbum  extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "LibAlbum{" +
-            "id=" + id +
-            ", albumType='" + albumType + "'" +
-            ", name='" + name + "'" +
-            ", releaseDate='" + releaseDate + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", albumType='" + albumType + "'" +
+                ", name='" + name + "'" +
+                ", releaseDate='" + releaseDate + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
+
 }

@@ -23,7 +23,7 @@ import java.util.Set;
 @Table(name = "lib_artist", uniqueConstraints =
 @UniqueConstraint(columnNames = {"name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibArtist  extends AbstractAuditingEntity implements Serializable {
+public class LibArtist extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,6 +43,9 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @OneToOne
+    private CorImageItem mainImage;
 
     @ManyToOne
     private CorNetwork network;
@@ -77,6 +80,19 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public LibArtist mainImage(CorImageItem mainImage) {
+        this.mainImage = mainImage;
+        return this;
+    }
+
+    public CorImageItem getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(CorImageItem mainImage) {
+        this.mainImage = mainImage;
+    }
+
     public LibArtistTypeEnum getType() {
         return type;
     }
@@ -102,6 +118,7 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
         this.description = description;
         return this;
     }
+
     public Set<CorImageItem> getImageItems() {
         return imageItems;
     }
@@ -109,6 +126,7 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
     public void setImageItems(Set<CorImageItem> imageItems) {
         this.imageItems = imageItems;
     }
+
     public CorNetwork getNetwork() {
         return network;
     }
@@ -145,12 +163,13 @@ public class LibArtist  extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "LibArtist{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", type='" + type + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", type='" + type + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
+
 
 
 }

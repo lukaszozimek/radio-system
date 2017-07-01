@@ -82,6 +82,9 @@
             <column name="status_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="cor_image_item_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

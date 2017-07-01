@@ -119,6 +119,19 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public CorChannel image(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+        return this;
+    }
+
+    public CorImageItem getCorImageItem() {
+        return corImageItem;
+    }
+
+    public void setCorImageItem(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+    }
+
     public Set<CorUser> getChannelUsers() {
         return channelUsers;
     }
@@ -167,10 +180,12 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CorChannel{" +
-            "id=" + id +
-            ", shortcut='" + shortcut + "'" +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", shortcut='" + shortcut + "'" +
+                ", name='" + name + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
+
+
 }

@@ -158,10 +158,6 @@
                 <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="imageurl" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-
             <column name="activated" type="boolean">
                 <constraints nullable="true"/>
             </column>

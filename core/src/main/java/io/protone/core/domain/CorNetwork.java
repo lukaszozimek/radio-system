@@ -67,26 +67,26 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
         return shortcut;
     }
 
+    public void setShortcut(String shortcut) {
+        this.shortcut = shortcut;
+    }
+
     public CorNetwork shortcut(String shortcut) {
         this.shortcut = shortcut;
         return this;
-    }
-
-    public void setShortcut(String shortcut) {
-        this.shortcut = shortcut;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public CorNetwork name(String name) {
         this.name = name;
         return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Boolean isActive() {
@@ -106,17 +106,39 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public CorNetwork description(String description) {
         this.description = description;
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public CorNetwork image(CorImageItem imageItem) {
+        this.corImageItem = imageItem;
+        return this;
+    }
+
+    public CorImageItem getCorImageItem() {
+        return corImageItem;
+    }
+
+    public void setCorImageItem(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+    }
+
+    public CorNetwork logo(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+        return this;
     }
 
     public Set<CorUser> getNetworkUsers() {
         return networkUsers;
+    }
+
+    public void setNetworkUsers(Set<CorUser> corUsers) {
+        this.networkUsers = corUsers;
     }
 
     public CorNetwork networkUsers(Set<CorUser> corUsers) {
@@ -134,10 +156,6 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
         this.networkUsers.remove(corUser);
         corUser.getNetworks().remove(this);
         return this;
-    }
-
-    public void setNetworkUsers(Set<CorUser> corUsers) {
-        this.networkUsers = corUsers;
     }
 
     @Override
@@ -163,11 +181,13 @@ public class CorNetwork extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CorNetwork{" +
-            "id=" + id +
-            ", shortcut='" + shortcut + "'" +
-            ", name='" + name + "'" +
-            ", active='" + active + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", shortcut='" + shortcut + "'" +
+                ", name='" + name + "'" +
+                ", active='" + active + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
+
+
 }
