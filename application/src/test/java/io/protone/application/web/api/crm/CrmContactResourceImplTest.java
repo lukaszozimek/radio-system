@@ -6,16 +6,21 @@ import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.crm.impl.CrmContactResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.repository.CorImageItemRepository;
+import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmContactDTO;
 import io.protone.crm.domain.CrmContact;
 import io.protone.crm.mapper.CrmContactMapper;
 import io.protone.crm.repostiory.CrmContactRepository;
 import io.protone.crm.service.CrmContactService;
+import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,14 +34,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -86,6 +95,12 @@ public class CrmContactResourceImplTest {
     @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
+    @Mock
+    private CorImageItemService corImageItemService;
+
+    @Autowired
+    private CorImageItemRepository corImageItemRepository;
+
     @Autowired
     private ExceptionTranslator exceptionTranslator;
 
@@ -117,17 +132,20 @@ public class CrmContactResourceImplTest {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         CrmContactResourceImpl crmContactResource = new CrmContactResourceImpl();
-
+        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItemRepository.saveAndFlush(corImageItem);
+        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        ReflectionTestUtils.setField(crmContactService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(crmContactResource, "crmContactService", crmContactService);
         ReflectionTestUtils.setField(crmContactResource, "crmContactMapper", crmContactMapper);
         ReflectionTestUtils.setField(crmContactResource, "corNetworkService", corNetworkService);
 
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
         corNetwork.setId(1L);
-
+        crmContactRepository.deleteAllInBatch();
         this.restCrmContactMockMvc = MockMvcBuilders.standaloneSetup(crmContactResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -146,10 +164,13 @@ public class CrmContactResourceImplTest {
 
         // Create the CrmContact
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
 
-        restCrmContactMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(crmContactDTO)))
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
                 .andExpect(status().isCreated());
 
         // Validate the CrmContact in the database
@@ -174,12 +195,15 @@ public class CrmContactResourceImplTest {
         // Create the CfgMarkerConfiguration, which fails.
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
 
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmContactMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(crmContactDTO)))
-                .andExpect(status().isBadRequest());
+        restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile)).andExpect(status().isBadRequest());
+
 
         List<CrmContact> crmAccounts = crmContactRepository.findAll();
         assertThat(crmAccounts).hasSize(databaseSizeBeforeTest);
@@ -195,8 +219,8 @@ public class CrmContactResourceImplTest {
         // Create the CrmContactDTO, which fails.
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(crmContact);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.jpg"));
-        MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
         restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
                 .file(emptyFile)
@@ -217,8 +241,8 @@ public class CrmContactResourceImplTest {
         existingCrmContact.setId(1L);
         CrmContactDTO existingCrmContactDTO = crmContactMapper.DB2DTO(existingCrmContact);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.jpg"));
-        MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCrmContactDTO));
         restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact", corNetwork.getShortcut())
                 .file(emptyFile)
@@ -278,6 +302,7 @@ public class CrmContactResourceImplTest {
     @Test
     @Transactional
     public void updateCrmContact() throws Exception {
+        when(corImageItemService.saveImageItem(any())).thenReturn(null);
         // Initialize the database
         crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
@@ -328,12 +353,12 @@ public class CrmContactResourceImplTest {
                 .vatNumber(UPDATED_VAT_NUMBER);
         CrmContactDTO crmContactDTO = crmContactMapper.DB2DTO(updatedCrmContact);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.jpg"));
-        MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/contact/logo.gif"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmContactDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(crmContactDTO));
         restCrmContactMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName())
                 .file(emptyFile)
-                .file(jsonFile)).andExpect(status().isBadRequest());
+                .file(jsonFile)).andExpect(status().isOk());
 
 
         // Validate the CrmContact in the database
@@ -350,6 +375,7 @@ public class CrmContactResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingCrmContact() throws Exception {
+        when(corImageItemService.saveImageItem(any())).thenReturn(null);
         int databaseSizeBeforeUpdate = crmContactRepository.findAll().size();
 
         // Create the CrmContact

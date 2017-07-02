@@ -74,7 +74,6 @@ public interface LibraryResource {
             @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                          @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
@@ -150,8 +149,8 @@ public interface LibraryResource {
     ResponseEntity<LibLibraryDTO> updateLibraryWithCoverForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                            @ApiParam(value = "library", required = true) @Valid @RequestPart("library") LibLibraryDTO library,
-                                                                            @ApiParam(value = "cover") @Valid @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
+                                                                            @ApiParam(value = "library", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
+                                                                            @ApiParam(value = "cover")  @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "createLibraryForChannel", notes = "", response = LibLibraryDTO.class, tags = {"LIBRARY",})
@@ -163,12 +162,11 @@ public interface LibraryResource {
             @ApiResponse(code = 404, message = "Not Found", response = LibLibraryDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibLibraryDTO> createLibraryForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "library", required = true) @Valid @RequestPart("library") LibLibraryDTO library,
-                                                                   @ApiParam(value = "cover") @Valid @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
+                                                                   @ApiParam(value = "library", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
+                                                                   @ApiParam(value = "cover")  @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "deleteLibraryForChannel", notes = "", response = Void.class, tags = {"LIBRARY",})

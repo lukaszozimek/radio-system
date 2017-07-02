@@ -44,8 +44,7 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer/{shortName}",
             produces = {"application/json"},
-            consumes = {"application/json"},
-            method = RequestMethod.PUT)
+            method = RequestMethod.POST)
     ResponseEntity<CrmAccountDTO> updateCustomerWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                     @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,
@@ -61,7 +60,6 @@ public interface CrmCustomerResource {
             @ApiResponse(code = 404, message = "Not Found", response = CrmAccountDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/customer",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmAccountDTO> createCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                           @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestPart("crmAccountDTO") CrmAccountDTO crmAccountDTO,

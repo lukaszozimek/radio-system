@@ -7,7 +7,10 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.library.impl.LibraryResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.repository.CorImageItemRepository;
+import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibLibraryDTO;
 import io.protone.library.domain.LibLibrary;
@@ -16,26 +19,34 @@ import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.mapper.LibLibraryMapper;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.service.LibLibraryService;
+import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -93,6 +104,12 @@ public class LibraryResourceChannelImplTest {
     @Autowired
     private EntityManager em;
 
+    @Mock
+    private CorImageItemService corImageItemService;
+
+    @Autowired
+    private CorImageItemRepository corImageItemRepository;
+
     private MockMvc restLibLibraryMockMvc;
 
     private LibLibrary libLibrary;
@@ -116,10 +133,13 @@ public class LibraryResourceChannelImplTest {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-
+        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItemRepository.saveAndFlush(corImageItem);
+        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        ReflectionTestUtils.setField(libLibraryService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
         ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
@@ -195,11 +215,14 @@ public class LibraryResourceChannelImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isBadRequest());
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
+                .andExpect(status().isBadRequest());
 
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
@@ -215,11 +238,14 @@ public class LibraryResourceChannelImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isBadRequest());
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
+                .andExpect(status().isBadRequest());
 
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
@@ -235,10 +261,14 @@ public class LibraryResourceChannelImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isBadRequest());
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
+                .andExpect(status().isBadRequest());
 
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
@@ -254,10 +284,14 @@ public class LibraryResourceChannelImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isBadRequest());
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
+                .andExpect(status().isBadRequest());
 
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
         assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);

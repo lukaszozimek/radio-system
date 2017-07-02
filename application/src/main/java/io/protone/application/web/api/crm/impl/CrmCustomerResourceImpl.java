@@ -46,7 +46,8 @@ public class CrmCustomerResourceImpl implements CrmCustomerResource {
     private CrmAccountMapper crmAccountMapper;
 
     @Override
-    public ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException, TikaException, IOException, SAXException {
+    public ResponseEntity<CrmAccountDTO> updateCustomerWithoutAvatarUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                             @ApiParam(value = "crmAccountDTO", required = true) @Valid @RequestBody CrmAccountDTO crmAccountDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update CrmAccount : {}, for Network: {}", crmAccountDTO, networkShortcut);
 
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);

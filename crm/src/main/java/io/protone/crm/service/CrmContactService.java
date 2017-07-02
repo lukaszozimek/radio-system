@@ -7,7 +7,6 @@ import io.protone.core.domain.CorPerson;
 import io.protone.core.service.CorAddressService;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPersonService;
-import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmContact;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.domain.CrmTaskComment;
@@ -69,7 +68,7 @@ public class CrmContactService {
         return contact;
     }
 
-    public CrmContact saveContactWithImage(CrmContact contact, MultipartFile avatar) throws IOException, TikaException, SAXException {
+    public CrmContact  saveContactWithImage(CrmContact contact, MultipartFile avatar) throws IOException, TikaException, SAXException {
         CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
         contact.setCorImageItem(corImageItem);
         return this.saveContact(contact);

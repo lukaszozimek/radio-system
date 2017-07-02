@@ -59,7 +59,6 @@ public interface CrmContactResource {
             @ApiResponse(code = 404, message = "Not Found", response = CrmContactDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/crm/contact",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CrmContactDTO> createContactUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                          @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,

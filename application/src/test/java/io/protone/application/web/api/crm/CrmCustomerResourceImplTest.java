@@ -5,16 +5,21 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.crm.impl.CrmCustomerResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.repository.CorImageItemRepository;
+import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmAccountDTO;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.mapper.CrmAccountMapper;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.crm.service.CrmCustomerService;
+import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,13 +33,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.util.List;
 
 import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -73,6 +82,13 @@ public class CrmCustomerResourceImplTest {
     @Autowired
     private CrmAccountMapper crmAccountMapper;
 
+    @Mock
+    private CorImageItemService corImageItemService;
+
+    @Autowired
+    private CorImageItemRepository corImageItemRepository;
+
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -109,10 +125,13 @@ public class CrmCustomerResourceImplTest {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         CrmCustomerResourceImpl crmAccountResource = new CrmCustomerResourceImpl();
-
+        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItemRepository.saveAndFlush(corImageItem);
+        when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
+        ReflectionTestUtils.setField(crmCustomerService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(crmAccountResource, "crmCustomerService", crmCustomerService);
         ReflectionTestUtils.setField(crmAccountResource, "crmAccountMapper", crmAccountMapper);
         ReflectionTestUtils.setField(crmAccountResource, "corNetworkService", corNetworkService);
@@ -165,11 +184,13 @@ public class CrmCustomerResourceImplTest {
         CrmAccount existingCrmAccount = new CrmAccount();
         existingCrmAccount.setId(1L);
         CrmAccountDTO existingCrmAccountDTO = crmAccountMapper.DB2DTO(existingCrmAccount);
-
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(existingCrmAccountDTO));
         // An entity with an existing ID cannot be created, so this API call must fail
-        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(existingCrmAccountDTO)))
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
                 .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database

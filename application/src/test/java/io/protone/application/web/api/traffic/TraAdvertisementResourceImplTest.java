@@ -27,9 +27,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -166,11 +168,17 @@ public class TraAdvertisementResourceImplTest {
         existingTraAdvertisement.setId(1L);
         TraAdvertisementDTO existingTraAdvertisementDTO = traAdvertisementMapper.DB2DTO(existingTraAdvertisement);
 
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraAdvertisementDTO)))
-            .andExpect(status().isBadRequest());
+        MockMultipartFile emptyFile = new MockMultipartFile("commercial", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("traAdvertisementDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(existingTraAdvertisementDTO));
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<TraAdvertisement> traAdvertisementList = traAdvertisementRepository.findAll();
@@ -187,10 +195,16 @@ public class TraAdvertisementResourceImplTest {
         // Create the TraAdvertisement, which fails.
         TraAdvertisementDTO traAdvertisementDTO = traAdvertisementMapper.DB2DTO(traAdvertisement);
 
-        restTraAdvertisementMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traAdvertisementDTO)))
-            .andExpect(status().isBadRequest());
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        MockMultipartFile emptyFile = new MockMultipartFile("commercial", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("traAdvertisementDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(traAdvertisementDTO));
+
+        restTraAdvertisementMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/traffic/advertisement", corNetwork.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
+                .andExpect(status().isBadRequest());
 
         List<TraAdvertisement> traAdvertisementList = traAdvertisementRepository.findAll();
         assertThat(traAdvertisementList).hasSize(databaseSizeBeforeTest);

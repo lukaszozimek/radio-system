@@ -65,8 +65,8 @@ public class CrmContactResourceImpl implements CrmContactResource {
                                                                           @ApiParam(value = "crmContactDTO", required = true) @Valid @RequestPart("crmContactDTO") CrmContactDTO crmContactDTO,
                                                                           @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact CrmContact : {}, for Network: {}", crmContactDTO, networkShortcut);
-        if (crmContactDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("CrmContact", "idexists", "A new CrmContact cannot already have an ID")).body(null);
+        if (crmContactDTO.getId() == null) {
+            return createContactUsingPOST(networkShortcut, crmContactDTO, null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         CrmContact contact = crmContactMapper.DTO2DB(crmContactDTO, corNetwork);

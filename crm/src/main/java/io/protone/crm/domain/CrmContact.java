@@ -98,7 +98,7 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorDictionary status;
 
-    @OneToMany(mappedBy = "contact")
+    @OneToMany(mappedBy = "contact",fetch = FetchType.EAGER)
     @JsonIgnore
     @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
