@@ -78,6 +78,23 @@ public class TraCustomerResourceImpl implements TraCustomerResource {
     }
 
     @Override
+    public ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                         @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                         @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestPart TraCustomerDTO traCustomerDTO,
+                                                                         @ApiParam(value = "avatar", required = false) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException {
+        log.debug("REST request to update TraCustomer : {}, for Network: {}", traCustomerDTO, networkShortcut);
+        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
+        if (traCustomerDTO.getId() == null) {
+            return createTrafficCustomerUsingPOST(networkShortcut, traCustomerDTO, null);
+        }
+        CrmAccount crmAccount = accountMapper.traDTO2DB(traCustomerDTO, corNetwork);
+        CrmAccount entity = crmCustomerService.saveCustomerWithImage(crmAccount, avatar);
+        TraCustomerDTO response = accountMapper.traDB2DTO(entity);
+        return ResponseEntity.ok()
+                .body(response);
+    }
+
+    @Override
     public ResponseEntity<List<TraCustomerDTO>> getAllTrafficCustomersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCustomer, for Network: {}", networkShortcut);

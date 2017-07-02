@@ -1,19 +1,25 @@
 package io.protone.library.service;
 
 
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.s3.exceptions.CreateBucketException;
+import io.protone.core.service.CorImageItemService;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.mapper.LibLibraryMapper;
 import io.protone.library.repository.LibLibraryRepository;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -32,6 +38,9 @@ public class LibLibraryService {
     private LibLibraryMapper customLibLibraryMapper;
     @Inject
     private S3Client s3Client;
+
+    @Inject
+    private CorImageItemService corImageItemService;
 
     public List<LibLibrary> findLibraries(String networkShortcut, Pageable pageable) {
         return libraryRepository.findAllByNetwork_Shortcut(networkShortcut, pageable);
@@ -66,5 +75,12 @@ public class LibLibraryService {
         return libLibrary;
     }
 
+    public LibLibrary createOrUpdateLibraryWithImage(LibLibrary libLibrary, MultipartFile cover) throws CreateBucketException, IOException, TikaException, SAXException {
+        CorImageItem imageItem = corImageItemService.saveImageItem(cover);
+        log.debug("Persisting LibLibrary: {}", libLibrary);
+        s3Client.makeBucket(libLibrary.getShortcut());
+        libLibrary = libraryRepository.saveAndFlush(libLibrary.addImageItems(imageItem));
+        return libLibrary;
+    }
 
 }

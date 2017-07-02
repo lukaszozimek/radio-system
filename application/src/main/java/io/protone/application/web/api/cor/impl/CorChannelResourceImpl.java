@@ -10,6 +10,7 @@ import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.swagger.annotations.ApiParam;
+import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -48,7 +51,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
 
     @Override
     public ResponseEntity<CorChannelDTO> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException {
+                                                               @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to update CORChannel : {}", channelDTO);
         if (channelDTO.getId() == null) {
             return createChannelUsingPOST(networkShortcut, channelDTO, null);
@@ -64,14 +67,28 @@ public class CorChannelResourceImpl implements CorChannelResource {
     }
 
     @Override
-    public ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(String networkShortcut, String channelShortcut, CorChannelDTO channelDTO, MultipartFile logo) throws URISyntaxException {
-        return null;
+    public ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                        @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO,
+                                                                        @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException {
+        log.debug("REST request to update CORChannel : {}", channelDTO);
+        if (channelDTO.getId() == null) {
+            return createChannelUsingPOST(networkShortcut, channelDTO, logo);
+        }
+        CorNetwork network = networkService.findNetwork(networkShortcut);
+        
+        CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
+        corChannel = channelService.save(corChannel, logo);
+        CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getShortcut().toString()))
+                .body(result);
     }
 
     @Override
     public ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                 @ApiParam(value = "channelDTO", required = true) @Valid @RequestPart("channelDTO") CorChannelDTO channelDTO,
-                                                                @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException {
+                                                                @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to saveCorContact CORChannel : {}", channelDTO);
         if (channelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("cORChannel", "idexists", "A new cORChannel cannot already have an ID")).body(null);
@@ -79,7 +96,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
 
         CorNetwork network = networkService.findNetwork(networkShortcut);
         CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
-        corChannel = channelService.save(corChannel);
+        corChannel = channelService.save(corChannel, logo);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel" + result.getShortcut()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getShortcut().toString()))

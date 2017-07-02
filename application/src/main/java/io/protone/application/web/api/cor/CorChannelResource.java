@@ -3,12 +3,15 @@ package io.protone.application.web.api.cor;
 
 import io.protone.core.api.dto.CorChannelDTO;
 import io.swagger.annotations.*;
+import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -28,7 +31,7 @@ public interface CorChannelResource {
             consumes = {"application/json"},
             method = RequestMethod.PUT)
     ResponseEntity<CorChannelDTO> updateChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                        @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException;
+                                                        @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
     @ApiOperation(value = "updateChannelWithLogo", notes = "", response = CorChannelDTO.class, tags = {"CORE",})
     @ApiResponses(value = {
@@ -43,7 +46,7 @@ public interface CorChannelResource {
     ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO,
-                                                                 @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException;
+                                                                 @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "createChannel", notes = "", response = CorChannelDTO.class, tags = {"CORE",})
@@ -58,7 +61,7 @@ public interface CorChannelResource {
             method = RequestMethod.POST)
     ResponseEntity<CorChannelDTO> createChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                          @ApiParam(value = "channelDTO", required = true) @Valid @RequestPart("channelDTO") CorChannelDTO channelDTO,
-                                                         @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException;
+                                                         @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
     @ApiOperation(value = "getAllChannels", notes = "", response = CorChannelDTO.class, responseContainer = "List", tags = {"CORE",})

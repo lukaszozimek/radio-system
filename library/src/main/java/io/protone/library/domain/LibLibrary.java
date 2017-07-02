@@ -58,17 +58,17 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "lib_library_channel",
-        joinColumns = @JoinColumn(name = "lib_library_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "lib_library_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     @PodamExclude
     private Set<CorChannel> channels = new HashSet<>();
 
     @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_library_cor_image_item",
-        joinColumns = @JoinColumn(name = "lib_library_id"),
-        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
+            name = "lib_library_cor_image_item",
+            joinColumns = @JoinColumn(name = "lib_library_id"),
+            inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
     private Set<CorImageItem> imageItems = new HashSet<>();
 
@@ -84,17 +84,21 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return prefix;
     }
 
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
     public LibLibrary prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
     public String getShortcut() {
         return shortcut;
+    }
+
+    public void setShortcut(String shortcut) {
+        this.shortcut = shortcut;
     }
 
     public LibLibrary shortcut(String shortcut) {
@@ -102,12 +106,12 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setShortcut(String shortcut) {
-        this.shortcut = shortcut;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LibLibrary name(String name) {
@@ -115,12 +119,12 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getCounter() {
         return counter;
+    }
+
+    public void setCounter(Long counter) {
+        this.counter = counter;
     }
 
     public LibLibrary counter(Long counter) {
@@ -128,12 +132,12 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setCounter(Long counter) {
-        this.counter = counter;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LibLibrary description(String description) {
@@ -141,12 +145,12 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public LibLibrary network(CorNetwork corNetwork) {
@@ -156,6 +160,10 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
 
     public Set<CorChannel> getChannels() {
         return channels;
+    }
+
+    public void setChannels(Set<CorChannel> corChannels) {
+        this.channels = corChannels;
     }
 
     public LibLibrary channels(Set<CorChannel> corChannels) {
@@ -173,15 +181,6 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         this.channels.remove(corChannel);
 
         return this;
-    }
-
-    public void setChannels(Set<CorChannel> corChannels) {
-        this.channels = corChannels;
-    }
-
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
     }
 
     @Override
@@ -207,12 +206,30 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "LibLibrary{" +
-            "id=" + id +
-            ", prefix='" + prefix + "'" +
-            ", shortcut='" + shortcut + "'" +
-            ", name='" + name + "'" +
-            ", counter='" + counter + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", prefix='" + prefix + "'" +
+                ", shortcut='" + shortcut + "'" +
+                ", name='" + name + "'" +
+                ", counter='" + counter + "'" +
+                ", description='" + description + "'" +
+                '}';
+    }
+
+    public Set<CorImageItem> getImageItems() {
+        return imageItems;
+    }
+
+    public void setImageItems(Set<CorImageItem> imageItems) {
+        this.imageItems = imageItems;
+    }
+
+    public LibLibrary addImageItems(CorImageItem imageItems) {
+        this.imageItems.add(imageItems);
+        return this;
+    }
+
+    public LibLibrary removeImageItems(CorImageItem imageItems) {
+        this.imageItems.remove(imageItems);
+        return this;
     }
 }

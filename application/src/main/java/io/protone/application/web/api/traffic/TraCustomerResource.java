@@ -18,7 +18,7 @@ import java.util.List;
 public interface TraCustomerResource {
 
 
-    @ApiOperation(value = "updateTrafficCustomerUsingPUT", notes = "", response = TraCustomerDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "updateTrafficCustomer", notes = "", response = TraCustomerDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = TraCustomerDTO.class),
             @ApiResponse(code = 201, message = "Created", response = TraCustomerDTO.class),
@@ -33,7 +33,7 @@ public interface TraCustomerResource {
                                                                  @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestBody TraCustomerDTO traCustomerDTO) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
-    @ApiOperation(value = "createTrafficCustomerUsingPOST", notes = "", response = TraCustomerDTO.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "createTrafficCustomer", notes = "", response = TraCustomerDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = TraCustomerDTO.class),
             @ApiResponse(code = 201, message = "Created", response = TraCustomerDTO.class),
@@ -45,6 +45,23 @@ public interface TraCustomerResource {
             method = RequestMethod.POST)
     ResponseEntity<TraCustomerDTO> createTrafficCustomerUsingPOST(
             @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+            @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestPart TraCustomerDTO traCustomerDTO,
+            @ApiParam(value = "avatar", required = false) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
+
+
+    @ApiOperation(value = "updateTrafficCustomer", notes = "", response = TraCustomerDTO.class, tags = {"TRAFFIC",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = TraCustomerDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = TraCustomerDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = TraCustomerDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = TraCustomerDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = TraCustomerDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/customer/{customerShortcut}",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<TraCustomerDTO> updateTrafficCustomerUsingPOST(
+            @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+            @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
             @ApiParam(value = "traCustomerDTO", required = true) @Valid @RequestPart TraCustomerDTO traCustomerDTO,
             @ApiParam(value = "avatar", required = false) @RequestPart("avatar") MultipartFile avatar) throws URISyntaxException, TikaException, IOException, SAXException;
 
