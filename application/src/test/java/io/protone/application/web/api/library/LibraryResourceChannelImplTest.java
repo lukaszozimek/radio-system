@@ -10,6 +10,8 @@ import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorImageItemRepository;
+import io.protone.core.s3.S3Client;
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibLibraryDTO;
@@ -46,6 +48,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -106,6 +109,8 @@ public class LibraryResourceChannelImplTest {
 
     @Mock
     private CorImageItemService corImageItemService;
+    @Mock
+    private S3Client s3Client;
 
     @Autowired
     private CorImageItemRepository corImageItemRepository;
@@ -133,13 +138,14 @@ public class LibraryResourceChannelImplTest {
     }
 
     @Before
-    public void setup() throws IOException, TikaException, SAXException {
+    public void setup() throws IOException, TikaException, SAXException, CreateBucketException {
         MockitoAnnotations.initMocks(this);
         LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
         CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
         corImageItemRepository.saveAndFlush(corImageItem);
         when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(libLibraryService, "corImageItemService", corImageItemService);
+        ReflectionTestUtils.setField(libLibraryService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
         ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
         ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
@@ -150,6 +156,7 @@ public class LibraryResourceChannelImplTest {
         corChannel = new CorChannel().shortcut("tes");
         corChannel.setId(1L);
 
+        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
         this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -168,10 +175,12 @@ public class LibraryResourceChannelImplTest {
 
         // Create the LibLibrary
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary.channels(Sets.newHashSet(corChannel)));
-
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
             .andExpect(status().isCreated());
 
         // Validate the LibLibrary in the database
@@ -194,11 +203,13 @@ public class LibraryResourceChannelImplTest {
         LibLibrary existingLibLibrary = new LibLibrary();
         existingLibLibrary.setId(1L);
         LibLibraryDTO existingLibLibraryDTO = libLibraryMapper.DB2DTO(existingLibLibrary);
-
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(existingLibLibraryDTO));
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibLibraryMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingLibLibraryDTO)))
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -215,7 +226,7 @@ public class LibraryResourceChannelImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -238,7 +249,7 @@ public class LibraryResourceChannelImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -261,7 +272,7 @@ public class LibraryResourceChannelImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -284,7 +295,7 @@ public class LibraryResourceChannelImplTest {
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
