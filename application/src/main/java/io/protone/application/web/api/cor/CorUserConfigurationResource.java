@@ -65,7 +65,7 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user/{login}",
             produces = {"application/json"},
-            method = RequestMethod.PUT)
+            method = RequestMethod.POST)
     ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "login", required = true) @PathVariable("login") String login,
                                                              @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
@@ -80,7 +80,6 @@ public interface CorUserConfigurationResource {
             @ApiResponse(code = 404, message = "Not Found", response = CorUserDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<CorUserDTO> createUserUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                    @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,

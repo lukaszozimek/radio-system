@@ -13,8 +13,6 @@ import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibLibraryDTO;
 import io.protone.library.domain.LibLibrary;
-import io.protone.library.domain.enumeration.LibCounterTypeEnum;
-import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.mapper.LibLibraryMapper;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.service.LibLibraryService;
@@ -56,9 +54,6 @@ public class LibraryResourceImplTest {
     private static final String DEFAULT_PREFIX = "A";
     private static final String UPDATED_PREFIX = "B";
 
-    private static final Integer DEFAULT_IDX_LENGTH = 1;
-    private static final Integer UPDATED_IDX_LENGTH = 2;
-
     private static final String DEFAULT_SHORTCUT = "AAA";
     private static final String UPDATED_SHORTCUT = "BBB";
 
@@ -67,12 +62,6 @@ public class LibraryResourceImplTest {
 
     private static final Long DEFAULT_COUNTER = 1L;
     private static final Long UPDATED_COUNTER = 2L;
-
-    private static final LibCounterTypeEnum DEFAULT_COUNTER_TYPE = LibCounterTypeEnum.CT_COUNTER;
-    private static final LibCounterTypeEnum UPDATED_COUNTER_TYPE = LibCounterTypeEnum.CT_PREFIX_COUNTER;
-
-    private static final LibObjectTypeEnum DEFAULT_LIBRARY_TYPE = LibObjectTypeEnum.OT_IMAGE;
-    private static final LibObjectTypeEnum UPDATED_LIBRARY_TYPE = LibObjectTypeEnum.OT_AUDIO;
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
@@ -166,7 +155,7 @@ public class LibraryResourceImplTest {
 
         // Create the LibLibrary
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -195,7 +184,7 @@ public class LibraryResourceImplTest {
         LibLibrary existingLibLibrary = new LibLibrary();
         existingLibLibrary.setId(1L);
         LibLibraryDTO existingLibLibraryDTO = libLibraryMapper.DB2DTO(existingLibLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingLibLibraryDTO));
 
@@ -219,7 +208,7 @@ public class LibraryResourceImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -242,7 +231,7 @@ public class LibraryResourceImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -264,7 +253,7 @@ public class LibraryResourceImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -286,7 +275,7 @@ public class LibraryResourceImplTest {
 
         // Create the LibLibrary, which fails.
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 
@@ -393,7 +382,7 @@ public class LibraryResourceImplTest {
                 .counter(UPDATED_COUNTER)
                 .description(UPDATED_DESCRIPTION);
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
-        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
 

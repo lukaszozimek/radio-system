@@ -11,11 +11,11 @@ import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.repository.CorChannelRepository;
+import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
-import io.protone.library.api.dto.LibMediaItemDTO;
 import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
@@ -42,7 +42,6 @@ import java.util.List;
 
 import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
@@ -93,13 +92,18 @@ public class CorChannelResourceTest {
     private EntityManager em;
 
     @Mock
-    private CorImageItemService imageItemService;
+    private CorImageItemService corImageItemService;
+
+    @Autowired
+    private CorImageItemRepository corImageItemRepository;
 
     private MockMvc restCorChannelMockMvc;
 
     private CorChannel corChannel;
 
     private CorNetwork corNetwork;
+
+    private CorImageItem corImageItem;
 
     /**
      * Create an entity for this test.
@@ -121,8 +125,10 @@ public class CorChannelResourceTest {
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(corChannelService, "corImageItemService", imageItemService);
+        ReflectionTestUtils.setField(corChannelService, "corImageItemService", corImageItemService);
         CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(corChannelService, corChannelMapper, networkService);
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
+        corImageItem = corImageItemRepository.saveAndFlush(new CorImageItem().name("test").network(corNetwork));
         this.restCorChannelMockMvc = MockMvcBuilders.standaloneSetup(corChannelResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -136,16 +142,14 @@ public class CorChannelResourceTest {
 
     @Test
     public void createCorChannel() throws Exception {
-        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
-        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
-        corImageItem.setId(1L);
-        when(imageItemService.saveImageItem(anyObject())).thenReturn(corImageItem);
+
+        when(corImageItemService.saveImageItem(anyObject())).thenReturn(corImageItem);
 
         int databaseSizeBeforeCreate = corChannelRepository.findAll().size();
 
         // Create the CorChannel
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
-        MockMultipartFile emptyFile = new MockMultipartFile("logo",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        MockMultipartFile emptyFile = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile jsonFile = new MockMultipartFile("channelDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
@@ -172,7 +176,7 @@ public class CorChannelResourceTest {
         existingCorChannel.setId(1L);
         CorChannelDTO existingCorChannelDTO = corChannelMapper.DB2DTO(existingCorChannel);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("logo",   Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        MockMultipartFile emptyFile = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile jsonFile = new MockMultipartFile("channelDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(existingCorChannelDTO));
 
@@ -195,7 +199,7 @@ public class CorChannelResourceTest {
 
         // Create the CorChannel, which fails.
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
-        MockMultipartFile emptyFile = new MockMultipartFile("logo",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        MockMultipartFile emptyFile = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile jsonFile = new MockMultipartFile("channelDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
@@ -217,7 +221,7 @@ public class CorChannelResourceTest {
 
         // Create the CorChannel, which fails.
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
-        MockMultipartFile emptyFile = new MockMultipartFile("logo",   Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        MockMultipartFile emptyFile = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile jsonFile = new MockMultipartFile("channelDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 
@@ -270,11 +274,12 @@ public class CorChannelResourceTest {
     }
 
     @Test
+    @Transactional
     public void updateCorChannel() throws Exception {
 
         // Initialize the database
 
-        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
+        corChannelRepository.deleteByShortcutAndNetwork_Shortcut(UPDATED_SHORTCUT,corNetwork.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 
@@ -285,7 +290,6 @@ public class CorChannelResourceTest {
                 .name(UPDATED_NAME)
                 .description(UPDATED_DESCRIPTION);
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(updatedCorChannel);
-
         restCorChannelMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(corChannelDTO)))
@@ -304,7 +308,7 @@ public class CorChannelResourceTest {
     public void updateCorChannelWithImage() throws Exception {
 
         // Initialize the database
-
+        when(corImageItemService.saveImageItem(anyObject())).thenReturn(corImageItem);
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
@@ -317,7 +321,7 @@ public class CorChannelResourceTest {
                 .description(UPDATED_DESCRIPTION);
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(updatedCorChannel);
 
-        MockMultipartFile emptyFile = new MockMultipartFile("logo",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        MockMultipartFile emptyFile = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         MockMultipartFile jsonFile = new MockMultipartFile("channelDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(corChannelDTO));
 

@@ -70,7 +70,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(String networkShortcut, String libraryPrefix,  LibMediaItemDTO mediaItem) throws IOException {
+    public ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                           @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                           @ApiParam(value = "mediaItem", required = true) @RequestBody @Valid LibMediaItemDTO mediaItem) throws IOException {
         if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
 
@@ -176,18 +178,6 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Override
-    public ResponseEntity<LibMediaItemDTO> uploadItemImagesByNetworShortcutAndLibraryPrefix(String networkShortcut, String libraryPrefix, String idx, MultipartFile[] files) {
-     /*   List<LibMediaItem> entities = libItemService.upload(networkShortcut, libraryPrefix, files);
-        List<LibMediaItemDTO> response = libMediaItemMapper.DBs2DTOs(entities);
-
-    */
-        return Optional.ofNullable(new LibMediaItemDTO())
-                .map(result -> new ResponseEntity<>(
-                        result,
-                        HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 
     @Override
     public ResponseEntity<Void> deleteItemByNetworShortcutAndLibrarUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx) {

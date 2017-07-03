@@ -24,7 +24,7 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
@@ -44,10 +44,10 @@ public interface LibMediaItemResource {
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                 @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                 @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
-                                                                                                 @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
-                                                                                                 @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException;
+                                                                                                  @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                  @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
+                                                                                                  @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
+                                                                                                  @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException;
 
     @ApiOperation(value = "getAllItemsByNetworShortcutAndLibraryPrefix", notes = "", response = LibMediaItemDTO.class, responseContainer = "List", tags = {"LIBRARY",})
     @ApiResponses(value = {
@@ -72,10 +72,9 @@ public interface LibMediaItemResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<LibMediaItemDTO>> uploadItemsByNetworShortcutAndLibraryPrefix(
-            @ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-            @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-            @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws Exception;
+    ResponseEntity<List<LibMediaItemDTO>> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                      @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                      @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws Exception;
 
 
     @ApiOperation(value = "getItemByNetworShortcutAndLibrar", notes = "", response = LibMediaItemDTO.class, tags = {"LIBRARY",})
@@ -91,18 +90,6 @@ public interface LibMediaItemResource {
                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
 
-    @ApiOperation(value = "getItemByNetworShortcutAndLibrar", notes = "", response = LibMediaItemDTO.class, tags = {"LIBRARY",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = LibMediaItemDTO.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemDTO.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
-            @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}/image",
-            produces = {"application/json"},
-            method = RequestMethod.POST)
-    ResponseEntity<LibMediaItemDTO> uploadItemImagesByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx, MultipartFile[] files);
 
 
     @ApiOperation(value = "deleteItemByNetworShortcutAndLibrar", notes = "", response = Void.class, tags = {"LIBRARY",})

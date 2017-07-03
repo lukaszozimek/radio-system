@@ -157,10 +157,13 @@ public class CrmCustomerResourceImplTest {
 
         // Create the CrmAccount
         CrmAccountDTO crmAccountDTO = crmAccountMapper.DB2DTO(crmAccount);
+        MockMultipartFile emptyFile = new MockMultipartFile("avatar", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
+        MockMultipartFile jsonFile = new MockMultipartFile("crmAccountDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(crmAccountDTO));
 
-        restCrmAccountMockMvc.perform(post("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(crmAccountDTO)))
+        restCrmAccountMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/crm/customer", corNetwork.getShortcut())
+                .file(emptyFile)
+                .file(jsonFile))
                 .andExpect(status().isCreated());
 
         // Validate the CrmAccount in the database

@@ -45,7 +45,7 @@ public interface CorChannelResource {
             method = RequestMethod.POST)
     ResponseEntity<CorChannelDTO> updateChannelWithLogoUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                 @ApiParam(value = "channelDTO", required = true) @Valid @RequestBody CorChannelDTO channelDTO,
+                                                                 @ApiParam(value = "channelDTO", required = true) @Valid @RequestPart CorChannelDTO channelDTO,
                                                                  @ApiParam(value = "logo", required = true) @RequestPart("logo") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
 
