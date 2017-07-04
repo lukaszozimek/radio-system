@@ -52,6 +52,9 @@ public class CrmAccountDTO implements Serializable {
 
     private List<CrmTaskDTO> tasks = new ArrayList<CrmTaskDTO>();
 
+
+    private String publicUrl = null;
+
     public CrmAccountDTO id(Long id) {
         this.id = id;
         return this;
@@ -302,7 +305,6 @@ public class CrmAccountDTO implements Serializable {
     }
 
 
-
     @ApiModelProperty(value = "")
     public Integer getPaymentDelay() {
         return paymentDelay;
@@ -342,6 +344,18 @@ public class CrmAccountDTO implements Serializable {
         this.tasks = tasks;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
+    public CrmAccountDTO publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -353,47 +367,47 @@ public class CrmAccountDTO implements Serializable {
         }
         CrmAccountDTO crmAccountDTO = (CrmAccountDTO) o;
         return Objects.equals(this.id, crmAccountDTO.id) &&
-            Objects.equals(this.shortName, crmAccountDTO.shortName) &&
-            Objects.equals(this.area, crmAccountDTO.area) &&
-            Objects.equals(this.externalId1, crmAccountDTO.externalId1) &&
-            Objects.equals(this.externalId2, crmAccountDTO.externalId2) &&
-            Objects.equals(this.industry, crmAccountDTO.industry) &&
-            Objects.equals(this.name, crmAccountDTO.name) &&
-            Objects.equals(this.range, crmAccountDTO.range) &&
-            Objects.equals(this.size, crmAccountDTO.size) &&
-            Objects.equals(this.vatNumber, crmAccountDTO.vatNumber) &&
-            Objects.equals(this.addres, crmAccountDTO.addres) &&
-            Objects.equals(this.account, crmAccountDTO.account) &&
-            Objects.equals(this.person, crmAccountDTO.person) &&
-            Objects.equals(this.tasks, crmAccountDTO.tasks);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, shortName, area, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, tasks);
+                Objects.equals(this.shortName, crmAccountDTO.shortName) &&
+                Objects.equals(this.area, crmAccountDTO.area) &&
+                Objects.equals(this.externalId1, crmAccountDTO.externalId1) &&
+                Objects.equals(this.externalId2, crmAccountDTO.externalId2) &&
+                Objects.equals(this.industry, crmAccountDTO.industry) &&
+                Objects.equals(this.name, crmAccountDTO.name) &&
+                Objects.equals(this.range, crmAccountDTO.range) &&
+                Objects.equals(this.size, crmAccountDTO.size) &&
+                Objects.equals(this.vatNumber, crmAccountDTO.vatNumber) &&
+                Objects.equals(this.addres, crmAccountDTO.addres) &&
+                Objects.equals(this.account, crmAccountDTO.account) &&
+                Objects.equals(this.person, crmAccountDTO.person) &&
+                Objects.equals(this.publicUrl, crmAccountDTO.publicUrl) &&
+                Objects.equals(this.tasks, crmAccountDTO.tasks);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CrmAccountDTO {\n");
+        return "CrmAccountDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", area=" + area +
+                ", externalId1='" + externalId1 + '\'' +
+                ", externalId2='" + externalId2 + '\'' +
+                ", paymentDelay=" + paymentDelay +
+                ", industry=" + industry +
+                ", range=" + range +
+                ", size=" + size +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", addres=" + addres +
+                ", account=" + account +
+                ", person=" + person +
+                ", tasks=" + tasks +
+                ", publicUrl='" + publicUrl + '\'' +
+                '}';
+    }
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("    area: ").append(toIndentedString(area)).append("\n");
-        sb.append("    externalId1: ").append(toIndentedString(externalId1)).append("\n");
-        sb.append("    externalId2: ").append(toIndentedString(externalId2)).append("\n");
-        sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    range: ").append(toIndentedString(range)).append("\n");
-        sb.append("    size: ").append(toIndentedString(size)).append("\n");
-        sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
-        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
-        sb.append("    account: ").append(toIndentedString(account)).append("\n");
-        sb.append("    person: ").append(toIndentedString(person)).append("\n");
-        sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, shortName, area, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, tasks, publicUrl);
     }
 
     /**

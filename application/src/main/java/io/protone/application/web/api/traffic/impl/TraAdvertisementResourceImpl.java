@@ -59,7 +59,7 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
         log.debug("REST request to update TraAdvertisement : {}, for Network: {}", traAdvertisementDTO, networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
         if (traAdvertisementDTO.getId() == null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraAdvertisement", "idDoesntExits", "Can't update commercial which doesn't exist")).body(null);
+            return createAdvertisementUsingPOST(networkShortcut, traAdvertisementDTO, null);
         }
         TraAdvertisement traAdvertisement = traAdvertisementMapper.DTO2DB(traAdvertisementDTO, corNetwork);
         TraAdvertisement entity = traAdvertisementService.saveAdvertisement(traAdvertisement);

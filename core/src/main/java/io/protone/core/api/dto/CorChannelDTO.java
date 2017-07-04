@@ -19,6 +19,7 @@ public class CorChannelDTO implements Serializable {
     private String name = null;
 
     private String description = null;
+    private String publicUrl = null;
 
     public CorChannelDTO id(Long id) {
         this.id = id;
@@ -96,6 +97,19 @@ public class CorChannelDTO implements Serializable {
         this.description = description;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
+    public CorChannelDTO publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -107,9 +121,9 @@ public class CorChannelDTO implements Serializable {
         }
         CorChannelDTO corChannelDTO = (CorChannelDTO) o;
         return Objects.equals(this.id, corChannelDTO.id) &&
-            Objects.equals(this.shortcut, corChannelDTO.shortcut) &&
-            Objects.equals(this.name, corChannelDTO.name) &&
-            Objects.equals(this.description, corChannelDTO.description);
+                Objects.equals(this.shortcut, corChannelDTO.shortcut) &&
+                Objects.equals(this.name, corChannelDTO.name) &&
+                Objects.equals(this.description, corChannelDTO.description);
     }
 
     @Override

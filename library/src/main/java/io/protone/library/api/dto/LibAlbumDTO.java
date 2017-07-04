@@ -31,6 +31,8 @@ public class LibAlbumDTO {
     @JsonProperty("releaseDate")
     private LocalDate releaseDate = null;
 
+    private String publicUrl = null;
+
     public LibAlbumDTO albumType(AlbumTypeEnum albumType) {
         this.albumType = albumType;
         return this;
@@ -168,6 +170,7 @@ public class LibAlbumDTO {
         this.releaseDate = releaseDate;
         return this;
     }
+
     /**
      * Get releaseDate
      *
@@ -182,6 +185,19 @@ public class LibAlbumDTO {
         this.releaseDate = releaseDate;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
+    public LibAlbumDTO publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -192,13 +208,13 @@ public class LibAlbumDTO {
         }
         LibAlbumDTO libAlbumDTO = (LibAlbumDTO) o;
         return Objects.equals(this.albumType, libAlbumDTO.albumType) &&
-            Objects.equals(this.artistId, libAlbumDTO.artistId) &&
-            Objects.equals(this.coverId, libAlbumDTO.coverId) &&
-            Objects.equals(this.description, libAlbumDTO.description) &&
-            Objects.equals(this.id, libAlbumDTO.id) &&
-            Objects.equals(this.labelId, libAlbumDTO.labelId) &&
-            Objects.equals(this.name, libAlbumDTO.name) &&
-            Objects.equals(this.releaseDate, libAlbumDTO.releaseDate);
+                Objects.equals(this.artistId, libAlbumDTO.artistId) &&
+                Objects.equals(this.coverId, libAlbumDTO.coverId) &&
+                Objects.equals(this.description, libAlbumDTO.description) &&
+                Objects.equals(this.id, libAlbumDTO.id) &&
+                Objects.equals(this.labelId, libAlbumDTO.labelId) &&
+                Objects.equals(this.name, libAlbumDTO.name) &&
+                Objects.equals(this.releaseDate, libAlbumDTO.releaseDate);
     }
 
     @Override

@@ -1,9 +1,5 @@
 package io.protone.application.web.api.traffic;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
@@ -154,7 +150,7 @@ public class TraMediaPlanResourceImplTest {
      */
     public static TraMediaPlan createEntity(EntityManager em) {
         TraMediaPlan traMediaPlan = new TraMediaPlan()
-            .name(DEFAULT_NAME);
+                .name(DEFAULT_NAME);
         return traMediaPlan;
     }
 
@@ -186,18 +182,18 @@ public class TraMediaPlanResourceImplTest {
         traOrder = traOrderRepository.saveAndFlush(traOrder);
 
         mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("CW")
-            .playlistFirsValueCell("G8")
-            .blockStartCell("A10")
-            .blockEndCell("A47")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G10")
-            .lastEmissionValueCell("CW47")
-            .order(traOrderMapper.DB2ThinDTO(traOrder));
+                .sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("CW")
+                .playlistFirsValueCell("G8")
+                .blockStartCell("A10")
+                .blockEndCell("A47")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G10")
+                .lastEmissionValueCell("CW47")
+                .order(traOrderMapper.DB2ThinDTO(traOrder));
 
         ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
@@ -206,9 +202,9 @@ public class TraMediaPlanResourceImplTest {
         ReflectionTestUtils.setField(traMediaPlanResource, "corChannelService", corChannelService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanDescriptorMapper", traMediaPlanDescriptorMapper);
         this.restTraMediaPlanMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -225,22 +221,21 @@ public class TraMediaPlanResourceImplTest {
     @Test
     @Transactional
     public void createTraMediaPlan() throws Exception {
+
         int databaseSizeBeforeCreate = traMediaPlanRepository.findAll().size();
         when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         // Create the TraMediaPlan
         MockMultipartFile firstFile = new MockMultipartFile("file", DEFAULT_NAME, "", inputStream);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        MockMultipartFile jsonFile = new MockMultipartFile("traMediaPlanDescriptorDTO", "",
+                "application/json", TestUtil.convertObjectToJsonBytes(mediaPlanDescriptor));
 
         restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
-            .file(firstFile).param("traMediaPlanDescriptorDTO", objectMapper.writeValueAsString(mediaPlanDescriptor)))
-            .andExpect(status().is(200))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                .file(firstFile)
+                .file(jsonFile))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
 
         // Validate the TraMediaPlan in the database
         List<TraMediaPlan> traMediaPlanList = traMediaPlanRepository.findAll();
@@ -258,10 +253,10 @@ public class TraMediaPlanResourceImplTest {
 
         // Get all the traMediaPlanList
         restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traMediaPlan.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traMediaPlan.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
     @Test
@@ -272,10 +267,10 @@ public class TraMediaPlanResourceImplTest {
 
         // Get the traMediaPlan
         restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(traMediaPlan.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(traMediaPlan.getId().intValue()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
     @Test
@@ -283,7 +278,7 @@ public class TraMediaPlanResourceImplTest {
     public void getNonExistingTraMediaPlan() throws Exception {
         // Get the traMediaPlan
         restTraMediaPlanMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -296,13 +291,13 @@ public class TraMediaPlanResourceImplTest {
         // Update the traMediaPlan
         TraMediaPlan updatedTraMediaPlan = traMediaPlanRepository.findOne(traMediaPlan.getId());
         updatedTraMediaPlan
-            .name(UPDATED_NAME);
+                .name(UPDATED_NAME);
         TraMediaPlanDTO traMediaPlanDTO = traMediaPlanMapper.DB2DTO(updatedTraMediaPlan);
 
         restTraMediaPlanMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
-            .andExpect(status().isOk());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traMediaPlanDTO)))
+                .andExpect(status().isOk());
 
         // Validate the TraMediaPlan in the database
         List<TraMediaPlan> traMediaPlanList = traMediaPlanRepository.findAll();
@@ -321,8 +316,8 @@ public class TraMediaPlanResourceImplTest {
 
         // Get the traMediaPlan
         restTraMediaPlanMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<TraMediaPlan> traMediaPlanList = traMediaPlanRepository.findAll();

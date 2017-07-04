@@ -3,10 +3,7 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorUserDTO;
-import io.protone.core.domain.CorAuthority;
-import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorUser;
+import io.protone.core.domain.*;
 import io.protone.core.mapper.CorUserMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +47,7 @@ public class CorUserMapperTest {
         corUser = factory.manufacturePojo(CorUser.class);
         corUser.addChannel(factory.manufacturePojo(CorChannel.class));
         corUser.addNetwork(factory.manufacturePojo(CorNetwork.class));
+        corUser.setCorImageItem(factory.manufacturePojo(CorImageItem.class));
 
         corUsers.add(corUser);
         corUserDTO = factory.manufacturePojo(CorUserDTO.class);
@@ -86,7 +84,6 @@ public class CorUserMapperTest {
             assertNotNull(dto.getImageurl());
             assertNotNull(dto.getLogin());
             assertNotNull(dto.getId());
-
             assertNotNull(dto.getChannel());
             assertNotNull(dto.getNetwork());
 
@@ -101,7 +98,6 @@ public class CorUserMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getLogin());
         assertNotNull(entity.getEmail());
-        assertNotNull(entity.getCorImageItem());
         assertNotNull(entity.isActivated());
         assertNotNull(entity.getAuthorities());
 
@@ -120,7 +116,6 @@ public class CorUserMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getLogin());
             assertNotNull(entity.getEmail());
-            assertNotNull(entity.getCorImageItem());
             assertNotNull(entity.isActivated());
             assertNotNull(entity.getAuthorities());
 

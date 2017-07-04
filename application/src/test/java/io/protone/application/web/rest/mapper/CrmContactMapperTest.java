@@ -78,6 +78,8 @@ public class CrmContactMapperTest {
         assertNotNull(dto.getSize());
         assertNotNull(dto.getPerson());
         assertNotNull(dto.getAccount());
+        assertNotNull(dto.getPublicUrl());
+
         assertNotNull(dto.getAddres());
         assertNotNull(dto.getRange());
         assertNotNull(dto.getIndustry());
@@ -102,6 +104,8 @@ public class CrmContactMapperTest {
             assertNotNull(dto.getSize());
             assertNotNull(dto.getPerson());
             assertNotNull(dto.getAccount());
+
+            assertNotNull(dto.getPublicUrl());
             assertNotNull(dto.getAddres());
             assertNotNull(dto.getRange());
             assertNotNull(dto.getIndustry());

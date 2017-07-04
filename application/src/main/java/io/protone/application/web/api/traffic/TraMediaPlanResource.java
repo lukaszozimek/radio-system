@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -38,8 +37,8 @@ public interface TraMediaPlanResource {
         method = RequestMethod.POST)
     ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                           @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO")@Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
-                                                                           @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException;
+                                                                           @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestPart("traMediaPlanDescriptorDTO")@Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
+                                                                           @ApiParam(value = "files", required = true) @RequestPart("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException;
 
 
     @ApiOperation(value = "deleteChannelTrafficMediaPlan", notes = "", response = Void.class, tags = {"TRAFFIC",})

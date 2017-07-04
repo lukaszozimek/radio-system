@@ -18,6 +18,7 @@ public interface CorUserMapper {
 
     @Mapping(source = "networks", target = "network")
     @Mapping(source = "channels", target = "channel")
+    @Mapping(source = "corImageItem.publicUrl",target = "imageurl")
     CorUserDTO DB2DTO(CorUser user);
 
     List<CorUserDTO> DBs2DTOs(List<CorUser> users);

@@ -68,6 +68,7 @@ public class CorNetworkMapperTest {
         assertNotNull(dto.getShortcut());
         assertNotNull(dto.getName());
         assertNotNull(dto.getDescription());
+        assertNotNull(dto.getPublicUrl());
 
     }
 
@@ -82,6 +83,8 @@ public class CorNetworkMapperTest {
             assertNotNull(dto.getShortcut());
             assertNotNull(dto.getName());
             assertNotNull(dto.getDescription());
+
+            assertNotNull(dto.getPublicUrl());
         });
     }
 

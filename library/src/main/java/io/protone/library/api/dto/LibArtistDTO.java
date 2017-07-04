@@ -13,132 +13,151 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class LibArtistDTO {
-  @JsonProperty("description")
-  private String description = null;
+    @JsonProperty("description")
+    private String description = null;
 
-  @JsonProperty("id")
-  private Long id = null;
+    @JsonProperty("id")
+    private Long id = null;
 
-  @JsonProperty("name")
-  private String name = null;
-  @JsonProperty("type")
-  private TypeEnum type = null;
+    @JsonProperty("name")
+    private String name = null;
+    @JsonProperty("type")
+    private TypeEnum type = null;
 
-  public LibArtistDTO description(String description) {
-    this.description = description;
-    return this;
-  }
+    private String publicUrl = null;
 
-   /**
-   * Get description
-   * @return description
-  **/
-  @ApiModelProperty(value = "")
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public LibArtistDTO id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Get id
-   * @return id
-  **/
-  @ApiModelProperty(value = "")
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public LibArtistDTO name(String name) {
-    this.name = name;
-    return this;
-  }
-
-   /**
-   * Get name
-   * @return name
-  **/
-  @ApiModelProperty(required = true, value = "")
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public LibArtistDTO type(TypeEnum type) {
-    this.type = type;
-    return this;
-  }
-
-   /**
-   * Get type
-   * @return type
-  **/
-  @ApiModelProperty(value = "")
-  public TypeEnum getType() {
-    return type;
-  }
-
-  public void setType(TypeEnum type) {
-    this.type = type;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public LibArtistDTO description(String description) {
+        this.description = description;
+        return this;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    /**
+     * Get description
+     *
+     * @return description
+     **/
+    @ApiModelProperty(value = "")
+    public String getDescription() {
+        return description;
     }
-    LibArtistDTO libArtistDTO = (LibArtistDTO) o;
-    return Objects.equals(this.description, libArtistDTO.description) &&
-        Objects.equals(this.id, libArtistDTO.id) &&
-        Objects.equals(this.name, libArtistDTO.name) &&
-        Objects.equals(this.type, libArtistDTO.type);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(description, id, name, type);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class LibArtistDTO {\n");
-
-    sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
+    public void setDescription(String description) {
+        this.description = description;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    public LibArtistDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return id
+     **/
+    @ApiModelProperty(value = "")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LibArtistDTO name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     **/
+    @ApiModelProperty(required = true, value = "")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LibArtistDTO type(TypeEnum type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return type
+     **/
+    @ApiModelProperty(value = "")
+    public TypeEnum getType() {
+        return type;
+    }
+
+    public void setType(TypeEnum type) {
+        this.type = type;
+    }
+
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
+    public LibArtistDTO publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        LibArtistDTO libArtistDTO = (LibArtistDTO) o;
+        return Objects.equals(this.description, libArtistDTO.description) &&
+                Objects.equals(this.id, libArtistDTO.id) &&
+                Objects.equals(this.name, libArtistDTO.name) &&
+                Objects.equals(this.type, libArtistDTO.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, id, name, type);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class LibArtistDTO {\n");
+
+        sb.append("    description: ").append(toIndentedString(description)).append("\n");
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    type: ").append(toIndentedString(type)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 
     /**
      * Gets or Sets type

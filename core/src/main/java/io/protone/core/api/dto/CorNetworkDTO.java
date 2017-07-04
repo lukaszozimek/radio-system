@@ -22,6 +22,19 @@ public class CorNetworkDTO implements Serializable {
 
     private String description = null;
 
+    @Override
+    public String toString() {
+        return "CorNetworkDTO{" +
+                "id=" + id +
+                ", shortcut='" + shortcut + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", publicUrl='" + publicUrl + '\'' +
+                '}';
+    }
+
+    private String publicUrl = null;
+
     public CorNetworkDTO id(Long id) {
         this.id = id;
         return this;
@@ -98,6 +111,18 @@ public class CorNetworkDTO implements Serializable {
         this.description = description;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
+    public CorNetworkDTO publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -113,33 +138,12 @@ public class CorNetworkDTO implements Serializable {
         return Objects.equals(id, corNetworkDTO.id);
     }
 
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, shortcut, name, description);
+        return Objects.hash(id, shortcut, name, description, publicUrl);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CorNetworkDTO {\n");
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    shortcut: ").append(toIndentedString(shortcut)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
 }
 

@@ -61,6 +61,8 @@ public class LibAlbumMapperTest {
         assertNotNull(dto.getLabelId());
         assertNotNull(dto.getAlbumType());
         assertNotNull(dto.getDescription());
+
+        assertNotNull(dto.getPublicUrl());
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
         assertNotNull(dto.getReleaseDate());
@@ -80,6 +82,8 @@ public class LibAlbumMapperTest {
             assertNotNull(dto.getLabelId());
             assertNotNull(dto.getAlbumType());
             assertNotNull(dto.getDescription());
+
+            assertNotNull(dto.getPublicUrl());
             assertNotNull(dto.getId());
             assertNotNull(dto.getName());
             assertNotNull(dto.getReleaseDate());

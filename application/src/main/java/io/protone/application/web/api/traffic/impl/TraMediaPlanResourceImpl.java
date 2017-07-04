@@ -25,14 +25,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import javax.validation.*;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -69,8 +68,8 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
     @Override
     public ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                  @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestParam("traMediaPlanDescriptorDTO")@Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
-                                                                                  @ApiParam(value = "files", required = true) @PathParam("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException {
+                                                                                  @ApiParam(value = "traMediaPlanDescriptorDTO", required = true) @RequestPart("traMediaPlanDescriptorDTO") @Valid TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO,
+                                                                                  @ApiParam(value = "file", required = true) @RequestPart("file") MultipartFile file) throws URISyntaxException, TikaException, SAXException, IOException, InvalidFormatException {
 
         TraMediaPlanDescriptor traMediaPlanDescriptor = traMediaPlanDescriptorMapper.DTO2DB(traMediaPlanDescriptorDTO);
         if (traMediaPlanDescriptor == null) {
@@ -81,10 +80,10 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         TraMediaPlan entity = traMediaPlanService.saveMediaPlan(file, traMediaPlanDescriptor, corNetwork, corChannel);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -104,10 +103,10 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         TraMediaPlan entity = traMediaPlanService.getMediaPlan(id, networkShortcut, channelShortcut);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -118,7 +117,7 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         List<TraMediaPlan> entities = traMediaPlanService.getMediaPlans(networkShortcut, channelShortcut, pagable);
         List<TraMediaPlanThinDTO> response = traMediaPlanMapper.DBsThin2DTOsThin(entities);
         return ResponseEntity.ok()
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -134,7 +133,7 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
         TraMediaPlan entity = traMediaPlanService.updateMediaPlan(requestEntity);
         TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
         return ResponseEntity.ok()
-            .body(response);
+                .body(response);
     }
 
     private TraMediaPlanDescriptorDTO validate(TraMediaPlanDescriptorDTO traMediaPlanDescriptorDTO) throws IOException {

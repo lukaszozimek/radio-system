@@ -59,6 +59,8 @@ public class LibArtistMapperTest {
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
         assertNotNull(dto.getType());
+        assertNotNull(dto.getPublicUrl());
+
         assertNotNull(dto.getDescription());
 
     }
@@ -105,6 +107,7 @@ public class LibArtistMapperTest {
             assertNotNull(dto.getId());
             assertNotNull(dto.getName());
             assertNotNull(dto.getType());
+            assertNotNull(dto.getPublicUrl());
             assertNotNull(dto.getDescription());
 
         });

@@ -35,6 +35,8 @@ public class LibLibraryDTO implements Serializable {
 
     private String description = null;
 
+    private String publicUrl = null;
+
     public LibLibraryDTO id(Long id) {
         this.id = id;
         return this;
@@ -137,6 +139,19 @@ public class LibLibraryDTO implements Serializable {
         this.channels = channels;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
+
+    public LibLibraryDTO publicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -147,7 +162,8 @@ public class LibLibraryDTO implements Serializable {
         if (getId() != null ? !getId().equals(libLibraryDTO.getId()) : libLibraryDTO.getId() != null) return false;
         if (getPrefix() != null ? !getPrefix().equals(libLibraryDTO.getPrefix()) : libLibraryDTO.getPrefix() != null)
             return false;
-        if (getName() != null ? !getName().equals(libLibraryDTO.getName()) : libLibraryDTO.getName() != null) return false;
+        if (getName() != null ? !getName().equals(libLibraryDTO.getName()) : libLibraryDTO.getName() != null)
+            return false;
         if (getCounter() != null ? !getCounter().equals(libLibraryDTO.getCounter()) : libLibraryDTO.getCounter() != null)
             return false;
         if (getShortcut() != null ? !getShortcut().equals(libLibraryDTO.getShortcut()) : libLibraryDTO.getShortcut() != null)
@@ -173,14 +189,14 @@ public class LibLibraryDTO implements Serializable {
     @Override
     public String toString() {
         return "LibLibraryDTO{" +
-            "id=" + id +
-            ", prefix='" + prefix + '\'' +
-            ", name='" + name + '\'' +
-            ", counter=" + counter +
-            ", shortcut='" + shortcut + '\'' +
-            ", prefix='" + prefix + '\'' +
-            ", description='" + description + '\'' +
-            '}';
+                "id=" + id +
+                ", prefix='" + prefix + '\'' +
+                ", name='" + name + '\'' +
+                ", counter=" + counter +
+                ", shortcut='" + shortcut + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 
 

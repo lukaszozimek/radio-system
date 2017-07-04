@@ -45,7 +45,6 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     @NotNull
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
-
     @NotNull
     @Column(name = "counter", nullable = false)
     private Long counter;
@@ -55,6 +54,11 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     private CorNetwork network;
+
+    @OneToOne
+    private CorImageItem mainImage;
+
+
     @OneToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "lib_library_channel",
@@ -183,6 +187,37 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public Set<CorImageItem> getImageItems() {
+        return imageItems;
+    }
+
+    public void setImageItems(Set<CorImageItem> imageItems) {
+        this.imageItems = imageItems;
+    }
+
+    public LibLibrary addImageItems(CorImageItem imageItems) {
+        this.imageItems.add(imageItems);
+        return this;
+    }
+
+    public LibLibrary removeImageItems(CorImageItem imageItems) {
+        this.imageItems.remove(imageItems);
+        return this;
+    }
+
+    public LibLibrary mainImage(CorImageItem mainImage) {
+        this.mainImage = mainImage;
+        return this;
+    }
+
+    public CorImageItem getMainImage() {
+        return mainImage;
+    }
+
+    public void setMainImage(CorImageItem mainImage) {
+        this.mainImage = mainImage;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -215,21 +250,5 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
                 '}';
     }
 
-    public Set<CorImageItem> getImageItems() {
-        return imageItems;
-    }
 
-    public void setImageItems(Set<CorImageItem> imageItems) {
-        this.imageItems = imageItems;
-    }
-
-    public LibLibrary addImageItems(CorImageItem imageItems) {
-        this.imageItems.add(imageItems);
-        return this;
-    }
-
-    public LibLibrary removeImageItems(CorImageItem imageItems) {
-        this.imageItems.remove(imageItems);
-        return this;
-    }
 }

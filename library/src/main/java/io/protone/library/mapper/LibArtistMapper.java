@@ -5,10 +5,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibArtistDTO;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.domain.enumeration.LibArtistTypeEnum;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface LibArtistMapper {
 
+    @Mapping(source = "mainImage.publicUrl",target = "publicUrl")
     LibArtistDTO DB2DTO(LibArtist db);
 
     List<LibArtistDTO> DBs2DTOs(List<LibArtist> dbs);

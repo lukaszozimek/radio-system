@@ -55,12 +55,13 @@ public class CorChannelMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        CorChannelDTO channelPT = corChannelMapper.DB2DTO(channel);
+        CorChannelDTO dto = corChannelMapper.DB2DTO(channel);
 
-        assertNotNull(channelPT.getId());
-        assertNotNull(channelPT.getShortcut());
-        assertNotNull(channelPT.getName());
-        assertNotNull(channelPT.getDescription());
+        assertNotNull(dto.getId());
+        assertNotNull(dto.getShortcut());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getDescription());
+        assertNotNull(dto.getPublicUrl());
     }
 
     @Test
@@ -74,6 +75,7 @@ public class CorChannelMapperTest {
             assertNotNull(dto.getShortcut());
             assertNotNull(dto.getName());
             assertNotNull(dto.getDescription());
+            assertNotNull(dto.getPublicUrl());
         });
     }
 

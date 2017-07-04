@@ -20,6 +20,7 @@ import java.util.List;
 public interface LibAlbumMapper {
 
     @Mapping(source = "label.id", target = "labelId")
+    @Mapping(source = "mainImage.publicUrl",target = "publicUrl")
     @Mapping(source = "artist.id", target = "artistId")
     LibAlbumDTO DB2DTO(LibAlbum db);
 

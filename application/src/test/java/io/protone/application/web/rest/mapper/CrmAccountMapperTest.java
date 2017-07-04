@@ -76,6 +76,8 @@ public class CrmAccountMapperTest {
         assertNotNull(dto.getArea());
         assertNotNull(dto.getSize());
         assertNotNull(dto.getPerson());
+
+        assertNotNull(dto.getPublicUrl());
         assertNotNull(dto.getAccount());
         assertNotNull(dto.getAddres());
         assertNotNull(dto.getRange());
@@ -101,6 +103,7 @@ public class CrmAccountMapperTest {
             assertNotNull(dto.getPerson());
             assertNotNull(dto.getAccount());
             assertNotNull(dto.getAddres());
+            assertNotNull(dto.getPublicUrl());
             assertNotNull(dto.getRange());
             assertNotNull(dto.getIndustry());
             assertNotNull(dto.getId());
