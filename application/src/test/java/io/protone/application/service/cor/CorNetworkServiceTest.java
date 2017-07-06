@@ -1,17 +1,28 @@
 package io.protone.application.service.cor;
 
-import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.s3.S3Client;
+import io.protone.core.s3.exceptions.S3Exception;
+import io.protone.core.s3.exceptions.UploadException;
+import io.protone.core.s3.exceptions.UrlGenerationResourceException;
+import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -19,6 +30,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 28.04.2017.
@@ -32,6 +47,11 @@ public class CorNetworkServiceTest {
     private static final String TEST_NAME = "tet";
     @Autowired
     private CorNetworkService corNetworkService;
+    @Autowired
+    private CorImageItemService corImageItemService;
+
+    @Mock
+    private S3Client s3Client;
 
     @Autowired
     private CorNetworkRepository corNetworkRepository;
@@ -41,7 +61,16 @@ public class CorNetworkServiceTest {
     private PodamFactory factory;
 
     @Before
-    public void initPojos() {
+    public void initPojos() throws UploadException, S3Exception, UrlGenerationResourceException {
+        MockitoAnnotations.initMocks(this);
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(), anyString())).thenReturn("test");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
+        SecurityContextHolder.setContext(securityContext);
+        ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(corNetworkService, "corImageItemService", corImageItemService);
+
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
@@ -122,7 +151,16 @@ public class CorNetworkServiceTest {
 
     @Test
     public void shouldSaveCorNetworkWithImage() throws Exception {
-        Assert.notNull(null);
+        MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        factory = new PodamFactoryImpl();
+        CorNetwork local = factory.manufacturePojo(CorNetwork.class);
+        local.setId(null);
+        local = corNetworkService.save(corNetwork, logo);
+
+        assertNotNull(local.getId());
+        assertNotNull(local.getCreatedBy());
+        assertNotNull(local.getCorImageItem());
+
 
     }
 }

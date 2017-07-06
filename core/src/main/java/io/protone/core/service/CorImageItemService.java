@@ -25,12 +25,9 @@ import org.xml.sax.SAXException;
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by lukaszozimek on 20.06.2017.
@@ -59,11 +56,12 @@ public class CorImageItemService {
         return corImageItemSet;
     }
 
+    @SuppressWarnings("")
     public CorImageItem saveImageItem(MultipartFile image) throws TikaException, SAXException, IOException {
         if (image.isEmpty() || image == null) {
             return null;
         }
-        CorImageItem corImageItem = new CorImageItem();
+        CorImageItem corImageItem = null;
         ByteArrayInputStream bais = new ByteArrayInputStream(image.getBytes());
         Parser parser = new AutoDetectParser();
         BodyContentHandler handler = new BodyContentHandler();
@@ -77,8 +75,11 @@ public class CorImageItemService {
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
             s3Client.upload(corNetwork.getShortcut() + "-" + PUBLIC_CONTENT, fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            corImageItem = new CorImageItem();
             corImageItem.name(fileUUID).network(corNetwork);
             corImageItem = corImageItemRepository.saveAndFlush(corImageItem);
+
+
         } catch (UploadException e) {
             log.error("There is a problem with uploading file to S3 Storage :{}", image.getOriginalFilename());
         } catch (S3Exception e) {
@@ -89,9 +90,16 @@ public class CorImageItemService {
         }
     }
 
-    public CorImageItem getValidLinkToResource(CorImageItem libMediaItem) throws UrlGenerationResourceException, S3Exception {
-        String publicUrl = s3Client.getCover(libMediaItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, libMediaItem.getName());
-        return libMediaItem.publicUrl(publicUrl);
+    public CorImageItem getValidLinkToResource(CorImageItem corImageItem)  {
+        String publicUrl = null;
+        try {
+            publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
+        } catch (S3Exception e) {
+            e.printStackTrace();
+        } catch (UrlGenerationResourceException e) {
+            e.printStackTrace();
+        }
+        return corImageItem.publicUrl(publicUrl);
     }
 
 }

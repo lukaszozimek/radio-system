@@ -4,6 +4,7 @@ package io.protone.core.mapper;
 import io.protone.core.api.dto.CorNetworkDTO;
 import io.protone.core.domain.CorNetwork;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring", uses = {})
 public interface CorNetworkMapper {
 
+    @Mapping(source = "corImageItem.publicUrl",target = "publicUrl")
     CorNetworkDTO DB2DTO(CorNetwork cORNetwork);
 
     List<CorNetworkDTO> DBs2DTOs(List<CorNetwork> cORNetworks);

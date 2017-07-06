@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by lukaszozimek on 17.01.2017.
  */
@@ -49,7 +51,8 @@ public class CrmContactService {
     private CorImageItemService corImageItemService;
 
     public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
-        return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+        return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable).stream()
+                .map(crmContact -> crmContact.avatar(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()))).collect(toList());
     }
 
     public CrmContact saveContact(CrmContact contact) {
@@ -68,7 +71,7 @@ public class CrmContactService {
         return contact;
     }
 
-    public CrmContact  saveContactWithImage(CrmContact contact, MultipartFile avatar) throws IOException, TikaException, SAXException {
+    public CrmContact saveContactWithImage(CrmContact contact, MultipartFile avatar) throws IOException, TikaException, SAXException {
         CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
         contact.setCorImageItem(corImageItem);
         return this.saveContact(contact);
@@ -80,7 +83,8 @@ public class CrmContactService {
     }
 
     public CrmContact getContact(String shortcut, String corNetwork) {
-        return crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        return crmContact.avatar(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()));
     }
 
     public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {

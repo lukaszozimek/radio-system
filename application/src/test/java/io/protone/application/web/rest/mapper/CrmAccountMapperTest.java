@@ -53,6 +53,7 @@ public class CrmAccountMapperTest {
         crmAccount.setPerson(factory.manufacturePojo(CorPerson.class));
         crmAccount.setSize(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setAddres(factory.manufacturePojo(CorAddress.class));
+        crmAccount.setCorImageItem(factory.manufacturePojo(CorImageItem.class));
         crmAccount.setRange(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setIndustry(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setKeeper(factory.manufacturePojo(CorUser.class));

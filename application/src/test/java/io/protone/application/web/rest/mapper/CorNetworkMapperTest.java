@@ -3,6 +3,7 @@ package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorNetworkDTO;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorNetworkMapper;
 import org.junit.Before;
@@ -43,8 +44,11 @@ public class CorNetworkMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
+        corNetwork.setCorImageItem(factory.manufacturePojo(CorImageItem.class));
         corNetworks.add(corNetwork);
         corNetworkDTO = factory.manufacturePojo(CorNetworkDTO.class);
+
+
         corNetworkDTOS.add(corNetworkDTO);
     }
 

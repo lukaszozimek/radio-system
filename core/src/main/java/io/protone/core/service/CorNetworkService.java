@@ -1,6 +1,5 @@
 package io.protone.core.service;
 
-import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
@@ -24,32 +23,33 @@ public class CorNetworkService {
     private final Logger log = LoggerFactory.getLogger(CorNetworkService.class);
 
     @Inject
-    private CorNetworkRepository ccorNetworkRepository;
+    private CorNetworkRepository corNetworkRepository;
 
     @Inject
     private CorImageItemService corImageItemService;
 
     public List<CorNetwork> findAllNetworks() {
-        return ccorNetworkRepository.findAll();
+        return corNetworkRepository.findAll();
     }
 
     public CorNetwork findNetwork(String shortcut) {
-        return ccorNetworkRepository.findOneByShortcut(shortcut);
+        CorNetwork corNetwork = corNetworkRepository.findOneByShortcut(shortcut);
+        return corNetwork.logo(corImageItemService.getValidLinkToResource(corNetwork.getCorImageItem()));
     }
 
     @Transactional
     public void deleteNetwork(String shortcut) {
-        ccorNetworkRepository.deleteByShortcut(shortcut);
+        corNetworkRepository.deleteByShortcut(shortcut);
     }
 
     public CorNetwork save(CorNetwork network) {
         log.debug("Persisting CorNetwork: {}", network);
-        return ccorNetworkRepository.saveAndFlush(network);
+        return corNetworkRepository.saveAndFlush(network);
     }
 
     public CorNetwork save(CorNetwork corNetwork, MultipartFile logo) throws IOException, TikaException, SAXException {
         log.debug("Persisting CorNetwork: {}", corNetwork);
         CorImageItem corImageItem = corImageItemService.saveImageItem(logo);
-        return ccorNetworkRepository.saveAndFlush(corNetwork.image(corImageItem));
+        return corNetworkRepository.saveAndFlush(corNetwork.image(corImageItem));
     }
 }

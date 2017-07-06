@@ -98,7 +98,7 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorDictionary status;
 
-    @OneToMany(mappedBy = "contact",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "contact", fetch = FetchType.EAGER)
     @JsonIgnore
     @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -329,9 +329,15 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
         return corImageItem;
     }
 
+    public CrmContact avatar(CorImageItem corImageItem) {
+        this.corImageItem = corImageItem;
+        return this;
+    }
+
     public void setCorImageItem(CorImageItem corImageItem) {
         this.corImageItem = corImageItem;
     }
+
     public CorDictionary getStatus() {
         return status;
     }

@@ -50,6 +50,7 @@ public class LibAlbum extends AbstractAuditingEntity implements Serializable {
     private String description;
 
     @OneToOne
+    @PodamExclude
     private CorImageItem mainImage;
 
     @ManyToOne

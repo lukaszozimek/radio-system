@@ -1,12 +1,13 @@
 package io.protone.application.service.crm;
 
 
-import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorAddress;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPerson;
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.s3.S3Client;
+import io.protone.core.service.CorImageItemService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.repostiory.CrmAccountRepository;
@@ -15,11 +16,18 @@ import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.xml.sax.SAXException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -29,6 +37,10 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 29.04.2017.
@@ -49,12 +61,27 @@ public class CrmCustomerServiceTest {
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
+    @Autowired
+    private CorImageItemService corImageItemService;
+
+    @Mock
+    private S3Client s3Client;
+
     private CorNetwork corNetwork;
 
     private PodamFactory factory;
 
+
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(), anyString())).thenReturn("test");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
+        SecurityContextHolder.setContext(securityContext);
+        ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(crmCustomerService, "corImageItemService", corImageItemService);
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
@@ -375,12 +402,34 @@ public class CrmCustomerServiceTest {
     }
 
     @Test
-    public void shouldSaveCrmContactWithImage() {
-        Assert.notNull(null);
+    public void shouldSaveCrmContactWithImage() throws Exception {
+        MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
 
-        //given
-        ///when
+        //when
+        CrmAccount crmAccount = factory.manufacturePojo(CrmAccount.class);
+        crmAccount.setId(null);
+        crmAccount.setNetwork(corNetwork);
+        crmAccount.setPerson(factory.manufacturePojo(CorPerson.class));
+        crmAccount.getPerson().setNetwork(corNetwork);
+        crmAccount.getPerson().getContacts().stream().forEach(corContact -> corContact.setNetwork(corNetwork));
+        crmAccount.setAddres(factory.manufacturePojo(CorAddress.class));
+        crmAccount.getAddres().setNetwork(corNetwork);
+
         //then
+        crmAccount = crmCustomerService.saveCustomerWithImage(crmAccount, logo);
+
+        //assert
+        assertNotNull(crmAccount);
+        assertNotNull(crmAccount.getId());
+        assertNotNull(crmAccount.getCreatedBy());
+        assertNotNull(crmAccount.getPerson().getId());
+        assertNotNull(crmAccount.getAddres().getId());
+        assertNotNull(crmAccount.getAddres().getCreatedBy());
+
+        crmAccount.getPerson().getContacts().stream().forEach(corContact -> {
+            assertNotNull(corContact.getId());
+        });
+        assertNotNull(crmAccount.getCorImageItem());
     }
 
 }

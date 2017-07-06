@@ -237,6 +237,7 @@ public class CorChannelResourceTest {
     @Test
     public void getAllCorChannels() throws Exception {
         // Initialize the database
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
@@ -253,6 +254,7 @@ public class CorChannelResourceTest {
     @Test
     public void getCorChannel() throws Exception {
         // Initialize the database
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 

@@ -1,6 +1,7 @@
 package io.protone.core.domain;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ public  class CorImageItem extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
+    @PodamExclude
     protected Long id;
 
     @Column(name = "name")

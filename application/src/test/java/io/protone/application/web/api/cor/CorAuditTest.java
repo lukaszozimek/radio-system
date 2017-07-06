@@ -131,6 +131,7 @@ public class CorAuditTest {
 
     @Test
     public void shouldCreateCorNetworksAndChangeAuditLog() throws Exception {
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
         when(corImageItemService.saveImageItem(anyObject())).thenReturn(null);
         //when
         LoginVM loginVM = new LoginVM();

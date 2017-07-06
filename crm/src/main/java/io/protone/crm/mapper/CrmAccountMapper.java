@@ -24,6 +24,7 @@ public interface CrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
+    @Mapping(source = "corImageItem.publicUrl",target = "publicUrl")
     CrmAccountDTO DB2DTO(CrmAccount crmAccount);
 
     List<CrmAccountDTO> DBs2DTOs(List<CrmAccount> crmAccounts);

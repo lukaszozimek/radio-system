@@ -4,6 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorChannelMapper;
 import org.junit.Before;
@@ -47,6 +48,7 @@ public class CorChannelMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         channel = factory.manufacturePojo(CorChannel.class);
+        channel.setCorImageItem(factory.manufacturePojo(CorImageItem.class));
         channels.add(channel);
         corChannelDTO = factory.manufacturePojo(CorChannelDTO.class);
         corChannelDTOS.add(corChannelDTO);
@@ -87,7 +89,6 @@ public class CorChannelMapperTest {
         assertNotNull(entity.getShortcut());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDescription());
-
         assertNotNull(entity.getNetwork());
     }
 
@@ -102,7 +103,6 @@ public class CorChannelMapperTest {
             assertNotNull(entity.getShortcut());
             assertNotNull(entity.getName());
             assertNotNull(entity.getDescription());
-
             assertNotNull(entity.getNetwork());
         });
     }

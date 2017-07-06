@@ -16,6 +16,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Created by lukaszozimek on 16.01.2017.
  */
@@ -32,12 +34,13 @@ public class CorChannelService {
     private CorImageItemService corImageItemService;
 
     public List<CorChannel> findAllChannel(String network, Pageable pageable) {
-        return channelRepository.findAllByNetwork_Shortcut(network, pageable);
+        return channelRepository.findAllByNetwork_Shortcut(network, pageable).stream().map(corChannel -> corChannel.logo(corImageItemService.getValidLinkToResource(corChannel.getCorImageItem()))).collect(toList());
+
     }
 
     public CorChannel findChannel(String networkShortcut, String channelShortcut) {
         CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, channelShortcut);
-        return channel;
+        return channel.logo(corImageItemService.getValidLinkToResource(channel.getCorImageItem()));
     }
 
     public void deleteChannel(String networkShortcut, String channelShortcut) {

@@ -4,10 +4,7 @@ package io.protone.core.mapper;
 import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +13,7 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {})
 public interface CorChannelMapper {
+    @Mapping(source = "corImageItem.publicUrl",target = "publicUrl")
     CorChannelDTO DB2DTO(CorChannel cORAddress);
 
     List<CorChannelDTO> DBs2DTOs(List<CorChannel> cORAddresses);

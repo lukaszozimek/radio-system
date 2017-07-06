@@ -56,6 +56,7 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     private CorNetwork network;
 
     @OneToOne
+    @PodamExclude
     private CorImageItem mainImage;
 
 

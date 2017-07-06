@@ -56,6 +56,7 @@ public class CrmContactMapperTest {
         crmContact.setAddres(factory.manufacturePojo(CorAddress.class));
         crmContact.setRange(factory.manufacturePojo(CorDictionary.class));
         crmContact.setIndustry(factory.manufacturePojo(CorDictionary.class));
+        crmContact.setCorImageItem(factory.manufacturePojo(CorImageItem.class));
         crmContact.setKeeper(factory.manufacturePojo(CorUser.class));
         crmContact.setShortName("fefe");
         crmContact.setName("fwafwafwa");

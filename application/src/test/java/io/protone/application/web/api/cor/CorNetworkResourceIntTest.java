@@ -210,6 +210,7 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void getAllCorNetworks() throws Exception {
         // Initialize the database
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
         corNetworkRepository.saveAndFlush(corNetwork);
 
         // Get all the corNetworkList
@@ -226,6 +227,7 @@ public class CorNetworkResourceIntTest {
     @Transactional
     public void getCorNetwork() throws Exception {
         // Initialize the database
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
         corNetworkRepository.saveAndFlush(corNetwork);
 
         // Get the corNetwork

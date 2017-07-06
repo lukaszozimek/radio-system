@@ -1,26 +1,38 @@
 package io.protone.application.service.library;
 
 
-import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.s3.S3Client;
+import io.protone.core.service.CorImageItemService;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.repository.LibArtistRepository;
 import io.protone.library.service.LibArtistService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 30/04/2017.
@@ -41,12 +53,27 @@ public class LibArtistServiceTest {
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
+    @Autowired
+    private CorImageItemService corImageItemService;
+
+    @Mock
+    private S3Client s3Client;
+
     private CorNetwork corNetwork;
 
     private PodamFactory factory;
 
     @Before
     public void setUp() throws Exception {
+
+        MockitoAnnotations.initMocks(this);
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(), anyString())).thenReturn("test");
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
+        SecurityContextHolder.setContext(securityContext);
+        ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(libArtistService, "corImageItemService", corImageItemService);
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
@@ -153,8 +180,13 @@ public class LibArtistServiceTest {
 
 
     }
+
     @Test
     public void shouldSaveArtistWithImage() throws Exception {
-        Assert.notNull(null);
+        MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+
+        LibArtist libArtist = factory.manufacturePojo(LibArtist.class);
+        LibArtist newOne = libArtistService.save(libArtist, logo, corNetwork);
+        assertNotNull(newOne.getMainImage());
     }
 }
