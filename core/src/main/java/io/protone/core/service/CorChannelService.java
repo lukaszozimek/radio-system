@@ -40,6 +40,11 @@ public class CorChannelService {
 
     public CorChannel findChannel(String networkShortcut, String channelShortcut) {
         CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, channelShortcut);
+        return channel;
+    }
+
+    public CorChannel findChannelWithPublicLogo(String networkShortcut, String channelShortcut) {
+        CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, channelShortcut);
         return channel.logo(corImageItemService.getValidLinkToResource(channel.getCorImageItem()));
     }
 
