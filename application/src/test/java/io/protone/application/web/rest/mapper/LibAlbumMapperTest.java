@@ -2,6 +2,7 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
@@ -46,6 +47,7 @@ public class LibAlbumMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         libAlbum = factory.manufacturePojo(LibAlbum.class);
+        libAlbum.setMainImage(factory.manufacturePojo(CorImageItem.class));
         libAlbums.add(libAlbum);
         libAlbumDTO = factory.manufacturePojo(LibAlbumDTO.class);
         libAlbumDTOS.add(libAlbumDTO);
