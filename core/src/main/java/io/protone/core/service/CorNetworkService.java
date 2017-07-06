@@ -34,6 +34,11 @@ public class CorNetworkService {
 
     public CorNetwork findNetwork(String shortcut) {
         CorNetwork corNetwork = corNetworkRepository.findOneByShortcut(shortcut);
+        return corNetwork;
+    }
+
+    public CorNetwork findNetworkWithPublicUrl(String shortcut) {
+        CorNetwork corNetwork = corNetworkRepository.findOneByShortcut(shortcut);
         return corNetwork.logo(corImageItemService.getValidLinkToResource(corNetwork.getCorImageItem()));
     }
 
