@@ -49,6 +49,9 @@ public class CorImageItemService {
 
 
     public Set<CorImageItem> saveImageItems(MultipartFile[] images) throws TikaException, SAXException, IOException {
+        if (images == null || images.length == 0) {
+            return new HashSet<>();
+        }
         Set<CorImageItem> corImageItemSet = new HashSet<>();
         for (MultipartFile image : images) {
             corImageItemSet.add(saveImageItem(image));
@@ -56,7 +59,7 @@ public class CorImageItemService {
         return corImageItemSet;
     }
 
-    @SuppressWarnings("")
+
     public CorImageItem saveImageItem(MultipartFile image) throws TikaException, SAXException, IOException {
         if (image.isEmpty() || image == null) {
             return null;
@@ -90,7 +93,10 @@ public class CorImageItemService {
         }
     }
 
-    public CorImageItem getValidLinkToResource(CorImageItem corImageItem)  {
+    public CorImageItem getValidLinkToResource(CorImageItem corImageItem) {
+        if (corImageItem == null) {
+            return null;
+        }
         String publicUrl = null;
         try {
             publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());

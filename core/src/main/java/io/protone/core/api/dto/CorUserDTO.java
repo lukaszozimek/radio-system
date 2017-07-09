@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
  * CorUserDTO
  */
 
-public class CorUserDTO  implements Serializable{
+public class CorUserDTO implements Serializable {
 
     private Long id = null;
 
@@ -55,7 +55,7 @@ public class CorUserDTO  implements Serializable{
         this.id = corUser.getId();
         this.activated = corUser.isActivated();
         this.authorities = corUser.getAuthorities().stream().map(authority -> authority.getName().toString()).collect(toList());
-        this.imageurl = corUser.getCorImageItem().getPublicUrl();
+        this.imageurl = corUser.getCorImageItem() != null ? corUser.getCorImageItem().getPublicUrl() : "";
         this.email = corUser.getEmail();
         this.firstName = corUser.getFirstname();
         this.langKey = corUser.getLangkey();

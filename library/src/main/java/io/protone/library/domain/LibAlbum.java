@@ -54,12 +54,15 @@ public class LibAlbum extends AbstractAuditingEntity implements Serializable {
     private CorImageItem mainImage;
 
     @ManyToOne
+    @PodamExclude
     private LibLabel label;
 
     @ManyToOne
+    @PodamExclude
     private LibArtist artist;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @PodamExclude

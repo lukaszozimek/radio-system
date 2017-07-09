@@ -94,7 +94,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     @Override
     public ResponseEntity<CorNetworkDTO> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get CorNetwork : {}", networkShortcut);
-        CorNetwork cORNetwork = corNetworkService.findNetwork(networkShortcut);
+        CorNetwork cORNetwork = corNetworkService.findNetworkWithPublicUrl(networkShortcut);
         CorNetworkDTO cORNetworkDTO = corNetworkMapper.DB2DTO(cORNetwork);
         return Optional.ofNullable(cORNetworkDTO)
                 .map(result -> new ResponseEntity<>(

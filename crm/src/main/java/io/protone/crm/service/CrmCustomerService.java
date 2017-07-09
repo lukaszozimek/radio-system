@@ -85,7 +85,10 @@ public class CrmCustomerService {
 
     public CrmAccount getCustomer(String shortcut, String corNetwork) {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        return crmAccount.avatar(corImageItemService.getValidLinkToResource(crmAccount.getCorImageItem()));
+        if (crmAccount != null) {
+            crmAccount.avatar(corImageItemService.getValidLinkToResource(crmAccount.getCorImageItem()));
+        }
+        return crmAccount;
     }
 
     public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {

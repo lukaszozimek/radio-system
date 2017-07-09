@@ -6,6 +6,8 @@ import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.api.dto.LibAlbumDTO;
 import io.protone.library.domain.LibAlbum;
+import io.protone.library.domain.LibArtist;
+import io.protone.library.domain.LibLabel;
 import io.protone.library.mapper.LibAlbumMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +49,8 @@ public class LibAlbumMapperTest {
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
         libAlbum = factory.manufacturePojo(LibAlbum.class);
+        libAlbum.setArtist(factory.manufacturePojo(LibArtist.class));
+        libAlbum.setLabel(factory.manufacturePojo(LibLabel.class));
         libAlbum.setMainImage(factory.manufacturePojo(CorImageItem.class));
         libAlbums.add(libAlbum);
         libAlbumDTO = factory.manufacturePojo(LibAlbumDTO.class);

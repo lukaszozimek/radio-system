@@ -186,7 +186,8 @@ public class LibArtistServiceTest {
         MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
 
         LibArtist libArtist = factory.manufacturePojo(LibArtist.class);
-        LibArtist newOne = libArtistService.save(libArtist, logo, corNetwork);
+        libArtist.network(corNetwork);
+        LibArtist newOne = libArtistService.save(libArtist, logo);
         assertNotNull(newOne.getMainImage());
     }
 }

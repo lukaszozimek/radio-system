@@ -84,7 +84,10 @@ public class CrmContactService {
 
     public CrmContact getContact(String shortcut, String corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        return crmContact.avatar(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()));
+        if (crmContact != null) {
+            crmContact.avatar(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()));
+        }
+        return crmContact;
     }
 
     public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
