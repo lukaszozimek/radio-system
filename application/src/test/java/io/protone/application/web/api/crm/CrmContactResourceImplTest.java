@@ -77,6 +77,7 @@ public class CrmContactResourceImplTest {
 
     private static final String DEFAULT_VAT_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_VAT_NUMBER = "BBBBBBBBBB";
+    private static final String PUBLIC_URL_STRING = "test";
     @Autowired
     private CorNetworkService corNetworkService;
 
@@ -256,6 +257,8 @@ public class CrmContactResourceImplTest {
     @Test
     @Transactional
     public void getAllCrmContacts() throws Exception {
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(null);
+
         // Initialize the database
         crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
@@ -274,8 +277,33 @@ public class CrmContactResourceImplTest {
 
     @Test
     @Transactional
+    public void getAllCrmContactsWithImage() throws Exception {
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
+
+        // Initialize the database
+        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+
+        // Get all the crmContactList
+        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(crmContact.getId().intValue())))
+                .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].externalId1").value(hasItem(DEFAULT_EXTERNAL_ID_1.toString())))
+                .andExpect(jsonPath("$.[*].externalId2").value(hasItem(DEFAULT_EXTERNAL_ID_2.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].paymentDelay").value(hasItem(DEFAULT_PAYMENT_DELAY)))
+                .andExpect(jsonPath("$.[*].vatNumber").value(hasItem(DEFAULT_VAT_NUMBER.toString())))
+                .andExpect(jsonPath("$.[*].publicUrl").value(hasItem(PUBLIC_URL_STRING.toString())));
+
+    }
+
+    @Test
+    @Transactional
     public void getCrmContact() throws Exception {
         // Initialize the database
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(null);
+
         crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
 
         // Get the crmContact
@@ -289,6 +317,28 @@ public class CrmContactResourceImplTest {
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
                 .andExpect(jsonPath("$.paymentDelay").value(DEFAULT_PAYMENT_DELAY))
                 .andExpect(jsonPath("$.vatNumber").value(DEFAULT_VAT_NUMBER.toString()));
+    }
+
+    @Test
+    @Transactional
+    public void getCrmContactWithImage() throws Exception {
+        // Initialize the database
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
+
+        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+
+        // Get the crmContact
+        restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(crmContact.getId().intValue()))
+                .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORT_NAME.toString()))
+                .andExpect(jsonPath("$.externalId1").value(DEFAULT_EXTERNAL_ID_1.toString()))
+                .andExpect(jsonPath("$.externalId2").value(DEFAULT_EXTERNAL_ID_2.toString()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.paymentDelay").value(DEFAULT_PAYMENT_DELAY))
+                .andExpect(jsonPath("$.vatNumber").value(DEFAULT_VAT_NUMBER.toString()))
+                .andExpect(jsonPath("$.publicUrl").value(PUBLIC_URL_STRING.toString()));
     }
 
     @Test

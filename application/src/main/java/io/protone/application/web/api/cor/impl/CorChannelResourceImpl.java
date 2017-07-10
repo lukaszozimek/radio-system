@@ -76,7 +76,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
             return createChannelUsingPOST(networkShortcut, channelDTO, logo);
         }
         CorNetwork network = networkService.findNetwork(networkShortcut);
-        
+
         CorChannel corChannel = corChannelMapper.DTO2DB(channelDTO, network);
         corChannel = channelService.save(corChannel, logo);
         CorChannelDTO result = corChannelMapper.DB2DTO(corChannel);
@@ -115,7 +115,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
     @Override
     public ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get CORChannel : {}", channelShortcut);
-        CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
+        CorChannel corChannel = channelService.findChannelWithPublicLogo(networkShortcut, channelShortcut);
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
                 .map(result -> new ResponseEntity<>(

@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Service class for managing users.
@@ -282,7 +283,8 @@ public class CorUserService {
     }
 
     public List<CorUser> getAllManagedUsers(CorNetwork corNetwork, Pageable pageable) {
-        return userRepository.findByNetworks(newHashSet(corNetwork), pageable);
+        return userRepository.findByNetworks(newHashSet(corNetwork), pageable).stream().map(corUser -> corUser.avatar(corImageItemService.getValidLinkToResource(corUser.getCorImageItem()))).collect(toList());
+
     }
 
     public Optional<CorUser> getUserWithAuthoritiesByLogin(String login) {

@@ -47,6 +47,8 @@ public class CrmContactThinDTO implements Serializable {
     private CrmCustomerPersonDTO person;
 
 
+    private String publicUrl = null;
+
 
     public CrmContactThinDTO area(CorDictionaryDTO area) {
         this.area = area;
@@ -291,6 +293,18 @@ public class CrmContactThinDTO implements Serializable {
         return this;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public CrmContactThinDTO avatar(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
 
     /**
      * Get person
@@ -307,7 +321,6 @@ public class CrmContactThinDTO implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -318,45 +331,45 @@ public class CrmContactThinDTO implements Serializable {
         }
         CrmContactThinDTO crmContactDTO = (CrmContactThinDTO) o;
         return Objects.equals(this.area, crmContactDTO.area) &&
-            Objects.equals(this.id, crmContactDTO.id) &&
-            Objects.equals(this.externalId1, crmContactDTO.externalId1) &&
-            Objects.equals(this.externalId2, crmContactDTO.externalId2) &&
-            Objects.equals(this.industry, crmContactDTO.industry) &&
-            Objects.equals(this.name, crmContactDTO.name) &&
-            Objects.equals(this.range, crmContactDTO.range) &&
-            Objects.equals(this.size, crmContactDTO.size) &&
-            Objects.equals(this.vatNumber, crmContactDTO.vatNumber) &&
-            Objects.equals(this.addres, crmContactDTO.addres) &&
-            Objects.equals(this.account, crmContactDTO.account) &&
-            Objects.equals(this.person, crmContactDTO.person) &&
-            Objects.equals(this.shortName, crmContactDTO.shortName);
+                Objects.equals(this.id, crmContactDTO.id) &&
+                Objects.equals(this.externalId1, crmContactDTO.externalId1) &&
+                Objects.equals(this.externalId2, crmContactDTO.externalId2) &&
+                Objects.equals(this.industry, crmContactDTO.industry) &&
+                Objects.equals(this.name, crmContactDTO.name) &&
+                Objects.equals(this.range, crmContactDTO.range) &&
+                Objects.equals(this.size, crmContactDTO.size) &&
+                Objects.equals(this.vatNumber, crmContactDTO.vatNumber) &&
+                Objects.equals(this.addres, crmContactDTO.addres) &&
+                Objects.equals(this.account, crmContactDTO.account) &&
+                Objects.equals(this.person, crmContactDTO.person) &&
+                Objects.equals(this.shortName, crmContactDTO.shortName) &&
+                Objects.equals(this.publicUrl, crmContactDTO.publicUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(area, id, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, shortName);
+        return Objects.hash(area, id, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, shortName, publicUrl);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CrmContactDTO {\n");
-
-        sb.append("    area: ").append(toIndentedString(area)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    externalId1: ").append(toIndentedString(externalId1)).append("\n");
-        sb.append("    externalId2: ").append(toIndentedString(externalId2)).append("\n");
-        sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    range: ").append(toIndentedString(range)).append("\n");
-        sb.append("    size: ").append(toIndentedString(size)).append("\n");
-        sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
-        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
-        sb.append("    account: ").append(toIndentedString(account)).append("\n");
-        sb.append("    person: ").append(toIndentedString(person)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "CrmContactThinDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", externalId1='" + externalId1 + '\'' +
+                ", externalId2='" + externalId2 + '\'' +
+                ", area=" + area +
+                ", industry=" + industry +
+                ", paymentDelay=" + paymentDelay +
+                ", range=" + range +
+                ", size=" + size +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", addres=" + addres +
+                ", account=" + account +
+                ", person=" + person +
+                ", publicUrl='" + publicUrl + '\'' +
+                '}';
     }
 
     /**
@@ -369,5 +382,7 @@ public class CrmContactThinDTO implements Serializable {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+
 }
 

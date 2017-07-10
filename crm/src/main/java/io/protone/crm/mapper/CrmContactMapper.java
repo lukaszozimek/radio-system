@@ -37,6 +37,7 @@ public interface CrmContactMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
+    @Mapping(source = "corImageItem.publicUrl",target = "publicUrl")
     CrmContactThinDTO DB2ThinDTO(CrmContact crmContact);
 
     List<CrmContactThinDTO> DBs2ThinDTOs(List<CrmContact> crmContacts);

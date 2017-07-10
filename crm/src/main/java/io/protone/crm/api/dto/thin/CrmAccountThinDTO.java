@@ -51,6 +51,9 @@ public class CrmAccountThinDTO implements Serializable {
     private CrmCustomerPersonDTO person = null;
 
 
+    private String publicUrl = null;
+
+
     public CrmAccountThinDTO id(Long id) {
         this.id = id;
         return this;
@@ -285,6 +288,18 @@ public class CrmAccountThinDTO implements Serializable {
         return this;
     }
 
+    public String getPublicUrl() {
+        return publicUrl;
+    }
+
+    public CrmAccountThinDTO avatar(String publicUrl) {
+        this.publicUrl = publicUrl;
+        return this;
+    }
+
+    public void setPublicUrl(String publicUrl) {
+        this.publicUrl = publicUrl;
+    }
 
     /**
      * Get person
@@ -307,6 +322,7 @@ public class CrmAccountThinDTO implements Serializable {
     public void setPaymentDelay(Integer paymentDelay) {
         this.paymentDelay = paymentDelay;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -317,19 +333,19 @@ public class CrmAccountThinDTO implements Serializable {
         }
         CrmAccountThinDTO crmAccountDTO = (CrmAccountThinDTO) o;
         return Objects.equals(this.id, crmAccountDTO.id) &&
-            Objects.equals(this.shortName, crmAccountDTO.shortName) &&
-            Objects.equals(this.area, crmAccountDTO.area) &&
-            Objects.equals(this.externalId1, crmAccountDTO.externalId1) &&
-            Objects.equals(this.externalId2, crmAccountDTO.externalId2) &&
-            Objects.equals(this.industry, crmAccountDTO.industry) &&
-            Objects.equals(this.name, crmAccountDTO.name) &&
-            Objects.equals(this.range, crmAccountDTO.range) &&
-            Objects.equals(this.size, crmAccountDTO.size) &&
-            Objects.equals(this.vatNumber, crmAccountDTO.vatNumber) &&
-            Objects.equals(this.addres, crmAccountDTO.addres) &&
-            Objects.equals(this.account, crmAccountDTO.account) &&
-            Objects.equals(this.paymentDelay, crmAccountDTO.paymentDelay) &&
-            Objects.equals(this.person, crmAccountDTO.person);
+                Objects.equals(this.shortName, crmAccountDTO.shortName) &&
+                Objects.equals(this.area, crmAccountDTO.area) &&
+                Objects.equals(this.externalId1, crmAccountDTO.externalId1) &&
+                Objects.equals(this.externalId2, crmAccountDTO.externalId2) &&
+                Objects.equals(this.industry, crmAccountDTO.industry) &&
+                Objects.equals(this.name, crmAccountDTO.name) &&
+                Objects.equals(this.range, crmAccountDTO.range) &&
+                Objects.equals(this.size, crmAccountDTO.size) &&
+                Objects.equals(this.vatNumber, crmAccountDTO.vatNumber) &&
+                Objects.equals(this.addres, crmAccountDTO.addres) &&
+                Objects.equals(this.account, crmAccountDTO.account) &&
+                Objects.equals(this.paymentDelay, crmAccountDTO.paymentDelay) &&
+                Objects.equals(this.person, crmAccountDTO.person);
     }
 
     @Override

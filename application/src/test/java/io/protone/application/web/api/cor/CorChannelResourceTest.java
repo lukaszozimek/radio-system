@@ -43,6 +43,7 @@ import java.util.List;
 import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,6 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ProtoneApp.class)
 public class CorChannelResourceTest {
 
+    private static final String PUBLIC_URL_STRING = "test";
 
     private static final String DEFAULT_SHORTCUT = "AAA";
     private static final String UPDATED_SHORTCUT = "BBB";
@@ -252,6 +254,24 @@ public class CorChannelResourceTest {
     }
 
     @Test
+    public void getAllCorChannelsWithImage() throws Exception {
+        // Initialize the database
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
+        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
+
+        // Get all the corChannelList
+        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(corChannel.getId().intValue())))
+                .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                .andExpect(jsonPath("$.[*].publicUrl").value(hasItem(PUBLIC_URL_STRING.toString())));
+    }
+
+    @Test
     public void getCorChannel() throws Exception {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
@@ -269,6 +289,25 @@ public class CorChannelResourceTest {
     }
 
     @Test
+    public void getCorChannelWithImageItem() throws Exception {
+        // Initialize the database
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
+        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
+
+        // Get the corChannel
+        restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(corChannel.getId().intValue()))
+                .andExpect(jsonPath("$.shortcut").value(DEFAULT_SHORTCUT.toString()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+                .andExpect(jsonPath("$.publicUrl").value(PUBLIC_URL_STRING.toString()));
+
+    }
+
+    @Test
     public void getNonExistingCorChannel() throws Exception {
         // Get the corChannel
         restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), Long.MAX_VALUE))
@@ -281,7 +320,7 @@ public class CorChannelResourceTest {
 
         // Initialize the database
 
-        corChannelRepository.deleteByShortcutAndNetwork_Shortcut(UPDATED_SHORTCUT,corNetwork.getShortcut());
+        corChannelRepository.deleteByShortcutAndNetwork_Shortcut(UPDATED_SHORTCUT, corNetwork.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
         int databaseSizeBeforeUpdate = corChannelRepository.findAll().size();
 

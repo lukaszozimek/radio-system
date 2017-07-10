@@ -19,6 +19,7 @@ public class CorChannelDTO implements Serializable {
     private String name = null;
 
     private String description = null;
+
     private String publicUrl = null;
 
     public CorChannelDTO id(Long id) {

@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {CorChannelMapper.class})
 public interface LibLibraryMapper {
 
+    @Mapping(source = "mainImage.publicUrl",target = "publicUrl")
     LibLibraryDTO DB2DTO(LibLibrary libLibrary);
 
     List<LibLibraryDTO> DBs2DTOs(List<LibLibrary> libLibraries);

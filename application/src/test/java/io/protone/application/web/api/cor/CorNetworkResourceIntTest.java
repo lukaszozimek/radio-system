@@ -4,6 +4,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorNetworkResourceImpl;
 import io.protone.core.api.dto.CorNetworkDTO;
+import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.repository.CorImageItemRepository;
@@ -51,6 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class CorNetworkResourceIntTest {
+    private static final String PUBLIC_URL_STRING = "test";
     public static final String TEST_NETWORK = "test";
     private static final String DEFAULT_SHORTCUT = "AAAAAAAAAA";
     private static final String UPDATED_SHORTCUT = "BBBBBBBBBB";
@@ -222,6 +224,22 @@ public class CorNetworkResourceIntTest {
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
+    @Test
+    @Transactional
+    public void getAllCorNetworksWithImages() throws Exception {
+        // Initialize the database
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
+        corNetworkRepository.saveAndFlush(corNetwork);
+
+        // Get all the corNetworkList
+        restCorNetworkMockMvc.perform(get("/api/v1/network?sort=id,desc"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(corNetwork.getId().intValue())))
+                .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+    }
 
     @Test
     @Transactional
@@ -239,6 +257,23 @@ public class CorNetworkResourceIntTest {
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
                 .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
+    @Test
+    @Transactional
+    public void getCorNetworkWithImage() throws Exception {
+        // Initialize the database
+        when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
+        corNetworkRepository.saveAndFlush(corNetwork);
+
+        // Get the corNetwork
+        restCorNetworkMockMvc.perform(get("/api/v1/network/{networkShortcut}", corNetwork.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(corNetwork.getId().intValue()))
+                .andExpect(jsonPath("$.shortcut").value(DEFAULT_SHORTCUT.toString()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
+    }
+
 
     @Test
     @Transactional

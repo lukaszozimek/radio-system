@@ -82,6 +82,7 @@ public class LibraryResourceChannelImplTest {
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+    private static final String PUBLIC_URL_STRING = "test";
 
     @Autowired
     private LibLibraryRepository libLibraryRepository;
@@ -312,6 +313,9 @@ public class LibraryResourceChannelImplTest {
     @Test
     @Transactional
     public void getAllLibLibraries() throws Exception {
+
+        when(corImageItemService.saveImageItem(any())).thenReturn(null);
+
         // Initialize the database
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
 
@@ -330,6 +334,8 @@ public class LibraryResourceChannelImplTest {
     @Test
     @Transactional
     public void getLibLibrary() throws Exception {
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(null);
+
         // Initialize the database
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));
 
@@ -343,6 +349,49 @@ public class LibraryResourceChannelImplTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.counter").value(DEFAULT_COUNTER.intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
+    }
+
+    @Test
+    @Transactional
+    public void getAllLibLibrariesWithImage() throws Exception {
+
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+
+        // Initialize the database
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
+
+        // Get all the libLibraryList
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
+                .andExpect(jsonPath("$.[*].prefix").value(hasItem(DEFAULT_PREFIX.toString())))
+                .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].counter").value(hasItem(DEFAULT_COUNTER.intValue())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                .andExpect(jsonPath("$.[*].publicUrl").value(hasItem(PUBLIC_URL_STRING.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void getLibLibraryWithImage() throws Exception {
+        when(corImageItemService.saveImageItem(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+
+        // Initialize the database
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));
+
+        // Get the libLibrary
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
+                .andExpect(jsonPath("$.prefix").value(DEFAULT_PREFIX.toString()))
+                .andExpect(jsonPath("$.shortcut").value("123"))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.counter").value(DEFAULT_COUNTER.intValue()))
+                .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+                .andExpect(jsonPath("$.publicUrl").value(PUBLIC_URL_STRING.toString()));
     }
 
     @Test

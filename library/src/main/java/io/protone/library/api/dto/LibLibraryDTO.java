@@ -32,8 +32,8 @@ public class LibLibraryDTO implements Serializable {
 
     private List<CorChannelDTO> channels = new ArrayList();
 
-
     private String description = null;
+
 
     private String publicUrl = null;
 
@@ -153,6 +153,21 @@ public class LibLibraryDTO implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "LibLibraryDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", counter=" + counter +
+                ", shortcut='" + shortcut + '\'' +
+                ", prefix='" + prefix + '\'' +
+                ", channels=" + channels +
+                ", description='" + description + '\'' +
+                ", publicUrl='" + publicUrl + '\'' +
+                '}';
+    }
+
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof LibLibraryDTO)) return false;
@@ -184,19 +199,6 @@ public class LibLibraryDTO implements Serializable {
 
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "LibLibraryDTO{" +
-                "id=" + id +
-                ", prefix='" + prefix + '\'' +
-                ", name='" + name + '\'' +
-                ", counter=" + counter +
-                ", shortcut='" + shortcut + '\'' +
-                ", prefix='" + prefix + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 
 

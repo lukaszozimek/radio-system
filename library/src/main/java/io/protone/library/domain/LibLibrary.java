@@ -45,6 +45,7 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     @NotNull
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
+
     @NotNull
     @Column(name = "counter", nullable = false)
     private Long counter;

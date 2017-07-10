@@ -85,7 +85,8 @@ public class CrmContactService {
     public CrmContact getContact(String shortcut, String corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
         if (crmContact != null) {
-            crmContact.avatar(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()));
+            crmContact.setCorImageItem(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()));
+            return crmContact;
         }
         return crmContact;
     }
