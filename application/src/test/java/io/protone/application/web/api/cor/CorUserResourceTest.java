@@ -5,6 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.web.api.cor.impl.CorUserResourceImpl;
 import io.protone.core.domain.CorUser;
 import io.protone.core.mapper.CorNetworkMapper;
+import io.protone.core.mapper.CorUserMapper;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.service.CorMailService;
@@ -43,6 +44,9 @@ public class CorUserResourceTest {
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
+    @Autowired
+    private CorUserMapper corUserMapper;
+
     private MockMvc restUserMockMvc;
 
     /**
@@ -68,7 +72,7 @@ public class CorUserResourceTest {
 
     @Before
     public void setup() {
-        CorUserResourceImpl userResource = new CorUserResourceImpl(userRepository, corUserService, mailService, corNetworkRepository, corNetworkMapper);
+        CorUserResourceImpl userResource = new CorUserResourceImpl(userRepository, corUserService, mailService, corNetworkRepository, corNetworkMapper, corUserMapper);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
     }
 

@@ -3,10 +3,10 @@ package io.protone.application.web.api.traffic.impl;
 
 import io.protone.application.web.api.traffic.TraDiscountResource;
 import io.protone.application.web.rest.util.HeaderUtil;
-import io.protone.core.domain.CorDiscount;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.repository.CorDiscountRepository;
 import io.protone.core.service.CorNetworkService;
+import io.protone.crm.domain.CrmDiscount;
+import io.protone.crm.repostiory.CrmDiscountRepository;
 import io.protone.traffic.api.dto.TraDiscountDTO;
 import io.protone.traffic.mapper.TraDiscountMapper;
 import io.swagger.annotations.ApiParam;
@@ -41,7 +41,7 @@ public class TraDiscountResourceImpl implements TraDiscountResource {
     private CorNetworkService corNetworkService;
 
     @Autowired
-    private CorDiscountRepository traDiscountRepository;
+    private CrmDiscountRepository traDiscountRepository;
 
     @Override
     public ResponseEntity<List<TraDiscountDTO>> getAllDiscountUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -50,7 +50,7 @@ public class TraDiscountResourceImpl implements TraDiscountResource {
         log.debug("REST request to get all TraDiscount");
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        List<CorDiscount> traDiscount = traDiscountRepository.findByNetwork(corNetwork);
+        List<CrmDiscount> traDiscount = traDiscountRepository.findByNetwork(corNetwork);
         List<TraDiscountDTO> traDiscountPT = traDiscountMapper.DBs2DTOs(traDiscount);
         return Optional.ofNullable(traDiscountPT)
             .map(result -> new ResponseEntity<>(
@@ -66,7 +66,7 @@ public class TraDiscountResourceImpl implements TraDiscountResource {
         log.debug("REST request to get TraDiscount : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        CorDiscount traDiscount = traDiscountRepository.findOneByIdAndNetwork(id, corNetwork);
+        CrmDiscount traDiscount = traDiscountRepository.findOneByIdAndNetwork(id, corNetwork);
         TraDiscountDTO traDiscountPt = traDiscountMapper.DB2DTO(traDiscount);
         return Optional.ofNullable(traDiscountPt)
             .map(result -> new ResponseEntity<>(
@@ -84,7 +84,7 @@ public class TraDiscountResourceImpl implements TraDiscountResource {
             return createDiscountUsingPOST(networkShortcut, discountPT);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDiscount traDiscount = traDiscountMapper.DTO2DB(discountPT, corNetwork);
+        CrmDiscount traDiscount = traDiscountMapper.DTO2DB(discountPT, corNetwork);
         traDiscount = traDiscountRepository.save(traDiscount);
         TraDiscountDTO result = traDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.ok()
@@ -100,7 +100,7 @@ public class TraDiscountResourceImpl implements TraDiscountResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraDiscount", "idexists", "A new TraDiscount cannot already have an ID")).body(null);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CorDiscount traDiscount = traDiscountMapper.DTO2DB(discountPT, corNetwork);
+        CrmDiscount traDiscount = traDiscountMapper.DTO2DB(discountPT, corNetwork);
         traDiscount = traDiscountRepository.save(traDiscount);
         TraDiscountDTO result = traDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/dictionary/discount/" + result.getId()))

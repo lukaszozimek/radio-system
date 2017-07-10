@@ -1,8 +1,8 @@
 package io.protone.traffic.mapper;
 
 
-import io.protone.core.domain.CorDiscount;
 import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmDiscount;
 import io.protone.traffic.api.dto.TraDiscountDTO;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
@@ -18,14 +18,14 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface TraDiscountMapper {
 
-    TraDiscountDTO DB2DTO(CorDiscount traDiscount);
+    TraDiscountDTO DB2DTO(CrmDiscount traDiscount);
 
-    List<TraDiscountDTO> DBs2DTOs(List<CorDiscount> traDiscounts);
+    List<TraDiscountDTO> DBs2DTOs(List<CrmDiscount> traDiscounts);
 
-    CorDiscount DTO2DB(TraDiscountDTO traDiscountDTO, @Context CorNetwork network);
+    CrmDiscount DTO2DB(TraDiscountDTO traDiscountDTO, @Context CorNetwork network);
 
-    default List<CorDiscount> DTOs2DBs(List<TraDiscountDTO> traDiscountDTOs, @Context CorNetwork network) {
-        List<CorDiscount> traDiscounts = new ArrayList<>();
+    default List<CrmDiscount> DTOs2DBs(List<TraDiscountDTO> traDiscountDTOs, @Context CorNetwork network) {
+        List<CrmDiscount> traDiscounts = new ArrayList<>();
         if (traDiscountDTOs.isEmpty() || traDiscountDTOs == null) {
             return null;
         }
@@ -36,7 +36,7 @@ public interface TraDiscountMapper {
     }
 
     @AfterMapping
-    default void confDiscountPTToTraDiscountAfterMapping(TraDiscountDTO dto, @MappingTarget CorDiscount entity, @Context CorNetwork corNetwork) {
+    default void confDiscountPTToTraDiscountAfterMapping(TraDiscountDTO dto, @MappingTarget CrmDiscount entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }

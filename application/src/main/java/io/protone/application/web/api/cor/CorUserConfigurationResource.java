@@ -4,6 +4,7 @@ package io.protone.application.web.api.cor;
 import io.protone.core.api.dto.CorUserDTO;
 import io.swagger.annotations.*;
 import org.apache.tika.exception.TikaException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +27,8 @@ public interface CorUserConfigurationResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/configuration/user",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut);
+    ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                         @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "getUser", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
@@ -69,7 +71,7 @@ public interface CorUserConfigurationResource {
     ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                              @ApiParam(value = "login", required = true) @PathVariable("login") String login,
                                                              @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
-                                                             @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException;
+                                                             @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException;
 
     @ApiOperation(value = "createUser", notes = "", response = CorUserDTO.class, tags = {"DICTIONARY", "CONFIGURATION",})
     @ApiResponses(value = {

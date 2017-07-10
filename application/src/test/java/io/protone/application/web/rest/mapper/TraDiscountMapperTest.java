@@ -2,8 +2,8 @@ package io.protone.application.web.rest.mapper;
 
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorDiscount;
 import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmDiscount;
 import io.protone.traffic.api.dto.TraDiscountDTO;
 import io.protone.traffic.mapper.TraDiscountMapper;
 import org.junit.Before;
@@ -32,20 +32,20 @@ public class TraDiscountMapperTest {
     @Autowired
     private TraDiscountMapper customTraDiscountMapper;
 
-    private CorDiscount traDiscount;
+    private CrmDiscount traDiscount;
 
     private TraDiscountDTO traDiscountDTO;
 
     private List<TraDiscountDTO> traDiscountDTOS = new ArrayList<>();
 
-    private List<CorDiscount> traDiscounts = new ArrayList<>();
+    private List<CrmDiscount> traDiscounts = new ArrayList<>();
 
     private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
-        traDiscount = factory.manufacturePojo(CorDiscount.class);
+        traDiscount = factory.manufacturePojo(CrmDiscount.class);
         traDiscounts.add(traDiscount);
         traDiscountDTO = factory.manufacturePojo(TraDiscountDTO.class);
         traDiscountDTOS.add(traDiscountDTO);
@@ -84,7 +84,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CorDiscount entity = customTraDiscountMapper.DTO2DB(traDiscountDTO, corNetwork);
+        CrmDiscount entity = customTraDiscountMapper.DTO2DB(traDiscountDTO, corNetwork);
         assertNotNull(entity.getId());
         assertNotNull(entity.getValidFrom());
         assertNotNull(entity.getValidTo());
@@ -95,7 +95,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CorDiscount> entities = customTraDiscountMapper.DTOs2DBs(traDiscountDTOS, corNetwork);
+        List<CrmDiscount> entities = customTraDiscountMapper.DTOs2DBs(traDiscountDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

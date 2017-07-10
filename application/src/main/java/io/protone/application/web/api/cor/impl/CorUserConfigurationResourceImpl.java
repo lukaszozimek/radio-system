@@ -10,6 +10,7 @@ import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
+import io.protone.core.mapper.CorUserMapper;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.service.CorMailService;
 import io.protone.core.service.CorNetworkService;
@@ -18,6 +19,7 @@ import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,13 +72,16 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
 
     private final CorNetworkService corNetworkService;
 
+    private final CorUserMapper corUserMapper;
+
     public CorUserConfigurationResourceImpl(CorUserRepository userRepository, CorMailService mailService,
-                                            CorUserService userService, CorNetworkService corNetworkService) {
+                                            CorUserService userService, CorNetworkService corNetworkService, CorUserMapper corUserMapper) {
 
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
         this.corNetworkService = corNetworkService;
+        this.corUserMapper = corUserMapper;
     }
 
     /**
@@ -111,7 +116,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
                     .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
                     .body(null);
         } else {
-            CorUser newUser = userService.createUser(corUserDTO,avatar);
+            CorUser newUser = userService.createUser(corUserDTO, avatar);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                     .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
@@ -144,7 +149,7 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(corUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
         }
-        Optional<CorUserDTO> updatedUser = Optional.of(userService.updateUser(corUserDTO));
+        Optional<CorUserDTO> updatedUser = Optional.of(corUserMapper.DB2DTO(userService.updateUser(corUserDTO)));
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
                 HeaderUtil.createAlert("userManagement.updated", corUserDTO.getLogin()));
@@ -154,15 +159,31 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     public ResponseEntity<CorUserDTO> updateUserWithAvatarUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "login", required = true) @PathVariable("login") String login,
                                                                     @ApiParam(value = "corUserDTO", required = true) @Valid @RequestPart("corUserDTO") CorUserDTO corUserDTO,
-                                                                    @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException {
-        return null;
+                                                                    @ApiParam(value = "avatar", required = true) @RequestPart("avatar") MultipartFile logo) throws URISyntaxException, TikaException, IOException, SAXException {
+        if (corUserDTO.getId() == null) {
+            return createUserUsingPOST(networkShortcut, corUserDTO, null);
+        }
+        log.debug("REST request to update User : {}", corUserDTO);
+        Optional<CorUser> existingUser = userRepository.findOneByEmail(corUserDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(corUserDTO.getId()))) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "E-mail already in use")).body(null);
+        }
+        existingUser = userRepository.findOneByLogin(corUserDTO.getLogin().toLowerCase());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(corUserDTO.getId()))) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(null);
+        }
+        Optional<CorUserDTO> updatedUser = Optional.of(corUserMapper.DB2DTO(userService.updateUser(corUserDTO, logo)));
+
+        return ResponseUtil.wrapOrNotFound(updatedUser,
+                HeaderUtil.createAlert("userManagement.updated", corUserDTO.getLogin()));
     }
 
 
     @Override
-    public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
+    public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "pagable", required = true) Pageable pagable) {
         CorNetwork network = corNetworkService.findNetwork(networkShortcut);
-        List<CorUserDTO> corUserDTOList = userService.getAllManagedUsers(network);
+        List<CorUser> corUserList = userService.getAllManagedUsers(network, pagable);
+        List<CorUserDTO> corUserDTOList = corUserMapper.DBs2DTOs(corUserList);
         return ResponseEntity.ok().body(corUserDTOList);
     }
 

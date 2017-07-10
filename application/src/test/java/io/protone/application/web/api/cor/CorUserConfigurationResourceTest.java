@@ -130,7 +130,7 @@ public class CorUserConfigurationResourceTest {
 
         ReflectionTestUtils.setField(corUserService, "corImageItemService", corImageItemService);
         CorUserConfigurationResourceImpl corUserConfigurationResource = new CorUserConfigurationResourceImpl(corUserRepository, corMailService,
-                corUserService, corNetworkService);
+                corUserService, corNetworkService, corUserMapper);
 
 
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);

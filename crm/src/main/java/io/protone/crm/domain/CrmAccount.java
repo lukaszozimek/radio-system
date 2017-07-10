@@ -63,7 +63,7 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorDiscount discount;
+    private CrmDiscount discount;
 
     @ManyToOne
     @PodamExclude
@@ -239,15 +239,15 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorDiscount getDiscount() {
+    public CrmDiscount getDiscount() {
         return discount;
     }
 
-    public void setDiscount(CorDiscount traDiscount) {
+    public void setDiscount(CrmDiscount traDiscount) {
         this.discount = traDiscount;
     }
 
-    public CrmAccount discount(CorDiscount traDiscount) {
+    public CrmAccount discount(CrmDiscount traDiscount) {
         this.discount = traDiscount;
         return this;
     }

@@ -6,7 +6,6 @@ import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.*;
 import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
-import io.protone.core.mapper.CorUserMapper;
 import io.protone.core.repository.CorAuthorityRepository;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
@@ -18,6 +17,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Service class for managing users.
@@ -60,8 +59,6 @@ public class CorUserService {
     @Autowired
     private CorNetworkRepository corNetworkRepository;
 
-    @Autowired
-    private CorUserMapper corUserMapper;
 
     @Autowired
     private CorNetworkMapper corNetworkMapper;
@@ -101,6 +98,7 @@ public class CorUserService {
                     user.setPasswordhash(passwordEncoder.encode(newPassword));
                     user.setResetkey(null);
                     user.setResetdate(null);
+                    userRepository.saveAndFlush(user);
                     return user;
                 });
     }
@@ -111,12 +109,13 @@ public class CorUserService {
                 .map(user -> {
                     user.setResetkey(RandomUtil.generateResetKey());
                     user.setResetdate(ZonedDateTime.now());
+                    userRepository.saveAndFlush(user);
                     return user;
                 });
     }
 
     public CorUser createUser(String login, String password, String firstName, String lastName, String email,
-                              String imageUrl, String langKey, CorNetworkDTO networkPt) {
+                              String langKey, CorNetworkDTO networkPt) {
 
         CorUser newUser = new CorUser();
         CorNetwork network = corNetworkRepository.save(corNetworkMapper.DTO2DB(networkPt));
@@ -162,10 +161,12 @@ public class CorUserService {
         user.setEmail(userDTO.getEmail());
         user.setCorImageItem(corImageItem);
         user.addNetwork(userCreator.getNetworks().stream().findFirst().get());
-        userDTO.getChannel().stream().forEach(coreChannelPT -> {
-            user.addChannel(corChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
+        if (userDTO.getChannel() != null && !userDTO.getChannel().isEmpty()) {
+            userDTO.getChannel().stream().forEach(coreChannelPT -> {
+                user.addChannel(corChannelMapper.DTO2DB(coreChannelPT, userCreator.getNetworks().stream().findFirst().get()));
 
-        });
+            });
+        }
         if (userDTO.getLangKey() == null) {
             user.setLangkey("en"); // default language
         } else {
@@ -198,13 +199,14 @@ public class CorUserService {
             user.setEmail(email);
             user.setLangkey(langKey);
             log.debug("Changed Information for User: {}", user);
+            userRepository.saveAndFlush(user);
         });
     }
 
     /**
      * Update all information for a specific user, and return the modified user.
      */
-    public CorUserDTO updateUser(CorUserDTO userDTO) {
+    public CorUser updateUser(CorUserDTO userDTO) {
 
         CorUser corUser = Optional.of(userRepository
                 .findOne(userDTO.getId()))
@@ -230,9 +232,38 @@ public class CorUserService {
                     return user;
                 }).get();
         corUser = userRepository.saveAndFlush(corUser);
-        return corUserMapper.DB2DTO(corUser);
+        return corUser;
     }
 
+    public CorUser updateUser(CorUserDTO userDTO, MultipartFile avatar) throws IOException, TikaException, SAXException {
+        CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
+        CorUser corUser = Optional.of(userRepository
+                .findOne(userDTO.getId()))
+                .map(user -> {
+                    user.setLogin(userDTO.getLogin());
+                    user.setFirstname(userDTO.getFirstName());
+                    user.setLastname(userDTO.getLastName());
+                    user.setEmail(userDTO.getEmail());
+                    user.setActivated(userDTO.getActivated());
+                    user.setLangkey(userDTO.getLangKey());
+                    user.avatar(corImageItem);
+                    user.getChannels().clear();
+                    Set<CorChannel> corChannels = user.getChannels();
+                    corChannels.clear();
+                    userDTO.getChannel().stream()
+                            .map(channelPT -> corChannelRepository.findOne(channelPT.getId()))
+                            .forEach(corChannels::add);
+                    Set<CorAuthority> managedAuthorities = user.getAuthorities();
+                    managedAuthorities.clear();
+                    userDTO.getAuthorities().stream()
+                            .map(authorityRepository::findOne)
+                            .forEach(managedAuthorities::add);
+                    log.debug("Changed Information for User: {}", user);
+                    return user;
+                }).get();
+        corUser = userRepository.saveAndFlush(corUser);
+        return corUser;
+    }
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
@@ -246,11 +277,12 @@ public class CorUserService {
             String encryptedPassword = passwordEncoder.encode(password);
             user.setPasswordhash(encryptedPassword);
             log.debug("Changed password for User: {}", user);
+            userRepository.saveAndFlush(user);
         });
     }
 
-    public List<CorUserDTO> getAllManagedUsers(CorNetwork corNetwork) {
-        return userRepository.findByNetworks(newHashSet(corNetwork)).stream().map(corUserMapper::DB2DTO).collect(toList());
+    public List<CorUser> getAllManagedUsers(CorNetwork corNetwork, Pageable pageable) {
+        return userRepository.findByNetworks(newHashSet(corNetwork), pageable);
     }
 
     public Optional<CorUser> getUserWithAuthoritiesByLogin(String login) {
@@ -262,9 +294,8 @@ public class CorUserService {
     }
 
 
-    public CorUserDTO getUserWithAuthorities() {
-        CorUser corUser = userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
-        return corUserMapper.DB2DTO(corUser);
+    public CorUser getUserWithAuthorities() {
+        return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
     }
 
 

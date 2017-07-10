@@ -8,7 +8,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>io.protone</groupId>
     <artifactId>application</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>

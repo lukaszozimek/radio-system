@@ -30,7 +30,7 @@
                                  baseTableName="crm_account"
                                  constraintName="fk_crm_account_discount_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="cor_discount"/>
+                                 referencedTableName="crm_discount"/>
 
         <addForeignKeyConstraint baseColumnNames="keeper_id"
                                  baseTableName="crm_account"

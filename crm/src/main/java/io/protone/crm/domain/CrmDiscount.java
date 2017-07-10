@@ -1,5 +1,6 @@
-package io.protone.core.domain;
+package io.protone.crm.domain;
 
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -10,9 +11,9 @@ import java.util.Objects;
  * Created by lukaszozimek on 28/06/2017.
  */
 @Entity
-@Table(name = "cor_discount")
+@Table(name = "crm_discount")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorDiscount {
+public class CrmDiscount {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,7 +50,7 @@ public class CorDiscount {
         this.validFrom = validFrom;
     }
 
-    public CorDiscount validFrom(LocalDate validFrom) {
+    public CrmDiscount validFrom(LocalDate validFrom) {
         this.validFrom = validFrom;
         return this;
     }
@@ -62,7 +63,7 @@ public class CorDiscount {
         this.validTo = validTo;
     }
 
-    public CorDiscount validTo(LocalDate validTo) {
+    public CrmDiscount validTo(LocalDate validTo) {
         this.validTo = validTo;
         return this;
     }
@@ -75,7 +76,7 @@ public class CorDiscount {
         this.discount = discount;
     }
 
-    public CorDiscount discount(Long discount) {
+    public CrmDiscount discount(Long discount) {
         this.discount = discount;
         return this;
     }
@@ -88,7 +89,7 @@ public class CorDiscount {
         this.network = corNetwork;
     }
 
-    public CorDiscount network(CorNetwork corNetwork) {
+    public CrmDiscount network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
     }
@@ -101,7 +102,7 @@ public class CorDiscount {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CorDiscount traDiscount = (CorDiscount) o;
+        CrmDiscount traDiscount = (CrmDiscount) o;
         if (traDiscount.id == null || id == null) {
             return false;
         }

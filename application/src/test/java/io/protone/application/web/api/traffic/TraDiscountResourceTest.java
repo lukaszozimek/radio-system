@@ -5,10 +5,10 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.traffic.impl.TraDiscountResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
-import io.protone.core.domain.CorDiscount;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.repository.CorDiscountRepository;
 import io.protone.core.service.CorNetworkService;
+import io.protone.crm.domain.CrmDiscount;
+import io.protone.crm.repostiory.CrmDiscountRepository;
 import io.protone.traffic.api.dto.TraDiscountDTO;
 import io.protone.traffic.mapper.TraDiscountMapper;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class TraDiscountResourceTest {
     private static final Long UPDATED_DISCOUNT = 2L;
 
     @Autowired
-    private CorDiscountRepository traDiscountRepository;
+    private CrmDiscountRepository traDiscountRepository;
 
     @Autowired
     private TraDiscountMapper traDiscountMapper;
@@ -75,7 +75,7 @@ public class TraDiscountResourceTest {
 
     private MockMvc restTraDiscountMockMvc;
 
-    private CorDiscount traDiscount;
+    private CrmDiscount traDiscount;
     private CorNetwork corNetwork;
 
     /**
@@ -84,8 +84,8 @@ public class TraDiscountResourceTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static CorDiscount createEntity(EntityManager em) {
-        CorDiscount traDiscount = new CorDiscount()
+    public static CrmDiscount createEntity(EntityManager em) {
+        CrmDiscount traDiscount = new CrmDiscount()
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO)
             .discount(DEFAULT_DISCOUNT);
@@ -129,9 +129,9 @@ public class TraDiscountResourceTest {
             .andExpect(status().isCreated());
 
         // Validate the TraDiscount in the database
-        List<CorDiscount> traDiscountList = traDiscountRepository.findAll();
+        List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
         assertThat(traDiscountList).hasSize(databaseSizeBeforeCreate + 1);
-        CorDiscount testTraDiscount = traDiscountList.get(traDiscountList.size() - 1);
+        CrmDiscount testTraDiscount = traDiscountList.get(traDiscountList.size() - 1);
         assertThat(testTraDiscount.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testTraDiscount.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
         assertThat(testTraDiscount.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
@@ -143,7 +143,7 @@ public class TraDiscountResourceTest {
         int databaseSizeBeforeCreate = traDiscountRepository.findAll().size();
 
         // Create the TraDiscount with an existing ID
-        CorDiscount existingTraDiscount = new CorDiscount();
+        CrmDiscount existingTraDiscount = new CrmDiscount();
         existingTraDiscount.setId(1L);
         TraDiscountDTO existingTraDiscountDTO = traDiscountMapper.DB2DTO(existingTraDiscount);
 
@@ -154,7 +154,7 @@ public class TraDiscountResourceTest {
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<CorDiscount> traDiscountList = traDiscountRepository.findAll();
+        List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
         assertThat(traDiscountList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -206,7 +206,7 @@ public class TraDiscountResourceTest {
         int databaseSizeBeforeUpdate = traDiscountRepository.findAll().size();
 
         // Update the traDiscount
-        CorDiscount updatedTraDiscount = traDiscountRepository.findOne(traDiscount.getId());
+        CrmDiscount updatedTraDiscount = traDiscountRepository.findOne(traDiscount.getId());
         updatedTraDiscount
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO)
@@ -219,9 +219,9 @@ public class TraDiscountResourceTest {
             .andExpect(status().isOk());
 
         // Validate the TraDiscount in the database
-        List<CorDiscount> traDiscountList = traDiscountRepository.findAll();
+        List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
         assertThat(traDiscountList).hasSize(databaseSizeBeforeUpdate);
-        CorDiscount testTraDiscount = traDiscountList.get(traDiscountList.size() - 1);
+        CrmDiscount testTraDiscount = traDiscountList.get(traDiscountList.size() - 1);
         assertThat(testTraDiscount.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testTraDiscount.getValidTo()).isEqualTo(UPDATED_VALID_TO);
         assertThat(testTraDiscount.getDiscount()).isEqualTo(UPDATED_DISCOUNT);
@@ -242,7 +242,7 @@ public class TraDiscountResourceTest {
             .andExpect(status().isCreated());
 
         // Validate the TraDiscount in the database
-        List<CorDiscount> traDiscountList = traDiscountRepository.findAll();
+        List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
         assertThat(traDiscountList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -259,13 +259,13 @@ public class TraDiscountResourceTest {
             .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<CorDiscount> traDiscountList = traDiscountRepository.findAll();
+        List<CrmDiscount> traDiscountList = traDiscountRepository.findAll();
         assertThat(traDiscountList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
     @Test
     public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(CorDiscount.class);
+        TestUtil.equalsVerifier(CrmDiscount.class);
     }
 
 }

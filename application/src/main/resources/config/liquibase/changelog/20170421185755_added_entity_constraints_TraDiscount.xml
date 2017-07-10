@@ -9,7 +9,7 @@
     <changeSet id="20170421185755-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="cor_discount"
+                                 baseTableName="crm_discount"
                                  constraintName="fk_cor_discount_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>

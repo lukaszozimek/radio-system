@@ -10,7 +10,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>io.protone</groupId>
     <artifactId>playout</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 

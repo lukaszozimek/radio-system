@@ -15,7 +15,7 @@
         Added the entity TraDiscount.
     -->
     <changeSet id="20170421185755-1" author="jhipster">
-        <createTable tableName="cor_discount">
+        <createTable tableName="crm_discount">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
