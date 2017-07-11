@@ -29,7 +29,7 @@ public class S3Client {
         try {
             if (client == null)
                 client = new MinioClient(applicationProperties.getS3().getUrl(),
-                    applicationProperties.getS3().getUsername(), applicationProperties.getS3().getPassword());
+                        applicationProperties.getS3().getUsername(), applicationProperties.getS3().getPassword());
 
         } catch (InvalidEndpointException e) {
             throw new S3Exception(e.getMessage());
@@ -66,6 +66,8 @@ public class S3Client {
         } catch (InternalException e) {
             throw new CreateBucketException(e.getMessage());
         } catch (S3Exception e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (RegionConflictException e) {
             throw new CreateBucketException(e.getMessage());
         }
     }
@@ -226,6 +228,30 @@ public class S3Client {
         } catch (InternalException e) {
             throw new UrlGenerationResourceException(e.getMessage());
         } catch (InvalidExpiresRangeException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        }
+    }
+
+    public String getObjectUrl(String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
+        try {
+            return getClient().getObjectUrl(minioBucket, uuid);
+        } catch (InvalidBucketNameException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (IOException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new UrlGenerationResourceException(e.getMessage());
+        } catch (InternalException e) {
             throw new UrlGenerationResourceException(e.getMessage());
         }
     }

@@ -80,6 +80,7 @@ public class CorImageItemService {
             s3Client.upload(corNetwork.getShortcut() + "-" + PUBLIC_CONTENT, fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             corImageItem = new CorImageItem();
             corImageItem.name(fileUUID).network(corNetwork);
+            corImageItem = getObjectUrl(corImageItem);
             corImageItem = corImageItemRepository.saveAndFlush(corImageItem);
 
 
@@ -108,4 +109,18 @@ public class CorImageItemService {
         return corImageItem.publicUrl(publicUrl);
     }
 
+    public CorImageItem getObjectUrl(CorImageItem corImageItem) {
+        if (corImageItem == null) {
+            return null;
+        }
+        String publicUrl = null;
+        try {
+            publicUrl = s3Client.getObjectUrl(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
+        } catch (S3Exception e) {
+            e.printStackTrace();
+        } catch (UrlGenerationResourceException e) {
+            e.printStackTrace();
+        }
+        return corImageItem.publicUrl(publicUrl);
+    }
 }
