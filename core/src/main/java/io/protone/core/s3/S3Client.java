@@ -3,6 +3,7 @@ package io.protone.core.s3;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.errors.*;
+import io.minio.policy.PolicyType;
 import io.protone.core.configuration.ApplicationProperties;
 import io.protone.core.s3.exceptions.*;
 import org.springframework.stereotype.Component;
@@ -68,6 +69,41 @@ public class S3Client {
         } catch (S3Exception e) {
             throw new CreateBucketException(e.getMessage());
         } catch (RegionConflictException e) {
+            throw new CreateBucketException(e.getMessage());
+        }
+    }
+    public String makeBucketPublicBucket(String bucketName) throws CreateBucketException {
+        try {
+            boolean isExist = getClient().bucketExists(bucketName);
+            if (!isExist) {
+
+                getClient().makeBucket(bucketName);
+                getClient().setBucketPolicy(bucketName, "", PolicyType.READ_ONLY);
+            }
+            return bucketName;
+        } catch (InvalidBucketNameException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (IOException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InternalException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (S3Exception e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (RegionConflictException e) {
+            throw new CreateBucketException(e.getMessage());
+        } catch (InvalidObjectPrefixException e) {
             throw new CreateBucketException(e.getMessage());
         }
     }
@@ -234,6 +270,7 @@ public class S3Client {
 
     public String getObjectUrl(String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
         try {
+
             return getClient().getObjectUrl(minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new UrlGenerationResourceException(e.getMessage());

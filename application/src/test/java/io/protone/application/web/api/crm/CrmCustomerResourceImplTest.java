@@ -107,6 +107,7 @@ public class CrmCustomerResourceImplTest {
     private CrmAccount crmAccount;
 
     private CorNetwork corNetwork;
+    private CorImageItem corImageItem;
 
     /**
      * Create an entity for this test.
@@ -129,7 +130,7 @@ public class CrmCustomerResourceImplTest {
     public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         CrmCustomerResourceImpl crmAccountResource = new CrmCustomerResourceImpl();
-        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
         corImageItemRepository.saveAndFlush(corImageItem);
         when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(crmCustomerService, "corImageItemService", corImageItemService);
@@ -249,8 +250,7 @@ public class CrmCustomerResourceImplTest {
     public void getAllCrmAccountsWithImage() throws Exception {
         // Initialize the database
 
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccountRepository.saveAndFlush(crmAccount.avatar(corImageItem).network(corNetwork));
 
         // Get all the crmAccountList
         restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer?sort=id,desc", corNetwork.getShortcut()))
@@ -271,8 +271,7 @@ public class CrmCustomerResourceImplTest {
     public void getCrmAccountWithImage() throws Exception {
         // Initialize the database
 
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-        crmAccountRepository.saveAndFlush(crmAccount.network(corNetwork));
+        crmAccountRepository.saveAndFlush(crmAccount.avatar(corImageItem).network(corNetwork));
 
         // Get the crmAccount
         restCrmAccountMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/customer/{shortName}", corNetwork.getShortcut(), crmAccount.getShortName()))

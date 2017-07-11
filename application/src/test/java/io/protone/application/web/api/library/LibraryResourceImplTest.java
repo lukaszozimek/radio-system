@@ -104,6 +104,7 @@ public class LibraryResourceImplTest {
     private LibLibrary libLibrary;
 
     private CorNetwork corNetwork;
+    private CorImageItem corImageItem;
 
     /**
      * Create an entity for this test.
@@ -125,7 +126,7 @@ public class LibraryResourceImplTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
         corImageItemRepository.saveAndFlush(corImageItem);
         when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(libLibraryService, "corImageItemService", corImageItemService);
@@ -331,8 +332,8 @@ public class LibraryResourceImplTest {
     @Transactional
     public void getAllLibLibrariesWithImages() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork));
+
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).mainImage(corImageItem));
 
         // Get all the libLibraryList
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library?sort=id,desc", corNetwork.getShortcut()))
@@ -351,8 +352,7 @@ public class LibraryResourceImplTest {
     @Transactional
     public void getLibLibraryWithImage() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123"));
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").mainImage(corImageItem));
 
         // Get the libLibrary
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), "123"))

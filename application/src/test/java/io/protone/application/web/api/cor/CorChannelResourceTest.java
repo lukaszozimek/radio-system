@@ -130,7 +130,7 @@ public class CorChannelResourceTest {
         ReflectionTestUtils.setField(corChannelService, "corImageItemService", corImageItemService);
         CorChannelResourceImpl corChannelResource = new CorChannelResourceImpl(corChannelService, corChannelMapper, networkService);
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
-        corImageItem = corImageItemRepository.saveAndFlush(new CorImageItem().name("test").network(corNetwork));
+        corImageItem = corImageItemRepository.saveAndFlush(new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork));
         this.restCorChannelMockMvc = MockMvcBuilders.standaloneSetup(corChannelResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -258,9 +258,8 @@ public class CorChannelResourceTest {
     @Transactional
     public void getAllCorChannelsWithImage() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
-        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
+        corChannelRepository.saveAndFlush(corChannel.logo(corImageItem).network(corNetwork));
 
         // Get all the corChannelList
         restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel?sort=id,desc", corNetwork.getShortcut()))
@@ -296,7 +295,7 @@ public class CorChannelResourceTest {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
-        corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
+        corChannelRepository.saveAndFlush(corChannel.logo(corImageItem).network(corNetwork));
 
         // Get the corChannel
         restCorChannelMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}", corNetwork.getShortcut(), corChannel.getShortcut()))

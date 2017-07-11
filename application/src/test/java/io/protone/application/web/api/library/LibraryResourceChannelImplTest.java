@@ -121,7 +121,7 @@ public class LibraryResourceChannelImplTest {
     private LibLibrary libLibrary;
     private CorNetwork corNetwork;
     private CorChannel corChannel;
-
+   private CorImageItem corImageItem;
     /**
      * Create an entity for this test.
      * <p>
@@ -142,7 +142,7 @@ public class LibraryResourceChannelImplTest {
     public void setup() throws IOException, TikaException, SAXException, CreateBucketException {
         MockitoAnnotations.initMocks(this);
         LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
         corImageItemRepository.saveAndFlush(corImageItem);
         when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(libLibraryService, "corImageItemService", corImageItemService);
@@ -314,7 +314,6 @@ public class LibraryResourceChannelImplTest {
     @Transactional
     public void getAllLibLibraries() throws Exception {
 
-        when(corImageItemService.saveImageItem(any())).thenReturn(null);
 
         // Initialize the database
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
@@ -334,7 +333,6 @@ public class LibraryResourceChannelImplTest {
     @Test
     @Transactional
     public void getLibLibrary() throws Exception {
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(null);
 
         // Initialize the database
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));
@@ -355,10 +353,9 @@ public class LibraryResourceChannelImplTest {
     @Transactional
     public void getAllLibLibrariesWithImage() throws Exception {
 
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
 
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).mainImage(corImageItem).channels(Sets.newHashSet(corChannel)));
 
         // Get all the libLibraryList
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -376,10 +373,8 @@ public class LibraryResourceChannelImplTest {
     @Test
     @Transactional
     public void getLibLibraryWithImage() throws Exception {
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));
+        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).mainImage(corImageItem).shortcut("123").channels(Sets.newHashSet(corChannel)));
 
         // Get the libLibrary
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))

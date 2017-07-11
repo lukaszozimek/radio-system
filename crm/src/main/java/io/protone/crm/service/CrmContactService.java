@@ -24,8 +24,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 /**
  * Created by lukaszozimek on 17.01.2017.
  */
@@ -51,8 +49,7 @@ public class CrmContactService {
     private CorImageItemService corImageItemService;
 
     public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
-        return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable).stream()
-                .map(crmContact -> crmContact.avatar(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()))).collect(toList());
+        return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public CrmContact saveContact(CrmContact contact) {
@@ -83,12 +80,8 @@ public class CrmContactService {
     }
 
     public CrmContact getContact(String shortcut, String corNetwork) {
-        CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        if (crmContact != null) {
-            crmContact.setCorImageItem(corImageItemService.getValidLinkToResource(crmContact.getCorImageItem()));
-            return crmContact;
-        }
-        return crmContact;
+        return crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+
     }
 
     public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {

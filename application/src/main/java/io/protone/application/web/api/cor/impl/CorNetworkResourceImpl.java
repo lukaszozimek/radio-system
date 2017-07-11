@@ -65,7 +65,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     public ResponseEntity<CorNetworkDTO> updateNetworkUsingPUT(@ApiParam(value = "network", required = true) @Valid @RequestBody CorNetworkDTO network) throws URISyntaxException {
         log.debug("REST request to update CorNetwork : {}", network);
         if (network.getId() == null) {
-            return createNetworkUsingPOST(network,null);
+            return createNetworkUsingPOST(network, null);
         }
         CorNetwork corNetwork = corNetworkMapper.DTO2DB(network);
         corNetwork = corNetworkService.save(corNetwork);
@@ -94,7 +94,7 @@ public class CorNetworkResourceImpl implements CorNetworkResource {
     @Override
     public ResponseEntity<CorNetworkDTO> getNetworkUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut) {
         log.debug("REST request to get CorNetwork : {}", networkShortcut);
-        CorNetwork cORNetwork = corNetworkService.findNetworkWithPublicUrl(networkShortcut);
+        CorNetwork cORNetwork = corNetworkService.findNetwork(networkShortcut);
         CorNetworkDTO cORNetworkDTO = corNetworkMapper.DB2DTO(cORNetwork);
         return Optional.ofNullable(cORNetworkDTO)
                 .map(result -> new ResponseEntity<>(

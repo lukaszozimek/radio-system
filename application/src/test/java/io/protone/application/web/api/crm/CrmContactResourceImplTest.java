@@ -113,6 +113,7 @@ public class CrmContactResourceImplTest {
     private CrmContact crmContact;
 
     private CorNetwork corNetwork;
+    private CorImageItem corImageItem;
 
     /**
      * Create an entity for this test.
@@ -136,7 +137,7 @@ public class CrmContactResourceImplTest {
     public void setup() throws IOException, TikaException, SAXException {
         MockitoAnnotations.initMocks(this);
         CrmContactResourceImpl crmContactResource = new CrmContactResourceImpl();
-        CorImageItem corImageItem = new CorImageItem().name("test").network(corNetwork);
+        corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
         corImageItemRepository.saveAndFlush(corImageItem);
         when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
         ReflectionTestUtils.setField(crmContactService, "corImageItemService", corImageItemService);
@@ -278,10 +279,9 @@ public class CrmContactResourceImplTest {
     @Test
     @Transactional
     public void getAllCrmContactsWithImage() throws Exception {
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
 
         // Initialize the database
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).network(corNetwork));
 
         // Get all the crmContactList
         restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact?sort=id,desc", corNetwork.getShortcut()))
@@ -323,9 +323,7 @@ public class CrmContactResourceImplTest {
     @Transactional
     public void getCrmContactWithImage() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
-
-        crmContactRepository.saveAndFlush(crmContact.network(corNetwork));
+        crmContactRepository.saveAndFlush(crmContact.avatar(corImageItem).network(corNetwork));
 
         // Get the crmContact
         restCrmContactMockMvc.perform(get("/api/v1/network/{networkShortcut}/crm/contact/{shortName}", corNetwork.getShortcut(), crmContact.getShortName()))

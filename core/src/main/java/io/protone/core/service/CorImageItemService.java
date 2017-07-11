@@ -102,9 +102,9 @@ public class CorImageItemService {
         try {
             publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
-            e.printStackTrace();
+          log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         }
         return corImageItem.publicUrl(publicUrl);
     }
@@ -117,9 +117,10 @@ public class CorImageItemService {
         try {
             publicUrl = s3Client.getObjectUrl(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {
-            e.printStackTrace();
+
+            log.error(e.getLocalizedMessage());
         }
         return corImageItem.publicUrl(publicUrl);
     }

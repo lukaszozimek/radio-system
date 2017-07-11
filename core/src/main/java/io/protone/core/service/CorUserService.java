@@ -8,7 +8,6 @@ import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.repository.CorAuthorityRepository;
 import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.security.AuthoritiesConstants;
 import io.protone.core.security.SecurityUtils;
@@ -58,7 +57,7 @@ public class CorUserService {
     private CorChannelRepository corChannelRepository;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
+    private CorNetworkService corNetworkService;
 
 
     @Autowired
@@ -81,8 +80,8 @@ public class CorUserService {
                     return user;
                 });
         if (corUser.isPresent()) {
-            CorNetwork network = corNetworkRepository.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
-
+            CorNetwork network = corNetworkService.save(corUser.get().getNetworks().stream().findFirst().get().active(true));
+            corNetworkService.createPublicBucketForThisNetwork(network);
         }
         return corUser;
     }
@@ -119,7 +118,7 @@ public class CorUserService {
                               String langKey, CorNetworkDTO networkPt) {
 
         CorUser newUser = new CorUser();
-        CorNetwork network = corNetworkRepository.save(corNetworkMapper.DTO2DB(networkPt));
+        CorNetwork network = corNetworkService.save(corNetworkMapper.DTO2DB(networkPt));
         CorAuthority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
         Set<CorAuthority> authorities = new HashSet<>();
 
@@ -146,7 +145,7 @@ public class CorUserService {
         newUser.setNetworks(newHashSet(network));
         userRepository.save(newUser);
         network.addNetworkUsers(newUser);
-        corNetworkRepository.save(network);
+        corNetworkService.save(network);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }

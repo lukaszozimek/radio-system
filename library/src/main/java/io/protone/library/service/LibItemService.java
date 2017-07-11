@@ -117,7 +117,7 @@ public class LibItemService {
 
     @Transactional
     public LibMediaItem update(MultipartFile[] covers, LibMediaItem libMediaItem, CorNetwork corNetwork) {
-        return libMediaItem;
+        return update(libMediaItem, corNetwork);
     }
 
     @Transactional

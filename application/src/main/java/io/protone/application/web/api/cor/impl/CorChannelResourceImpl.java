@@ -115,7 +115,7 @@ public class CorChannelResourceImpl implements CorChannelResource {
     @Override
     public ResponseEntity<CorChannelDTO> getChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get CORChannel : {}", channelShortcut);
-        CorChannel corChannel = channelService.findChannelWithPublicLogo(networkShortcut, channelShortcut);
+        CorChannel corChannel = channelService.findChannel(networkShortcut, channelShortcut);
         CorChannelDTO corChannelDTO = corChannelMapper.DB2DTO(corChannel);
         return Optional.ofNullable(corChannelDTO)
                 .map(result -> new ResponseEntity<>(

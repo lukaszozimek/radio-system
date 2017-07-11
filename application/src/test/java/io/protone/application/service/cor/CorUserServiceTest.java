@@ -28,7 +28,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -92,8 +91,8 @@ public class CorUserServiceTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
-        ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
-        ReflectionTestUtils.setField(corUserService, "corImageItemService", corImageItemService);
+        // ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
+        //  ReflectionTestUtils.setField(corUserService, "corImageItemService", corImageItemService);
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
@@ -173,7 +172,7 @@ public class CorUserServiceTest {
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
 
         CorUserDTO corUserDTO = corUserMapper.DB2DTO(corUser);
-        MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
+        MockMultipartFile logo = new MockMultipartFile("logo", "logo.jpg", "", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         corUserService.createUser(corUserDTO, logo);
         Optional<CorUser> featechEnitity = corUserRepository.findOneByLogin(corUserDTO.getLogin());
         assertTrue(featechEnitity.isPresent());
