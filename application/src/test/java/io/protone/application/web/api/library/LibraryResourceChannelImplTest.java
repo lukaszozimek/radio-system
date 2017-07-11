@@ -355,7 +355,7 @@ public class LibraryResourceChannelImplTest {
     @Transactional
     public void getAllLibLibrariesWithImage() throws Exception {
 
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
 
         // Initialize the database
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).channels(Sets.newHashSet(corChannel)));
@@ -376,7 +376,7 @@ public class LibraryResourceChannelImplTest {
     @Test
     @Transactional
     public void getLibLibraryWithImage() throws Exception {
-        when(corImageItemService.saveImageItem(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
 
         // Initialize the database
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").channels(Sets.newHashSet(corChannel)));

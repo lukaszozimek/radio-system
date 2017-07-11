@@ -119,10 +119,6 @@ public class CorChannel extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorChannel image(CorImageItem corImageItem) {
-        this.corImageItem = corImageItem;
-        return this;
-    }
 
     public CorImageItem getCorImageItem() {
         return corImageItem;

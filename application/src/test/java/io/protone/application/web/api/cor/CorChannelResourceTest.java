@@ -237,6 +237,7 @@ public class CorChannelResourceTest {
     }
 
     @Test
+    @Transactional
     public void getAllCorChannels() throws Exception {
         // Initialize the database
         when(corImageItemService.getValidLinkToResource(anyObject())).thenReturn(null);
@@ -254,9 +255,10 @@ public class CorChannelResourceTest {
     }
 
     @Test
+    @Transactional
     public void getAllCorChannelsWithImage() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 
@@ -289,9 +291,10 @@ public class CorChannelResourceTest {
     }
 
     @Test
+    @Transactional
     public void getCorChannelWithImageItem() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
         corChannelService.deleteChannel(corNetwork.getShortcut(), corChannel.getShortcut());
         corChannelRepository.saveAndFlush(corChannel.network(corNetwork));
 

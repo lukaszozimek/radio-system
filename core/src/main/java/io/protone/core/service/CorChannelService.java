@@ -46,7 +46,7 @@ public class CorChannelService {
     public CorChannel findChannelWithPublicLogo(String networkShortcut, String channelShortcut) {
         CorChannel channel = channelRepository.findOneByNetwork_ShortcutAndShortcut(networkShortcut, channelShortcut);
         if (channel != null) {
-            channel.setCorImageItem(corImageItemService.getValidLinkToResource(channel.getCorImageItem()));
+            channel.logo(corImageItemService.getValidLinkToResource(channel.getCorImageItem()));
             return channel;
         }
         return channel;
@@ -64,7 +64,7 @@ public class CorChannelService {
     public CorChannel save(CorChannel channel, MultipartFile logo) throws IOException, TikaException, SAXException {
         log.debug("Persisting CorChannel: {}", channel);
         CorImageItem corImageItem = corImageItemService.saveImageItem(logo);
-        return channelRepository.saveAndFlush(channel.image(corImageItem));
+        return channelRepository.saveAndFlush(channel.logo(corImageItem));
     }
 
 

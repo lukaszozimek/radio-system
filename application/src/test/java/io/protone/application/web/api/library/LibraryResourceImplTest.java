@@ -331,7 +331,7 @@ public class LibraryResourceImplTest {
     @Transactional
     public void getAllLibLibrariesWithImages() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork));
 
         // Get all the libLibraryList
@@ -351,7 +351,7 @@ public class LibraryResourceImplTest {
     @Transactional
     public void getLibLibraryWithImage() throws Exception {
         // Initialize the database
-        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().name(PUBLIC_URL_STRING));
+        when(corImageItemService.getValidLinkToResource(any())).thenReturn(new CorImageItem().publicUrl(PUBLIC_URL_STRING));
         libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123"));
 
         // Get the libLibrary

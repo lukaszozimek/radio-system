@@ -207,6 +207,7 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+
     public LibLibrary mainImage(CorImageItem mainImage) {
         this.mainImage = mainImage;
         return this;
