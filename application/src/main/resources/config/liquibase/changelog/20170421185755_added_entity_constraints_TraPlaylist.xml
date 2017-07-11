@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraPlaylist.
+    -->
+    <changeSet id="20170515200401-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_playlist"
+                                 constraintName="fk_tra_playlist_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="tra_playlist"
+                                 constraintName="fk_tra_playlist_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="tra_playlist"
+                                 constraintName="fk_tra_playlist_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="tra_playlist"
+                                 constraintName="fk_tra_playlist_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+    </changeSet>
+</databaseChangeLog>

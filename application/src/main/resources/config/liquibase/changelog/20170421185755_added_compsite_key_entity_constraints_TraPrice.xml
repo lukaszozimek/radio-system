@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraPrice.
+    -->
+    <changeSet id="20170421185755-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="currency_id"
+                                 baseTableName="tra_price"
+                                 constraintName="fk_tra_price_currency_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_currency"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_price"
+                                 constraintName="fk_tra_price_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+    </changeSet>
+</databaseChangeLog>
