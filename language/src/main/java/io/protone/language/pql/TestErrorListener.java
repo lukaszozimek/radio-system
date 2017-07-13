@@ -1,4 +1,4 @@
-package io.protone.pql;
+package io.protone.language.pql;
 
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;

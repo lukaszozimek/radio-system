@@ -1,5 +1,7 @@
-package io.protone.pql.vistior;
+package io.protone.language.pql.pql;
 
+import io.protone.language.pql.ProtoneQueryLanguageVisitor;
+import io.protone.language.pql.ProtoneQueryLanguageParser;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
@@ -8,9 +10,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
-public class ProtoneQueryLanguageVisitorImpl implements io.protone.pql.ProtoneQueryLanguageVisitor<Void> {
+public class ProtoneQueryLanguageVisitorImpl implements ProtoneQueryLanguageVisitor<Void> {
     @Override
-    public Void visitProgram(ProtoneQueryLanguageParser.ProgramContext ctx) {
+    public Void visitProgram(io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext ctx) {
         return null;
     }
 

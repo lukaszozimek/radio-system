@@ -1,6 +1,5 @@
-package io.protone.pql;
+package io.protone.language.pql;
 
-import io.protone.core.service.CorAddressService;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -21,14 +20,14 @@ public class CorModuleStatemantTest {
 
         String simplestProgram = "CORE  Person WHERE x = z" ;
 
-        CharStream inputCharStream = new ANTLRInputStream(new StringReader(simplestProgram));
-        TokenSource tokenSource = new io.protone.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        CharStream inputCharStream =  CharStreams.fromReader(new StringReader(simplestProgram));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
-        io.protone.pql.ProtoneQueryLanguageParser parser = new io.protone.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
         parser.addErrorListener(new TestErrorListener());
 
-        io.protone.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());
 

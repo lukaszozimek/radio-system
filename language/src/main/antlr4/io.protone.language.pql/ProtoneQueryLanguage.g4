@@ -9,14 +9,10 @@ ql_module
     ;
 cor_module_statemant : cor_module cor_entity  (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
 
-traffic_module_statemant: traffic_module traffic_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?
-                                                           ;
-crm_module_statemant:crm_module crm_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?
-                                  ;
-library_module_statemant :library_module library_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?
-                                            ;
-scheduler_module_statemant :scheduler_module scheduler_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?
-                                               ;
+traffic_module_statemant: traffic_module traffic_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
+crm_module_statemant:crm_module crm_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)? ;
+library_module_statemant :library_module library_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
+scheduler_module_statemant :scheduler_module scheduler_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
 
 cor_entity : 'Person' | 'Adress';
 traffic_entity : 'Media Plan';

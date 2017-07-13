@@ -1,2 +1,0 @@
-grammar ProtoneAutomationLanguage;
-program : 'test';
