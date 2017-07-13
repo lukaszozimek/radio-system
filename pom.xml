@@ -25,6 +25,7 @@
         <module>library</module>
         <module>scheduler</module>
         <module>playout</module>
+        <module>language</module>
         <module>application</module>
     </modules>
     <properties>
@@ -102,6 +103,8 @@
         <!-- Spring properties -->
         <springfox.version>2.6.1</springfox.version>
         <tika.version>1.14</tika.version>
+        <antlr4.plugin.version>4.7</antlr4.plugin.version>
+        <antlr4.version>4.7</antlr4.version>
     </properties>
 
     <dependencies>
@@ -459,6 +462,17 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr4.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-maven-plugin</artifactId>
+            <version>${antlr4.plugin.version}</version>
         </dependency>
 
     </dependencies>
