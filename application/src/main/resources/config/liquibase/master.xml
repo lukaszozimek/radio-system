@@ -42,6 +42,10 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CorUserAuthority.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CorFilter.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CorCommand.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CrmAccount.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CrmContact.xml"
@@ -150,6 +154,11 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CorUserAuthority.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CorCommand.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CorFilter.xml"
+             relativeToChangelogFile="false"/>
+
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmAccount.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmContact.xml"

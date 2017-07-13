@@ -1,4 +1,4 @@
-package io.protone.language.pql.pal;
+package io.protone.language.pal.impl;
 import io.protone.language.pal.ProtoneAutomationLanguageParser;
 import io.protone.language.pal.ProtoneAutomationLanguageVisitor;
 import org.antlr.v4.runtime.tree.ErrorNode;

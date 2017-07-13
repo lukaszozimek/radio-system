@@ -1,11 +1,9 @@
-package io.protone.language.pql.pql;
+package io.protone.language.pql.impl;
 
-import io.protone.language.pql.ProtoneQueryLanguageParser;
+import io.protone.language.pql.ProtoneQueryLanguageListener;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
-import io.protone.language.pql.ProtoneQueryLanguageListener;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */

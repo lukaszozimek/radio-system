@@ -1,11 +1,11 @@
-package io.protone.language.pql.pal;
+package io.protone.language.pal.impl;
+
 
 import io.protone.language.pal.ProtoneAutomationLanguageListener;
 import io.protone.language.pal.ProtoneAutomationLanguageParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
