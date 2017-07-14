@@ -1,5 +1,6 @@
 package io.protone.language.pql;
 
+import io.protone.language.pal.impl.ProtoneAutomationLanguageListenerImpl;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -18,13 +19,14 @@ public class CrmModuleStatemantTest {
     @Test
     public void simpleCustomerQuery() throws IOException {
 
-        String simpleQuery = "CRM Customer";
+        String simpleQuery = "Crm Customer";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());
@@ -35,13 +37,14 @@ public class CrmModuleStatemantTest {
     @Test
     public void simpleLeadQuery() throws IOException {
 
-        String simpleQuery = "CRM Lead";
+        String simpleQuery = "Crm Lead";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());
@@ -52,15 +55,14 @@ public class CrmModuleStatemantTest {
     @Test
     public void simpleOpportunityQuery() throws IOException {
 
-        String simpleQuery = "CRM Opportunity";
+        String simpleQuery = "Crm Opportunity";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
-
-
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());
@@ -71,13 +73,14 @@ public class CrmModuleStatemantTest {
     @Test
     public void simpleContactQuery() throws IOException {
 
-        String simpleQuery = "CRM Contact";
+        String simpleQuery = "Crm Contact";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());
@@ -87,13 +90,14 @@ public class CrmModuleStatemantTest {
     @Test
     public void simpleTaskQuery() throws IOException {
 
-        String simpleQuery = "CRM Task";
+        String simpleQuery = "Crm Task";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());

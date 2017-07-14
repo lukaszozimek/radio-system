@@ -6,7 +6,7 @@ automation_module
 
 protone_playout_statemant:
     protone_playout_basic;
-  //  protone_playout_time_action|
+  //protone_playout_time_action|
   //protone_playout_condition_action;
 
 

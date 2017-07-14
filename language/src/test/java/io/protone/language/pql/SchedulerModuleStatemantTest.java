@@ -1,5 +1,6 @@
 package io.protone.language.pql;
 
+import io.protone.language.pal.impl.ProtoneAutomationLanguageListenerImpl;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,15 +18,14 @@ public class SchedulerModuleStatemantTest {
     @Test
     public void simpleSchedulerQuery() throws IOException {
 
-        String simpleQuery = "Scheduler  Event";
+        String simpleQuery = "Scheduler Event";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
 
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
-
-
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
         log.info(context.toString());
