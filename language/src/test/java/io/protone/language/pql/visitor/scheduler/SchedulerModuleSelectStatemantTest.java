@@ -1,4 +1,4 @@
-package io.protone.language.pql;
+package io.protone.language.pql.visitor.scheduler;
 
 import io.protone.language.pal.impl.ProtoneAutomationLanguageListenerImpl;
 import org.antlr.v4.runtime.*;
@@ -12,8 +12,8 @@ import java.io.StringReader;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
-public class SchedulerModuleStatemantTest {
-    private final Logger log = LoggerFactory.getLogger(SchedulerModuleStatemantTest.class);
+public class SchedulerModuleSelectStatemantTest {
+    private final Logger log = LoggerFactory.getLogger(SchedulerModuleSelectStatemantTest.class);
 
     @Test
     public void simpleSchedulerQuery() throws IOException {

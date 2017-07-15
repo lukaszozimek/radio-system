@@ -14,7 +14,7 @@ crm_module_statemant:crm_module crm_entity (where_clause)? (groupby_clause)? (ha
 library_module_statemant :library_module library_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
 scheduler_module_statemant :scheduler_module scheduler_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
 
-cor_entity : 'Person' | 'Adress'|'ImageItem'|'Channel'|'Contact'|'Property';
+cor_entity : 'Person' | 'Adress'|'Image'|'Channel'|'Contact'|'Property';
 traffic_entity : 'Media Plan'|'Advertisement'|'Campaign'|'Invoice'|'Order'|'Playlist';
 crm_entity :'Customer'|'Lead'|'Opportunity'|'Contact'|'Task';
 library_entity :'MediaItem'|'Library'|'Label'|'Album'|'Track'|'Artist';
