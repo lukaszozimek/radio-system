@@ -1,4 +1,3 @@
-
 package io.protone.language.pql.impl.visitor.traffic;
 
 import com.google.common.base.Strings;
@@ -28,21 +27,25 @@ public class ProtoneQueryLanguageTrafficEntityVisitorImpl extends ProtoneQueryLa
 
     }
 
-    @Override
-    public String visitTraffic_module(ProtoneQueryLanguageParser.Traffic_moduleContext ctx) {
-        return "SELECT * FROM";
-    }
 
     @Override
     public String visitTraffic_entity(ProtoneQueryLanguageParser.Traffic_entityContext ctx) {
 
-        return pqlEntityMap.get(ctx.getText().trim());
+        if (Strings.isNullOrEmpty(pqlEntityMap.get(ctx.getText().trim()))) {
+            return null;
+        }
+        return "SELECT * FROM " + pqlEntityMap.get(ctx.getText().trim());
     }
 
 
     @Override
     protected String aggregateResult(String aggregate, String nextResult) {
-        if (Strings.isNullOrEmpty(aggregate)) {
+
+        if (Strings.isNullOrEmpty(nextResult)) {
+            return aggregate;
+        }
+
+        if (Strings.isNullOrEmpty(aggregate) && !Strings.isNullOrEmpty(nextResult)) {
             aggregate = "";
             return aggregate.concat(nextResult);
         }

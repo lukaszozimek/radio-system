@@ -15,14 +15,14 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
-public class CorModuleSelectStatemantTest {
-    private final Logger log = LoggerFactory.getLogger(CorModuleSelectStatemantTest.class);
+public class CorModuleWhereStatemantTest {
+    private final Logger log = LoggerFactory.getLogger(CorModuleWhereStatemantTest.class);
 
 
     @Test
     public void simpleCorPersonQuery() throws IOException {
-        String simpleQuery = "Core Person ";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson";
+        String simpleQuery = "Core Person AND id=1 AND name='eetest'";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson WHERE p.id=1 p.name='eetest'";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -38,8 +38,8 @@ public class CorModuleSelectStatemantTest {
 
     @Test
     public void simpleCorTagQuery() throws IOException {
-        String simpleQuery = "Core Tag ";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag";
+        String simpleQuery = "Core Tag AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag WHERE t.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -58,8 +58,8 @@ public class CorModuleSelectStatemantTest {
 
     @Test
     public void simpleCorImageItemQuery() throws IOException {
-        String simpleQuery = "Core  Image ";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem";
+        String simpleQuery = "Core  Image AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem WHERE i.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -77,8 +77,8 @@ public class CorModuleSelectStatemantTest {
 
     @Test
     public void simpleCorChannelQuery() throws IOException {
-        String simpleQuery = "Core  Channel ";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel";
+        String simpleQuery = "Core  Channel AND  id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel WHERE ANY c.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -96,8 +96,8 @@ public class CorModuleSelectStatemantTest {
 
     @Test
     public void simpleCorContactQuery() throws IOException {
-        String simpleQuery = "Core  Contact ";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact";
+        String simpleQuery = "Core  Contact AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact WHERE c.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -115,8 +115,8 @@ public class CorModuleSelectStatemantTest {
 
     @Test
     public void simpleCorAdressQuery() throws IOException {
-        String simpleQuery = "Core  Adress ";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress";
+        String simpleQuery = "Core  Adress AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress WHERE a.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -134,8 +134,8 @@ public class CorModuleSelectStatemantTest {
 
     @Test
     public void simpleCorPropertyQuery() throws IOException {
-        String simpleQuery = "Core  Property ";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey";
+        String simpleQuery = "Core  Property AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey WHERE p.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

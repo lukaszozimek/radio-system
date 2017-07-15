@@ -26,24 +26,33 @@ public class ProtoneQueryLanguageLibraryEntityVisitorImpl extends ProtoneQueryLa
 
     }
 
-    @Override
-    public String visitLibrary_module(ProtoneQueryLanguageParser.Library_moduleContext ctx) {
-        return "SELECT * FROM";
-    }
 
     @Override
     public String visitLibrary_entity(ProtoneQueryLanguageParser.Library_entityContext ctx) {
 
-        return pqlEntityMap.get(ctx.getText().trim());
+        if (Strings.isNullOrEmpty(pqlEntityMap.get(ctx.getText().trim()))) {
+            return null;
+        }
+        return "SELECT * FROM " + pqlEntityMap.get(ctx.getText().trim());
     }
 
 
     @Override
     protected String aggregateResult(String aggregate, String nextResult) {
-        if (Strings.isNullOrEmpty(aggregate)) {
+
+        if (Strings.isNullOrEmpty(nextResult)) {
+            return aggregate;
+        }
+
+        if (Strings.isNullOrEmpty(aggregate) && !Strings.isNullOrEmpty(nextResult)) {
             aggregate = "";
             return aggregate.concat(nextResult);
         }
+
+        if (Strings.isNullOrEmpty(nextResult)) {
+            return aggregate;
+        }
+
         return aggregate.concat(SPACE).concat(nextResult);
     }
 

@@ -26,22 +26,28 @@ public class ProtoneQueryLanguageCrmEntityVisitorImpl extends ProtoneQueryLangua
     }
 
     @Override
-    public String visitCrm_module(ProtoneQueryLanguageParser.Crm_moduleContext ctx) {
-        return "SELECT * FROM";
-    }
-
-    @Override
     public String visitCrm_entity(ProtoneQueryLanguageParser.Crm_entityContext ctx) {
-
-        return pqlEntityMap.get(ctx.getText().trim());
+        if (Strings.isNullOrEmpty(pqlEntityMap.get(ctx.getText().trim()))) {
+            return null;
+        }
+        return "SELECT * FROM " + pqlEntityMap.get(ctx.getText().trim());
     }
 
 
     @Override
     protected String aggregateResult(String aggregate, String nextResult) {
-        if (Strings.isNullOrEmpty(aggregate)) {
+
+        if (Strings.isNullOrEmpty(nextResult)) {
+            return aggregate;
+        }
+
+        if (Strings.isNullOrEmpty(aggregate) && !Strings.isNullOrEmpty(nextResult)) {
             aggregate = "";
             return aggregate.concat(nextResult);
+        }
+
+        if (Strings.isNullOrEmpty(nextResult)) {
+            return aggregate;
         }
         return aggregate.concat(SPACE).concat(nextResult);
     }

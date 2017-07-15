@@ -14,7 +14,7 @@ crm_module_statemant:crm_module crm_entity (where_clause)? (groupby_clause)? (ha
 library_module_statemant :library_module library_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
 scheduler_module_statemant :scheduler_module scheduler_entity (where_clause)? (groupby_clause)? (having_clause)? (orderby_clause)?;
 
-cor_entity : 'Person' | 'Adress'|'Image'|'Channel'|'Contact'|'Property';
+cor_entity : 'Person' | 'Adress'|'Image'|'Channel'|'Contact'|'Property' | 'Tag';
 traffic_entity : 'Media Plan'|'Advertisement'|'Campaign'|'Invoice'|'Order'|'Playlist';
 crm_entity :'Customer'|'Lead'|'Opportunity'|'Contact'|'Task';
 library_entity :'MediaItem'|'Library'|'Label'|'Album'|'Track'|'Artist';
@@ -38,7 +38,7 @@ single_valued_path_expression
    ;
 
 state_field_path_expression
-   : (IDENTIFICATION_VARIABLE | single_valued_association_path_expression) '.' state_field
+   : IDENTIFICATION_VARIABLE | state_field
    ;
 
 single_valued_association_path_expression
@@ -80,7 +80,7 @@ aggregate_expression
    ;
 
 where_clause
-   : 'WHERE' conditional_expression
+   : 'AND' conditional_expression
    ;
 
 groupby_clause
@@ -337,10 +337,14 @@ collection_valued_association_field
 abstract_schema_name
    :
    ;
-
+fragment DIGIT : [0-9];
 IDENTIFICATION_VARIABLE
-   : ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
-   ;
+    : '"' (~'"' | '""')* '"'
+      | '`' (~'`' | '``')* '`'
+      | '[' ~']'* ']'
+      | [a-zA-Z_] [a-zA-Z_0-9]* // TODO check: needs more chars in set
+      | DIGIT
+      ;
 
 CHARACTER
    : '\'' (~ ('\'' | '\\')) '\''
