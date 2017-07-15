@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by lukaszozimek on 13/07/2017.
@@ -26,6 +28,6 @@ public interface LaPQLResource {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    void queryElements(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                       @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO);
+    List queryElements(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                       @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException;
 }
