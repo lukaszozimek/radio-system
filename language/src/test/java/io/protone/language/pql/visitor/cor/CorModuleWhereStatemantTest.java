@@ -77,8 +77,8 @@ public class CorModuleWhereStatemantTest {
 
     @Test
     public void simpleCorChannelQuery() throws IOException {
-        String simpleQuery = "Core  Channel AND  id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel WHERE ANY c.id=1";
+        String simpleQuery = "Core  Channel AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel WHERE c.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

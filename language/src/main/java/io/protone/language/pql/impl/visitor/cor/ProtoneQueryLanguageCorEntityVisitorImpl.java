@@ -15,6 +15,8 @@ public class ProtoneQueryLanguageCorEntityVisitorImpl extends ProtoneQueryLangua
     private static final String SPACE = " ";
     private Map<String, Class> pqlEntityMap = new HashMap<>();
 
+    private char aliasVariable;
+
     public ProtoneQueryLanguageCorEntityVisitorImpl() {
         pqlEntityMap.put("Person", CorPerson.class);
         pqlEntityMap.put("Image", CorImageItem.class);
@@ -28,10 +30,11 @@ public class ProtoneQueryLanguageCorEntityVisitorImpl extends ProtoneQueryLangua
 
     @Override
     public String visitCor_entity(ProtoneQueryLanguageParser.Cor_entityContext ctx) {
-        if (pqlEntityMap.get(ctx.getText().trim()).getSimpleName() == null) {
+        if (pqlEntityMap.get(ctx.getText().trim()) == null) {
             return null;
         }
-        return "SELECT " + ctx.getText().toLowerCase().toCharArray()[0] + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim();
+        aliasVariable = ctx.getText().toLowerCase().toCharArray()[0];
+        return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim();
     }
 
     @Override
@@ -61,7 +64,7 @@ public class ProtoneQueryLanguageCorEntityVisitorImpl extends ProtoneQueryLangua
     @Override
     public String visitSimple_cond_expression(ProtoneQueryLanguageParser.Simple_cond_expressionContext ctx) {
 
-        return "." + ctx.getText();
+        return aliasVariable + "." + ctx.getText();
     }
 
     @Override

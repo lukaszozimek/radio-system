@@ -23,7 +23,7 @@ public class TrafficModuleSelectStatemantTest {
     public void simpleTrafficTraAdvertisementQuerry() throws IOException {
 
         String simpleQuery = "Traffic Advertisement";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraAdvertisement";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -44,7 +44,7 @@ public class TrafficModuleSelectStatemantTest {
     public void simpleTrafficTraCampaignQuerry() throws IOException {
 
         String simpleQuery = "Traffic Campaign";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraCampaign";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -64,7 +64,7 @@ public class TrafficModuleSelectStatemantTest {
     public void simpleTrafficTraInvoiceQuerry() throws IOException {
 
         String simpleQuery = "Traffic Invoice";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraInvoice";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -84,7 +84,7 @@ public class TrafficModuleSelectStatemantTest {
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
         String simpleQuery = "Traffic Media Plan";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraMediaPlan";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -104,7 +104,7 @@ public class TrafficModuleSelectStatemantTest {
     public void simpleTrafficTraOrderQuerry() throws IOException {
 
         String simpleQuery = "Traffic Order";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraOrder";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -125,7 +125,7 @@ public class TrafficModuleSelectStatemantTest {
     public void simpleTrafficTraPlaylistQuerry() throws IOException {
 
         String simpleQuery = "Traffic Playlist";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraPlaylist";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

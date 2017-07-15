@@ -23,7 +23,7 @@ public class CrmModuleSelectStatemantTest {
     public void simpleCustomerQuery() throws IOException {
 
         String simpleQuery = "Crm Customer";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM CrmAccount";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -46,7 +46,7 @@ public class CrmModuleSelectStatemantTest {
     public void simpleLeadQuery() throws IOException {
 
         String simpleQuery = "Crm Lead";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM CrmLead";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -68,7 +68,7 @@ public class CrmModuleSelectStatemantTest {
     public void simpleOpportunityQuery() throws IOException {
 
         String simpleQuery = "Crm Opportunity";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM CrmOpportunity";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -90,7 +90,7 @@ public class CrmModuleSelectStatemantTest {
     public void simpleContactQuery() throws IOException {
 
         String simpleQuery = "Crm Contact";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM CrmContact";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -111,7 +111,7 @@ public class CrmModuleSelectStatemantTest {
     public void simpleTaskQuery() throws IOException {
 
         String simpleQuery = "Crm Task";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM CrmTask";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

@@ -21,8 +21,8 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraAdvertisementQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Advertisement WHERE id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraAdvertisement WHERE id=1 ";
+        String simpleQuery = "Traffic Advertisement AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement WHERE a.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -42,8 +42,8 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraCampaignQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Campaign WHERE id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraCampaign WHERE id=1";
+        String simpleQuery = "Traffic Campaign AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign WHERE c.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -62,8 +62,8 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraInvoiceQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Invoice WHERE id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraInvoice WHERE id=1";
+        String simpleQuery = "Traffic Invoice AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice WHERE i.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -82,8 +82,8 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan WHERE id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraMediaPlan WHERE id=1";
+        String simpleQuery = "Traffic Media Plan AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan WHERE m.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -102,8 +102,8 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraOrderQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Order WHERE id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraOrder WHERE id=1";
+        String simpleQuery = "Traffic Order AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder WHERE o.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -123,8 +123,8 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraPlaylistQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Playlist WHERE id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT * FROM TraPlaylist WHERE id=1";
+        String simpleQuery = "Traffic Playlist AND id=1";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist WHERE p.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

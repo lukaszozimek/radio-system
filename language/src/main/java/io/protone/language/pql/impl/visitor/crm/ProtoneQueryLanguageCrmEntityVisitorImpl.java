@@ -14,25 +14,71 @@ import java.util.Map;
  */
 public class ProtoneQueryLanguageCrmEntityVisitorImpl extends ProtoneQueryLanguageBaseVisitor<String> {
     private static final String SPACE = " ";
-    private Map<String, String> pqlEntityMap = new HashMap<>();
+    private Map<String, Class> pqlEntityMap = new HashMap<>();
+    private char aliasVariable;
 
     public ProtoneQueryLanguageCrmEntityVisitorImpl() {
-        pqlEntityMap.put("Contact", CrmContact.class.getSimpleName());
-        pqlEntityMap.put("Lead", CrmLead.class.getSimpleName());
-        pqlEntityMap.put("Opportunity", CrmOpportunity.class.getSimpleName());
-        pqlEntityMap.put("Customer", CrmAccount.class.getSimpleName());
-        pqlEntityMap.put("Task", CrmTask.class.getSimpleName());
+        pqlEntityMap.put("Contact", CrmContact.class);
+        pqlEntityMap.put("Lead", CrmLead.class);
+        pqlEntityMap.put("Opportunity", CrmOpportunity.class);
+        pqlEntityMap.put("Customer", CrmAccount.class);
+        pqlEntityMap.put("Task", CrmTask.class);
 
     }
 
     @Override
     public String visitCrm_entity(ProtoneQueryLanguageParser.Crm_entityContext ctx) {
-        if (Strings.isNullOrEmpty(pqlEntityMap.get(ctx.getText().trim()))) {
+        if (pqlEntityMap.get(ctx.getText().trim()).getSimpleName() == null) {
             return null;
         }
-        return "SELECT * FROM " + pqlEntityMap.get(ctx.getText().trim());
+        aliasVariable = ctx.getText().toLowerCase().toCharArray()[0];
+        return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim();
     }
 
+
+
+
+    @Override
+    public String visitWhere_clause(ProtoneQueryLanguageParser.Where_clauseContext ctx) {
+
+        return "WHERE " + visitChildren(ctx);
+    }
+
+
+    @Override
+    public String visitConditional_expression(ProtoneQueryLanguageParser.Conditional_expressionContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>The default implementation returns the result of calling
+     * {@link #visitChildren} on {@code ctx}.</p>
+     */
+    @Override
+    public String visitConditional_term(ProtoneQueryLanguageParser.Conditional_termContext ctx) {
+
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public String visitSimple_cond_expression(ProtoneQueryLanguageParser.Simple_cond_expressionContext ctx) {
+
+        return aliasVariable + "." + ctx.getText();
+    }
+
+    @Override
+    public String visitConditional_primary(ProtoneQueryLanguageParser.Conditional_primaryContext ctx) {
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public String visitConditional_factor(ProtoneQueryLanguageParser.Conditional_factorContext ctx) {
+
+        return visitChildren(ctx);
+
+    }
 
     @Override
     protected String aggregateResult(String aggregate, String nextResult) {
@@ -49,8 +95,7 @@ public class ProtoneQueryLanguageCrmEntityVisitorImpl extends ProtoneQueryLangua
         if (Strings.isNullOrEmpty(nextResult)) {
             return aggregate;
         }
+
         return aggregate.concat(SPACE).concat(nextResult);
     }
-
-
 }
