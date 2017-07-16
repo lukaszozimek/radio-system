@@ -37,6 +37,25 @@ public class LibraryModuleWhereStatemantTest {
 
     }
     @Test
+    public void simpleMediaItemyORQuery() throws IOException {
+
+        String simpleQuery = "Library  MediaItem AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem WHERE m.id=1 OR m.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageLibraryEntityVisitorImpl visitor = new ProtoneQueryLanguageLibraryEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+    @Test
     public void simpleArtistQuery() throws IOException {
 
         String simpleQuery = "Library  Artist AND id=1";
@@ -55,7 +74,25 @@ public class LibraryModuleWhereStatemantTest {
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
+    @Test
+    public void simpleArtistORQuery() throws IOException {
 
+        String simpleQuery = "Library  Artist AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist WHERE a.id=1 OR a.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+        ProtoneQueryLanguageLibraryEntityVisitorImpl visitor = new ProtoneQueryLanguageLibraryEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
     @Test
     public void simpleLibraryQuery() throws IOException {
 
@@ -75,7 +112,25 @@ public class LibraryModuleWhereStatemantTest {
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
+    @Test
+    public void simpleLibraryORQuery() throws IOException {
 
+        String simpleQuery = "Library  Library AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary WHERE l.id=1 OR l.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+        ProtoneQueryLanguageLibraryEntityVisitorImpl visitor = new ProtoneQueryLanguageLibraryEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
     @Test
     public void simpleLabelQuery() throws IOException {
 
@@ -95,7 +150,25 @@ public class LibraryModuleWhereStatemantTest {
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
+    @Test
+    public void simpleLabelORQuery() throws IOException {
 
+        String simpleQuery = "Library  Label AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel WHERE l.id=1 OR l.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+        ProtoneQueryLanguageLibraryEntityVisitorImpl visitor = new ProtoneQueryLanguageLibraryEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
     @Test
     public void simpleAlbumQuery() throws IOException {
 
@@ -115,12 +188,49 @@ public class LibraryModuleWhereStatemantTest {
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
+    @Test
+    public void simpleAlbumORQuery() throws IOException {
 
+        String simpleQuery = "Library Album AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum WHERE a.id=1 OR a.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+        ProtoneQueryLanguageLibraryEntityVisitorImpl visitor = new ProtoneQueryLanguageLibraryEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
     @Test
     public void simpleTrackQuery() throws IOException {
 
         String simpleQuery = "Library Track AND id=1";
         final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack WHERE t.id=1";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+        ProtoneQueryLanguageLibraryEntityVisitorImpl visitor = new ProtoneQueryLanguageLibraryEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+    @Test
+    public void simpleTrackORQuery() throws IOException {
+
+        String simpleQuery = "Library Track AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack WHERE t.id=1 OR t.id=2";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

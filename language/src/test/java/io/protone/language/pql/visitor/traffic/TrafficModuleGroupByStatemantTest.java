@@ -21,8 +21,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraAdvertisementQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Advertisement GROUP BY";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement GROUP BY";
+        String simpleQuery = "Traffic Advertisement GROUP BY network";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement GROUP BY a.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -42,8 +42,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraCampaignQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Campaign GROUP BY";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign GROUP BY";
+        String simpleQuery = "Traffic Campaign GROUP BY network";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign GROUP BY c.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -62,8 +62,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraInvoiceQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Invoice GROUP BY";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice GROUP BY";
+        String simpleQuery = "Traffic Invoice GROUP BY network";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice GROUP BY i.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -82,8 +82,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan GROUP BY";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan GROUP BY";
+        String simpleQuery = "Traffic Media Plan GROUP BY network";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan GROUP BY m.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -102,8 +102,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraOrderQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Order GROUP BY";
-        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder GROUP BY";
+        String simpleQuery = "Traffic Order GROUP BY network";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder GROUP BY o.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -123,8 +123,8 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraPlaylistQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Playlist GROUP BY";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist GROUP BY";
+        String simpleQuery = "Traffic Playlist GROUP BY network";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist GROUP BY p.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

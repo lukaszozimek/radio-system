@@ -43,6 +43,28 @@ public class CrmModuleWhereStatemantTest {
     }
 
     @Test
+    public void simpleCustomerORQuery() throws IOException {
+
+        String simpleQuery = "Crm Customer AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount WHERE c.id=1 OR c.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+        log.info(context.toString());
+
+
+    }
+    @Test
     public void simpleLeadQuery() throws IOException {
 
         String simpleQuery = "Crm Lead AND id=1";
@@ -64,6 +86,27 @@ public class CrmModuleWhereStatemantTest {
 
     }
 
+    @Test
+    public void simpleLeadORQuery() throws IOException {
+
+        String simpleQuery = "Crm Lead AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead WHERE l.id=1 OR l.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+
+    }
     @Test
     public void simpleOpportunityQuery() throws IOException {
 
@@ -87,10 +130,51 @@ public class CrmModuleWhereStatemantTest {
     }
 
     @Test
+    public void simpleOpportunityOrQuery() throws IOException {
+
+        String simpleQuery = "Crm Opportunity AND id=1 OR id=2";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity WHERE o.id=1 OR o.id=2";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+
+    }
+    @Test
     public void simpleContactQuery() throws IOException {
 
         String simpleQuery = "Crm Contact AND id=1";
         final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact WHERE c.id=1";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+    @Test
+    public void simpleContactOrQuery() throws IOException {
+
+        String simpleQuery = "Crm Contact AND id=1 OR name='test'";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact WHERE c.id=1 OR c.name='test'";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -127,4 +211,25 @@ public class CrmModuleWhereStatemantTest {
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
+    @Test
+    public void simpleTaskOrQuery() throws IOException {
+
+        String simpleQuery = "Crm Task AND id=1 OR assignedTo.id =1";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask WHERE t.id=1 OR t.assignedTo.id=1";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+
 }

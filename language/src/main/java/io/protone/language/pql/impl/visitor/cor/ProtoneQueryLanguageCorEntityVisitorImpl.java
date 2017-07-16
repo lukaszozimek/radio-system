@@ -52,15 +52,21 @@ public class ProtoneQueryLanguageCorEntityVisitorImpl extends ProtoneQueryLangua
     public String visitGroupby_item(ProtoneQueryLanguageParser.Groupby_itemContext ctx) {
         return aliasVariable + "." + ctx.getText();
     }
-    @Override public String visitOrderby_clause(ProtoneQueryLanguageParser.Orderby_clauseContext ctx) {
+
+    @Override
+    public String visitOrderby_clause(ProtoneQueryLanguageParser.Orderby_clauseContext ctx) {
         return "ORDER BY " + visitChildren(ctx);
     }
-
 
 
     @Override
     public String visitOrderby_item(ProtoneQueryLanguageParser.Orderby_itemContext ctx) {
         return aliasVariable + "." + ctx.getChild(0).getText() + visitChildren(ctx);
+    }
+
+    @Override
+    public String visitOr_expession(ProtoneQueryLanguageParser.Or_expessionContext ctx) {
+        return "OR";
     }
 
     @Override
@@ -70,6 +76,7 @@ public class ProtoneQueryLanguageCorEntityVisitorImpl extends ProtoneQueryLangua
         }
         return " ASC";
     }
+
     @Override
     public String visitConditional_expression(ProtoneQueryLanguageParser.Conditional_expressionContext ctx) {
         return visitChildren(ctx);

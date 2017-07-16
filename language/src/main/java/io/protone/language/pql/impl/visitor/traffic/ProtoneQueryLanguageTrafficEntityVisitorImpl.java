@@ -78,6 +78,11 @@ public class ProtoneQueryLanguageTrafficEntityVisitorImpl extends ProtoneQueryLa
         return visitChildren(ctx);
     }
 
+    @Override
+    public String visitOr_expession(ProtoneQueryLanguageParser.Or_expessionContext ctx) {
+        return "OR";
+    }
+
     /**
      * {@inheritDoc}
      * <p>

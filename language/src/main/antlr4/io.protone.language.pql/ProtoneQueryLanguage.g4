@@ -114,7 +114,7 @@ association_path_expression
 
 
 conditional_expression
-   : (conditional_term) ('OR' conditional_term)*
+   : (conditional_term) (or_expession conditional_term)*
    ;
 
 conditional_term
@@ -179,7 +179,8 @@ exists_expression
 all_or_any_expression
    : ('ALL' | 'ANY' | 'SOME')
    ;
-
+or_expession:
+'OR';
 comparison_expression
    : string_expression comparison_operator (string_expression | all_or_any_expression)
    | boolean_expression ('=' | '<>') (boolean_expression | all_or_any_expression)
