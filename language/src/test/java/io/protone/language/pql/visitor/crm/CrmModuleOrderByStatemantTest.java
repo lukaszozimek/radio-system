@@ -22,8 +22,8 @@ public class CrmModuleOrderByStatemantTest {
     @Test
     public void simpleCustomerQuery() throws IOException {
 
-        String simpleQuery = "Crm Customer ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount ORDER BY";
+        String simpleQuery = "Crm Customer ORDER BY id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount ORDER BY c.id DESC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -45,8 +45,8 @@ public class CrmModuleOrderByStatemantTest {
     @Test
     public void simpleLeadQuery() throws IOException {
 
-        String simpleQuery = "Crm Lead ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead ORDER BY";
+        String simpleQuery = "Crm Lead ORDER BY id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead ORDER BY l.id DESC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -67,8 +67,8 @@ public class CrmModuleOrderByStatemantTest {
     @Test
     public void simpleOpportunityQuery() throws IOException {
 
-        String simpleQuery = "Crm Opportunity ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity ORDER BY";
+        String simpleQuery = "Crm Opportunity ORDER BY id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity ORDER BY o.id DESC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -89,8 +89,8 @@ public class CrmModuleOrderByStatemantTest {
     @Test
     public void simpleContactQuery() throws IOException {
 
-        String simpleQuery = "Crm Contact ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact ORDER BY";
+        String simpleQuery = "Crm Contact ORDER BY id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact ORDER BY c.id DESC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -110,8 +110,8 @@ public class CrmModuleOrderByStatemantTest {
     @Test
     public void simpleTaskQuery() throws IOException {
 
-        String simpleQuery = "Crm Task ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask ORDER BY";
+        String simpleQuery = "Crm Task ORDER BY id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask ORDER BY t.id DESC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

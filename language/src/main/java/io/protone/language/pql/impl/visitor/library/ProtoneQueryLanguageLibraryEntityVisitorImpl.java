@@ -47,8 +47,18 @@ public class ProtoneQueryLanguageLibraryEntityVisitorImpl extends ProtoneQueryLa
     }
 
 
-    @Override public String visitOrderby_item(ProtoneQueryLanguageParser.Orderby_itemContext ctx) {
-        return aliasVariable + "." + ctx.getText();
+
+    @Override
+    public String visitOrderby_item(ProtoneQueryLanguageParser.Orderby_itemContext ctx) {
+        return aliasVariable + "." + ctx.getChild(0).getText() + visitChildren(ctx);
+    }
+
+    @Override
+    public String visitAsc_desc(ProtoneQueryLanguageParser.Asc_descContext ctx) {
+        if (!Strings.isNullOrEmpty(ctx.getText())) {
+            return " " + ctx.getText();
+        }
+        return " ASC";
     }
     @Override
     public String visitGroupby_item(ProtoneQueryLanguageParser.Groupby_itemContext ctx) {

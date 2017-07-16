@@ -101,10 +101,10 @@ orderby_clause
    ;
 
 orderby_item
-   : state_field_path_expression ('ASC' | 'DESC')?
+   : state_field_path_expression asc_desc
    ;
-
-
+asc_desc:
+('ASC' | 'DESC')?;
 association_path_expression
    : collection_valued_path_expression
    | single_valued_association_path_expression

@@ -51,6 +51,7 @@ public class ProtoneQueryLanguageTrafficEntityVisitorImpl extends ProtoneQueryLa
         return "GROUP BY " + visitChildren(ctx);
     }
 
+
     @Override
     public String visitGroupby_item(ProtoneQueryLanguageParser.Groupby_itemContext ctx) {
         return aliasVariable + "." + ctx.getText();
@@ -64,7 +65,12 @@ public class ProtoneQueryLanguageTrafficEntityVisitorImpl extends ProtoneQueryLa
 
     @Override
     public String visitOrderby_item(ProtoneQueryLanguageParser.Orderby_itemContext ctx) {
-        return aliasVariable + "." + ctx.getText();
+        return aliasVariable + "." + ctx.getChild(0).getText() + visitChildren(ctx);
+    }
+
+    @Override
+    public String visitAsc_desc(ProtoneQueryLanguageParser.Asc_descContext ctx) {
+        return " " + ctx.getText();
     }
 
     @Override

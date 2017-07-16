@@ -21,8 +21,8 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraAdvertisementQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Advertisement ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement ORDER BY";
+        String simpleQuery = "Traffic Advertisement ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement ORDER BY a.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -42,8 +42,8 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraCampaignQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Campaign ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign ORDER BY";
+        String simpleQuery = "Traffic Campaign ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM TraCampaign ORDER BY c.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -62,8 +62,8 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraInvoiceQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Invoice ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice ORDER BY";
+        String simpleQuery = "Traffic Invoice ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM TraInvoice ORDER BY i.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -82,8 +82,8 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan ORDER BY";
+        String simpleQuery = "Traffic Media Plan ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan ORDER BY m.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -102,8 +102,8 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraOrderQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Order ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder ORDER BY";
+        String simpleQuery = "Traffic Order ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM TraOrder ORDER BY o.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -123,8 +123,8 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraPlaylistQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Playlist ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist ORDER BY";
+        String simpleQuery = "Traffic Playlist ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM TraPlaylist ORDER BY p.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

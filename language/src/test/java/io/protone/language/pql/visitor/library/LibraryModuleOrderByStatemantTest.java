@@ -20,8 +20,8 @@ public class LibraryModuleOrderByStatemantTest {
     @Test
     public void simpleMediaItemyQuery() throws IOException {
 
-        String simpleQuery = "Library  MediaItem ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem ORDER BY";
+        String simpleQuery = "Library  MediaItem ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem ORDER BY m.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -39,8 +39,8 @@ public class LibraryModuleOrderByStatemantTest {
     @Test
     public void simpleArtistQuery() throws IOException {
 
-        String simpleQuery = "Library  Artist ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist ORDER BY";
+        String simpleQuery = "Library  Artist ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist ORDER BY a.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -59,8 +59,8 @@ public class LibraryModuleOrderByStatemantTest {
     @Test
     public void simpleLibraryQuery() throws IOException {
 
-        String simpleQuery = "Library  Library ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary ORDER BY";
+        String simpleQuery = "Library  Library ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary ORDER BY l.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -79,8 +79,8 @@ public class LibraryModuleOrderByStatemantTest {
     @Test
     public void simpleLabelQuery() throws IOException {
 
-        String simpleQuery = "Library  Label ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel ORDER BY";
+        String simpleQuery = "Library  Label ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel ORDER BY l.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -99,8 +99,8 @@ public class LibraryModuleOrderByStatemantTest {
     @Test
     public void simpleAlbumQuery() throws IOException {
 
-        String simpleQuery = "Library Album ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum ORDER BY";
+        String simpleQuery = "Library Album ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum ORDER BY a.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -119,8 +119,8 @@ public class LibraryModuleOrderByStatemantTest {
     @Test
     public void simpleTrackQuery() throws IOException {
 
-        String simpleQuery = "Library Track ORDER BY";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack ORDER BY";
+        String simpleQuery = "Library Track ORDER BY id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack ORDER BY t.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
