@@ -16,7 +16,6 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {})
 public interface CorFilterMapper {
-    @Mapping(source = "corImageItem.publicUrl", target = "publicUrl")
     CorFilterDTO DB2DTO(CorFilter cORAddress);
 
     List<CorFilterDTO> DBs2DTOs(List<CorFilter> cORAddresses);

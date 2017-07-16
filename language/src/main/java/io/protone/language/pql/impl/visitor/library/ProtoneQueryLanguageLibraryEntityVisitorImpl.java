@@ -38,7 +38,22 @@ public class ProtoneQueryLanguageLibraryEntityVisitorImpl extends ProtoneQueryLa
         return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim();
     }
 
+    @Override
+    public String visitGroupby_clause(ProtoneQueryLanguageParser.Groupby_clauseContext ctx) {
+        return "GROUP BY " + visitChildren(ctx);
+    }
+    @Override public String visitOrderby_clause(ProtoneQueryLanguageParser.Orderby_clauseContext ctx) {
+        return "ORDER BY " + visitChildren(ctx);
+    }
 
+
+    @Override public String visitOrderby_item(ProtoneQueryLanguageParser.Orderby_itemContext ctx) {
+        return aliasVariable + "." + ctx.getText();
+    }
+    @Override
+    public String visitGroupby_item(ProtoneQueryLanguageParser.Groupby_itemContext ctx) {
+        return aliasVariable + "." + ctx.getText();
+    }
     @Override
     public String visitWhere_clause(ProtoneQueryLanguageParser.Where_clauseContext ctx) {
 

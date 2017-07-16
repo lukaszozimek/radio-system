@@ -14,14 +14,14 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
-public class LibraryModuleHavingStatemantTest {
-    private final Logger log = LoggerFactory.getLogger(LibraryModuleHavingStatemantTest.class);
+public class LibraryModuleOrderByStatemantTest {
+    private final Logger log = LoggerFactory.getLogger(LibraryModuleOrderByStatemantTest.class);
 
     @Test
     public void simpleMediaItemyQuery() throws IOException {
 
-        String simpleQuery = "Library  MediaItem";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem";
+        String simpleQuery = "Library  MediaItem ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem ORDER BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -39,8 +39,8 @@ public class LibraryModuleHavingStatemantTest {
     @Test
     public void simpleArtistQuery() throws IOException {
 
-        String simpleQuery = "Library  Artist";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist";
+        String simpleQuery = "Library  Artist ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist ORDER BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -59,8 +59,8 @@ public class LibraryModuleHavingStatemantTest {
     @Test
     public void simpleLibraryQuery() throws IOException {
 
-        String simpleQuery = "Library  Library";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary";
+        String simpleQuery = "Library  Library ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary ORDER BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -79,8 +79,8 @@ public class LibraryModuleHavingStatemantTest {
     @Test
     public void simpleLabelQuery() throws IOException {
 
-        String simpleQuery = "Library  Label";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel";
+        String simpleQuery = "Library  Label ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel ORDER BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -99,8 +99,8 @@ public class LibraryModuleHavingStatemantTest {
     @Test
     public void simpleAlbumQuery() throws IOException {
 
-        String simpleQuery = "Library Album";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum";
+        String simpleQuery = "Library Album ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum ORDER BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -119,8 +119,8 @@ public class LibraryModuleHavingStatemantTest {
     @Test
     public void simpleTrackQuery() throws IOException {
 
-        String simpleQuery = "Library Track ";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack";
+        String simpleQuery = "Library Track ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack ORDER BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

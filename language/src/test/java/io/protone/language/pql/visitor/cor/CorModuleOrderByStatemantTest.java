@@ -1,7 +1,7 @@
-package io.protone.language.pql.visitor.crm;
+package io.protone.language.pql.visitor.cor;
 
 import io.protone.language.pal.impl.ProtoneAutomationLanguageListenerImpl;
-import io.protone.language.pql.impl.visitor.crm.ProtoneQueryLanguageCrmEntityVisitorImpl;
+import io.protone.language.pql.impl.visitor.cor.ProtoneQueryLanguageCorEntityVisitorImpl;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,38 +15,31 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
-public class CrmModuleHavingStatemantTest {
-    private final Logger log = LoggerFactory.getLogger(CrmModuleHavingStatemantTest.class);
+public class CorModuleOrderByStatemantTest {
+    private final Logger log = LoggerFactory.getLogger(CorModuleOrderByStatemantTest.class);
 
 
     @Test
-    public void simpleCustomerQuery() throws IOException {
+    public void simpleCorPersonQuery() throws IOException {
+        String simpleQuery = "Core Person ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson WHERE p.id=1 p.name='eetest'";
 
-        String simpleQuery = "Crm Customer";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
         TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
-
         io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
-
-        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
         String parseValue = visitor.visit(context);
 
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
-
-        log.info(context.toString());
-
-
     }
 
     @Test
-    public void simpleLeadQuery() throws IOException {
-
-        String simpleQuery = "Crm Lead";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead";
+    public void simpleCorTagQuery() throws IOException {
+        String simpleQuery = "Core Tag ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag WHERE t.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -56,19 +49,93 @@ public class CrmModuleHavingStatemantTest {
         parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
-        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
         String parseValue = visitor.visit(context);
 
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
+    }
+
+    @Test
+    public void simpleCorImageItemQuery() throws IOException {
+        String simpleQuery = "Core  Image ORDER BY id";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem ORDER BY i.id";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
 
     @Test
-    public void simpleOpportunityQuery() throws IOException {
+    public void simpleCorChannelQuery() throws IOException {
+        String simpleQuery = "Core  Channel ORDER BY id";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel ORDER BY c.id";
 
-        String simpleQuery = "Crm Opportunity";
-        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity";
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+
+    @Test
+    public void simpleCorContactQuery() throws IOException {
+        String simpleQuery = "Core  Contact ORDER BY id";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact ORDER BY c.id";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+
+    @Test
+    public void simpleCorAdressQuery() throws IOException {
+        String simpleQuery = "Core  Adress ORDER BY id";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress ORDER BY a.id";
+
+        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
+        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
+        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
+        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
+        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
+        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
+
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
+        String parseValue = visitor.visit(context);
+
+        assertEquals(EXPECTED_JPA_QUERY, parseValue);
+
+    }
+
+    @Test
+    public void simpleCorPropertyQuery() throws IOException {
+        String simpleQuery = "Core  Property ORDER BY";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey ORDER BY p.id";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -78,53 +145,11 @@ public class CrmModuleHavingStatemantTest {
         parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
         io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
 
-        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
-        String parseValue = visitor.visit(context);
-
-        assertEquals(EXPECTED_JPA_QUERY, parseValue);
-
-
-    }
-
-    @Test
-    public void simpleContactQuery() throws IOException {
-
-        String simpleQuery = "Crm Contact";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact";
-
-        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
-        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
-        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
-
-        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
-        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
-        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
-
-        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
+        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
         String parseValue = visitor.visit(context);
 
         assertEquals(EXPECTED_JPA_QUERY, parseValue);
 
     }
 
-    @Test
-    public void simpleTaskQuery() throws IOException {
-
-        String simpleQuery = "Crm Task";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask";
-
-        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
-        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
-        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
-
-        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
-        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
-        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
-
-        ProtoneQueryLanguageCrmEntityVisitorImpl visitor = new ProtoneQueryLanguageCrmEntityVisitorImpl();
-        String parseValue = visitor.visit(context);
-
-        assertEquals(EXPECTED_JPA_QUERY, parseValue);
-
-    }
 }

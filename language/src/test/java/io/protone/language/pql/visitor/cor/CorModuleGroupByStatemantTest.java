@@ -21,8 +21,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorPersonQuery() throws IOException {
-        String simpleQuery = "Core Person AND id=1 AND name='eetest'";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson WHERE p.id=1 p.name='eetest'";
+        String simpleQuery = "Core Person GROUP BY firstName";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson GROUP BY p.firstName";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -38,8 +38,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorTagQuery() throws IOException {
-        String simpleQuery = "Core Tag AND id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag WHERE t.id=1";
+        String simpleQuery = "Core Tag GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -58,8 +58,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorImageItemQuery() throws IOException {
-        String simpleQuery = "Core  Image AND id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem WHERE i.id=1";
+        String simpleQuery = "Core  Image GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -77,8 +77,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorChannelQuery() throws IOException {
-        String simpleQuery = "Core  Channel AND id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel WHERE c.id=1";
+        String simpleQuery = "Core  Channel GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -96,8 +96,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorContactQuery() throws IOException {
-        String simpleQuery = "Core  Contact AND id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact WHERE c.id=1";
+        String simpleQuery = "Core  Contact GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -115,8 +115,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorAdressQuery() throws IOException {
-        String simpleQuery = "Core  Adress AND id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress WHERE a.id=1";
+        String simpleQuery = "Core  Adress GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -134,8 +134,8 @@ public class CorModuleGroupByStatemantTest {
 
     @Test
     public void simpleCorPropertyQuery() throws IOException {
-        String simpleQuery = "Core  Property AND id=1";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey WHERE p.id=1";
+        String simpleQuery = "Core  Property GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

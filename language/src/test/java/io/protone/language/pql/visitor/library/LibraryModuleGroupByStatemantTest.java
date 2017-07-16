@@ -20,8 +20,8 @@ public class LibraryModuleGroupByStatemantTest {
     @Test
     public void simpleMediaItemyQuery() throws IOException {
 
-        String simpleQuery = "Library  MediaItem";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem";
+        String simpleQuery = "Library  MediaItem GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -39,8 +39,8 @@ public class LibraryModuleGroupByStatemantTest {
     @Test
     public void simpleArtistQuery() throws IOException {
 
-        String simpleQuery = "Library  Artist";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist";
+        String simpleQuery = "Library  Artist GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibArtist GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -59,8 +59,8 @@ public class LibraryModuleGroupByStatemantTest {
     @Test
     public void simpleLibraryQuery() throws IOException {
 
-        String simpleQuery = "Library  Library";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary";
+        String simpleQuery = "Library  Library GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -79,8 +79,8 @@ public class LibraryModuleGroupByStatemantTest {
     @Test
     public void simpleLabelQuery() throws IOException {
 
-        String simpleQuery = "Library  Label";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel";
+        String simpleQuery = "Library  Label GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLabel GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -99,8 +99,8 @@ public class LibraryModuleGroupByStatemantTest {
     @Test
     public void simpleAlbumQuery() throws IOException {
 
-        String simpleQuery = "Library Album";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum";
+        String simpleQuery = "Library Album GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM LibAlbum GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -119,8 +119,8 @@ public class LibraryModuleGroupByStatemantTest {
     @Test
     public void simpleTrackQuery() throws IOException {
 
-        String simpleQuery = "Library Track ";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack";
+        String simpleQuery = "Library Track GROUP BY";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM LibTrack GROUP BY";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
