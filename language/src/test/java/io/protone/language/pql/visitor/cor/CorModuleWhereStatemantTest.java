@@ -22,7 +22,7 @@ public class CorModuleWhereStatemantTest {
     @Test
     public void simpleCorPersonQuery() throws IOException {
         String simpleQuery = "Core Person AND id=1 AND name='eetest'";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson WHERE p.id=1 p.name='eetest'";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson WHERE p.id=1 AND p.name='eetest'";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
