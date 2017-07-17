@@ -118,8 +118,10 @@ conditional_expression
    ;
 
 conditional_term
-   : (conditional_factor) ('AND' conditional_factor)*
+   : (conditional_factor) (and_expression conditional_factor)*
    ;
+
+and_expression: 'AND';
 
 conditional_factor
    : ('NOT')? conditional_primary
@@ -157,9 +159,10 @@ in_item
    ;
 
 like_expression
-   : string_expression ('NOT')? 'LIKE' pattern_value ('ESCAPE' ESCAPE_CHARACTER)?
+   : string_expression ('NOT')? like_keyword  pattern_value ('ESCAPE' ESCAPE_CHARACTER)?
    ;
 
+like_keyword: 'LIKE';
 null_comparison_expression
    : (single_valued_path_expression | input_parameter) 'IS' ('NOT')? 'NULL'
    ;

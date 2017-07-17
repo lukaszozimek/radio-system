@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import io.protone.language.pql.ProtoneQueryLanguageBaseVisitor;
 import io.protone.language.pql.ProtoneQueryLanguageParser;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,11 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
     public String visitWhere_clause(ProtoneQueryLanguageParser.Where_clauseContext ctx) {
 
         return "WHERE " + visitChildren(ctx);
+    }
+
+    @Override
+    public String visitAnd_expression(ProtoneQueryLanguageParser.And_expressionContext ctx) {
+        return "AND";
     }
 
     @Override
@@ -76,9 +82,30 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
 
     @Override
     public String visitSimple_cond_expression(ProtoneQueryLanguageParser.Simple_cond_expressionContext ctx) {
-
+        if (ctx.getText().split("AND").length > 1) {
+            return handleNestedProperties(ctx);
+        }
+        if (visitChildren(ctx) != null) {
+            return visitChildren(ctx);
+        }
         return aliasVariable + "." + ctx.getText();
     }
+
+    @Override
+    public String visitLike_expression(ProtoneQueryLanguageParser.Like_expressionContext ctx) {
+        return aliasVariable + "." + ctx.getStart().getText() + visitChildren(ctx);
+    }
+
+    @Override
+    public String visitLike_keyword(ProtoneQueryLanguageParser.Like_keywordContext ctx) {
+        return " LIKE";
+    }
+
+    @Override
+    public String visitPattern_value(ProtoneQueryLanguageParser.Pattern_valueContext ctx) {
+        return "'%" + ctx.getStart().getText().replace("'", "") + "%'";
+    }
+
 
     @Override
     public String visitConditional_primary(ProtoneQueryLanguageParser.Conditional_primaryContext ctx) {
@@ -110,4 +137,22 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
         }
         return aggregate.concat(SPACE).concat(nextResult);
     }
+
+    private String handleNestedProperties(ProtoneQueryLanguageParser.Simple_cond_expressionContext ctx) {
+        StringBuilder concatedElement = new StringBuilder();
+        String[] splittedCondition = ctx.getText().split("AND");
+        for (int i = 0; i < splittedCondition.length; i++) {
+            if ((splittedCondition.length - i) - 1 != 0) {
+                concatedElement.append(aliasVariable).append(".").append(splittedCondition[i].trim()).append(" AND ");
+            } else {
+                concatedElement.append(aliasVariable).append(".").append(splittedCondition[i].trim());
+            }
+
+        }
+        if (visitChildren(ctx) != null) {
+            return concatedElement.toString() + visitChildren(ctx);
+        }
+        return concatedElement.toString();
+    }
+
 }
