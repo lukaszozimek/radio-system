@@ -22,7 +22,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorPersonQuery() throws IOException {
         String simpleQuery = "Core Person ORDER BY id";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson ORDER BY p.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p ORDER BY p.id ASC";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -39,7 +39,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorTagQuery() throws IOException {
         String simpleQuery = "Core Tag ORDER BY id";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag ORDER BY t.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag t ORDER BY t.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -59,7 +59,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorImageItemQuery() throws IOException {
         String simpleQuery = "Core  Image ORDER BY id";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem ORDER BY i.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem i ORDER BY i.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -78,7 +78,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorChannelQuery() throws IOException {
         String simpleQuery = "Core  Channel ORDER BY id";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel ORDER BY c.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel c ORDER BY c.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -97,7 +97,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorContactQuery() throws IOException {
         String simpleQuery = "Core  Contact ORDER BY id";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact ORDER BY c.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact c ORDER BY c.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -116,7 +116,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorAdressQuery() throws IOException {
         String simpleQuery = "Core  Adress ORDER BY id ASC";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress ORDER BY a.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress a ORDER BY a.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -135,7 +135,7 @@ public class CorModuleOrderByStatemantTest {
     @Test
     public void simpleCorPropertyQuery() throws IOException {
         String simpleQuery = "Core  Property ORDER BY id ASC";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey ORDER BY p.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey p ORDER BY p.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

@@ -1,47 +1,25 @@
 package io.protone.application.service.language;
 
 
+import io.jsonwebtoken.lang.Assert;
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorAddress;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorFilter;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPerson;
+import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
-import io.protone.core.s3.S3Client;
-import io.protone.core.service.CorImageItemService;
-import io.protone.crm.domain.CrmContact;
-import io.protone.crm.domain.CrmTask;
-import io.protone.crm.repostiory.CrmContactRepository;
-import io.protone.crm.service.CrmContactService;
 import io.protone.language.service.LaPQLService;
-import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.xml.sax.SAXException;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by lukaszozimek on 29.04.2017.
@@ -51,43 +29,80 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class LaPQLServiceTest {
+    private static final String SAMPLE = "sample";
+    private static final String SAMPLE_SHORTCUT = "sam";
+    private static final String SAMPLE_NET = "net";
 
     @Autowired
     private LaPQLService pqlService;
 
+    @Autowired
+    private CorChannelRepository corChannelRepository;
+
+    @Autowired
+    private CorNetworkRepository corNetworkRepository;
+
     @Before
     public void setUp() throws Exception {
-
-    }
-    @Test
-    public void shouldReturnListCorObjectRequestedInQuery(){
-
-    }
-
-    @Test
-    public void shouldReturnListCrmObjectRequestedInQuery(){
-
-    }
-    @Test
-    public void shouldReturnListTrafficObjectRequestedInQuery(){
+        CorNetwork corNetwork = new CorNetwork().shortcut(SAMPLE_NET).name(SAMPLE_NET);
+        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        CorChannel corChannel = new CorChannel().shortcut(SAMPLE_SHORTCUT).name(SAMPLE).network(corNetwork);
+        corChannelRepository.saveAndFlush(corChannel);
 
     }
 
     @Test
-    public void shouldReturnListLibraryObjectRequestedInQuery(){
+    public void shouldReturnCorChannel() throws Exception {
+        //when
+        CorFilter corFilter = new CorFilter().value("Core Channel");
+        List list = pqlService.getObjectList(corFilter);
+        Assert.notNull(list);
 
     }
 
     @Test
-    public void shouldReturnListWithLimitationObjectRequestedInQuery(){
+    public void shouldReturnCorChannelWithPredicateName() throws Exception {
+        //when
+        CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample'");
+        List list = pqlService.getObjectList(corFilter);
+        Assert.notNull(list);
+        List<CorChannel> listChannel = (List<CorChannel>) list;
+    }
+
+    @Test
+    public void shouldReturnCorChannelWithPredicateNameAndNetworkShortcutPredicate() throws Exception {
+        //when
+        CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample'");
+        List list = pqlService.getObjectList(corFilter);
+        Assert.notNull(list);
+        List<CorChannel> listChannel = (List<CorChannel>) list;
+        Assert.notEmpty(list);
+    }
+
+    @Test
+    public void shouldReturnListTrafficObjectRequestedInQuery() throws Exception {
+        CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample' AND network.shortcut='net'");
+        List list = pqlService.getObjectList(corFilter);
+        Assert.notNull(list);
+        List<CorChannel> listChannel = (List<CorChannel>) list;
+        Assert.notEmpty(list);
 
     }
 
     @Test
-    public void shouldReturnListWithLimitationAndGroupedByObjectRequestedInQuery(){
+    public void shouldReturnListLibraryObjectRequestedInQuery() {
 
     }
 
+    @Test
+    public void shouldReturnListWithLimitationObjectRequestedInQuery() {
+
+    }
+
+    @Test
+    public void shouldReturnListWithLimitationAndGroupedByObjectRequestedInQuery() {
+
+    }
 
 
 }

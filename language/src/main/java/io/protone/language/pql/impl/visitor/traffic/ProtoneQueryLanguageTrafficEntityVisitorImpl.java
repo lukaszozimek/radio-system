@@ -7,7 +7,7 @@ import io.protone.traffic.domain.*;
 /**
  * Created by lukaszozimek on 13.07.2017.
  */
-public class ProtoneQueryLanguageTrafficEntityVisitorImpl  extends ProtoneQueryLangageBaseVisitorImpl {
+public class ProtoneQueryLanguageTrafficEntityVisitorImpl extends ProtoneQueryLangageBaseVisitorImpl {
 
 
     public ProtoneQueryLanguageTrafficEntityVisitorImpl() {
@@ -29,7 +29,8 @@ public class ProtoneQueryLanguageTrafficEntityVisitorImpl  extends ProtoneQueryL
             return null;
         }
         aliasVariable = ctx.getText().toLowerCase().toCharArray()[0];
-        return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim();
+        return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim() + " " + aliasVariable;
+
     }
 
 

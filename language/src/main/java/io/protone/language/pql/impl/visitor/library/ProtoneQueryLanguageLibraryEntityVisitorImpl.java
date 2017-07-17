@@ -26,7 +26,7 @@ public class ProtoneQueryLanguageLibraryEntityVisitorImpl extends ProtoneQueryLa
             return null;
         }
         aliasVariable = ctx.getText().toLowerCase().toCharArray()[0];
-        return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim();
+        return "SELECT " + aliasVariable + " FROM " + pqlEntityMap.get(ctx.getText()).getSimpleName().trim() + " " + aliasVariable;
     }
 
 

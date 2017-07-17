@@ -26,7 +26,7 @@ public class ProtoneQueryLanguageVisitorTest {
     @Test
     public void shouldSelectCorVisitor() throws IOException {
         String simpleQuery = "Core Person ";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -43,7 +43,7 @@ public class ProtoneQueryLanguageVisitorTest {
     public void shouldSelectCrmVisitor() throws IOException {
 
         String simpleQuery = "Crm Customer";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount c";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -65,7 +65,7 @@ public class ProtoneQueryLanguageVisitorTest {
     public void shouldSelectLibraryVisitor() throws IOException {
 
         String simpleQuery = "Library  MediaItem";
-        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem";
+        final String EXPECTED_JPA_QUERY = "SELECT m FROM LibMediaItem m";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -84,7 +84,7 @@ public class ProtoneQueryLanguageVisitorTest {
     public void shouldSelectTrafficVisitor() throws IOException {
 
         String simpleQuery = "Traffic Advertisement";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM TraAdvertisement a";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

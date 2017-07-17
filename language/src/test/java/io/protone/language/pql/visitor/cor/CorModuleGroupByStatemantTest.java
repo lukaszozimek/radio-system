@@ -22,7 +22,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorPersonQuery() throws IOException {
         String simpleQuery = "Core Person GROUP BY firstName";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson GROUP BY p.firstName";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p GROUP BY p.firstName";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -39,7 +39,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorTagQuery() throws IOException {
         String simpleQuery = "Core Tag GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag GROUP BY t.network";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag t GROUP BY t.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -59,7 +59,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorImageItemQuery() throws IOException {
         String simpleQuery = "Core  Image GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem GROUP BY i.network";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem i GROUP BY i.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -78,7 +78,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorChannelQuery() throws IOException {
         String simpleQuery = "Core  Channel GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel GROUP BY c.network";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel c GROUP BY c.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -97,7 +97,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorContactQuery() throws IOException {
         String simpleQuery = "Core  Contact GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact GROUP BY c.network";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact c GROUP BY c.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -116,7 +116,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorAdressQuery() throws IOException {
         String simpleQuery = "Core  Adress GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress GROUP BY a.network";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress a GROUP BY a.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -135,7 +135,7 @@ public class CorModuleGroupByStatemantTest {
     @Test
     public void simpleCorPropertyQuery() throws IOException {
         String simpleQuery = "Core  Property GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey GROUP BY p.network";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey p GROUP BY p.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

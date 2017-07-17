@@ -35,16 +35,14 @@ public class CorFilter implements Serializable {
         return name;
     }
 
-    public CorFilter name(String name) {
-        this.name = name;
-        return this;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-
+    public CorFilter name(String name) {
+        this.name = name;
+        return this;
+    }
 
     public CorNetwork getNetwork() {
         return network;
@@ -60,6 +58,11 @@ public class CorFilter implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public CorFilter value(String value) {
+        this.value = value;
+        return this;
     }
 
     @Override

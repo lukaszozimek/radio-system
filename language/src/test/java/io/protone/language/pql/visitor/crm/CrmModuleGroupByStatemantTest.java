@@ -23,7 +23,7 @@ public class CrmModuleGroupByStatemantTest {
     public void simpleCustomerQuery() throws IOException {
 
         String simpleQuery = "Crm Customer GROUP BY keeper";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount GROUP BY c.keeper";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmAccount c GROUP BY c.keeper";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -46,7 +46,7 @@ public class CrmModuleGroupByStatemantTest {
     public void simpleLeadQuery() throws IOException {
 
         String simpleQuery = "Crm Lead GROUP BY leadStatus";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead GROUP BY l.leadStatus";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM CrmLead l GROUP BY l.leadStatus";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -68,7 +68,7 @@ public class CrmModuleGroupByStatemantTest {
     public void simpleOpportunityQuery() throws IOException {
 
         String simpleQuery = "Crm Opportunity GROUP BY probability";
-        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity GROUP BY o.probability";
+        final String EXPECTED_JPA_QUERY = "SELECT o FROM CrmOpportunity o GROUP BY o.probability";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -90,7 +90,7 @@ public class CrmModuleGroupByStatemantTest {
     public void simpleContactQuery() throws IOException {
 
         String simpleQuery = "Crm Contact GROUP BY range";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact GROUP BY c.range";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CrmContact c GROUP BY c.range";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -111,7 +111,7 @@ public class CrmModuleGroupByStatemantTest {
     public void simpleTaskQuery() throws IOException {
 
         String simpleQuery = "Crm Task GROUP BY assignedTo";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask GROUP BY t.assignedTo";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CrmTask t GROUP BY t.assignedTo";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

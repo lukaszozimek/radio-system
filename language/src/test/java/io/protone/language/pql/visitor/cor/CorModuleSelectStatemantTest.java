@@ -22,7 +22,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorPersonQuery() throws IOException {
         String simpleQuery = "Core Person ";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -39,7 +39,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorTagQuery() throws IOException {
         String simpleQuery = "Core Tag ";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag t";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -59,7 +59,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorImageItemQuery() throws IOException {
         String simpleQuery = "Core  Image ";
-        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem";
+        final String EXPECTED_JPA_QUERY = "SELECT i FROM CorImageItem i";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -78,7 +78,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorChannelQuery() throws IOException {
         String simpleQuery = "Core  Channel ";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorChannel c";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -97,7 +97,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorContactQuery() throws IOException {
         String simpleQuery = "Core  Contact ";
-        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact";
+        final String EXPECTED_JPA_QUERY = "SELECT c FROM CorContact c";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -116,7 +116,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorAdressQuery() throws IOException {
         String simpleQuery = "Core  Adress ";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress";
+        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress a";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
@@ -135,7 +135,7 @@ public class CorModuleSelectStatemantTest {
     @Test
     public void simpleCorPropertyQuery() throws IOException {
         String simpleQuery = "Core  Property ";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPropertyKey p";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

@@ -22,7 +22,7 @@ public class ComplexQueryStatemantTest {
     @Test
     public void simpleCorPersonQuery() throws IOException {
         String simpleQuery = "Core Person AND id=1 AND name='eetest' AND network.shortcut='test' OR id=1 ORDER BY id DESC";
-        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson WHERE p.id=1 AND p.name='eetest' AND p.network.shortcut='test' OR p.id=1 ORDER BY p.id DESC";
+        final String EXPECTED_JPA_QUERY = "SELECT p FROM CorPerson p WHERE p.id=1 AND p.name='eetest' AND p.network.shortcut='test' OR p.id=1 ORDER BY p.id DESC";
 
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
@@ -39,7 +39,7 @@ public class ComplexQueryStatemantTest {
     @Test
     public void simpleCorTagQuery() throws IOException {
         String simpleQuery = "Core Tag AND id=1 AND name LIKE 'test' ";
-        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag WHERE t.id=1 AND t.name LIKE '%test%'";
+        final String EXPECTED_JPA_QUERY = "SELECT t FROM CorTag t WHERE t.id=1 AND t.name LIKE '%test%'";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
