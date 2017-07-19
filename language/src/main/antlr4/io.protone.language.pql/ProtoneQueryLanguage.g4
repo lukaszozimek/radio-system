@@ -129,9 +129,12 @@ conditional_factor
 
 conditional_primary
    : simple_cond_expression
-   | '(' conditional_expression ')'
+   | start_complex_expression conditional_expression end_complex_expression
    ;
-
+start_complex_expression:
+'(';
+end_complex_expression:
+')';
 simple_cond_expression
    : comparison_expression
    | between_expression

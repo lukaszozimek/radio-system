@@ -23,7 +23,8 @@ public class LaPQLService {
     private EntityManager em;
 
     public List getObjectList(CorFilter corFilter) throws IOException {
-        Query query = em.createQuery(getJpaQuery(corFilter));
+        String jpaQuery =getJpaQuery(corFilter);
+        Query query = em.createQuery(jpaQuery);
         return query.getResultList();
     }
 

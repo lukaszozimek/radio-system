@@ -80,7 +80,7 @@ public class LaPQLServiceTest {
     }
 
     @Test
-    public void shouldReturnListTrafficObjectRequestedInQuery() throws Exception {
+    public void shouldReturnCorObjectRequestedInQueryWithComplexPredicate() throws Exception {
         CorFilter corFilter = new CorFilter().value("Core Channel AND name='sample' AND network.shortcut='net'");
         List list = pqlService.getObjectList(corFilter);
         Assert.notNull(list);
@@ -90,13 +90,21 @@ public class LaPQLServiceTest {
     }
 
     @Test
-    public void shouldReturnListLibraryObjectRequestedInQuery() {
-
+    public void shouldReturnListCorObjectRequestedInComplexPrediactQuery() throws Exception{
+        CorFilter corFilter = new CorFilter().value("Core Channel AND ( name='xx' AND network.shortcut='xx' ) OR network.shortcut='net'");
+        List list = pqlService.getObjectList(corFilter);
+        Assert.notNull(list);
+        List<CorChannel> listChannel = (List<CorChannel>) list;
+        Assert.notEmpty(list);
     }
 
     @Test
-    public void shouldReturnListWithLimitationObjectRequestedInQuery() {
-
+    public void shouldReturnListCorObjectRequestedInQueryMulitiPredicateQuery() throws Exception{
+        CorFilter corFilter = new CorFilter().value("Core Channel AND ( name='xx' AND network.shortcut='xx' ) OR (network.shortcut='net' AND name='sample') OR  name='x'");
+        List list = pqlService.getObjectList(corFilter);
+        Assert.notNull(list);
+        List<CorChannel> listChannel = (List<CorChannel>) list;
+        Assert.notEmpty(list);
     }
 
     @Test

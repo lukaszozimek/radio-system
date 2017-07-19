@@ -24,6 +24,7 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
         return "WHERE " + visitChildren(ctx);
     }
 
+
     @Override
     public String visitAnd_expression(ProtoneQueryLanguageParser.And_expressionContext ctx) {
         return "AND";
@@ -65,7 +66,11 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
 
     @Override
     public String visitConditional_expression(ProtoneQueryLanguageParser.Conditional_expressionContext ctx) {
+//        if (ctx.getStart().getText().equals("(")) {
+//            return ctx.getStart().getText() + visitChildren(ctx);
+//        }
         return visitChildren(ctx);
+
     }
 
     /**
@@ -117,6 +122,22 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
 
         return visitChildren(ctx);
 
+    }
+
+    @Override
+    public String visitStart_complex_expression(ProtoneQueryLanguageParser.Start_complex_expressionContext ctx) {
+        return "(";
+    }
+
+    /**
+     * Visit a parse tree produced by {@link ProtoneQueryLanguageParser#end_complex_expression}.
+     *
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    @Override
+    public String visitEnd_complex_expression(ProtoneQueryLanguageParser.End_complex_expressionContext ctx) {
+        return ")";
     }
 
 
