@@ -66,10 +66,7 @@ public class ProtoneQueryLangageBaseVisitorImpl extends ProtoneQueryLanguageBase
 
     @Override
     public String visitConditional_expression(ProtoneQueryLanguageParser.Conditional_expressionContext ctx) {
-//        if (ctx.getStart().getText().equals("(")) {
-//            return ctx.getStart().getText() + visitChildren(ctx);
-//        }
-        return visitChildren(ctx);
+       return visitChildren(ctx);
 
     }
 
