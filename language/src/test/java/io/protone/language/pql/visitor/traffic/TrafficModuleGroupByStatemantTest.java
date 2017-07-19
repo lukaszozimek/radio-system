@@ -82,7 +82,7 @@ public class TrafficModuleGroupByStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan GROUP BY network";
+        String simpleQuery = "Traffic MediaPlan GROUP BY network";
         final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan m GROUP BY m.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));

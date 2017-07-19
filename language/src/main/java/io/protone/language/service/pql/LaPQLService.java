@@ -1,4 +1,4 @@
-package io.protone.language.service;
+package io.protone.language.service.pql;
 
 import io.protone.core.domain.CorFilter;
 import io.protone.language.pal.impl.ProtoneAutomationLanguageListenerImpl;

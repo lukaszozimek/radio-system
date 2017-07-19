@@ -1,4 +1,4 @@
-package io.protone.application.service.language;
+package io.protone.application.service.language.pql;
 
 
 import io.jsonwebtoken.lang.Assert;
@@ -6,10 +6,9 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorFilter;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.domain.CorPerson;
 import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
-import io.protone.language.service.LaPQLService;
+import io.protone.language.service.pql.LaPQLService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.List;
 
 /**

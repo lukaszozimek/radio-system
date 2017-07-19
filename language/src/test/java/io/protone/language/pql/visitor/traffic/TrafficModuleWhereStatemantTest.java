@@ -148,7 +148,7 @@ public class TrafficModuleWhereStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan AND id=1";
+        String simpleQuery = "Traffic MediaPlan AND id=1";
         final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan m WHERE m.id=1";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));

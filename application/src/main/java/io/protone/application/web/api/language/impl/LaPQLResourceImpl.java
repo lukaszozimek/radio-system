@@ -4,7 +4,8 @@ import io.protone.application.web.api.language.LaPQLResource;
 import io.protone.core.api.dto.thin.CorFilterThinDTO;
 import io.protone.core.domain.CorFilter;
 import io.protone.core.mapper.CorFilterMapper;
-import io.protone.language.service.LaPQLService;
+import io.protone.language.service.pql.LaPQLMappingService;
+import io.protone.language.service.pql.LaPQLService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,15 @@ public class LaPQLResourceImpl implements LaPQLResource {
 
     @Autowired
     private CorFilterMapper corFilterMapper;
+    @Autowired
+    private LaPQLMappingService pqlMappingService;
 
     @Override
     public List queryElements(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                               @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException {
 
         CorFilter corFilter = corFilterMapper.DTO2DB(corFilterDTO);
-        return pqlService.getObjectList(corFilter);
+        List entites = pqlService.getObjectList(corFilter);
+        return pqlMappingService.DBs2DTOs(entites, corFilter.getType());
     }
 }

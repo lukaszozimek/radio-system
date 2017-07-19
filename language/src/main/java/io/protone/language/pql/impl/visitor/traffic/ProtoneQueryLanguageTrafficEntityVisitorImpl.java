@@ -16,7 +16,7 @@ public class ProtoneQueryLanguageTrafficEntityVisitorImpl extends ProtoneQueryLa
         pqlEntityMap.put("Campaign", TraCampaign.class);
         pqlEntityMap.put("Order", TraOrder.class);
         pqlEntityMap.put("Invoice", TraInvoice.class);
-        pqlEntityMap.put("Media Plan", TraMediaPlan.class);
+        pqlEntityMap.put("MediaPlan", TraMediaPlan.class);
         pqlEntityMap.put("Playlist", TraPlaylist.class);
 
     }

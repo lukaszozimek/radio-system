@@ -82,7 +82,7 @@ public class TrafficModuleOrderByStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan ORDER BY id ASC";
+        String simpleQuery = "Traffic MediaPlan ORDER BY id ASC";
         final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan m ORDER BY m.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));

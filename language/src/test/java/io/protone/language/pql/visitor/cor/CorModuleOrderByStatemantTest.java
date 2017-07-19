@@ -113,24 +113,7 @@ public class CorModuleOrderByStatemantTest {
 
     }
 
-    @Test
-    public void simpleCorAdressQuery() throws IOException {
-        String simpleQuery = "Core  Adress ORDER BY id ASC";
-        final String EXPECTED_JPA_QUERY = "SELECT a FROM CorAddress a ORDER BY a.id ASC";
 
-        CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
-        TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);
-        TokenStream inputTokenStream = new CommonTokenStream(tokenSource);
-        io.protone.language.pql.ProtoneQueryLanguageParser parser = new io.protone.language.pql.ProtoneQueryLanguageParser(inputTokenStream);
-        parser.addParseListener(new ProtoneAutomationLanguageListenerImpl());
-        io.protone.language.pql.ProtoneQueryLanguageParser.ProgramContext context = parser.program();
-
-        ProtoneQueryLanguageCorEntityVisitorImpl visitor = new ProtoneQueryLanguageCorEntityVisitorImpl();
-        String parseValue = visitor.visit(context);
-
-        assertEquals(EXPECTED_JPA_QUERY, parseValue);
-
-    }
 
     @Test
     public void simpleCorPropertyQuery() throws IOException {

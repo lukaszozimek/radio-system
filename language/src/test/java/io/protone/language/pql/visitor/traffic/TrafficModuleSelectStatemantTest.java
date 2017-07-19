@@ -83,7 +83,7 @@ public class TrafficModuleSelectStatemantTest {
     @Test
     public void simpleTrafficTraMediaPlanQuerry() throws IOException {
 
-        String simpleQuery = "Traffic Media Plan";
+        String simpleQuery = "Traffic MediaPlan";
         final String EXPECTED_JPA_QUERY = "SELECT m FROM TraMediaPlan m";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
