@@ -45,6 +45,7 @@ import static org.mockito.Mockito.when;
 public class CorChannelServiceTest {
 
     private static final String TEST_NAME = "Tes";
+    private static final String TEST_SH = "xxksk";
     @Autowired
     private CorChannelService corChannelService;
     @Autowired
@@ -170,6 +171,7 @@ public class CorChannelServiceTest {
     public void shouldSaveCorChannelWithImage() throws Exception {
         MockMultipartFile logo = new MockMultipartFile("logo", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/cor/channel/logo.jpg"));
         CorChannel localChannel = factory.manufacturePojo(CorChannel.class);
+        localChannel.setShortcut(TEST_SH);
         localChannel.setNetwork(corNetwork);
         localChannel = corChannelService.save(localChannel, logo);
         assertNotNull(localChannel);
