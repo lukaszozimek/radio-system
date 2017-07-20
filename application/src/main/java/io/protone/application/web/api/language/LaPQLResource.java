@@ -27,7 +27,7 @@ public interface LaPQLResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/language/pql/filter",
             produces = {"application/json"},
             consumes = {"application/json"},
-            method = RequestMethod.POST)
+            method = RequestMethod.GET)
     List queryElements(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                        @ApiParam(value = "corFilterDTO", required = true) @RequestBody @Valid CorFilterThinDTO corFilterDTO) throws IOException;
 }

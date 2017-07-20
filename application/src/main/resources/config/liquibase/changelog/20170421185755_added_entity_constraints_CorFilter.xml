@@ -9,11 +9,29 @@
     <changeSet id="20170421185755-2" author="jhipster">
 
 
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="cor_filter"
                                  constraintName="fk_cor_filter_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
+        <addForeignKeyConstraint baseColumnNames="cor_user_id"
+                                 baseTableName="cor_filter"
+                                 constraintName="fk_cor_filter_cor_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="cor_filter"
+                                 constraintName="fk_cor_filter_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="cor_filter"
+                                 constraintName="fk_cor_filter_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
 
     </changeSet>
 </databaseChangeLog>

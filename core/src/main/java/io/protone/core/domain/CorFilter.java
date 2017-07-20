@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.enumeration.CorEntityTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,10 +15,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "cor_filter")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorFilter implements Serializable {
+public class CorFilter extends AbstractAuditingEntity implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
@@ -37,7 +39,21 @@ public class CorFilter implements Serializable {
 
     @ManyToOne
     @JsonIgnore
+    @PodamExclude
+    private CorUser corUser;
+
+    @ManyToOne
+    @JsonIgnore
+    @PodamExclude
     private CorNetwork network;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -60,6 +76,11 @@ public class CorFilter implements Serializable {
         this.network = network;
     }
 
+    public CorFilter network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
     public String getValue() {
         return value;
     }
@@ -73,6 +94,19 @@ public class CorFilter implements Serializable {
         return this;
     }
 
+    public CorUser getCorUser() {
+        return corUser;
+    }
+
+    public void setCorUser(CorUser corUser) {
+        this.corUser = corUser;
+    }
+
+    public CorFilter user(CorUser corUser) {
+        this.corUser = corUser;
+        return this;
+    }
+
     public CorEntityTypeEnum getType() {
         return type;
     }
@@ -81,28 +115,10 @@ public class CorFilter implements Serializable {
         this.type = type;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        CorFilter corFilter = (CorFilter) o;
-
-        if (id != null ? !id.equals(corFilter.id) : corFilter.id != null) return false;
-        if (getName() != null ? !getName().equals(corFilter.getName()) : corFilter.getName() != null) return false;
-        if (getValue() != null ? !getValue().equals(corFilter.getValue()) : corFilter.getValue() != null) return false;
-        if (getType() != null ? !getType().equals(corFilter.getType()) : corFilter.getType() != null) return false;
-        return getNetwork() != null ? getNetwork().equals(corFilter.getNetwork()) : corFilter.getNetwork() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        result = 31 * result + (getNetwork() != null ? getNetwork().hashCode() : 0);
-        return result;
+    public CorFilter type(CorEntityTypeEnum type) {
+        this.type = type;
+        return this;
     }
 
     @Override
@@ -111,7 +127,10 @@ public class CorFilter implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", value='" + value + '\'' +
-                ", type='" + type + '\'' +
+                ", type=" + type +
+                ", corUser=" + corUser +
                 '}';
     }
+
+
 }

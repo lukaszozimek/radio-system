@@ -91,8 +91,6 @@ public class CorUserServiceTest {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);
-        // ReflectionTestUtils.setField(corImageItemService, "s3Client", s3Client);
-        //  ReflectionTestUtils.setField(corUserService, "corImageItemService", corImageItemService);
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);

@@ -23,8 +23,13 @@ public class CorFilterThinDTO {
 
     public void setValue(String value) {
         this.value = value;
+
     }
 
+    public CorFilterThinDTO value(String value) {
+        this.value = value;
+        return this;
+    }
 
     public CorEntityTypeEnum getType() {
         return type;
@@ -32,6 +37,11 @@ public class CorFilterThinDTO {
 
     public void setType(CorEntityTypeEnum type) {
         this.type = type;
+    }
+
+    public CorFilterThinDTO type(CorEntityTypeEnum type) {
+        this.type = type;
+        return this;
     }
 
     @Override

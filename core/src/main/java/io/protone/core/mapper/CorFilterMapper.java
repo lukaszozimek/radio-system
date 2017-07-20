@@ -16,40 +16,41 @@ import java.util.Set;
 
 @Mapper(componentModel = "spring", uses = {})
 public interface CorFilterMapper {
+
     CorFilterDTO DB2DTO(CorFilter cORAddress);
 
-    List<CorFilterDTO> DBs2DTOs(List<CorFilter> cORAddresses);
+    List<CorFilterDTO> DBs2DTOs(List<CorFilter> corFilters);
 
-    List<CorFilterDTO> DBs2DTOs(Set<CorFilter> cORAddresses);
+    List<CorFilterDTO> DBs2DTOs(Set<CorFilter> corFilters);
 
     CorFilter DTO2DB(CorFilterThinDTO cORAddressDTO);
 
-    CorFilter DTO2DB(CorFilterDTO cORAddressDTO, @Context CorNetwork corNetwork);
+    CorFilter DTO2DB(CorFilterDTO corFilterDTO, @Context CorNetwork corNetwork);
 
-    default List<CorFilter> DTOs2DBs(List<CorFilterDTO> corChannelDTOS, CorNetwork networkId) {
+    default List<CorFilter> DTOs2DBs(List<CorFilterDTO> corFilterDTOS, CorNetwork corNetwork) {
         List<CorFilter> corAddresses = new ArrayList<>();
-        if (corChannelDTOS.isEmpty() || corChannelDTOS == null) {
+        if (corFilterDTOS.isEmpty() || corFilterDTOS == null) {
             return null;
         }
-        for (CorFilterDTO dto : corChannelDTOS) {
-            corAddresses.add(DTO2DB(dto, networkId));
+        for (CorFilterDTO dto : corFilterDTOS) {
+            corAddresses.add(DTO2DB(dto, corNetwork));
         }
         return corAddresses;
     }
 
-    default Set<CorFilter> DTOs2DBsSet(List<CorFilterDTO> corChannelDTOS, CorNetwork networkId) {
+    default Set<CorFilter> DTOs2DBsSet(List<CorFilterDTO> corFilterDTOS, CorNetwork corNetwork) {
         Set<CorFilter> corAddresses = new HashSet<>();
-        if (corChannelDTOS.isEmpty() || corChannelDTOS == null) {
+        if (corFilterDTOS.isEmpty() || corFilterDTOS == null) {
             return null;
         }
-        for (CorFilterDTO dto : corChannelDTOS) {
-            corAddresses.add(DTO2DB(dto, networkId));
+        for (CorFilterDTO dto : corFilterDTOS) {
+            corAddresses.add(DTO2DB(dto, corNetwork));
         }
         return corAddresses;
     }
 
     @AfterMapping
-    default void coreChannelPTToCorChannelAfterMapping(CorFilterDTO dto, @MappingTarget CorFilter entity, @Context CorNetwork corNetwork) {
+    default void coreFilterDTOToCorFilterAfterMapping(CorFilterDTO dto, @MappingTarget CorFilter entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 }
