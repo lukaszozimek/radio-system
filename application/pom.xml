@@ -227,6 +227,7 @@
                 <configuration>
                     <!-- Force alphabetiordersrder to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
+                    <argLine>-Xms1024m -Xmx1024m</argLine>
                 </configuration>
             </plugin>
             <plugin>

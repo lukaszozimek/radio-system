@@ -14,7 +14,6 @@
     <artifactId>protone</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
@@ -692,6 +691,11 @@
                                 <phase>none</phase>
                             </execution>
                         </executions>
+                        <configuration>
+                            <fork>true</fork>
+                            <meminitial>1024m</meminitial>
+                            <maxmem>2024m</maxmem>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
