@@ -74,7 +74,7 @@ public class CorUser extends AbstractAuditingEntity implements Serializable {
     private Set<CorAuthority> authorities = new HashSet<>();
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch= FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "cor_user_channel",
             joinColumns = @JoinColumn(name = "cor_users_id", referencedColumnName = "id"),

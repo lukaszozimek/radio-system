@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -12,12 +11,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A Block.
+ * A Clock.
  */
 @Entity
-@Table(name = "sch_block")
+@Table(name = "sch_clock")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchBlock implements Serializable {
+public class SchClock implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,15 +28,8 @@ public class SchBlock implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "length")
-    private Long length;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "event_type")
-    private EventTypeEnum eventType;
-
     @ManyToOne
-    private SchClock clock;
+    private SchGrid grid;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -47,15 +39,12 @@ public class SchBlock implements Serializable {
     @JoinColumn(unique = true)
     private SchTimeParams timeParams;
 
-    @ManyToOne
-    private SchBlock block;
-
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "clock")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "clock")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
@@ -72,7 +61,7 @@ public class SchBlock implements Serializable {
         return name;
     }
 
-    public SchBlock name(String name) {
+    public SchClock name(String name) {
         this.name = name;
         return this;
     }
@@ -81,50 +70,24 @@ public class SchBlock implements Serializable {
         this.name = name;
     }
 
-    public Long getLength() {
-        return length;
+    public SchGrid getGrid() {
+        return grid;
     }
 
-    public SchBlock length(Long length) {
-        this.length = length;
+    public SchClock grid(SchGrid grid) {
+        this.grid = grid;
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
-    public EventTypeEnum getEventType() {
-        return eventType;
-    }
-
-    public SchBlock eventType(EventTypeEnum eventType) {
-        this.eventType = eventType;
-        return this;
-    }
-
-    public void setEventType(EventTypeEnum eventType) {
-        this.eventType = eventType;
-    }
-
-    public SchClock getClock() {
-        return clock;
-    }
-
-    public SchBlock clock(SchClock clock) {
-        this.clock = clock;
-        return this;
-    }
-
-    public void setClock(SchClock clock) {
-        this.clock = clock;
+    public void setGrid(SchGrid grid) {
+        this.grid = grid;
     }
 
     public SchQueueParams getQueueParams() {
         return queueParams;
     }
 
-    public SchBlock queueParams(SchQueueParams queueParams) {
+    public SchClock queueParams(SchQueueParams queueParams) {
         this.queueParams = queueParams;
         return this;
     }
@@ -137,7 +100,7 @@ public class SchBlock implements Serializable {
         return timeParams;
     }
 
-    public SchBlock timeParams(SchTimeParams timeParams) {
+    public SchClock timeParams(SchTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }
@@ -146,37 +109,24 @@ public class SchBlock implements Serializable {
         this.timeParams = timeParams;
     }
 
-    public SchBlock getBlock() {
-        return block;
-    }
-
-    public SchBlock block(SchBlock block) {
-        this.block = block;
-        return this;
-    }
-
-    public void setBlock(SchBlock block) {
-        this.block = block;
-    }
-
     public Set<SchBlock> getBlocks() {
         return blocks;
     }
 
-    public SchBlock blocks(Set<SchBlock> blocks) {
+    public SchClock blocks(Set<SchBlock> blocks) {
         this.blocks = blocks;
         return this;
     }
 
-    public SchBlock addBlock(SchBlock block) {
+    public SchClock addBlock(SchBlock block) {
         this.blocks.add(block);
-        block.setBlock(this);
+        block.setClock(this);
         return this;
     }
 
-    public SchBlock removeBlock(SchBlock block) {
+    public SchClock removeBlock(SchBlock block) {
         this.blocks.remove(block);
-        block.setBlock(null);
+        block.setClock(null);
         return this;
     }
 
@@ -188,20 +138,20 @@ public class SchBlock implements Serializable {
         return emissions;
     }
 
-    public SchBlock emissions(Set<SchEmission> emissions) {
+    public SchClock emissions(Set<SchEmission> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchBlock addEmission(SchEmission emission) {
+    public SchClock addEmission(SchEmission emission) {
         this.emissions.add(emission);
-        emission.setBlock(this);
+        emission.setClock(this);
         return this;
     }
 
-    public SchBlock removeEmission(SchEmission emission) {
+    public SchClock removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
-        emission.setBlock(null);
+        emission.setClock(null);
         return this;
     }
 
@@ -217,11 +167,11 @@ public class SchBlock implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchBlock block = (SchBlock) o;
-        if (block.getId() == null || getId() == null) {
+        SchClock clock = (SchClock) o;
+        if (clock.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), block.getId());
+        return Objects.equals(getId(), clock.getId());
     }
 
     @Override
@@ -231,11 +181,9 @@ public class SchBlock implements Serializable {
 
     @Override
     public String toString() {
-        return "Block{" +
+        return "Clock{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", length='" + getLength() + "'" +
-            ", eventType='" + getEventType() + "'" +
             "}";
     }
 }
