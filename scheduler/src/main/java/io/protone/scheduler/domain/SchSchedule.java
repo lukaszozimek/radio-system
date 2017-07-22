@@ -12,12 +12,12 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A Playlist.
+ * A Schedule.
  */
 @Entity
-@Table(name = "sch_playlist")
+@Table(name = "sch_schedule")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchPlaylist implements Serializable {
+public class SchSchedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,10 +29,10 @@ public class SchPlaylist implements Serializable {
     @Column(name = "jhi_date")
     private LocalDate date;
 
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "schedule")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private Set<SchGrid> grids = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -46,7 +46,7 @@ public class SchPlaylist implements Serializable {
         return date;
     }
 
-    public SchPlaylist date(LocalDate date) {
+    public SchSchedule date(LocalDate date) {
         this.date = date;
         return this;
     }
@@ -55,29 +55,29 @@ public class SchPlaylist implements Serializable {
         this.date = date;
     }
 
-    public Set<SchEmission> getEmissions() {
-        return emissions;
+    public Set<SchGrid> getGrids() {
+        return grids;
     }
 
-    public SchPlaylist emissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
+    public SchSchedule grids(Set<SchGrid> grids) {
+        this.grids = grids;
         return this;
     }
 
-    public SchPlaylist addEmission(SchEmission emission) {
-        this.emissions.add(emission);
-        emission.setPlaylist(this);
+    public SchSchedule addGrid(SchGrid grid) {
+        this.grids.add(grid);
+        grid.setSchedule(this);
         return this;
     }
 
-    public SchPlaylist removeEmission(SchEmission emission) {
-        this.emissions.remove(emission);
-        emission.setPlaylist(null);
+    public SchSchedule removeGrid(SchGrid grid) {
+        this.grids.remove(grid);
+        grid.setSchedule(null);
         return this;
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
+    public void setGrids(Set<SchGrid> grids) {
+        this.grids = grids;
     }
 
     @Override
@@ -88,11 +88,11 @@ public class SchPlaylist implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchPlaylist playlist = (SchPlaylist) o;
-        if (playlist.getId() == null || getId() == null) {
+        SchSchedule schedule = (SchSchedule) o;
+        if (schedule.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), playlist.getId());
+        return Objects.equals(getId(), schedule.getId());
     }
 
     @Override
@@ -102,7 +102,7 @@ public class SchPlaylist implements Serializable {
 
     @Override
     public String toString() {
-        return "Playlist{" +
+        return "Schedule{" +
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             "}";

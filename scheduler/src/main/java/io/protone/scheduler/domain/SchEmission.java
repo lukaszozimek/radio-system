@@ -1,18 +1,17 @@
 package io.protone.scheduler.domain;
 
-import io.protone.library.domain.LibMediaItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * A SchEmission.
+ * A Emission.
  */
 @Entity
 @Table(name = "sch_emission")
@@ -26,44 +25,31 @@ public class SchEmission implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "seq", nullable = false)
-    private Integer seq;
-
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
-
-    @Column(name = "start_time")
-    private ZonedDateTime startTime;
-
-    @Column(name = "end_time")
-    private ZonedDateTime endTime;
-
-    @Column(name = "length")
-    private Long length;
-
-    @Column(name = "dim_year")
-    private Integer dimYear;
-
-    @Column(name = "dim_month")
-    private Integer dimMonth;
-
-    @Column(name = "dim_day")
-    private Integer dimDay;
-
-    @Column(name = "dim_hour")
-    private Integer dimHour;
-
-    @Column(name = "dim_minute")
-    private Integer dimMinute;
-
-    @Column(name = "dim_second")
-    private Integer dimSecond;
+    @Column(name = "seq")
+    private Long seq;
 
     @ManyToOne
-    private LibMediaItem mediaItem;
+    private SchPlaylist playlist;
+
+    @ManyToOne
+    private SchClock clock;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private SchMediaItem mediaItem;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private SchQueueParams queueParams;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private SchTimeParams timeParams;
+
+    @OneToMany(mappedBy = "emission")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SchAttachment> attachments = new HashSet<>();
 
     @ManyToOne
     private SchBlock block;
@@ -76,173 +62,120 @@ public class SchEmission implements Serializable {
         this.id = id;
     }
 
-    public Integer getSeq() {
+    public Long getSeq() {
         return seq;
     }
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
-
-    public SchEmission seq(Integer seq) {
+    public SchEmission seq(Long seq) {
         this.seq = seq;
         return this;
     }
 
-    public String getName() {
-        return name;
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public SchPlaylist getPlaylist() {
+        return playlist;
     }
 
-    public SchEmission name(String name) {
-        this.name = name;
+    public SchEmission playlist(SchPlaylist playlist) {
+        this.playlist = playlist;
         return this;
     }
 
-    public ZonedDateTime getStartTime() {
-        return startTime;
+    public void setPlaylist(SchPlaylist playlist) {
+        this.playlist = playlist;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
+    public SchClock getClock() {
+        return clock;
     }
 
-    public SchEmission startTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
+    public SchEmission clock(SchClock clock) {
+        this.clock = clock;
         return this;
     }
 
-    public ZonedDateTime getEndTime() {
-        return endTime;
+    public void setClock(SchClock clock) {
+        this.clock = clock;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public SchEmission endTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    public Long getLength() {
-        return length;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
-    public SchEmission length(Long length) {
-        this.length = length;
-        return this;
-    }
-
-    public Integer getDimYear() {
-        return dimYear;
-    }
-
-    public void setDimYear(Integer dimYear) {
-        this.dimYear = dimYear;
-    }
-
-    public SchEmission dimYear(Integer dimYear) {
-        this.dimYear = dimYear;
-        return this;
-    }
-
-    public Integer getDimMonth() {
-        return dimMonth;
-    }
-
-    public void setDimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
-    }
-
-    public SchEmission dimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
-        return this;
-    }
-
-    public Integer getDimDay() {
-        return dimDay;
-    }
-
-    public void setDimDay(Integer dimDay) {
-        this.dimDay = dimDay;
-    }
-
-    public SchEmission dimDay(Integer dimDay) {
-        this.dimDay = dimDay;
-        return this;
-    }
-
-    public Integer getDimHour() {
-        return dimHour;
-    }
-
-    public void setDimHour(Integer dimHour) {
-        this.dimHour = dimHour;
-    }
-
-    public SchEmission dimHour(Integer dimHour) {
-        this.dimHour = dimHour;
-        return this;
-    }
-
-    public Integer getDimMinute() {
-        return dimMinute;
-    }
-
-    public void setDimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
-    }
-
-    public SchEmission dimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
-        return this;
-    }
-
-    public Integer getDimSecond() {
-        return dimSecond;
-    }
-
-    public void setDimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
-    }
-
-    public SchEmission dimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
-        return this;
-    }
-
-    public LibMediaItem getMediaItem() {
+    public SchMediaItem getMediaItem() {
         return mediaItem;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
+    public SchEmission mediaItem(SchMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
+        return this;
     }
 
-    public SchEmission mediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
+    public void setMediaItem(SchMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
+    }
+
+    public SchQueueParams getQueueParams() {
+        return queueParams;
+    }
+
+    public SchEmission queueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
         return this;
+    }
+
+    public void setQueueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
+    }
+
+    public SchTimeParams getTimeParams() {
+        return timeParams;
+    }
+
+    public SchEmission timeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
+        return this;
+    }
+
+    public void setTimeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
+    }
+
+    public Set<SchAttachment> getAttachments() {
+        return attachments;
+    }
+
+    public SchEmission attachments(Set<SchAttachment> attachments) {
+        this.attachments = attachments;
+        return this;
+    }
+
+    public SchEmission addAttachment(SchAttachment attachment) {
+        this.attachments.add(attachment);
+        attachment.setEmission(this);
+        return this;
+    }
+
+    public SchEmission removeAttachment(SchAttachment attachment) {
+        this.attachments.remove(attachment);
+        attachment.setEmission(null);
+        return this;
+    }
+
+    public void setAttachments(Set<SchAttachment> attachments) {
+        this.attachments = attachments;
     }
 
     public SchBlock getBlock() {
         return block;
     }
 
-    public void setBlock(SchBlock schBlock) {
-        this.block = schBlock;
+    public SchEmission block(SchBlock block) {
+        this.block = block;
+        return this;
     }
 
-    public SchEmission block(SchBlock schBlock) {
-        this.block = schBlock;
-        return this;
+    public void setBlock(SchBlock block) {
+        this.block = block;
     }
 
     @Override
@@ -253,33 +186,23 @@ public class SchEmission implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchEmission schEmission = (SchEmission) o;
-        if (schEmission.id == null || id == null) {
+        SchEmission emission = (SchEmission) o;
+        if (emission.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, schEmission.id);
+        return Objects.equals(getId(), emission.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
-        return "SchEmission{" +
-            "id=" + id +
-            ", seq='" + seq + "'" +
-            ", name='" + name + "'" +
-            ", startTime='" + startTime + "'" +
-            ", endTime='" + endTime + "'" +
-            ", length='" + length + "'" +
-            ", dimYear='" + dimYear + "'" +
-            ", dimMonth='" + dimMonth + "'" +
-            ", dimDay='" + dimDay + "'" +
-            ", dimHour='" + dimHour + "'" +
-            ", dimMinute='" + dimMinute + "'" +
-            ", dimSecond='" + dimSecond + "'" +
-            '}';
+        return "Emission{" +
+            "id=" + getId() +
+            ", seq='" + getSeq() + "'" +
+            "}";
     }
 }
