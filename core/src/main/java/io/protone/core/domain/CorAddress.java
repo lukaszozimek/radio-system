@@ -4,7 +4,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,27 +23,22 @@ public class CorAddress extends AbstractAuditingEntity implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "street", length = 100 )
     private String street;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "number", length = 100)
     private String number;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "postal_code", length = 100)
     private String postalCode;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "city", length = 100)
     private String city;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "country", length = 100)
     private String country;

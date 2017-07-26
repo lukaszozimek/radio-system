@@ -49,12 +49,12 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
 
     @OneToOne
     @PodamExclude
-    @JoinColumn(unique = true)
+    @JoinColumn
     private CorPerson person;
 
     @OneToOne
     @PodamExclude
-    @JoinColumn(unique = true)
+    @JoinColumn
     private CorAddress addres;
 
     @ManyToOne

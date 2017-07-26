@@ -7,7 +7,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,12 +27,12 @@ public class CorContact extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private Long id;
 
-    @NotNull
+
     @Size(max = 100)
     @Column(name = "contact", length = 100, nullable = false)
     private String contact;
 
-    @NotNull
+
     @Enumerated(EnumType.STRING)
     @Column(name = "contact_type", nullable = false)
     private CorContactTypeEnum contactType;

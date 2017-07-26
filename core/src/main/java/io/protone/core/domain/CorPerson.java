@@ -6,7 +6,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -29,12 +28,11 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private Long id;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
 
-    @NotNull
+
     @Size(max = 100)
     @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
