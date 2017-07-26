@@ -61,7 +61,7 @@ public class CorImageItemService {
 
 
     public CorImageItem saveImageItem(MultipartFile image) throws TikaException, SAXException, IOException {
-        if (image.isEmpty() || image == null) {
+        if (image == null || image.isEmpty()  ) {
             return null;
         }
         CorImageItem corImageItem = null;
