@@ -95,7 +95,7 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorImageItem corImageItem;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
     @JsonIgnore
     @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

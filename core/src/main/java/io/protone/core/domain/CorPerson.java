@@ -52,7 +52,7 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorMediaItem composer;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorContact> contacts = new HashSet<>();
@@ -191,10 +191,10 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CorPerson{" +
-            "id=" + id +
-            ", firstName='" + firstName + "'" +
-            ", lastName='" + lastName + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", firstName='" + firstName + "'" +
+                ", lastName='" + lastName + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
 }

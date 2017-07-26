@@ -81,7 +81,9 @@ public class CrmCustomerService {
 
 
     public CrmAccount getCustomer(String shortcut, String corNetwork) {
-        return accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        crmAccount.getTasks().size();
+        return crmAccount;
     }
 
     public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {

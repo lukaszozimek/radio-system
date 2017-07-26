@@ -1,9 +1,13 @@
 package io.protone.crm.mapper;
 
+import io.protone.core.api.dto.CoreContactDTO;
+import io.protone.core.domain.CorContact;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorPerson;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorPersonMapper;
+import io.protone.crm.api.dto.CrmCustomerPersonDTO;
 import io.protone.crm.api.dto.CrmLeadDTO;
 import io.protone.crm.api.dto.thin.CrmLeadThinDTO;
 import io.protone.crm.domain.CrmLead;
@@ -66,7 +70,15 @@ public interface CrmLeadMapper {
     default void crmLeadPTToCrmLeadAfterMapping(CrmLeadDTO dto, @MappingTarget CrmLead entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
+    @AfterMapping
+    default void crmCustomerPersonDTOToCorPersonAfterMapping(CrmCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 
+    @AfterMapping
+    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 }
 
 
