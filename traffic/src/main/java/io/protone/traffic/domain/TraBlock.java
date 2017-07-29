@@ -61,7 +61,7 @@ public class TraBlock extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorChannel channel;
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @PodamExclude
@@ -240,12 +240,12 @@ public class TraBlock extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "TraBlock{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", length='" + length + "'" +
-            ", sequence='" + sequence + "'" +
-            ", startBlock='" + startBlock + "'" +
-            ", stopBlock='" + stopBlock + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", length='" + length + "'" +
+                ", sequence='" + sequence + "'" +
+                ", startBlock='" + startBlock + "'" +
+                ", stopBlock='" + stopBlock + "'" +
+                '}';
     }
 }

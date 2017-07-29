@@ -321,6 +321,11 @@
                   file="/config/liquibase/demo/cor_channel_lib_library.csv"
                   separator=";"
                   tableName="lib_library_channel"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/tra_block_configuration.csv"
+                  separator=";"
+                  tableName="tra_block_configuration"/>
+
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>
 

@@ -52,7 +52,7 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     @PodamExclude
     private TraAdvertisement advertiment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private TraBlock block;
 
@@ -192,10 +192,10 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     @Override
     public String toString() {
         return "TraEmission{" +
-            "id=" + id +
-            ", sequence='" + sequence + "'" +
-            ", timeStart='" + timeStart + "'" +
-            ", timeStop='" + timeStop + "'" +
-            '}';
+                "id=" + id +
+                ", sequence='" + sequence + "'" +
+                ", timeStart='" + timeStart + "'" +
+                ", timeStop='" + timeStop + "'" +
+                '}';
     }
 }
