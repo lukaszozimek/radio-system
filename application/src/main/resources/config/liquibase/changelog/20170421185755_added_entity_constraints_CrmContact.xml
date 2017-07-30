@@ -80,5 +80,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="crm_lead_id"
+                                 baseTableName="crm_contact"
+                                 constraintName="fk_crm_contact_crm_lead"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_lead"/>
+
     </changeSet>
 </databaseChangeLog>

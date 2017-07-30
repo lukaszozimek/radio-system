@@ -28,9 +28,9 @@
 
         <addForeignKeyConstraint baseColumnNames="advertiment_id"
                                  baseTableName="tra_emission"
-                                 constraintName="fk_tra_emission_advertiment_id"
+                                 constraintName="fk_tra_emission_lib_media_item"
                                  referencedColumnNames="id"
-                                 referencedTableName="tra_advertisement"/>
+                                 referencedTableName="lib_media_item"/>
 
         <addForeignKeyConstraint baseColumnNames="block_id"
                                  baseTableName="tra_emission"

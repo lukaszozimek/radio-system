@@ -58,7 +58,9 @@
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />
             </column>
-
+            <column name="crm_lead_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="range_id" type="bigint">
                 <constraints nullable="true" />
             </column>

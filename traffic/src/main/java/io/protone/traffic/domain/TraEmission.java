@@ -3,6 +3,7 @@ package io.protone.traffic.domain;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -36,6 +37,9 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     @Column(name = "time_stop")
     private Long timeStop;
 
+    @Column(name = "fixed_postion")
+    private boolean fixedPosition;
+
     @ManyToOne
     @PodamExclude
     private TraOrder order;
@@ -50,7 +54,7 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
 
     @ManyToOne
     @PodamExclude
-    private TraAdvertisement advertiment;
+    private LibMediaItem advertiment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
@@ -142,15 +146,15 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public TraAdvertisement getAdvertiment() {
+    public LibMediaItem getAdvertiment() {
         return advertiment;
     }
 
-    public void setAdvertiment(TraAdvertisement traAdvertisement) {
+    public void setAdvertiment(LibMediaItem traAdvertisement) {
         this.advertiment = traAdvertisement;
     }
 
-    public TraEmission advertiment(TraAdvertisement traAdvertisement) {
+    public TraEmission advertiment(LibMediaItem traAdvertisement) {
         this.advertiment = traAdvertisement;
         return this;
     }
@@ -197,5 +201,13 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
                 ", timeStart='" + timeStart + "'" +
                 ", timeStop='" + timeStop + "'" +
                 '}';
+    }
+
+    public boolean isFixedPosition() {
+        return fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
     }
 }

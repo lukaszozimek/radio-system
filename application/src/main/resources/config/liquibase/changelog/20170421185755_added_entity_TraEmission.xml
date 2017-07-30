@@ -34,6 +34,9 @@
             <column name="order_id" type="bigint">
                 <constraints nullable="false" />
             </column>
+            <column name="fixed_postion" type="boolean">
+                <constraints nullable="false" />
+            </column>
 
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />
