@@ -1,5 +1,6 @@
 package io.protone.application.web.api.traffic;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.traffic.impl.TraMediaPlanMappingResourceImpl;
@@ -17,6 +18,7 @@ import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
+import io.protone.traffic.domain.TraMediaPlanTemplate;
 import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.mapper.TraAdvertisementMapper;
 import io.protone.traffic.mapper.TraMediaPlanDescriptorMapper;
@@ -146,7 +148,7 @@ public class TraMediaPlanMappingResourceImplTest {
      */
     public static TraMediaPlan createEntity(EntityManager em) {
         TraMediaPlan traMediaPlan = new TraMediaPlan()
-            .name(DEFAULT_NAME);
+                .name(DEFAULT_NAME);
         return traMediaPlan;
     }
 
@@ -169,7 +171,7 @@ public class TraMediaPlanMappingResourceImplTest {
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
-        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
+        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
 
         traOrder = factory.manufacturePojo(TraOrder.class);
@@ -184,9 +186,9 @@ public class TraMediaPlanMappingResourceImplTest {
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMapper", traPlaylistMapper);
 
         this.restTraMediaPlanMappingMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanMappingResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -204,19 +206,21 @@ public class TraMediaPlanMappingResourceImplTest {
     @Transactional
     public void shouldMapMediaPlanWithPlaylist() throws Exception {
         when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("CW")
-            .playlistFirsValueCell("G8")
-            .blockStartCell("A10")
-            .blockEndCell("A47")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G10")
-            .lastEmissionValueCell("CW47")
-            .order(traOrder);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItem);
+        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
+                .sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("CW")
+                .playlistFirsValueCell("G8")
+                .blockStartCell("A10")
+                .blockEndCell("A47")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G10")
+                .lastEmissionValueCell("CW47");
+        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
+
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         // Create the TraMediaPlan
@@ -225,11 +229,11 @@ public class TraMediaPlanMappingResourceImplTest {
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(firstFile, mediaPlanDescriptor, corNetwork, corChannel);
 
         restTraMediaPlanMappingMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/{mediaPlanId}/advertisement/{advertisementId}",
-            corNetwork.getShortcut(),
-            corChannel.getShortcut(),
-            traMediaPlan.getId(), traAdvertisement.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                corNetwork.getShortcut(),
+                corChannel.getShortcut(),
+                traMediaPlan.getId(), traAdvertisement.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
 
     }
 

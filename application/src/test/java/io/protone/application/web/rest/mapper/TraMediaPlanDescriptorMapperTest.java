@@ -41,14 +41,14 @@ public class TraMediaPlanDescriptorMapperTest {
     @Test
     public void DTO2DB() throws Exception {
 
-        assertNotNull(traMediaPlanDescriptor.getBlockStartCell());
-        assertNotNull(traMediaPlanDescriptor.getBlockEndCell());
-        assertNotNull(traMediaPlanDescriptor.getBlockHourSeparator());
-        assertNotNull(traMediaPlanDescriptor.getPlaylistDateStartColumn());
-        assertNotNull(traMediaPlanDescriptor.getPlaylistDateEndColumn());
-        assertNotNull(traMediaPlanDescriptor.getPlaylistFirsValueCell());
-        assertNotNull(traMediaPlanDescriptor.getPlaylistDatePattern());
-        assertNotNull(traMediaPlanDescriptor.getSheetIndexOfMediaPlan());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockStartCell());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockEndCell());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getBlockHourSeparator());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getPlaylistDateStartColumn());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getPlaylistDateEndColumn());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getPlaylistFirsValueCell());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getPlaylistDatePattern());
+        assertNotNull(traMediaPlanDescriptor.getTraMediaPlanTemplate().getSheetIndexOfMediaPlan());
         assertNotNull(traMediaPlanDescriptor.getOrder());
 
     }

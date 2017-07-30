@@ -1,6 +1,7 @@
 package io.protone.application.web.rest.mapper;
 
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -54,7 +55,8 @@ public class TraAdvertisementMapperTest {
         traAdvertisement.setCustomer(factory.manufacturePojo(CrmAccount.class));
         traAdvertisement.setIndustry(factory.manufacturePojo(CorDictionary.class));
         traAdvertisement.setType(factory.manufacturePojo(CorDictionary.class));
-        traAdvertisement.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
+        LibMediaItem libMediaItem =factory.manufacturePojo(LibMediaItem.class);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisements.add(traAdvertisement);
         traAdvertisementDTO = factory.manufacturePojo(TraAdvertisementDTO.class);
         traAdvertisementDTOS.add(traAdvertisementDTO);
@@ -67,7 +69,7 @@ public class TraAdvertisementMapperTest {
         TraAdvertisementDTO dto = customTRAAdvertisementMapper.DB2DTO(traAdvertisement);
 
         assertNotNull(dto.getId());
-        assertNotNull(dto.getMediaItemId());
+        assertNotNull(dto.getLibMediaItemThinDTOList());
         assertNotNull(dto.getIndustryId());
         assertNotNull(dto.getTypeId());
         assertNotNull(dto.getCustomerId());
@@ -84,7 +86,7 @@ public class TraAdvertisementMapperTest {
         dtos.stream().forEach(dto -> {
 
             assertNotNull(dto.getId());
-            assertNotNull(dto.getMediaItemId());
+            assertNotNull(dto.getLibMediaItemThinDTOList());
             assertNotNull(dto.getIndustryId());
             assertNotNull(dto.getTypeId());
             assertNotNull(dto.getCustomerId());

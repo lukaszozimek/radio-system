@@ -1,5 +1,6 @@
 package io.protone.application.service.traffic.base;
 
+import com.google.common.collect.Sets;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
@@ -7,8 +8,10 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.mapper.LibItemMapper;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
@@ -42,11 +45,14 @@ public class TraPlaylistBasedTest {
     protected TraOrderThinDTO traOrderThinDTO;
     protected TraAdvertisement advertisementToShuffle;
     protected LibMediaItem libMediaItemToShuffle;
+    protected LibMediaItemThinDTO libMediaItemToShuffleThinDTO;
     protected CrmAccount crmAccount;
     protected List<LibMediaItem> mediaItemList;
     protected List<TraAdvertisement> advertisements;
     protected List<TraPlaylist> traPlaylists;
     protected TraOrder traOrder;
+    @Inject
+    private LibItemMapper libItemMapper;
     @Inject
     protected TraBlockConfigurationRepository trablockConfigurationRepository;
     @Inject
@@ -92,7 +98,7 @@ public class TraPlaylistBasedTest {
         List<TraAdvertisement> traAdvertisements = Lists.newArrayList();
         mediaItemList.stream().forEach(libMediaItem -> {
             TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
-            traAdvertisement.mediaItem(libMediaItem);
+            traAdvertisement.mediaItem(Sets.newHashSet(libMediaItem));
             traAdvertisement.network(corNetwork);
             traAdvertisement.setCustomer(crmAccount);
             traAdvertisements.add(traAdvertisementService.saveAdvertisement(traAdvertisement));
@@ -176,15 +182,15 @@ public class TraPlaylistBasedTest {
         Set<TraEmission> traEmissions = new HashSet<>();
         for (int i = 1; i < commercialsInBlock; i++) {
             TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
-            traEmission.advertiment(advertisements.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, COMMERCIALS_AUDIO_FILES_NUMBER_IN_PLAYLIST_SCHEDULE)));
+            traEmission.advertiment(mediaItemList.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, COMMERCIALS_AUDIO_FILES_NUMBER_IN_PLAYLIST_SCHEDULE)));
             traEmission.sequence(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, maxCommercialNumber));
             traEmission.setChannel(corChannel);
             traEmission.setNetwork(corNetwork);
             traEmission.setOrder(traOrder);
             traEmission.setBlock(traBlock);
-            if (0 < (currentLenght - traEmission.getAdvertiment().getMediaItem().getLength().longValue())) {
+            if (0 < (currentLenght - traEmission.getAdvertiment().getLength().longValue())) {
                 traEmission = traEmissionRepository.saveAndFlush(traEmission);
-                currentLenght = currentLenght - traEmission.getAdvertiment().getMediaItem().getLength().longValue();
+                currentLenght = currentLenght - traEmission.getAdvertiment().getLength().longValue();
                 traEmissions.add(traEmission);
             }
         }
@@ -235,10 +241,10 @@ public class TraPlaylistBasedTest {
         libMediaItemToShuffle.setNetwork(corNetwork);
         libMediaItemToShuffle.setLibrary(libLibrary);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
-
+        libMediaItemToShuffleThinDTO = libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItemToShuffle);
         advertisementToShuffle.setCustomer(crmAccount);
         advertisementToShuffle.setNetwork(corNetwork);
-        advertisementToShuffle.setMediaItem(libMediaItemToShuffle);
+        advertisementToShuffle.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
         advertisementToShuffle = traAdvertisementService.saveAdvertisement(advertisementToShuffle);
 
 
@@ -247,6 +253,7 @@ public class TraPlaylistBasedTest {
         traOrder.setAdvertisment(advertisementToShuffle);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
         traOrderThinDTO = traOrderMapper.DB2ThinDTO(traOrder);
+
     }
 
     protected void buildBlockConfiguration() {

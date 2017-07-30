@@ -47,6 +47,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
     private TraAdvertisementShuffleService traAdvertisementShuffleService;
 
 
+
     @Before
     public void setup() throws InterruptedException {
         buildMustHavePojos();
@@ -63,7 +64,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
     public void tryShuffleCommercial() throws InterruptedException {
         //when
         TraShuffleAdvertisementDTO traShuffleAdvertisementDTO = new TraShuffleAdvertisementDTO();
-        traShuffleAdvertisementDTO.setTraOrderThinDTO(traOrderThinDTO);
+        traShuffleAdvertisementDTO.setLibMediaItemThinDTO(libMediaItemToShuffleThinDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
         traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);
@@ -77,7 +78,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
             traPlaylist.getPlaylists().stream().forEach(traBlock -> {
                 long numberFounded = traBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId().equals(traOrderThinDTO.getAdvertismentId().getId())).count();
                 assertTrue((numberFounded < 2 && numberFounded >= 0));
-                assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getMediaItem().getLength()).sum()));
+                assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getLength()).sum()));
                 assertNotNull(traBlock.getNetwork());
                 assertNotNull(traBlock.getChannel());
                 Optional<TraEmission> traEmission = traBlock.getEmissions().stream().findFirst();

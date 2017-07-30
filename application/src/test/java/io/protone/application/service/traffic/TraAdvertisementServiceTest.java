@@ -1,5 +1,6 @@
 package io.protone.application.service.traffic;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
@@ -98,7 +99,7 @@ public class TraAdvertisementServiceTest {
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
         traAdvertisement.customer(crmAccount);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then
@@ -117,9 +118,9 @@ public class TraAdvertisementServiceTest {
 
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.customer(crmAccount);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
 
         //then
         TraAdvertisement fetchedEntity = traAdvertisementService.saveAdvertisement(traAdvertisement);
@@ -130,7 +131,7 @@ public class TraAdvertisementServiceTest {
         assertNotNull(fetchedEntity.getCreatedBy());
         assertEquals(traAdvertisement.getNetwork(), fetchedEntity.getNetwork());
         assertNotNull(fetchedEntity.getMediaItem());
-        assertEquals(libMediaItem.getId(), fetchedEntity.getMediaItem().getId());
+        assertEquals(libMediaItem.getId(), fetchedEntity.getMediaItem().stream().findFirst().get().getId());
     }
 
     @Test
@@ -138,7 +139,7 @@ public class TraAdvertisementServiceTest {
         //when
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement.customer(crmAccount);
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
@@ -155,7 +156,7 @@ public class TraAdvertisementServiceTest {
         //when
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement.customer(crmAccount);
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
@@ -178,7 +179,7 @@ public class TraAdvertisementServiceTest {
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
         traAdvertisement.setCustomer(crmAccount);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then

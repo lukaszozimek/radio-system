@@ -101,12 +101,12 @@ public class TraBlockConfigurationResourceImplTest {
      */
     public static TraBlockConfiguration createEntity(EntityManager em) {
         TraBlockConfiguration traBlockConfiguration = new TraBlockConfiguration()
-            .day(DEFAULT_DAY)
-            .name(DEFAULT_NAME)
-            .sequence(DEFAULT_SEQUENCE)
-            .length(DEFAULT_LENGTH)
-            .startBlock(DEFAULT_START_BLOCK)
-            .stopBlock(DEFAULT_STOP_BLOCK);
+                .day(DEFAULT_DAY)
+                .name(DEFAULT_NAME)
+                .sequence(DEFAULT_SEQUENCE)
+                .length(DEFAULT_LENGTH)
+                .startBlock(DEFAULT_START_BLOCK)
+                .stopBlock(DEFAULT_STOP_BLOCK);
         return traBlockConfiguration;
     }
 
@@ -124,9 +124,9 @@ public class TraBlockConfigurationResourceImplTest {
         corChannel = new CorChannel().shortcut("tes");
         corChannel.setId(1L);
         this.restTraBlockConfigurationMockMvc = MockMvcBuilders.standaloneSetup(traBlockConfigurationResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -143,9 +143,9 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
         restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
-            .andExpect(status().isCreated());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraBlockConfiguration in the database
         List<TraBlockConfiguration> traBlockConfigurationList = traBlockConfigurationRepository.findAll();
@@ -171,9 +171,9 @@ public class TraBlockConfigurationResourceImplTest {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraBlockConfigurationDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingTraBlockConfigurationDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<TraBlockConfiguration> traBlockConfigurationList = traBlockConfigurationRepository.findAll();
@@ -184,19 +184,20 @@ public class TraBlockConfigurationResourceImplTest {
     @Transactional
     public void getAllTraBlockConfigurations() throws Exception {
         // Initialize the database
+        traBlockConfigurationRepository.deleteAllInBatch();
         traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration.network(corNetwork).channel(corChannel));
 
         // Get all the traBlockConfigurationList
         restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traBlockConfiguration.getId().intValue())))
-            .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY.toString())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].sequence").value(DEFAULT_SEQUENCE.intValue()))
-            .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH.intValue())))
-            .andExpect(jsonPath("$.[*].startBlock").value(hasItem(DEFAULT_START_BLOCK.intValue())))
-            .andExpect(jsonPath("$.[*].stopBlock").value(hasItem(DEFAULT_STOP_BLOCK.intValue())));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traBlockConfiguration.getId().intValue())))
+                .andExpect(jsonPath("$.[*].day").value(hasItem(DEFAULT_DAY.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].sequence").value(DEFAULT_SEQUENCE.intValue()))
+                .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH.intValue())))
+                .andExpect(jsonPath("$.[*].startBlock").value(hasItem(DEFAULT_START_BLOCK.intValue())))
+                .andExpect(jsonPath("$.[*].stopBlock").value(hasItem(DEFAULT_STOP_BLOCK.intValue())));
     }
 
     @Test
@@ -207,16 +208,16 @@ public class TraBlockConfigurationResourceImplTest {
 
         // Get the traBlockConfiguration
         restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traBlockConfiguration.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(traBlockConfiguration.getId().intValue()))
-            .andExpect(jsonPath("$.day").value(DEFAULT_DAY.toString()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.length").value(DEFAULT_LENGTH.intValue()))
-            .andExpect(jsonPath("$.sequence").value(DEFAULT_SEQUENCE.intValue()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(traBlockConfiguration.getId().intValue()))
+                .andExpect(jsonPath("$.day").value(DEFAULT_DAY.toString()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.length").value(DEFAULT_LENGTH.intValue()))
+                .andExpect(jsonPath("$.sequence").value(DEFAULT_SEQUENCE.intValue()))
 
-            .andExpect(jsonPath("$.startBlock").value(DEFAULT_START_BLOCK.intValue()))
-            .andExpect(jsonPath("$.stopBlock").value(DEFAULT_STOP_BLOCK.intValue()));
+                .andExpect(jsonPath("$.startBlock").value(DEFAULT_START_BLOCK.intValue()))
+                .andExpect(jsonPath("$.stopBlock").value(DEFAULT_STOP_BLOCK.intValue()));
     }
 
     @Test
@@ -224,7 +225,7 @@ public class TraBlockConfigurationResourceImplTest {
     public void getNonExistingTraBlockConfiguration() throws Exception {
         // Get the traBlockConfiguration
         restTraBlockConfigurationMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -237,18 +238,18 @@ public class TraBlockConfigurationResourceImplTest {
         // Update the traBlockConfiguration
         TraBlockConfiguration updatedTraBlockConfiguration = traBlockConfigurationRepository.findOne(traBlockConfiguration.getId());
         updatedTraBlockConfiguration
-            .day(UPDATED_DAY)
-            .name(UPDATED_NAME)
-            .length(UPDATED_LENGTH)
-            .sequence(UPDATED_SEQUENCE)
-            .startBlock(UPDATED_START_BLOCK)
-            .stopBlock(UPDATED_STOP_BLOCK);
+                .day(UPDATED_DAY)
+                .name(UPDATED_NAME)
+                .length(UPDATED_LENGTH)
+                .sequence(UPDATED_SEQUENCE)
+                .startBlock(UPDATED_START_BLOCK)
+                .stopBlock(UPDATED_STOP_BLOCK);
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(updatedTraBlockConfiguration);
 
         restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
-            .andExpect(status().isOk());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+                .andExpect(status().isOk());
 
         // Validate the TraBlockConfiguration in the database
         List<TraBlockConfiguration> traBlockConfigurationList = traBlockConfigurationRepository.findAll();
@@ -271,9 +272,9 @@ public class TraBlockConfigurationResourceImplTest {
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restTraBlockConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
-            .andExpect(status().isCreated());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraBlockConfiguration in the database
         List<TraBlockConfiguration> traBlockConfigurationList = traBlockConfigurationRepository.findAll();
@@ -289,8 +290,8 @@ public class TraBlockConfigurationResourceImplTest {
 
         // Get the traBlockConfiguration
         restTraBlockConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block/{id}", corNetwork.getShortcut(), corChannel.getShortcut(), traBlockConfiguration.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<TraBlockConfiguration> traBlockConfigurationList = traBlockConfigurationRepository.findAll();
@@ -310,9 +311,9 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO traOrderDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
         restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraBlockConfiguration> traOrderList = traBlockConfigurationRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
@@ -331,9 +332,9 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
         restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraBlockConfiguration> traOrderList = traBlockConfigurationRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
@@ -352,9 +353,9 @@ public class TraBlockConfigurationResourceImplTest {
         TraBlockConfigurationDTO traBlockConfigurationDTO = traBlockConfigurationMapper.DB2DTO(traBlockConfiguration);
 
         restTraBlockConfigurationMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/block", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traBlockConfigurationDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraBlockConfiguration> traOrderList = traBlockConfigurationRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);

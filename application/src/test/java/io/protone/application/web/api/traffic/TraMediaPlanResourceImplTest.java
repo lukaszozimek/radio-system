@@ -1,5 +1,6 @@
 package io.protone.application.web.api.traffic;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
@@ -14,10 +15,12 @@ import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
+import io.protone.library.mapper.LibItemMapper;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.TraMediaPlanDescriptorDTO;
+import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.domain.TraOrder;
@@ -114,8 +117,12 @@ public class TraMediaPlanResourceImplTest {
 
     @Autowired
     private TraOrderMapper traOrderMapper;
+
+    @Autowired
+    private LibItemMapper libItemMapper;
     @Mock
     private LibItemService libItemService;
+
     @Autowired
     private ExceptionTranslator exceptionTranslator;
 
@@ -173,16 +180,16 @@ public class TraMediaPlanResourceImplTest {
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
-        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(libMediaItem);
+        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
         traOrder.setAdvertisment(traAdvertisement);
         traOrder.setNetwork(corNetwork);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
-
-        mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
-                .sheetIndexOfMediaPlan(0)
+        TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = new TraMediaPlanTemplateDTO();
+        mediaPlanDescriptor = new TraMediaPlanDescriptorDTO().order(traOrderMapper.DB2ThinDTO(traOrder)).libMediaItemThinDTO(libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItem));
+        traMediaPlanTemplateDTO.sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")
                 .playlistDateStartColumn("G")
                 .playlistDateEndColumn("CW")
@@ -192,8 +199,9 @@ public class TraMediaPlanResourceImplTest {
                 .blockStartColumn("A")
                 .blockHourSeparator("-")
                 .firstEmissionValueCell("G10")
-                .lastEmissionValueCell("CW47")
-                .order(traOrderMapper.DB2ThinDTO(traOrder));
+                .lastEmissionValueCell("CW47");
+        mediaPlanDescriptor.setTraMediaPlanTemplateDTO(traMediaPlanTemplateDTO);
+
 
         ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);

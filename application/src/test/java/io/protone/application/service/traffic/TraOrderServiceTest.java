@@ -1,6 +1,7 @@
 package io.protone.application.service.traffic;
 
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -107,7 +108,7 @@ public class TraOrderServiceTest {
         traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setCustomer(crmAccount);
         traAdvertisement.setNetwork(corNetwork);
-        traAdvertisement.setMediaItem(libMediaItemToShuffle);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
     }
 
