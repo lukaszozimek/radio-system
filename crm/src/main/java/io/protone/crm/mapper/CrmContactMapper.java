@@ -11,6 +11,7 @@ import io.protone.crm.api.dto.CrmContactDTO;
 import io.protone.crm.api.dto.CrmCustomerPersonDTO;
 import io.protone.crm.api.dto.thin.CrmContactThinDTO;
 import io.protone.crm.domain.CrmContact;
+import io.protone.crm.domain.CrmLead;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -54,6 +55,13 @@ public interface CrmContactMapper {
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
     CrmContact DTO2DB(CrmContactDTO crmAccountDTO, @Context CorNetwork networkId);
+
+    @Mapping(source = "person", target = "person")
+    @Mapping(source = "addres", target = "addres")
+    @Mapping(source = "keeper", target = "keeper")
+    @Mapping(source = "industry", target = "industry")
+    @Mapping(source = "area", target = "area")
+    CrmContact crmLeadToCrmContact(CrmLead crmlead);
 
     default List<CrmContact> DTOs2DBs(List<CrmContactDTO> crmAccountDTOs, CorNetwork networkId) {
         List<CrmContact> crmContacts = new ArrayList<>();

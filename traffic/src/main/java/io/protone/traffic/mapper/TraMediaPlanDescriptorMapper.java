@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 /**
  * Created by lukaszozimek on 11/06/2017.
  */
-@Mapper(componentModel = "spring", uses = {TraOrderMapper.class})
+@Mapper(componentModel = "spring", uses = {TraOrderMapper.class, TraMediaPlanTemplateMapper.class})
 public interface TraMediaPlanDescriptorMapper {
 
     TraMediaPlanDescriptor DTO2DB(TraMediaPlanDescriptorDTO traEmissionDTO);

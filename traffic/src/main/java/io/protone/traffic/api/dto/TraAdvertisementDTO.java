@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,7 +28,7 @@ public class TraAdvertisementDTO implements Serializable {
 
     private CorDictionaryDTO industryId = null;
 
-    private LibMediaItemThinDTO mediaItemId = null;
+    private List<LibMediaItemThinDTO> libMediaItemThinDTOList = null;
 
     private CorDictionaryDTO typeId;
 
@@ -122,23 +123,23 @@ public class TraAdvertisementDTO implements Serializable {
         this.industryId = industryId;
     }
 
-    public TraAdvertisementDTO mediaItemId(LibMediaItemThinDTO mediaItemId) {
-        this.mediaItemId = mediaItemId;
+    public TraAdvertisementDTO mediaItemId(List<LibMediaItemThinDTO> mediaItemId) {
+        this.libMediaItemThinDTOList = mediaItemId;
         return this;
     }
 
     /**
-     * Get mediaItemId
+     * Get libMediaItemThinDTOList
      *
-     * @return mediaItemId
+     * @return libMediaItemThinDTOList
      **/
     @ApiModelProperty(value = "")
-    public LibMediaItemThinDTO getMediaItemId() {
-        return mediaItemId;
+    public List<LibMediaItemThinDTO> getLibMediaItemThinDTOList() {
+        return libMediaItemThinDTOList;
     }
 
-    public void setMediaItemId(LibMediaItemThinDTO mediaItemId) {
-        this.mediaItemId = mediaItemId;
+    public void setLibMediaItemThinDTOList(List<LibMediaItemThinDTO> libMediaItemThinDTOList) {
+        this.libMediaItemThinDTOList = libMediaItemThinDTOList;
     }
 
     public TraAdvertisementDTO name(String name) {
@@ -171,16 +172,16 @@ public class TraAdvertisementDTO implements Serializable {
         }
         TraAdvertisementDTO traAdvertisementDTO = (TraAdvertisementDTO) o;
         return Objects.equals(this.customerId, traAdvertisementDTO.customerId) &&
-            Objects.equals(this.description, traAdvertisementDTO.description) &&
-            Objects.equals(this.id, traAdvertisementDTO.id) &&
-            Objects.equals(this.industryId, traAdvertisementDTO.industryId) &&
-            Objects.equals(this.mediaItemId, traAdvertisementDTO.mediaItemId) &&
-            Objects.equals(this.name, traAdvertisementDTO.name);
+                Objects.equals(this.description, traAdvertisementDTO.description) &&
+                Objects.equals(this.id, traAdvertisementDTO.id) &&
+                Objects.equals(this.industryId, traAdvertisementDTO.industryId) &&
+                Objects.equals(this.libMediaItemThinDTOList, traAdvertisementDTO.libMediaItemThinDTOList) &&
+                Objects.equals(this.name, traAdvertisementDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, description, id, industryId, mediaItemId, name);
+        return Objects.hash(customerId, description, id, industryId, libMediaItemThinDTOList, name);
     }
 
     @Override
@@ -192,7 +193,7 @@ public class TraAdvertisementDTO implements Serializable {
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    industryId: ").append(toIndentedString(industryId)).append("\n");
-        sb.append("    mediaItemId: ").append(toIndentedString(mediaItemId)).append("\n");
+        sb.append("    libMediaItemThinDTOList: ").append(toIndentedString(libMediaItemThinDTOList)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("}");
         return sb.toString();

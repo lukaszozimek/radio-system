@@ -1,7 +1,7 @@
 package io.protone.traffic.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -14,7 +14,7 @@ public class TraShuffleAdvertisementDTO implements Serializable {
 
 
     @NotNull
-    private TraOrderThinDTO traOrderThinDTO;
+    private LibMediaItemThinDTO libMediaItemThinDTO;
 
     @NotNull
     private LocalDate from;
@@ -60,18 +60,18 @@ public class TraShuffleAdvertisementDTO implements Serializable {
         this.traShuffleAdvertisementOptionalDTO = traShuffleAdvertisementOptionalDTO;
     }
 
-    public TraOrderThinDTO getTraOrderThinDTO() {
-        return traOrderThinDTO;
+    public LibMediaItemThinDTO getLibMediaItemThinDTO() {
+        return libMediaItemThinDTO;
     }
 
-    public void setTraOrderThinDTO(TraOrderThinDTO traOrderThinDTO) {
-        this.traOrderThinDTO = traOrderThinDTO;
+    public void setLibMediaItemThinDTO(LibMediaItemThinDTO libMediaItemThinDTO) {
+        this.libMediaItemThinDTO = libMediaItemThinDTO;
     }
 
     @Override
     public String toString() {
         return "TraShuffleAdvertisementDTO{" +
-            "traOrderThinDTO=" + traOrderThinDTO +
+            "libMediaItemThinDTO=" + libMediaItemThinDTO +
             ", from=" + from +
             ", to=" + to +
             ", number=" + number +
