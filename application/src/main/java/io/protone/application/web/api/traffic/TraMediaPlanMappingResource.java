@@ -20,11 +20,11 @@ public interface TraMediaPlanMappingResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDiffDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDiffDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDiffDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/{mediaPlanId}/advertisement/{advertisementId}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/{mediaPlanId}/advertisement/{libMediaItemIdx}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                            @ApiParam(value = "mediaPlanId", required = true) @PathVariable("mediaPlanId") Long mediaPlanId,
-                                                                           @ApiParam(value = "advertismentId", required = true) @PathVariable("advertisementId") Long advertismentId);
+                                                                           @ApiParam(value = "libMediaItemIdx", required = true) @PathVariable("libMediaItemIdx") String libMediaItemIdx);
 }

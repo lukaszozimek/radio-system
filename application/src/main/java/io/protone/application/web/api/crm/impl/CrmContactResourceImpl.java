@@ -97,8 +97,7 @@ public class CrmContactResourceImpl implements CrmContactResource {
     public ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmContact, for Network: {}", networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactService.getAllContact(corNetwork.getShortcut(), pagable));
+        List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactService.getAllContact(networkShortcut, pagable));
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -110,8 +109,7 @@ public class CrmContactResourceImpl implements CrmContactResource {
     @Override
     public ResponseEntity<CrmContactDTO> getContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get CrmContact : {}, for Network: {}", shortName, networkShortcut);
-        CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        CrmContactDTO response = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, corNetwork.getShortcut()));
+        CrmContactDTO response = crmContactMapper.DB2DTO(crmContactService.getContact(shortName, networkShortcut));
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,

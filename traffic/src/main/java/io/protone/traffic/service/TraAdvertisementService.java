@@ -43,7 +43,10 @@ public class TraAdvertisementService {
         TraAdvertisement traAdvertisement = traAdvertisementRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
         traAdvertisementRepository.delete(traAdvertisement);
         if (traAdvertisement.getMediaItem() != null) {
-            libItemService.deleteItem(traAdvertisement.getMediaItem());
+            traAdvertisement.getMediaItem().stream().forEach(libMediaItem -> {
+
+                libItemService.deleteItem(libMediaItem);
+            });
         }
     }
 

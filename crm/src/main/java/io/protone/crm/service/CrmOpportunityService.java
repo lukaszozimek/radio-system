@@ -1,9 +1,8 @@
 package io.protone.crm.service;
 
 
-import io.protone.crm.domain.CrmOpportunity;
-import io.protone.crm.domain.CrmTask;
-import io.protone.crm.domain.CrmTaskComment;
+import io.protone.crm.domain.*;
+import io.protone.crm.mapper.CrmOpportunityMapper;
 import io.protone.crm.repostiory.CrmOpportunityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,9 @@ public class CrmOpportunityService {
 
     @Inject
     private CrmTaskService crmTaskService;
+
+    @Inject
+    private CrmOpportunityMapper crmOpportunityMapper;
 
     public List<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
         return opportunityRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -91,4 +93,36 @@ public class CrmOpportunityService {
     public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
+
+    public CrmOpportunity convertLeadToOpportunity(CrmLead lead) {
+        CrmOpportunity opportunity = new CrmOpportunity();
+        opportunity.setShortName(lead.getShortname());
+        opportunity.setLead(lead);
+        opportunity.setKeeper(lead.getKeeper());
+        opportunity.setNetwork(lead.getNetwork());
+
+        return saveOpportunity(opportunity);
+    }
+
+    public CrmOpportunity convertContactToOpportunity(CrmContact crmContact) {
+        CrmOpportunity opportunity = new CrmOpportunity();
+
+        opportunity.setShortName(crmContact.getShortName());
+        opportunity.contact(crmContact);
+        opportunity.setKeeper(crmContact.getKeeper());
+        opportunity.setNetwork(crmContact.getNetwork());
+
+        return saveOpportunity(opportunity);
+    }
+
+    public CrmOpportunity convertAccountToOpportunity(CrmAccount crmAccount) {
+        CrmOpportunity opportunity = new CrmOpportunity();
+        opportunity.setAccount(crmAccount);
+        opportunity.setShortName(crmAccount.getShortName());
+        opportunity.setKeeper(crmAccount.getKeeper());
+        opportunity.setNetwork(crmAccount.getNetwork());
+
+        return saveOpportunity(opportunity);
+    }
+
 }

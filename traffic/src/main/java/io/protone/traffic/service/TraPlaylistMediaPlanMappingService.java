@@ -2,6 +2,8 @@ package io.protone.traffic.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.*;
 import io.protone.traffic.mapper.TraMediaPlanMapperPlaylist;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
@@ -35,13 +37,13 @@ public class TraPlaylistMediaPlanMappingService {
     private TraPlaylistService traPlaylistService;
 
     @Inject
-    private TraAdvertisementService traAdvertisementService;
+    private LibItemService libItemService;
 
     @Inject
     private TraMediaPlanMapperPlaylist traMediaPlanMapperPlaylistMapper;
 
-    public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(Long mediaPlanId, Long advertismentId, String networkShortcut, String channelShortcut) {
-        TraAdvertisement traAdvertisement = traAdvertisementService.getAdvertisement(advertismentId, networkShortcut);
+    public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(Long mediaPlanId, String libMediaItemIdx, String networkShortcut, String channelShortcut) {
+        LibMediaItem traAdvertisement = libItemService.getMediaItem(networkShortcut, "com", libMediaItemIdx);
         TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(mediaPlanId, networkShortcut, channelShortcut);
         List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), networkShortcut, channelShortcut);
@@ -50,7 +52,7 @@ public class TraPlaylistMediaPlanMappingService {
     }
 
     @VisibleForTesting
-    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, TraAdvertisement traAdvertisement) {
+    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, LibMediaItem libMediaItem) {
         log.debug("Start mapping entity Playlist with parsed Playlists");
         List<TraPlaylist> traPlaylists = entiyPlaylists;
         List<TraPlaylist> traPlaylistsExcel = Lists.newArrayList(parsedFromMediaPlan.iterator());
@@ -69,9 +71,9 @@ public class TraPlaylistMediaPlanMappingService {
                                     if (isNotEmpty(filteredEntityTraBlock.getEmissions())) {
                                         Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
                                         Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
-                                        if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), traAdvertisement.getMediaItem().getLength())) {
+                                        if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), libMediaItem.getLength())) {
                                             log.debug("Put commercial into block");
-                                            TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
+                                            TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                             filteredEntityTraBlock.addEmissions(emisssion);
                                             synchronized (lockObject) {
                                                 parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
@@ -83,7 +85,7 @@ public class TraPlaylistMediaPlanMappingService {
                                         log.debug("Block is empty");
                                         log.debug("Put commercial into block");
                                         Long lastTimeStop = 0L;
-                                        TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
+                                        TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                         filteredEntityTraBlock.addEmissions(emisssion);
                                         synchronized (lockObject) {
                                             parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());

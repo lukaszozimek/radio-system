@@ -1,7 +1,9 @@
 package io.protone.traffic.service;
 
 
+import io.protone.traffic.api.dto.TraOrderDTO;
 import io.protone.traffic.domain.TraOrder;
+import io.protone.traffic.mapper.TraOrderMapper;
 import io.protone.traffic.repository.TraOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ public class TraOrderService {
     @Inject
     private TraOrderRepository traOrderRepository;
 
+    @Inject
+    private TraOrderMapper traOrderMapper;
     public List<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
         return traOrderRepository.findByNetwork_Shortcut(corNetwork, pageable);
     }
@@ -46,7 +50,10 @@ public class TraOrderService {
     public TraOrder getOrder(Long id, String corNetwork) {
         return traOrderRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
     }
-
+    //TODO: Remove this stuff by writing custom query for selectring single order
+    public TraOrderDTO getOrderDTO(Long id, String corNetwork) {
+        return traOrderMapper.DB2DTO(traOrderRepository.findByIdAndNetwork_Shortcut(id, corNetwork));
+    }
 
     public List<TraOrder> getCustomerOrders(String shortcut, String corNetwork, Pageable pageable) {
         return traOrderRepository.findByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);

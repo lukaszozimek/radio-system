@@ -68,7 +68,7 @@ public class TraOrderResourceImpl implements TraOrderResource {
         TraOrder entity = traOrderService.saveOrder(traOrder);
         TraOrderDTO response = traOrderMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/order/" + response.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -78,22 +78,22 @@ public class TraOrderResourceImpl implements TraOrderResource {
         List<TraOrder> entity = traOrderService.getAllOrders(networkShortcut, pagable);
         List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public ResponseEntity<TraOrderDTO> getAnOrderUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraOrder : {}, for Network: {}", id, networkShortcut);
-        TraOrder entity = traOrderService.getOrder(id, networkShortcut);
-        TraOrderDTO response = traOrderMapper.DB2DTO(entity);
+
+        TraOrderDTO response = traOrderService.getOrderDTO(id, networkShortcut);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -111,10 +111,10 @@ public class TraOrderResourceImpl implements TraOrderResource {
         List<TraOrder> entity = traOrderService.getCustomerOrders(customerShortcut, networkShortcut, pagable);
         List<TraOrderDTO> response = traOrderMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
