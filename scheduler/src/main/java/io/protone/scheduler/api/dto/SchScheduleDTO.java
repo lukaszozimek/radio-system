@@ -2,7 +2,7 @@ package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
 import java.util.Objects;

@@ -19,11 +19,11 @@ public class SchQueueParamsDTO   {
   @JsonProperty("previousId")
   private Long previousId = null;
   @JsonProperty("previousType")
-  private PreviousTypeEnum previousType = null;
+  private ObjectTypeEnum previousType = null;
   @JsonProperty("nextId")
   private Long nextId = null;
   @JsonProperty("nextType")
-  private NextTypeEnum nextType = null;
+  private ObjectTypeEnum nextType = null;
 
   public SchQueueParamsDTO seq(Integer seq) {
     this.seq = seq;
@@ -61,7 +61,7 @@ public class SchQueueParamsDTO   {
     this.previousId = previousId;
   }
 
-  public SchQueueParamsDTO previousType(PreviousTypeEnum previousType) {
+  public SchQueueParamsDTO previousType(ObjectTypeEnum previousType) {
     this.previousType = previousType;
     return this;
   }
@@ -71,11 +71,11 @@ public class SchQueueParamsDTO   {
    * @return previousType
   **/
   @ApiModelProperty(value = "")
-  public PreviousTypeEnum getPreviousType() {
+  public ObjectTypeEnum getPreviousType() {
     return previousType;
   }
 
-  public void setPreviousType(PreviousTypeEnum previousType) {
+  public void setPreviousType(ObjectTypeEnum previousType) {
     this.previousType = previousType;
   }
 
@@ -97,7 +97,7 @@ public class SchQueueParamsDTO   {
     this.nextId = nextId;
   }
 
-  public SchQueueParamsDTO nextType(NextTypeEnum nextType) {
+  public SchQueueParamsDTO nextType(ObjectTypeEnum nextType) {
     this.nextType = nextType;
     return this;
   }
@@ -107,11 +107,11 @@ public class SchQueueParamsDTO   {
    * @return nextType
   **/
   @ApiModelProperty(value = "")
-  public NextTypeEnum getNextType() {
+  public ObjectTypeEnum getNextType() {
     return nextType;
   }
 
-  public void setNextType(NextTypeEnum nextType) {
+  public void setNextType(ObjectTypeEnum nextType) {
     this.nextType = nextType;
   }
 
@@ -162,26 +162,28 @@ public class SchQueueParamsDTO   {
   }
 
     /**
-     * Gets or Sets previousType
+     * Gets or Sets objectType
      */
-    public enum PreviousTypeEnum {
+    public enum ObjectTypeEnum {
         CLOCK("PT_CLOCK"),
 
         BLOCK("PT_BLOCK"),
 
         EVENT("PT_EVENT"),
 
-        EMISSION("PT_EMISSION");
+        EMISSION("PT_EMISSION"),
+
+        UNKNOWN("PT_UNKNOWN");
 
         private String value;
 
-        PreviousTypeEnum(String value) {
+        ObjectTypeEnum(String value) {
             this.value = value;
         }
 
         @JsonCreator
-        public static PreviousTypeEnum fromValue(String text) {
-            for (PreviousTypeEnum b : PreviousTypeEnum.values()) {
+        public static ObjectTypeEnum fromValue(String text) {
+            for (ObjectTypeEnum b : ObjectTypeEnum.values()) {
                 if (String.valueOf(b.value).equals(text)) {
                     return b;
                 }
@@ -189,46 +191,6 @@ public class SchQueueParamsDTO   {
             return null;
         }
 
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
-
-    /**
-     * Gets or Sets nextType
-     */
-    public enum NextTypeEnum {
-        CLOCK("PT_CLOCK"),
-
-        BLOCK("PT_BLOCK"),
-
-        EVENT("PT_EVENT"),
-
-        EMISSION("PT_EMISSION");
-
-        private String value;
-
-        NextTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static NextTypeEnum fromValue(String text) {
-            for (NextTypeEnum b : NextTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
     }
 }
 
