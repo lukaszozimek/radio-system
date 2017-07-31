@@ -15,6 +15,7 @@ import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.mapper.TraPlaylistMapper;
 import io.protone.traffic.service.TraAdvertisementShuffleService;
 import io.protone.traffic.service.TraPlaylistService;
+import io.protone.traffic.service.shuffle.exception.TrafficShuffleReindexException;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -205,7 +206,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     @Override
     public ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException {
+                                                                          @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException, TrafficShuffleReindexException {
         log.debug("REST request to shuffle TraAdvertisments : {}, for Channel {}, Network: {}", traShuffleAdvertismentDTO.getLibMediaItemThinDTO(), channelShortcut, networkShortcut);
         List<TraPlaylist> entities = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertismentDTO, networkShortcut, channelShortcut);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entities);

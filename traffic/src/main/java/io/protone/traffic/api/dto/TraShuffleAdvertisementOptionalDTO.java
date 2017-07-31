@@ -7,25 +7,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TraShuffleAdvertisementOptionalDTO {
 
-    @JsonProperty("priority")
-    private String priority;
+    @JsonProperty("firstPosition")
+    private boolean firstPosition;
 
-    @JsonProperty("offsetType")
-    private String offsetType;
+    @JsonProperty("lastPostion")
+    private boolean lastPostion;
 
-    public String getPriority() {
-        return priority;
+    public boolean isFirstPosition() {
+        return firstPosition;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
+    public void setFirstPosition(boolean firstPosition) {
+        this.firstPosition = firstPosition;
     }
 
-    public String getOffsetType() {
-        return offsetType;
+    public boolean isLastPostion() {
+        return lastPostion;
     }
 
-    public void setOffsetType(String offsetType) {
-        this.offsetType = offsetType;
+    public void setLastPostion(boolean lastPostion) {
+        this.lastPostion = lastPostion;
     }
 }

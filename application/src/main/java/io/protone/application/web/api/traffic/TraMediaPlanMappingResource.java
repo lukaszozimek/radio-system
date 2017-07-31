@@ -1,10 +1,12 @@
 package io.protone.application.web.api.traffic;
 
 
+import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.api.dto.TraPlaylistDiffDTO;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,11 +22,10 @@ public interface TraMediaPlanMappingResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDiffDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDiffDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDiffDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/{mediaPlanId}/advertisement/{libMediaItemIdx}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/assigne",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                           @ApiParam(value = "mediaPlanId", required = true) @PathVariable("mediaPlanId") Long mediaPlanId,
-                                                                           @ApiParam(value = "libMediaItemIdx", required = true) @PathVariable("libMediaItemIdx") String libMediaItemIdx);
+                                                                           @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO")@RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO);
 }

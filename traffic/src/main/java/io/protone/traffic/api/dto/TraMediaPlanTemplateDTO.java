@@ -1,170 +1,65 @@
-package io.protone.traffic.domain;
+package io.protone.traffic.api.dto;
 
-
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorNetwork;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import uk.co.jemos.podam.common.PodamExclude;
-
-import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * Created by lukaszozimek on 11/06/2017.
+ * Created by lukaszozimek on 30/07/2017.
  */
-@Entity
-@Table(name = "tra_media_plan_template")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Serializable {
+public class TraMediaPlanTemplateDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "name")
+    @NotNull
     private String name;
 
-    @Column(name = "block_start_column")
+    @NotNull
     private String blockStartColumn;
 
-    @Column(name = "block_start_cell")
+    @NotNull
     private String blockStartCell;
 
-    @Column(name = "block_end_cell")
+    @NotNull
     private String blockEndCell;
 
-    @Column(name = "block_hour_separator")
+    @NotNull
     private String blockHourSeparator;
 
-    @Column(name = "playlist_date_start_column")
+    @NotNull
     private String playlistDateStartColumn;
 
-    @Column(name = "playlist_date_end_column")
+    @NotNull
     private String playlistDateEndColumn;
 
-    @Column(name = "playlist_first_value_cell")
+    @NotNull
     private String playlistFirsValueCell;
 
-    @Column(name = "playlist_date_pattern")
+    @NotNull
     private String playlistDatePattern;
 
-    @Column(name = "sheet_index_of_media_plan")
+    @NotNull
     private Integer sheetIndexOfMediaPlan;
 
-    @Column(name = "first_emission_value_cell")
+    @NotNull
     private String firstEmissionValueCell;
 
-    @Column(name = "last_emission_value_cell")
+    @NotNull
     private String lastEmissionValueCell;
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-    public String getBlockStartCell() {
-        return blockStartCell;
+    public Long getId() {
+        return id;
     }
 
-    public void setBlockStartCell(String blockStartCell) {
-        this.blockStartCell = blockStartCell;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public TraMediaPlanTemplate blockStartCell(String blockStartCell) {
-        this.blockStartCell = blockStartCell;
-        return this;
+    public String getName() {
+        return name;
     }
 
-    public String getBlockEndCell() {
-        return blockEndCell;
-    }
-
-    public void setBlockEndCell(String blockEndCell) {
-        this.blockEndCell = blockEndCell;
-    }
-
-    public TraMediaPlanTemplate blockEndCell(String blockEndCell) {
-        this.blockEndCell = blockEndCell;
-        return this;
-    }
-
-    public String getBlockHourSeparator() {
-        return blockHourSeparator;
-    }
-
-    public void setBlockHourSeparator(String blockHourSeparator) {
-        this.blockHourSeparator = blockHourSeparator;
-    }
-
-    public TraMediaPlanTemplate blockHourSeparator(String blockHourSeparator) {
-        this.blockHourSeparator = blockHourSeparator;
-        return this;
-    }
-
-    public String getPlaylistDateStartColumn() {
-        return playlistDateStartColumn;
-    }
-
-    public void setPlaylistDateStartColumn(String playlistDateStartColumn) {
-        this.playlistDateStartColumn = playlistDateStartColumn;
-    }
-
-    public TraMediaPlanTemplate playlistDateStartColumn(String playlistDateStartColumn) {
-        this.playlistDateStartColumn = playlistDateStartColumn;
-        return this;
-    }
-
-    public String getPlaylistDateEndColumn() {
-        return playlistDateEndColumn;
-    }
-
-    public void setPlaylistDateEndColumn(String playlistDateEndColumn) {
-        this.playlistDateEndColumn = playlistDateEndColumn;
-    }
-
-    public TraMediaPlanTemplate playlistDateEndColumn(String playlistDateEndColumn) {
-        this.playlistDateEndColumn = playlistDateEndColumn;
-        return this;
-    }
-
-    public String getPlaylistFirsValueCell() {
-        return playlistFirsValueCell;
-    }
-
-    public void setPlaylistFirsValueCell(String playlistFirsValueCell) {
-        this.playlistFirsValueCell = playlistFirsValueCell;
-    }
-
-    public TraMediaPlanTemplate playlistFirsValueCell(String playlistFirsValueCell) {
-        this.playlistFirsValueCell = playlistFirsValueCell;
-        return this;
-    }
-
-    public String getPlaylistDatePattern() {
-        return playlistDatePattern;
-    }
-
-    public void setPlaylistDatePattern(String playlistDatePattern) {
-        this.playlistDatePattern = playlistDatePattern;
-    }
-
-    public TraMediaPlanTemplate playlistDatePattern(String playlistDatePattern) {
-        this.playlistDatePattern = playlistDatePattern;
-        return this;
-    }
-
-    public Integer getSheetIndexOfMediaPlan() {
-        return sheetIndexOfMediaPlan;
-    }
-
-    public void setSheetIndexOfMediaPlan(Integer sheetIndexOfMediaPlan) {
-        this.sheetIndexOfMediaPlan = sheetIndexOfMediaPlan;
-    }
-
-    public TraMediaPlanTemplate sheetIndexOfMediaPlan(Integer sheetIndexOfMediaPlan) {
-        this.sheetIndexOfMediaPlan = sheetIndexOfMediaPlan;
-        return this;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBlockStartColumn() {
@@ -175,9 +70,68 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
         this.blockStartColumn = blockStartColumn;
     }
 
-    public TraMediaPlanTemplate blockStartColumn(String blockStartColumn) {
-        this.blockStartColumn = blockStartColumn;
-        return this;
+    public String getBlockStartCell() {
+        return blockStartCell;
+    }
+
+    public void setBlockStartCell(String blockStartCell) {
+        this.blockStartCell = blockStartCell;
+    }
+
+    public String getBlockEndCell() {
+        return blockEndCell;
+    }
+
+    public void setBlockEndCell(String blockEndCell) {
+        this.blockEndCell = blockEndCell;
+    }
+
+    public String getBlockHourSeparator() {
+        return blockHourSeparator;
+    }
+
+    public void setBlockHourSeparator(String blockHourSeparator) {
+        this.blockHourSeparator = blockHourSeparator;
+    }
+
+    public String getPlaylistDateStartColumn() {
+        return playlistDateStartColumn;
+    }
+
+    public void setPlaylistDateStartColumn(String playlistDateStartColumn) {
+        this.playlistDateStartColumn = playlistDateStartColumn;
+    }
+
+    public String getPlaylistDateEndColumn() {
+        return playlistDateEndColumn;
+    }
+
+    public void setPlaylistDateEndColumn(String playlistDateEndColumn) {
+        this.playlistDateEndColumn = playlistDateEndColumn;
+    }
+
+    public String getPlaylistFirsValueCell() {
+        return playlistFirsValueCell;
+    }
+
+    public void setPlaylistFirsValueCell(String playlistFirsValueCell) {
+        this.playlistFirsValueCell = playlistFirsValueCell;
+    }
+
+    public String getPlaylistDatePattern() {
+        return playlistDatePattern;
+    }
+
+    public void setPlaylistDatePattern(String playlistDatePattern) {
+        this.playlistDatePattern = playlistDatePattern;
+    }
+
+    public Integer getSheetIndexOfMediaPlan() {
+        return sheetIndexOfMediaPlan;
+    }
+
+    public void setSheetIndexOfMediaPlan(Integer sheetIndexOfMediaPlan) {
+        this.sheetIndexOfMediaPlan = sheetIndexOfMediaPlan;
     }
 
     public String getFirstEmissionValueCell() {
@@ -188,12 +142,6 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
         this.firstEmissionValueCell = firstEmissionValueCell;
     }
 
-
-    public TraMediaPlanTemplate firstEmissionValueCell(String firstEmissionValueCell) {
-        this.firstEmissionValueCell = firstEmissionValueCell;
-        return this;
-    }
-
     public String getLastEmissionValueCell() {
         return lastEmissionValueCell;
     }
@@ -202,19 +150,15 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
         this.lastEmissionValueCell = lastEmissionValueCell;
     }
 
-    public TraMediaPlanTemplate lastEmissionValueCell(String lastEmissionValueCell) {
-        this.lastEmissionValueCell = lastEmissionValueCell;
-        return this;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TraMediaPlanTemplate that = (TraMediaPlanTemplate) o;
+        TraMediaPlanTemplateDTO that = (TraMediaPlanTemplateDTO) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (blockStartColumn != null ? !blockStartColumn.equals(that.blockStartColumn) : that.blockStartColumn != null)
             return false;
         if (blockStartCell != null ? !blockStartCell.equals(that.blockStartCell) : that.blockStartCell != null)
@@ -234,13 +178,14 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
             return false;
         if (firstEmissionValueCell != null ? !firstEmissionValueCell.equals(that.firstEmissionValueCell) : that.firstEmissionValueCell != null)
             return false;
-
-        return lastEmissionValueCell != null ? !lastEmissionValueCell.equals(that.lastEmissionValueCell) : that.lastEmissionValueCell != null;
+        return lastEmissionValueCell != null ? lastEmissionValueCell.equals(that.lastEmissionValueCell) : that.lastEmissionValueCell == null;
     }
 
     @Override
     public int hashCode() {
-        int result = blockStartColumn != null ? blockStartColumn.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (blockStartColumn != null ? blockStartColumn.hashCode() : 0);
         result = 31 * result + (blockStartCell != null ? blockStartCell.hashCode() : 0);
         result = 31 * result + (blockEndCell != null ? blockEndCell.hashCode() : 0);
         result = 31 * result + (blockHourSeparator != null ? blockHourSeparator.hashCode() : 0);
@@ -256,8 +201,10 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
 
     @Override
     public String toString() {
-        return "TraMediaPlanTemplate{" +
-                "blockStartColumn='" + blockStartColumn + '\'' +
+        return "TraMediaPlanTemplateDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", blockStartColumn='" + blockStartColumn + '\'' +
                 ", blockStartCell='" + blockStartCell + '\'' +
                 ", blockEndCell='" + blockEndCell + '\'' +
                 ", blockHourSeparator='" + blockHourSeparator + '\'' +
@@ -271,32 +218,58 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
                 '}';
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
-    public TraMediaPlanTemplate network(CorNetwork network) {
-        this.network = network;
+    public TraMediaPlanTemplateDTO sheetIndexOfMediaPlan(int sheetIndexOfMediaPlan) {
+        this.sheetIndexOfMediaPlan = sheetIndexOfMediaPlan;
         return this;
     }
 
-    public Long getId() {
-        return id;
+    public TraMediaPlanTemplateDTO playlistDatePattern(String playlistDatePattern) {
+       this.playlistDatePattern = playlistDatePattern;
+        return this;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public TraMediaPlanTemplateDTO playlistDateStartColumn(String playlistDateStartColumn) {
+        this.playlistDateStartColumn = playlistDateStartColumn;
+        return this;
     }
 
-    public String getName() {
-        return name;
+    public TraMediaPlanTemplateDTO playlistDateEndColumn(String playlistDateEndColumn) {
+        this.playlistDateEndColumn = playlistDateEndColumn;
+        return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public TraMediaPlanTemplateDTO playlistFirsValueCell(String playlistFirsValueCell) {
+        this.playlistFirsValueCell = playlistFirsValueCell;
+        return this;
+    }
+
+    public TraMediaPlanTemplateDTO blockStartCell(String blockStartCell) {
+        this.blockStartCell = blockStartCell;
+        return this;
+    }
+
+    public TraMediaPlanTemplateDTO blockEndCell(String blockEndCell) {
+        this.blockEndCell = blockEndCell;
+        return this;
+    }
+
+    public TraMediaPlanTemplateDTO blockStartColumn(String blockStartColumn) {
+        this.blockStartColumn = blockStartColumn;
+        return this;
+    }
+
+    public TraMediaPlanTemplateDTO blockHourSeparator(String blockHourSeparator) {
+        this.blockHourSeparator = blockHourSeparator;
+        return this;
+    }
+
+    public TraMediaPlanTemplateDTO firstEmissionValueCell(String firstEmissionValueCell) {
+        this.firstEmissionValueCell = firstEmissionValueCell;
+        return this;
+    }
+
+    public TraMediaPlanTemplateDTO lastEmissionValueCell(String lastEmissionValueCell) {
+        this.lastEmissionValueCell = lastEmissionValueCell;
+        return this;
     }
 }

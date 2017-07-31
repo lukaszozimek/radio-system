@@ -3,6 +3,7 @@ package io.protone.application.web.api.traffic;
 
 import io.protone.traffic.api.dto.TraPlaylistDTO;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
+import io.protone.traffic.service.shuffle.exception.TrafficShuffleReindexException;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -154,7 +155,7 @@ public interface TraPlaylistResource {
         method = RequestMethod.GET)
     ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException;
+                                                                   @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException, TrafficShuffleReindexException;
 
 
 

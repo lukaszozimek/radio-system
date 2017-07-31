@@ -33,9 +33,9 @@ import static org.apache.poi.ss.usermodel.WorkbookFactory.create;
  * Created by lukaszozimek on 04/06/2017.
  */
 @Service
-public class TraExcelMediaXlsPlan {
+public class TraExcelMediaParserXlsPlan {
 
-    private final Logger log = LoggerFactory.getLogger(TraExcelMediaXlsPlan.class);
+    private final Logger log = LoggerFactory.getLogger(TraExcelMediaParserXlsPlan.class);
     private final Long DEFAULT_START_STOP = 0L;
 
     public Set<TraMediaPlanPlaylist> parseMediaPlan(ByteArrayInputStream byteArrayInputStream, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException, InvalidFormatException {

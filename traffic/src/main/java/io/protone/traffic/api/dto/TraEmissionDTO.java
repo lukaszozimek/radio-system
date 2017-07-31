@@ -1,7 +1,7 @@
 package io.protone.traffic.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.traffic.api.dto.thin.TraAdvertisementThinDTO;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -18,7 +18,7 @@ public class TraEmissionDTO implements Serializable {
     private Long id = null;
 
     @NotNull
-    private TraAdvertisementThinDTO advertiment = null;
+    private LibMediaItemThinDTO advertiment = null;
 
     @NotNull
     private Long timeStart = null;
@@ -32,7 +32,16 @@ public class TraEmissionDTO implements Serializable {
     @NotNull
     private Long orderId = null;
 
-    public TraEmissionDTO advertisment(TraAdvertisementThinDTO advertisment) {
+
+
+
+    private boolean fixedPosition;
+
+    private boolean firsrPosition;
+
+    private boolean lastPosition;
+
+    public TraEmissionDTO advertisment(LibMediaItemThinDTO advertisment) {
         this.advertiment = advertisment;
         return this;
     }
@@ -51,11 +60,11 @@ public class TraEmissionDTO implements Serializable {
      * @return advertiment
      **/
     @ApiModelProperty(value = "")
-    public TraAdvertisementThinDTO getAdvertiment() {
+    public LibMediaItemThinDTO getAdvertiment() {
         return advertiment;
     }
 
-    public void setAdvertiment(TraAdvertisementThinDTO advertiment) {
+    public void setAdvertiment(LibMediaItemThinDTO advertiment) {
         this.advertiment = advertiment;
     }
 
@@ -123,6 +132,29 @@ public class TraEmissionDTO implements Serializable {
         this.orderId = orderId;
         return this;
     }
+    public boolean isFixedPosition() {
+        return fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
+    }
+
+    public boolean isFirsrPosition() {
+        return firsrPosition;
+    }
+
+    public void setFirsrPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+    }
+
+    public boolean isLastPosition() {
+        return lastPosition;
+    }
+
+    public void setLastPosition(boolean lastPosition) {
+        this.lastPosition = lastPosition;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -151,18 +183,19 @@ public class TraEmissionDTO implements Serializable {
         result = 31 * result + (orderId != null ? orderId.hashCode() : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "TraEmissionDTO{" +
-            "id=" + id +
-            ", advertiment=" + advertiment +
-            ", timeStart=" + timeStart +
-            ", timeStop=" + timeStop +
-            ", sequence=" + sequence +
-            ", orderId=" + orderId +
-            '}';
+                "id=" + id +
+                ", advertiment=" + advertiment +
+                ", timeStart=" + timeStart +
+                ", timeStop=" + timeStop +
+                ", sequence=" + sequence +
+                ", orderId=" + orderId +
+                ", fixedPosition=" + fixedPosition +
+                ", firstPosition=" + firsrPosition +
+                ", lastPosition=" + lastPosition +
+                '}';
     }
-
 }
 

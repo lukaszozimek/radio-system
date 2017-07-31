@@ -8,7 +8,7 @@ import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.domain.TraMediaPlanPlaylist;
 import io.protone.traffic.repository.TraMediaPlanRepository;
-import io.protone.traffic.service.mediaplan.TraExcelMediaXlsPlan;
+import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;
@@ -42,7 +42,7 @@ public class TraMediaPlanService {
     private TraMediaPlanRepository traMediaPlanRepository;
 
     @Inject
-    private TraExcelMediaXlsPlan traExcelMediaXlsPlan;
+    private TraExcelMediaParserXlsPlan traExcelMediaXlsPlan;
 
     @Inject
     private TraMediaPlanPlaylistService traPlaylistService;

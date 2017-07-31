@@ -40,6 +40,12 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     @Column(name = "fixed_postion")
     private boolean fixedPosition;
 
+    @Column(name = "first_postion")
+    private boolean firsrPosition;
+
+    @Column(name = "last_postion")
+    private boolean lastPosition;
+
     @ManyToOne
     @PodamExclude
     private TraOrder order;
@@ -209,5 +215,36 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
 
     public void setFixedPosition(boolean fixedPosition) {
         this.fixedPosition = fixedPosition;
+    }
+
+    public boolean isFirsrPosition() {
+        return firsrPosition;
+    }
+
+    public void setFirsrPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+    }
+
+    public TraEmission firstPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+        return this;
+    }
+
+    public boolean isLastPosition() {
+        return lastPosition;
+    }
+
+    public TraEmission lastPosition(boolean lastPostion) {
+        this.lastPosition = lastPostion;
+        return this;
+    }
+
+    public TraEmission fixedPosition(boolean fixedPosition) {
+        this.firsrPosition = fixedPosition;
+        return this;
+    }
+
+    public void setLastPosition(boolean lastPosition) {
+        this.lastPosition = lastPosition;
     }
 }

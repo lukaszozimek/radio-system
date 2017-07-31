@@ -26,6 +26,7 @@ public class TraShuffleAdvertisementDTO implements Serializable {
     private int number;
 
     @JsonProperty("optional")
+    @NotNull
     private TraShuffleAdvertisementOptionalDTO traShuffleAdvertisementOptionalDTO;
 
     public LocalDate getFrom() {
@@ -71,11 +72,11 @@ public class TraShuffleAdvertisementDTO implements Serializable {
     @Override
     public String toString() {
         return "TraShuffleAdvertisementDTO{" +
-            "libMediaItemThinDTO=" + libMediaItemThinDTO +
-            ", from=" + from +
-            ", to=" + to +
-            ", number=" + number +
-            ", traShuffleAdvertisementOptionalDTO=" + traShuffleAdvertisementOptionalDTO +
-            '}';
+                "libMediaItemThinDTO=" + libMediaItemThinDTO +
+                ", from=" + from +
+                ", to=" + to +
+                ", number=" + number +
+                ", traShuffleAdvertisementOptionalDTO=" + traShuffleAdvertisementOptionalDTO +
+                '}';
     }
 }

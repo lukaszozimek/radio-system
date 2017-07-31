@@ -8,6 +8,7 @@ import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.repository.TraPlaylistRepository;
+import io.protone.traffic.service.mediaplan.TraPlaylistMediaPlanMappingService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
