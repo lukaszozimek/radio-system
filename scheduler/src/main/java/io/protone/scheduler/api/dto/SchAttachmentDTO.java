@@ -242,7 +242,9 @@ public class SchAttachmentDTO   {
     public enum FadeTypeEnum {
         LINEAR("FT_LINEAR"),
 
-        LOGARITMIC("FT_LOGARITMIC");
+        LOGARITMIC("FT_LOGARITMIC"),
+
+        OTHER("FT_OTHER");
 
         private String value;
 
