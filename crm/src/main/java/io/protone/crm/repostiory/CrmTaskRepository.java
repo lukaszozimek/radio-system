@@ -5,6 +5,8 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmTask;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -15,7 +17,11 @@ import java.util.List;
 public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
     CrmTask findOneByIdAndNetwork(Long id, CorNetwork network);
 
-    CrmTask findOneByIdAndNetwork_Shortcut(Long id, String network);
+    @Query("select t from CrmTask as t " +
+            "left join fetch t.network as n " +
+            "left join fetch t.comments as c " +
+            "where n.shortcut = :network and t.id =:id")
+    CrmTask findOneByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
 
     List<CrmTask> findAllByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 

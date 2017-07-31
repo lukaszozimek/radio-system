@@ -4,6 +4,7 @@ package io.protone.crm.api.dto;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.CoreAddressDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.crm.api.dto.thin.CrmTaskThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -43,7 +44,7 @@ public class CrmLeadDTO {
     private CrmCustomerPersonDTO person = null;
 
     @PodamExclude
-    private List<CrmTaskDTO> tasks = new ArrayList<CrmTaskDTO>();
+    private List<CrmTaskThinDTO> tasks = new ArrayList<CrmTaskThinDTO>();
 
     public CrmLeadDTO id(Long id) {
         this.id = id;
@@ -244,12 +245,12 @@ public class CrmLeadDTO {
     }
 
 
-    public CrmLeadDTO tasks(List<CrmTaskDTO> tasks) {
+    public CrmLeadDTO tasks(List<CrmTaskThinDTO> tasks) {
         this.tasks = tasks;
         return this;
     }
 
-    public CrmLeadDTO addTasksItem(CrmTaskDTO tasksItem) {
+    public CrmLeadDTO addTasksItem(CrmTaskThinDTO tasksItem) {
         this.tasks.add(tasksItem);
         return this;
     }
@@ -260,11 +261,11 @@ public class CrmLeadDTO {
      * @return tasks
      **/
     @ApiModelProperty(value = "")
-    public List<CrmTaskDTO> getTasks() {
+    public List<CrmTaskThinDTO> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<CrmTaskDTO> tasks) {
+    public void setTasks(List<CrmTaskThinDTO> tasks) {
         this.tasks = tasks;
     }
 
