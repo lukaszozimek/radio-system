@@ -6,7 +6,7 @@ import io.protone.application.util.TestUtil;
 import io.protone.traffic.domain.TraEmission;
 import io.protone.traffic.domain.TraMediaPlanPlaylist;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
-import io.protone.traffic.service.mediaplan.TraExcelMediaXlsPlan;
+import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -35,7 +35,7 @@ import static org.junit.Assert.assertNotNull;
 public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
     @Autowired
-    private TraExcelMediaXlsPlan traExcelMediaXlsPlan;
+    private TraExcelMediaParserXlsPlan traExcelMediaXlsPlan;
 
     @Before
     public void setup() throws InterruptedException {

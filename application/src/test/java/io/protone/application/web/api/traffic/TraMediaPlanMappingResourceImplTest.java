@@ -27,7 +27,7 @@ import io.protone.traffic.mapper.TraPlaylistMapper;
 import io.protone.traffic.repository.TraAdvertisementRepository;
 import io.protone.traffic.repository.TraOrderRepository;
 import io.protone.traffic.service.TraMediaPlanService;
-import io.protone.traffic.service.TraPlaylistMediaPlanMappingService;
+import io.protone.traffic.service.mediaplan.TraPlaylistMediaPlanMappingService;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import org.junit.Before;
 import org.junit.Test;

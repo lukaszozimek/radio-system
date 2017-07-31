@@ -4,9 +4,11 @@ package io.protone.application.service.traffic;
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
+import io.protone.traffic.api.dto.TraShuffleAdvertisementOptionalDTO;
 import io.protone.traffic.domain.TraEmission;
 import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.service.TraAdvertisementShuffleService;
+import io.protone.traffic.service.shuffle.exception.TrafficShuffleReindexException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +49,6 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
     private TraAdvertisementShuffleService traAdvertisementShuffleService;
 
 
-
     @Before
     public void setup() throws InterruptedException {
         buildMustHavePojos();
@@ -61,14 +62,15 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
     }
 
     @Test
-    public void tryShuffleCommercial() throws InterruptedException {
+    public void tryShuffleCommercial() throws InterruptedException, TrafficShuffleReindexException {
         //when
         TraShuffleAdvertisementDTO traShuffleAdvertisementDTO = new TraShuffleAdvertisementDTO();
+
         traShuffleAdvertisementDTO.setLibMediaItemThinDTO(libMediaItemToShuffleThinDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
         traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);
-
+        traShuffleAdvertisementDTO.setTraShuffleAdvertisementOptionalDTO(new TraShuffleAdvertisementOptionalDTO());
         //then
         List<TraPlaylist> traPlaylists = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertisementDTO, corNetwork.getShortcut(), corChannel.getShortcut());
 
