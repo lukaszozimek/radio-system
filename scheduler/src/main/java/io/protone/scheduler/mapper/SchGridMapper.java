@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {ScheduleMapper.class, })
+@Mapper(componentModel = "spring", uses = {SchScheduleMapper.class, })
 public interface SchGridMapper extends SchEntityMapper<SchGridDTO, SchGrid> {
 
     SchGridDTO toDto(SchGrid grid);
