@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
  * Mapper for the entity Schedule and its DTO ScheduleDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface ScheduleMapper extends SchEntityMapper<SchScheduleDTO, SchSchedule> {
+public interface SchScheduleMapper extends SchEntityMapper<SchScheduleDTO, SchSchedule> {
     
     @Mapping(target = "grids", ignore = true)
     SchSchedule toEntity(SchScheduleDTO scheduleDTO);
