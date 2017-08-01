@@ -28,6 +28,7 @@ public interface TraAdvertisementMapper {
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "industryId", target = "industry")
     @Mapping(source = "typeId", target = "type")
+    @Mapping(source = "libMediaItemThinDTOList", target="libMediaItems")
     TraAdvertisement DTO2DB(TraAdvertisementDTO traAdvertisementDTO, @Context CorNetwork corNetwork);
 
     default List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementDTO> traAdvertisementDTOs, CorNetwork networkId) {

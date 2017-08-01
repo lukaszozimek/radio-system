@@ -56,7 +56,7 @@ public interface TraMediaPlanResource {
                                                                   @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "getChannelTrafficMediaPlan", notes = "", response = TraMediaPlanDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getChannelTrafficMediaPlan", notes = "", response = TraMediaPlanDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
@@ -69,7 +69,7 @@ public interface TraMediaPlanResource {
                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "getAllChannelTrafficMediaPlan", notes = "", response = TraMediaPlanDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllChannelTrafficMediaPlan", notes = "", response = TraMediaPlanDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),

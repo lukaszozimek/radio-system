@@ -145,11 +145,10 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
 
         traPlaylistDTOs.stream().forEach(traPlaylistDTO -> {
-            if (traPlaylistDTO.getId() == null) {
                 TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
                 TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
                 traPlaylistDTOS.add(traPlaylistMapper.DB2DTO(entity));
-            }
+
         });
         return ResponseEntity.created(new URI(""))
             .body(traPlaylistDTOS);

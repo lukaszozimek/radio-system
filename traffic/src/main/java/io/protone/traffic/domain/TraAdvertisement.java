@@ -57,7 +57,7 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
     private CorDictionary type;
 
     @PodamExclude
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "lib_media_item_tra_advertisement",
             joinColumns = @JoinColumn(name = "tra_advertisement_id"),

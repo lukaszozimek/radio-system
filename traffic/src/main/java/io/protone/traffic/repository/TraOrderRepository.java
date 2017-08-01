@@ -5,6 +5,8 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.domain.TraOrder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,11 +18,36 @@ import java.util.List;
 public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
     List<TraOrder> findByNetwork(CorNetwork network);
 
-    List<TraOrder> findByNetwork_Shortcut(String network, Pageable pageable);
+
+    @Query("select o  from TraOrder as o " +
+            "left join fetch o.network as n " +
+            "left join fetch o.advertisment as a " +
+            "left join fetch o.status as stat " +
+            "left join fetch o.campaign as camp " +
+            "left join fetch o.customer as c " +
+            "left join fetch c.area as car " +
+            "left join fetch c.size as cs " +
+            "left join fetch c.range as cr " +
+            "left join fetch c.industry as ind " +
+            " where n.shortcut = :network")
+    List<TraOrder> findByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
 
     List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
 
-    TraOrder findByIdAndNetwork_Shortcut(Long id, String corNetwork);
+
+    @Query("select o  from TraOrder as o " +
+            "left join fetch o.network as n " +
+            "left join fetch o.advertisment as a " +
+            "left join fetch o.status as stat " +
+            "left join fetch o.campaign as camp " +
+            "left join fetch o.emissions as em " +
+            "left join fetch o.customer as c " +
+            "left join fetch c.area as car " +
+            "left join fetch c.size as cs " +
+            "left join fetch c.range as cr " +
+            "left join fetch c.industry as ind " +
+            "left join fetch o.customer as c where n.shortcut = :network and o.id =:id")
+    TraOrder findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String corNetwork);
 
     void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
 }
