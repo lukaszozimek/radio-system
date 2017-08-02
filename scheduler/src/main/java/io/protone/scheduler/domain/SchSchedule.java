@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,6 +30,7 @@ public class SchSchedule implements Serializable {
     @Column(name = "jhi_date")
     private LocalDate date;
 
+    @PodamExclude
     @OneToMany(mappedBy = "schedule")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
