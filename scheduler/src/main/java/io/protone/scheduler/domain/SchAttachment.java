@@ -1,9 +1,12 @@
 package io.protone.scheduler.domain;
 
+import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
+import uk.co.jemos.podam.common.PodamLongValue;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,12 +28,13 @@ public class SchAttachment implements Serializable {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "attachement_type")
-    private AttachmentTypeEnum attachementType;
+    @Column(name = "attachment_type")
+    private AttachmentTypeEnum attachmentType;
 
     @Column(name = "fade_start")
     private Long fadeStart;
 
+    @PodamLongValue
     @Column(name = "fade_in_length")
     private Long fadeInLength;
 
@@ -44,10 +48,12 @@ public class SchAttachment implements Serializable {
     @Column(name = "fade_type")
     private FadeTypeEnum fadeType;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
-    private SchMediaItem mediaItem;
+    private LibMediaItem mediaItem;
 
+    @PodamExclude
     @ManyToOne
     private SchEmission emission;
 
@@ -59,17 +65,17 @@ public class SchAttachment implements Serializable {
         this.id = id;
     }
 
-    public AttachmentTypeEnum getAttachementType() {
-        return attachementType;
+    public AttachmentTypeEnum getAttachmentType() {
+        return attachmentType;
     }
 
-    public SchAttachment attachementType(AttachmentTypeEnum attachementType) {
-        this.attachementType = attachementType;
+    public SchAttachment attachmentType(AttachmentTypeEnum attachementType) {
+        this.attachmentType = attachementType;
         return this;
     }
 
-    public void setAttachementType(AttachmentTypeEnum attachementType) {
-        this.attachementType = attachementType;
+    public void setAttachmentType(AttachmentTypeEnum attachmentType) {
+        this.attachmentType = attachmentType;
     }
 
     public Long getFadeStart() {
@@ -137,16 +143,16 @@ public class SchAttachment implements Serializable {
         this.fadeType = fadeType;
     }
 
-    public SchMediaItem getMediaItem() {
+    public LibMediaItem getMediaItem() {
         return mediaItem;
     }
 
-    public SchAttachment mediaItem(SchMediaItem mediaItem) {
+    public SchAttachment mediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
 
-    public void setMediaItem(SchMediaItem mediaItem) {
+    public void setMediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
     }
 
@@ -187,7 +193,7 @@ public class SchAttachment implements Serializable {
     public String toString() {
         return "Attachment{" +
             "id=" + getId() +
-            ", attachementType='" + getAttachementType() + "'" +
+            ", attachmentType='" + getAttachmentType() + "'" +
             ", fadeStart='" + getFadeStart() + "'" +
             ", fadeInLength='" + getFadeInLength() + "'" +
             ", volumeLevel='" + getVolumeLevel() + "'" +
