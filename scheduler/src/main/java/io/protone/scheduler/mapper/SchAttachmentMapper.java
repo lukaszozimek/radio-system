@@ -1,23 +1,17 @@
 package io.protone.scheduler.mapper;
 
-import io.protone.library.api.dto.LibAlbumDTO;
-import io.protone.library.domain.enumeration.LibAlbumTypeEnum;
-import io.protone.library.mapper.LibItemMapper;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
-import io.protone.scheduler.domain.*;
-
-import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
-import org.mapstruct.*;
+import io.protone.scheduler.domain.SchAttachment;
+import org.mapstruct.Mapper;
+import org.mapstruct.ValueMapping;
+import org.mapstruct.ValueMappings;
 
 /**
  * Mapper for the entity Attachment and its DTO AttachmentDTO.
  */
-@Mapper(componentModel = "spring", uses = {LibItemMapper.class, SchEmissionMapper.class, })
+@Mapper(componentModel = "spring", uses = {SchMediaItemMapper.class, SchEmissionMapper.class, })
 public interface SchAttachmentMapper extends SchEntityMapper<SchAttachmentDTO, SchAttachment> {
 
-    SchAttachmentDTO toDto(SchAttachment attachment);
-
-    SchAttachment toEntity(SchAttachmentDTO attachmentDTO);
     default SchAttachment fromId(Long id) {
         if (id == null) {
             return null;
@@ -27,22 +21,30 @@ public interface SchAttachmentMapper extends SchEntityMapper<SchAttachmentDTO, S
         return attachment;
     }
 
-    default SchAttachmentDTO.FadeTypeEnum mapFadeTypeEnum(FadeTypeEnum value) {
+    @ValueMappings({
+            @ValueMapping(source = "AT_VOICE_TRACK", target = "VOICE_TRACK"),
+            @ValueMapping(source = "AT_OTHER", target = "OTHER")
+    })
+    SchAttachmentDTO.AttachmentTypeEnum map(io.protone.scheduler.domain.enumeration.AttachmentTypeEnum source);
 
-        if (value.compareTo(FadeTypeEnum.FT_LINEAR) == 0)
-            return SchAttachmentDTO.FadeTypeEnum.LINEAR;
-        else if (value.compareTo(FadeTypeEnum.FT_LOGARITMIC) == 0)
-            return SchAttachmentDTO.FadeTypeEnum.LOGARITMIC;
-        else
-            return SchAttachmentDTO.FadeTypeEnum.OTHER;
-    }
+    @ValueMappings({
+            @ValueMapping(source = "VOICE_TRACK", target = "AT_VOICE_TRACK"),
+            @ValueMapping(source = "OTHER", target = "AT_OTHER")
+    })
+    io.protone.scheduler.domain.enumeration.AttachmentTypeEnum map(SchAttachmentDTO.AttachmentTypeEnum source);
 
-    default FadeTypeEnum mapFadeTypeEnum(SchAttachmentDTO.FadeTypeEnum value) {
-        if (value.compareTo(SchAttachmentDTO.FadeTypeEnum.LINEAR) == 0)
-            return FadeTypeEnum.FT_LINEAR;
-        else if (value.compareTo(SchAttachmentDTO.FadeTypeEnum.LOGARITMIC) == 0)
-            return FadeTypeEnum.FT_LOGARITMIC;
-        else
-            return FadeTypeEnum.FT_OTHER;
-    }
+    @ValueMappings({
+            @ValueMapping(source = "FT_LINEAR", target = "LINEAR"),
+            @ValueMapping(source = "FT_OTHER", target = "OTHER"),
+            @ValueMapping(source = "FT_LOGARITHMIC", target = "LOGARITHMIC")
+    })
+    SchAttachmentDTO.FadeTypeEnum map(io.protone.scheduler.domain.enumeration.FadeTypeEnum source);
+
+    @ValueMappings({
+            @ValueMapping(source = "LINEAR", target = "FT_LINEAR"),
+            @ValueMapping(source = "LOGARITHMIC", target = "FT_LOGARITHMIC"),
+            @ValueMapping(source = "OTHER", target = "FT_OTHER")
+    })
+    io.protone.scheduler.domain.enumeration.FadeTypeEnum map(SchAttachmentDTO.FadeTypeEnum source);
+
 }
