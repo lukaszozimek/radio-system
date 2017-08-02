@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import io.protone.scheduler.domain.enumeration.MarkerTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class SchMarker implements Serializable {
     @Column(name = "cue")
     private Long cue;
 
+    @PodamExclude
     @ManyToOne
     private SchMediaItem mediaItem;
 

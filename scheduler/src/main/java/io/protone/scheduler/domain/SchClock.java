@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,22 +29,27 @@ public class SchClock implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @PodamExclude
     @ManyToOne
     private SchGrid grid;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchQueueParams queueParams;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchTimeParams timeParams;
 
+    @PodamExclude
     @OneToMany(mappedBy = "clock")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();
 
+    @PodamExclude
     @OneToMany(mappedBy = "clock")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
