@@ -2,6 +2,8 @@ package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
+
 import java.time.LocalDate;;
 
 import javax.validation.constraints.NotNull;
@@ -15,6 +17,8 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchPlaylistDTO   {
+
+  @PodamExclude
   @JsonProperty("emissions")
   private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
 

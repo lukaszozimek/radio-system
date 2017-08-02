@@ -2,6 +2,8 @@ package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
+
 import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
@@ -19,8 +21,9 @@ public class SchScheduleDTO   {
   @JsonProperty("id")
   private Long id = null;
 
+  @PodamExclude
   @JsonProperty("schGridPT")
-  private SchGridThinDTO schGridPT = null;
+  private SchGridThinDTO schGrid = null;
 
   public SchScheduleDTO date(LocalDate date) {
     this.date = date;
@@ -59,8 +62,8 @@ public class SchScheduleDTO   {
     this.id = id;
   }
 
-  public SchScheduleDTO schGridPT(SchGridThinDTO schGridPT) {
-    this.schGridPT = schGridPT;
+  public SchScheduleDTO schGrid(SchGridThinDTO schGrid) {
+    this.schGrid = schGrid;
     return this;
   }
 
@@ -69,12 +72,12 @@ public class SchScheduleDTO   {
    * @return schGridPT
   **/
   @ApiModelProperty(value = "")
-  public SchGridThinDTO getSchGridPT() {
-    return schGridPT;
+  public SchGridThinDTO getSchGrid() {
+    return schGrid;
   }
 
-  public void setSchGridPT(SchGridThinDTO schGridPT) {
-    this.schGridPT = schGridPT;
+  public void setSchGrid(SchGridThinDTO schGrid) {
+    this.schGrid = schGrid;
   }
 
 
@@ -89,12 +92,12 @@ public class SchScheduleDTO   {
     SchScheduleDTO schScheduleDTO = (SchScheduleDTO) o;
     return Objects.equals(this.date, schScheduleDTO.date) &&
         Objects.equals(this.id, schScheduleDTO.id) &&
-        Objects.equals(this.schGridPT, schScheduleDTO.schGridPT);
+        Objects.equals(this.schGrid, schScheduleDTO.schGrid);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(date, id, schGridPT);
+    return Objects.hash(date, id, schGrid);
   }
 
   @Override
@@ -104,7 +107,7 @@ public class SchScheduleDTO   {
 
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    schGridPT: ").append(toIndentedString(schGridPT)).append("\n");
+    sb.append("    schGrid: ").append(toIndentedString(schGrid)).append("\n");
     sb.append("}");
     return sb.toString();
   }
