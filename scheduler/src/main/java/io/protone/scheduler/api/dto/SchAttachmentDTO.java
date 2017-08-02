@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.scheduler.api.dto.thin.SchLibItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
+import uk.co.jemos.podam.common.PodamLongValue;
 
 import java.util.Objects;
 
@@ -16,12 +18,18 @@ import java.util.Objects;
 public class SchAttachmentDTO   {
   @JsonProperty("attachmentType")
   private AttachmentTypeEnum attachmentType = null;
+
+  @PodamExclude
   @JsonProperty("mediaItem")
   private SchLibItemThinDTO mediaItem = null;
+
   @JsonProperty("fadeStart")
   private Long fadeStart = null;
-  @JsonProperty("fadeInLenght")
-  private Long fadeInLenght = null;
+
+  @PodamLongValue
+  @JsonProperty("fadeInLength")
+  private Long fadeInLength = null;
+
   @JsonProperty("volumeLevel")
   private Long volumeLevel = null;
   @JsonProperty("fadeOutLength")
@@ -83,22 +91,22 @@ public class SchAttachmentDTO   {
     this.fadeStart = fadeStart;
   }
 
-  public SchAttachmentDTO fadeInLenght(Long fadeInLenght) {
-    this.fadeInLenght = fadeInLenght;
+  public SchAttachmentDTO fadeInLength(Long fadeInLenght) {
+    this.fadeInLength = fadeInLenght;
     return this;
   }
 
    /**
    * Get fadeInLenght
-   * @return fadeInLenght
+   * @return fadeInLength
   **/
   @ApiModelProperty(value = "")
-  public Long getFadeInLenght() {
-    return fadeInLenght;
+  public Long getFadeInLength() {
+    return fadeInLength;
   }
 
-  public void setFadeInLenght(Long fadeInLenght) {
-    this.fadeInLenght = fadeInLenght;
+  public void setFadeInLength(Long fadeInLength) {
+    this.fadeInLength = fadeInLength;
   }
 
   public SchAttachmentDTO volumeLevel(Long volumeLevel) {
@@ -167,7 +175,7 @@ public class SchAttachmentDTO   {
     return Objects.equals(this.attachmentType, schAttachmentDTO.attachmentType) &&
         Objects.equals(this.mediaItem, schAttachmentDTO.mediaItem) &&
         Objects.equals(this.fadeStart, schAttachmentDTO.fadeStart) &&
-        Objects.equals(this.fadeInLenght, schAttachmentDTO.fadeInLenght) &&
+        Objects.equals(this.fadeInLength, schAttachmentDTO.fadeInLength) &&
         Objects.equals(this.volumeLevel, schAttachmentDTO.volumeLevel) &&
         Objects.equals(this.fadeOutLength, schAttachmentDTO.fadeOutLength) &&
         Objects.equals(this.fadeType, schAttachmentDTO.fadeType);
@@ -175,7 +183,7 @@ public class SchAttachmentDTO   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(attachmentType, mediaItem, fadeStart, fadeInLenght, volumeLevel, fadeOutLength, fadeType);
+    return Objects.hash(attachmentType, mediaItem, fadeStart, fadeInLength, volumeLevel, fadeOutLength, fadeType);
   }
 
   @Override
@@ -186,7 +194,7 @@ public class SchAttachmentDTO   {
     sb.append("    attachmentType: ").append(toIndentedString(attachmentType)).append("\n");
     sb.append("    mediaItem: ").append(toIndentedString(mediaItem)).append("\n");
     sb.append("    fadeStart: ").append(toIndentedString(fadeStart)).append("\n");
-    sb.append("    fadeInLenght: ").append(toIndentedString(fadeInLenght)).append("\n");
+    sb.append("    fadeInLength: ").append(toIndentedString(fadeInLength)).append("\n");
     sb.append("    volumeLevel: ").append(toIndentedString(volumeLevel)).append("\n");
     sb.append("    fadeOutLength: ").append(toIndentedString(fadeOutLength)).append("\n");
     sb.append("    fadeType: ").append(toIndentedString(fadeType)).append("\n");
@@ -242,7 +250,7 @@ public class SchAttachmentDTO   {
     public enum FadeTypeEnum {
         LINEAR("FT_LINEAR"),
 
-        LOGARITMIC("FT_LOGARITMIC"),
+        LOGARITHMIC("FT_LOGARITHMIC"),
 
         OTHER("FT_OTHER");
 

@@ -4,5 +4,5 @@ package io.protone.scheduler.domain.enumeration;
  * The FadeTypeEnum enumeration.
  */
 public enum FadeTypeEnum {
-    FT_LINEAR, FT_OTHER, FT_LOGARITMIC
+    FT_LINEAR, FT_OTHER, FT_LOGARITHMIC
 }
