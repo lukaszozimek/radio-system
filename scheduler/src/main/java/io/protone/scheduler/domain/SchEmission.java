@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,31 +29,38 @@ public class SchEmission implements Serializable {
     @Column(name = "seq")
     private Long seq;
 
+    @PodamExclude
     @ManyToOne
     private SchPlaylist playlist;
 
+    @PodamExclude
     @ManyToOne
     private SchClock clock;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchMediaItem mediaItem;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchQueueParams queueParams;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchTimeParams timeParams;
 
+    @PodamExclude
     @OneToMany(mappedBy = "emission")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchAttachment> attachments = new HashSet<>();
 
+    @PodamExclude
     @ManyToOne
-    private SchBlock block;
+    private SchBlock block = null;
 
     public Long getId() {
         return id;
@@ -166,7 +174,7 @@ public class SchEmission implements Serializable {
     }
 
     public SchBlock getBlock() {
-        return block;
+        return null; //block;
     }
 
     public SchEmission block(SchBlock block) {
@@ -175,7 +183,7 @@ public class SchEmission implements Serializable {
     }
 
     public void setBlock(SchBlock block) {
-        this.block = block;
+        //this.block = block;
     }
 
     @Override

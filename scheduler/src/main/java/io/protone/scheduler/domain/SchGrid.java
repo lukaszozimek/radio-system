@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,9 +37,11 @@ public class SchGrid implements Serializable {
     @Column(name = "short_name")
     private String shortName;
 
+    @PodamExclude
     @ManyToOne
     private SchSchedule schedule;
 
+    @PodamExclude
     @OneToMany(mappedBy = "grid")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

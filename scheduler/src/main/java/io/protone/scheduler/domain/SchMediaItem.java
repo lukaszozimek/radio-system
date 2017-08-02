@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class SchMediaItem implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @PodamExclude
     @Column(name = "jhi_library")
     private String library;
 
@@ -49,6 +51,7 @@ public class SchMediaItem implements Serializable {
     @Column(name = "stream")
     private String stream;
 
+    @PodamExclude
     @OneToMany(mappedBy = "mediaItem")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
