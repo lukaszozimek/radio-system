@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,25 +37,31 @@ public class SchBlock implements Serializable {
     @Column(name = "event_type")
     private EventTypeEnum eventType;
 
+    @PodamExclude
     @ManyToOne
     private SchClock clock;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchQueueParams queueParams;
 
+    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchTimeParams timeParams;
 
+    @PodamExclude
     @ManyToOne
     private SchBlock block;
 
+    @PodamExclude
     @OneToMany(mappedBy = "block")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();
 
+    @PodamExclude
     @OneToMany(mappedBy = "block")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -170,13 +177,11 @@ public class SchBlock implements Serializable {
 
     public SchBlock addBlock(SchBlock block) {
         this.blocks.add(block);
-        block.setBlock(this);
         return this;
     }
 
     public SchBlock removeBlock(SchBlock block) {
         this.blocks.remove(block);
-        block.setBlock(null);
         return this;
     }
 

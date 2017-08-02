@@ -24,4 +24,19 @@ public interface SchBlockMapper extends SchEntityMapper<SchBlockDTO, SchBlock> {
         block.setId(id);
         return block;
     }
+
+    @ValueMappings({
+            @ValueMapping(source = "MUSIC_IMPORT", target = "ET_MUSIC_IMPORT"),
+            @ValueMapping(source = "COMMERCIAL_IMPORT", target = "ET_COMMERCIAL_IMPORT"),
+            @ValueMapping(source = "OTHER", target = "ET_OTHER")
+    })
+    io.protone.scheduler.domain.enumeration.EventTypeEnum map(SchBlockDTO.SchEventTypeEnum source);
+
+    @ValueMappings({ //ET_MUSIC_IMPORT, ET_COMMERCIAL_IMPORT, ET_OTHER
+            @ValueMapping(source = "ET_MUSIC_IMPORT", target = "MUSIC_IMPORT"),
+            @ValueMapping(source = "ET_COMMERCIAL_IMPORT", target = "COMMERCIAL_IMPORT"),
+            @ValueMapping(source = "ET_OTHER", target = "OTHER")
+    })
+    SchBlockDTO.SchEventTypeEnum map(io.protone.scheduler.domain.enumeration.EventTypeEnum source);
+
 }

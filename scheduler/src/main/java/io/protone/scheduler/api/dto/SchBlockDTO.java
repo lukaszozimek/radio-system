@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,9 +18,12 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchBlockDTO   {
+
+  @PodamExclude
   @JsonProperty("blocks")
   private List<SchBlockDTO> blocks = new ArrayList<SchBlockDTO>();
 
+  @PodamExclude
   @JsonProperty("emissions")
   private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
 
@@ -37,8 +41,9 @@ public class SchBlockDTO   {
 
   @JsonProperty("queueParams")
   private SchQueueParamsDTO queueParams = null;
+
   @JsonProperty("schEventType")
-  private SchEventTypeEnum schEventType = null;
+  private SchEventTypeEnum eventType = null;
 
   public SchBlockDTO blocks(List<SchBlockDTO> blocks) {
     this.blocks = blocks;
@@ -178,8 +183,8 @@ public class SchBlockDTO   {
     this.queueParams = queueParams;
   }
 
-  public SchBlockDTO schEventType(SchEventTypeEnum schEventType) {
-    this.schEventType = schEventType;
+  public SchBlockDTO eventType(SchEventTypeEnum eventType) {
+    this.eventType = eventType;
     return this;
   }
 
@@ -188,12 +193,12 @@ public class SchBlockDTO   {
    * @return schEventType
   **/
   @ApiModelProperty(value = "")
-  public SchEventTypeEnum getSchEventType() {
-    return schEventType;
+  public SchEventTypeEnum getEventType() {
+    return eventType;
   }
 
-  public void setSchEventType(SchEventTypeEnum schEventType) {
-    this.schEventType = schEventType;
+  public void setEventType(SchEventTypeEnum eventType) {
+    this.eventType = eventType;
   }
 
   @Override
@@ -212,12 +217,12 @@ public class SchBlockDTO   {
         Objects.equals(this.name, schBlockDTO.name) &&
         Objects.equals(this.timeParams, schBlockDTO.timeParams) &&
         Objects.equals(this.queueParams, schBlockDTO.queueParams) &&
-        Objects.equals(this.schEventType, schBlockDTO.schEventType);
+        Objects.equals(this.eventType, schBlockDTO.eventType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(blocks, emissions, id, length, name, timeParams, queueParams, schEventType);
+    return Objects.hash(blocks, emissions, id, length, name, timeParams, queueParams, eventType);
   }
 
   @Override
@@ -232,7 +237,7 @@ public class SchBlockDTO   {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
     sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
-    sb.append("    schEventType: ").append(toIndentedString(schEventType)).append("\n");
+    sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
     sb.append("}");
     return sb.toString();
   }
