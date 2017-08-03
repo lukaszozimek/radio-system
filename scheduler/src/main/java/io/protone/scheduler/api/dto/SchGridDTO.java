@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -173,45 +174,5 @@ public class SchGridDTO   {
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-     * Gets or Sets dayOfWeek
-     */
-    public enum DayOfWeekEnum {
-        MONDAY("MONDAY"),
-
-        TUESDAY("TUESDAY"),
-
-        WEDNESDAY("WEDNESDAY"),
-
-        THURSDAY("THURSDAY"),
-
-        FRIDAY("FRIDAY"),
-
-        SATURDAY("SATURDAY"),
-
-        SUNDAY("SUNDAY");
-
-        private String value;
-
-        DayOfWeekEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static DayOfWeekEnum fromValue(String text) {
-            for (DayOfWeekEnum b : DayOfWeekEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
 }
 

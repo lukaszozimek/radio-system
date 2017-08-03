@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -43,7 +44,7 @@ public class SchBlockDTO   {
   private SchQueueParamsDTO queueParams = null;
 
   @JsonProperty("schEventType")
-  private SchEventTypeEnum eventType = null;
+  private EventTypeEnum eventType = null;
 
   public SchBlockDTO blocks(List<SchBlockDTO> blocks) {
     this.blocks = blocks;
@@ -183,7 +184,7 @@ public class SchBlockDTO   {
     this.queueParams = queueParams;
   }
 
-  public SchBlockDTO eventType(SchEventTypeEnum eventType) {
+  public SchBlockDTO eventType(EventTypeEnum eventType) {
     this.eventType = eventType;
     return this;
   }
@@ -193,11 +194,11 @@ public class SchBlockDTO   {
    * @return schEventType
   **/
   @ApiModelProperty(value = "")
-  public SchEventTypeEnum getEventType() {
+  public EventTypeEnum getEventType() {
     return eventType;
   }
 
-  public void setEventType(SchEventTypeEnum eventType) {
+  public void setEventType(EventTypeEnum eventType) {
     this.eventType = eventType;
   }
 
@@ -253,37 +254,5 @@ public class SchBlockDTO   {
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-     * Gets or Sets schEventType
-     */
-    public enum SchEventTypeEnum {
-        MUSIC_IMPORT("ET_MUSIC_IMPORT"),
-
-        COMMERCIAL_IMPORT("ET_COMMERCIAL_IMPORT"),
-
-        OTHER("ET_OTHER");
-
-        private String value;
-
-        SchEventTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static SchEventTypeEnum fromValue(String text) {
-            for (SchEventTypeEnum b : SchEventTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
 }
 

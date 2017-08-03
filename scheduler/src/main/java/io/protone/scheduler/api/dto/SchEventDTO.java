@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -196,41 +197,5 @@ public class SchEventDTO   {
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-     * Gets or Sets eventType
-     */
-    public enum EventTypeEnum {
-        MUSIC_IMPORT("ET_MUSIC_IMPORT"),
-
-        COMMERCIAL_IMPORT("ET_COMMERCIAL_IMPORT"),
-
-        AUTOMATION("ET_AUTOMATION"),
-
-        AUDIO("ET_AUDIO"),
-
-        OTHER("ET_OTHER");
-
-        private String value;
-
-        EventTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static EventTypeEnum fromValue(String text) {
-            for (EventTypeEnum b : EventTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
 }
 
