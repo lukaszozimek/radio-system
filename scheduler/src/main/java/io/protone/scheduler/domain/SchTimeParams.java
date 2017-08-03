@@ -44,17 +44,21 @@ public class SchTimeParams implements Serializable {
         return startTime;
     }
 
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+    }
+
     public SchTimeParams startTime(ZonedDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-    }
-
     public ZonedDateTime getEndTime() {
         return endTime;
+    }
+
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public SchTimeParams endTime(ZonedDateTime endTime) {
@@ -62,21 +66,17 @@ public class SchTimeParams implements Serializable {
         return this;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
-    }
-
     public Integer getRelativeDelay() {
         return relativeDelay;
+    }
+
+    public void setRelativeDelay(Integer relativeDelay) {
+        this.relativeDelay = relativeDelay;
     }
 
     public SchTimeParams relativeDelay(Integer relativeDelay) {
         this.relativeDelay = relativeDelay;
         return this;
-    }
-
-    public void setRelativeDelay(Integer relativeDelay) {
-        this.relativeDelay = relativeDelay;
     }
 
     @Override
@@ -102,10 +102,10 @@ public class SchTimeParams implements Serializable {
     @Override
     public String toString() {
         return "TimeParams{" +
-            "id=" + getId() +
-            ", startTime='" + getStartTime() + "'" +
-            ", endTime='" + getEndTime() + "'" +
-            ", relativeDelay='" + getRelativeDelay() + "'" +
-            "}";
+                "id=" + getId() +
+                ", startTime='" + getStartTime() + "'" +
+                ", endTime='" + getEndTime() + "'" +
+                ", relativeDelay='" + getRelativeDelay() + "'" +
+                "}";
     }
 }

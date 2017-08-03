@@ -69,17 +69,21 @@ public class SchMediaItem implements Serializable {
         return library;
     }
 
+    public void setLibrary(String library) {
+        this.library = library;
+    }
+
     public SchMediaItem library(String library) {
         this.library = library;
         return this;
     }
 
-    public void setLibrary(String library) {
-        this.library = library;
-    }
-
     public String getIdx() {
         return idx;
+    }
+
+    public void setIdx(String idx) {
+        this.idx = idx;
     }
 
     public SchMediaItem idx(String idx) {
@@ -87,12 +91,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setIdx(String idx) {
-        this.idx = idx;
-    }
-
     public String getArtist() {
         return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public SchMediaItem artist(String artist) {
@@ -100,12 +104,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
     public String getAlbum() {
         return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public SchMediaItem album(String album) {
@@ -113,12 +117,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
     public String getCover() {
         return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public SchMediaItem cover(String cover) {
@@ -126,12 +130,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public SchMediaItem length(Long length) {
@@ -139,12 +143,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public SchMediaItem name(String name) {
@@ -152,12 +156,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getStream() {
         return stream;
+    }
+
+    public void setStream(String stream) {
+        this.stream = stream;
     }
 
     public SchMediaItem stream(String stream) {
@@ -165,12 +169,12 @@ public class SchMediaItem implements Serializable {
         return this;
     }
 
-    public void setStream(String stream) {
-        this.stream = stream;
-    }
-
     public Set<SchMarker> getMarkers() {
         return markers;
+    }
+
+    public void setMarkers(Set<SchMarker> markers) {
+        this.markers = markers;
     }
 
     public SchMediaItem markers(Set<SchMarker> markers) {
@@ -188,10 +192,6 @@ public class SchMediaItem implements Serializable {
         this.markers.remove(marker);
         marker.setMediaItem(null);
         return this;
-    }
-
-    public void setMarkers(Set<SchMarker> markers) {
-        this.markers = markers;
     }
 
     @Override
@@ -217,15 +217,15 @@ public class SchMediaItem implements Serializable {
     @Override
     public String toString() {
         return "MediaItem{" +
-            "id=" + getId() +
-            ", library='" + getLibrary() + "'" +
-            ", idx='" + getIdx() + "'" +
-            ", artist='" + getArtist() + "'" +
-            ", album='" + getAlbum() + "'" +
-            ", cover='" + getCover() + "'" +
-            ", length='" + getLength() + "'" +
-            ", name='" + getName() + "'" +
-            ", stream='" + getStream() + "'" +
-            "}";
+                "id=" + getId() +
+                ", library='" + getLibrary() + "'" +
+                ", idx='" + getIdx() + "'" +
+                ", artist='" + getArtist() + "'" +
+                ", album='" + getAlbum() + "'" +
+                ", cover='" + getCover() + "'" +
+                ", length='" + getLength() + "'" +
+                ", name='" + getName() + "'" +
+                ", stream='" + getStream() + "'" +
+                "}";
     }
 }

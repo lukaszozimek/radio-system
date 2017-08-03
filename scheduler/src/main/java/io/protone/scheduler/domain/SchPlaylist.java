@@ -48,17 +48,21 @@ public class SchPlaylist implements Serializable {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public SchPlaylist date(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public Set<SchEmission> getEmissions() {
         return emissions;
+    }
+
+    public void setEmissions(Set<SchEmission> emissions) {
+        this.emissions = emissions;
     }
 
     public SchPlaylist emissions(Set<SchEmission> emissions) {
@@ -76,10 +80,6 @@ public class SchPlaylist implements Serializable {
         this.emissions.remove(emission);
         emission.setPlaylist(null);
         return this;
-    }
-
-    public void setEmissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
     }
 
     @Override
@@ -105,8 +105,8 @@ public class SchPlaylist implements Serializable {
     @Override
     public String toString() {
         return "Playlist{" +
-            "id=" + getId() +
-            ", date='" + getDate() + "'" +
-            "}";
+                "id=" + getId() +
+                ", date='" + getDate() + "'" +
+                "}";
     }
 }

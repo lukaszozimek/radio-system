@@ -69,17 +69,21 @@ public class SchAttachment implements Serializable {
         return attachmentType;
     }
 
+    public void setAttachmentType(AttachmentTypeEnum attachmentType) {
+        this.attachmentType = attachmentType;
+    }
+
     public SchAttachment attachmentType(AttachmentTypeEnum attachementType) {
         this.attachmentType = attachementType;
         return this;
     }
 
-    public void setAttachmentType(AttachmentTypeEnum attachmentType) {
-        this.attachmentType = attachmentType;
-    }
-
     public Long getFadeStart() {
         return fadeStart;
+    }
+
+    public void setFadeStart(Long fadeStart) {
+        this.fadeStart = fadeStart;
     }
 
     public SchAttachment fadeStart(Long fadeStart) {
@@ -87,12 +91,12 @@ public class SchAttachment implements Serializable {
         return this;
     }
 
-    public void setFadeStart(Long fadeStart) {
-        this.fadeStart = fadeStart;
-    }
-
     public Long getFadeInLength() {
         return fadeInLength;
+    }
+
+    public void setFadeInLength(Long fadeInLength) {
+        this.fadeInLength = fadeInLength;
     }
 
     public SchAttachment fadeInLength(Long fadeInLength) {
@@ -100,12 +104,12 @@ public class SchAttachment implements Serializable {
         return this;
     }
 
-    public void setFadeInLength(Long fadeInLength) {
-        this.fadeInLength = fadeInLength;
-    }
-
     public Long getVolumeLevel() {
         return volumeLevel;
+    }
+
+    public void setVolumeLevel(Long volumeLevel) {
+        this.volumeLevel = volumeLevel;
     }
 
     public SchAttachment volumeLevel(Long volumeLevel) {
@@ -113,12 +117,12 @@ public class SchAttachment implements Serializable {
         return this;
     }
 
-    public void setVolumeLevel(Long volumeLevel) {
-        this.volumeLevel = volumeLevel;
-    }
-
     public Long getFadeOutLength() {
         return fadeOutLength;
+    }
+
+    public void setFadeOutLength(Long fadeOutLength) {
+        this.fadeOutLength = fadeOutLength;
     }
 
     public SchAttachment fadeOutLength(Long fadeOutLength) {
@@ -126,12 +130,12 @@ public class SchAttachment implements Serializable {
         return this;
     }
 
-    public void setFadeOutLength(Long fadeOutLength) {
-        this.fadeOutLength = fadeOutLength;
-    }
-
     public FadeTypeEnum getFadeType() {
         return fadeType;
+    }
+
+    public void setFadeType(FadeTypeEnum fadeType) {
+        this.fadeType = fadeType;
     }
 
     public SchAttachment fadeType(FadeTypeEnum fadeType) {
@@ -139,12 +143,12 @@ public class SchAttachment implements Serializable {
         return this;
     }
 
-    public void setFadeType(FadeTypeEnum fadeType) {
-        this.fadeType = fadeType;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(LibMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
     }
 
     public SchAttachment mediaItem(LibMediaItem mediaItem) {
@@ -152,21 +156,17 @@ public class SchAttachment implements Serializable {
         return this;
     }
 
-    public void setMediaItem(LibMediaItem mediaItem) {
-        this.mediaItem = mediaItem;
-    }
-
     public SchEmission getEmission() {
         return emission;
+    }
+
+    public void setEmission(SchEmission emission) {
+        this.emission = emission;
     }
 
     public SchAttachment emission(SchEmission emission) {
         this.emission = emission;
         return this;
-    }
-
-    public void setEmission(SchEmission emission) {
-        this.emission = emission;
     }
 
     @Override
@@ -192,13 +192,13 @@ public class SchAttachment implements Serializable {
     @Override
     public String toString() {
         return "Attachment{" +
-            "id=" + getId() +
-            ", attachmentType='" + getAttachmentType() + "'" +
-            ", fadeStart='" + getFadeStart() + "'" +
-            ", fadeInLength='" + getFadeInLength() + "'" +
-            ", volumeLevel='" + getVolumeLevel() + "'" +
-            ", fadeOutLength='" + getFadeOutLength() + "'" +
-            ", fadeType='" + getFadeType() + "'" +
-            "}";
+                "id=" + getId() +
+                ", attachmentType='" + getAttachmentType() + "'" +
+                ", fadeStart='" + getFadeStart() + "'" +
+                ", fadeInLength='" + getFadeInLength() + "'" +
+                ", volumeLevel='" + getVolumeLevel() + "'" +
+                ", fadeOutLength='" + getFadeOutLength() + "'" +
+                ", fadeType='" + getFadeType() + "'" +
+                "}";
     }
 }

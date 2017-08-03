@@ -79,17 +79,21 @@ public class SchBlock implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public SchBlock name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public SchBlock length(Long length) {
@@ -97,12 +101,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
     public EventTypeEnum getEventType() {
         return eventType;
+    }
+
+    public void setEventType(EventTypeEnum eventType) {
+        this.eventType = eventType;
     }
 
     public SchBlock eventType(EventTypeEnum eventType) {
@@ -110,12 +114,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setEventType(EventTypeEnum eventType) {
-        this.eventType = eventType;
-    }
-
     public SchClock getClock() {
         return clock;
+    }
+
+    public void setClock(SchClock clock) {
+        this.clock = clock;
     }
 
     public SchBlock clock(SchClock clock) {
@@ -123,12 +127,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setClock(SchClock clock) {
-        this.clock = clock;
-    }
-
     public SchQueueParams getQueueParams() {
         return queueParams;
+    }
+
+    public void setQueueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
     }
 
     public SchBlock queueParams(SchQueueParams queueParams) {
@@ -136,12 +140,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
     public SchTimeParams getTimeParams() {
         return timeParams;
+    }
+
+    public void setTimeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
     }
 
     public SchBlock timeParams(SchTimeParams timeParams) {
@@ -149,12 +153,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
     public SchBlock getBlock() {
         return block;
+    }
+
+    public void setBlock(SchBlock block) {
+        this.block = block;
     }
 
     public SchBlock block(SchBlock block) {
@@ -162,12 +166,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setBlock(SchBlock block) {
-        this.block = block;
-    }
-
     public Set<SchBlock> getBlocks() {
         return blocks;
+    }
+
+    public void setBlocks(Set<SchBlock> blocks) {
+        this.blocks = blocks;
     }
 
     public SchBlock blocks(Set<SchBlock> blocks) {
@@ -185,12 +189,12 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public void setBlocks(Set<SchBlock> blocks) {
-        this.blocks = blocks;
-    }
-
     public Set<SchEmission> getEmissions() {
         return emissions;
+    }
+
+    public void setEmissions(Set<SchEmission> emissions) {
+        this.emissions = emissions;
     }
 
     public SchBlock emissions(Set<SchEmission> emissions) {
@@ -208,10 +212,6 @@ public class SchBlock implements Serializable {
         this.emissions.remove(emission);
         emission.setBlock(null);
         return this;
-    }
-
-    public void setEmissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
     }
 
     @Override
@@ -237,10 +237,10 @@ public class SchBlock implements Serializable {
     @Override
     public String toString() {
         return "Block{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", length='" + getLength() + "'" +
-            ", eventType='" + getEventType() + "'" +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", length='" + getLength() + "'" +
+                ", eventType='" + getEventType() + "'" +
+                "}";
     }
 }

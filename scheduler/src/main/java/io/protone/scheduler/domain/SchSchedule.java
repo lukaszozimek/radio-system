@@ -48,17 +48,21 @@ public class SchSchedule implements Serializable {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public SchSchedule date(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public Set<SchGrid> getGrids() {
         return grids;
+    }
+
+    public void setGrids(Set<SchGrid> grids) {
+        this.grids = grids;
     }
 
     public SchSchedule grids(Set<SchGrid> grids) {
@@ -76,10 +80,6 @@ public class SchSchedule implements Serializable {
         this.grids.remove(grid);
         grid.setSchedule(null);
         return this;
-    }
-
-    public void setGrids(Set<SchGrid> grids) {
-        this.grids = grids;
     }
 
     @Override
@@ -105,8 +105,8 @@ public class SchSchedule implements Serializable {
     @Override
     public String toString() {
         return "Schedule{" +
-            "id=" + getId() +
-            ", date='" + getDate() + "'" +
-            "}";
+                "id=" + getId() +
+                ", date='" + getDate() + "'" +
+                "}";
     }
 }
