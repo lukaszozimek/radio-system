@@ -59,17 +59,21 @@ public class SchGrid implements Serializable {
         return dayOfWeek;
     }
 
+    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
     public SchGrid dayOfWeek(DayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         return this;
     }
 
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public SchGrid name(String name) {
@@ -77,12 +81,12 @@ public class SchGrid implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getShortName() {
         return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public SchGrid shortName(String shortName) {
@@ -90,12 +94,12 @@ public class SchGrid implements Serializable {
         return this;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public SchSchedule getSchedule() {
         return schedule;
+    }
+
+    public void setSchedule(SchSchedule schedule) {
+        this.schedule = schedule;
     }
 
     public SchGrid schedule(SchSchedule schedule) {
@@ -103,12 +107,12 @@ public class SchGrid implements Serializable {
         return this;
     }
 
-    public void setSchedule(SchSchedule schedule) {
-        this.schedule = schedule;
-    }
-
     public Set<SchClock> getClocks() {
         return clocks;
+    }
+
+    public void setClocks(Set<SchClock> clocks) {
+        this.clocks = clocks;
     }
 
     public SchGrid clocks(Set<SchClock> clocks) {
@@ -124,10 +128,6 @@ public class SchGrid implements Serializable {
     public SchGrid removeClock(SchClock clock) {
         this.clocks.remove(clock);
         return this;
-    }
-
-    public void setClocks(Set<SchClock> clocks) {
-        this.clocks = clocks;
     }
 
     @Override
@@ -153,10 +153,10 @@ public class SchGrid implements Serializable {
     @Override
     public String toString() {
         return "Grid{" +
-            "id=" + getId() +
-            ", dayOfWeek='" + getDayOfWeek() + "'" +
-            ", name='" + getName() + "'" +
-            ", shortName='" + getShortName() + "'" +
-            "}";
+                "id=" + getId() +
+                ", dayOfWeek='" + getDayOfWeek() + "'" +
+                ", name='" + getName() + "'" +
+                ", shortName='" + getShortName() + "'" +
+                "}";
     }
 }

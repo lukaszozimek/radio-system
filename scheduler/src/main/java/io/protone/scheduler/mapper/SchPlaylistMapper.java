@@ -3,7 +3,6 @@ package io.protone.scheduler.mapper;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchPlaylist;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity Playlist and its DTO PlaylistDTO.

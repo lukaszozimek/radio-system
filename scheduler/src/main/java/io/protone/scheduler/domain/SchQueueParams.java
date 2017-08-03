@@ -52,17 +52,21 @@ public class SchQueueParams implements Serializable {
         return seq;
     }
 
+    public void setSeq(Long seq) {
+        this.seq = seq;
+    }
+
     public SchQueueParams seq(Long seq) {
         this.seq = seq;
         return this;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
-    }
-
     public Long getPreviousId() {
         return previousId;
+    }
+
+    public void setPreviousId(Long previousId) {
+        this.previousId = previousId;
     }
 
     public SchQueueParams previousId(Long previousId) {
@@ -70,12 +74,12 @@ public class SchQueueParams implements Serializable {
         return this;
     }
 
-    public void setPreviousId(Long previousId) {
-        this.previousId = previousId;
-    }
-
     public ObjectTypeEnum getPreviousType() {
         return previousType;
+    }
+
+    public void setPreviousType(ObjectTypeEnum previousType) {
+        this.previousType = previousType;
     }
 
     public SchQueueParams previousType(ObjectTypeEnum previousType) {
@@ -83,12 +87,12 @@ public class SchQueueParams implements Serializable {
         return this;
     }
 
-    public void setPreviousType(ObjectTypeEnum previousType) {
-        this.previousType = previousType;
-    }
-
     public Long getNextId() {
         return nextId;
+    }
+
+    public void setNextId(Long nextId) {
+        this.nextId = nextId;
     }
 
     public SchQueueParams nextId(Long nextId) {
@@ -96,21 +100,17 @@ public class SchQueueParams implements Serializable {
         return this;
     }
 
-    public void setNextId(Long nextId) {
-        this.nextId = nextId;
-    }
-
     public ObjectTypeEnum getNextType() {
         return nextType;
+    }
+
+    public void setNextType(ObjectTypeEnum nextType) {
+        this.nextType = nextType;
     }
 
     public SchQueueParams nextType(ObjectTypeEnum nextType) {
         this.nextType = nextType;
         return this;
-    }
-
-    public void setNextType(ObjectTypeEnum nextType) {
-        this.nextType = nextType;
     }
 
     @Override
@@ -136,12 +136,12 @@ public class SchQueueParams implements Serializable {
     @Override
     public String toString() {
         return "QueueParams{" +
-            "id=" + getId() +
-            ", seq='" + getSeq() + "'" +
-            ", previousId='" + getPreviousId() + "'" +
-            ", previousType='" + getPreviousType() + "'" +
-            ", nextId='" + getNextId() + "'" +
-            ", nextType='" + getNextType() + "'" +
-            "}";
+                "id=" + getId() +
+                ", seq='" + getSeq() + "'" +
+                ", previousId='" + getPreviousId() + "'" +
+                ", previousType='" + getPreviousType() + "'" +
+                ", nextId='" + getNextId() + "'" +
+                ", nextType='" + getNextType() + "'" +
+                "}";
     }
 }

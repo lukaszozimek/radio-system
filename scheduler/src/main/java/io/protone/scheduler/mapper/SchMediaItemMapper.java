@@ -6,15 +6,15 @@ import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.api.dto.thin.SchLibItemThinDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity MediaItem and its DTO MediaItemDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface SchMediaItemMapper extends SchEntityMapper <SchLibItemThinDTO, LibMediaItem> {
+public interface SchMediaItemMapper extends SchEntityMapper<SchLibItemThinDTO, LibMediaItem> {
 
     SchLibItemThinDTO toDto(LibMediaItem attachment);
+
     LibMediaItem toEntity(SchLibItemThinDTO attachmentDTO);
 
     default String map(LibLibrary value) {

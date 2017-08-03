@@ -67,17 +67,21 @@ public class SchClock implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public SchClock name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public SchGrid getGrid() {
         return grid;
+    }
+
+    public void setGrid(SchGrid grid) {
+        this.grid = grid;
     }
 
     public SchClock grid(SchGrid grid) {
@@ -85,12 +89,12 @@ public class SchClock implements Serializable {
         return this;
     }
 
-    public void setGrid(SchGrid grid) {
-        this.grid = grid;
-    }
-
     public SchQueueParams getQueueParams() {
         return queueParams;
+    }
+
+    public void setQueueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
     }
 
     public SchClock queueParams(SchQueueParams queueParams) {
@@ -98,12 +102,12 @@ public class SchClock implements Serializable {
         return this;
     }
 
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
     public SchTimeParams getTimeParams() {
         return timeParams;
+    }
+
+    public void setTimeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
     }
 
     public SchClock timeParams(SchTimeParams timeParams) {
@@ -111,12 +115,12 @@ public class SchClock implements Serializable {
         return this;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
     public Set<SchBlock> getBlocks() {
         return blocks;
+    }
+
+    public void setBlocks(Set<SchBlock> blocks) {
+        this.blocks = blocks;
     }
 
     public SchClock blocks(Set<SchBlock> blocks) {
@@ -134,12 +138,12 @@ public class SchClock implements Serializable {
         return this;
     }
 
-    public void setBlocks(Set<SchBlock> blocks) {
-        this.blocks = blocks;
-    }
-
     public Set<SchEmission> getEmissions() {
         return emissions;
+    }
+
+    public void setEmissions(Set<SchEmission> emissions) {
+        this.emissions = emissions;
     }
 
     public SchClock emissions(Set<SchEmission> emissions) {
@@ -155,10 +159,6 @@ public class SchClock implements Serializable {
     public SchClock removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
         return this;
-    }
-
-    public void setEmissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
     }
 
     @Override
@@ -184,8 +184,8 @@ public class SchClock implements Serializable {
     @Override
     public String toString() {
         return "Clock{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            "}";
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                "}";
     }
 }

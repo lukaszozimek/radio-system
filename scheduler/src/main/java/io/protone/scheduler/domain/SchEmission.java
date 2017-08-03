@@ -72,17 +72,21 @@ public class SchEmission implements Serializable {
         return seq;
     }
 
+    public void setSeq(Long seq) {
+        this.seq = seq;
+    }
+
     public SchEmission seq(Long seq) {
         this.seq = seq;
         return this;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
-    }
-
     public SchPlaylist getPlaylist() {
         return playlist;
+    }
+
+    public void setPlaylist(SchPlaylist playlist) {
+        this.playlist = playlist;
     }
 
     public SchEmission playlist(SchPlaylist playlist) {
@@ -90,12 +94,12 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public void setPlaylist(SchPlaylist playlist) {
-        this.playlist = playlist;
-    }
-
     public SchClock getClock() {
         return clock;
+    }
+
+    public void setClock(SchClock clock) {
+        this.clock = clock;
     }
 
     public SchEmission clock(SchClock clock) {
@@ -103,12 +107,12 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public void setClock(SchClock clock) {
-        this.clock = clock;
-    }
-
     public SchMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(SchMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
     }
 
     public SchEmission mediaItem(SchMediaItem mediaItem) {
@@ -116,12 +120,12 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public void setMediaItem(SchMediaItem mediaItem) {
-        this.mediaItem = mediaItem;
-    }
-
     public SchQueueParams getQueueParams() {
         return queueParams;
+    }
+
+    public void setQueueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
     }
 
     public SchEmission queueParams(SchQueueParams queueParams) {
@@ -129,12 +133,12 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
     public SchTimeParams getTimeParams() {
         return timeParams;
+    }
+
+    public void setTimeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
     }
 
     public SchEmission timeParams(SchTimeParams timeParams) {
@@ -142,12 +146,12 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
     public Set<SchAttachment> getAttachments() {
         return attachments;
+    }
+
+    public void setAttachments(Set<SchAttachment> attachments) {
+        this.attachments = attachments;
     }
 
     public SchEmission attachments(Set<SchAttachment> attachments) {
@@ -167,21 +171,17 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public void setAttachments(Set<SchAttachment> attachments) {
-        this.attachments = attachments;
-    }
-
     public SchBlock getBlock() {
         return null; //block;
+    }
+
+    public void setBlock(SchBlock block) {
+        //this.block = block;
     }
 
     public SchEmission block(SchBlock block) {
         this.block = block;
         return this;
-    }
-
-    public void setBlock(SchBlock block) {
-        //this.block = block;
     }
 
     @Override
@@ -207,8 +207,8 @@ public class SchEmission implements Serializable {
     @Override
     public String toString() {
         return "Emission{" +
-            "id=" + getId() +
-            ", seq='" + getSeq() + "'" +
-            "}";
+                "id=" + getId() +
+                ", seq='" + getSeq() + "'" +
+                "}";
     }
 }

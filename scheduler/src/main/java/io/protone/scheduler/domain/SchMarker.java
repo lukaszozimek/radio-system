@@ -50,17 +50,21 @@ public class SchMarker implements Serializable {
         return markerType;
     }
 
+    public void setMarkerType(MarkerTypeEnum markerType) {
+        this.markerType = markerType;
+    }
+
     public SchMarker markerType(MarkerTypeEnum markerType) {
         this.markerType = markerType;
         return this;
     }
 
-    public void setMarkerType(MarkerTypeEnum markerType) {
-        this.markerType = markerType;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public SchMarker name(String name) {
@@ -68,12 +72,12 @@ public class SchMarker implements Serializable {
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getCue() {
         return cue;
+    }
+
+    public void setCue(Long cue) {
+        this.cue = cue;
     }
 
     public SchMarker cue(Long cue) {
@@ -81,21 +85,17 @@ public class SchMarker implements Serializable {
         return this;
     }
 
-    public void setCue(Long cue) {
-        this.cue = cue;
-    }
-
     public SchMediaItem getMediaItem() {
         return mediaItem;
+    }
+
+    public void setMediaItem(SchMediaItem mediaItem) {
+        this.mediaItem = mediaItem;
     }
 
     public SchMarker mediaItem(SchMediaItem mediaItem) {
         this.mediaItem = mediaItem;
         return this;
-    }
-
-    public void setMediaItem(SchMediaItem mediaItem) {
-        this.mediaItem = mediaItem;
     }
 
     @Override
@@ -121,10 +121,10 @@ public class SchMarker implements Serializable {
     @Override
     public String toString() {
         return "Marker{" +
-            "id=" + getId() +
-            ", markerType='" + getMarkerType() + "'" +
-            ", name='" + getName() + "'" +
-            ", cue='" + getCue() + "'" +
-            "}";
+                "id=" + getId() +
+                ", markerType='" + getMarkerType() + "'" +
+                ", name='" + getName() + "'" +
+                ", cue='" + getCue() + "'" +
+                "}";
     }
 }

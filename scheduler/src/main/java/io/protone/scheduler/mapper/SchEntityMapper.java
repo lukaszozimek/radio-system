@@ -1,13 +1,12 @@
 package io.protone.scheduler.mapper;
 
-import org.mapstruct.Mapper;
-
 import java.util.List;
 
 /**
  * Contract for a generic dto to entity mapper.
- @param <D> - DTO type parameter.
- @param <E> - Entity type parameter.
+ *
+ * @param <D> - DTO type parameter.
+ * @param <E> - Entity type parameter.
  */
 public interface SchEntityMapper<D, E> {
 
@@ -15,7 +14,7 @@ public interface SchEntityMapper<D, E> {
 
     public D toDto(E entity);
 
-    public List <E> toEntity(List<D> dtoList);
+    public List<E> toEntity(List<D> dtoList);
 
-    public List <D> toDto(List<E> entityList);
+    public List<D> toDto(List<E> entityList);
 }

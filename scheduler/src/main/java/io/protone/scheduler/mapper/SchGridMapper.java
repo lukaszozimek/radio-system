@@ -5,19 +5,18 @@ import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchGrid;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchScheduleMapper.class, })
+@Mapper(componentModel = "spring", uses = {SchScheduleMapper.class,})
 public interface SchGridMapper extends SchEntityMapper<SchGridDTO, SchGrid> {
 
     SchGridDTO toDto(SchGrid grid);
+
     SchGrid toEntity(SchGridDTO gridDTO);
 
     default SchGrid fromId(Long id) {
