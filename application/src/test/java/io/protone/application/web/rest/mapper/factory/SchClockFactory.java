@@ -24,9 +24,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@SuppressWarnings("ALL")
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProtoneApp.class)
 public class SchClockFactory {
 
     private static final PodamFactory factory = new PodamFactoryImpl();
