@@ -10,18 +10,4 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = {SchGridMapper.class, SchQueueParamsMapper.class, SchTimeParamsMapper.class, })
 public interface SchClockMapper extends SchEntityMapper<SchClockDTO, SchClock> {
-
-    SchClockDTO toDto(SchClock clock);
-
-    @Mapping(target = "blocks", ignore = true)
-    @Mapping(target = "emissions", ignore = true)
-    SchClock toEntity(SchClockDTO clockDTO);
-    default SchClock fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        SchClock clock = new SchClock();
-        clock.setId(id);
-        return clock;
-    }
 }

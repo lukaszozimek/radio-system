@@ -10,15 +10,4 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface SchPlaylistMapper extends SchEntityMapper<SchPlaylistDTO, SchPlaylist> {
-    
-    @Mapping(target = "emissions", ignore = true)
-    SchPlaylist toEntity(SchPlaylistDTO playlistDTO);
-    default SchPlaylist fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        SchPlaylist playlist = new SchPlaylist();
-        playlist.setId(id);
-        return playlist;
-    }
 }
