@@ -12,9 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-@SuppressWarnings("ALL")
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProtoneApp.class)
 public class SchGridFactory {
 
     private static final PodamFactory factory = new PodamFactoryImpl();
