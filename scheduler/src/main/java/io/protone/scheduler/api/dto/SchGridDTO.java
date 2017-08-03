@@ -5,12 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * SchGridDTO
@@ -18,24 +17,35 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchGridDTO   {
+
+  @PodamExclude
   @JsonProperty("clocks")
-  private Map<String, SchClockThinDTO> clocks = new HashMap<String, SchClockThinDTO>();
+  private List<SchClockThinDTO> clocks = new ArrayList<SchClockThinDTO>();
+
   @JsonProperty("dayOfWeek")
   private DayOfWeekEnum dayOfWeek = null;
+
   @JsonProperty("id")
   private Long id = null;
+
   @JsonProperty("name")
   private String name = null;
+
   @JsonProperty("shortName")
   private String shortName = null;
 
-  public SchGridDTO clocks(Map<String, SchClockThinDTO> clocks) {
+  public SchGridDTO clocks(List<SchClockThinDTO> clocks) {
     this.clocks = clocks;
     return this;
   }
 
-  public SchGridDTO putClocksItem(String key, SchClockThinDTO clocksItem) {
-    this.clocks.put(key, clocksItem);
+  public SchGridDTO addClock(SchClockThinDTO clock) {
+    this.clocks.add(clock);
+    return this;
+  }
+
+  public SchGridDTO removeClock(SchClockThinDTO clock) {
+    this.clocks.remove(clock);
     return this;
   }
 
@@ -44,11 +54,11 @@ public class SchGridDTO   {
    * @return clocks
   **/
   @ApiModelProperty(value = "")
-  public Map<String, SchClockThinDTO> getClocks() {
+  public List<SchClockThinDTO> getClocks() {
     return clocks;
   }
 
-  public void setClocks(Map<String, SchClockThinDTO> clocks) {
+  public void setClocks(List<SchClockThinDTO> clocks) {
     this.clocks = clocks;
   }
 

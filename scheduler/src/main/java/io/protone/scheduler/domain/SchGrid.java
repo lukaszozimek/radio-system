@@ -118,13 +118,11 @@ public class SchGrid implements Serializable {
 
     public SchGrid addClock(SchClock clock) {
         this.clocks.add(clock);
-        clock.setGrid(this);
         return this;
     }
 
     public SchGrid removeClock(SchClock clock) {
         this.clocks.remove(clock);
-        clock.setGrid(null);
         return this;
     }
 
