@@ -42,12 +42,10 @@ public class SchEmission implements Serializable {
     @JoinColumn(unique = true)
     private SchMediaItem mediaItem;
 
-    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchQueueParams queueParams;
 
-    @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
     private SchTimeParams timeParams;
