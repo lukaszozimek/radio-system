@@ -14,20 +14,4 @@ FIXME: LibItem mapper refers to class in inner module which will become separate
  */
 @Mapper(componentModel = "spring", uses = {SchPlaylistMapper.class, SchClockMapper.class, LibItemMapper.class, SchQueueParamsMapper.class, SchTimeParamsMapper.class, SchBlockMapper.class, })
 public interface SchEmissionMapper extends SchEntityMapper<SchEmissionDTO, SchEmission> {
-
-    @Mapping(source = "block.id", target = "blockId")
-    SchEmissionDTO toDto(SchEmission emission);
-
-    @Mapping(target = "attachments", ignore = true)
-
-    @Mapping(source = "blockId", target = "block")
-    SchEmission toEntity(SchEmissionDTO emissionDTO);
-    default SchEmission fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        SchEmission emission = new SchEmission();
-        emission.setId(id);
-        return emission;
-    }
 }

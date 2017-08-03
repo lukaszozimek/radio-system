@@ -10,15 +10,4 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface SchScheduleMapper extends SchEntityMapper<SchScheduleDTO, SchSchedule> {
-    
-    @Mapping(target = "grids", ignore = true)
-    SchSchedule toEntity(SchScheduleDTO scheduleDTO);
-    default SchSchedule fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        SchSchedule schedule = new SchSchedule();
-        schedule.setId(id);
-        return schedule;
-    }
 }

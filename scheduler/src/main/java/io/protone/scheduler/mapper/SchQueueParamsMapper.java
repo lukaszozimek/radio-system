@@ -9,14 +9,4 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface SchQueueParamsMapper extends SchEntityMapper<SchQueueParamsDTO, SchQueueParams> {
-    
-    
-    default SchQueueParams fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        SchQueueParams queueParams = new SchQueueParams();
-        queueParams.setId(id);
-        return queueParams;
-    }
 }
