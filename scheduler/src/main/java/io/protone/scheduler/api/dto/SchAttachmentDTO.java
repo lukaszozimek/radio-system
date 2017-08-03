@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.protone.scheduler.api.dto.thin.SchLibItemThinDTO;
+import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
+import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 import uk.co.jemos.podam.common.PodamLongValue;
@@ -212,69 +214,5 @@ public class SchAttachmentDTO   {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
-    /**
-     * Gets or Sets attachmentType
-     */
-    public enum AttachmentTypeEnum {
-        VOICE_TRACK("AT_VOICE_TRACK"),
-
-        OTHER("AT_OTHER");
-
-        private String value;
-
-        AttachmentTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static AttachmentTypeEnum fromValue(String text) {
-            for (AttachmentTypeEnum b : AttachmentTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
-
-    /**
-     * Gets or Sets fadeType
-     */
-    public enum FadeTypeEnum {
-        LINEAR("FT_LINEAR"),
-
-        LOGARITHMIC("FT_LOGARITHMIC"),
-
-        OTHER("FT_OTHER");
-
-        private String value;
-
-        FadeTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static FadeTypeEnum fromValue(String text) {
-            for (FadeTypeEnum b : FadeTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        @JsonValue
-        public String toString() {
-            return String.valueOf(value);
-        }
-    }
 }
 

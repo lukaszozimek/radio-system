@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.protone.scheduler.domain.enumeration.ObjectTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -161,36 +162,5 @@ public class SchQueueParamsDTO   {
     return o.toString().replace("\n", "\n    ");
   }
 
-    /**
-     * Gets or Sets objectType
-     */
-    public enum ObjectTypeEnum {
-        CLOCK("PT_CLOCK"),
-
-        BLOCK("PT_BLOCK"),
-
-        EVENT("PT_EVENT"),
-
-        EMISSION("PT_EMISSION"),
-
-        UNKNOWN("PT_UNKNOWN");
-
-        private String value;
-
-        ObjectTypeEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonCreator
-        public static ObjectTypeEnum fromValue(String text) {
-            for (ObjectTypeEnum b : ObjectTypeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-    }
 }
 
