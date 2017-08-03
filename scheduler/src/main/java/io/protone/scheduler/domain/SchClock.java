@@ -126,13 +126,11 @@ public class SchClock implements Serializable {
 
     public SchClock addBlock(SchBlock block) {
         this.blocks.add(block);
-        block.setClock(this);
         return this;
     }
 
     public SchClock removeBlock(SchBlock block) {
         this.blocks.remove(block);
-        block.setClock(null);
         return this;
     }
 
@@ -151,13 +149,11 @@ public class SchClock implements Serializable {
 
     public SchClock addEmission(SchEmission emission) {
         this.emissions.add(emission);
-        emission.setClock(this);
         return this;
     }
 
     public SchClock removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
-        emission.setClock(null);
         return this;
     }
 
