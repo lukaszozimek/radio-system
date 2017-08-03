@@ -9,6 +9,7 @@ import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraPlaylistDTO;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
+import io.protone.traffic.api.dto.thin.TraPlaylistThinDTO;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
 import io.protone.traffic.domain.TraPlaylist;
@@ -80,7 +81,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/playlist/" + response.getPlaylistDate()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -100,24 +101,24 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         TraPlaylist entity = traPlaylistService.getTraPlaylistList(date, networkShortcut, channelShortcut);
         TraPlaylistDTO response = traPlaylistMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraPlaylistThinDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraPlaylist, for Channel {}, Network: {}", channelShortcut, networkShortcut);
         List<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut, channelShortcut, pagable);
-        List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entity);
+        List<TraPlaylistThinDTO> response = traPlaylistMapper.DBs2ThinDTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -129,10 +130,10 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         List<TraPlaylist> entity = traPlaylistService.getTraPlaylistListInRange(fromDate, toDate, networkShortcut, channelShortcut);
         List<TraPlaylistDTO> response = traPlaylistMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -145,13 +146,13 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
 
         traPlaylistDTOs.stream().forEach(traPlaylistDTO -> {
-                TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
-                TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
-                traPlaylistDTOS.add(traPlaylistMapper.DB2DTO(entity));
+            TraPlaylist traOrder = traPlaylistMapper.DTO2DB(traPlaylistDTO, corNetwork, corChannel);
+            TraPlaylist entity = traPlaylistService.savePlaylist(traOrder);
+            traPlaylistDTOS.add(traPlaylistMapper.DB2DTO(entity));
 
         });
         return ResponseEntity.created(new URI(""))
-            .body(traPlaylistDTOS);
+                .body(traPlaylistDTOS);
     }
 
     @Override
@@ -165,22 +166,24 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
 
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"",
-            csvFileName);
+                csvFileName);
         response.setHeader(headerKey, headerValue);
 
         TraPlaylist traPlaylist = traPlaylistService.getTraPlaylistList(date, networkShortcut, channelShortcut);
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),
-            CsvPreference.STANDARD_PREFERENCE);
+                CsvPreference.STANDARD_PREFERENCE);
 
-        String[] header = {"id", "time_start", "time_stop"};
+        String[] header = {"blockName", "timeStart", "timeStop", "mediaItemId", "mediaItemLenght", "mediaItemName"};
 
         csvWriter.writeHeader(header);
+
         for (TraBlock traBlock : traPlaylist.getPlaylists()) {
             for (TraEmission traEmission : traBlock.getEmissions()) {
-                csvWriter.write(traEmission, header);
+                TraEmissionCSV emissionCSV = new TraEmissionCSV(traEmission.getBlock().getName(),
+                        traEmission.getTimeStart(), traEmission.getTimeStop(), traEmission.getAdvertiment().getId(), traEmission.getAdvertiment().getLength().longValue(), traEmission.getAdvertiment().getName());
+                csvWriter.write(emissionCSV, header);
             }
         }
-
         csvWriter.close();
         response.setStatus(200);
     }
@@ -212,4 +215,46 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         return ResponseEntity.ok().body(response);
     }
 
+    public class TraEmissionCSV {
+
+        private String blockName;
+        private Long timeStart;
+        private Long timeStop;
+        private Long mediaItemId;
+        private Long mediaItemLenght;
+        private String mediaItemName;
+
+        public TraEmissionCSV(String blockName, Long timeStart, Long timeStop, Long mediaItemId, Long mediaItemLenght, String mediaItemName) {
+            this.blockName = blockName;
+            this.timeStart = timeStart;
+            this.timeStop = timeStop;
+            this.mediaItemId = mediaItemId;
+            this.mediaItemLenght = mediaItemLenght;
+            this.mediaItemName = mediaItemName;
+        }
+
+        public String getBlockName() {
+            return blockName;
+        }
+
+        public Long getTimeStart() {
+            return timeStart;
+        }
+
+        public Long getTimeStop() {
+            return timeStop;
+        }
+
+        public Long getMediaItemId() {
+            return mediaItemId;
+        }
+
+        public Long getMediaItemLenght() {
+            return mediaItemLenght;
+        }
+
+        public String getMediaItemName() {
+            return mediaItemName;
+        }
+    }
 }

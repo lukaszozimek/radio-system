@@ -4,6 +4,7 @@ package io.protone.traffic.mapper;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraPlaylistDTO;
+import io.protone.traffic.api.dto.thin.TraPlaylistThinDTO;
 import io.protone.traffic.domain.TraPlaylist;
 import org.mapstruct.*;
 
@@ -19,6 +20,12 @@ public interface TraPlaylistMapper {
     @Mapping(source = "playlistDate", target = "playlistDate")
     @Mapping(source = "playlists", target = "blocks")
     TraPlaylistDTO DB2DTO(TraPlaylist traPlaylist);
+
+    @Mapping(source = "playlistDate", target = "playlistDate")
+    TraPlaylistThinDTO DB2ThinDTO(TraPlaylist traPlaylist);
+
+
+    List<TraPlaylistThinDTO> DBs2ThinDTOs(List<TraPlaylist> traPlaylists);
 
     List<TraPlaylistDTO> DBs2DTOs(List<TraPlaylist> traPlaylists);
 
