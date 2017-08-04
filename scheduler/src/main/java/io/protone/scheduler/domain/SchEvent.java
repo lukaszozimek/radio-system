@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;

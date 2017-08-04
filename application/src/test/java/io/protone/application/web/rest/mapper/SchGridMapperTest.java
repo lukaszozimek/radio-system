@@ -1,12 +1,10 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.web.rest.mapper.factory.SchClockFactory;
-import io.protone.application.web.rest.mapper.factory.SchGridFactory;
+import io.protone.scheduler.to.delete.factory.SchGridFactory;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

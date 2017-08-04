@@ -204,13 +204,11 @@ public class SchBlock implements Serializable {
 
     public SchBlock addEmission(SchEmission emission) {
         this.emissions.add(emission);
-        emission.setBlock(this);
         return this;
     }
 
     public SchBlock removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
-        emission.setBlock(null);
         return this;
     }
 

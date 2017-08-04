@@ -1,14 +1,7 @@
-package io.protone.application.web.rest.mapper.factory;
+package io.protone.scheduler.to.delete.factory;
 
-import io.protone.application.ProtoneApp;
-import io.protone.scheduler.api.dto.*;
-import io.protone.scheduler.domain.SchBlock;
-import io.protone.scheduler.domain.SchClock;
-import io.protone.scheduler.domain.SchEmission;
+import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
