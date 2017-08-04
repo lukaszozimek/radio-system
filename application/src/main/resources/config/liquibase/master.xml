@@ -274,6 +274,8 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchEmission.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchEvent.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchGrid.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchPlaylist.xml"
@@ -291,6 +293,8 @@
     <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchClock.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchEvent.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchGrid.xml"
              relativeToChangelogFile="false"/>
