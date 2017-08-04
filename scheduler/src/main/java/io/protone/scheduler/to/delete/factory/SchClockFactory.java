@@ -1,6 +1,5 @@
-package io.protone.application.web.rest.mapper.factory;
+package io.protone.scheduler.to.delete.factory;
 
-import io.protone.application.ProtoneApp;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchClockDTO;
 import io.protone.scheduler.api.dto.SchClockThinDTO;
@@ -8,21 +7,9 @@ import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchEmission;
-import io.protone.scheduler.mapper.SchClockMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class SchClockFactory {
 
