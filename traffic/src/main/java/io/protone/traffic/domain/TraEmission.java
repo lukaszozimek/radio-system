@@ -240,7 +240,7 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     }
 
     public TraEmission fixedPosition(boolean fixedPosition) {
-        this.firsrPosition = fixedPosition;
+        this.fixedPosition = fixedPosition;
         return this;
     }
 

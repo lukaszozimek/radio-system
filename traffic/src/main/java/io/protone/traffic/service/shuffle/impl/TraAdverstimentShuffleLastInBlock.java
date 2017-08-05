@@ -5,7 +5,9 @@ import io.protone.library.service.LibItemService;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
+import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.domain.TraPlaylist;
+import io.protone.traffic.service.TraOrderService;
 import io.protone.traffic.service.TraPlaylistService;
 import io.protone.traffic.service.shuffle.TraAdvertismentShuffle;
 import org.slf4j.Logger;
@@ -36,6 +38,8 @@ public class TraAdverstimentShuffleLastInBlock implements TraAdvertismentShuffle
 
     @Inject
     private LibItemService libItemService;
+    @Inject
+    private TraOrderService traOrderService;
 
     @Override
     public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException {
@@ -43,6 +47,8 @@ public class TraAdverstimentShuffleLastInBlock implements TraAdvertismentShuffle
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
         LibMediaItem mediaItem = libItemService.getMediaItem(networkShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
         log.debug("Found advertisment {}", mediaItem.getId());
+        TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), networkShortcut);
+        log.debug("Found Order {}", traOrder.getId());
         List<TraPlaylist> traPlaylistListInRange = traPlaylistService.getTraPlaylistListInRange(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), networkShortcut, channelShortcut);
         log.debug("Found number of Playlist in range : {}", traPlaylistListInRange.size());
         int numberOfCommercialsShuffled = 0;
@@ -62,14 +68,14 @@ public class TraAdverstimentShuffleLastInBlock implements TraAdvertismentShuffle
                             Long lastTimeStop = traBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
                             Integer lastSequence = traBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
                             if (canAddEmissionToBlock(lastTimeStop, traBlock.getLength(), mediaItem.getLength()) && hasNotFixedLastPostion(traBlock)) {
-                                TraEmission emisssion = new TraEmission().block(traBlock).sequence(lastSequence + 1).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).channel(traBlock.getChannel()).network(traBlock.getNetwork());
+                                TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).sequence(lastSequence + 1).timeStart(lastTimeStop).fixedPosition(true).lastPosition(true).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).channel(traBlock.getChannel()).network(traBlock.getNetwork());
                                 traBlock.addEmissions(emisssion);
                                 numberOfCommercialsShuffled++;
                             }
                         } else {
                             log.debug("Block is empty");
                             Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().block(traBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).fixedPosition(true).lastPosition(true).sequence(0).channel(traBlock.getChannel()).network(traBlock.getNetwork());
+                            TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).fixedPosition(true).lastPosition(true).sequence(0).channel(traBlock.getChannel()).network(traBlock.getNetwork());
                             traBlock.addEmissions(emisssion);
                             numberOfCommercialsShuffled++;
                         }

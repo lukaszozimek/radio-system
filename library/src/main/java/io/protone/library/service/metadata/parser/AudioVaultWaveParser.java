@@ -67,7 +67,7 @@ public class AudioVaultWaveParser extends AudioParser {
             int frameSize = format.getFrameSize();
             float frameRate = format.getFrameRate();
             double durationInSeconds = (audioFileLength / (frameSize * frameRate));
-            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds));
+            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds*1000));
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         } catch (IOException e) {
