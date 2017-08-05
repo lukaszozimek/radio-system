@@ -8,8 +8,10 @@ import io.protone.core.service.CorAddressService;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPersonService;
 import io.protone.crm.domain.CrmContact;
+import io.protone.crm.domain.CrmLead;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.domain.CrmTaskComment;
+import io.protone.crm.mapper.CrmContactMapper;
 import io.protone.crm.repostiory.CrmContactRepository;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
@@ -47,6 +49,9 @@ public class CrmContactService {
 
     @Inject
     private CorImageItemService corImageItemService;
+
+    @Inject
+    private CrmContactMapper crmContactMapper;
 
     public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
         return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -125,5 +130,13 @@ public class CrmContactService {
 
     public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
+    }
+
+    public CrmContact convertCrmLeadToContact(CrmLead crmLead) {
+        CrmContact crmContact = crmContactMapper.crmLeadToCrmContact(crmLead);
+        crmContact.setCrmLead(crmLead);
+        crmContact.setId(null);
+        CrmContact savedContact = saveContact(crmContact);
+        return savedContact;
     }
 }

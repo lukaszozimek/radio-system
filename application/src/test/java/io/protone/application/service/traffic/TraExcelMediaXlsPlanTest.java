@@ -5,7 +5,8 @@ import io.protone.application.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.application.util.TestUtil;
 import io.protone.traffic.domain.TraEmission;
 import io.protone.traffic.domain.TraMediaPlanPlaylist;
-import io.protone.traffic.service.mediaplan.TraExcelMediaXlsPlan;
+import io.protone.traffic.domain.TraMediaPlanTemplate;
+import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -34,7 +35,7 @@ import static org.junit.Assert.assertNotNull;
 public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
     @Autowired
-    private TraExcelMediaXlsPlan traExcelMediaXlsPlan;
+    private TraExcelMediaParserXlsPlan traExcelMediaXlsPlan;
 
     @Before
     public void setup() throws InterruptedException {
@@ -50,19 +51,20 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
         final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 75;
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("CW")
-            .playlistFirsValueCell("G8")
-            .blockStartCell("A10")
-            .blockEndCell("A47")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G10")
-            .lastEmissionValueCell("CW47")
-            .order(traOrder);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
+        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
+                .sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("CW")
+                .playlistFirsValueCell("G8")
+                .blockStartCell("A10")
+                .blockEndCell("A47")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G10")
+                .lastEmissionValueCell("CW47");
+        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
 
 
         //when
@@ -86,19 +88,20 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
         final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 80;
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("CW")
-            .playlistFirsValueCell("G8")
-            .blockStartCell("A10")
-            .blockEndCell("A47")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G10")
-            .lastEmissionValueCell("CW47")
-            .order(traOrder);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
+        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
+                .sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("CW")
+                .playlistFirsValueCell("G8")
+                .blockStartCell("A10")
+                .blockEndCell("A47")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G10")
+                .lastEmissionValueCell("CW47");
+        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
 
 
         //when
@@ -122,20 +125,20 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
         final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 170;
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("CW")
-            .playlistFirsValueCell("G8")
-            .blockStartCell("A10")
-            .blockEndCell("A47")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G10")
-            .lastEmissionValueCell("CW47")
-            .order(traOrder);
-
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
+        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
+                .sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("CW")
+                .playlistFirsValueCell("G8")
+                .blockStartCell("A10")
+                .blockEndCell("A47")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G10")
+                .lastEmissionValueCell("CW47");
+        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
 
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_3.xls");
@@ -158,19 +161,20 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
         final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 64;
         List<TraEmission> formPlaylistOverview = Lists.newArrayList();
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("AW")
-            .playlistFirsValueCell("G22")
-            .blockStartCell("A26")
-            .blockEndCell("A63")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G26")
-            .lastEmissionValueCell("AV64")
-            .order(traOrder);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
+        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
+                .sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("AW")
+                .playlistFirsValueCell("G22")
+                .blockStartCell("A26")
+                .blockEndCell("A63")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G26")
+                .lastEmissionValueCell("AV64");
+        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
 
 
         //when

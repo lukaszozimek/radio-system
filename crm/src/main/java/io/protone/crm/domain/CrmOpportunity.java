@@ -71,7 +71,7 @@ public class CrmOpportunity extends AbstractAuditingEntity implements Serializab
     @PodamExclude
     private CorNetwork network;
 
-    @OneToMany(mappedBy = "opportunity")
+    @OneToMany(mappedBy = "opportunity",fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @PodamExclude

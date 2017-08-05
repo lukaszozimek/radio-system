@@ -47,55 +47,55 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
     @Column(name = "vat_number")
     private String vatNumber;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @PodamExclude
-    @JoinColumn(unique = true)
+    @JoinColumn
     private CorPerson person;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @PodamExclude
-    @JoinColumn(unique = true)
+    @JoinColumn
     private CorAddress addres;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorNetwork network;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CrmDiscount discount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorUser keeper;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorCountry country;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary range;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary size;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary industry;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary area;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     @PodamExclude
     private CorImageItem corImageItem;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",fetch = FetchType.LAZY)
     @JsonIgnore
     @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

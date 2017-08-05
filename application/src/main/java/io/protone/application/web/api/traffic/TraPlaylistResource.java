@@ -3,6 +3,8 @@ package io.protone.application.web.api.traffic;
 
 import io.protone.traffic.api.dto.TraPlaylistDTO;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
+import io.protone.traffic.api.dto.thin.TraPlaylistThinDTO;
+import io.protone.traffic.service.shuffle.exception.TrafficShuffleReindexException;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -79,9 +81,9 @@ public interface TraPlaylistResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraPlaylistDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                              @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<TraPlaylistThinDTO>> getAllChannelTrafficPlaylistUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getAllChannelTrafficPlaylistInRange", notes = "", response = TraPlaylistDTO.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
@@ -154,7 +156,7 @@ public interface TraPlaylistResource {
         method = RequestMethod.GET)
     ResponseEntity<List<TraPlaylistDTO>> shuffleCommercialUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                   @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException;
+                                                                   @ApiParam(value = "traShuffleAdvertismentPT", required = true) @RequestBody TraShuffleAdvertisementDTO traShuffleAdvertismentDTO) throws InterruptedException, TrafficShuffleReindexException;
 
 
 

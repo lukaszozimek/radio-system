@@ -1,5 +1,6 @@
 package io.protone.application.web.api.traffic;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.crm.CrmCustomerResourceImplTest;
@@ -143,7 +144,7 @@ public class TraAdvertisementResourceImplTest {
         libLibrary.setShortcut("tes");
         libMediaItem = libMediaItemRepository.saveAndFlush(LibMediaItemResourceTest.createEntity(em).network(corNetwork).library(libLibrary));
         crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traAdvertisement = createEntity(em).network(corNetwork).customer(crmAccount).mediaItem(libMediaItem);
+        traAdvertisement = createEntity(em).network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem));
     }
 
     @Test
@@ -229,7 +230,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getAllTraAdvertisements() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(libMediaItem));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem)));
 
         // Get all the traAdvertisementList
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement?sort=id,desc", corNetwork.getShortcut()))
@@ -244,7 +245,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void getTraAdvertisement() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(libMediaItem));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem)));
 
         // Get the traAdvertisement
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/{id}", corNetwork.getShortcut(), traAdvertisement.getId()))
@@ -269,7 +270,7 @@ public class TraAdvertisementResourceImplTest {
         // Initialize the database
         when(libItemService.upload(any(), any(), (MultipartFile) any())).thenReturn(libMediaItem);
 
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(libMediaItem));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem)));
         int databaseSizeBeforeUpdate = traAdvertisementRepository.findAll().size();
 
         // Update the traAdvertisement
@@ -315,7 +316,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void deleteTraAdvertisement() throws Exception {
         // Initialize the database
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).mediaItem(libMediaItem).customer(crmAccount));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).mediaItem(Sets.newHashSet(libMediaItem)).customer(crmAccount));
         int databaseSizeBeforeDelete = traAdvertisementRepository.findAll().size();
 
         // Get the traAdvertisement
@@ -334,7 +335,7 @@ public class TraAdvertisementResourceImplTest {
     public void getAllTraAdvertisementsForCustomer() throws Exception {
         // Initialize the database
 
-        traAdvertisementRepository.saveAndFlush(traAdvertisement.customer(crmAccount).network(corNetwork).mediaItem(libMediaItem));
+        traAdvertisementRepository.saveAndFlush(traAdvertisement.customer(crmAccount).network(corNetwork).mediaItem(Sets.newHashSet(libMediaItem)));
 
         // Get all the traAdvertisementList
         restTraAdvertisementMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/advertisement/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))

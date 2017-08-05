@@ -6,7 +6,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -29,12 +28,11 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private Long id;
 
-    @NotNull
     @Size(max = 100)
     @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
 
-    @NotNull
+
     @Size(max = 100)
     @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
@@ -54,7 +52,7 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorMediaItem composer;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<CorContact> contacts = new HashSet<>();
@@ -193,10 +191,10 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "CorPerson{" +
-            "id=" + id +
-            ", firstName='" + firstName + "'" +
-            ", lastName='" + lastName + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", firstName='" + firstName + "'" +
+                ", lastName='" + lastName + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
 }

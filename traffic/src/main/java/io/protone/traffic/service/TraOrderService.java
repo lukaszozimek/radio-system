@@ -25,6 +25,7 @@ public class TraOrderService {
     @Inject
     private TraOrderRepository traOrderRepository;
 
+
     public List<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
         return traOrderRepository.findByNetwork_Shortcut(corNetwork, pageable);
     }

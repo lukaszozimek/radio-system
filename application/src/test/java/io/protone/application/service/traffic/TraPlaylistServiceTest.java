@@ -205,7 +205,7 @@ public class TraPlaylistServiceTest {
         crmAccount = crmAccountRepository.save(crmAccount);
 
         traAdvertisement.customer(crmAccount);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
@@ -217,7 +217,7 @@ public class TraPlaylistServiceTest {
 
         traEmission.setChannel(corChannel);
         traEmission.setNetwork(corNetwork);
-        traEmission.setAdvertiment(traAdvertisement);
+        traEmission.setAdvertiment(libMediaItem);
         traEmission.setOrder(traOrder);
 
         TraBlock traBlock = factory.manufacturePojo(TraBlock.class)
@@ -267,7 +267,7 @@ public class TraPlaylistServiceTest {
         crmAccount = crmAccountRepository.save(crmAccount);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
         traAdvertisement.customer(crmAccount);
-        traAdvertisement.setMediaItem(libMediaItem);
+        traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         TraOrder traOrder = factory.manufacturePojo(TraOrder.class);
@@ -284,7 +284,7 @@ public class TraPlaylistServiceTest {
             TraEmission traEmission = factory.manufacturePojo(TraEmission.class);
             traEmission.setChannel(corChannel);
             traEmission.setOrder(traOrder);
-            traEmission.setAdvertiment(traAdvertisement);
+            traEmission.setAdvertiment(libMediaItem);
             traEmission.setNetwork(corNetwork);
             traEmissionSet.add(traEmission);
         }

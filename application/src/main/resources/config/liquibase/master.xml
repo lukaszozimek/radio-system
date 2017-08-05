@@ -120,6 +120,9 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylist.xml"
              relativeToChangelogFile="false"/>
 
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanTemplate.xml"
+             relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmTaskComment.xml"
              relativeToChangelogFile="false"/>
@@ -234,6 +237,9 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylist.xml"
              relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraMediaPlanTemplate.xml"
+            relativeToChangelogFile="false"/>
 
     <!--Custom-->
     <include
@@ -291,6 +297,9 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibArtist_LibImageItem.xml"
              relativeToChangelogFile="false"/>
 
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_TraAdvertisment.xml"
+            relativeToChangelogFile="false"/>
+
     <changeSet id="" author="">
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/lib_library.csv"
@@ -321,6 +330,11 @@
                   file="/config/liquibase/demo/cor_channel_lib_library.csv"
                   separator=";"
                   tableName="lib_library_channel"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/tra_block_configuration.csv"
+                  separator=";"
+                  tableName="tra_block_configuration"/>
+
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>
 

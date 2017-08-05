@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Supplier;
 
 import static io.protone.library.service.file.impl.LibAudioFileService.AUDIO;
 import static io.protone.library.service.file.impl.LibDocumentFileService.DOCUMENT;
@@ -151,17 +152,20 @@ public class LibItemService {
         }
 
         for (MultipartFile file : files) {
-            String fileName = file.getOriginalFilename();
             ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+            byte[] inputStream = new byte[bais.available()];
+            bais.read(inputStream);
+            Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
+            String fileName = file.getOriginalFilename();
             Parser parser = new AutoDetectParser();
             BodyContentHandler handler = new BodyContentHandler();
             Metadata metadata = new Metadata();
             ParseContext pcontext = new ParseContext();
-            parser.parse(bais, handler, metadata, pcontext);
+            parser.parse(inputStreamSupplier.get(), handler, metadata, pcontext);
             String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
             if (!Strings.isNullOrEmpty(libItemType)) {
                 log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-                LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
+                LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(inputStreamSupplier.get(), metadata, fileName, file.getSize(), libraryDB);
                 result.add(libMediaItem);
             } else {
                 log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
@@ -178,17 +182,21 @@ public class LibItemService {
         if (libraryDB == null) {
             return null;
         }
+
         String fileName = file.getOriginalFilename();
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+        byte[] inputStream = new byte[bais.available()];
+        bais.read(inputStream);
+        Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
         Parser parser = new AutoDetectParser();
         BodyContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
         ParseContext pcontext = new ParseContext();
-        parser.parse(bais, handler, metadata, pcontext);
+        parser.parse(inputStreamSupplier.get(), handler, metadata, pcontext);
         String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
         if (!Strings.isNullOrEmpty(libItemType)) {
             log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(bais, metadata, fileName, file.getSize(), libraryDB);
+            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).saveFile(inputStreamSupplier.get(), metadata, fileName, file.getSize(), libraryDB);
             return libMediaItem;
         } else {
             log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));

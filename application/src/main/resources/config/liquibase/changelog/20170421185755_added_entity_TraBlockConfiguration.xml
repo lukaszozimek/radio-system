@@ -54,7 +54,9 @@
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-
+            <column name="block_type_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

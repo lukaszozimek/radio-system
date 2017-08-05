@@ -1,10 +1,14 @@
 package io.protone.crm.mapper;
 
+import io.protone.core.api.dto.CoreContactDTO;
+import io.protone.core.domain.CorContact;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorPerson;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorPersonMapper;
 import io.protone.crm.api.dto.CrmAccountDTO;
+import io.protone.crm.api.dto.CrmCustomerPersonDTO;
 import io.protone.crm.api.dto.thin.CrmAccountThinDTO;
 import io.protone.crm.domain.CrmAccount;
 import org.mapstruct.*;
@@ -24,7 +28,7 @@ public interface CrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    @Mapping(source = "corImageItem.publicUrl",target = "publicUrl")
+    @Mapping(source = "corImageItem.publicUrl", target = "publicUrl")
     CrmAccountDTO DB2DTO(CrmAccount crmAccount);
 
     List<CrmAccountDTO> DBs2DTOs(List<CrmAccount> crmAccounts);
@@ -36,7 +40,7 @@ public interface CrmAccountMapper {
     @Mapping(source = "size", target = "size")
     @Mapping(source = "industry", target = "industry")
     @Mapping(source = "area", target = "area")
-    @Mapping(source = "corImageItem.publicUrl",target = "publicUrl")
+    @Mapping(source = "corImageItem.publicUrl", target = "publicUrl")
     CrmAccountThinDTO DB2ThinDTO(CrmAccount crmAccount);
 
     List<CrmAccountThinDTO> DBs2ThinDTOs(List<CrmAccount> crmAccounts);
@@ -67,4 +71,13 @@ public interface CrmAccountMapper {
         entity.setNetwork(corNetwork);
     }
 
+    @AfterMapping
+    default void crmCustomerPersonDTOToCorPersonAfterMapping(CrmCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
+
+    @AfterMapping
+    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
 }

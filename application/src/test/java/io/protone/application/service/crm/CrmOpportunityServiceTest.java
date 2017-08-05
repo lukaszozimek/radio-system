@@ -1,9 +1,13 @@
 package io.protone.application.service.crm;
 
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorAuthority;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.core.repository.CorNetworkRepository;
+import io.protone.core.repository.CorUserRepository;
 import io.protone.crm.domain.*;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.crm.repostiory.CrmContactRepository;
@@ -24,6 +28,7 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.util.List;
 
+import static io.protone.core.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
 
 /**
@@ -54,9 +59,13 @@ public class CrmOpportunityServiceTest {
     @Autowired
     private CrmContactRepository crmContactRepository;
 
+    @Autowired
+    private CorUserRepository corUserRepository;
+
     private CorNetwork corNetwork;
 
     private PodamFactory factory;
+    private String CONVERTED = "conv";
 
     @Before
     public void setUp() throws Exception {
@@ -365,5 +374,58 @@ public class CrmOpportunityServiceTest {
         crmOpportunity = crmOpportunityService.saveOpportunity(crmOpportunity);
         crmOpportunity1 = crmOpportunityService.saveOpportunity(crmOpportunity1);
 
+    }
+
+    @Test
+    public void shouldConvertLeadToOpportunity() {
+        CorUser corUser1 = factory.manufacturePojo(CorUser.class);
+        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.networks(Sets.newHashSet(corNetwork)).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
+
+        CrmLead crmLead = factory.manufacturePojoWithFullData(CrmLead.class);
+        CrmLead leadEntity = crmLeadRepository.saveAndFlush(crmLead.network(corNetwork).keeper(userEntity));
+        CrmOpportunity crmOpportunity = crmOpportunityService.convertLeadToOpportunity(leadEntity);
+
+        assertNotNull(crmOpportunity);
+        assertEquals(crmOpportunity.getLead().getId(), leadEntity.getId());
+        assertEquals(leadEntity.getId(), crmOpportunity.getLead().getId());
+        assertEquals(CONVERTED + leadEntity.getShortname(), crmOpportunity.getShortName());
+        assertEquals(crmOpportunity.getKeeper().getId(), leadEntity.getKeeper().getId());
+        assertEquals(leadEntity.getNetwork().getId(), crmOpportunity.getNetwork().getId());
+    }
+
+    @Test
+    public void shouldConvertContactToOpportunity() {
+        CorUser corUser1 = factory.manufacturePojo(CorUser.class);
+        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.networks(Sets.newHashSet(corNetwork)).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
+        CrmContact crmContact1 = factory.manufacturePojoWithFullData(CrmContact.class);
+        CrmContact contactEntity = crmContactRepository.saveAndFlush(crmContact1.network(corNetwork).keeper(userEntity));
+
+        CrmOpportunity crmOpportunity = crmOpportunityService.convertContactToOpportunity(contactEntity);
+
+        assertNotNull(crmOpportunity);
+        assertEquals(crmOpportunity.getContact().getId(), contactEntity.getId());
+        assertEquals(contactEntity.getId(), crmOpportunity.getContact().getId());
+        assertEquals(CONVERTED + contactEntity.getShortName(), crmOpportunity.getShortName());
+        assertEquals(crmOpportunity.getKeeper().getId(), contactEntity.getKeeper().getId());
+        assertEquals(contactEntity.getNetwork().getId(), crmOpportunity.getNetwork().getId());
+    }
+
+    @Test
+    public void shouldConvertAccountToOpportunity() {
+        CorUser corUser1 = factory.manufacturePojo(CorUser.class);
+        CorUser userEntity = corUserRepository.saveAndFlush(corUser1.networks(Sets.newHashSet(corNetwork)).authorities(Sets.newHashSet(new CorAuthority().name(ADMIN))).channels(null));
+        CrmAccount crmAccount1 = factory.manufacturePojoWithFullData(CrmAccount.class);
+        CrmAccount accountEntity = crmAccountRepository.saveAndFlush(crmAccount1.keeper(userEntity).network(corNetwork));
+
+        CrmOpportunity crmOpportunity = crmOpportunityService.convertAccountToOpportunity(accountEntity);
+
+
+        assertNotNull(crmOpportunity);
+        assertEquals(crmOpportunity.getAccount().getId(), accountEntity.getId());
+        assertEquals(accountEntity.getId(), crmOpportunity.getAccount().getId());
+        assertEquals(CONVERTED + accountEntity.getShortName(), crmOpportunity.getShortName());
+        assertEquals(crmOpportunity.getKeeper().getId(), accountEntity.getKeeper().getId());
+        assertEquals(accountEntity
+                .getNetwork().getId(), crmOpportunity.getNetwork().getId());
     }
 }

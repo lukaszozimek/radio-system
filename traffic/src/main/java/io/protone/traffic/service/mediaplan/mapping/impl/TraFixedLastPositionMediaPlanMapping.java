@@ -1,56 +1,37 @@
-package io.protone.traffic.service;
+package io.protone.traffic.service.mediaplan.mapping.impl;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
-import io.protone.traffic.domain.*;
-import io.protone.traffic.mapper.TraMediaPlanMapperPlaylist;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.traffic.domain.TraBlock;
+import io.protone.traffic.domain.TraEmission;
+import io.protone.traffic.domain.TraPlaylist;
+import io.protone.traffic.service.TraAdvertisementShuffleService;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
+import io.protone.traffic.service.mediaplan.mapping.TraMediaPlanMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 /**
- * Created by lukaszozimek on 12/06/2017.
+ * Created by lukaszozimek on 31/07/2017.
  */
-@Service
-public class TraPlaylistMediaPlanMappingService {
+@Service("traFixedLastPositionMediaPlanMapping")
+@Qualifier("traFixedLastPositionMediaPlanMapping")
+public class TraFixedLastPositionMediaPlanMapping implements TraMediaPlanMapping {
     private final Object lockObject = new Object();
-    private final Logger log = LoggerFactory.getLogger(TraPlaylistMediaPlanMappingService.class);
+    private final Logger log = LoggerFactory.getLogger(TraFixedLastPositionMediaPlanMapping.class);
 
-    @Inject
-    private TraMediaPlanService traMediaPlanService;
-
-    @Inject
-    private TraPlaylistService traPlaylistService;
-
-    @Inject
-    private TraAdvertisementService traAdvertisementService;
-
-    @Inject
-    private TraMediaPlanMapperPlaylist traMediaPlanMapperPlaylistMapper;
-
-    public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(Long mediaPlanId, Long advertismentId, String networkShortcut, String channelShortcut) {
-        TraAdvertisement traAdvertisement = traAdvertisementService.getAdvertisement(advertismentId, networkShortcut);
-        TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(mediaPlanId, networkShortcut, channelShortcut);
-        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
-        List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), networkShortcut, channelShortcut);
-        List<TraPlaylist> mediaPlanPlaylists = traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists());
-        return mapToEntityPlaylist(entiyPlaylists, mediaPlanPlaylists, traAdvertisement);
-    }
-
-    @VisibleForTesting
-    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, TraAdvertisement traAdvertisement) {
+    @Override
+    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, LibMediaItem libMediaItem) {
         log.debug("Start mapping entity Playlist with parsed Playlists");
         List<TraPlaylist> traPlaylists = entiyPlaylists;
         List<TraPlaylist> traPlaylistsExcel = Lists.newArrayList(parsedFromMediaPlan.iterator());
@@ -69,21 +50,21 @@ public class TraPlaylistMediaPlanMappingService {
                                     if (isNotEmpty(filteredEntityTraBlock.getEmissions())) {
                                         Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
                                         Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
-                                        if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), traAdvertisement.getMediaItem().getLength())) {
+                                        if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), libMediaItem.getLength()) && hasNotFixedLastPostion(filteredEntityTraBlock)) {
                                             log.debug("Put commercial into block");
-                                            TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
+                                            TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).lastPosition(true).fixedPosition(true).block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                             filteredEntityTraBlock.addEmissions(emisssion);
                                             synchronized (lockObject) {
                                                 parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
                                             }
                                         } else {
-                                            log.debug("Can't put commercial because block size excide maximum number of seconds");
+                                            log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed last postion");
                                         }
                                     } else {
                                         log.debug("Block is empty");
                                         log.debug("Put commercial into block");
                                         Long lastTimeStop = 0L;
-                                        TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + traAdvertisement.getMediaItem().getLength().longValue()).advertiment(traAdvertisement).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
+                                        TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).lastPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
                                         filteredEntityTraBlock.addEmissions(emisssion);
                                         synchronized (lockObject) {
                                             parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
@@ -98,6 +79,10 @@ public class TraPlaylistMediaPlanMappingService {
             }
         });
         return new TraPlaylistDiff(traPlaylists, traPlaylistsExcel);
+    }
+
+    private boolean hasNotFixedLastPostion(TraBlock traBlock) {
+        return !traBlock.getEmissions().stream().filter(traEmission -> traEmission.isLastPosition() && traEmission.isFixedPosition()).findFirst().isPresent();
     }
 
     private boolean isInRange(long parsedStartBlock, long entityStratBlock, long parsedEndBlock) {

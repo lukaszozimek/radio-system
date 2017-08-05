@@ -17,18 +17,18 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, LibItemMapper.class})
 public interface TraAdvertisementMapper {
-    @Mapping(source = "mediaItem", target = "mediaItemId")
     @Mapping(source = "industry", target = "industryId")
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "type", target = "typeId")
+    @Mapping(source = "libMediaItems", target="libMediaItemThinDTOList")
     TraAdvertisementDTO DB2DTO(TraAdvertisement traAdvertisement);
 
     List<TraAdvertisementDTO> DBs2DTOs(List<TraAdvertisement> traAdvertisements);
 
-    @Mapping(source = "mediaItemId", target = "mediaItem")
     @Mapping(source = "customerId", target = "customer")
     @Mapping(source = "industryId", target = "industry")
     @Mapping(source = "typeId", target = "type")
+    @Mapping(source = "libMediaItemThinDTOList", target="libMediaItems")
     TraAdvertisement DTO2DB(TraAdvertisementDTO traAdvertisementDTO, @Context CorNetwork corNetwork);
 
     default List<TraAdvertisement> DTOs2DBs(List<TraAdvertisementDTO> traAdvertisementDTOs, CorNetwork networkId) {
@@ -48,11 +48,9 @@ public interface TraAdvertisementMapper {
     }
 
     @Mapping(source = "customerId", target = "customer")
-    @Mapping(source = "mediaItemId", target = "mediaItem")
     TraAdvertisement traAdvertisementFromTraAdvertisementThinPT(TraAdvertisementThinDTO coreUserThinPT);
 
     @Mapping(source = "customer", target = "customerId")
-    @Mapping(source = "mediaItem", target = "mediaItemId")
     TraAdvertisementThinDTO traAdvertisementThinPTFromTraAdvertisement(TraAdvertisement coreUserThinPT);
 
     default CrmAccount crmAccountFromId(Long id) {

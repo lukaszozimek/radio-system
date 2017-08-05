@@ -4,9 +4,11 @@ package io.protone.application.service.traffic;
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
+import io.protone.traffic.api.dto.TraShuffleAdvertisementOptionalDTO;
 import io.protone.traffic.domain.TraEmission;
 import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.service.TraAdvertisementShuffleService;
+import io.protone.traffic.service.shuffle.exception.TrafficShuffleReindexException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,14 +62,15 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
     }
 
     @Test
-    public void tryShuffleCommercial() throws InterruptedException {
+    public void tryShuffleCommercial() throws InterruptedException, TrafficShuffleReindexException {
         //when
         TraShuffleAdvertisementDTO traShuffleAdvertisementDTO = new TraShuffleAdvertisementDTO();
-        traShuffleAdvertisementDTO.setTraOrderThinDTO(traOrderThinDTO);
+
+        traShuffleAdvertisementDTO.setLibMediaItemThinDTO(libMediaItemToShuffleThinDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
         traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);
-
+        traShuffleAdvertisementDTO.setTraShuffleAdvertisementOptionalDTO(new TraShuffleAdvertisementOptionalDTO());
         //then
         List<TraPlaylist> traPlaylists = traAdvertisementShuffleService.shuffleCommercials(traShuffleAdvertisementDTO, corNetwork.getShortcut(), corChannel.getShortcut());
 
@@ -77,7 +80,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
             traPlaylist.getPlaylists().stream().forEach(traBlock -> {
                 long numberFounded = traBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId().equals(traOrderThinDTO.getAdvertismentId().getId())).count();
                 assertTrue((numberFounded < 2 && numberFounded >= 0));
-                assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getMediaItem().getLength()).sum()));
+                assertTrue((traBlock.getLength() >= traBlock.getEmissions().stream().mapToDouble(traEmission -> traEmission.getAdvertiment().getLength()).sum()));
                 assertNotNull(traBlock.getNetwork());
                 assertNotNull(traBlock.getChannel());
                 Optional<TraEmission> traEmission = traBlock.getEmissions().stream().findFirst();

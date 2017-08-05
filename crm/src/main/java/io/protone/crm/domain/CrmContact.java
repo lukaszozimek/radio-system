@@ -55,6 +55,13 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorAddress addres;
 
+
+    @OneToOne
+    @JoinColumn(unique = true, name = "crm_lead_id")
+    @PodamExclude
+    private CrmLead crmLead;
+
+
     @OneToOne
     @JoinColumn(unique = true)
     @PodamExclude
@@ -376,6 +383,14 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public CrmLead getCrmLead() {
+        return crmLead;
+    }
+
+    public void setCrmLead(CrmLead crmLead) {
+        this.crmLead = crmLead;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -400,14 +415,26 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     public String toString() {
         return "CrmContact{" +
                 "id=" + id +
-                ", shortName='" + shortName + "'" +
-                ", externalId1='" + externalId1 + "'" +
-                ", externalId2='" + externalId2 + "'" +
-                ", paymentDate='" + paymentDate + "'" +
-                ", name='" + name + "'" +
-                ", paymentDelay='" + paymentDelay + "'" +
-                ", vatNumber='" + vatNumber + "'" +
+                ", shortName='" + shortName + '\'' +
+                ", externalId1='" + externalId1 + '\'' +
+                ", externalId2='" + externalId2 + '\'' +
+                ", paymentDate=" + paymentDate +
+                ", name='" + name + '\'' +
+                ", paymentDelay=" + paymentDelay +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", addres=" + addres +
+                ", crmLead=" + crmLead +
+                ", country=" + country +
+                ", corImageItem=" + corImageItem +
+                ", person=" + person +
+                ", network=" + network +
+                ", range=" + range +
+                ", size=" + size +
+                ", industry=" + industry +
+                ", area=" + area +
+                ", keeper=" + keeper +
+                ", status=" + status +
+                ", tasks=" + tasks +
                 '}';
     }
-
 }

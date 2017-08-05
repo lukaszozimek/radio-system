@@ -72,7 +72,7 @@ public class CrmLead extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorNetwork network;
 
-    @OneToMany(mappedBy = "lead")
+    @OneToMany(mappedBy = "lead", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @PodamExclude

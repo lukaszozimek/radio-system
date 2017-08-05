@@ -1,6 +1,7 @@
 package io.protone.application.web.api.traffic;
 
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.crm.CrmCustomerResourceImplTest;
@@ -164,7 +165,7 @@ public class TrafficOrderResourceImplTest {
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
         crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
-        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(libMediaItem).customer(crmAccount).network(corNetwork));
+        traAdvertisement = traAdvertisementRepository.saveAndFlush(TraAdvertisementResourceImplTest.createEntity(em).mediaItem(Sets.newHashSet(libMediaItem)).customer(crmAccount).network(corNetwork));
 
         ReflectionTestUtils.setField(traOrderResource, "traOrderService", traOrderService);
         ReflectionTestUtils.setField(traOrderResource, "traOrderMapper", traOrderMapper);

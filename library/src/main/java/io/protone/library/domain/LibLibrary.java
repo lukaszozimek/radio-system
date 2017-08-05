@@ -19,6 +19,7 @@ import java.util.Set;
 /**
  * A LibLibrary.
  */
+//TODO: ad commercial Libary Entity where id is fk
 @Entity
 @Table(name = "lib_library")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

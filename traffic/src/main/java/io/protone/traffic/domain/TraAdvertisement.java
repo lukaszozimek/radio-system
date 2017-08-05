@@ -13,7 +13,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A TraAdvertisement.
@@ -38,11 +40,6 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
     @Column(name = "description")
     private String description;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    @PodamExclude
-    private LibMediaItem mediaItem;
-
     @ManyToOne
     @PodamExclude
     private CrmAccount customer;
@@ -58,6 +55,15 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
     @ManyToOne
     @PodamExclude
     private CorDictionary type;
+
+    @PodamExclude
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "lib_media_item_tra_advertisement",
+            joinColumns = @JoinColumn(name = "tra_advertisement_id"),
+            inverseJoinColumns = @JoinColumn(name = "lib_media_item_id")
+    )
+    private Set<LibMediaItem> libMediaItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -93,16 +99,16 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public LibMediaItem getMediaItem() {
-        return mediaItem;
+    public Set<LibMediaItem> getMediaItem() {
+        return libMediaItems;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
+    public void setMediaItem(Set<LibMediaItem> libMediaItem) {
+        this.libMediaItems = libMediaItem;
     }
 
-    public TraAdvertisement mediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
+    public TraAdvertisement mediaItem(Set<LibMediaItem> libMediaItem) {
+        this.libMediaItems = libMediaItem;
         return this;
     }
 
@@ -158,6 +164,14 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
+    public Set<LibMediaItem> getLibMediaItems() {
+        return libMediaItems;
+    }
+
+    public void setLibMediaItems(Set<LibMediaItem> libMediaItems) {
+        this.libMediaItems = libMediaItems;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -181,9 +195,9 @@ public class TraAdvertisement extends AbstractAuditingEntity implements Serializ
     @Override
     public String toString() {
         return "TraAdvertisement{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", description='" + description + "'" +
+                '}';
     }
 }

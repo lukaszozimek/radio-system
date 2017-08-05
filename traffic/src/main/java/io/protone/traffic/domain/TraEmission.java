@@ -3,6 +3,7 @@ package io.protone.traffic.domain;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -36,6 +37,15 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     @Column(name = "time_stop")
     private Long timeStop;
 
+    @Column(name = "fixed_postion")
+    private boolean fixedPosition;
+
+    @Column(name = "first_postion")
+    private boolean firsrPosition;
+
+    @Column(name = "last_postion")
+    private boolean lastPosition;
+
     @ManyToOne
     @PodamExclude
     private TraOrder order;
@@ -50,9 +60,9 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
 
     @ManyToOne
     @PodamExclude
-    private TraAdvertisement advertiment;
+    private LibMediaItem advertiment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private TraBlock block;
 
@@ -142,15 +152,15 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public TraAdvertisement getAdvertiment() {
+    public LibMediaItem getAdvertiment() {
         return advertiment;
     }
 
-    public void setAdvertiment(TraAdvertisement traAdvertisement) {
+    public void setAdvertiment(LibMediaItem traAdvertisement) {
         this.advertiment = traAdvertisement;
     }
 
-    public TraEmission advertiment(TraAdvertisement traAdvertisement) {
+    public TraEmission advertiment(LibMediaItem traAdvertisement) {
         this.advertiment = traAdvertisement;
         return this;
     }
@@ -192,10 +202,49 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
     @Override
     public String toString() {
         return "TraEmission{" +
-            "id=" + id +
-            ", sequence='" + sequence + "'" +
-            ", timeStart='" + timeStart + "'" +
-            ", timeStop='" + timeStop + "'" +
-            '}';
+                "id=" + id +
+                ", sequence='" + sequence + "'" +
+                ", timeStart='" + timeStart + "'" +
+                ", timeStop='" + timeStop + "'" +
+                '}';
+    }
+
+    public boolean isFixedPosition() {
+        return fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
+    }
+
+    public boolean isFirsrPosition() {
+        return firsrPosition;
+    }
+
+    public void setFirsrPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+    }
+
+    public TraEmission firstPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+        return this;
+    }
+
+    public boolean isLastPosition() {
+        return lastPosition;
+    }
+
+    public TraEmission lastPosition(boolean lastPostion) {
+        this.lastPosition = lastPostion;
+        return this;
+    }
+
+    public TraEmission fixedPosition(boolean fixedPosition) {
+        this.firsrPosition = fixedPosition;
+        return this;
+    }
+
+    public void setLastPosition(boolean lastPosition) {
+        this.lastPosition = lastPosition;
     }
 }

@@ -26,9 +26,7 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="media_item_id" type="bigint">
-                <constraints unique="true" nullable="false" />
-            </column>
+
             <column name="customer_id" type="bigint">
                 <constraints nullable="false" />
             </column>

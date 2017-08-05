@@ -1,6 +1,7 @@
 package io.protone.application.service.traffic;
 
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -17,6 +18,7 @@ import io.protone.library.service.LibItemService;
 import io.protone.traffic.api.dto.thin.TraAdvertisementThinDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
+import io.protone.traffic.domain.TraMediaPlanTemplate;
 import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.mapper.TraAdvertisementMapper;
 import io.protone.traffic.repository.TraAdvertisementRepository;
@@ -181,26 +183,27 @@ public class TraMediaPlanServiceTest {
         TraAdvertisement advertisementToShuffle = factory.manufacturePojo(TraAdvertisement.class);
         advertisementToShuffle.setCustomer(crmAccount);
         advertisementToShuffle.setNetwork(corNetwork);
-        advertisementToShuffle.setMediaItem(libMediaItemToShuffle);
+        advertisementToShuffle.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
         advertisementToShuffle = traAdvertisementRepository.saveAndFlush(advertisementToShuffle);
         traOrder.advertisment(advertisementToShuffle);
         traOrder.setNetwork(corNetwork);
         traOrder.setCustomer(crmAccount);
         traOrder = traOrderRepository.save(traOrder);
 
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor()
-            .sheetIndexOfMediaPlan(0)
-            .playlistDatePattern("dd-MMM-yyyy")
-            .playlistDateStartColumn("G")
-            .playlistDateEndColumn("CW")
-            .playlistFirsValueCell("G8")
-            .blockStartCell("A10")
-            .blockEndCell("A47")
-            .blockStartColumn("A")
-            .blockHourSeparator("-")
-            .firstEmissionValueCell("G10")
-            .lastEmissionValueCell("CW47")
-            .order(traOrder);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
+        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate().sheetIndexOfMediaPlan(0)
+                .playlistDatePattern("dd-MMM-yyyy")
+                .playlistDateStartColumn("G")
+                .playlistDateEndColumn("CW")
+                .playlistFirsValueCell("G8")
+                .blockStartCell("A10")
+                .blockEndCell("A47")
+                .blockStartColumn("A")
+                .blockHourSeparator("-")
+                .firstEmissionValueCell("G10")
+                .lastEmissionValueCell("CW47");
+        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
+
 
         //then
         TraMediaPlan fetchedEntity = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
