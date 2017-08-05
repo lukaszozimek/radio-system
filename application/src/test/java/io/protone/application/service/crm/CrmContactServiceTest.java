@@ -9,8 +9,10 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorImageItemService;
 import io.protone.crm.domain.CrmContact;
+import io.protone.crm.domain.CrmLead;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.repostiory.CrmContactRepository;
+import io.protone.crm.repostiory.CrmLeadRepository;
 import io.protone.crm.service.CrmContactService;
 import org.apache.tika.exception.TikaException;
 import org.junit.Before;
@@ -63,6 +65,9 @@ public class CrmContactServiceTest {
 
     @Autowired
     private CorImageItemService corImageItemService;
+
+    @Autowired
+    private CrmLeadRepository crmLeadRepository;
 
     @Mock
     private S3Client s3Client;
@@ -392,6 +397,20 @@ public class CrmContactServiceTest {
         //then
         crmContact = crmContactService.saveContact(crmContact);
         crmContact1 = crmContactService.saveContact(crmContact1);
+
+    }
+
+    @Test
+    public void shoudlConvertLeadToContact() {
+        CrmLead crmLead = factory.manufacturePojo(CrmLead.class);
+        crmLead.network(corNetwork);
+        CrmLead crmLeadEntity = crmLeadRepository.saveAndFlush(crmLead);
+        CrmContact crmContact = crmContactService.convertCrmLeadToContact(crmLeadEntity);
+
+        //assert
+        assertNotNull(crmContact);
+        assertNotNull(crmContact.getId());
+        assertNotNull(crmContact.getCrmLead());
 
     }
 

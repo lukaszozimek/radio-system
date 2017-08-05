@@ -34,7 +34,7 @@ public class TraMediaPlanTemplateService {
         return traMediaPlanTemplateRepository.save(traMediaPlanTemplate);
     }
 
-    public List<TraMediaPlanTemplate> getAllMediaPlanTemplates(String networkShortcut, Pageable pagable) {
+    public List<TraMediaPlanTemplate> findAllMediaPlanTemplates(String networkShortcut, Pageable pagable) {
         return traMediaPlanTemplateRepository.findAllByNetwork_Shortcut(networkShortcut, pagable);
     }
 

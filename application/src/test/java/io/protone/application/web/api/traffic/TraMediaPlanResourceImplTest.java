@@ -46,6 +46,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -188,7 +189,9 @@ public class TraMediaPlanResourceImplTest {
         traOrder.setNetwork(corNetwork);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = new TraMediaPlanTemplateDTO();
-        mediaPlanDescriptor = new TraMediaPlanDescriptorDTO().order(traOrderMapper.DB2ThinDTO(traOrder)).libMediaItemThinDTO(libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItem));
+        mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
+                .order(traOrderMapper.DB2ThinDTO(traOrder))
+                .libMediaItemThinDTO(libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItem));
         traMediaPlanTemplateDTO.sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")
                 .playlistDateStartColumn("G")
@@ -199,7 +202,7 @@ public class TraMediaPlanResourceImplTest {
                 .blockStartColumn("A")
                 .blockHourSeparator("-")
                 .firstEmissionValueCell("G10")
-                .lastEmissionValueCell("CW47");
+                .lastEmissionValueCell("CW47").name("test");
         mediaPlanDescriptor.setTraMediaPlanTemplateDTO(traMediaPlanTemplateDTO);
 
 
@@ -239,7 +242,7 @@ public class TraMediaPlanResourceImplTest {
         MockMultipartFile jsonFile = new MockMultipartFile("traMediaPlanDescriptorDTO", "",
                 "application/json", TestUtil.convertObjectToJsonBytes(mediaPlanDescriptor));
 
-        restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
+        ResultActions resultActions = restTraMediaPlanMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(firstFile)
                 .file(jsonFile))
                 .andExpect(status().is(200))

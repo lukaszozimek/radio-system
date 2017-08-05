@@ -3,6 +3,7 @@ package io.protone.traffic.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.library.domain.LibMediaItem;
@@ -55,6 +56,10 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
 
     @ManyToOne
     @PodamExclude
+    private CorDictionary blockType;
+
+    @ManyToOne
+    @PodamExclude
     private LibMediaItem blockStartSound;
 
     @ManyToOne
@@ -96,6 +101,19 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
 
     public TraBlockConfiguration name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public CorDictionary getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(CorDictionary blockType) {
+        this.blockType = blockType;
+    }
+
+    public TraBlockConfiguration blockType(CorDictionary blockType) {
+        this.blockType = blockType;
         return this;
     }
 
@@ -226,13 +244,15 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
     @Override
     public String toString() {
         return "TraBlockConfiguration{" +
-            "id=" + id +
-            ", day='" + day + "'" +
-            ", name='" + name + "'" +
-            ", length='" + length + "'" +
-            ", startBlock='" + startBlock + "'" +
-            ", stopBlock='" + stopBlock + "'" +
-            ", sequence='" + sequence + "'" +
-            '}';
+                "id=" + id +
+                ", day='" + day + "'" +
+                ", name='" + name + "'" +
+                ", length='" + length + "'" +
+                ", startBlock='" + startBlock + "'" +
+                ", stopBlock='" + stopBlock + "'" +
+                ", sequence='" + sequence + "'" +
+                '}';
     }
+
+
 }

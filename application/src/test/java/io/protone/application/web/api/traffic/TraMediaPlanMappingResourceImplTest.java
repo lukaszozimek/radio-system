@@ -2,6 +2,7 @@ package io.protone.application.web.api.traffic;
 
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
+import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.traffic.impl.TraMediaPlanMappingResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
@@ -16,6 +17,7 @@ import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibItemService;
+import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
@@ -227,11 +229,12 @@ public class TraMediaPlanMappingResourceImplTest {
         MockMultipartFile firstFile = new MockMultipartFile("file", DEFAULT_NAME, "", inputStream);
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(firstFile, mediaPlanDescriptor, corNetwork, corChannel);
-
-        restTraMediaPlanMappingMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/{mediaPlanId}/advertisement/{advertisementId}",
+        TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO = new TraMediaPlanAdvertisementAssigneDTO().mediaPlanId(traMediaPlan.getId()).libMediaItemIdx(libMediaItem.getIdx());
+        restTraMediaPlanMappingMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
                 corNetwork.getShortcut(),
-                corChannel.getShortcut(),
-                traMediaPlan.getId(), traAdvertisement.getId()))
+                corChannel.getShortcut())
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traMediaPlanAdvertisementAssigneDTO)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
 

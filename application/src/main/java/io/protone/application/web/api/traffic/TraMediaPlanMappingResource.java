@@ -22,7 +22,7 @@ public interface TraMediaPlanMappingResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraPlaylistDiffDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraPlaylistDiffDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraPlaylistDiffDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan/assigne",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

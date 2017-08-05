@@ -8,8 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Created by lukaszozimek on 30/07/2017.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ProtoneApp.class)
+//TODO: Implement Test
 public class CrmContactConverterResourceImplTest {
 
 }

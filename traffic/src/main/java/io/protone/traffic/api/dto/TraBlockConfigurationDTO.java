@@ -1,6 +1,7 @@
 package io.protone.traffic.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -14,11 +15,12 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class TraBlockConfigurationDTO implements Serializable {
+    @JsonProperty("id")
+    private Long id = null;
+
     @JsonProperty("description")
     private String description = null;
 
-    @JsonProperty("id")
-    private Long id = null;
 
     @NotNull
     private String name = null;
@@ -35,12 +37,27 @@ public class TraBlockConfigurationDTO implements Serializable {
     @NotNull
     private Integer sequence = null;
 
-
     @NotNull
     private CorDayOfWeekEnum day;
 
+    private CorDictionaryDTO blockType;
+
     public TraBlockConfigurationDTO description(String description) {
         this.description = description;
+        return this;
+    }
+
+    public CorDictionaryDTO getBlockType() {
+        return blockType;
+    }
+
+
+    public void setBlockType(CorDictionaryDTO blockType) {
+        this.blockType = blockType;
+    }
+
+    public TraBlockConfigurationDTO blockType(CorDictionaryDTO blockType) {
+        this.blockType = blockType;
         return this;
     }
 
@@ -174,24 +191,12 @@ public class TraBlockConfigurationDTO implements Serializable {
         }
         TraBlockConfigurationDTO traBlockConfigurationDTO = (TraBlockConfigurationDTO) o;
         return Objects.equals(this.description, traBlockConfigurationDTO.description) &&
-            Objects.equals(this.id, traBlockConfigurationDTO.id) &&
-            Objects.equals(this.name, traBlockConfigurationDTO.name) &&
-            Objects.equals(this.length, traBlockConfigurationDTO.length) &&
-            Objects.equals(this.day, traBlockConfigurationDTO.day);
+                Objects.equals(this.id, traBlockConfigurationDTO.id) &&
+                Objects.equals(this.name, traBlockConfigurationDTO.name) &&
+                Objects.equals(this.length, traBlockConfigurationDTO.length) &&
+                Objects.equals(this.day, traBlockConfigurationDTO.day);
     }
-    @Override
-    public String toString() {
-        return "TraBlockConfigurationDTO{" +
-            "description='" + description + '\'' +
-            ", id=" + id +
-            ", name='" + name + '\'' +
-            ", length=" + length +
-            ", startBlock=" + startBlock +
-            ", stopBlock=" + stopBlock +
-            ", sequence=" + sequence +
-            ", day=" + day +
-            '}';
-    }
+
     @Override
     public int hashCode() {
         return Objects.hash(description, id, name, length, day);
@@ -209,5 +214,19 @@ public class TraBlockConfigurationDTO implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        return "TraBlockConfigurationDTO{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                ", length=" + length +
+                ", startBlock=" + startBlock +
+                ", stopBlock=" + stopBlock +
+                ", sequence=" + sequence +
+                ", day=" + day +
+                ", blockType=" + blockType +
+                '}';
+    }
 }
 

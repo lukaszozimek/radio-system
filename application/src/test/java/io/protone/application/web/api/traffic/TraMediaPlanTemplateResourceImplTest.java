@@ -6,11 +6,14 @@ import io.protone.application.web.api.traffic.impl.TraMediaPlanTemplateResourceI
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
+import io.protone.crm.domain.CrmDiscount;
+import io.protone.traffic.api.dto.TraDiscountDTO;
 import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
+import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.mapper.TraMediaPlanTemplateMapper;
 import io.protone.traffic.repository.TraMediaPlanTemplateRepository;
-import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
+import io.protone.traffic.service.TraMediaPlanTemplateService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,18 +24,18 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 import static io.protone.application.web.api.cor.CorNetworkResourceIntTest.TEST_NETWORK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,14 +45,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class TraMediaPlanTemplateResourceImplTest {
-    private static final LocalDate DEFAULT_VALID_FROM = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_VALID_FROM = LocalDate.now(ZoneId.systemDefault());
 
-    private static final LocalDate DEFAULT_VALID_TO = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_VALID_TO = LocalDate.now(ZoneId.systemDefault());
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_DISCOUNT = 1L;
-    private static final Long UPDATED_DISCOUNT = 2L;
+    private static final String DEFAULT_BLOCK_START_COLUMN = "AAAAAAAAAA";
+    private static final String UPDATED_BLOCK_START_COLUMN = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BLOCK_START_CELL = "AAAAAAAAAA";
+    private static final String UPDATED_BLOCK_START_CELL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BLOCK_END_CELL = "AAAAAAAAAA";
+    private static final String UPDATED_BLOCK_END_CELL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BLOCK_HOUR_SEPARATOR = "AAAAAAAAAA";
+    private static final String UPDATED_BLOCK_HOUR_SEPARATOR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PLAYLIST_DATE_START_COLUMN = "AAAAAAAAAA";
+    private static final String UPDATED_PLAYLIST_DATE_START_COLUMN = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PLAYLIST_DATE_END_COLUMN = "AAAAAAAAAA";
+    private static final String UPDATED_PLAYLIST_DATE_END_COLUMN = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PLAYLIST_FIRST_VALUE_CELL = "AAAAAAAAAA";
+    private static final String UPDATED_PLAYLIST_FIRST_VALUE_CELL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PLAYLIST_DATE_PATTERN = "AAAAAAAAAA";
+    private static final String UPDATED_PLAYLIST_DATE_PATTERN = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_SHEET_INDEX_OF_MEDIAPLAN = 0;
+    private static final Integer UPDATED_SHEET_INDEX_OF_MEDIAPLAN = 1;
+
+    private static final String DEFAULT_FIRST_EMISSION_VALUE_CELL = "AAAAAAAAAA";
+    private static final String UPDATED_FIRST_EMISSION_VALUE_CELL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LAST_EMISSION_VALUE_CELL = "AAAAAAAAAA";
+    private static final String UPDATED_LAST_EMISSION_VALUE_CELL = "BBBBBBBBBB";
+
 
     @Autowired
     private TraMediaPlanTemplateRepository traMediaPlanTemplateRepository;
@@ -59,7 +91,8 @@ public class TraMediaPlanTemplateResourceImplTest {
 
     @Autowired
     private CorNetworkService corNetworkService;
-
+    @Autowired
+    private TraMediaPlanTemplateService traMediaPlanTemplateService;
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -84,21 +117,34 @@ public class TraMediaPlanTemplateResourceImplTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static TraMediaPlanDescriptor createEntity(EntityManager em) {
-        TraMediaPlanDescriptor traMediaPlanDescriptor = new TraMediaPlanDescriptor();
-        return traMediaPlanDescriptor;
+    public static TraMediaPlanTemplate createEntity(EntityManager em) {
+
+        return new TraMediaPlanTemplate()
+                .name(DEFAULT_NAME).blockStartColumn(DEFAULT_BLOCK_START_COLUMN)
+                .blockStartCell(DEFAULT_BLOCK_START_CELL).blockEndCell(DEFAULT_BLOCK_END_CELL)
+                .blockHourSeparator(DEFAULT_BLOCK_HOUR_SEPARATOR)
+                .playlistDateStartColumn(DEFAULT_PLAYLIST_DATE_START_COLUMN)
+                .playlistDateEndColumn(DEFAULT_PLAYLIST_DATE_END_COLUMN)
+                .playlistFirsValueCell(DEFAULT_PLAYLIST_FIRST_VALUE_CELL)
+                .playlistDatePattern(DEFAULT_PLAYLIST_DATE_PATTERN)
+                .sheetIndexOfMediaPlan(DEFAULT_SHEET_INDEX_OF_MEDIAPLAN)
+                .firstEmissionValueCell(DEFAULT_FIRST_EMISSION_VALUE_CELL)
+                .lastEmissionValueCell(DEFAULT_LAST_EMISSION_VALUE_CELL);
     }
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        TraMediaPlanTemplateResourceImpl traDiscountResource = new TraMediaPlanTemplateResourceImpl();
+        TraMediaPlanTemplateResourceImpl traMediaPlanTemplateResource = new TraMediaPlanTemplateResourceImpl();
 
+        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "traMediaPlanTemplateService", traMediaPlanTemplateService);
+        ReflectionTestUtils.setField(traMediaPlanTemplateResource, "traMediaPlanTemplateMapper", traMediaPlanTemplateMapper);
 
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
 
-        this.restTraMediaPlantMockMvc = MockMvcBuilders.standaloneSetup(traDiscountResource)
+        this.restTraMediaPlantMockMvc = MockMvcBuilders.standaloneSetup(traMediaPlanTemplateResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
                 .setMessageConverters(jacksonMessageConverter).build();
@@ -106,18 +152,18 @@ public class TraMediaPlanTemplateResourceImplTest {
 
     @Before
     public void initTest() {
-//        traDiscount = createEntity(em).network(corNetwork);
+        traMediaPlanTemplate = createEntity(em).network(corNetwork);
     }
 
     @Test
     @Transactional
-    public void createTraDiscount() throws Exception {
+    public void createTraMediaPlanTemplate() throws Exception {
         int databaseSizeBeforeCreate = traMediaPlanTemplateRepository.findAll().size();
 
         // Create the TraDiscount
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(traMediaPlanTemplate);
 
-        restTraMediaPlantMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/dictionary/discount", corNetwork.getShortcut())
+        restTraMediaPlantMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanTemplateDTO)))
                 .andExpect(status().isCreated());
@@ -131,7 +177,7 @@ public class TraMediaPlanTemplateResourceImplTest {
 
     @Test
     @Transactional
-    public void createTraDiscountWithExistingId() throws Exception {
+    public void createTraMediaPlanTemplateWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = traMediaPlanTemplateRepository.findAll().size();
 
         // Create the TraDiscount with an existing ID
@@ -152,7 +198,7 @@ public class TraMediaPlanTemplateResourceImplTest {
 
     @Test
     @Transactional
-    public void getAllTraDiscounts() throws Exception {
+    public void getAllTraMediaPlanTemplate() throws Exception {
         // Initialize the database
         traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
 
@@ -161,14 +207,23 @@ public class TraMediaPlanTemplateResourceImplTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traMediaPlanTemplate.getId().intValue())))
-                .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
-                .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())))
-                .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.intValue())));
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].blockStartColumn").value(hasItem(DEFAULT_BLOCK_START_COLUMN.toString())))
+                .andExpect(jsonPath("$.[*].blockStartCell").value(hasItem(DEFAULT_BLOCK_START_CELL.toString())))
+                .andExpect(jsonPath("$.[*].blockEndCell").value(hasItem(DEFAULT_BLOCK_END_CELL.toString())))
+                .andExpect(jsonPath("$.[*].blockHourSeparator").value(hasItem(DEFAULT_BLOCK_HOUR_SEPARATOR.toString())))
+                .andExpect(jsonPath("$.[*].playlistDateStartColumn").value(hasItem(DEFAULT_PLAYLIST_DATE_START_COLUMN.toString())))
+                .andExpect(jsonPath("$.[*].playlistDateEndColumn").value(hasItem(DEFAULT_PLAYLIST_DATE_END_COLUMN.toString())))
+                .andExpect(jsonPath("$.[*].playlistFirsValueCell").value(hasItem(DEFAULT_PLAYLIST_FIRST_VALUE_CELL.toString())))
+                .andExpect(jsonPath("$.[*].playlistDatePattern").value(hasItem(DEFAULT_PLAYLIST_DATE_PATTERN.toString())))
+                .andExpect(jsonPath("$.[*].sheetIndexOfMediaPlan").value(hasItem(DEFAULT_SHEET_INDEX_OF_MEDIAPLAN.intValue())))
+                .andExpect(jsonPath("$.[*].firstEmissionValueCell").value(hasItem(DEFAULT_FIRST_EMISSION_VALUE_CELL.toString())))
+                .andExpect(jsonPath("$.[*].lastEmissionValueCell").value(hasItem(DEFAULT_LAST_EMISSION_VALUE_CELL.toString())));
     }
 
     @Test
     @Transactional
-    public void getTraDiscount() throws Exception {
+    public void getTraMediaPlanTemplate() throws Exception {
         // Initialize the database
         traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
 
@@ -177,14 +232,23 @@ public class TraMediaPlanTemplateResourceImplTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traMediaPlanTemplate.getId().intValue()))
-                .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
-                .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()))
-                .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.intValue()));
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.blockStartColumn").value(DEFAULT_BLOCK_START_COLUMN.toString()))
+                .andExpect(jsonPath("$.blockStartCell").value(DEFAULT_BLOCK_START_CELL.toString()))
+                .andExpect(jsonPath("$.blockEndCell").value(DEFAULT_BLOCK_END_CELL.toString()))
+                .andExpect(jsonPath("$.blockHourSeparator").value(DEFAULT_BLOCK_HOUR_SEPARATOR.toString()))
+                .andExpect(jsonPath("$.playlistDateStartColumn").value(DEFAULT_PLAYLIST_DATE_START_COLUMN.toString()))
+                .andExpect(jsonPath("$.playlistDateEndColumn").value(DEFAULT_PLAYLIST_DATE_END_COLUMN.toString()))
+                .andExpect(jsonPath("$.playlistFirsValueCell").value(DEFAULT_PLAYLIST_FIRST_VALUE_CELL.toString()))
+                .andExpect(jsonPath("$.playlistDatePattern").value(DEFAULT_PLAYLIST_DATE_PATTERN.toString()))
+                .andExpect(jsonPath("$.sheetIndexOfMediaPlan").value(DEFAULT_SHEET_INDEX_OF_MEDIAPLAN.intValue()))
+                .andExpect(jsonPath("$.firstEmissionValueCell").value(DEFAULT_FIRST_EMISSION_VALUE_CELL.toString()))
+                .andExpect(jsonPath("$.lastEmissionValueCell").value(DEFAULT_LAST_EMISSION_VALUE_CELL.toString()));
     }
 
     @Test
     @Transactional
-    public void getNonExistingTraDiscount() throws Exception {
+    public void getNonExistingTraMediaPlanTemplate() throws Exception {
         // Get the traMediaPlanTemplate
         restTraMediaPlantMockMvc.perform(get("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
@@ -192,15 +256,24 @@ public class TraMediaPlanTemplateResourceImplTest {
 
     @Test
     @Transactional
-    public void updateTraDiscount() throws Exception {
+    public void updateTraMediaPlanTemplate() throws Exception {
         // Initialize the database
         traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
         int databaseSizeBeforeUpdate = traMediaPlanTemplateRepository.findAll().size();
 
         // Update the traMediaPlanTemplate
-        TraMediaPlanTemplate updatedTraDiscount = traMediaPlanTemplateRepository.findOne(traMediaPlanTemplate.getId());
-
-        TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(traMediaPlanTemplate);
+        TraMediaPlanTemplate traMediaPlanTemplate = traMediaPlanTemplateRepository.findOne(this.traMediaPlanTemplate.getId());
+        traMediaPlanTemplate.name(UPDATED_NAME).blockStartColumn(UPDATED_BLOCK_START_COLUMN)
+                .blockStartCell(UPDATED_BLOCK_START_CELL).blockEndCell(UPDATED_BLOCK_END_CELL)
+                .blockHourSeparator(UPDATED_BLOCK_HOUR_SEPARATOR)
+                .playlistDateStartColumn(UPDATED_PLAYLIST_DATE_START_COLUMN)
+                .playlistDateEndColumn(UPDATED_PLAYLIST_DATE_END_COLUMN)
+                .playlistFirsValueCell(UPDATED_PLAYLIST_FIRST_VALUE_CELL)
+                .playlistDatePattern(UPDATED_PLAYLIST_DATE_PATTERN)
+                .sheetIndexOfMediaPlan(UPDATED_SHEET_INDEX_OF_MEDIAPLAN)
+                .firstEmissionValueCell(UPDATED_FIRST_EMISSION_VALUE_CELL)
+                .lastEmissionValueCell(UPDATED_LAST_EMISSION_VALUE_CELL);
+        TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = traMediaPlanTemplateMapper.DB2DTO(this.traMediaPlanTemplate);
 
         restTraMediaPlantMockMvc.perform(put("/api/v1/network/{networkShortcut}/configuration/traffic/mediaplan/template", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -210,13 +283,25 @@ public class TraMediaPlanTemplateResourceImplTest {
         // Validate the TraDiscount in the database
         List<TraMediaPlanTemplate> traMediaPlanList = traMediaPlanTemplateRepository.findAll();
         assertThat(traMediaPlanList).hasSize(databaseSizeBeforeUpdate);
-        TraMediaPlanTemplate testTraDiscount = traMediaPlanList.get(traMediaPlanList.size() - 1);
+        TraMediaPlanTemplate mediaPlanTemplate = traMediaPlanList.get(traMediaPlanList.size() - 1);
+        assertEquals(mediaPlanTemplate.getName(), UPDATED_NAME);
+        assertEquals(mediaPlanTemplate.getBlockStartCell(), UPDATED_BLOCK_START_CELL);
+        assertEquals(mediaPlanTemplate.getBlockEndCell(), UPDATED_BLOCK_END_CELL);
+        assertEquals(mediaPlanTemplate.getBlockHourSeparator(), UPDATED_BLOCK_HOUR_SEPARATOR);
+        assertEquals(mediaPlanTemplate.getPlaylistDateStartColumn(), UPDATED_PLAYLIST_DATE_START_COLUMN);
+        assertEquals(mediaPlanTemplate.getBlockStartColumn(), UPDATED_BLOCK_START_COLUMN);
+        assertEquals(mediaPlanTemplate.getPlaylistDateEndColumn(), UPDATED_PLAYLIST_DATE_END_COLUMN);
+        assertEquals(mediaPlanTemplate.getPlaylistFirsValueCell(), UPDATED_PLAYLIST_FIRST_VALUE_CELL);
+        assertEquals(mediaPlanTemplate.getPlaylistDatePattern(), UPDATED_PLAYLIST_DATE_PATTERN);
+        assertEquals(mediaPlanTemplate.getSheetIndexOfMediaPlan(), UPDATED_SHEET_INDEX_OF_MEDIAPLAN);
+        assertEquals(mediaPlanTemplate.getFirstEmissionValueCell(), UPDATED_FIRST_EMISSION_VALUE_CELL);
+        assertEquals(mediaPlanTemplate.getLastEmissionValueCell(), UPDATED_LAST_EMISSION_VALUE_CELL);
 
     }
 
     @Test
     @Transactional
-    public void updateNonExistingTraDiscount() throws Exception {
+    public void updateNonExistingTraMediaPlanTemplate() throws Exception {
         int databaseSizeBeforeUpdate = traMediaPlanTemplateRepository.findAll().size();
 
         // Create the TraDiscount
@@ -235,7 +320,7 @@ public class TraMediaPlanTemplateResourceImplTest {
 
     @Test
     @Transactional
-    public void deleteTraDiscount() throws Exception {
+    public void deleteTraMediaPlanTemplate() throws Exception {
         // Initialize the database
         traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
         int databaseSizeBeforeDelete = traMediaPlanTemplateRepository.findAll().size();

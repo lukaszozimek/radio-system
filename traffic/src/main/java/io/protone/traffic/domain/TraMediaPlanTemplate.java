@@ -296,6 +296,12 @@ public class TraMediaPlanTemplate extends AbstractAuditingEntity implements Seri
         return name;
     }
 
+
+    public TraMediaPlanTemplate name(String name) {
+        this.name = name;
+        return this;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

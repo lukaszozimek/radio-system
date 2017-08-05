@@ -5,12 +5,17 @@ import io.protone.library.constans.MarkerConstans;
 import io.protone.library.service.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.XMPDM;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.audio.AudioParser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,16 +42,40 @@ public class AudioVaultWaveParser extends AudioParser {
 
     @Override
     public void parse(
-        InputStream stream, ContentHandler handler,
-        Metadata metadata, ParseContext context)
-        throws IOException, SAXException, TikaException {
+            InputStream stream, ContentHandler handler,
+            Metadata metadata, ParseContext context)
+            throws IOException, SAXException, TikaException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         Supplier<InputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
         metadata.set("Content-Type", "audio/wav");
+        super.parse(inputStreamSupplier.get(), handler, metadata, context);
         cartChunk(inputStreamSupplier.get(), metadata);
         listAV(inputStreamSupplier.get(), metadata);
+        getAudioLenght(inputStreamSupplier.get(), metadata);
 
+
+    }
+
+    private void getAudioLenght(InputStream stream, Metadata metadata) throws IOException {
+
+        AudioInputStream audioInputStream = null;
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(stream);
+            AudioFormat format = audioInputStream.getFormat();
+            long audioFileLength = stream.available();
+            int frameSize = format.getFrameSize();
+            float frameRate = format.getFrameRate();
+            double durationInSeconds = (audioFileLength / (frameSize * frameRate));
+            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds));
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            audioInputStream.close();
+
+        }
 
     }
 
@@ -163,10 +192,10 @@ public class AudioVaultWaveParser extends AudioParser {
     }
 
     private void listBextAV
-        (InputStream
-             stream, Metadata
-             metadata) throws
-        IOException {
+            (InputStream
+                     stream, Metadata
+                     metadata) throws
+            IOException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         stream.close();
@@ -176,10 +205,10 @@ public class AudioVaultWaveParser extends AudioParser {
     }
 
     private void av10
-        (InputStream
-             stream, Metadata
-             metadata) throws
-        IOException {
+            (InputStream
+                     stream, Metadata
+                     metadata) throws
+            IOException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         stream.close();
@@ -189,10 +218,10 @@ public class AudioVaultWaveParser extends AudioParser {
     }
 
     private void cartChunk
-        (InputStream
-             stream, Metadata
-             metadata) throws
-        IOException {
+            (InputStream
+                     stream, Metadata
+                     metadata) throws
+            IOException {
         byte[] inputStream = new byte[stream.available()];
         stream.read(inputStream);
         stream.close();

@@ -62,6 +62,11 @@ public class TraMediaPlanTemplateDTO implements Serializable {
         this.name = name;
     }
 
+    public TraMediaPlanTemplateDTO name(String name) {
+        this.name = name;
+        return this;
+    }
+
     public String getBlockStartColumn() {
         return blockStartColumn;
     }
@@ -224,7 +229,7 @@ public class TraMediaPlanTemplateDTO implements Serializable {
     }
 
     public TraMediaPlanTemplateDTO playlistDatePattern(String playlistDatePattern) {
-       this.playlistDatePattern = playlistDatePattern;
+        this.playlistDatePattern = playlistDatePattern;
         return this;
     }
 

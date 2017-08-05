@@ -22,6 +22,7 @@ import java.util.List;
 public class CrmOpportunityService {
 
     private final Logger log = LoggerFactory.getLogger(CrmOpportunityService.class);
+    private static final String CONVERTED = "conv";
 
     @Inject
     private CrmOpportunityRepository opportunityRepository;
@@ -96,7 +97,7 @@ public class CrmOpportunityService {
 
     public CrmOpportunity convertLeadToOpportunity(CrmLead lead) {
         CrmOpportunity opportunity = new CrmOpportunity();
-        opportunity.setShortName(lead.getShortname());
+        opportunity.setShortName(CONVERTED + lead.getShortname());
         opportunity.setLead(lead);
         opportunity.setKeeper(lead.getKeeper());
         opportunity.setNetwork(lead.getNetwork());
@@ -107,7 +108,7 @@ public class CrmOpportunityService {
     public CrmOpportunity convertContactToOpportunity(CrmContact crmContact) {
         CrmOpportunity opportunity = new CrmOpportunity();
 
-        opportunity.setShortName(crmContact.getShortName());
+        opportunity.setShortName(CONVERTED + crmContact.getShortName());
         opportunity.contact(crmContact);
         opportunity.setKeeper(crmContact.getKeeper());
         opportunity.setNetwork(crmContact.getNetwork());
@@ -118,7 +119,7 @@ public class CrmOpportunityService {
     public CrmOpportunity convertAccountToOpportunity(CrmAccount crmAccount) {
         CrmOpportunity opportunity = new CrmOpportunity();
         opportunity.setAccount(crmAccount);
-        opportunity.setShortName(crmAccount.getShortName());
+        opportunity.setShortName(CONVERTED + crmAccount.getShortName());
         opportunity.setKeeper(crmAccount.getKeeper());
         opportunity.setNetwork(crmAccount.getNetwork());
 

@@ -240,7 +240,9 @@ public class TraPlaylistBasedTest {
 
         libMediaItemToShuffle.setNetwork(corNetwork);
         libMediaItemToShuffle.setLibrary(libLibrary);
-        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
+        LibLibrary libLibrary = new LibLibrary();
+        libLibrary.setId(2L);
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.library(libLibrary));
         libMediaItemToShuffleThinDTO = libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItemToShuffle);
         advertisementToShuffle.setCustomer(crmAccount);
         advertisementToShuffle.setNetwork(corNetwork);
