@@ -59,6 +59,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -230,7 +231,7 @@ public class TraMediaPlanMappingResourceImplTest {
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(firstFile, mediaPlanDescriptor, corNetwork, corChannel);
         TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO = new TraMediaPlanAdvertisementAssigneDTO().mediaPlanId(traMediaPlan.getId()).libMediaItemIdx(libMediaItem.getIdx());
-        restTraMediaPlanMappingMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
+        restTraMediaPlanMappingMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/assigne/mediaplan",
                 corNetwork.getShortcut(),
                 corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)

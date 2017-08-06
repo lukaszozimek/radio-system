@@ -4,17 +4,12 @@ import io.protone.library.constans.MarkerConstans;
 import io.protone.library.service.metadata.ProtoneMetadataProperty;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.XMPDM;
 import org.apache.tika.mime.MediaType;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp4.MP4Parser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,23 +51,6 @@ public class AudioVaultMP2Parser extends MP4Parser {
 
     private void getAudioLenght(InputStream stream, Metadata metadata) throws IOException {
 
-        AudioInputStream audioInputStream = null;
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(stream);
-            AudioFormat format = audioInputStream.getFormat();
-            long audioFileLength = stream.available();
-            int frameSize = format.getFrameSize();
-            float frameRate = format.getFrameRate();
-            double durationInSeconds = (audioFileLength / (frameSize * frameRate));
-            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds*1000));
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            audioInputStream.close();
-
-        }
 
     }
 
@@ -112,7 +90,6 @@ public class AudioVaultMP2Parser extends MP4Parser {
             metadata.add(SOURCE_TRACK, splitedUser[7].replace("\u0000", "").trim());
         }
         if (splitedUser.length >= 9) {
-
 
             metadata.add(SONG_ID, splitedUser[8].replace("\u0000", "").trim());
         }
