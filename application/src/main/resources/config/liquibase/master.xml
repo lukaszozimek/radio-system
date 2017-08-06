@@ -334,7 +334,10 @@
                   file="/config/liquibase/demo/tra_block_configuration.csv"
                   separator=";"
                   tableName="tra_block_configuration"/>
-
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/tra_media_plan_template.csv"
+                  separator=";"
+                  tableName="tra_media_plan_template"/>
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>
 
