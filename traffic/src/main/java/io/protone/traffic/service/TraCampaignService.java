@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraCampaign;
 import io.protone.traffic.repository.TraCampaignRepository;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class TraCampaignService {
         traCampaignRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
+    public void deleteCampaignByCustomer(CrmAccount crmAccount, String corNetwork) {
+        traCampaignRepository.deleteByCustomerAndNetwork_Shortcut(crmAccount, corNetwork);
+    }
 
     public TraCampaign getCampaign(String shortcut, String corNetwork) {
         return traCampaignRepository.findByShortNameAndNetwork_Shortcut(shortcut, corNetwork);

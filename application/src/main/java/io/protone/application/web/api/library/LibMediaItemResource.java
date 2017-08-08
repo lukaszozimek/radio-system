@@ -33,6 +33,21 @@ public interface LibMediaItemResource {
                                                                                                     @ApiParam(value = "mediaItem", required = true) @RequestBody @Valid LibMediaItemDTO mediaItem
     ) throws IOException;
 
+    @ApiOperation(value = "moveMediaItemUsingGET", notes = "", response = Void.class, tags = {"LIBRARY",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Void.class),
+            @ApiResponse(code = 201, message = "Created", response = Void.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
+            @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{idx}/move/{libraryShortcut}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                               @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                               @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
+                                               @ApiParam(value = "libraryShortcut", required = true) @PathVariable("libraryShortcut") String libraryShortcut);
+
     @ApiOperation(value = "updateItemByNetworShortcutAndLibraryPrefix", notes = "", response = LibMediaItemDTO.class, tags = {"LIBRARY",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = LibMediaItemDTO.class),
@@ -89,7 +104,6 @@ public interface LibMediaItemResource {
     ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
-
 
 
     @ApiOperation(value = "deleteItemByNetworShortcutAndLibrar", notes = "", response = Void.class, tags = {"LIBRARY",})
@@ -211,5 +225,6 @@ public interface LibMediaItemResource {
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("idx") String idx);
+
 
 }

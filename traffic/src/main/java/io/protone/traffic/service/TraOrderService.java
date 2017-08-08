@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.repository.TraOrderRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class TraOrderService {
     @Inject
     private TraOrderRepository traOrderRepository;
 
+    @Inject
+    private TraEmissionService traEmissionService;
+
 
     public List<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
         return traOrderRepository.findByNetwork_Shortcut(corNetwork, pageable);
@@ -32,8 +36,11 @@ public class TraOrderService {
 
     public TraOrder saveOrder(TraOrder traOrder) {
         log.debug("Persisting TraOrder: {}", traOrder);
-        return traOrderRepository.saveAndFlush(traOrder);
+
+        TraOrder traOrder1 = traOrderRepository.saveAndFlush(traOrder);
+        return traOrderRepository.findByIdAndNetwork_Shortcut(traOrder1.getId(), traOrder1.getNetwork().getShortcut());
     }
+
 
     public TraOrder saveOrderLazy(TraOrder traOrder) {
         log.debug("Persisting TraOrder: {}", traOrder);
@@ -41,7 +48,22 @@ public class TraOrderService {
     }
 
     public void deleteOrder(Long id, String corNetwork) {
-        traOrderRepository.deleteByIdAndNetwork_Shortcut(id, corNetwork);
+        TraOrder traOrder = traOrderRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
+        traEmissionService.deleteTraEmissions(traOrder.getEmissions());
+        traOrderRepository.delete(traOrder);
+
+    }
+
+    public void deleteCustomerOrders(CrmAccount crmAccount, String corNetwork) {
+        List<TraOrder> traOrder = traOrderRepository.findByCustomer_ShortNameAndNetwork_Shortcut(crmAccount.getShortName(), corNetwork);
+        if (traOrder != null) {
+            traOrder.stream().forEach(order -> {
+                traEmissionService.deleteTraEmissions(order.getEmissions());
+                traOrderRepository.delete(order);
+            });
+
+        }
+
     }
 
     public TraOrder getOrder(Long id, String corNetwork) {

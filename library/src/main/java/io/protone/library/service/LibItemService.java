@@ -110,6 +110,19 @@ public class LibItemService {
     }
 
     @Transactional
+    public void moveMediaItem(String networkShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
+        LibLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, dstLibararyShortcut);
+        if (dstLibarary != null) {
+            Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+            if (optionalItemDB.isPresent()) {
+                optionalItemDB.get().setLibrary(dstLibarary);
+                itemRepository.saveAndFlush(optionalItemDB.get());
+            }
+        }
+    }
+
+
+    @Transactional
     public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
         List<LibMediaItem> itemsDB = itemRepository.findByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
         return itemsDB;

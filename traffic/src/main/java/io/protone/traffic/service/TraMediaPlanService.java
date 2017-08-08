@@ -3,6 +3,7 @@ package io.protone.traffic.service;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmAccount;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.TraMediaPlan;
@@ -86,6 +87,20 @@ public class TraMediaPlanService {
         traMediaPlanRepository.delete(traMediaPlan);
 
     }
+
+    @Transactional
+    public void deleteCustomerMediaPlan(CrmAccount crmAccount, String corNetwork) {
+        List<TraMediaPlan> traMediaPlans = traMediaPlanRepository.findAllByNetwork_ShortcutAndAccount(corNetwork, crmAccount);
+
+        if (traMediaPlans != null) {
+            traMediaPlans.stream().forEach(traMediaPlan -> {
+                libItemService.deleteItem(traMediaPlan.getMediaItem());
+                traPlaylistService.deletePlaylist(traMediaPlan.getPlaylists());
+                traMediaPlanRepository.delete(traMediaPlan);
+            });
+        }
+    }
+
 
     @Transactional
     public TraMediaPlan getMediaPlan(Long id, String corNetwork, String corChannel) {

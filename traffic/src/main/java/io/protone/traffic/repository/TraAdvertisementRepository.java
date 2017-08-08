@@ -38,4 +38,6 @@ public interface TraAdvertisementRepository extends JpaRepository<TraAdvertiseme
     TraAdvertisement findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
 
     List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String network, Pageable pageable);
+
+    List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String network);
 }

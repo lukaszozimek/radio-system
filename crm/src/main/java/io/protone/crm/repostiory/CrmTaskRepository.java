@@ -25,11 +25,19 @@ public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
 
     List<CrmTask> findAllByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork, Pageable pageable);
 
+    List<CrmTask> findAllByContact_ShortNameAndNetwork_Shortcut(String crmContact, String corNetwork);
+
     List<CrmTask> findAllByLead_ShortnameAndNetwork_Shortcut(String leadShortName, String corNetwork, Pageable pageable);
+
+    List<CrmTask> findAllByLead_ShortnameAndNetwork_Shortcut(String leadShortName, String corNetworkm);
+
+    List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String opportunityShortcut, String corNetwork, Pageable pageable);
 
     List<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork, Pageable pageable);
 
-    List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork, Pageable pageable);
+    List<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork);
+
+    List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String accountShortName, String corNetwork);
 
     List<CrmTask> findAllByNetwork(CorNetwork network, Pageable pageable);
 
@@ -42,5 +50,7 @@ public interface CrmTaskRepository extends JpaRepository<CrmTask, Long> {
     void deleteByAccount_ShortNameAndNetwork_Shortcut(String account, String corNetwork);
 
     void deleteByLead_ShortnameAndNetwork_Shortcut(String lead, String corNetwork);
+
+    void deleteByOpportunity_ShortNameAndNetwork_Shortcut(String opportunity, String corNetwork);
 
 }

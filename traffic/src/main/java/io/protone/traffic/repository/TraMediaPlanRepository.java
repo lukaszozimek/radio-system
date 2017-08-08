@@ -1,6 +1,7 @@
 package io.protone.traffic.repository;
 
 
+import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraMediaPlan;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -50,6 +51,8 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and m.channel.shortcut = :corChannel and m.id = :id ")
     TraMediaPlan findByIdAndNetwork_ShortcutAndChannel_Shortcut(@Param("id") Long id, @Param("network") String corNetwork, @Param("corChannel") String corChannel);
+
+    List<TraMediaPlan> findAllByNetwork_ShortcutAndAccount(String corNetwork, CrmAccount crmAccount);
 
     void deleteByIdAndNetwork_ShortcutAndChannel_Shortcut(Long id, String corNetwork, String corChannel);
 }

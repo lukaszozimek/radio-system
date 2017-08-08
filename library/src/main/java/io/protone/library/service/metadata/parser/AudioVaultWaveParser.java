@@ -67,7 +67,7 @@ public class AudioVaultWaveParser extends AudioParser {
             int frameSize = format.getFrameSize();
             float frameRate = format.getFrameRate();
             double durationInSeconds = (audioFileLength / (frameSize * frameRate));
-            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds*1000));
+            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds * 1000));
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -244,13 +244,13 @@ public class AudioVaultWaveParser extends AudioParser {
         metadata.add(CART_CHUNK_PRODUCER_APP_ID, s2.substring(484, 548).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
         metadata.add(CART_CHUNK_PRODUCER_APP_VERSION, s2.substring(548, 614).trim().replace("\u0000", "").replace("'\u0000' 0", "").trim());
 
-        metadata.add(MarkerConstans.AUDs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.AUDs)));
-        metadata.add(MarkerConstans.AUDe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.AUDe)));
-        metadata.add(MarkerConstans.INT, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.INT)));
-        metadata.add(MarkerConstans.SEGs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.SEGs)));
-        metadata.add(MarkerConstans.SEGe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.SEGe)));
-        metadata.add(MarkerConstans.TERe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.TERe)));
-        metadata.add(MarkerConstans.TERs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.TERs)));
+        metadata.add(MarkerConstans.AUDs, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.AUDs) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.AUDe, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.AUDe) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.INT, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.INT) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.SEGs, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.SEGs) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.SEGe, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.SEGe) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.TERe, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.TERe) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.TERs, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.TERs) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
 
 
     }

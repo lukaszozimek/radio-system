@@ -43,6 +43,7 @@ public class CrmOpportunityService {
     }
 
     public void deleteOpportunity(String shortcut, String corNetwork) {
+        crmTaskService.deleteByOpportunity_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
         opportunityRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 

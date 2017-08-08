@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraInvoice;
 import io.protone.traffic.repository.TraInvoiceRepository;
 import org.slf4j.Logger;
@@ -37,6 +38,9 @@ public class TraInvoiceService {
 
     public void deleteInvoice(Long id, String corNetwork) {
         traInvoiceRepository.deleteByIdAndNetwork_Shortcut(id, corNetwork);
+    }
+    public void deleteByCustomerInvoice(CrmAccount crmAccount, String corNetwork) {
+        traInvoiceRepository.deleteByCustomerAndNetwork_Shortcut(crmAccount, corNetwork);
     }
 
     public TraInvoice getInvoice(Long id, String corNetwork) {
