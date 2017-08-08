@@ -2,6 +2,7 @@ package io.protone.traffic.repository;
 
 
 import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraCampaign;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,6 @@ public interface TraCampaignRepository extends JpaRepository<TraCampaign, Long> 
     List<TraCampaign> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
 
     void deleteByShortNameAndNetwork_Shortcut(String shortcut, String corNetwork);
+    void deleteByCustomerAndNetwork_Shortcut(CrmAccount crmAccount, String corNetwork);
 
 }

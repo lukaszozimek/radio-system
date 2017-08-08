@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import io.protone.crm.domain.CrmAccount;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.repository.TraAdvertisementRepository;
@@ -36,7 +37,8 @@ public class TraAdvertisementService {
 
     public TraAdvertisement saveAdvertisement(TraAdvertisement traAdvertisement) {
         log.debug("Persisting TraAdvertisement: {}", traAdvertisement);
-        return traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        TraAdvertisement traAdvertisement1 = traAdvertisementRepository.saveAndFlush(traAdvertisement);
+        return traAdvertisementRepository.findByIdAndNetwork_Shortcut(traAdvertisement1.getId(), traAdvertisement1.getNetwork().getShortcut());
     }
 
     public void deleteAdvertisement(Long id, String corNetwork) {
@@ -46,6 +48,21 @@ public class TraAdvertisementService {
             traAdvertisement.getMediaItem().stream().forEach(libMediaItem -> {
 
                 libItemService.deleteItem(libMediaItem);
+            });
+        }
+    }
+
+    public void deleteCustomerAdvertisement(CrmAccount customer, String corNetwork) {
+        List<TraAdvertisement> traAdvertisements = traAdvertisementRepository.findByCustomer_ShortNameAndNetwork_Shortcut(customer.getShortName(), corNetwork);
+        if (traAdvertisements != null) {
+            traAdvertisements.stream().forEach(traAdvertisement -> {
+                traAdvertisementRepository.delete(traAdvertisement);
+                if (traAdvertisement.getMediaItem() != null) {
+                    traAdvertisement.getMediaItem().stream().forEach(libMediaItem -> {
+
+                        libItemService.deleteItem(libMediaItem);
+                    });
+                }
             });
         }
     }

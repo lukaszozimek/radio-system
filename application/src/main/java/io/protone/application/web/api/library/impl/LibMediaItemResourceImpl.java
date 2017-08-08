@@ -52,10 +52,10 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
     @Override
     public ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                        @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                        @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
-                                                                                                        @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
-                                                                                                        @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
+                                                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                         @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
+                                                                                                         @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
+                                                                                                         @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
 
         if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
@@ -83,6 +83,16 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
         LibMediaItemDTO response = libMediaItemMapper.DB2DTO(entity);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @Override
+    public ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
+                                                                                                @ApiParam(value = "libraryShortcut", required = true) @PathVariable("libraryShortcut") String libraryShortcut) {
+        log.debug("REST request to move Libarary Item {} from {} to {}", idx, libraryPrefix, libraryShortcut);
+        libItemService.moveMediaItem(networkShortcut, libraryPrefix, idx, libraryShortcut);
+        return ResponseEntity.ok().build();
     }
 
 

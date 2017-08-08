@@ -2,6 +2,7 @@ package io.protone.traffic.repository;
 
 
 import io.protone.core.domain.CorNetwork;
+import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraOrder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,6 +35,7 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
 
     List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
 
+    List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork);
 
     @Query("select o  from TraOrder as o " +
             "left join fetch o.network as n " +
@@ -50,4 +52,6 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
     TraOrder findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String corNetwork);
 
     void deleteByIdAndNetwork_Shortcut(Long id, String corNetwork);
+
+    void deleteByCustomerAndNetwork_Shortcut(CrmAccount customer, String corNetwork);
 }

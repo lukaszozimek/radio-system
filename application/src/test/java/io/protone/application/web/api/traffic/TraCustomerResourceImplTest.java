@@ -16,6 +16,7 @@ import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.crm.service.CrmCustomerService;
 import io.protone.traffic.api.dto.TraCustomerDTO;
 import io.protone.traffic.mapper.TraCustomerMapper;
+import io.protone.traffic.service.TraCustomerService;
 import org.apache.tika.exception.TikaException;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,6 +83,8 @@ public class TraCustomerResourceImplTest {
 
     @Autowired
     private TraCustomerMapper crmAccountMapper;
+    @Autowired
+    private TraCustomerService traCustomerService;
 
     @Mock
     private CorImageItemService corImageItemService;
@@ -134,6 +137,9 @@ public class TraCustomerResourceImplTest {
         ReflectionTestUtils.setField(crmCustomerService, "corImageItemService", corImageItemService);
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "crmCustomerService", crmCustomerService);
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "accountMapper", crmAccountMapper);
+
+        ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "traCustomerService", traCustomerService);
+
         ReflectionTestUtils.setField(apiNetworkTrafficCustomer, "corNetworkService", corNetworkService);
 
 
