@@ -9,8 +9,8 @@
     <changeSet id="20170421185755-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="cfg_marker_configuration"
-                                 constraintName="fk_cfg_marker_configuration_network_id"
+                                 baseTableName="lib_marker_configuration"
+                                 constraintName="fk_lib_marker_configuration_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
