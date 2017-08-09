@@ -21,7 +21,8 @@ import java.util.Set;
  */
 //TODO: ad commercial Libary Entity where id is fk
 @Entity
-@Table(name = "lib_library")
+@Table(name = "lib_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
+
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibLibrary extends AbstractAuditingEntity implements Serializable {
 

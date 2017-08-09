@@ -56,7 +56,7 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CrmTask.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CfgMarkerConfiguration.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibMarkerConfiguration.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibAlbum.xml"
              relativeToChangelogFile="false"/>
@@ -173,7 +173,7 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmTask.xml"
              relativeToChangelogFile="false"/>
     <include
-            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CfgMarkerConfiguration.xml"
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibMarkerConfiguration.xml"
             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibAlbum.xml"
              relativeToChangelogFile="false"/>
@@ -276,6 +276,9 @@
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibLabel.xml"
             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibMarkerConfiguration.xml"
+            relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_LibImageItem.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibLibrary_LibImageItem.xml"
@@ -308,7 +311,7 @@
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/lib_marker_configuration.csv"
                   separator=";"
-                  tableName="cfg_marker_configuration"/>
+                  tableName="lib_marker_configuration"/>
 
 
         <loadData encoding="UTF-8"

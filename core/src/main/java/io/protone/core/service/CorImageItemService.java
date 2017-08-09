@@ -35,6 +35,7 @@ import java.util.UUID;
 @Service
 public class CorImageItemService {
     public static final String PUBLIC_CONTENT = "public-content";
+    public static final String DEFAULT = "default";
 
     private final Logger log = LoggerFactory.getLogger(CorImageItemService.class);
 
@@ -47,6 +48,15 @@ public class CorImageItemService {
     @Inject
     private CorImageItemRepository corImageItemRepository;
 
+
+    public CorImageItem getDefualtImageItem() {
+        CorImageItem corImageItem = new CorImageItem();
+        CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
+        corImageItem.setName(DEFAULT);
+        corImageItem.network(corNetwork);
+        return corImageItemRepository.saveAndFlush(corImageItem);
+    }
 
     public Set<CorImageItem> saveImageItems(MultipartFile[] images) throws TikaException, SAXException, IOException {
         if (images == null || images.length == 0) {
@@ -61,7 +71,7 @@ public class CorImageItemService {
 
 
     public CorImageItem saveImageItem(MultipartFile image) throws TikaException, SAXException, IOException {
-        if (image == null || image.isEmpty()  ) {
+        if (image == null || image.isEmpty()) {
             return null;
         }
         CorImageItem corImageItem = null;
@@ -102,7 +112,7 @@ public class CorImageItemService {
         try {
             publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
-          log.error(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {
             log.error(e.getLocalizedMessage());
         }

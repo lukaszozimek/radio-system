@@ -15,7 +15,7 @@ import java.util.Objects;
  * A LibMarkerConfiguration.
  */
 @Entity
-@Table(name = "cfg_marker_configuration")
+@Table(name = "lib_marker_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "keyboard_shortcut", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibMarkerConfiguration implements Serializable {
 

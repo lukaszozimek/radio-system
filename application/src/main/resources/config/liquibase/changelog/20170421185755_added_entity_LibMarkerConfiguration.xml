@@ -15,7 +15,7 @@
         Added the entity CfgMarkerConfiguration.
     -->
     <changeSet id="20170421185755-1" author="jhipster">
-        <createTable tableName="cfg_marker_configuration">
+        <createTable tableName="lib_marker_configuration">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
