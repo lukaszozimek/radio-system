@@ -6,6 +6,7 @@ import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraInvoiceDTO;
+import io.protone.traffic.api.dto.thin.TraInvoiceThinDTO;
 import io.protone.traffic.domain.TraInvoice;
 import io.protone.traffic.mapper.TraInvoiceMapper;
 import io.protone.traffic.service.TraInvoiceService;
@@ -41,16 +42,16 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
     private CorNetworkService corNetworkService;
 
     @Override
-    public ResponseEntity<List<TraInvoiceDTO>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<TraInvoiceThinDTO>> getAllInvoicesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraInvoice, for Network: {}", networkShortcut);
         List<TraInvoice> entity = traInvoiceService.getAllInvoice(networkShortcut, pagable);
-        List<TraInvoiceDTO> response = traInvoiceMapper.DBs2DTOs(entity);
+        List<TraInvoiceThinDTO> response = traInvoiceMapper.DBs2ThinDTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -64,10 +65,10 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoiceDTO response = traInvoiceMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
 
     }
@@ -83,7 +84,7 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
         TraInvoice entity = traInvoiceService.saveInvoice(traInvoice);
         TraInvoiceDTO response = traInvoiceMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/invoice/" + response.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -99,10 +100,10 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
         TraInvoice entity = traInvoiceService.getInvoice(id, networkShortcut);
         TraInvoiceDTO response = traInvoiceMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -113,10 +114,10 @@ public class TraInvoiceResourceImpl implements TraInvoiceResource {
         List<TraInvoice> entity = traInvoiceService.getCustomerInvoice(customerShortcut, networkShortcut, pagable);
         List<TraInvoiceDTO> response = traInvoiceMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

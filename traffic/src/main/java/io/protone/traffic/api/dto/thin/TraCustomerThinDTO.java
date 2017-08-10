@@ -2,10 +2,11 @@ package io.protone.traffic.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
+import java.time.ZonedDateTime;
 
 /**
  * TraCustomerDTO
@@ -38,6 +39,14 @@ public class TraCustomerThinDTO {
 
     @JsonProperty("size")
     private CorDictionaryDTO size = null;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
 
     public TraCustomerThinDTO id(Long id) {
@@ -175,45 +184,36 @@ public class TraCustomerThinDTO {
         this.size = size;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TraCustomerThinDTO traCustomerPT = (TraCustomerThinDTO) o;
-        return Objects.equals(this.id, traCustomerPT.id) &&
-            Objects.equals(this.shortName, traCustomerPT.shortName) &&
-            Objects.equals(this.area, traCustomerPT.area) &&
-            Objects.equals(this.industry, traCustomerPT.industry) &&
-            Objects.equals(this.name, traCustomerPT.name) &&
-            Objects.equals(this.paymentDate, traCustomerPT.paymentDate) &&
-            Objects.equals(this.range, traCustomerPT.range) &&
-            Objects.equals(this.size, traCustomerPT.size);
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, shortName, area,  industry, name, paymentDate, range, size);
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraCustomerDTO {\n");
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("    area: ").append(toIndentedString(area)).append("\n");
-        sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
-        sb.append("    range: ").append(toIndentedString(range)).append("\n");
-        sb.append("    size: ").append(toIndentedString(size)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -225,6 +225,74 @@ public class TraCustomerThinDTO {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    public CorDictionaryDTO getArea() {
+        return area;
+    }
+
+    public void setArea(CorDictionaryDTO area) {
+        this.area = area;
+    }
+
+    @Override
+    public String toString() {
+        return "TraCustomerThinDTO{" +
+                "id=" + id +
+                ", shortName='" + shortName + '\'' +
+                ", area=" + area +
+                ", industry=" + industry +
+                ", name='" + name + '\'' +
+                ", paymentDate=" + paymentDate +
+                ", range=" + range +
+                ", size=" + size +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraCustomerThinDTO that = (TraCustomerThinDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (shortName != null ? !shortName.equals(that.shortName) : that.shortName != null) return false;
+        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (paymentDate != null ? !paymentDate.equals(that.paymentDate) : that.paymentDate != null) return false;
+        if (range != null ? !range.equals(that.range) : that.range != null) return false;
+        if (size != null ? !size.equals(that.size) : that.size != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (industry != null ? industry.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (paymentDate != null ? paymentDate.hashCode() : 0);
+        result = 31 * result + (range != null ? range.hashCode() : 0);
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        return result;
     }
 }
 

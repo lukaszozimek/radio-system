@@ -8,6 +8,7 @@ import io.protone.crm.api.dto.CrmCustomerPersonDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -40,6 +41,13 @@ public class CrmLeadThinDTO {
 
     private CrmCustomerPersonDTO person = null;
 
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public CrmLeadThinDTO id(Long id) {
         this.id = id;
@@ -240,51 +248,6 @@ public class CrmLeadThinDTO {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CrmLeadThinDTO crmLeadDTO = (CrmLeadThinDTO) o;
-        return Objects.equals(this.id, crmLeadDTO.id) &&
-            Objects.equals(this.name, crmLeadDTO.name) &&
-            Objects.equals(this.description, crmLeadDTO.description) &&
-            Objects.equals(this.source, crmLeadDTO.source) &&
-            Objects.equals(this.status, crmLeadDTO.status) &&
-            Objects.equals(this.addres, crmLeadDTO.addres) &&
-            Objects.equals(this.area, crmLeadDTO.area) &&
-            Objects.equals(this.industry, crmLeadDTO.industry) &&
-            Objects.equals(this.person, crmLeadDTO.person) &&
-            Objects.equals(this.shortname, crmLeadDTO.shortname);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, source, status, addres, area, industry, person, shortname);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CrmLeadDTO {\n");
-
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    source: ").append(toIndentedString(source)).append("\n");
-        sb.append("    status: ").append(toIndentedString(status)).append("\n");
-        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
-        sb.append("    area: ").append(toIndentedString(area)).append("\n");
-        sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
-        sb.append("    person: ").append(toIndentedString(person)).append("\n");
-        sb.append("    shortname: ").append(toIndentedString(shortname)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -297,5 +260,110 @@ public class CrmLeadThinDTO {
     }
 
 
+    public CoreUserThinDTO getLeadOwner() {
+        return leadOwner;
+    }
+
+    public void setLeadOwner(CoreUserThinDTO leadOwner) {
+        this.leadOwner = leadOwner;
+    }
+
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CrmLeadThinDTO that = (CrmLeadThinDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (shortname != null ? !shortname.equals(that.shortname) : that.shortname != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (source != null ? !source.equals(that.source) : that.source != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (addres != null ? !addres.equals(that.addres) : that.addres != null) return false;
+        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
+        if (leadOwner != null ? !leadOwner.equals(that.leadOwner) : that.leadOwner != null) return false;
+        if (person != null ? !person.equals(that.person) : that.person != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        return lastModifiedDate != null ? lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (shortname != null ? shortname.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (addres != null ? addres.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (industry != null ? industry.hashCode() : 0);
+        result = 31 * result + (leadOwner != null ? leadOwner.hashCode() : 0);
+        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CrmLeadThinDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortname='" + shortname + '\'' +
+                ", description='" + description + '\'' +
+                ", source=" + source +
+                ", status=" + status +
+                ", addres=" + addres +
+                ", area=" + area +
+                ", industry=" + industry +
+                ", leadOwner=" + leadOwner +
+                ", person=" + person +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
+    }
 }
 

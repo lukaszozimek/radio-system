@@ -5,6 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.core.domain.*;
 import io.protone.crm.api.dto.CrmLeadDTO;
+import io.protone.crm.api.dto.thin.CrmLeadThinDTO;
 import io.protone.crm.domain.CrmLead;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.mapper.CrmLeadMapper;
@@ -57,6 +58,8 @@ public class CrmLeadMapperTest {
         crmLead.setAddres(factory.manufacturePojo(CorAddress.class));
         crmLead.setIndustry(factory.manufacturePojo(CorDictionary.class));
         crmLead.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmLead.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmLead.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmLead.setShortname("fefe");
         crmLead.setName("fwafwafwa");
         crmLead.setTasks(Sets.newLinkedHashSet(factory.manufacturePojo(CrmTask.class)));
@@ -87,6 +90,10 @@ public class CrmLeadMapperTest {
         assertNotNull(dto.getDescription());
         assertNotNull(dto.getTasks());
         assertNotNull(dto.getName());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
 
     }
 
@@ -111,6 +118,10 @@ public class CrmLeadMapperTest {
             assertNotNull(dto.getDescription());
             assertNotNull(dto.getTasks());
             assertNotNull(dto.getName());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
 
         });
     }
@@ -161,10 +172,54 @@ public class CrmLeadMapperTest {
 
     @Test
     public void DB2ThinDTO() throws Exception {
+        CrmLeadThinDTO dto = customCrmLeadMapper.DB2ThinDTO(crmLead);
+
+        assertNotNull(dto.getArea());
+        assertNotNull(dto.getStatus());
+        assertNotNull(dto.getSource());
+        assertNotNull(dto.getPerson());
+        assertNotNull(dto.getOwner());
+        assertNotNull(dto.getAddres());
+        assertNotNull(dto.getIndustry());
+        assertNotNull(dto.getId());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getShortname());
+        assertNotNull(dto.getDescription());
+
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
+
     }
 
     @Test
     public void DBs2ThinDTOs() throws Exception {
+        List<CrmLeadThinDTO> dtos = customCrmLeadMapper.DBs2ThinDTOs(crmLeads);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+
+            assertNotNull(dto.getArea());
+            assertNotNull(dto.getStatus());
+            assertNotNull(dto.getSource());
+            assertNotNull(dto.getPerson());
+            assertNotNull(dto.getOwner());
+            assertNotNull(dto.getAddres());
+            assertNotNull(dto.getIndustry());
+            assertNotNull(dto.getId());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getShortname());
+            assertNotNull(dto.getDescription());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
+
+        });
     }
 
 }

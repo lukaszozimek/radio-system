@@ -6,6 +6,7 @@ import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.api.dto.CrmOpportunityDTO;
+import io.protone.crm.api.dto.thin.CrmOpportunityThinDTO;
 import io.protone.crm.domain.*;
 import io.protone.crm.mapper.CrmOpportunityMapper;
 import org.junit.Before;
@@ -61,6 +62,8 @@ public class CrmOpportunityMapperTest {
         crmOpportunity.setLead(factory.manufacturePojo(CrmLead.class));
         crmOpportunity.getLead().setId(1L);
         crmOpportunity.setTasks(Sets.newHashSet(factory.manufacturePojo(CrmTask.class)));
+        crmOpportunity.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmOpportunity.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmOpportunities.add(crmOpportunity);
         crmOpportunityDTO = factory.manufacturePojo(CrmOpportunityDTO.class);
         crmOpportunityDTOS.add(crmOpportunityDTO);
@@ -75,6 +78,7 @@ public class CrmOpportunityMapperTest {
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getShortName());
+        assertNotNull(dto.getDescription());
         assertNotNull(dto.getStage());
         assertNotNull(dto.getAccountId());
         assertNotNull(dto.getLeadId());
@@ -84,6 +88,11 @@ public class CrmOpportunityMapperTest {
         assertNotNull(dto.getLastTry());
         assertNotNull(dto.getCloseDate());
         assertNotNull(dto.getTasks());
+        assertNotNull(dto.getDescription());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
@@ -97,14 +106,20 @@ public class CrmOpportunityMapperTest {
             assertNotNull(dto.getId());
             assertNotNull(dto.getShortName());
             assertNotNull(dto.getStage());
+            assertNotNull(dto.getDescription());
             assertNotNull(dto.getAccountId());
             assertNotNull(dto.getLeadId());
             assertNotNull(dto.getOpportunityOwner());
             assertNotNull(dto.getContactId());
             assertNotNull(dto.getName());
             assertNotNull(dto.getLastTry());
+            assertNotNull(dto.getDescription());
             assertNotNull(dto.getCloseDate());
             assertNotNull(dto.getTasks());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 
@@ -117,13 +132,14 @@ public class CrmOpportunityMapperTest {
         entities.stream().forEach(entity -> {
 
             assertNotNull(entity.getId());
-
+            assertNotNull(entity.getDescription());
             assertNotNull(entity.getShortName());
             assertNotNull(entity.getAccount());
             assertNotNull(entity.getStage());
             assertNotNull(entity.getKeeper());
             assertNotNull(entity.getContact());
             assertNotNull(entity.getLead());
+            assertNotNull(entity.getDescription());
             assertNotNull(entity.getName());
             assertNotNull(entity.getLastTry());
             assertNotNull(entity.getCloseDate());
@@ -141,9 +157,11 @@ public class CrmOpportunityMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortName());
         assertNotNull(entity.getAccount());
+        assertNotNull(entity.getDescription());
         assertNotNull(entity.getStage());
         assertNotNull(entity.getKeeper());
         assertNotNull(entity.getContact());
+        assertNotNull(entity.getDescription());
         assertNotNull(entity.getLead());
         assertNotNull(entity.getName());
         assertNotNull(entity.getLastTry());
@@ -154,10 +172,47 @@ public class CrmOpportunityMapperTest {
 
     @Test
     public void DB2ThinDTO() throws Exception {
+        CrmOpportunityThinDTO dto = customCrmOpportunityMapper.DB2ThinDTO(crmOpportunity);
+
+        assertNotNull(dto.getId());
+        assertNotNull(dto.getShortName());
+        assertNotNull(dto.getStage());
+        assertNotNull(dto.getAccountId());
+        assertNotNull(dto.getLeadId());
+        assertNotNull(dto.getOpportunityOwner());
+        assertNotNull(dto.getContactId());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getLastTry());
+        assertNotNull(dto.getCloseDate());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
     public void DBs2ThinDTOs() throws Exception {
+        List<CrmOpportunityThinDTO> dtos = customCrmOpportunityMapper.DBs2ThinDTOs(crmOpportunities);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+
+            assertNotNull(dto.getId());
+            assertNotNull(dto.getShortName());
+            assertNotNull(dto.getStage());
+            assertNotNull(dto.getAccountId());
+            assertNotNull(dto.getLeadId());
+            assertNotNull(dto.getOpportunityOwner());
+            assertNotNull(dto.getContactId());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getLastTry());
+            assertNotNull(dto.getCloseDate());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
+        });
     }
 
 }

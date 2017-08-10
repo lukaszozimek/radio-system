@@ -35,6 +35,9 @@ public class CrmOpportunity extends AbstractAuditingEntity implements Serializab
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
@@ -253,6 +256,13 @@ public class CrmOpportunity extends AbstractAuditingEntity implements Serializab
         return this;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -284,4 +294,6 @@ public class CrmOpportunity extends AbstractAuditingEntity implements Serializab
             ", probability='" + probability + "'" +
             '}';
     }
+
+
 }

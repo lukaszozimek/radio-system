@@ -5,6 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.api.dto.TraOrderDTO;
 import io.protone.traffic.api.dto.thin.TraAdvertisementThinDTO;
@@ -69,6 +70,8 @@ public class TraOrderMapperTest {
         traOrder.getCustomer().setId(1L);
         traOrder.setInvoice(factory.manufacturePojo(TraInvoice.class));
         traOrder.getInvoice().setId(1L);
+        traOrder.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        traOrder.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         traOrders.add(traOrder);
         traOrderThinDTO = factory.manufacturePojo(TraOrderThinDTO.class);
         traOrderDTO = factory.manufacturePojo(TraOrderDTO.class);
@@ -97,7 +100,10 @@ public class TraOrderMapperTest {
         assertNotNull(dto.getStartDate());
         assertNotNull(dto.getEndDate());
         assertNotNull(dto.getCalculatedPrize());
-
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
 
     }
 
@@ -118,6 +124,10 @@ public class TraOrderMapperTest {
             assertNotNull(dto.getStartDate());
             assertNotNull(dto.getEndDate());
             assertNotNull(dto.getCalculatedPrize());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 

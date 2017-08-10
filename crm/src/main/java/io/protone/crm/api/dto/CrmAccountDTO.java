@@ -9,9 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * CrmAccountDTO
@@ -27,6 +27,8 @@ public class CrmAccountDTO implements Serializable {
 
     @NotNull
     private String shortName = null;
+
+    private String description = null;
 
     private CorDictionaryDTO area = null;
 
@@ -53,6 +55,13 @@ public class CrmAccountDTO implements Serializable {
 
     private List<CrmTaskThinDTO> tasks = new ArrayList<CrmTaskThinDTO>();
 
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     private String publicUrl = null;
 
@@ -358,30 +367,115 @@ public class CrmAccountDTO implements Serializable {
         return this;
     }
 
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CrmAccountDTO that = (CrmAccountDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (shortName != null ? !shortName.equals(that.shortName) : that.shortName != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (externalId1 != null ? !externalId1.equals(that.externalId1) : that.externalId1 != null) return false;
+        if (externalId2 != null ? !externalId2.equals(that.externalId2) : that.externalId2 != null) return false;
+        if (paymentDelay != null ? !paymentDelay.equals(that.paymentDelay) : that.paymentDelay != null) return false;
+        if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
+        if (range != null ? !range.equals(that.range) : that.range != null) return false;
+        if (size != null ? !size.equals(that.size) : that.size != null) return false;
+        if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) return false;
+        if (addres != null ? !addres.equals(that.addres) : that.addres != null) return false;
+        if (account != null ? !account.equals(that.account) : that.account != null) return false;
+        if (person != null ? !person.equals(that.person) : that.person != null) return false;
+        if (tasks != null ? !tasks.equals(that.tasks) : that.tasks != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
             return false;
-        }
-        CrmAccountDTO crmAccountDTO = (CrmAccountDTO) o;
-        return Objects.equals(this.id, crmAccountDTO.id) &&
-                Objects.equals(this.shortName, crmAccountDTO.shortName) &&
-                Objects.equals(this.area, crmAccountDTO.area) &&
-                Objects.equals(this.externalId1, crmAccountDTO.externalId1) &&
-                Objects.equals(this.externalId2, crmAccountDTO.externalId2) &&
-                Objects.equals(this.industry, crmAccountDTO.industry) &&
-                Objects.equals(this.name, crmAccountDTO.name) &&
-                Objects.equals(this.range, crmAccountDTO.range) &&
-                Objects.equals(this.size, crmAccountDTO.size) &&
-                Objects.equals(this.vatNumber, crmAccountDTO.vatNumber) &&
-                Objects.equals(this.addres, crmAccountDTO.addres) &&
-                Objects.equals(this.account, crmAccountDTO.account) &&
-                Objects.equals(this.person, crmAccountDTO.person) &&
-                Objects.equals(this.publicUrl, crmAccountDTO.publicUrl) &&
-                Objects.equals(this.tasks, crmAccountDTO.tasks);
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+        if (publicUrl != null ? !publicUrl.equals(that.publicUrl) : that.publicUrl != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (externalId1 != null ? externalId1.hashCode() : 0);
+        result = 31 * result + (externalId2 != null ? externalId2.hashCode() : 0);
+        result = 31 * result + (paymentDelay != null ? paymentDelay.hashCode() : 0);
+        result = 31 * result + (industry != null ? industry.hashCode() : 0);
+        result = 31 * result + (range != null ? range.hashCode() : 0);
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
+        result = 31 * result + (addres != null ? addres.hashCode() : 0);
+        result = 31 * result + (account != null ? account.hashCode() : 0);
+        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (tasks != null ? tasks.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        result = 31 * result + (publicUrl != null ? publicUrl.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -390,6 +484,7 @@ public class CrmAccountDTO implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
+                ", description='" + description + '\'' +
                 ", area=" + area +
                 ", externalId1='" + externalId1 + '\'' +
                 ", externalId2='" + externalId2 + '\'' +
@@ -402,24 +497,12 @@ public class CrmAccountDTO implements Serializable {
                 ", account=" + account +
                 ", person=" + person +
                 ", tasks=" + tasks +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
                 ", publicUrl='" + publicUrl + '\'' +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, shortName, area, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, tasks, publicUrl);
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }
 

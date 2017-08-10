@@ -54,6 +54,8 @@ public class TraCustomerMapperTest {
         crmAccount.setRange(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setIndustry(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmAccount.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmAccount.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmAccount.setShortName("fefe");
         crmAccount.setName("fwafwafwa");
         crmAccount.setVatNumber("fwafwa");
@@ -79,11 +81,15 @@ public class TraCustomerMapperTest {
         assertNotNull(dto.getRange());
         assertNotNull(dto.getIndustry());
         assertNotNull(dto.getId());
+        assertNotNull(dto.getDescription());
         assertNotNull(dto.getShortName());
         assertNotNull(dto.getName());
         assertNotNull(dto.getPaymentDelay());
         assertNotNull(dto.getVatNumber());
-
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
@@ -103,10 +109,14 @@ public class TraCustomerMapperTest {
             assertNotNull(dto.getIndustry());
             assertNotNull(dto.getId());
             assertNotNull(dto.getShortName());
+            assertNotNull(dto.getDescription());
             assertNotNull(dto.getName());
             assertNotNull(dto.getPaymentDelay());
             assertNotNull(dto.getVatNumber());
-
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
 
         });
     }
@@ -124,6 +134,7 @@ public class TraCustomerMapperTest {
             assertNotNull(entity.getAddres());
             assertNotNull(entity.getRange());
             assertNotNull(entity.getIndustry());
+            assertNotNull(entity.getDescription());
             assertNotNull(entity.getKeeper());
             assertNotNull(entity.getId());
             assertNotNull(entity.getShortName());
@@ -144,6 +155,7 @@ public class TraCustomerMapperTest {
         assertNotNull(entity.getSize());
         assertNotNull(entity.getPerson());
         assertNotNull(entity.getAddres());
+        assertNotNull(entity.getDescription());
         assertNotNull(entity.getRange());
         assertNotNull(entity.getIndustry());
         assertNotNull(entity.getKeeper());

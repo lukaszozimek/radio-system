@@ -4,6 +4,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.traffic.api.dto.TraInvoiceDTO;
+import io.protone.traffic.api.dto.thin.TraInvoiceThinDTO;
 import io.protone.traffic.domain.TraInvoice;
 import org.mapstruct.*;
 
@@ -21,6 +22,12 @@ public interface TraInvoiceMapper {
     @Mapping(source = "status", target = "statusId")
     @Mapping(source = "orders", target = "orders")
     TraInvoiceDTO DB2DTO(TraInvoice traInvoice);
+
+    @Mapping(source = "customer", target = "customerId")
+    @Mapping(source = "status", target = "statusId")
+    TraInvoiceThinDTO DB2ThinDTO(TraInvoice traInvoice);
+
+    List<TraInvoiceThinDTO> DBs2ThinDTOs(List<TraInvoice> traInvoices);
 
     List<TraInvoiceDTO> DBs2DTOs(List<TraInvoice> traInvoices);
 

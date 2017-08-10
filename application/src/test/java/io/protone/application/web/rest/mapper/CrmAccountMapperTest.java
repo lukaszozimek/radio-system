@@ -4,6 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.*;
 import io.protone.crm.api.dto.CrmAccountDTO;
+import io.protone.crm.api.dto.thin.CrmAccountThinDTO;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.mapper.CrmAccountMapper;
@@ -57,6 +58,8 @@ public class CrmAccountMapperTest {
         crmAccount.setRange(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setIndustry(factory.manufacturePojo(CorDictionary.class));
         crmAccount.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmAccount.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmAccount.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmAccount.setShortName("fefe");
         crmAccount.setName("fwafwafwa");
         crmAccount.setVatNumber("fwafwa");
@@ -88,7 +91,12 @@ public class CrmAccountMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getPaymentDelay());
         assertNotNull(dto.getVatNumber());
+        assertNotNull(dto.getDescription());
         assertNotNull(dto.getTasks());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
@@ -110,10 +118,14 @@ public class CrmAccountMapperTest {
             assertNotNull(dto.getId());
             assertNotNull(dto.getShortName());
             assertNotNull(dto.getName());
+            assertNotNull(dto.getDescription());
             assertNotNull(dto.getPaymentDelay());
             assertNotNull(dto.getVatNumber());
             assertNotNull(dto.getTasks());
-
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 
@@ -133,6 +145,7 @@ public class CrmAccountMapperTest {
             assertNotNull(entity.getIndustry());
             assertNotNull(entity.getKeeper());
             assertNotNull(entity.getId());
+            assertNotNull(entity.getDescription());
             assertNotNull(entity.getShortName());
             assertNotNull(entity.getName());
             assertNotNull(entity.getVatNumber());
@@ -158,6 +171,7 @@ public class CrmAccountMapperTest {
         assertNotNull(entity.getKeeper());
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortName());
+        assertNotNull(entity.getDescription());
         assertNotNull(entity.getName());
         assertNotNull(entity.getVatNumber());
         assertNotNull(entity.getPaymentDelay());
@@ -167,10 +181,52 @@ public class CrmAccountMapperTest {
 
     @Test
     public void DB2ThinDTO() throws Exception {
+        CrmAccountThinDTO dto = customCrmAccountMapper.DB2ThinDTO(crmAccount);
+        assertNotNull(dto.getArea());
+        assertNotNull(dto.getSize());
+        assertNotNull(dto.getPerson());
+        assertNotNull(dto.getAccount());
+        assertNotNull(dto.getAddres());
+        assertNotNull(dto.getPublicUrl());
+        assertNotNull(dto.getRange());
+        assertNotNull(dto.getIndustry());
+        assertNotNull(dto.getId());
+        assertNotNull(dto.getShortName());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getPaymentDelay());
+        assertNotNull(dto.getVatNumber());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
     public void DBs2ThinDTOs() throws Exception {
+        List<CrmAccountThinDTO> dtos = customCrmAccountMapper.DBs2ThinDTOs(crmAccounts);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+
+            assertNotNull(dto.getArea());
+            assertNotNull(dto.getSize());
+            assertNotNull(dto.getPerson());
+            assertNotNull(dto.getAccount());
+            assertNotNull(dto.getAddres());
+            assertNotNull(dto.getPublicUrl());
+            assertNotNull(dto.getRange());
+            assertNotNull(dto.getIndustry());
+            assertNotNull(dto.getId());
+            assertNotNull(dto.getShortName());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getPaymentDelay());
+            assertNotNull(dto.getVatNumber());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
+        });
     }
 
 }
