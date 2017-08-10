@@ -34,6 +34,10 @@ public class TraBlockConfigurationDTO implements Serializable {
     @NotNull
     private Long stopBlock = null;
 
+    private Long startBlockSoundId = null;
+
+    private Long stopBlockSoundId = null;
+
     @NotNull
     private Integer sequence = null;
 
@@ -146,6 +150,22 @@ public class TraBlockConfigurationDTO implements Serializable {
     @ApiModelProperty(value = "")
     public CorDayOfWeekEnum getDay() {
         return day;
+    }
+
+    public Long getStartBlockSoundId() {
+        return startBlockSoundId;
+    }
+
+    public void setStartBlockSoundId(Long startBlockSoundId) {
+        this.startBlockSoundId = startBlockSoundId;
+    }
+
+    public Long getStopBlockSoundId() {
+        return stopBlockSoundId;
+    }
+
+    public void setStopBlockSoundId(Long stopBlockSoundId) {
+        this.stopBlockSoundId = stopBlockSoundId;
     }
 
     public void setDay(CorDayOfWeekEnum day) {

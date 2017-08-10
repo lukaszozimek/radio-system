@@ -107,9 +107,13 @@ public class CrmCustomerService {
 
     public void deleteCustomerTask(String shortcut, Long taskId, String corNetwork) {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        crmAccount.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
-        accountRepository.save(crmAccount);
-        crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        CrmTask crmTask = crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        if (crmTask != null) {
+            crmAccount.removeTasks(crmTask);
+            crmTaskService.saveOrUpdateTaskAssociatiedWithCustomer(crmAccount, crmTask);
+            accountRepository.saveAndFlush(crmAccount);
+            crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        }
     }
 
     public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {

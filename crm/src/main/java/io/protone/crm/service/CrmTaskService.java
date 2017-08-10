@@ -35,7 +35,6 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithCustomer(CrmAccount crmAccount, CrmTask crmTask) {
-        crmTask.setAccount(crmAccount);
         crmTask.setNetwork(crmAccount.getNetwork());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmAccount: ", task);
@@ -44,16 +43,14 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithLead(CrmLead crmLead, CrmTask crmTask) {
-        crmTask.setLead(crmLead);
         crmTask.setNetwork(crmLead.getNetwork());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmLead: ", task);
-        return task;
+        return crmTask;
     }
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmOpportunity crmOpportunity, CrmTask crmTask) {
-        crmTask.setOpportunity(crmOpportunity);
         crmTask.setNetwork(crmOpportunity.getNetwork());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmOpportunity: ", task);
