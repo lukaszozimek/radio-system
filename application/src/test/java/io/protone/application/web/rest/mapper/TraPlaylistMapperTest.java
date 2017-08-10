@@ -4,6 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.traffic.api.dto.TraBlockDTO;
 import io.protone.traffic.api.dto.TraPlaylistDTO;
 import io.protone.traffic.domain.TraBlock;
@@ -57,6 +58,9 @@ public class TraPlaylistMapperTest {
         traPlaylists.add(traPlaylist);
         traPlaylistDTO = factory.manufacturePojo(TraPlaylistDTO.class);
         traPlaylistDTO.setId(1L);
+        traPlaylist.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        traPlaylist.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
+
         TraBlockDTO traBlockDTO = factory.manufacturePojo(TraBlockDTO.class);
         traPlaylistDTO.addBlocksItem(traBlockDTO);
         traPlaylistDTOS.add(traPlaylistDTO);
@@ -72,7 +76,10 @@ public class TraPlaylistMapperTest {
         assertNotNull(dto.getId());
         assertNotNull(dto.getBlocks());
         assertNotEquals(0, dto.getBlocks().size());
-
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
         assertNotNull(dto.getPlaylistDate());
 
 
@@ -89,6 +96,10 @@ public class TraPlaylistMapperTest {
             assertNotNull(dto.getBlocks());
             assertNotEquals(0, dto.getBlocks().size());
             assertNotNull(dto.getPlaylistDate());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 

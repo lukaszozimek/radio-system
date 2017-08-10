@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.traffic.api.dto.TraAdvertisementDTO;
@@ -55,6 +56,8 @@ public class TraAdvertisementMapperTest {
         traAdvertisement.setCustomer(factory.manufacturePojo(CrmAccount.class));
         traAdvertisement.setIndustry(factory.manufacturePojo(CorDictionary.class));
         traAdvertisement.setType(factory.manufacturePojo(CorDictionary.class));
+        traAdvertisement.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        traAdvertisement.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         LibMediaItem libMediaItem =factory.manufacturePojo(LibMediaItem.class);
         traAdvertisement.setMediaItem(Sets.newHashSet(libMediaItem));
         traAdvertisements.add(traAdvertisement);
@@ -75,6 +78,10 @@ public class TraAdvertisementMapperTest {
         assertNotNull(dto.getCustomerId());
         assertNotNull(dto.getName());
         assertNotNull(dto.getDescription());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
@@ -92,6 +99,10 @@ public class TraAdvertisementMapperTest {
             assertNotNull(dto.getCustomerId());
             assertNotNull(dto.getName());
             assertNotNull(dto.getDescription());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 

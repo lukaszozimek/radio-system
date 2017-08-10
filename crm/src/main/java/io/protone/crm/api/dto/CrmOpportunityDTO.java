@@ -9,9 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * CrmOpportunityDTO
@@ -29,6 +29,8 @@ public class CrmOpportunityDTO implements Serializable {
     @NotNull
     private String shortName = null;
 
+    private String description = null;
+
     private Long contactId = null;
 
     private Long leadId = null;
@@ -42,6 +44,14 @@ public class CrmOpportunityDTO implements Serializable {
     private CorDictionaryDTO stage = null;
 
     private Integer probability = null;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     private List<CrmTaskThinDTO> tasks = new ArrayList<CrmTaskThinDTO>();
 
@@ -279,51 +289,44 @@ public class CrmOpportunityDTO implements Serializable {
         this.tasks = tasks;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CrmOpportunityDTO crmOpportunityDTO = (CrmOpportunityDTO) o;
-        return Objects.equals(this.id, crmOpportunityDTO.id) &&
-            Objects.equals(this.opportunityOwner, crmOpportunityDTO.opportunityOwner) &&
-            Objects.equals(this.name, crmOpportunityDTO.name) &&
-            Objects.equals(this.contactId, crmOpportunityDTO.contactId) &&
-            Objects.equals(this.lastTry, crmOpportunityDTO.lastTry) &&
-            Objects.equals(this.closeDate, crmOpportunityDTO.closeDate) &&
-            Objects.equals(this.stage, crmOpportunityDTO.stage) &&
-            Objects.equals(this.probability, crmOpportunityDTO.probability) &&
-            Objects.equals(this.tasks, crmOpportunityDTO.tasks);
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, opportunityOwner, name, contactId, lastTry, closeDate, stage, probability, tasks);
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CrmOpportunityDTO {\n");
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    opportunityOwner: ").append(toIndentedString(opportunityOwner)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("    contactId: ").append(toIndentedString(contactId)).append("\n");
-        sb.append("    leadId: ").append(toIndentedString(leadId)).append("\n");
-        sb.append("    accountId: ").append(toIndentedString(accountId)).append("\n");
-        sb.append("    lastTry: ").append(toIndentedString(lastTry)).append("\n");
-        sb.append("    closeDate: ").append(toIndentedString(closeDate)).append("\n");
-        sb.append("    stage: ").append(toIndentedString(stage)).append("\n");
-        sb.append("    probability: ").append(toIndentedString(probability)).append("\n");
-        sb.append("    tasks: ").append(toIndentedString(tasks)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -335,6 +338,82 @@ public class CrmOpportunityDTO implements Serializable {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CrmOpportunityDTO that = (CrmOpportunityDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (opportunityOwner != null ? !opportunityOwner.equals(that.opportunityOwner) : that.opportunityOwner != null)
+            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (shortName != null ? !shortName.equals(that.shortName) : that.shortName != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (contactId != null ? !contactId.equals(that.contactId) : that.contactId != null) return false;
+        if (leadId != null ? !leadId.equals(that.leadId) : that.leadId != null) return false;
+        if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
+        if (lastTry != null ? !lastTry.equals(that.lastTry) : that.lastTry != null) return false;
+        if (closeDate != null ? !closeDate.equals(that.closeDate) : that.closeDate != null) return false;
+        if (stage != null ? !stage.equals(that.stage) : that.stage != null) return false;
+        if (probability != null ? !probability.equals(that.probability) : that.probability != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+        if (tasks != null ? !tasks.equals(that.tasks) : that.tasks != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (opportunityOwner != null ? opportunityOwner.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (contactId != null ? contactId.hashCode() : 0);
+        result = 31 * result + (leadId != null ? leadId.hashCode() : 0);
+        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+        result = 31 * result + (lastTry != null ? lastTry.hashCode() : 0);
+        result = 31 * result + (closeDate != null ? closeDate.hashCode() : 0);
+        result = 31 * result + (stage != null ? stage.hashCode() : 0);
+        result = 31 * result + (probability != null ? probability.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        result = 31 * result + (tasks != null ? tasks.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CrmOpportunityDTO{" +
+                "id=" + id +
+                ", opportunityOwner=" + opportunityOwner +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", description='" + description + '\'' +
+                ", contactId=" + contactId +
+                ", leadId=" + leadId +
+                ", accountId=" + accountId +
+                ", lastTry=" + lastTry +
+                ", closeDate=" + closeDate +
+                ", stage=" + stage +
+                ", probability=" + probability +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", tasks=" + tasks +
+                '}';
     }
 }
 

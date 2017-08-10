@@ -2,12 +2,13 @@ package io.protone.traffic.api.dto.thin;
 
 
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.time.ZonedDateTime;
 
 /**
  * Created by lukaszozimek on 19/06/2017.
@@ -36,6 +37,14 @@ public class TraOrderThinDTO implements Serializable {
     private CorDictionaryDTO statusId = null;
 
     private Long invoiceId = null;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public TraOrderThinDTO() {
     }
@@ -232,44 +241,100 @@ public class TraOrderThinDTO implements Serializable {
         this.startDate = startDate;
     }
 
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraOrderThinDTO that = (TraOrderThinDTO) o;
+
+        if (calculatedPrize != null ? !calculatedPrize.equals(that.calculatedPrize) : that.calculatedPrize != null)
             return false;
-        }
-        TraOrderThinDTO traOrderDTO = (TraOrderThinDTO) o;
-        return Objects.equals(this.calculatedPrize, traOrderDTO.calculatedPrize) &&
-            Objects.equals(this.campaignId, traOrderDTO.campaignId) &&
-            Objects.equals(this.customerId, traOrderDTO.customerId) &&
-            Objects.equals(this.endDate, traOrderDTO.endDate) &&
-            Objects.equals(this.id, traOrderDTO.id) &&
-            Objects.equals(this.name, traOrderDTO.name) &&
-            Objects.equals(this.startDate, traOrderDTO.startDate) &&
-            Objects.equals(this.advertismentId, traOrderDTO.advertismentId);
+        if (campaignId != null ? !campaignId.equals(that.campaignId) : that.campaignId != null) return false;
+        if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
+        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
+        if (advertismentId != null ? !advertismentId.equals(that.advertismentId) : that.advertismentId != null)
+            return false;
+        if (statusId != null ? !statusId.equals(that.statusId) : that.statusId != null) return false;
+        if (invoiceId != null ? !invoiceId.equals(that.invoiceId) : that.invoiceId != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        return lastModifiedDate != null ? lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(calculatedPrize, campaignId, customerId, endDate, id, name, startDate, advertismentId);
+        int result = calculatedPrize != null ? calculatedPrize.hashCode() : 0;
+        result = 31 * result + (campaignId != null ? campaignId.hashCode() : 0);
+        result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (advertismentId != null ? advertismentId.hashCode() : 0);
+        result = 31 * result + (statusId != null ? statusId.hashCode() : 0);
+        result = 31 * result + (invoiceId != null ? invoiceId.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return "{" +
-            "calculatedPrize=" + calculatedPrize +
-            ", campaignId=" + campaignId +
-            ", customerId=" + customerId +
-            ", endDate=" + endDate +
-            ", id=" + id +
-            ", name='" + name + '\'' +
-            ", startDate=" + startDate +
-            ", advertismentId=" + advertismentId +
-            ", statusId=" + statusId +
-            ", invoiceId=" + invoiceId +
-            '}';
+        return "TraOrderThinDTO{" +
+                "calculatedPrize=" + calculatedPrize +
+                ", campaignId=" + campaignId +
+                ", customerId=" + customerId +
+                ", endDate=" + endDate +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", advertismentId=" + advertismentId +
+                ", statusId=" + statusId +
+                ", invoiceId=" + invoiceId +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
     }
 }

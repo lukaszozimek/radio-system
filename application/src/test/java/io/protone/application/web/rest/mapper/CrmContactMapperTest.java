@@ -4,6 +4,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.*;
 import io.protone.crm.api.dto.CrmContactDTO;
+import io.protone.crm.api.dto.thin.CrmContactThinDTO;
 import io.protone.crm.domain.CrmContact;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.mapper.CrmContactMapper;
@@ -58,6 +59,8 @@ public class CrmContactMapperTest {
         crmContact.setIndustry(factory.manufacturePojo(CorDictionary.class));
         crmContact.setCorImageItem(factory.manufacturePojo(CorImageItem.class));
         crmContact.setKeeper(factory.manufacturePojo(CorUser.class));
+        crmContact.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmContact.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmContact.setShortName("fefe");
         crmContact.setName("fwafwafwa");
         crmContact.setVatNumber("fwafwa");
@@ -80,7 +83,7 @@ public class CrmContactMapperTest {
         assertNotNull(dto.getPerson());
         assertNotNull(dto.getAccount());
         assertNotNull(dto.getPublicUrl());
-
+        assertNotNull(dto.getDescription());
         assertNotNull(dto.getAddres());
         assertNotNull(dto.getRange());
         assertNotNull(dto.getIndustry());
@@ -89,7 +92,10 @@ public class CrmContactMapperTest {
         assertNotNull(dto.getPaymentDelay());
         assertNotNull(dto.getVatNumber());
         assertNotNull(dto.getTasks());
-
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
@@ -112,10 +118,14 @@ public class CrmContactMapperTest {
             assertNotNull(dto.getIndustry());
             assertNotNull(dto.getShortName());
             assertNotNull(dto.getName());
+            assertNotNull(dto.getDescription());
             assertNotNull(dto.getPaymentDelay());
             assertNotNull(dto.getVatNumber());
             assertNotNull(dto.getTasks());
-
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 
@@ -137,6 +147,7 @@ public class CrmContactMapperTest {
             assertNotNull(entity.getKeeper());
             assertNotNull(entity.getShortName());
             assertNotNull(entity.getPaymentDelay());
+            assertNotNull(entity.getDescription());
             assertNotNull(entity.getName());
             assertNotNull(entity.getVatNumber());
             assertNotNull(entity.getTasks());
@@ -158,6 +169,7 @@ public class CrmContactMapperTest {
         assertNotNull(entity.getKeeper());
         assertNotNull(entity.getShortName());
         assertNotNull(entity.getPaymentDelay());
+        assertNotNull(entity.getDescription());
         assertNotNull(entity.getName());
         assertNotNull(entity.getVatNumber());
         assertNotNull(entity.getTasks());
@@ -166,10 +178,54 @@ public class CrmContactMapperTest {
 
     @Test
     public void DB2ThinDTO() throws Exception {
+        CrmContactThinDTO dto = customCrmContactMapper.DB2ThinDTO(crmContact);
+        assertNotNull(dto.getId());
+
+        assertNotNull(dto.getArea());
+        assertNotNull(dto.getSize());
+        assertNotNull(dto.getPerson());
+        assertNotNull(dto.getAccount());
+        assertNotNull(dto.getPublicUrl());
+        assertNotNull(dto.getAddres());
+        assertNotNull(dto.getRange());
+        assertNotNull(dto.getIndustry());
+        assertNotNull(dto.getShortName());
+        assertNotNull(dto.getName());
+        assertNotNull(dto.getPaymentDelay());
+        assertNotNull(dto.getVatNumber());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
     }
 
     @Test
     public void DBs2ThinDTOs() throws Exception {
+        List<CrmContactThinDTO> dtos = customCrmContactMapper.DBs2ThinDTOs(crmContacts);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+            assertNotNull(dto.getId());
+
+            assertNotNull(dto.getArea());
+            assertNotNull(dto.getSize());
+            assertNotNull(dto.getPerson());
+            assertNotNull(dto.getAccount());
+
+            assertNotNull(dto.getPublicUrl());
+            assertNotNull(dto.getAddres());
+            assertNotNull(dto.getRange());
+            assertNotNull(dto.getIndustry());
+            assertNotNull(dto.getShortName());
+            assertNotNull(dto.getName());
+            assertNotNull(dto.getPaymentDelay());
+            assertNotNull(dto.getVatNumber());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
+        });
     }
 
 }

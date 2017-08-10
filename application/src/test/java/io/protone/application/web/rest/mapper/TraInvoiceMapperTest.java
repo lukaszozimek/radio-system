@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.api.dto.TraInvoiceDTO;
 import io.protone.traffic.domain.TraInvoice;
@@ -51,6 +52,8 @@ public class TraInvoiceMapperTest {
         traInvoice.setCustomer(factory.manufacturePojo(CrmAccount.class));
         traInvoice.setOrders(Sets.newHashSet(factory.manufacturePojo(TraOrder.class)));
         traInvoice.setStatus(factory.manufacturePojo(CorDictionary.class));
+        traInvoice.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        traInvoice.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         traInvoice.setPrice(new BigDecimal(1));
         traInvoice.setId(1L);
         traInvoices.add(traInvoice);
@@ -71,6 +74,10 @@ public class TraInvoiceMapperTest {
         assertNotNull(dto.getPaid());
         assertNotNull(dto.getPrice());
         assertNotNull(dto.getPaymentDay());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
 
     }
 

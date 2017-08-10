@@ -1,13 +1,14 @@
 package io.protone.traffic.api.dto;
 
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * TraPlaylistDTO
@@ -23,6 +24,15 @@ public class TraPlaylistDTO implements Serializable {
     private LocalDate playlistDate;
 
     private List<TraBlockDTO> blocks = new ArrayList<TraBlockDTO>();
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
+
 
     public Long getId() {
         return id;
@@ -65,22 +75,43 @@ public class TraPlaylistDTO implements Serializable {
         this.blocks = blocks;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TraPlaylistDTO traPlaylistDTO = (TraPlaylistDTO) o;
-        return Objects.equals(this.blocks, traPlaylistDTO.blocks);
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(blocks);
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
     }
 
     /**
@@ -90,17 +121,46 @@ public class TraPlaylistDTO implements Serializable {
     @Override
     public String toString() {
         return "TraPlaylistDTO{" +
-            "id=" + id +
-            ", playlistDate=" + playlistDate +
-            ", blocks=" + blocks +
-            '}';
+                "id=" + id +
+                ", playlistDate=" + playlistDate +
+                ", blocks=" + blocks +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
     }
 
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraPlaylistDTO that = (TraPlaylistDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (playlistDate != null ? !playlistDate.equals(that.playlistDate) : that.playlistDate != null) return false;
+        if (blocks != null ? !blocks.equals(that.blocks) : that.blocks != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (playlistDate != null ? playlistDate.hashCode() : 0);
+        result = 31 * result + (blocks != null ? blocks.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        return result;
     }
 }
 

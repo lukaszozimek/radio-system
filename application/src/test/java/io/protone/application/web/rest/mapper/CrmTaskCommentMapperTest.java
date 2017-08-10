@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import static io.jsonwebtoken.lang.Assert.notNull;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 17.06.2017.
@@ -51,6 +52,7 @@ public class CrmTaskCommentMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         crmTaskComment = factory.manufacturePojo(CrmTaskComment.class);
         crmTaskComment.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmTaskComment.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmTaskComments.add(crmTaskComment);
         crmTaskCommentDTO = factory.manufacturePojo(CrmTaskCommentDTO.class);
         crmTaskCommentDTOS.add(crmTaskCommentDTO);
@@ -75,7 +77,10 @@ public class CrmTaskCommentMapperTest {
             notNull(dto.getCreatedBy());
             notNull(dto.getId());
             notNull(dto.getComment());
-
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
 
     }
@@ -87,7 +92,10 @@ public class CrmTaskCommentMapperTest {
             notNull(dto.getCreatedBy());
             notNull(dto.getId());
             notNull(dto.getComment());
-
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 
