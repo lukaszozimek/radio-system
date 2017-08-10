@@ -4,31 +4,32 @@ import com.google.common.base.Strings;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorTag;
 import io.protone.core.mapper.CorPersonMapper;
+import io.protone.core.mapper.CorPropertyValueMapper;
 import io.protone.library.api.dto.LibMediaItemDTO;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {
-    LibAlbumMapper.class,
-    LibArtistMapper.class,
-    CorPersonMapper.class,
-    LibLabelMapper.class,
-    LibLibraryMapper.class,
-    LibMarkerMapper.class,
-    LibTrackMapper.class})
+        LibAlbumMapper.class,
+        LibArtistMapper.class,
+        CorPersonMapper.class,
+        LibLabelMapper.class,
+        LibLibraryMapper.class,
+        LibMarkerMapper.class,
+        LibTrackMapper.class,
+        CorPropertyValueMapper.class})
 public interface LibItemMapper {
 
+    @Mapping(source = "properites", target = "properties")
     LibMediaItemDTO DB2DTO(LibMediaItem db);
 
     List<LibMediaItemDTO> DBs2DTOs(List<LibMediaItem> dbs);
 
+    @Mapping(source = "properties", target = "properites")
     LibMediaItem DTO2DB(LibMediaItemDTO dto, @Context CorNetwork networkId);
 
     @AfterMapping
