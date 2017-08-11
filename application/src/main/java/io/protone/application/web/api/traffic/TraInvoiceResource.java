@@ -62,7 +62,7 @@ public interface TraInvoiceResource {
                                                          @ApiParam(value = "traInvoiceDTO", required = true) @Valid @RequestBody TraInvoiceDTO traInvoiceDTO) throws URISyntaxException;
 
 
-    @ApiOperation(value = "deleteInvoice", notes = "", response = Void.class, tags = {"TRAFFIC",})
+    @ApiOperation(value = "deleteCompany", notes = "", response = Void.class, tags = {"TRAFFIC",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Void.class),
             @ApiResponse(code = 204, message = "No Content", response = Void.class),

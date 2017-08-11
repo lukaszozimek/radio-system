@@ -5,6 +5,7 @@ import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.CoreAddressDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.crm.api.dto.CrmCustomerPersonDTO;
+import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -32,6 +33,7 @@ public class CrmAccountThinDTO implements Serializable {
 
     private String externalId2 = null;
 
+    private CrmDiscountDTO discount = null;
 
     private Integer paymentDelay = null;
 
@@ -373,6 +375,14 @@ public class CrmAccountThinDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public CrmDiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(CrmDiscountDTO discount) {
+        this.discount = discount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -386,6 +396,7 @@ public class CrmAccountThinDTO implements Serializable {
         if (area != null ? !area.equals(that.area) : that.area != null) return false;
         if (externalId1 != null ? !externalId1.equals(that.externalId1) : that.externalId1 != null) return false;
         if (externalId2 != null ? !externalId2.equals(that.externalId2) : that.externalId2 != null) return false;
+        if (discount != null ? !discount.equals(that.discount) : that.discount != null) return false;
         if (paymentDelay != null ? !paymentDelay.equals(that.paymentDelay) : that.paymentDelay != null) return false;
         if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
         if (range != null ? !range.equals(that.range) : that.range != null) return false;
@@ -413,6 +424,7 @@ public class CrmAccountThinDTO implements Serializable {
         result = 31 * result + (area != null ? area.hashCode() : 0);
         result = 31 * result + (externalId1 != null ? externalId1.hashCode() : 0);
         result = 31 * result + (externalId2 != null ? externalId2.hashCode() : 0);
+        result = 31 * result + (discount != null ? discount.hashCode() : 0);
         result = 31 * result + (paymentDelay != null ? paymentDelay.hashCode() : 0);
         result = 31 * result + (industry != null ? industry.hashCode() : 0);
         result = 31 * result + (range != null ? range.hashCode() : 0);
@@ -438,6 +450,7 @@ public class CrmAccountThinDTO implements Serializable {
                 ", area=" + area +
                 ", externalId1='" + externalId1 + '\'' +
                 ", externalId2='" + externalId2 + '\'' +
+                ", discount=" + discount +
                 ", paymentDelay=" + paymentDelay +
                 ", industry=" + industry +
                 ", range=" + range +

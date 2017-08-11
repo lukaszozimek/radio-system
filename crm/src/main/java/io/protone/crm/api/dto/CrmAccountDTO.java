@@ -40,6 +40,7 @@ public class CrmAccountDTO implements Serializable {
 
     private CorDictionaryDTO industry = null;
 
+    private CrmDiscountDTO discount = null;
 
     private CorDictionaryDTO range = null;
 
@@ -418,6 +419,15 @@ public class CrmAccountDTO implements Serializable {
         this.description = description;
     }
 
+    public CrmDiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(CrmDiscountDTO discount) {
+        this.discount = discount;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -434,6 +444,7 @@ public class CrmAccountDTO implements Serializable {
         if (externalId2 != null ? !externalId2.equals(that.externalId2) : that.externalId2 != null) return false;
         if (paymentDelay != null ? !paymentDelay.equals(that.paymentDelay) : that.paymentDelay != null) return false;
         if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
+        if (discount != null ? !discount.equals(that.discount) : that.discount != null) return false;
         if (range != null ? !range.equals(that.range) : that.range != null) return false;
         if (size != null ? !size.equals(that.size) : that.size != null) return false;
         if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) return false;
@@ -463,6 +474,7 @@ public class CrmAccountDTO implements Serializable {
         result = 31 * result + (externalId2 != null ? externalId2.hashCode() : 0);
         result = 31 * result + (paymentDelay != null ? paymentDelay.hashCode() : 0);
         result = 31 * result + (industry != null ? industry.hashCode() : 0);
+        result = 31 * result + (discount != null ? discount.hashCode() : 0);
         result = 31 * result + (range != null ? range.hashCode() : 0);
         result = 31 * result + (size != null ? size.hashCode() : 0);
         result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
@@ -477,7 +489,6 @@ public class CrmAccountDTO implements Serializable {
         result = 31 * result + (publicUrl != null ? publicUrl.hashCode() : 0);
         return result;
     }
-
     @Override
     public String toString() {
         return "CrmAccountDTO{" +
@@ -490,6 +501,7 @@ public class CrmAccountDTO implements Serializable {
                 ", externalId2='" + externalId2 + '\'' +
                 ", paymentDelay=" + paymentDelay +
                 ", industry=" + industry +
+                ", discount=" + discount +
                 ", range=" + range +
                 ", size=" + size +
                 ", vatNumber='" + vatNumber + '\'' +
@@ -504,5 +516,6 @@ public class CrmAccountDTO implements Serializable {
                 ", publicUrl='" + publicUrl + '\'' +
                 '}';
     }
+
 }
 

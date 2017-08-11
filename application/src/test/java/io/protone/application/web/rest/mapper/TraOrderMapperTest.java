@@ -99,6 +99,7 @@ public class TraOrderMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getStartDate());
         assertNotNull(dto.getEndDate());
+        assertNotNull(dto.getPrice());
         assertNotNull(dto.getCalculatedPrize());
         assertNotNull(dto.getCreatedBy());
         assertNotNull(dto.getCreatedDate());
@@ -123,6 +124,7 @@ public class TraOrderMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getStartDate());
             assertNotNull(dto.getEndDate());
+            assertNotNull(dto.getPrice());
             assertNotNull(dto.getCalculatedPrize());
             assertNotNull(dto.getCreatedBy());
             assertNotNull(dto.getCreatedDate());
@@ -142,6 +144,7 @@ public class TraOrderMapperTest {
         assertNotNull(entity.getCustomer());
         assertNotNull(entity.getStatus());
         assertNotNull(entity.getId());
+        assertNotNull(entity.getPrice());
         assertNotNull(entity.getName());
         assertNotNull(entity.getStartDate());
         assertNotNull(entity.getEndDate());
@@ -159,6 +162,7 @@ public class TraOrderMapperTest {
             assertNotNull(entity.getAdvertisment());
             assertNotNull(entity.getStatus());
             assertNotNull(entity.getCampaign());
+            assertNotNull(entity.getPrice());
             assertNotNull(entity.getCustomer());
             assertNotNull(entity.getInvoice());
             assertNotNull(entity.getCalculatedPrize());

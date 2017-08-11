@@ -1,4 +1,4 @@
-package io.protone.traffic.api.dto;
+package io.protone.crm.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A DTO for the TraDiscount entity.
  */
-public class TraDiscountDTO implements Serializable {
+public class CrmDiscountDTO implements Serializable {
     @JsonProperty("id")
     private Long id;
 
@@ -64,9 +64,9 @@ public class TraDiscountDTO implements Serializable {
             return false;
         }
 
-        TraDiscountDTO traDiscountDTO = (TraDiscountDTO) o;
+        CrmDiscountDTO crmDiscountDTO = (CrmDiscountDTO) o;
 
-        return Objects.equals(id, traDiscountDTO.id);
+        return Objects.equals(id, crmDiscountDTO.id);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class TraDiscountDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "TraDiscountDTO{" +
+        return "CrmDiscountDTO{" +
             "id=" + id +
             ", validFrom='" + validFrom + "'" +
             ", validTo='" + validTo + "'" +

@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -54,6 +53,10 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     @PodamExclude
     private CorDictionary status;
+
+    @ManyToOne
+    @PodamExclude
+    private TraCompany company;
 
     @OneToMany(mappedBy = "invoice")
     @JsonIgnore
@@ -173,33 +176,65 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public TraCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(TraCompany company) {
+        this.company = company;
+    }
+
+    public TraInvoice company(TraCompany traCompany) {
+        this.company = traCompany;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TraInvoice traInvoice = (TraInvoice) o;
-        if (traInvoice.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, traInvoice.id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraInvoice that = (TraInvoice) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (paid != null ? !paid.equals(that.paid) : that.paid != null) return false;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        if (paymentDay != null ? !paymentDay.equals(that.paymentDay) : that.paymentDay != null) return false;
+        if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
+        if (network != null ? !network.equals(that.network) : that.network != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (company != null ? !company.equals(that.company) : that.company != null) return false;
+        return orders != null ? orders.equals(that.orders) : that.orders == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (paid != null ? paid.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (paymentDay != null ? paymentDay.hashCode() : 0);
+        result = 31 * result + (customer != null ? customer.hashCode() : 0);
+        result = 31 * result + (network != null ? network.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "TraInvoice{" +
-            "id=" + id +
-            ", paid='" + paid + "'" +
-            ", price='" + price + "'" +
-            ", paymentDay='" + paymentDay + "'" +
-            '}';
+                "id=" + id +
+                ", paid=" + paid +
+                ", price=" + price +
+                ", paymentDay=" + paymentDay +
+                ", customer=" + customer +
+                ", network=" + network +
+                ", status=" + status +
+                ", company=" + company +
+                ", orders=" + orders +
+                '}';
     }
+
+
 }

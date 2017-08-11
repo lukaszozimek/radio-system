@@ -29,6 +29,9 @@ public class TraInvoiceDTO implements Serializable {
 
     private BigDecimal price = null;
 
+    @NotNull
+    private TraCompanyDTO traCompany;
+
     private CoreUserThinDTO createdBy;
 
     private ZonedDateTime createdDate;
@@ -259,6 +262,14 @@ public class TraInvoiceDTO implements Serializable {
         return result;
     }
 
+    public TraCompanyDTO getTraCompany() {
+        return traCompany;
+    }
+
+    public void setTraCompany(TraCompanyDTO traCompany) {
+        this.traCompany = traCompany;
+    }
+
     @Override
     public String toString() {
         return "TraInvoiceDTO{" +
@@ -267,6 +278,7 @@ public class TraInvoiceDTO implements Serializable {
                 ", paid=" + paid +
                 ", paymentDay=" + paymentDay +
                 ", price=" + price +
+                ", traCompany=" + traCompany +
                 ", createdBy=" + createdBy +
                 ", createdDate=" + createdDate +
                 ", lastModifiedBy=" + lastModifiedBy +

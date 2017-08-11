@@ -8,6 +8,7 @@ import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorPersonMapper;
 import io.protone.crm.domain.CrmAccount;
+import io.protone.crm.mapper.CrmDiscountMapper;
 import io.protone.crm.mapper.CrmTaskMapper;
 import io.protone.traffic.api.dto.TraCustomerDTO;
 import io.protone.traffic.api.dto.TraCustomerPersonDTO;
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 28/06/2017.
  */
-@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class, CrmDiscountMapper.class})
 public interface TraCustomerMapper {
 
     @Mapping(source = "person", target = "person")
