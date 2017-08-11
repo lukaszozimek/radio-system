@@ -61,7 +61,6 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "invoice")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-
     @PodamExclude
     private Set<TraOrder> orders = new HashSet<>();
 
