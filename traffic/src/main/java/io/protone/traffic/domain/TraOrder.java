@@ -54,9 +54,8 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CrmAccount customer;
 
-    @ManyToOne
-    @PodamExclude
-    private TraPrice price;
+    @Column(name = "price")
+    private Long price;
 
     @ManyToOne
     @PodamExclude
@@ -157,16 +156,16 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         this.customer = crmAccount;
     }
 
-    public TraPrice getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public TraOrder price(TraPrice traPrice) {
+    public TraOrder price(Long traPrice) {
         this.price = traPrice;
         return this;
     }
 
-    public void setPrice(TraPrice traPrice) {
+    public void setPrice(Long traPrice) {
         this.price = traPrice;
     }
 
@@ -283,11 +282,11 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "TraOrder{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", startDate='" + startDate + "'" +
-            ", endDate='" + endDate + "'" +
-            ", calculatedPrize='" + calculatedPrize + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", startDate='" + startDate + "'" +
+                ", endDate='" + endDate + "'" +
+                ", calculatedPrize='" + calculatedPrize + "'" +
+                '}';
     }
 }

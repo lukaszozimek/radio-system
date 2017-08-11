@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class,CrmDiscountMapper.class})
 public interface CrmAccountMapper {
     @Mapping(source = "person", target = "person")
     @Mapping(source = "addres", target = "addres")

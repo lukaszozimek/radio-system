@@ -4,8 +4,8 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmDiscount;
-import io.protone.traffic.api.dto.TraDiscountDTO;
-import io.protone.traffic.mapper.TraDiscountMapper;
+import io.protone.crm.api.dto.CrmDiscountDTO;
+import io.protone.crm.mapper.CrmDiscountMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,16 +27,16 @@ import static org.junit.Assert.assertNotNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class TraDiscountMapperTest {
+public class CrmDiscountMapperTest {
 
     @Autowired
-    private TraDiscountMapper customTraDiscountMapper;
+    private CrmDiscountMapper customCrmDiscountMapper;
 
     private CrmDiscount traDiscount;
 
-    private TraDiscountDTO traDiscountDTO;
+    private CrmDiscountDTO crmDiscountDTO;
 
-    private List<TraDiscountDTO> traDiscountDTOS = new ArrayList<>();
+    private List<CrmDiscountDTO> crmDiscountDTOS = new ArrayList<>();
 
     private List<CrmDiscount> traDiscounts = new ArrayList<>();
 
@@ -47,15 +47,15 @@ public class TraDiscountMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         traDiscount = factory.manufacturePojo(CrmDiscount.class);
         traDiscounts.add(traDiscount);
-        traDiscountDTO = factory.manufacturePojo(TraDiscountDTO.class);
-        traDiscountDTOS.add(traDiscountDTO);
+        crmDiscountDTO = factory.manufacturePojo(CrmDiscountDTO.class);
+        crmDiscountDTOS.add(crmDiscountDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
     }
 
 
     @Test
     public void DB2DTO() throws Exception {
-        TraDiscountDTO dto = customTraDiscountMapper.DB2DTO(traDiscount);
+        CrmDiscountDTO dto = customCrmDiscountMapper.DB2DTO(traDiscount);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getValidFrom());
@@ -68,7 +68,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DBs2DTOs() throws Exception {
-        List<TraDiscountDTO> dtos = customTraDiscountMapper.DBs2DTOs(traDiscounts);
+        List<CrmDiscountDTO> dtos = customCrmDiscountMapper.DBs2DTOs(traDiscounts);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -84,7 +84,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        CrmDiscount entity = customTraDiscountMapper.DTO2DB(traDiscountDTO, corNetwork);
+        CrmDiscount entity = customCrmDiscountMapper.DTO2DB(crmDiscountDTO, corNetwork);
         assertNotNull(entity.getId());
         assertNotNull(entity.getValidFrom());
         assertNotNull(entity.getValidTo());
@@ -95,7 +95,7 @@ public class TraDiscountMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<CrmDiscount> entities = customTraDiscountMapper.DTOs2DBs(traDiscountDTOS, corNetwork);
+        List<CrmDiscount> entities = customCrmDiscountMapper.DTOs2DBs(crmDiscountDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

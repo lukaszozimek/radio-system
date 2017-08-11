@@ -98,7 +98,7 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraCampaign.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraDiscount.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CrmDiscount.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraInvoice.xml"
              relativeToChangelogFile="false"/>
@@ -116,6 +116,8 @@
              relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlan.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraCompany.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylist.xml"
              relativeToChangelogFile="false"/>
@@ -216,7 +218,7 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraCampaign.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraDiscount.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmDiscount.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraInvoice.xml"
              relativeToChangelogFile="false"/>
@@ -239,6 +241,9 @@
              relativeToChangelogFile="false"/>
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraMediaPlanTemplate.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraCompany.xml"
             relativeToChangelogFile="false"/>
 
     <!--Custom-->
@@ -300,7 +305,8 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibArtist_LibImageItem.xml"
              relativeToChangelogFile="false"/>
 
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_TraAdvertisment.xml"
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_TraAdvertisment.xml"
             relativeToChangelogFile="false"/>
 
     <changeSet id="" author="">
@@ -341,6 +347,14 @@
                   file="/config/liquibase/demo/tra_media_plan_template.csv"
                   separator=";"
                   tableName="tra_media_plan_template"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/tra_company.csv"
+                  separator=";"
+                  tableName="tra_company"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/crm_discount.csv"
+                  separator=";"
+                  tableName="crm_discount"/>
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>
 

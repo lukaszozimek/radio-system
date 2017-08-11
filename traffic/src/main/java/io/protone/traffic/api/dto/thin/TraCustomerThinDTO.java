@@ -3,6 +3,7 @@ package io.protone.traffic.api.dto.thin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,8 @@ public class TraCustomerThinDTO {
 
     @JsonProperty("size")
     private CorDictionaryDTO size = null;
+
+    private CrmDiscountDTO discount = null;
 
     private CoreUserThinDTO createdBy;
 
@@ -170,6 +173,14 @@ public class TraCustomerThinDTO {
         return this;
     }
 
+    public CrmDiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(CrmDiscountDTO discount) {
+        this.discount = discount;
+    }
+
     /**
      * Get size
      *
@@ -235,23 +246,6 @@ public class TraCustomerThinDTO {
         this.area = area;
     }
 
-    @Override
-    public String toString() {
-        return "TraCustomerThinDTO{" +
-                "id=" + id +
-                ", shortName='" + shortName + '\'' +
-                ", area=" + area +
-                ", industry=" + industry +
-                ", name='" + name + '\'' +
-                ", paymentDate=" + paymentDate +
-                ", range=" + range +
-                ", size=" + size +
-                ", createdBy=" + createdBy +
-                ", createdDate=" + createdDate +
-                ", lastModifiedBy=" + lastModifiedBy +
-                ", lastModifiedDate=" + lastModifiedDate +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -268,6 +262,7 @@ public class TraCustomerThinDTO {
         if (paymentDate != null ? !paymentDate.equals(that.paymentDate) : that.paymentDate != null) return false;
         if (range != null ? !range.equals(that.range) : that.range != null) return false;
         if (size != null ? !size.equals(that.size) : that.size != null) return false;
+        if (discount != null ? !discount.equals(that.discount) : that.discount != null) return false;
         if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
         if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
@@ -288,11 +283,31 @@ public class TraCustomerThinDTO {
         result = 31 * result + (paymentDate != null ? paymentDate.hashCode() : 0);
         result = 31 * result + (range != null ? range.hashCode() : 0);
         result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (discount != null ? discount.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
         result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TraCustomer{" +
+                "id=" + id +
+                ", shortName='" + shortName + '\'' +
+                ", area=" + area +
+                ", industry=" + industry +
+                ", name='" + name + '\'' +
+                ", paymentDate=" + paymentDate +
+                ", range=" + range +
+                ", size=" + size +
+                ", discount=" + discount +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
     }
 }
 

@@ -17,6 +17,8 @@ public class TraOrderThinDTO implements Serializable {
 
     private Long calculatedPrize = null;
 
+    private Long price = null;
+
     private Long campaignId = null;
 
     @NotNull
@@ -273,6 +275,14 @@ public class TraOrderThinDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -282,6 +292,7 @@ public class TraOrderThinDTO implements Serializable {
 
         if (calculatedPrize != null ? !calculatedPrize.equals(that.calculatedPrize) : that.calculatedPrize != null)
             return false;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (campaignId != null ? !campaignId.equals(that.campaignId) : that.campaignId != null) return false;
         if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
@@ -302,6 +313,7 @@ public class TraOrderThinDTO implements Serializable {
     @Override
     public int hashCode() {
         int result = calculatedPrize != null ? calculatedPrize.hashCode() : 0;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (campaignId != null ? campaignId.hashCode() : 0);
         result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
@@ -322,6 +334,7 @@ public class TraOrderThinDTO implements Serializable {
     public String toString() {
         return "TraOrderThinDTO{" +
                 "calculatedPrize=" + calculatedPrize +
+                ", price=" + price +
                 ", campaignId=" + campaignId +
                 ", customerId=" + customerId +
                 ", endDate=" + endDate +

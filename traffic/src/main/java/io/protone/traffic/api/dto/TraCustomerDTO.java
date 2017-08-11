@@ -4,6 +4,7 @@ package io.protone.traffic.api.dto;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.CoreAddressDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -52,7 +53,7 @@ public class TraCustomerDTO implements Serializable {
 
     private TraCustomerPersonDTO person = null;
 
-    private TraDiscountDTO traDiscount = null;
+    private CrmDiscountDTO traDiscount = null;
 
     private CoreUserThinDTO createdBy;
 
@@ -111,15 +112,15 @@ public class TraCustomerDTO implements Serializable {
      * @return shortName
      **/
     @ApiModelProperty(value = "")
-    public TraDiscountDTO getDiscount() {
+    public CrmDiscountDTO getDiscount() {
         return traDiscount;
     }
 
-    public void setDiscount(TraDiscountDTO traDiscount) {
+    public void setDiscount(CrmDiscountDTO traDiscount) {
         this.traDiscount = traDiscount;
     }
 
-    public TraCustomerDTO discount(TraDiscountDTO traDiscount) {
+    public TraCustomerDTO discount(CrmDiscountDTO traDiscount) {
         this.traDiscount = traDiscount;
         return this;
     }
@@ -414,11 +415,11 @@ public class TraCustomerDTO implements Serializable {
         this.description = description;
     }
 
-    public TraDiscountDTO getTraDiscount() {
+    public CrmDiscountDTO getTraDiscount() {
         return traDiscount;
     }
 
-    public void setTraDiscount(TraDiscountDTO traDiscount) {
+    public void setTraDiscount(CrmDiscountDTO traDiscount) {
         this.traDiscount = traDiscount;
     }
 
