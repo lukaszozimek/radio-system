@@ -250,11 +250,7 @@
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.minio</groupId>
-            <artifactId>minio</artifactId>
-            <version>3.0.6</version>
-        </dependency>
+
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-bean-validators</artifactId>
@@ -473,7 +469,11 @@
             <artifactId>antlr4-maven-plugin</artifactId>
             <version>${antlr4.plugin.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>3.0.6</version>
+        </dependency>
     </dependencies>
 
     <profiles>
