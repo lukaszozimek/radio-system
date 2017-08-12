@@ -52,6 +52,10 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
 
     @ManyToOne
     @PodamExclude
+    private TraPrice price;
+
+    @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
@@ -221,6 +225,13 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
+    public TraPrice getPrice() {
+        return price;
+    }
+
+    public void setPrice(TraPrice price) {
+        this.price = price;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -253,6 +264,7 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
                 ", sequence='" + sequence + "'" +
                 '}';
     }
+
 
 
 }

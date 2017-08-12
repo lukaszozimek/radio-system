@@ -1,7 +1,5 @@
-package io.protone.traffic.domain;
+package io.protone.traffic.api.dto;
 
-import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorCurrency;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,42 +17,19 @@ import java.util.Objects;
 /**
  * A TraPrice.
  */
-@Entity
-@Table(name = "tra_price")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraPrice extends AbstractAuditingEntity implements Serializable {
+public class TraPriceDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @ElementCollection
-    @MapKeyColumn(name = "lenght")
-    @Column(name = "multiplier")
-    @CollectionTable(name = "tra_price_lenght_multiplier")
-    Map<Long, Double> lenghtMultiplier = new HashMap<>();
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
     @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
     private String name;
-    @Column(name = "valid_from")
     private LocalDate validFrom;
-    @Column(name = "valid_to")
     private LocalDate validTo;
-    @NotNull
-    @Column(name = "base_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal basePrice;
-    @NotNull
-    @Column(name = "price_last_postion", precision = 10, scale = 2, nullable = false)
     private BigDecimal priceLastPostion;
-    @NotNull
-    @Column(name = "price_first_postion", precision = 10, scale = 2, nullable = false)
     private BigDecimal priceFirstPostion;
-    @Column(name = "base_length")
-    private Long baseLength;
-    @ManyToOne
-    private CorNetwork network;
+    private Integer baseLength;
+    private Map<Long, Double> lenghtMultiplier = new HashMap<>();
 
     public Long getId() {
         return id;
@@ -72,7 +47,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
-    public TraPrice name(String name) {
+    public TraPriceDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -85,7 +60,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         this.validFrom = validFrom;
     }
 
-    public TraPrice validFrom(LocalDate validFrom) {
+    public TraPriceDTO validFrom(LocalDate validFrom) {
         this.validFrom = validFrom;
         return this;
     }
@@ -98,7 +73,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         this.validTo = validTo;
     }
 
-    public TraPrice validTo(LocalDate validTo) {
+    public TraPriceDTO validTo(LocalDate validTo) {
         this.validTo = validTo;
         return this;
     }
@@ -119,25 +94,16 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         this.lenghtMultiplier = lenghtMultiplier;
     }
 
-    public TraPrice putToLenghtMultiplier(Long lenght, Double multiplier) {
-        this.lenghtMultiplier.put(lenght, multiplier);
-        return this;
-    }
 
-    public TraPrice removeToLenghtMultiplier(Long lenght) {
-        this.lenghtMultiplier.remove(lenght);
-        return this;
-    }
-
-    public Long getBaseLength() {
+    public Integer getBaseLength() {
         return baseLength;
     }
 
-    public void setBaseLength(Long baseLength) {
+    public void setBaseLength(Integer baseLength) {
         this.baseLength = baseLength;
     }
 
-    public TraPrice baseLength(Long baseLength) {
+    public TraPriceDTO baseLength(Integer baseLength) {
         this.baseLength = baseLength;
         return this;
     }
@@ -159,19 +125,6 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         this.priceFirstPostion = priceFirstPostion;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
-    public TraPrice network(CorNetwork corNetwork) {
-        this.network = corNetwork;
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -180,7 +133,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TraPrice traPrice = (TraPrice) o;
+        TraPriceDTO traPrice = (TraPriceDTO) o;
         if (traPrice.id == null || id == null) {
             return false;
         }
@@ -194,9 +147,8 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "TraPrice{" +
-                "lenghtMultiplier=" + lenghtMultiplier +
-                ", id=" + id +
+        return "TraPriceDTO{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", validFrom=" + validFrom +
                 ", validTo=" + validTo +
@@ -204,24 +156,7 @@ public class TraPrice extends AbstractAuditingEntity implements Serializable {
                 ", priceLastPostion=" + priceLastPostion +
                 ", priceFirstPostion=" + priceFirstPostion +
                 ", baseLength=" + baseLength +
-                ", network=" + network +
+                ", lenghtMultiplier=" + lenghtMultiplier +
                 '}';
     }
-
-
-    public TraPrice basePrice(BigDecimal defaultBasePrice) {
-        this.basePrice = defaultBasePrice;
-        return this;
-    }
-
-    public TraPrice priceLastPostion(BigDecimal defaultPriceLastPostion) {
-        this.priceLastPostion = defaultPriceLastPostion;
-        return this;
-    }
-
-    public TraPrice priceFirstPostion(BigDecimal defaultPriceFirstPostion) {
-        this.priceFirstPostion = defaultPriceFirstPostion;
-        return this;
-    }
-
 }

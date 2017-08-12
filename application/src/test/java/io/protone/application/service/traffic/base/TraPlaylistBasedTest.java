@@ -25,6 +25,7 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -185,6 +186,7 @@ public class TraPlaylistBasedTest {
             traEmission.advertiment(mediaItemList.get(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, COMMERCIALS_AUDIO_FILES_NUMBER_IN_PLAYLIST_SCHEDULE)));
             traEmission.sequence(java.util.concurrent.ThreadLocalRandom.current().nextInt(0, maxCommercialNumber));
             traEmission.setChannel(corChannel);
+            traEmission.setPrice(new BigDecimal(1L));
             traEmission.setNetwork(corNetwork);
             traEmission.setOrder(traOrder);
             traEmission.setBlock(traBlock);

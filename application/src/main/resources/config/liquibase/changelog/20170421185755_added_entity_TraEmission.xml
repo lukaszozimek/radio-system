@@ -35,6 +35,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="fixed_postion" type="boolean">
                 <constraints nullable="false"/>
             </column>

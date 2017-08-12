@@ -31,7 +31,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="calculated_prize" type="bigint">
+            <column name="calculated_prize" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
@@ -39,7 +39,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="price" type="bigint">
+            <column name="price" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 

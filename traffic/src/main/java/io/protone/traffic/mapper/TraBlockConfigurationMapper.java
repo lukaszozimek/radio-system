@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 15/05/2017.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {TraPriceMapper.class})
 public interface TraBlockConfigurationMapper {
 
     @Mapping(source = "day", target = "day")

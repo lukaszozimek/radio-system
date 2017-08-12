@@ -13,6 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -47,15 +48,17 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "calculated_prize")
-    private Long calculatedPrize;
+    @Column(name = "calculated_prize", precision = 10, scale = 2)
+    @PodamExclude
+    private BigDecimal calculatedPrize;
 
     @ManyToOne
     @PodamExclude
     private CrmAccount customer;
 
-    @Column(name = "price")
-    private Long price;
+    @Column(name = "price", precision = 10, scale = 2)
+    @PodamExclude
+    private BigDecimal price;
 
     @ManyToOne
     @PodamExclude
@@ -95,17 +98,21 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public TraOrder name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public LocalDate getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
     public TraOrder startDate(LocalDate startDate) {
@@ -113,12 +120,12 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public TraOrder endDate(LocalDate endDate) {
@@ -126,25 +133,25 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Long getCalculatedPrize() {
+    public BigDecimal getCalculatedPrize() {
         return calculatedPrize;
     }
 
-    public TraOrder calculatedPrize(Long calculatedPrize) {
+    public void setCalculatedPrize(BigDecimal calculatedPrize) {
+        this.calculatedPrize = calculatedPrize;
+    }
+
+    public TraOrder calculatedPrize(BigDecimal calculatedPrize) {
         this.calculatedPrize = calculatedPrize;
         return this;
     }
 
-    public void setCalculatedPrize(Long calculatedPrize) {
-        this.calculatedPrize = calculatedPrize;
-    }
-
     public CrmAccount getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(CrmAccount crmAccount) {
+        this.customer = crmAccount;
     }
 
     public TraOrder customer(CrmAccount crmAccount) {
@@ -152,25 +159,25 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setCustomer(CrmAccount crmAccount) {
-        this.customer = crmAccount;
-    }
-
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public TraOrder price(Long traPrice) {
+    public void setPrice(BigDecimal traPrice) {
+        this.price = traPrice;
+    }
+
+    public TraOrder price(BigDecimal traPrice) {
         this.price = traPrice;
         return this;
     }
 
-    public void setPrice(Long traPrice) {
-        this.price = traPrice;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork corNetwork) {
+        this.network = corNetwork;
     }
 
     public TraOrder network(CorNetwork corNetwork) {
@@ -178,12 +185,12 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork corNetwork) {
-        this.network = corNetwork;
-    }
-
     public CorDictionary getStatus() {
         return status;
+    }
+
+    public void setStatus(CorDictionary corDictionary) {
+        this.status = corDictionary;
     }
 
     public TraOrder status(CorDictionary corDictionary) {
@@ -191,12 +198,12 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setStatus(CorDictionary corDictionary) {
-        this.status = corDictionary;
-    }
-
     public TraAdvertisement getAdvertisment() {
         return advertisment;
+    }
+
+    public void setAdvertisment(TraAdvertisement traAdvertisement) {
+        this.advertisment = traAdvertisement;
     }
 
     public TraOrder advertisment(TraAdvertisement traAdvertisement) {
@@ -204,12 +211,12 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setAdvertisment(TraAdvertisement traAdvertisement) {
-        this.advertisment = traAdvertisement;
-    }
-
     public TraCampaign getCampaign() {
         return campaign;
+    }
+
+    public void setCampaign(TraCampaign traCampaign) {
+        this.campaign = traCampaign;
     }
 
     public TraOrder campaign(TraCampaign traCampaign) {
@@ -217,12 +224,12 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setCampaign(TraCampaign traCampaign) {
-        this.campaign = traCampaign;
-    }
-
     public TraInvoice getInvoice() {
         return invoice;
+    }
+
+    public void setInvoice(TraInvoice traInvoice) {
+        this.invoice = traInvoice;
     }
 
     public TraOrder invoice(TraInvoice traInvoice) {
@@ -230,12 +237,12 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setInvoice(TraInvoice traInvoice) {
-        this.invoice = traInvoice;
-    }
-
     public Set<TraEmission> getEmissions() {
         return emissions;
+    }
+
+    public void setEmissions(Set<TraEmission> traEmissions) {
+        this.emissions = traEmissions;
     }
 
     public TraOrder emissions(Set<TraEmission> traEmissions) {
@@ -253,10 +260,6 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         this.emissions.remove(traEmission);
         traEmission.setOrder(null);
         return this;
-    }
-
-    public void setEmissions(Set<TraEmission> traEmissions) {
-        this.emissions = traEmissions;
     }
 
     @Override

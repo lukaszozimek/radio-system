@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +61,8 @@ public class TraOrderMapperTest {
         factory = new PodamFactoryImpl();
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setId(1L);
+        traOrder.setCalculatedPrize(new BigDecimal(1L));
+        traOrder.setPrice(new BigDecimal(1L));
         traOrder.setAdvertisment(factory.manufacturePojo(TraAdvertisement.class));
         traOrder.getAdvertisment().setId(1L);
         traOrder.setStatus(factory.manufacturePojo(CorDictionary.class));

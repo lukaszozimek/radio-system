@@ -8,6 +8,7 @@ import io.protone.traffic.api.dto.thin.TraCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class TraOrderDTO {
 
     private Long calculatedPrize = null;
 
-    private Long price = null;
+    private BigDecimal price = null;
 
     private Long campaignId = null;
 
@@ -306,13 +307,15 @@ public class TraOrderDTO {
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
-    public Long getPrice() {
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).

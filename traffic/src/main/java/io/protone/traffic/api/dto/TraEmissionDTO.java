@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * TraEmissionDTO
@@ -31,9 +33,8 @@ public class TraEmissionDTO implements Serializable {
 
     @NotNull
     private Long orderId = null;
-
-
-
+    
+    private BigDecimal price;
 
     private boolean fixedPosition;
 
@@ -132,6 +133,7 @@ public class TraEmissionDTO implements Serializable {
         this.orderId = orderId;
         return this;
     }
+
     public boolean isFixedPosition() {
         return fixedPosition;
     }
@@ -154,6 +156,14 @@ public class TraEmissionDTO implements Serializable {
 
     public void setLastPosition(boolean lastPosition) {
         this.lastPosition = lastPosition;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override
@@ -183,6 +193,7 @@ public class TraEmissionDTO implements Serializable {
         result = 31 * result + (orderId != null ? orderId.hashCode() : 0);
         return result;
     }
+
     @Override
     public String toString() {
         return "TraEmissionDTO{" +
@@ -192,10 +203,12 @@ public class TraEmissionDTO implements Serializable {
                 ", timeStop=" + timeStop +
                 ", sequence=" + sequence +
                 ", orderId=" + orderId +
+                ", price=" + price +
                 ", fixedPosition=" + fixedPosition +
-                ", firstPosition=" + firsrPosition +
+                ", firsrPosition=" + firsrPosition +
                 ", lastPosition=" + lastPosition +
                 '}';
     }
+
 }
 
