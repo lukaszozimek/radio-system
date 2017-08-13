@@ -33,7 +33,18 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             " where n.shortcut = :network")
     List<TraOrder> findByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
 
-    List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork, Pageable pageable);
+    @Query("select o  from TraOrder as o " +
+            "left join fetch o.network as n " +
+            "left join fetch o.advertisment as a " +
+            "left join fetch o.status as stat " +
+            "left join fetch o.campaign as camp " +
+            "left join fetch o.customer as c " +
+            "left join fetch c.area as car " +
+            "left join fetch c.size as cs " +
+            "left join fetch c.range as cr " +
+            "left join fetch c.industry as ind " +
+            " where n.shortcut = :network and c.shortName=:shortName")
+    List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String corNetwork, Pageable pageable);
 
     List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork);
 

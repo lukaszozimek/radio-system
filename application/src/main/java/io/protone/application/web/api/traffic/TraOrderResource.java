@@ -98,16 +98,16 @@ public interface TraOrderResource {
     ResponseEntity<TraOrderDTO> notifyCustomerAboutUnpaidOrderUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "getAllCustomerOrders", notes = "", response = TraOrderDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
+    @ApiOperation(value = "getAllCustomerOrders", notes = "", response = TraOrderThinDTO.class, responseContainer = "List", tags = {"TRAFFIC",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = TraOrderDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = TraOrderDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = TraOrderDTO.class)})
+        @ApiResponse(code = 200, message = "OK", response = TraOrderThinDTO.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = TraOrderThinDTO.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = TraOrderThinDTO.class),
+        @ApiResponse(code = 404, message = "Not Found", response = TraOrderThinDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<TraOrderDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<List<TraOrderThinDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                    @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable);
 

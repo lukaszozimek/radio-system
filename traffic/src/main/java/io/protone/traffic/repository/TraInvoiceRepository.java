@@ -54,6 +54,14 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             " where n.shortcut = :network and i.id =:id")
     TraInvoice findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
 
-    List<TraInvoice> findAllByCustomer_ShortNameAndNetwork_Shortcut(String customer, String network, Pageable pageable);
+    @Query("select i  from TraInvoice as i " +
+            "left join fetch i.network as n " +
+            "left join fetch i.customer as c " +
+            "left join fetch c.addres as ca " +
+            "left join fetch c.range as cr " +
+            "left join fetch c.area as car " +
+            "left join fetch c.size as css " +
+            " where n.shortcut = :network and c.shortName =:shortName")
+    List<TraInvoice> findAllByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String customer, @Param("network") String network, Pageable pageable);
 
 }

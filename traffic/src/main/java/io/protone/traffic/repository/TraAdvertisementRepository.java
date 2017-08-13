@@ -37,7 +37,15 @@ public interface TraAdvertisementRepository extends JpaRepository<TraAdvertiseme
             " where n.shortcut = :network  and a.id =:id")
     TraAdvertisement findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
 
-    List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String network, Pageable pageable);
+    @Query("select a  from TraAdvertisement as a " +
+            "left join fetch a.network as n " +
+            "left join fetch a.customer as c " +
+            "left join fetch c.area as car " +
+            "left join fetch c.size as cs " +
+            "left join fetch c.range as cr " +
+            "left join fetch c.industry as ind " +
+            " where n.shortcut = :network and c.shortName = :shortName")
+    List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String network, Pageable pageable);
 
     List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String network);
 }
