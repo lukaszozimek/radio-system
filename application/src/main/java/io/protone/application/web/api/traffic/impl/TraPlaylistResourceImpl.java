@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -218,13 +219,13 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     public class TraEmissionCSV {
 
         private String blockName;
-        private Long timeStart;
-        private Long timeStop;
+        private LocalTime timeStart;
+        private LocalTime timeStop;
         private Long mediaItemId;
         private Long mediaItemLenght;
         private String mediaItemName;
 
-        public TraEmissionCSV(String blockName, Long timeStart, Long timeStop, Long mediaItemId, Long mediaItemLenght, String mediaItemName) {
+        public TraEmissionCSV(String blockName, LocalTime timeStart, LocalTime timeStop, Long mediaItemId, Long mediaItemLenght, String mediaItemName) {
             this.blockName = blockName;
             this.timeStart = timeStart;
             this.timeStop = timeStop;

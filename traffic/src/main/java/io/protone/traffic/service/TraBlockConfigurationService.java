@@ -32,7 +32,7 @@ public class TraBlockConfigurationService {
 
     @Transactional
     public TraBlockConfiguration saveBlockConfiguration(TraBlockConfiguration traBlockConfiguration) {
-        return traBlockConfigurationRepository.save(traBlockConfiguration);
+        return traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
     }
 
     public List<TraBlockConfiguration> getAllBlockConfigurations(String networkShortcut, Pageable pagable) {

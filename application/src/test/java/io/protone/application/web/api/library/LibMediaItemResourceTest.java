@@ -21,6 +21,7 @@ import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.enumeration.LibItemStateEnum;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibItemService;
 import io.protone.library.service.file.LibFileService;
@@ -98,6 +99,8 @@ public class LibMediaItemResourceTest {
     private LibItemMapper libMediaItemMapper;
     @Inject
     private LibMediaItemRepository libMediaItemRepository;
+    @Inject
+    private LibMediaItemThinMapper libMediaItemThinMapper;
     @Inject
     private CorNetworkService corNetworkService;
     @Autowired
@@ -195,6 +198,7 @@ public class LibMediaItemResourceTest {
 
         ReflectionTestUtils.setField(libMediaItemResource, "libItemService", itemService);
         ReflectionTestUtils.setField(libMediaItemResource, "libMediaItemMapper", libMediaItemMapper);
+        ReflectionTestUtils.setField(libMediaItemResource, "libMediaItemThinMapper", libMediaItemThinMapper);
         ReflectionTestUtils.setField(libMediaItemResource, "corNetworkService", corNetworkService);
 
         this.restLibMediaItemMockMvc = MockMvcBuilders.standaloneSetup(libMediaItemResource)
@@ -282,11 +286,7 @@ public class LibMediaItemResourceTest {
                 .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaItem.getId().intValue())))
                 .andExpect(jsonPath("$.[*].idx").value(hasItem(DEFAULT_IDX.toString())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-                .andExpect(jsonPath("$.[*].itemType").value(hasItem(DEFAULT_ITEM_TYPE.toString())))
-                .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH)))
-                .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-                .andExpect(jsonPath("$.[*].command").value(hasItem(DEFAULT_COMMAND.toString())))
-                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+                .andExpect(jsonPath("$.[*].length").value(hasItem(DEFAULT_LENGTH)));
     }
 
     @Test

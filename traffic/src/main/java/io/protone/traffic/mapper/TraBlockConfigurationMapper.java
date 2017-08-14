@@ -20,6 +20,7 @@ public interface TraBlockConfigurationMapper {
     @Mapping(source = "day", target = "day")
     @Mapping(source = "blockStartSound.id", target = "startBlockSoundId")
     @Mapping(source = "blockEndSound.id", target = "stopBlockSoundId")
+    @Mapping(source = "price",target = "price")
     TraBlockConfigurationDTO DB2DTO(TraBlockConfiguration traBlockConfiguration);
 
     List<TraBlockConfigurationDTO> DBs2DTOs(List<TraBlockConfiguration> traBlockConfigurations);
@@ -27,6 +28,7 @@ public interface TraBlockConfigurationMapper {
     @Mapping(source = "day", target = "day")
     @Mapping(source = "startBlockSoundId", target = "blockStartSound.id")
     @Mapping(source = "stopBlockSoundId", target = "blockEndSound.id")
+    @Mapping(source = "price",target = "price")
     TraBlockConfiguration DTO2DB(TraBlockConfigurationDTO traBlockConfigurationDTO, @Context CorNetwork network, @Context CorChannel corChannel);
 
     default List<TraBlockConfiguration> DTOs2DBs(List<TraBlockConfigurationDTO> traBlockConfigurationDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {

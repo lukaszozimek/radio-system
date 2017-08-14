@@ -6,8 +6,10 @@ import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibMediaItemDTO;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.service.LibItemService;
 import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
@@ -47,6 +49,8 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     @Inject
     private LibItemMapper libMediaItemMapper;
 
+    @Inject
+    private LibMediaItemThinMapper libMediaItemThinMapper;
     @Inject
     private CorNetworkService corNetworkService;
 
@@ -97,21 +101,20 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
 
     @Override
-    public ResponseEntity<List<LibMediaItemDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibLibraryDTO");
         List<LibMediaItem> entities = libItemService.getMediaItems(networkShortcut, libraryPrefix, pagable);
-        List<LibMediaItemDTO> response = libMediaItemMapper.DBs2DTOs(entities);
-
+        List<LibMediaItemThinDTO> response = libMediaItemThinMapper.DBs2DTOs(entities);
         return ResponseEntity.ok()
                 .body(response);
     }
 
     @Override
-    public ResponseEntity<List<LibMediaItemDTO>> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws IOException, TikaException, SAXException {
+    public ResponseEntity<List<LibMediaItemThinDTO>> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix, @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws IOException, TikaException, SAXException {
         List<LibMediaItem> entities = libItemService.upload(networkShortcut, libraryPrefix, files);
-        List<LibMediaItemDTO> response = libMediaItemMapper.DBs2DTOs(entities);
+        List<LibMediaItemThinDTO> response = libMediaItemThinMapper.DBs2DTOs(entities);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -138,7 +141,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<List<LibMediaItemDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                      @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {

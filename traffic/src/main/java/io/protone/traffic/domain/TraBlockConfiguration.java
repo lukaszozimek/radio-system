@@ -50,7 +50,7 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
     @Column(name = "sequence")
     private Integer sequence;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
     private TraPrice price;
 
@@ -232,6 +232,7 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
     public void setPrice(TraPrice price) {
         this.price = price;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -264,7 +265,6 @@ public class TraBlockConfiguration extends AbstractAuditingEntity implements Ser
                 ", sequence='" + sequence + "'" +
                 '}';
     }
-
 
 
 }
