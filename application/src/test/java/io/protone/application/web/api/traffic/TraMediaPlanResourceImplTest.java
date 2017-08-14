@@ -16,6 +16,7 @@ import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
@@ -121,6 +122,8 @@ public class TraMediaPlanResourceImplTest {
 
     @Autowired
     private LibItemMapper libItemMapper;
+    @Autowired
+    private LibMediaItemThinMapper libMediaItemThinMapper;
     @Mock
     private LibItemService libItemService;
 
@@ -191,7 +194,7 @@ public class TraMediaPlanResourceImplTest {
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = new TraMediaPlanTemplateDTO();
         mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
                 .order(traOrderMapper.DB2ThinDTO(traOrder))
-                .libMediaItemThinDTO(libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItem));
+                .libMediaItemThinDTO(libMediaItemThinMapper.DB2DTO(libMediaItem));
         traMediaPlanTemplateDTO.sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")
                 .playlistDateStartColumn("G")

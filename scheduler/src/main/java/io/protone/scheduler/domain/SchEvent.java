@@ -1,9 +1,13 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_event")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEvent implements Serializable {
+public class SchEvent extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +32,10 @@ public class SchEvent implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "short_name", unique = true, nullable = false)
+    private String shortName;
+
 
     @OneToMany(mappedBy = "block")
     @JsonIgnore
@@ -46,12 +54,32 @@ public class SchEvent implements Serializable {
     @JoinColumn(unique = true)
     private SchTimeParams timeParams;
 
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public SchEvent shortName(String shortName) {
+        this.shortName = shortName;
+        return this;
     }
 
     public String getName() {
@@ -127,6 +155,32 @@ public class SchEvent implements Serializable {
     public SchEvent timeParams(SchTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchEvent network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchEvent channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override

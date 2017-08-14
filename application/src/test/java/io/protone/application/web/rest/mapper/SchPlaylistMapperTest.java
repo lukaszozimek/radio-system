@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.mapper.SchPlaylistMapper;
@@ -34,10 +36,15 @@ public class SchPlaylistMapperTest {
     private List<SchPlaylist> playlists = new ArrayList<>();
 
     private List<SchPlaylistDTO> playlistDTOs = new ArrayList<>();
-    
+    private CorNetwork network;
+    private CorChannel corChannel;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         playlist = factory.manufacturePojo(SchPlaylist.class);
         playlists.add(playlist);
         playlistDTO = factory.manufacturePojo(SchPlaylistDTO.class);
@@ -66,20 +73,26 @@ public class SchPlaylistMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchPlaylist entity = playlistMapper.toEntity(playlistDTO);
+        SchPlaylist entity = playlistMapper.toEntity(playlistDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
+
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
         //assertNotNull(entity.getEmissions()); //TODO: test emission instances mapping
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchPlaylist> entities = playlistMapper.toEntity(playlistDTOs);
+        List<SchPlaylist> entities = playlistMapper.toEntity(playlistDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getDate());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
             //assertNotNull(entity.getEmissions()); //TODO: test emission instances mapping
         });
     }

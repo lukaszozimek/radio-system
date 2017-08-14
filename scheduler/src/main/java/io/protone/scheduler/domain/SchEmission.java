@@ -1,6 +1,10 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -17,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmission implements Serializable {
+public class SchEmission  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +44,7 @@ public class SchEmission implements Serializable {
     @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
-    private SchMediaItem mediaItem;
+    private LibMediaItem mediaItem;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -59,6 +63,14 @@ public class SchEmission implements Serializable {
     @PodamExclude
     @ManyToOne
     private SchBlock block = null;
+
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
 
     public Long getId() {
         return id;
@@ -107,15 +119,15 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public SchMediaItem getMediaItem() {
+    public LibMediaItem getMediaItem() {
         return mediaItem;
     }
 
-    public void setMediaItem(SchMediaItem mediaItem) {
+    public void setMediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
     }
 
-    public SchEmission mediaItem(SchMediaItem mediaItem) {
+    public SchEmission mediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
@@ -182,6 +194,32 @@ public class SchEmission implements Serializable {
     public SchEmission block(SchBlock block) {
         this.block = block;
         return this;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchEmission network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchEmission channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override

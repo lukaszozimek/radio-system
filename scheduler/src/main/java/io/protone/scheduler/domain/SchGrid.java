@@ -1,6 +1,9 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -18,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_grid")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchGrid implements Serializable {
+public class SchGrid  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,6 +50,13 @@ public class SchGrid implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchClock> clocks = new HashSet<>();
 
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
     public Long getId() {
         return id;
     }
@@ -54,6 +64,7 @@ public class SchGrid implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
 
     public DayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;
@@ -129,7 +140,31 @@ public class SchGrid implements Serializable {
         this.clocks.remove(clock);
         return this;
     }
+    public CorNetwork getNetwork() {
+        return network;
+    }
 
+    public SchGrid network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchGrid channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

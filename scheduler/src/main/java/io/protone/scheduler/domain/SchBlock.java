@@ -1,6 +1,9 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -18,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchBlock implements Serializable {
+public class SchBlock  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,6 +69,14 @@ public class SchBlock implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
+
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
 
     public Long getId() {
         return id;
@@ -210,6 +221,32 @@ public class SchBlock implements Serializable {
     public SchBlock removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
         return this;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchBlock network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchBlock channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override

@@ -1,8 +1,12 @@
 package io.protone.scheduler.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.ObjectTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_queue_params")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchQueueParams implements Serializable {
+public class SchQueueParams  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +43,13 @@ public class SchQueueParams implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "next_type")
     private ObjectTypeEnum nextType;
+
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -112,7 +123,31 @@ public class SchQueueParams implements Serializable {
         this.nextType = nextType;
         return this;
     }
+    public CorNetwork getNetwork() {
+        return network;
+    }
 
+    public SchQueueParams network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchQueueParams channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

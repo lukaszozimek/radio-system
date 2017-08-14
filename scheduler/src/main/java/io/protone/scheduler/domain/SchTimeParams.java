@@ -1,7 +1,11 @@
 package io.protone.scheduler.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_time_params")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchTimeParams implements Serializable {
+public class SchTimeParams extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,6 +35,13 @@ public class SchTimeParams implements Serializable {
 
     @Column(name = "relative_delay")
     private Integer relativeDelay;
+
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
 
     public Long getId() {
         return id;
@@ -77,6 +88,32 @@ public class SchTimeParams implements Serializable {
     public SchTimeParams relativeDelay(Integer relativeDelay) {
         this.relativeDelay = relativeDelay;
         return this;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchTimeParams network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchTimeParams channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override

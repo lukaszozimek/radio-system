@@ -1,6 +1,9 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -17,7 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock implements Serializable {
+public class SchClock  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,6 +31,9 @@ public class SchClock implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "short_name", unique = true, nullable = false)
+    private String shortName;
 
     @PodamExclude
     @ManyToOne
@@ -55,6 +61,14 @@ public class SchClock implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
 
+    @ManyToOne
+    private CorNetwork network;
+
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +77,18 @@ public class SchClock implements Serializable {
         this.id = id;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public SchClock shortName(String shortName) {
+        this.shortName = shortName;
+        return this;
+    }
     public String getName() {
         return name;
     }
@@ -161,6 +187,32 @@ public class SchClock implements Serializable {
         return this;
     }
 
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchClock network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchClock channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -188,4 +240,6 @@ public class SchClock implements Serializable {
                 ", name='" + getName() + "'" +
                 "}";
     }
+
+
 }

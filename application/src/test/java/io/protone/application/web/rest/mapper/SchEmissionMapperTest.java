@@ -1,10 +1,11 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchEmissionMapper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +36,15 @@ public class SchEmissionMapperTest {
     private List<SchEmission> emissions = new ArrayList<>();
 
     private List<SchEmissionDTO> emissionDTOs = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
-
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmission.class);
         emissions.add(emission);
@@ -78,18 +82,21 @@ public class SchEmissionMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchEmission entity = emissionMapper.toEntity(emissionDTO);
+        SchEmission entity = emissionMapper.toEntity(emissionDTO, network, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getSeq());
         assertNotNull(entity.getTimeParams());
         assertNotNull(entity.getQueueParams());
+
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
         //TODO: Consider assertions for attachments
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEmission> entities = emissionMapper.toEntity(emissionDTOs);
+        List<SchEmission> entities = emissionMapper.toEntity(emissionDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -98,6 +105,9 @@ public class SchEmissionMapperTest {
             assertNotNull(entity.getSeq());
             assertNotNull(entity.getTimeParams());
             assertNotNull(entity.getQueueParams());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
             //TODO: Consider assertions for attachments
         });
     }

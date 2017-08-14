@@ -1,7 +1,7 @@
 package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.api.dto.thin.SchLibItemThinDTO;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +21,7 @@ public class SchAttachmentDTO {
 
     @PodamExclude
     @JsonProperty("mediaItem")
-    private SchLibItemThinDTO mediaItem = null;
+    private LibMediaItemThinDTO mediaItem = null;
 
     @JsonProperty("fadeStart")
     private Long fadeStart = null;
@@ -56,7 +56,7 @@ public class SchAttachmentDTO {
         this.attachmentType = attachmentType;
     }
 
-    public SchAttachmentDTO mediaItem(SchLibItemThinDTO mediaItem) {
+    public SchAttachmentDTO mediaItem(LibMediaItemThinDTO mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
@@ -67,11 +67,11 @@ public class SchAttachmentDTO {
      * @return mediaItem
      **/
     @ApiModelProperty(value = "")
-    public SchLibItemThinDTO getMediaItem() {
+    public LibMediaItemThinDTO getMediaItem() {
         return mediaItem;
     }
 
-    public void setMediaItem(SchLibItemThinDTO mediaItem) {
+    public void setMediaItem(LibMediaItemThinDTO mediaItem) {
         this.mediaItem = mediaItem;
     }
 

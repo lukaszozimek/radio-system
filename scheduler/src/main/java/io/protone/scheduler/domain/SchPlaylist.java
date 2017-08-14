@@ -1,6 +1,9 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -18,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_playlist")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchPlaylist implements Serializable {
+public class SchPlaylist  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +38,14 @@ public class SchPlaylist implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
+
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
 
     public Long getId() {
         return id;
@@ -81,7 +92,31 @@ public class SchPlaylist implements Serializable {
         emission.setPlaylist(null);
         return this;
     }
+    public CorNetwork getNetwork() {
+        return network;
+    }
 
+    public SchPlaylist network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchPlaylist channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

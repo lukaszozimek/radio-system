@@ -1,12 +1,13 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchBlockMapper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,15 +39,21 @@ public class SchBlockMapperTest {
 
     private List<SchBlockDTO> blockDTOs = new ArrayList<>();
 
+    private CorNetwork network;
+    private CorChannel corChannel;
+
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
 
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         block = factory.manufacturePojo(SchBlock.class);
 
         SchBlock childBlock = factory.manufacturePojo(SchBlock.class);
         childBlock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ childBlock
+
         block.addBlock(childBlock);
 
         block.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ rootBlock
@@ -101,7 +108,7 @@ public class SchBlockMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchBlock entity = blockMapper.toEntity(blockDTO);
+        SchBlock entity = blockMapper.toEntity(blockDTO, network, corChannel);
 
         assertNotNull(entity.getBlocks());
         assertNotNull(entity.getEmissions());
@@ -110,11 +117,14 @@ public class SchBlockMapperTest {
         assertNotNull(entity.getQueueParams());
         assertNotNull(entity.getEventType());
         assertNotNull(entity.getTimeParams());
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
+
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchBlock> entities = blockMapper.toEntity(blockDTOs);
+        List<SchBlock> entities = blockMapper.toEntity(blockDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -126,6 +136,9 @@ public class SchBlockMapperTest {
             assertNotNull(entity.getQueueParams());
             assertNotNull(entity.getEventType());
             assertNotNull(entity.getTimeParams());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

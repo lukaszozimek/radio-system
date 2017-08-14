@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchClockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
@@ -8,7 +10,6 @@ import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchClockMapper;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +42,14 @@ public class SchClockMapperTest {
     private List<SchClock> clocks = new ArrayList<>();
 
     private List<SchClockDTO> clockDTOs = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
-
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         // Fill entity
         clock = factory.manufacturePojo(SchClock.class);
 
@@ -126,7 +130,7 @@ public class SchClockMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchClock entity = clockMapper.toEntity(clockDTO);
+        SchClock entity = clockMapper.toEntity(clockDTO, network, corChannel);
 
         assertEquals(entity.getBlocks().size(), 3);
         assertEquals(entity.getEmissions().size(), 3);
@@ -134,11 +138,14 @@ public class SchClockMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getQueueParams());
         assertNotNull(entity.getTimeParams());
+
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchClock> entities = clockMapper.toEntity(clockDTOs);
+        List<SchClock> entities = clockMapper.toEntity(clockDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -149,6 +156,9 @@ public class SchClockMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getQueueParams());
             assertNotNull(entity.getTimeParams());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

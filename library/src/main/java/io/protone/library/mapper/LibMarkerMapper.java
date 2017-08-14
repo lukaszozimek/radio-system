@@ -39,21 +39,15 @@ public interface LibMarkerMapper {
     default void libMarkerPTToLibMarkerAfterMapping(LibMarkerDTO dto, @MappingTarget LibMarker entity, @Context CorNetwork corNetwork) {
        //  entity.setNetwork(corNetwork);
     }
+    default LibMediaItem longToLibMediaItem (Long itemId){
 
-    default LibMediaItem libMediaItemFromId(Long id) {
-        if (id == null) {
+        if(itemId ==null){
             return null;
         }
-        LibMediaItem lIBMediaItem = new LibMediaItem();
-        lIBMediaItem.setId(id);
-        return lIBMediaItem;
+        LibMediaItem libMediaItem = new LibMediaItem();
+        libMediaItem.setId(itemId);
+        return libMediaItem;
     }
 
-    default Long idFromLibMediaItem(LibMediaItem libMediaItem) {
-        if (libMediaItem == null) {
-            return null;
-        }
-        return libMediaItem.getId();
-    }
 
 }

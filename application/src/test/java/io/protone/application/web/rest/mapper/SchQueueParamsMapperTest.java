@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchQueueParamsDTO;
 import io.protone.scheduler.domain.SchQueueParams;
 import io.protone.scheduler.mapper.SchQueueParamsMapper;
@@ -34,10 +36,15 @@ public class SchQueueParamsMapperTest {
     private List<SchQueueParamsDTO> queueParamDTOS = new ArrayList<>();
 
     private List<SchQueueParams> queueParams = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         queueParam = factory.manufacturePojo(SchQueueParams.class);
         queueParams.add(queueParam);
         queueParamDTO = factory.manufacturePojo(SchQueueParamsDTO.class);
@@ -72,18 +79,21 @@ public class SchQueueParamsMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchQueueParams entity = queueParamsMapper.toEntity(queueParamDTO);
+        SchQueueParams entity = queueParamsMapper.toEntity(queueParamDTO, network, corChannel);
 
         assertNotNull(entity.getNextId());
         assertNotNull(entity.getNextType());
         assertNotNull(entity.getPreviousId());
         assertNotNull(entity.getPreviousType());
         assertNotNull(entity.getSeq());
+
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchQueueParams> entities = queueParamsMapper.toEntity(queueParamDTOS);
+        List<SchQueueParams> entities = queueParamsMapper.toEntity(queueParamDTOS, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -93,6 +103,9 @@ public class SchQueueParamsMapperTest {
             assertNotNull(entity.getPreviousId());
             assertNotNull(entity.getPreviousType());
             assertNotNull(entity.getSeq());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

@@ -110,7 +110,9 @@ public class CorChannelServiceTest {
 
     @Test
     public void save() throws Exception {
-        CorChannel localChannel = factory.manufacturePojo(CorChannel.class);
+        CorChannel localChannel = new CorChannel();
+        localChannel.setShortcut("Txp");
+        localChannel.setName("testTestowy12412");
         localChannel.setNetwork(corNetwork);
         localChannel = corChannelService.save(localChannel);
         assertNotNull(localChannel);

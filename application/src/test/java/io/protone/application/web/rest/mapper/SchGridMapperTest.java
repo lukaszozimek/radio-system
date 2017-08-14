@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.to.delete.factory.SchGridFactory;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
@@ -37,10 +39,14 @@ public class SchGridMapperTest {
     private List<SchGrid> grids = new ArrayList<>();
 
     private List<SchGridDTO> gridDTOs = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
-
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         grid = SchGridFactory.produceEntity();
         grids.add(grid);
         gridDTO = SchGridFactory.produceDTO();
@@ -72,17 +78,20 @@ public class SchGridMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchGrid entity = gridMapper.toEntity(gridDTO);
+        SchGrid entity = gridMapper.toEntity(gridDTO, network, corChannel);
 
         assertEquals(entity.getClocks().size(), 3);
         assertNotNull(entity.getName());
         assertNotNull(entity.getDayOfWeek());
         assertNotNull(entity.getShortName());
+
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchGrid> entities = gridMapper.toEntity(gridDTOs);
+        List<SchGrid> entities = gridMapper.toEntity(gridDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -91,6 +100,9 @@ public class SchGridMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDayOfWeek());
             assertNotNull(entity.getShortName());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 }

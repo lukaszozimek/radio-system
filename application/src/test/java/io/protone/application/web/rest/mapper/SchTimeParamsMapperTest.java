@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.mapper.SchTimeParamsMapper;
@@ -34,10 +36,15 @@ public class SchTimeParamsMapperTest {
     private List<SchTimeParamsDTO> timeParamDTOS = new ArrayList<>();
 
     private List<SchTimeParams> timeParams = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         timeParam = factory.manufacturePojo(SchTimeParams.class);
         timeParams.add(timeParam);
         timeParamDTO = factory.manufacturePojo(SchTimeParamsDTO.class);
@@ -68,7 +75,7 @@ public class SchTimeParamsMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchTimeParams entity = timeParamsMapper.toEntity(timeParamDTO);
+        SchTimeParams entity = timeParamsMapper.toEntity(timeParamDTO, network, corChannel);
 
         assertNotNull(entity.getStartTime());
         assertNotNull(entity.getEndTime());
@@ -77,7 +84,7 @@ public class SchTimeParamsMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchTimeParams> entities = timeParamsMapper.toEntity(timeParamDTOS);
+        List<SchTimeParams> entities = timeParamsMapper.toEntity(timeParamDTOS, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -85,6 +92,9 @@ public class SchTimeParamsMapperTest {
             assertNotNull(entity.getStartTime());
             assertNotNull(entity.getEndTime());
             assertNotNull(entity.getRelativeDelay());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

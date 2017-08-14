@@ -1,7 +1,7 @@
 package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.api.dto.thin.SchLibItemThinDTO;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -22,7 +22,7 @@ public class SchEmissionDTO {
     private Long id = null;
 
     @JsonProperty("mediaItem")
-    private SchLibItemThinDTO mediaItem = null;
+    private LibMediaItemThinDTO mediaItem = null;
 
     @JsonProperty("seq")
     private Integer seq = null;
@@ -74,7 +74,7 @@ public class SchEmissionDTO {
         this.id = id;
     }
 
-    public SchEmissionDTO mediaItem(SchLibItemThinDTO mediaItem) {
+    public SchEmissionDTO mediaItem(LibMediaItemThinDTO mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
@@ -85,11 +85,11 @@ public class SchEmissionDTO {
      * @return mediaItem
      **/
     @ApiModelProperty(value = "")
-    public SchLibItemThinDTO getMediaItem() {
+    public LibMediaItemThinDTO getMediaItem() {
         return mediaItem;
     }
 
-    public void setMediaItem(SchLibItemThinDTO mediaItem) {
+    public void setMediaItem(LibMediaItemThinDTO mediaItem) {
         this.mediaItem = mediaItem;
     }
 

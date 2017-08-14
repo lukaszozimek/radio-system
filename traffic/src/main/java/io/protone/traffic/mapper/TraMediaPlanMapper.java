@@ -3,6 +3,7 @@ package io.protone.traffic.mapper;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
 import io.protone.traffic.domain.TraMediaPlan;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 10/06/2017.
  */
-@Mapper(componentModel = "spring", uses = {TraMediaPlanMapperPlaylist.class, TraCustomerMapper.class})
+@Mapper(componentModel = "spring", uses = {TraMediaPlanMapperPlaylist.class, TraCustomerMapper.class, LibMediaItemThinMapper.class})
 public interface TraMediaPlanMapper {
 
     @Mapping(source = "account", target = "traCustomerThinDTO")

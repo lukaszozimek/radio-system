@@ -198,14 +198,6 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibVideoObject.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchBlock.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmission.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchPlaylist.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchTemplate.xml"
-             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraAdvertisement.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraCampaign.xml"

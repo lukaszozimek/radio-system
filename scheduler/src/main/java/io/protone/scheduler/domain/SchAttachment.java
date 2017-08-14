@@ -1,5 +1,8 @@
 package io.protone.scheduler.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
@@ -18,7 +21,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_attachment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachment implements Serializable {
+public class SchAttachment extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,6 +59,14 @@ public class SchAttachment implements Serializable {
     @PodamExclude
     @ManyToOne
     private SchEmission emission;
+
+    @ManyToOne
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
 
     public Long getId() {
         return id;
@@ -167,6 +178,32 @@ public class SchAttachment implements Serializable {
     public SchAttachment emission(SchEmission emission) {
         this.emission = emission;
         return this;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchAttachment network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchAttachment channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override

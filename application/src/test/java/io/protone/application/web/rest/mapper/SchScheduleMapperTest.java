@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
@@ -34,10 +36,15 @@ public class SchScheduleMapperTest {
     private List<SchSchedule> schedules = new ArrayList<>();
 
     private List<SchScheduleDTO> scheduleDTOs = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         schedule = factory.manufacturePojo(SchSchedule.class);
         schedule.setGrids(null);
         schedules.add(schedule);
@@ -68,7 +75,7 @@ public class SchScheduleMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchSchedule entity = scheduleMapper.toEntity(scheduleDTO);
+        SchSchedule entity = scheduleMapper.toEntity(scheduleDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
         //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
@@ -76,12 +83,15 @@ public class SchScheduleMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchSchedule> entities = scheduleMapper.toEntity(scheduleDTOs);
+        List<SchSchedule> entities = scheduleMapper.toEntity(scheduleDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getDate());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
             //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
         });
     }

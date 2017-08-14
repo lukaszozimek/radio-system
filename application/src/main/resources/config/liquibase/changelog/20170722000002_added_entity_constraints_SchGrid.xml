@@ -13,6 +13,29 @@
                                  constraintName="fk_grid_schedule_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sch_schedule"/>
+        
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="sch_grid"
+                                 constraintName="fk_sch_grid_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="sch_grid"
+                                 constraintName="fk_sch_grid_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="sch_grid"
+                                 constraintName="fk_sch_grid_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="sch_grid"
+                                 constraintName="fk_sch_grid_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

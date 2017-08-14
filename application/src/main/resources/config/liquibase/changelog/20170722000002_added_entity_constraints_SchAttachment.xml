@@ -19,6 +19,28 @@
                                  constraintName="fk_attachment_emission_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sch_emission"/>
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="sch_attachment"
+                                 constraintName="fk_sch_attachment_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
 
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="sch_attachment"
+                                 constraintName="fk_sch_attachment_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="sch_attachment"
+                                 constraintName="fk_sch_attachment_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="sch_attachment"
+                                 constraintName="fk_sch_attachment_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
     </changeSet>
 </databaseChangeLog>

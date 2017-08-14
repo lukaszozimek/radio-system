@@ -1,6 +1,8 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.mapper.SchAttachmentMapper;
@@ -34,10 +36,15 @@ public class SchAttachmentMapperTest {
     private List<SchAttachment> attachments = new ArrayList<>();
 
     private List<SchAttachmentDTO> attachmentDTOs = new ArrayList<>();
+    private CorNetwork network;
+    private CorChannel corChannel;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
+        corChannel = factory.manufacturePojo(CorChannel.class);
+        network = factory.manufacturePojo(CorNetwork.class);
+        // Fill entity instance
         attachment = factory.manufacturePojo(SchAttachment.class);
         attachments.add(attachment);
         attachmentDTO = factory.manufacturePojo(SchAttachmentDTO.class);
@@ -77,7 +84,7 @@ public class SchAttachmentMapperTest {
 
     @Test
     public void toEntity() throws Exception {
-        SchAttachment entity = attachmentMapper.toEntity(attachmentDTO);
+        SchAttachment entity = attachmentMapper.toEntity(attachmentDTO, network, corChannel);
 
         assertNotNull(entity.getAttachmentType());
         assertNotNull(entity.getFadeInLength());
@@ -86,11 +93,14 @@ public class SchAttachmentMapperTest {
         assertNotNull(entity.getFadeType());
         //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
         assertNotNull(entity.getVolumeLevel());
+
+        assertNotNull(entity.getNetwork());
+        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchAttachment> entities = attachmentMapper.toEntity(attachmentDTOs);
+        List<SchAttachment> entities = attachmentMapper.toEntity(attachmentDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -102,6 +112,9 @@ public class SchAttachmentMapperTest {
             assertNotNull(entity.getFadeType());
             //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
             assertNotNull(entity.getVolumeLevel());
+
+            assertNotNull(entity.getNetwork());
+            assertNotNull(entity.getChannel());
         });
     }
 

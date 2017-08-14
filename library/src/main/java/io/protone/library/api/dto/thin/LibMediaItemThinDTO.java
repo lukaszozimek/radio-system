@@ -1,12 +1,14 @@
 package io.protone.library.api.dto.thin;
 
 
-import io.protone.library.domain.enumeration.LibItemStateEnum;
-import io.protone.library.domain.enumeration.LibItemTypeEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.library.api.dto.LibMarkerDTO;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,29 +16,125 @@ import java.util.Objects;
  */
 public class LibMediaItemThinDTO implements Serializable {
 
-    private Long id;
+    @JsonProperty("library")
+    private String library = null;
 
+    @JsonProperty("album")
+    private String album = null;
+
+    @JsonProperty("artist")
+    private String artist = null;
+
+    @JsonProperty("cover")
+    private String cover = null;
+
+    @JsonProperty("id")
     @NotNull
-    @Size(max = 15)
-    private String idx;
+    private Long id = null;
 
+    @JsonProperty("idx")
     @NotNull
-    @Size(max = 100)
-    private String name;
+    private String idx = null;
 
-    @NotNull
-    private LibItemTypeEnum itemType;
+    @JsonProperty("length")
+    private Integer length = null;
 
-    @NotNull
-    private Long length;
+    @JsonProperty("markers")
+    private List<LibMarkerDTO> markers = new ArrayList<LibMarkerDTO>();
 
-    @NotNull
-    private LibItemStateEnum state;
+    @JsonProperty("name")
+    private String name = null;
 
-    private String command;
+    @JsonProperty("stream")
+    private String stream = null;
 
-    private String description;
+    public LibMediaItemThinDTO library(String library) {
+        this.library = library;
+        return this;
+    }
 
+    /**
+     * Get library
+     *
+     * @return library
+     **/
+    @ApiModelProperty(value = "")
+    public String getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(String library) {
+        this.library = library;
+    }
+
+    public LibMediaItemThinDTO album(String album) {
+        this.album = album;
+        return this;
+    }
+
+    /**
+     * Get album
+     *
+     * @return album
+     **/
+    @ApiModelProperty(value = "")
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public LibMediaItemThinDTO artist(String artist) {
+        this.artist = artist;
+        return this;
+    }
+
+    /**
+     * Get artist
+     *
+     * @return artist
+     **/
+    @ApiModelProperty(value = "")
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public LibMediaItemThinDTO cover(String cover) {
+        this.cover = cover;
+        return this;
+    }
+
+    /**
+     * Get cover
+     *
+     * @return cover
+     **/
+    @ApiModelProperty(value = "")
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public LibMediaItemThinDTO id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return id
+     **/
+    @ApiModelProperty(value = "")
     public Long getId() {
         return id;
     }
@@ -45,6 +143,17 @@ public class LibMediaItemThinDTO implements Serializable {
         this.id = id;
     }
 
+    public LibMediaItemThinDTO idx(String idx) {
+        this.idx = idx;
+        return this;
+    }
+
+    /**
+     * Get idx
+     *
+     * @return idx
+     **/
+    @ApiModelProperty(value = "")
     public String getIdx() {
         return idx;
     }
@@ -53,6 +162,60 @@ public class LibMediaItemThinDTO implements Serializable {
         this.idx = idx;
     }
 
+    public LibMediaItemThinDTO length(Integer length) {
+        this.length = length;
+        return this;
+    }
+
+    /**
+     * Get length
+     *
+     * @return length
+     **/
+    @ApiModelProperty(value = "")
+    public Integer getLength() {
+        return length;
+    }
+
+    public void setLength(Integer length) {
+        this.length = length;
+    }
+
+    public LibMediaItemThinDTO markers(List<LibMarkerDTO> markers) {
+        this.markers = markers;
+        return this;
+    }
+
+    public LibMediaItemThinDTO addMarkersItem(LibMarkerDTO markersItem) {
+        this.markers.add(markersItem);
+        return this;
+    }
+
+    /**
+     * Get markers
+     *
+     * @return markers
+     **/
+    @ApiModelProperty(value = "")
+    public List<LibMarkerDTO> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(List<LibMarkerDTO> markers) {
+        this.markers = markers;
+    }
+
+    public LibMediaItemThinDTO name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return name
+     **/
+    @ApiModelProperty(value = "")
     public String getName() {
         return name;
     }
@@ -61,45 +224,25 @@ public class LibMediaItemThinDTO implements Serializable {
         this.name = name;
     }
 
-    public LibItemTypeEnum getItemType() {
-        return itemType;
+    public LibMediaItemThinDTO stream(String stream) {
+        this.stream = stream;
+        return this;
     }
 
-    public void setItemType(LibItemTypeEnum itemType) {
-        this.itemType = itemType;
+    /**
+     * Get stream
+     *
+     * @return stream
+     **/
+    @ApiModelProperty(value = "")
+    public String getStream() {
+        return stream;
     }
 
-    public Long getLength() {
-        return length;
+    public void setStream(String stream) {
+        this.stream = stream;
     }
 
-    public void setLength(Long length) {
-        this.length = length;
-    }
-
-    public LibItemStateEnum getState() {
-        return state;
-    }
-
-    public void setState(LibItemStateEnum state) {
-        this.state = state;
-    }
-
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -109,30 +252,52 @@ public class LibMediaItemThinDTO implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
-        LibMediaItemThinDTO lIBMediaItemDTO = (LibMediaItemThinDTO) o;
-
-        return Objects.equals(id, lIBMediaItemDTO.id);
+        LibMediaItemThinDTO schLibItemThinDTO = (LibMediaItemThinDTO) o;
+        return Objects.equals(this.library, schLibItemThinDTO.library) &&
+                Objects.equals(this.album, schLibItemThinDTO.album) &&
+                Objects.equals(this.artist, schLibItemThinDTO.artist) &&
+                Objects.equals(this.cover, schLibItemThinDTO.cover) &&
+                Objects.equals(this.id, schLibItemThinDTO.id) &&
+                Objects.equals(this.idx, schLibItemThinDTO.idx) &&
+                Objects.equals(this.length, schLibItemThinDTO.length) &&
+                Objects.equals(this.markers, schLibItemThinDTO.markers) &&
+                Objects.equals(this.name, schLibItemThinDTO.name) &&
+                Objects.equals(this.stream, schLibItemThinDTO.stream);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(library, album, artist, cover, id, idx, length, markers, name, stream);
     }
 
     @Override
     public String toString() {
-        return "LibMediaItemDTO{" +
-            "id=" + id +
-            ", idx='" + idx + "'" +
-            ", name='" + name + "'" +
-            ", itemType='" + itemType + "'" +
-            ", length='" + length + "'" +
-            ", state='" + state + "'" +
-            ", command='" + command + "'" +
-            ", description='" + description + "'" +
-            '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("class LibMediaItemThinDTO {\n");
+
+        sb.append("    library: ").append(toIndentedString(library)).append("\n");
+        sb.append("    album: ").append(toIndentedString(album)).append("\n");
+        sb.append("    artist: ").append(toIndentedString(artist)).append("\n");
+        sb.append("    cover: ").append(toIndentedString(cover)).append("\n");
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
+        sb.append("    idx: ").append(toIndentedString(idx)).append("\n");
+        sb.append("    length: ").append(toIndentedString(length)).append("\n");
+        sb.append("    markers: ").append(toIndentedString(markers)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
+        sb.append("}");
+        return sb.toString();
     }
 
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 
 }
