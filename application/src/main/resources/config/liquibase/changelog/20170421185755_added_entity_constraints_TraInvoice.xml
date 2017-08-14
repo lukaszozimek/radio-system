@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
         Added the constraints for entity TraInvoice.
     -->
@@ -25,7 +25,11 @@
                                  constraintName="fk_tra_invoice_status_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
-
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="tra_invoice"
+                                 constraintName="fk_tra_invoice_tra_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_company"/>
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="tra_invoice"
                                  constraintName="fk_tra_invoice_created_by_id"

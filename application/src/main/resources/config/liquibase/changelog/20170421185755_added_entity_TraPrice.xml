@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
 
@@ -20,34 +20,44 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <column name="valid_from" type="date">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="valid_to" type="date">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
-            <column name="price" type="decimal(10,2)">
-                <constraints nullable="false" />
+            <column name="base_price" type="decimal(10,2)">
+                <constraints nullable="false"/>
             </column>
 
-            <column name="base_length" type="integer">
-                <constraints nullable="true" />
+            <column name="price_last_postion" type="decimal(10,2)">
+                <constraints nullable="false"/>
             </column>
 
-            <column name="price_alternative" type="decimal(10,2)">
-                <constraints nullable="false" />
+            <column name="price_first_postion" type="decimal(10,2)">
+                <constraints nullable="false"/>
             </column>
-            <column name="currency_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+
+            <column name="base_length" type="bigint">
+                <constraints nullable="true"/>
             </column>
+
             <column name="network_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+            <column name="created_by_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by_id" type="bigint"/>
+            <column name="last_modified_date" type="timestamp"/>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

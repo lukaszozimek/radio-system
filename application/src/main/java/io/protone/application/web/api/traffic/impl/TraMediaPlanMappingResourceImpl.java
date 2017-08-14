@@ -35,7 +35,7 @@ public class TraMediaPlanMappingResourceImpl implements TraMediaPlanMappingResou
     private TraPlaylistMapper traPlaylistMapper;
 
     @Override
-    public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                   @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO")@RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO) {
         //TODO:// MAPSTRUCT BUG!!

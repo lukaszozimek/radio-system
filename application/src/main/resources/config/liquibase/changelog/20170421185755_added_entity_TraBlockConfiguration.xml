@@ -51,6 +51,10 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="price_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

@@ -3,6 +3,7 @@ package io.protone.library.service;
 import com.google.common.base.Strings;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorImageItemService;
+import io.protone.core.service.CorPropertyService;
 import io.protone.library.domain.LibArtist;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
@@ -33,6 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static io.protone.library.service.file.impl.LibAudioFileService.AUDIO;
 import static io.protone.library.service.file.impl.LibDocumentFileService.DOCUMENT;
@@ -68,6 +70,9 @@ public class LibItemService {
 
     @Inject
     private CorImageItemService corImageItemService;
+
+    @Inject
+    private CorPropertyService corPropertyService;
 
     @Autowired
     @Qualifier("libAudioFileService")
@@ -110,6 +115,19 @@ public class LibItemService {
     }
 
     @Transactional
+    public void moveMediaItem(String networkShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
+        LibLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, dstLibararyShortcut);
+        if (dstLibarary != null) {
+            Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+            if (optionalItemDB.isPresent()) {
+                optionalItemDB.get().setLibrary(dstLibarary);
+                itemRepository.saveAndFlush(optionalItemDB.get());
+            }
+        }
+    }
+
+
+    @Transactional
     public List<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
         List<LibMediaItem> itemsDB = itemRepository.findByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
         return itemsDB;
@@ -130,6 +148,9 @@ public class LibItemService {
         }
         if (libMediaItem.getAlbum() != null) {
             libMediaItem.setAlbum(libAlbumService.findOrSaveOne(libMediaItem.getAlbum().getName(), artist.getName(), corNetwork));
+        }
+        if (libMediaItem.getProperites() != null) {
+            libMediaItem.setProperites(libMediaItem.getProperites().stream().map(corPropertyValue -> corPropertyService.saveCorProperty(corPropertyValue)).collect(Collectors.toSet()));
         }
         libMediaItem.setLabel(libLabelService.saveLibLabel(libMediaItem.getLabel()).orElse(null));
         libMediaItem.setTrack(libTrackService.saveLibTrack(libMediaItem.getTrack()).orElse(null));

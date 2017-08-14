@@ -25,7 +25,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @CreatedBy
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="created_by_id", referencedColumnName="id",updatable = false, nullable = false)
     @JsonIgnore
     @PodamExclude
@@ -37,7 +37,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @LastModifiedBy
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="last_modified_by_id", referencedColumnName="id", nullable = false)
     @JsonIgnore
     @PodamExclude

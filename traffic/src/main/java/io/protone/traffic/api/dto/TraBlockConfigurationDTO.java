@@ -34,6 +34,10 @@ public class TraBlockConfigurationDTO implements Serializable {
     @NotNull
     private Long stopBlock = null;
 
+    private Long startBlockSoundId = null;
+
+    private Long stopBlockSoundId = null;
+
     @NotNull
     private Integer sequence = null;
 
@@ -41,6 +45,8 @@ public class TraBlockConfigurationDTO implements Serializable {
     private CorDayOfWeekEnum day;
 
     private CorDictionaryDTO blockType;
+
+    private TraPriceDTO price;
 
     public TraBlockConfigurationDTO description(String description) {
         this.description = description;
@@ -152,6 +158,22 @@ public class TraBlockConfigurationDTO implements Serializable {
         this.day = day;
     }
 
+    public Long getStartBlockSoundId() {
+        return startBlockSoundId;
+    }
+
+    public void setStartBlockSoundId(Long startBlockSoundId) {
+        this.startBlockSoundId = startBlockSoundId;
+    }
+
+    public Long getStopBlockSoundId() {
+        return stopBlockSoundId;
+    }
+
+    public void setStopBlockSoundId(Long stopBlockSoundId) {
+        this.stopBlockSoundId = stopBlockSoundId;
+    }
+
     public Long getStopBlock() {
         return stopBlock;
     }
@@ -179,6 +201,14 @@ public class TraBlockConfigurationDTO implements Serializable {
     public TraBlockConfigurationDTO sequence(Integer sequence) {
         this.sequence = sequence;
         return this;
+    }
+
+    public TraPriceDTO getPrice() {
+        return price;
+    }
+
+    public void setPrice(TraPriceDTO price) {
+        this.price = price;
     }
 
     @Override

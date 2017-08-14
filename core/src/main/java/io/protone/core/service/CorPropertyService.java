@@ -11,6 +11,7 @@ import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
@@ -30,6 +31,7 @@ public class CorPropertyService {
     @Inject
     private CorPropertyKeyRepository corPropertyKeyRepository;
 
+    @Transactional
     public CorPropertyValue saveCorProperty(String metadataName, CorMediaItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
         CorPropertyKey corPropertyKey;
         if (Strings.isNullOrEmpty(metadataName)) {
@@ -42,6 +44,15 @@ public class CorPropertyService {
         corPropertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyKey);
         log.debug("Persisting CorValues: {}", metadata.get(metadataName));
         return corPropertyValueRepository.saveAndFlush(new CorPropertyValue().value(metadata.get(metadataName)).libItemPropertyValue(libMediaItem).propertyKey(corPropertyKey));
+
+    }
+
+    @Transactional
+    public CorPropertyValue saveCorProperty(CorPropertyValue corPropertyValue) {
+        log.debug("Persisting CorValues: {}", corPropertyValue);
+        CorPropertyKey corPropertyKey = corPropertyKeyRepository.saveAndFlush(corPropertyValue.getPropertyKey());
+        corPropertyValue.setPropertyKey(corPropertyKey);
+        return corPropertyValueRepository.saveAndFlush(corPropertyValue);
 
     }
 }

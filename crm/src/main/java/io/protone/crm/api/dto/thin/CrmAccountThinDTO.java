@@ -5,11 +5,12 @@ import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.CoreAddressDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.crm.api.dto.CrmCustomerPersonDTO;
+import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.ZonedDateTime;
 
 /**
  * CrmAccountDTO
@@ -32,6 +33,7 @@ public class CrmAccountThinDTO implements Serializable {
 
     private String externalId2 = null;
 
+    private CrmDiscountDTO discount = null;
 
     private Integer paymentDelay = null;
 
@@ -50,6 +52,13 @@ public class CrmAccountThinDTO implements Serializable {
 
     private CrmCustomerPersonDTO person = null;
 
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     private String publicUrl = null;
 
@@ -323,59 +332,6 @@ public class CrmAccountThinDTO implements Serializable {
         this.paymentDelay = paymentDelay;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CrmAccountThinDTO crmAccountDTO = (CrmAccountThinDTO) o;
-        return Objects.equals(this.id, crmAccountDTO.id) &&
-                Objects.equals(this.shortName, crmAccountDTO.shortName) &&
-                Objects.equals(this.area, crmAccountDTO.area) &&
-                Objects.equals(this.externalId1, crmAccountDTO.externalId1) &&
-                Objects.equals(this.externalId2, crmAccountDTO.externalId2) &&
-                Objects.equals(this.industry, crmAccountDTO.industry) &&
-                Objects.equals(this.name, crmAccountDTO.name) &&
-                Objects.equals(this.range, crmAccountDTO.range) &&
-                Objects.equals(this.size, crmAccountDTO.size) &&
-                Objects.equals(this.vatNumber, crmAccountDTO.vatNumber) &&
-                Objects.equals(this.addres, crmAccountDTO.addres) &&
-                Objects.equals(this.account, crmAccountDTO.account) &&
-                Objects.equals(this.paymentDelay, crmAccountDTO.paymentDelay) &&
-                Objects.equals(this.person, crmAccountDTO.person);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, shortName, area, externalId1, externalId2, industry, name, range, size, vatNumber, addres, account, person, paymentDelay);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CrmAccountDTO {\n");
-
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("    area: ").append(toIndentedString(area)).append("\n");
-        sb.append("    externalId1: ").append(toIndentedString(externalId1)).append("\n");
-        sb.append("    externalId2: ").append(toIndentedString(externalId2)).append("\n");
-        sb.append("    industry: ").append(toIndentedString(industry)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    range: ").append(toIndentedString(range)).append("\n");
-        sb.append("    size: ").append(toIndentedString(size)).append("\n");
-        sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
-        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
-        sb.append("    account: ").append(toIndentedString(account)).append("\n");
-        sb.append("    person: ").append(toIndentedString(person)).append("\n");
-        sb.append("    paymentDelay: ").append(toIndentedString(paymentDelay)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -385,6 +341,130 @@ public class CrmAccountThinDTO implements Serializable {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public CrmDiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(CrmDiscountDTO discount) {
+        this.discount = discount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CrmAccountThinDTO that = (CrmAccountThinDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (shortName != null ? !shortName.equals(that.shortName) : that.shortName != null) return false;
+        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (externalId1 != null ? !externalId1.equals(that.externalId1) : that.externalId1 != null) return false;
+        if (externalId2 != null ? !externalId2.equals(that.externalId2) : that.externalId2 != null) return false;
+        if (discount != null ? !discount.equals(that.discount) : that.discount != null) return false;
+        if (paymentDelay != null ? !paymentDelay.equals(that.paymentDelay) : that.paymentDelay != null) return false;
+        if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
+        if (range != null ? !range.equals(that.range) : that.range != null) return false;
+        if (size != null ? !size.equals(that.size) : that.size != null) return false;
+        if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) return false;
+        if (addres != null ? !addres.equals(that.addres) : that.addres != null) return false;
+        if (account != null ? !account.equals(that.account) : that.account != null) return false;
+        if (person != null ? !person.equals(that.person) : that.person != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+        if (publicUrl != null ? !publicUrl.equals(that.publicUrl) : that.publicUrl != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
+        result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (externalId1 != null ? externalId1.hashCode() : 0);
+        result = 31 * result + (externalId2 != null ? externalId2.hashCode() : 0);
+        result = 31 * result + (discount != null ? discount.hashCode() : 0);
+        result = 31 * result + (paymentDelay != null ? paymentDelay.hashCode() : 0);
+        result = 31 * result + (industry != null ? industry.hashCode() : 0);
+        result = 31 * result + (range != null ? range.hashCode() : 0);
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
+        result = 31 * result + (addres != null ? addres.hashCode() : 0);
+        result = 31 * result + (account != null ? account.hashCode() : 0);
+        result = 31 * result + (person != null ? person.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        result = 31 * result + (publicUrl != null ? publicUrl.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CrmAccountThinDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", area=" + area +
+                ", externalId1='" + externalId1 + '\'' +
+                ", externalId2='" + externalId2 + '\'' +
+                ", discount=" + discount +
+                ", paymentDelay=" + paymentDelay +
+                ", industry=" + industry +
+                ", range=" + range +
+                ", size=" + size +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", addres=" + addres +
+                ", account=" + account +
+                ", person=" + person +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", publicUrl='" + publicUrl + '\'' +
+                '}';
     }
 }
 

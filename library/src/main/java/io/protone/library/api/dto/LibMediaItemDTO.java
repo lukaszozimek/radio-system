@@ -1,7 +1,7 @@
 package io.protone.library.api.dto;
 
 
-import io.protone.core.api.dto.CorKeyValueDTO;
+import io.protone.core.api.dto.CorValueDTO;
 import io.protone.library.domain.enumeration.LibItemStateEnum;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
@@ -45,7 +45,7 @@ public class LibMediaItemDTO implements Serializable {
     @NotNull
     private String name = null;
 
-    private List<CorKeyValueDTO> properties = new ArrayList<CorKeyValueDTO>();
+    private List<CorValueDTO> properties = new ArrayList<CorValueDTO>();
 
     private LibItemTypeEnum itemType = null;
 
@@ -299,12 +299,12 @@ public class LibMediaItemDTO implements Serializable {
         this.name = name;
     }
 
-    public LibMediaItemDTO properties(List<CorKeyValueDTO> properties) {
+    public LibMediaItemDTO properties(List<CorValueDTO> properties) {
         this.properties = properties;
         return this;
     }
 
-    public LibMediaItemDTO addPropertiesItem(CorKeyValueDTO propertiesItem) {
+    public LibMediaItemDTO addPropertiesItem(CorValueDTO propertiesItem) {
         this.properties.add(propertiesItem);
         return this;
     }
@@ -315,11 +315,11 @@ public class LibMediaItemDTO implements Serializable {
      * @return properties
      **/
     @ApiModelProperty(value = "")
-    public List<CorKeyValueDTO> getProperties() {
+    public List<CorValueDTO> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<CorKeyValueDTO> properties) {
+    public void setProperties(List<CorValueDTO> properties) {
         this.properties = properties;
     }
 

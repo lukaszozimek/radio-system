@@ -104,12 +104,12 @@ public class TraOrderResourceImpl implements TraOrderResource {
     }
 
     @Override
-    public ResponseEntity<List<TraOrderDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<List<TraOrderThinDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraOrder, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
         List<TraOrder> entity = traOrderService.getCustomerOrders(customerShortcut, networkShortcut, pagable);
-        List<TraOrderDTO> response = traOrderMapper.DBs2DTOs(entity);
+        List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity);
         return Optional.ofNullable(response)
             .map(result -> new ResponseEntity<>(
                 result,

@@ -67,6 +67,7 @@ public class TraAdvertisementShuffleServiceTest extends TraPlaylistBasedTest {
         TraShuffleAdvertisementDTO traShuffleAdvertisementDTO = new TraShuffleAdvertisementDTO();
 
         traShuffleAdvertisementDTO.setLibMediaItemThinDTO(libMediaItemToShuffleThinDTO);
+        traShuffleAdvertisementDTO.setTraOrderThinDTO(traOrderThinDTO);
         traShuffleAdvertisementDTO.setFrom(SCHEDULING_START);
         traShuffleAdvertisementDTO.setTo(SCHEDULING_END);
         traShuffleAdvertisementDTO.setNumber(LARGE_NUMBER_TO_SHUFFLE);

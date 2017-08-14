@@ -5,7 +5,9 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
+import io.protone.traffic.domain.TraCompany;
 import io.protone.traffic.domain.TraInvoice;
+import io.protone.traffic.repository.TraCompanyRepository;
 import io.protone.traffic.repository.TraInvoiceRepository;
 import io.protone.traffic.service.TraInvoiceService;
 import org.junit.Before;
@@ -42,9 +44,14 @@ public class TraInvoiceServiceTest {
     @Autowired
     private CrmAccountRepository crmAccountRepository;
 
+    @Autowired
+    private TraCompanyRepository traCompanyRepository;
+
     private CorNetwork corNetwork;
 
     private CrmAccount crmAccount;
+
+    private TraCompany traCompany;
 
     private PodamFactory factory;
 
@@ -58,6 +65,9 @@ public class TraInvoiceServiceTest {
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.save(crmAccount);
+        traCompany = factory.manufacturePojo(TraCompany.class);
+        traCompany.setNetwork(corNetwork);
+        traCompany = traCompanyRepository.save(traCompany);
 
     }
 
@@ -67,6 +77,7 @@ public class TraInvoiceServiceTest {
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
         traInvoice.setCustomer(crmAccount);
         traInvoice.setNetwork(corNetwork);
+        traInvoice.setCompany(traCompany);
         traInvoice = traInvoiceRepository.save(traInvoice);
 
         //then
@@ -86,6 +97,7 @@ public class TraInvoiceServiceTest {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
         traInvoice.setCustomer(crmAccount);
+        traInvoice.setCompany(traCompany);
         traInvoice.setNetwork(corNetwork);
 
         //then
@@ -104,6 +116,7 @@ public class TraInvoiceServiceTest {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
         traInvoice.setCustomer(crmAccount);
+        traInvoice.setCompany(traCompany);
         traInvoice.setNetwork(corNetwork);
         traInvoice = traInvoiceRepository.save(traInvoice);
         //then
@@ -119,6 +132,7 @@ public class TraInvoiceServiceTest {
         //when
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
         traInvoice.setCustomer(crmAccount);
+        traInvoice.setCompany(traCompany);
         traInvoice.setNetwork(corNetwork);
         traInvoice = traInvoiceRepository.save(traInvoice);
 
@@ -141,6 +155,7 @@ public class TraInvoiceServiceTest {
 
         TraInvoice traInvoice = factory.manufacturePojo(TraInvoice.class);
         traInvoice.setNetwork(corNetwork);
+        traInvoice.setCompany(traCompany);
         traInvoice.setCustomer(crmAccount);
         traInvoice = traInvoiceRepository.save(traInvoice);
 

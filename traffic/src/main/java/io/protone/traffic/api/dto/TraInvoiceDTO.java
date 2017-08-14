@@ -2,6 +2,7 @@ package io.protone.traffic.api.dto;
 
 
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.traffic.api.dto.thin.TraInvoiceCustomerThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,8 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * TraInvoiceDTO
@@ -27,6 +28,17 @@ public class TraInvoiceDTO implements Serializable {
     private LocalDate paymentDay = null;
 
     private BigDecimal price = null;
+
+    @NotNull
+    private TraCompanyDTO traCompany;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     @NotNull
     private TraInvoiceCustomerThinDTO customerId = null;
@@ -169,42 +181,36 @@ public class TraInvoiceDTO implements Serializable {
         this.customerId = customerPT;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TraInvoiceDTO traInvoiceDTO = (TraInvoiceDTO) o;
-        return Objects.equals(this.id, traInvoiceDTO.id) &&
-            Objects.equals(this.orders, traInvoiceDTO.orders) &&
-            Objects.equals(this.paid, traInvoiceDTO.paid) &&
-            Objects.equals(this.paymentDay, traInvoiceDTO.paymentDay) &&
-            Objects.equals(this.customerId, traInvoiceDTO.customerId);
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, orders, paid, paymentDay);
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraInvoiceDTO {\n");
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    order: ").append(toIndentedString(orders)).append("\n");
-        sb.append("    paid: ").append(toIndentedString(paid)).append("\n");
-        sb.append("    paymentDay: ").append(toIndentedString(paymentDay)).append("\n");
-        sb.append("    customer: ").append(toIndentedString(customerId)).append("\n");
-        sb.append("    status: ").append(toIndentedString(statusId)).append("\n");
-        sb.append("    price: ").append(toIndentedString(price)).append("\n");
-        sb.append("}");
-        return sb.toString();
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -216,6 +222,70 @@ public class TraInvoiceDTO implements Serializable {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TraInvoiceDTO that = (TraInvoiceDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (orders != null ? !orders.equals(that.orders) : that.orders != null) return false;
+        if (paid != null ? !paid.equals(that.paid) : that.paid != null) return false;
+        if (paymentDay != null ? !paymentDay.equals(that.paymentDay) : that.paymentDay != null) return false;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+        if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
+        return statusId != null ? statusId.equals(that.statusId) : that.statusId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
+        result = 31 * result + (paid != null ? paid.hashCode() : 0);
+        result = 31 * result + (paymentDay != null ? paymentDay.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        result = 31 * result + (statusId != null ? statusId.hashCode() : 0);
+        return result;
+    }
+
+    public TraCompanyDTO getTraCompany() {
+        return traCompany;
+    }
+
+    public void setTraCompany(TraCompanyDTO traCompany) {
+        this.traCompany = traCompany;
+    }
+
+    @Override
+    public String toString() {
+        return "TraInvoiceDTO{" +
+                "id=" + id +
+                ", orders=" + orders +
+                ", paid=" + paid +
+                ", paymentDay=" + paymentDay +
+                ", price=" + price +
+                ", traCompany=" + traCompany +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", customerId=" + customerId +
+                ", statusId=" + statusId +
+                '}';
     }
 }
 

@@ -100,9 +100,13 @@ public class CrmContactService {
 
     public void deleteContactTask(String shortcut, Long taskId, String corNetwork) {
         CrmContact crmContact = crmContactRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        crmContact.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
-        crmContactRepository.save(crmContact);
-        crmTaskService.deleteCrmTask(taskId, corNetwork);
+        CrmTask crmTask = crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        if (crmTask != null) {
+            crmContact.removeTasks(crmTask);
+            crmTaskService.saveOrUpdateTaskAssociatiedWithContact(crmContact, crmTask);
+            crmContactRepository.saveAndFlush(crmContact);
+            crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        }
     }
 
     public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {

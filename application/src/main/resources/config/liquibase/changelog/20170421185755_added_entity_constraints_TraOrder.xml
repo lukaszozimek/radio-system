@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
         Added the constraints for entity TraOrder.
     -->
@@ -13,12 +13,6 @@
                                  constraintName="fk_tra_order_customer_id"
                                  referencedColumnNames="id"
                                  referencedTableName="crm_account"/>
-
-        <addForeignKeyConstraint baseColumnNames="price_id"
-                                 baseTableName="tra_order"
-                                 constraintName="fk_tra_order_price_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="tra_price"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="tra_order"

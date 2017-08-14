@@ -43,6 +43,7 @@ public class CrmOpportunityService {
     }
 
     public void deleteOpportunity(String shortcut, String corNetwork) {
+        crmTaskService.deleteByOpportunity_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
         opportunityRepository.deleteByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
@@ -73,9 +74,13 @@ public class CrmOpportunityService {
 
     public void deleteOpportunityTask(String shortcut, Long taskId, String corNetwork) {
         CrmOpportunity crmOpportunity = opportunityRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        crmOpportunity.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
-        opportunityRepository.save(crmOpportunity);
-        crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        CrmTask crmTask = crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        if (crmTask != null) {
+            crmOpportunity.removeTasks(crmTask);
+            crmTaskService.saveOrUpdateTaskAssociatiedWithOpportunity(crmOpportunity, crmTask);
+            opportunityRepository.saveAndFlush(crmOpportunity);
+            crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        }
     }
 
 

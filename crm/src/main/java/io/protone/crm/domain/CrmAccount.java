@@ -32,6 +32,9 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name", nullable = false)
     private String shortName;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "external_id_1")
     private String externalId1;
 
@@ -354,7 +357,13 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
         crmTask.setAccount(null);
         return this;
     }
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -387,5 +396,6 @@ public class CrmAccount extends AbstractAuditingEntity implements Serializable {
                 ", vatNumber='" + vatNumber + "'" +
                 '}';
     }
+
 
 }

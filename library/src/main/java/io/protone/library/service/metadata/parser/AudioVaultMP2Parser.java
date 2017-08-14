@@ -11,10 +11,6 @@ import org.apache.tika.parser.mp4.MP4Parser;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,23 +52,6 @@ public class AudioVaultMP2Parser extends MP4Parser {
 
     private void getAudioLenght(InputStream stream, Metadata metadata) throws IOException {
 
-        AudioInputStream audioInputStream = null;
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(stream);
-            AudioFormat format = audioInputStream.getFormat();
-            long audioFileLength = stream.available();
-            int frameSize = format.getFrameSize();
-            float frameRate = format.getFrameRate();
-            double durationInSeconds = (audioFileLength / (frameSize * frameRate));
-            metadata.add(XMPDM.DURATION, String.valueOf(durationInSeconds));
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            audioInputStream.close();
-
-        }
 
     }
 
@@ -112,7 +91,6 @@ public class AudioVaultMP2Parser extends MP4Parser {
             metadata.add(SOURCE_TRACK, splitedUser[7].replace("\u0000", "").trim());
         }
         if (splitedUser.length >= 9) {
-
 
             metadata.add(SONG_ID, splitedUser[8].replace("\u0000", "").trim());
         }
@@ -230,13 +208,13 @@ public class AudioVaultMP2Parser extends MP4Parser {
         metadata.add(CART_CHUNK_PRODUCER_APP_ID, s2.substring(484, 548).trim());
         metadata.add(CART_CHUNK_PRODUCER_APP_VERSION, s2.substring(548, 614).trim());
 
-        metadata.add(MarkerConstans.AUDs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.AUDs)));
-        metadata.add(MarkerConstans.AUDe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.AUDe)));
-        metadata.add(MarkerConstans.INT, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.INT)));
-        metadata.add(MarkerConstans.SEGs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.SEGs)));
-        metadata.add(MarkerConstans.SEGe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.SEGe)));
-        metadata.add(MarkerConstans.TERe, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.TERe)));
-        metadata.add(MarkerConstans.TERs, String.valueOf(getFindAudioStartMarker(inputStream, MarkerConstans.TERs)));
+        metadata.add(MarkerConstans.AUDs, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.AUDs) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.AUDe, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.AUDe) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.INT, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.INT) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.SEGs, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.SEGs) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.SEGe, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.SEGe) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.TERe, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.TERe) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
+        metadata.add(MarkerConstans.TERs, String.valueOf((getFindAudioStartMarker(inputStream, MarkerConstans.TERs) / Integer.parseInt(metadata.get(XMPDM.AUDIO_SAMPLE_RATE))) * 1000));
 
 
     }

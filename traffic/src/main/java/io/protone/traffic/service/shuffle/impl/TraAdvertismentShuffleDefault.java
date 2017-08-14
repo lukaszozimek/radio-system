@@ -5,8 +5,10 @@ import io.protone.library.service.LibItemService;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
+import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.service.TraAdvertisementShuffleService;
+import io.protone.traffic.service.TraOrderService;
 import io.protone.traffic.service.TraPlaylistService;
 import io.protone.traffic.service.shuffle.TraAdvertismentShuffle;
 import io.protone.traffic.service.shuffle.exception.TrafficShuffleReindexException;
@@ -38,12 +40,16 @@ public class TraAdvertismentShuffleDefault implements TraAdvertismentShuffle {
 
     @Inject
     private LibItemService libItemService;
+    @Inject
+    private TraOrderService traOrderService;
 
     public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException, TrafficShuffleReindexException {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
         LibMediaItem mediaItem = libItemService.getMediaItem(networkShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
         log.debug("Found advertisment {}", mediaItem.getId());
+        TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), networkShortcut);
+        log.debug("Found Order {}", traOrder.getId());
         List<TraPlaylist> traPlaylistListInRange = traPlaylistService.getTraPlaylistListInRange(tarShuffleAdvertisementPT.getFrom(), tarShuffleAdvertisementPT.getTo(), networkShortcut, channelShortcut);
         log.debug("Found number of Playlist in range : {}", traPlaylistListInRange.size());
         int numberOfCommercialsShuffled = 0;
@@ -68,14 +74,14 @@ public class TraAdvertismentShuffleDefault implements TraAdvertismentShuffle {
                                 traBlock.addEmissions(emisssion);
                                 numberOfCommercialsShuffled++;
                             } else if (canAddEmissionToBlock(lastTimeStop, traBlock.getLength(), mediaItem.getLength()) && !hasFixedLastPostion(traBlock)) {
-                                TraEmission emisssion = new TraEmission().block(traBlock).sequence(lastSequence + 1).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).channel(traBlock.getChannel()).network(traBlock.getNetwork());
+                                TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).sequence(lastSequence + 1).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).channel(traBlock.getChannel()).network(traBlock.getNetwork());
                                 traBlock.addEmissions(emisssion);
                                 numberOfCommercialsShuffled++;
                             }
                         } else {
                             log.debug("Block is empty");
                             Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().block(traBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).sequence(0).channel(traBlock.getChannel()).network(traBlock.getNetwork());
+                            TraEmission emisssion = new TraEmission().order(traOrder).block(traBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + mediaItem.getLength().longValue()).advertiment(mediaItem).sequence(0).channel(traBlock.getChannel()).network(traBlock.getNetwork());
                             traBlock.addEmissions(emisssion);
                             numberOfCommercialsShuffled++;
                         }

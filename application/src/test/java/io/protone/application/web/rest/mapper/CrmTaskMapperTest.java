@@ -5,6 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
 import io.protone.crm.api.dto.CrmTaskDTO;
+import io.protone.crm.api.dto.thin.CrmTaskThinDTO;
 import io.protone.crm.domain.CrmTask;
 import io.protone.crm.mapper.CrmTaskMapper;
 import org.junit.Before;
@@ -50,6 +51,7 @@ public class CrmTaskMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         crmTask = factory.manufacturePojo(CrmTask.class);
         crmTask.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        crmTask.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         crmTask.setAssignedTo(factory.manufacturePojo(CorUser.class));
         crmTask.setId(1L);
         crmTasks.add(crmTask);
@@ -68,6 +70,10 @@ public class CrmTaskMapperTest {
         assertNotNull(dto.getSubject());
         assertNotNull(dto.getActivityDate());
         assertNotNull(dto.getComment());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
 
     }
 
@@ -84,6 +90,10 @@ public class CrmTaskMapperTest {
             assertNotNull(dto.getSubject());
             assertNotNull(dto.getActivityDate());
             assertNotNull(dto.getComment());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
 
         });
     }
@@ -120,6 +130,43 @@ public class CrmTaskMapperTest {
             assertNotNull(entity.getComment());
             assertNotNull(entity.getId());
             assertNotNull(entity.getNetwork());
+
+        });
+    }
+
+    @Test
+    public void DB2ThinDTO() throws Exception {
+        CrmTaskThinDTO dto = customCrmTaskMapper.DB2ThinDTO(crmTask);
+
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getAssignedTo());
+        assertNotNull(dto.getId());
+        assertNotNull(dto.getSubject());
+        assertNotNull(dto.getActivityDate());
+        assertNotNull(dto.getComment());
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
+    }
+
+    @Test
+    public void DBs2ThinDTOs() throws Exception {
+        List<CrmTaskThinDTO> dtos = customCrmTaskMapper.DBs2ThinDTOs(crmTasks);
+
+        assertNotNull(dtos);
+        assertEquals(dtos.size(), 1);
+        dtos.stream().forEach(dto -> {
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getAssignedTo());
+            assertNotNull(dto.getId());
+            assertNotNull(dto.getSubject());
+            assertNotNull(dto.getActivityDate());
+            assertNotNull(dto.getComment());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
 
         });
     }

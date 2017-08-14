@@ -35,7 +35,6 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithCustomer(CrmAccount crmAccount, CrmTask crmTask) {
-        crmTask.setAccount(crmAccount);
         crmTask.setNetwork(crmAccount.getNetwork());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmAccount: ", task);
@@ -44,16 +43,14 @@ public class CrmTaskService {
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithLead(CrmLead crmLead, CrmTask crmTask) {
-        crmTask.setLead(crmLead);
         crmTask.setNetwork(crmLead.getNetwork());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmLead: ", task);
-        return task;
+        return crmTask;
     }
 
     @Transactional
     public CrmTask saveOrUpdateTaskAssociatiedWithOpportunity(CrmOpportunity crmOpportunity, CrmTask crmTask) {
-        crmTask.setOpportunity(crmOpportunity);
         crmTask.setNetwork(crmOpportunity.getNetwork());
         CrmTask task = crmTaskRepository.saveAndFlush(crmTask);
         log.debug("Persisting CrmTask: {}, for CrmOpportunity: ", task);
@@ -67,6 +64,14 @@ public class CrmTaskService {
 
     @Transactional
     public void deleteByContactByShortNameAndNetworkByShortcut(String shortcut, String corNetwork) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        if (crmTasks != null && !crmTasks.isEmpty()) {
+            crmTasks.stream().forEach(crmTask -> {
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+
+            });
+            crmTaskRepository.delete(crmTasks);
+        }
         crmTaskRepository.deleteByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
@@ -85,8 +90,18 @@ public class CrmTaskService {
 
     @Transactional
     public void deleteByAccount_ShortNameAndNetwork_Shortcut(String shortName, String corNetwork) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
+        if (crmTasks != null && !crmTasks.isEmpty()) {
+            crmTasks.stream().forEach(crmTask -> {
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+
+            });
+            crmTaskRepository.delete(crmTasks);
+        }
         crmTaskRepository.deleteByAccount_ShortNameAndNetwork_Shortcut(shortName, corNetwork);
+
     }
+
 
     @Transactional
     public void deleteByIdAndNetwork_Shortcut(Long taskId, String corNetwork) {
@@ -95,6 +110,27 @@ public class CrmTaskService {
 
     @Transactional
     public void deleteByLead_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
+        if (crmTasks != null && !crmTasks.isEmpty()) {
+            crmTasks.stream().forEach(crmTask -> {
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+
+            });
+            crmTaskRepository.delete(crmTasks);
+        }
+        crmTaskRepository.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
+    }
+
+    @Transactional
+    public void deleteByOpportunity_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork) {
+        List<CrmTask> crmTasks = crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        if (crmTasks != null && !crmTasks.isEmpty()) {
+            crmTasks.stream().forEach(crmTask -> {
+                this.crmTaskCommentService.deleteByCrmTaskId(crmTask.getId(), corNetwork);
+
+            });
+            crmTaskRepository.delete(crmTasks);
+        }
         crmTaskRepository.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 

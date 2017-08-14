@@ -32,6 +32,9 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "external_id_1")
     private String externalId1;
 
@@ -382,6 +385,13 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
         crmTask.setContact(null);
         return this;
     }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public CrmLead getCrmLead() {
         return crmLead;
@@ -437,4 +447,6 @@ public class CrmContact extends AbstractAuditingEntity implements Serializable {
                 ", tasks=" + tasks +
                 '}';
     }
+
+
 }

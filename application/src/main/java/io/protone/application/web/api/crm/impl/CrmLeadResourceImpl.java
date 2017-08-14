@@ -97,7 +97,7 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
     @Override
     public ResponseEntity<Void> deleteLeadUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete CrmLead : {}, for Network: {}", shortName, networkShortcut);
-        crmLeadService.deleteLead(shortName, shortName);
+        crmLeadService.deleteLead(shortName, networkShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CrmLead", shortName.toString())).build();
     }
 }

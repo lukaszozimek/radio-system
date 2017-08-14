@@ -5,6 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorUser;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.api.dto.TraOrderDTO;
 import io.protone.traffic.api.dto.thin.TraAdvertisementThinDTO;
@@ -24,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,8 @@ public class TraOrderMapperTest {
         factory = new PodamFactoryImpl();
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setId(1L);
+        traOrder.setCalculatedPrize(new BigDecimal(1L));
+        traOrder.setPrice(new BigDecimal(1L));
         traOrder.setAdvertisment(factory.manufacturePojo(TraAdvertisement.class));
         traOrder.getAdvertisment().setId(1L);
         traOrder.setStatus(factory.manufacturePojo(CorDictionary.class));
@@ -69,6 +73,8 @@ public class TraOrderMapperTest {
         traOrder.getCustomer().setId(1L);
         traOrder.setInvoice(factory.manufacturePojo(TraInvoice.class));
         traOrder.getInvoice().setId(1L);
+        traOrder.setCreatedBy(factory.manufacturePojo(CorUser.class));
+        traOrder.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
         traOrders.add(traOrder);
         traOrderThinDTO = factory.manufacturePojo(TraOrderThinDTO.class);
         traOrderDTO = factory.manufacturePojo(TraOrderDTO.class);
@@ -96,8 +102,12 @@ public class TraOrderMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getStartDate());
         assertNotNull(dto.getEndDate());
+        assertNotNull(dto.getPrice());
         assertNotNull(dto.getCalculatedPrize());
-
+        assertNotNull(dto.getCreatedBy());
+        assertNotNull(dto.getCreatedDate());
+        assertNotNull(dto.getLastModifiedBy());
+        assertNotNull(dto.getLastModifiedDate());
 
     }
 
@@ -117,7 +127,12 @@ public class TraOrderMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getStartDate());
             assertNotNull(dto.getEndDate());
+            assertNotNull(dto.getPrice());
             assertNotNull(dto.getCalculatedPrize());
+            assertNotNull(dto.getCreatedBy());
+            assertNotNull(dto.getCreatedDate());
+            assertNotNull(dto.getLastModifiedBy());
+            assertNotNull(dto.getLastModifiedDate());
         });
     }
 
@@ -132,6 +147,7 @@ public class TraOrderMapperTest {
         assertNotNull(entity.getCustomer());
         assertNotNull(entity.getStatus());
         assertNotNull(entity.getId());
+        assertNotNull(entity.getPrice());
         assertNotNull(entity.getName());
         assertNotNull(entity.getStartDate());
         assertNotNull(entity.getEndDate());
@@ -149,6 +165,7 @@ public class TraOrderMapperTest {
             assertNotNull(entity.getAdvertisment());
             assertNotNull(entity.getStatus());
             assertNotNull(entity.getCampaign());
+            assertNotNull(entity.getPrice());
             assertNotNull(entity.getCustomer());
             assertNotNull(entity.getInvoice());
             assertNotNull(entity.getCalculatedPrize());

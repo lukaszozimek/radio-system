@@ -1,12 +1,17 @@
 package io.protone.traffic.mapper;
 
+import io.protone.core.api.dto.CoreContactDTO;
+import io.protone.core.domain.CorContact;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.domain.CorPerson;
 import io.protone.core.mapper.CorAddressMapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorPersonMapper;
 import io.protone.crm.domain.CrmAccount;
+import io.protone.crm.mapper.CrmDiscountMapper;
 import io.protone.crm.mapper.CrmTaskMapper;
 import io.protone.traffic.api.dto.TraCustomerDTO;
+import io.protone.traffic.api.dto.TraCustomerPersonDTO;
 import io.protone.traffic.api.dto.thin.TraCustomerThinDTO;
 import org.mapstruct.*;
 
@@ -16,7 +21,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 28/06/2017.
  */
-@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class})
+@Mapper(componentModel = "spring", uses = {CrmTaskMapper.class, CorDictionaryMapper.class, CorAddressMapper.class, CorPersonMapper.class, CrmDiscountMapper.class})
 public interface TraCustomerMapper {
 
     @Mapping(source = "person", target = "person")
@@ -52,6 +57,16 @@ public interface TraCustomerMapper {
 
     @AfterMapping
     default void traCustomerPTToCrmAccountAfterMapping(TraCustomerDTO dto, @MappingTarget CrmAccount entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
+
+    @AfterMapping
+    default void traCustomerPersonDTOToCorPersonAfterMapping(TraCustomerPersonDTO dto, @MappingTarget CorPerson entity, @Context CorNetwork corNetwork) {
+        entity.setNetwork(corNetwork);
+    }
+
+    @AfterMapping
+    default void coreContactDTOToCorContactAfterMapping(CoreContactDTO dto, @MappingTarget CorContact entity, @Context CorNetwork corNetwork) {
         entity.setNetwork(corNetwork);
     }
 

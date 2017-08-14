@@ -44,6 +44,8 @@ public interface CorUserMapper {
 
     CorUser corUserFromCoreUserThinPT(CoreUserThinDTO coreUserThinDTO);
 
+    @Mapping(source = "firstname",target = "firstName")
+    @Mapping(source = "lastname",target = "lastName")
     CoreUserThinDTO coreUserThinPTFromCorUser(CorUser coreUserThinPT);
 
     default CorAuthority corAuthorityFromString(String authorinty) {

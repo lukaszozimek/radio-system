@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.time.ZonedDateTime;
 
 /**
  * CrmTaskDTO
@@ -20,8 +20,13 @@ public class CrmTaskThinDTO implements Serializable {
 
     private CorDictionaryDTO status = null;
 
-    private CoreUserThinDTO createdBy = null;
+    private CoreUserThinDTO createdBy;
 
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
     private CoreUserThinDTO assignedTo = null;
 
     @NotNull
@@ -180,48 +185,6 @@ public class CrmTaskThinDTO implements Serializable {
         this.comment = comment;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CrmTaskThinDTO crmTaskDTO = (CrmTaskThinDTO) o;
-        return Objects.equals(this.id, crmTaskDTO.id) &&
-            Objects.equals(this.createdBy, crmTaskDTO.createdBy) &&
-            Objects.equals(this.assignedTo, crmTaskDTO.assignedTo) &&
-            Objects.equals(this.subject, crmTaskDTO.subject) &&
-            Objects.equals(this.activityDate, crmTaskDTO.activityDate) &&
-            Objects.equals(this.activityLength, crmTaskDTO.activityLength) &&
-            Objects.equals(this.comment, crmTaskDTO.comment) &&
-            Objects.equals(this.status, crmTaskDTO.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, createdBy, assignedTo, subject, activityDate, activityLength, comment, status);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CrmTaskDTO {\n");
-
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
-        sb.append("    assignedTo: ").append(toIndentedString(assignedTo)).append("\n");
-        sb.append("    subject: ").append(toIndentedString(subject)).append("\n");
-        sb.append("    activityDate: ").append(toIndentedString(activityDate)).append("\n");
-        sb.append("    activityLength: ").append(toIndentedString(activityLength)).append("\n");
-        sb.append("    comment: ").append(toIndentedString(comment)).append("\n");
-        sb.append("    status: ").append(toIndentedString(status)).append("\n");
-
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -231,6 +194,88 @@ public class CrmTaskThinDTO implements Serializable {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CrmTaskThinDTO that = (CrmTaskThinDTO) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
+        if (assignedTo != null ? !assignedTo.equals(that.assignedTo) : that.assignedTo != null) return false;
+        if (subject != null ? !subject.equals(that.subject) : that.subject != null) return false;
+        if (activityDate != null ? !activityDate.equals(that.activityDate) : that.activityDate != null) return false;
+        if (activityLength != null ? !activityLength.equals(that.activityLength) : that.activityLength != null)
+            return false;
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
+        result = 31 * result + (assignedTo != null ? assignedTo.hashCode() : 0);
+        result = 31 * result + (subject != null ? subject.hashCode() : 0);
+        result = 31 * result + (activityDate != null ? activityDate.hashCode() : 0);
+        result = 31 * result + (activityLength != null ? activityLength.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CrmTaskThinDTO{" +
+                "id=" + id +
+                ", status=" + status +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", assignedTo=" + assignedTo +
+                ", subject='" + subject + '\'' +
+                ", activityDate=" + activityDate +
+                ", activityLength=" + activityLength +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }
 

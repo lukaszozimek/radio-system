@@ -6,11 +6,8 @@ import io.protone.application.web.api.traffic.impl.TraMediaPlanTemplateResourceI
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
-import io.protone.crm.domain.CrmDiscount;
-import io.protone.traffic.api.dto.TraDiscountDTO;
 import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
-import io.protone.traffic.domain.TraOrder;
 import io.protone.traffic.mapper.TraMediaPlanTemplateMapper;
 import io.protone.traffic.repository.TraMediaPlanTemplateRepository;
 import io.protone.traffic.service.TraMediaPlanTemplateService;

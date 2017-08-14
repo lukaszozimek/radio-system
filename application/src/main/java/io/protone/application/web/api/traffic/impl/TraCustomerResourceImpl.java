@@ -5,11 +5,11 @@ import io.protone.application.web.api.traffic.TraCustomerResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
-import io.protone.crm.api.dto.CrmAccountDTO;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.service.CrmCustomerService;
 import io.protone.traffic.api.dto.TraCustomerDTO;
 import io.protone.traffic.mapper.TraCustomerMapper;
+import io.protone.traffic.service.TraCustomerService;
 import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
@@ -38,6 +38,8 @@ public class TraCustomerResourceImpl implements TraCustomerResource {
 
     @Inject
     private CrmCustomerService crmCustomerService;
+    @Inject
+    private TraCustomerService traCustomerService;
 
     @Inject
     private CorNetworkService corNetworkService;
@@ -123,7 +125,7 @@ public class TraCustomerResourceImpl implements TraCustomerResource {
     @Override
     public ResponseEntity<Void> deleteTrafficCustomerUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut) {
         log.debug("REST request to delete TraCustomer : {}, for Network: {}", customerShortcut, networkShortcut);
-        crmCustomerService.deleteCustomer(customerShortcut, networkShortcut);
+        traCustomerService.deleteCustomerByShortNameAndNetworkShortName(customerShortcut, networkShortcut);
         return ResponseEntity.ok().build();
     }
 }

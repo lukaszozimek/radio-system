@@ -22,7 +22,9 @@
             <column name="short_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="external_id_1" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

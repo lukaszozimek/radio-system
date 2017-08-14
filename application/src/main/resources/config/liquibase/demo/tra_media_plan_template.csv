@@ -1,0 +1,4 @@
+id;name;block_start_column;block_start_cell;block_end_cell ;block_hour_separator;playlist_date_start_column;playlist_date_end_column;playlist_first_value_cell;playlist_date_pattern;sheet_index_of_media_plan;first_emission_value_cell;last_emission_value_cell;network_id;created_by_id;last_modified_by_id
+1;"Centurm";"A";"A10";"A47";"-";"G";"CW";"G8";"dd-MMM-yyyy";0;"G10";"CW47";1;1;1
+
+

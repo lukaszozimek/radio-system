@@ -78,6 +78,9 @@ public class LibLibraryService {
         CorImageItem imageItem = corImageItemService.saveImageItem(cover);
         log.debug("Persisting LibLibrary: {}", libLibrary);
         s3Client.makeBucket(libLibrary.getShortcut());
+        if (imageItem == null) {
+            imageItem = corImageItemService.getDefualtImageItem();
+        }
         libLibrary = libraryRepository.saveAndFlush(libLibrary.addImageItems(imageItem));
         return libLibrary;
     }

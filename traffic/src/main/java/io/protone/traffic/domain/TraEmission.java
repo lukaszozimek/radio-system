@@ -9,7 +9,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -36,6 +38,11 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
 
     @Column(name = "time_stop")
     private Long timeStop;
+
+
+    @Column(name = "price", precision = 10, scale = 2)
+    @PodamExclude
+    private BigDecimal price;
 
     @Column(name = "fixed_postion")
     private boolean fixedPosition;
@@ -178,6 +185,53 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
+    public boolean isFixedPosition() {
+        return fixedPosition;
+    }
+
+    public void setFixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
+    }
+
+    public boolean isFirsrPosition() {
+        return firsrPosition;
+    }
+
+    public void setFirsrPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+    }
+
+    public TraEmission firstPosition(boolean firsrPosition) {
+        this.firsrPosition = firsrPosition;
+        return this;
+    }
+
+    public boolean isLastPosition() {
+        return lastPosition;
+    }
+
+    public void setLastPosition(boolean lastPosition) {
+        this.lastPosition = lastPosition;
+    }
+
+    public TraEmission lastPosition(boolean lastPostion) {
+        this.lastPosition = lastPostion;
+        return this;
+    }
+
+    public TraEmission fixedPosition(boolean fixedPosition) {
+        this.fixedPosition = fixedPosition;
+        return this;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -209,42 +263,4 @@ public class TraEmission extends AbstractAuditingEntity implements Serializable 
                 '}';
     }
 
-    public boolean isFixedPosition() {
-        return fixedPosition;
-    }
-
-    public void setFixedPosition(boolean fixedPosition) {
-        this.fixedPosition = fixedPosition;
-    }
-
-    public boolean isFirsrPosition() {
-        return firsrPosition;
-    }
-
-    public void setFirsrPosition(boolean firsrPosition) {
-        this.firsrPosition = firsrPosition;
-    }
-
-    public TraEmission firstPosition(boolean firsrPosition) {
-        this.firsrPosition = firsrPosition;
-        return this;
-    }
-
-    public boolean isLastPosition() {
-        return lastPosition;
-    }
-
-    public TraEmission lastPosition(boolean lastPostion) {
-        this.lastPosition = lastPostion;
-        return this;
-    }
-
-    public TraEmission fixedPosition(boolean fixedPosition) {
-        this.firsrPosition = fixedPosition;
-        return this;
-    }
-
-    public void setLastPosition(boolean lastPosition) {
-        this.lastPosition = lastPosition;
-    }
 }

@@ -1,5 +1,6 @@
 package io.protone.traffic.domain;
 
+import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorCurrency;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
@@ -11,6 +12,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -19,41 +22,37 @@ import java.util.Objects;
 @Entity
 @Table(name = "tra_price")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraPrice implements Serializable {
+public class TraPrice extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    @ElementCollection
+    @MapKeyColumn(name = "lenght")
+    @Column(name = "multiplier")
+    @CollectionTable(name = "tra_price_lenght_multiplier")
+    Map<Long, Double> lenghtMultiplier = new HashMap<>();
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
-
     @NotNull
     @Size(max = 100)
     @Column(name = "name", length = 100, nullable = false)
     private String name;
-
     @Column(name = "valid_from")
     private LocalDate validFrom;
-
     @Column(name = "valid_to")
     private LocalDate validTo;
-
     @NotNull
-    @Column(name = "price", precision=10, scale=2, nullable = false)
-    private BigDecimal price;
-
+    @Column(name = "base_price", precision = 10, scale = 2, nullable = false)
+    private BigDecimal basePrice;
+    @NotNull
+    @Column(name = "price_last_postion", precision = 10, scale = 2, nullable = false)
+    private BigDecimal priceLastPostion;
+    @NotNull
+    @Column(name = "price_first_postion", precision = 10, scale = 2, nullable = false)
+    private BigDecimal priceFirstPostion;
     @Column(name = "base_length")
-    private Integer baseLength;
-
-    @NotNull
-    @Column(name = "price_alternative", precision=10, scale=2, nullable = false)
-    private BigDecimal priceAlternative;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private CorCurrency currency;
-
+    private Long baseLength;
     @ManyToOne
     private CorNetwork network;
 
@@ -104,56 +103,60 @@ public class TraPrice implements Serializable {
         return this;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getBasePrice() {
+        return basePrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setBasePrice(BigDecimal basePrice) {
+        this.basePrice = basePrice;
     }
 
-    public TraPrice price(BigDecimal price) {
-        this.price = price;
+    public Map<Long, Double> getLenghtMultiplier() {
+        return lenghtMultiplier;
+    }
+
+    public void setLenghtMultiplier(Map<Long, Double> lenghtMultiplier) {
+        this.lenghtMultiplier = lenghtMultiplier;
+    }
+
+    public TraPrice putToLenghtMultiplier(Long lenght, Double multiplier) {
+        this.lenghtMultiplier.put(lenght, multiplier);
         return this;
     }
 
-    public Integer getBaseLength() {
+    public TraPrice removeToLenghtMultiplier(Long lenght) {
+        this.lenghtMultiplier.remove(lenght);
+        return this;
+    }
+
+    public Long getBaseLength() {
         return baseLength;
     }
 
-    public void setBaseLength(Integer baseLength) {
+    public void setBaseLength(Long baseLength) {
         this.baseLength = baseLength;
     }
 
-    public TraPrice baseLength(Integer baseLength) {
+    public TraPrice baseLength(Long baseLength) {
         this.baseLength = baseLength;
         return this;
     }
 
-    public BigDecimal getPriceAlternative() {
-        return priceAlternative;
+
+    public BigDecimal getPriceLastPostion() {
+        return priceLastPostion;
     }
 
-    public void setPriceAlternative(BigDecimal priceAlternative) {
-        this.priceAlternative = priceAlternative;
+    public void setPriceLastPostion(BigDecimal priceLastPostion) {
+        this.priceLastPostion = priceLastPostion;
     }
 
-    public TraPrice priceAlternative(BigDecimal priceAlternative) {
-        this.priceAlternative = priceAlternative;
-        return this;
+    public BigDecimal getPriceFirstPostion() {
+        return priceFirstPostion;
     }
 
-    public CorCurrency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(CorCurrency corCurrency) {
-        this.currency = corCurrency;
-    }
-
-    public TraPrice currency(CorCurrency corCurrency) {
-        this.currency = corCurrency;
-        return this;
+    public void setPriceFirstPostion(BigDecimal priceFirstPostion) {
+        this.priceFirstPostion = priceFirstPostion;
     }
 
     public CorNetwork getNetwork() {
@@ -192,13 +195,33 @@ public class TraPrice implements Serializable {
     @Override
     public String toString() {
         return "TraPrice{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", validFrom='" + validFrom + "'" +
-            ", validTo='" + validTo + "'" +
-            ", price='" + price + "'" +
-            ", baseLength='" + baseLength + "'" +
-            ", priceAlternative='" + priceAlternative + "'" +
-            '}';
+                "lenghtMultiplier=" + lenghtMultiplier +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", validFrom=" + validFrom +
+                ", validTo=" + validTo +
+                ", basePrice=" + basePrice +
+                ", priceLastPostion=" + priceLastPostion +
+                ", priceFirstPostion=" + priceFirstPostion +
+                ", baseLength=" + baseLength +
+                ", network=" + network +
+                '}';
     }
+
+
+    public TraPrice basePrice(BigDecimal defaultBasePrice) {
+        this.basePrice = defaultBasePrice;
+        return this;
+    }
+
+    public TraPrice priceLastPostion(BigDecimal defaultPriceLastPostion) {
+        this.priceLastPostion = defaultPriceLastPostion;
+        return this;
+    }
+
+    public TraPrice priceFirstPostion(BigDecimal defaultPriceFirstPostion) {
+        this.priceFirstPostion = defaultPriceFirstPostion;
+        return this;
+    }
+
 }

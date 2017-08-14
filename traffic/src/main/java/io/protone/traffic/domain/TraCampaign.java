@@ -64,9 +64,6 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
     @PodamExclude
     private CorDictionary status;
 
-    @ManyToOne
-    @PodamExclude
-    private TraPrice price;
     @OneToMany(mappedBy = "campaign")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -185,18 +182,6 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public TraPrice getPrice() {
-        return price;
-    }
-
-    public void setPrice(TraPrice traPrice) {
-        this.price = traPrice;
-    }
-
-    public TraCampaign price(TraPrice traPrice) {
-        this.price = traPrice;
-        return this;
-    }
 
     public Set<TraOrder> getOrders() {
         return orders;
@@ -246,12 +231,16 @@ public class TraCampaign extends AbstractAuditingEntity implements Serializable 
     @Override
     public String toString() {
         return "TraCampaign{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", shortName='" + shortName + "'" +
-            ", startDate='" + startDate + "'" +
-            ", endDate='" + endDate + "'" +
-            ", prize='" + prize + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", prize=" + prize +
+                ", customer=" + customer +
+                ", network=" + network +
+                ", status=" + status +
+                ", orders=" + orders +
+                '}';
     }
 }

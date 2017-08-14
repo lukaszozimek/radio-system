@@ -42,6 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -68,8 +69,8 @@ public class TrafficOrderResourceImplTest {
     private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Long DEFAULT_CALCULATED_PRIZE = 1L;
-    private static final Long UPDATED_CALCULATED_PRIZE = 2L;
+    private static final BigDecimal DEFAULT_CALCULATED_PRIZE = new BigDecimal(1L);
+    private static final BigDecimal UPDATED_CALCULATED_PRIZE = new BigDecimal(2L);
 
     @Autowired
     private TraOrderRepository traOrderRepository;
@@ -133,10 +134,10 @@ public class TrafficOrderResourceImplTest {
     public static TraOrder createEntity(EntityManager em) {
 
         TraOrder traOrder = new TraOrder()
-            .name(DEFAULT_NAME)
-            .startDate(DEFAULT_START_DATE)
-            .endDate(DEFAULT_END_DATE)
-            .calculatedPrize(DEFAULT_CALCULATED_PRIZE);
+                .name(DEFAULT_NAME)
+                .startDate(DEFAULT_START_DATE)
+                .endDate(DEFAULT_END_DATE)
+                .calculatedPrize(DEFAULT_CALCULATED_PRIZE);
         return traOrder;
     }
 
@@ -173,9 +174,9 @@ public class TrafficOrderResourceImplTest {
 
 
         this.restTraOrderMockMvc = MockMvcBuilders.standaloneSetup(traOrderResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Test
@@ -189,9 +190,9 @@ public class TrafficOrderResourceImplTest {
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
         restTraOrderMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isCreated());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraOrder in the database
         List<TraOrder> traOrderList = traOrderRepository.findAll();
@@ -217,9 +218,9 @@ public class TrafficOrderResourceImplTest {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTraOrderMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingTraOrderDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(existingTraOrderDTO)))
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<TraOrder> traOrderList = traOrderRepository.findAll();
@@ -239,9 +240,9 @@ public class TrafficOrderResourceImplTest {
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder.network(corNetwork).advertisment(traAdvertisement).customer(crmAccount));
 
         restTraOrderMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraOrder> traOrderList = traOrderRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
@@ -260,9 +261,9 @@ public class TrafficOrderResourceImplTest {
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
         restTraOrderMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraOrder> traOrderList = traOrderRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
@@ -281,9 +282,9 @@ public class TrafficOrderResourceImplTest {
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(traOrder);
 
         restTraOrderMockMvc.perform(post("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isBadRequest());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isBadRequest());
 
         List<TraOrder> traOrderList = traOrderRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
@@ -299,13 +300,13 @@ public class TrafficOrderResourceImplTest {
 
         // Get all the traOrderList
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order?sort=id,desc", corNetwork.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].calculatedPrize").value(hasItem(DEFAULT_CALCULATED_PRIZE.intValue())));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+                .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+                .andExpect(jsonPath("$.[*].calculatedPrize").value(hasItem(DEFAULT_CALCULATED_PRIZE.intValue())));
     }
 
     @Test
@@ -318,13 +319,13 @@ public class TrafficOrderResourceImplTest {
 
         // Get the traOrder
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/{id}", corNetwork.getShortcut(), traOrder.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(traOrder.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
-            .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.calculatedPrize").value(DEFAULT_CALCULATED_PRIZE.intValue()));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(traOrder.getId().intValue()))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
+                .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
+                .andExpect(jsonPath("$.calculatedPrize").value(DEFAULT_CALCULATED_PRIZE.intValue()));
     }
 
     @Test
@@ -334,7 +335,7 @@ public class TrafficOrderResourceImplTest {
 
         // Get the traOrder
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -349,16 +350,16 @@ public class TrafficOrderResourceImplTest {
         // Update the traOrder
         TraOrder updatedTraOrder = traOrderRepository.findOne(traOrder.getId());
         updatedTraOrder
-            .name(UPDATED_NAME)
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
-            .calculatedPrize(UPDATED_CALCULATED_PRIZE);
+                .name(UPDATED_NAME)
+                .startDate(UPDATED_START_DATE)
+                .endDate(UPDATED_END_DATE)
+                .calculatedPrize(UPDATED_CALCULATED_PRIZE);
         TraOrderDTO traOrderDTO = traOrderMapper.DB2DTO(updatedTraOrder);
 
         restTraOrderMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isOk());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isOk());
 
         // Validate the TraOrder in the database
         List<TraOrder> traOrderList = traOrderRepository.findAll();
@@ -382,9 +383,9 @@ public class TrafficOrderResourceImplTest {
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restTraOrderMockMvc.perform(put("/api/v1/network/{networkShortcut}/traffic/order", corNetwork.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-            .andExpect(status().isCreated());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the TraOrder in the database
         List<TraOrder> traOrderList = traOrderRepository.findAll();
@@ -402,8 +403,8 @@ public class TrafficOrderResourceImplTest {
 
         // Get the traOrder
         restTraOrderMockMvc.perform(delete("/api/v1/network/{networkShortcut}/traffic/order/{id}", corNetwork.getShortcut(), traOrder.getId())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<TraOrder> traOrderList = traOrderRepository.findAll();
@@ -420,13 +421,13 @@ public class TrafficOrderResourceImplTest {
 
         // Get all the traOrderList
         restTraOrderMockMvc.perform(get("/api/v1/network/{networkShortcut}/traffic/order/customer/{customerShortcut}?sort=id,desc", corNetwork.getShortcut(), crmAccount.getShortName()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
-            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].calculatedPrize").value(hasItem(DEFAULT_CALCULATED_PRIZE.intValue())));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(traOrder.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+                .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+                .andExpect(jsonPath("$.[*].calculatedPrize").value(hasItem(DEFAULT_CALCULATED_PRIZE.intValue())));
     }
 
     @Test

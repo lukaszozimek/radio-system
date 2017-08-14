@@ -64,7 +64,8 @@ public class CrmCustomerService {
         }
         log.debug("Persisting CrmAccount: {}", crmAccount);
         crmAccount = accountRepository.saveAndFlush(crmAccount);
-        return crmAccount;
+
+        return accountRepository.findOneByShortNameAndNetwork_Shortcut(crmAccount.getShortName(), crmAccount.getNetwork().getShortcut());
     }
 
     public CrmAccount saveCustomerWithImage(CrmAccount crmAccount, MultipartFile avatar) throws IOException, TikaException, SAXException {
@@ -81,7 +82,7 @@ public class CrmCustomerService {
 
 
     public CrmAccount getCustomer(String shortcut, String corNetwork) {
-        return  accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
+        return accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
     public CrmTask saveOrUpdateTaskAssociatiedWithAccount(CrmTask crmTask, String shortcut, String corNetwork) {
@@ -106,9 +107,13 @@ public class CrmCustomerService {
 
     public void deleteCustomerTask(String shortcut, Long taskId, String corNetwork) {
         CrmAccount crmAccount = accountRepository.findOneByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
-        crmAccount.getTasks().removeIf(crmTask -> crmTask.getId() == taskId);
-        accountRepository.save(crmAccount);
-        crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        CrmTask crmTask = crmTaskService.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
+        if (crmTask != null) {
+            crmAccount.removeTasks(crmTask);
+            crmTaskService.saveOrUpdateTaskAssociatiedWithCustomer(crmAccount, crmTask);
+            accountRepository.saveAndFlush(crmAccount);
+            crmTaskService.deleteByIdAndNetwork_Shortcut(taskId, corNetwork);
+        }
     }
 
     public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {
