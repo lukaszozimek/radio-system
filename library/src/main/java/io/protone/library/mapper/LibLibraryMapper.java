@@ -36,4 +36,8 @@ public interface LibLibraryMapper {
         entity.setNetwork(corNetwork);
 
     }
+
+    default String map(LibLibrary value) {
+        return value.getShortcut();
+    }
 }
