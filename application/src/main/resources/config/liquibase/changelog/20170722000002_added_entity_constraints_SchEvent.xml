@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Block.
+    -->
+    <changeSet id="20170720190704-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="queue_params_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_event_queue_params_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_queue_params"/>
+
+        <addForeignKeyConstraint baseColumnNames="time_params_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_event_time_params_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_time_params"/>
+        
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+    </changeSet>
+</databaseChangeLog>

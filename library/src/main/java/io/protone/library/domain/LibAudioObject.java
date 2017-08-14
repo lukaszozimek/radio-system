@@ -5,6 +5,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibAudioQualityEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -42,16 +43,20 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
 
     @Enumerated(EnumType.STRING)
     @Column(name = "quality")
+    @PodamExclude
     private LibAudioQualityEnum quality;
 
     @OneToOne
     @JoinColumn(unique = true)
+    @PodamExclude
     private LibCloudObject cloudObject;
 
     @ManyToOne
+    @PodamExclude
     private LibMediaItem mediaItem;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     public Long getId() {
@@ -176,11 +181,11 @@ public class LibAudioObject extends AbstractAuditingEntity implements Serializab
     @Override
     public String toString() {
         return "LibAudioObject{" +
-            "id=" + id +
-            ", length='" + length + "'" +
-            ", biTrate='" + biTrate + "'" +
-            ", codec='" + codec + "'" +
-            ", quality='" + quality + "'" +
-            '}';
+                "id=" + id +
+                ", length='" + length + "'" +
+                ", biTrate='" + biTrate + "'" +
+                ", codec='" + codec + "'" +
+                ", quality='" + quality + "'" +
+                '}';
     }
 }

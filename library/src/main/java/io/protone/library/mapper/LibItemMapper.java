@@ -6,7 +6,6 @@ import io.protone.core.domain.CorTag;
 import io.protone.core.mapper.CorPersonMapper;
 import io.protone.core.mapper.CorPropertyValueMapper;
 import io.protone.library.api.dto.LibMediaItemDTO;
-import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
 import org.mapstruct.*;
 
@@ -47,11 +46,6 @@ public interface LibItemMapper {
         }
         return libMediaItems;
     }
-
-    LibMediaItem libMediaItemFromLibMediaItemThinPt(LibMediaItemThinDTO id);
-
-    LibMediaItemThinDTO libMediaItemThinPtFromLibMediaItem(LibMediaItem id);
-
 
     default CorTag corTagFromString(String tag, CorNetwork networkId) {
 

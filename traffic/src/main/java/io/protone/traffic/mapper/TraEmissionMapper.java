@@ -2,6 +2,7 @@ package io.protone.traffic.mapper;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.traffic.api.dto.TraEmissionDTO;
 import io.protone.traffic.domain.TraEmission;
 import io.protone.traffic.domain.TraOrder;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 15/05/2017.
  */
-@Mapper(componentModel = "spring", uses = {TraAdvertisementMapper.class})
+@Mapper(componentModel = "spring", uses = {TraAdvertisementMapper.class, LibMediaItemThinMapper.class})
 public interface TraEmissionMapper {
     @Mapping(source = "order", target = "orderId")
     TraEmissionDTO DB2DTO(TraEmission traEmission);

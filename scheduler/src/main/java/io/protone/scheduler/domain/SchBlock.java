@@ -1,25 +1,27 @@
 package io.protone.scheduler.domain;
 
-
-import io.protone.scheduler.domain.enumeration.SchBlockTypeEnum;
-import io.protone.scheduler.domain.enumeration.SchStartTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
- * A SchBlock.
+ * A Block.
  */
 @Entity
 @Table(name = "sch_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchBlock implements Serializable {
+public class SchBlock  extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,70 +30,53 @@ public class SchBlock implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "seq", nullable = false)
-    private Integer seq;
-
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name")
     private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private SchBlockTypeEnum type;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "start_type")
-    private SchStartTypeEnum startType;
-
-    @Column(name = "relative_delay")
-    private Long relativeDelay;
-
-    @Column(name = "scheduled_start_time")
-    private ZonedDateTime scheduledStartTime;
-
-    @Column(name = "scheduled_end_time")
-    private ZonedDateTime scheduledEndTime;
-
-    @Column(name = "scheduled_length")
-    private Long scheduledLength;
-
-    @Column(name = "start_time")
-    private ZonedDateTime startTime;
-
-    @Column(name = "end_time")
-    private ZonedDateTime endTime;
 
     @Column(name = "length")
     private Long length;
 
-    @Column(name = "dim_year")
-    private Integer dimYear;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "event_type")
+    private EventTypeEnum eventType;
 
-    @Column(name = "dim_month")
-    private Integer dimMonth;
+    @PodamExclude
+    @ManyToOne
+    private SchClock clock;
 
-    @Column(name = "dim_day")
-    private Integer dimDay;
+    @PodamExclude
+    @OneToOne
+    @JoinColumn(unique = true)
+    private SchQueueParams queueParams;
 
-    @Column(name = "dim_hour")
-    private Integer dimHour;
+    @PodamExclude
+    @OneToOne
+    @JoinColumn(unique = true)
+    private SchTimeParams timeParams;
 
-    @Column(name = "dim_minute")
-    private Integer dimMinute;
+    @PodamExclude
+    @ManyToOne
+    private SchBlock block;
 
-    @Column(name = "dim_second")
-    private Integer dimSecond;
+    @PodamExclude
+    @OneToMany(mappedBy = "block")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SchBlock> blocks = new HashSet<>();
+
+    @PodamExclude
+    @OneToMany(mappedBy = "block")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<SchEmission> emissions = new HashSet<>();
 
     @ManyToOne
-    private SchPlaylist playlist;
+    private CorNetwork network;
 
     @ManyToOne
-    private SchTemplate template;
+    @PodamExclude
+    private CorChannel channel;
 
-    @ManyToOne
-    private SchBlock parentBlock;
 
     public Long getId() {
         return id;
@@ -99,19 +84,6 @@ public class SchBlock implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
-
-    public SchBlock seq(Integer seq) {
-        this.seq = seq;
-        return this;
     }
 
     public String getName() {
@@ -124,110 +96,6 @@ public class SchBlock implements Serializable {
 
     public SchBlock name(String name) {
         this.name = name;
-        return this;
-    }
-
-    public SchBlockTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(SchBlockTypeEnum type) {
-        this.type = type;
-    }
-
-    public SchBlock type(SchBlockTypeEnum type) {
-        this.type = type;
-        return this;
-    }
-
-    public SchStartTypeEnum getStartType() {
-        return startType;
-    }
-
-    public void setStartType(SchStartTypeEnum startType) {
-        this.startType = startType;
-    }
-
-    public SchBlock startType(SchStartTypeEnum startType) {
-        this.startType = startType;
-        return this;
-    }
-
-    public Long getRelativeDelay() {
-        return relativeDelay;
-    }
-
-    public void setRelativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
-    }
-
-    public SchBlock relativeDelay(Long relativeDelay) {
-        this.relativeDelay = relativeDelay;
-        return this;
-    }
-
-    public ZonedDateTime getScheduledStartTime() {
-        return scheduledStartTime;
-    }
-
-    public void setScheduledStartTime(ZonedDateTime scheduledStartTime) {
-        this.scheduledStartTime = scheduledStartTime;
-    }
-
-    public SchBlock scheduledStartTime(ZonedDateTime scheduledStartTime) {
-        this.scheduledStartTime = scheduledStartTime;
-        return this;
-    }
-
-    public ZonedDateTime getScheduledEndTime() {
-        return scheduledEndTime;
-    }
-
-    public void setScheduledEndTime(ZonedDateTime scheduledEndTime) {
-        this.scheduledEndTime = scheduledEndTime;
-    }
-
-    public SchBlock scheduledEndTime(ZonedDateTime scheduledEndTime) {
-        this.scheduledEndTime = scheduledEndTime;
-        return this;
-    }
-
-    public Long getScheduledLength() {
-        return scheduledLength;
-    }
-
-    public void setScheduledLength(Long scheduledLength) {
-        this.scheduledLength = scheduledLength;
-    }
-
-    public SchBlock scheduledLength(Long scheduledLength) {
-        this.scheduledLength = scheduledLength;
-        return this;
-    }
-
-    public ZonedDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public SchBlock startTime(ZonedDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    public ZonedDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public SchBlock endTime(ZonedDateTime endTime) {
-        this.endTime = endTime;
         return this;
     }
 
@@ -244,121 +112,141 @@ public class SchBlock implements Serializable {
         return this;
     }
 
-    public Integer getDimYear() {
-        return dimYear;
+    public EventTypeEnum getEventType() {
+        return eventType;
     }
 
-    public void setDimYear(Integer dimYear) {
-        this.dimYear = dimYear;
+    public void setEventType(EventTypeEnum eventType) {
+        this.eventType = eventType;
     }
 
-    public SchBlock dimYear(Integer dimYear) {
-        this.dimYear = dimYear;
+    public SchBlock eventType(EventTypeEnum eventType) {
+        this.eventType = eventType;
         return this;
     }
 
-    public Integer getDimMonth() {
-        return dimMonth;
+    public SchClock getClock() {
+        return clock;
     }
 
-    public void setDimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
+    public void setClock(SchClock clock) {
+        this.clock = clock;
     }
 
-    public SchBlock dimMonth(Integer dimMonth) {
-        this.dimMonth = dimMonth;
+    public SchBlock clock(SchClock clock) {
+        this.clock = clock;
         return this;
     }
 
-    public Integer getDimDay() {
-        return dimDay;
+    public SchQueueParams getQueueParams() {
+        return queueParams;
     }
 
-    public void setDimDay(Integer dimDay) {
-        this.dimDay = dimDay;
+    public void setQueueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
     }
 
-    public SchBlock dimDay(Integer dimDay) {
-        this.dimDay = dimDay;
+    public SchBlock queueParams(SchQueueParams queueParams) {
+        this.queueParams = queueParams;
         return this;
     }
 
-    public Integer getDimHour() {
-        return dimHour;
+    public SchTimeParams getTimeParams() {
+        return timeParams;
     }
 
-    public void setDimHour(Integer dimHour) {
-        this.dimHour = dimHour;
+    public void setTimeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
     }
 
-    public SchBlock dimHour(Integer dimHour) {
-        this.dimHour = dimHour;
+    public SchBlock timeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
         return this;
     }
 
-    public Integer getDimMinute() {
-        return dimMinute;
+    public SchBlock getBlock() {
+        return block;
     }
 
-    public void setDimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
+    public void setBlock(SchBlock block) {
+        this.block = block;
     }
 
-    public SchBlock dimMinute(Integer dimMinute) {
-        this.dimMinute = dimMinute;
+    public SchBlock block(SchBlock block) {
+        this.block = block;
         return this;
     }
 
-    public Integer getDimSecond() {
-        return dimSecond;
+    public Set<SchBlock> getBlocks() {
+        return blocks;
     }
 
-    public void setDimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
+    public void setBlocks(Set<SchBlock> blocks) {
+        this.blocks = blocks;
     }
 
-    public SchBlock dimSecond(Integer dimSecond) {
-        this.dimSecond = dimSecond;
+    public SchBlock blocks(Set<SchBlock> blocks) {
+        this.blocks = blocks;
         return this;
     }
 
-    public SchPlaylist getPlaylist() {
-        return playlist;
-    }
-
-    public void setPlaylist(SchPlaylist schPlaylist) {
-        this.playlist = schPlaylist;
-    }
-
-    public SchBlock playlist(SchPlaylist schPlaylist) {
-        this.playlist = schPlaylist;
+    public SchBlock addBlock(SchBlock block) {
+        this.blocks.add(block);
         return this;
     }
 
-    public SchTemplate getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(SchTemplate schTemplate) {
-        this.template = schTemplate;
-    }
-
-    public SchBlock template(SchTemplate schTemplate) {
-        this.template = schTemplate;
+    public SchBlock removeBlock(SchBlock block) {
+        this.blocks.remove(block);
         return this;
     }
 
-    public SchBlock getParentBlock() {
-        return parentBlock;
+    public Set<SchEmission> getEmissions() {
+        return emissions;
     }
 
-    public void setParentBlock(SchBlock schBlock) {
-        this.parentBlock = schBlock;
+    public void setEmissions(Set<SchEmission> emissions) {
+        this.emissions = emissions;
     }
 
-    public SchBlock parentBlock(SchBlock schBlock) {
-        this.parentBlock = schBlock;
+    public SchBlock emissions(Set<SchEmission> emissions) {
+        this.emissions = emissions;
         return this;
+    }
+
+    public SchBlock addEmission(SchEmission emission) {
+        this.emissions.add(emission);
+        return this;
+    }
+
+    public SchBlock removeEmission(SchEmission emission) {
+        this.emissions.remove(emission);
+        return this;
+    }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public SchBlock network(CorNetwork network) {
+        this.network = network;
+        return this;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public SchBlock channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override
@@ -369,39 +257,25 @@ public class SchBlock implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchBlock schBlock = (SchBlock) o;
-        if (schBlock.id == null || id == null) {
+        SchBlock block = (SchBlock) o;
+        if (block.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, schBlock.id);
+        return Objects.equals(getId(), block.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
-        return "SchBlock{" +
-            "id=" + id +
-            ", seq='" + seq + "'" +
-            ", name='" + name + "'" +
-            ", type='" + type + "'" +
-            ", startType='" + startType + "'" +
-            ", relativeDelay='" + relativeDelay + "'" +
-            ", scheduledStartTime='" + scheduledStartTime + "'" +
-            ", scheduledEndTime='" + scheduledEndTime + "'" +
-            ", scheduledLength='" + scheduledLength + "'" +
-            ", startTime='" + startTime + "'" +
-            ", endTime='" + endTime + "'" +
-            ", length='" + length + "'" +
-            ", dimYear='" + dimYear + "'" +
-            ", dimMonth='" + dimMonth + "'" +
-            ", dimDay='" + dimDay + "'" +
-            ", dimHour='" + dimHour + "'" +
-            ", dimMinute='" + dimMinute + "'" +
-            ", dimSecond='" + dimSecond + "'" +
-            '}';
+        return "Block{" +
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", length='" + getLength() + "'" +
+                ", eventType='" + getEventType() + "'" +
+                "}";
     }
 }

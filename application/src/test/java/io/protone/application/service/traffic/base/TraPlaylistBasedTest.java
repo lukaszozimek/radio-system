@@ -12,6 +12,7 @@ import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
@@ -54,6 +55,8 @@ public class TraPlaylistBasedTest {
     protected TraOrder traOrder;
     @Inject
     private LibItemMapper libItemMapper;
+    @Inject
+    private LibMediaItemThinMapper thinMapper;
     @Inject
     protected TraBlockConfigurationRepository trablockConfigurationRepository;
     @Inject
@@ -245,7 +248,7 @@ public class TraPlaylistBasedTest {
         LibLibrary libLibrary = new LibLibrary();
         libLibrary.setId(2L);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.library(libLibrary));
-        libMediaItemToShuffleThinDTO = libItemMapper.libMediaItemThinPtFromLibMediaItem(libMediaItemToShuffle);
+        libMediaItemToShuffleThinDTO = thinMapper.DB2DTO(libMediaItemToShuffle);
         advertisementToShuffle.setCustomer(crmAccount);
         advertisementToShuffle.setNetwork(corNetwork);
         advertisementToShuffle.setMediaItem(Sets.newHashSet(libMediaItemToShuffle));
