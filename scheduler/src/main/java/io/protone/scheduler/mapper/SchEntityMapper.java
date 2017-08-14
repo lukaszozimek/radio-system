@@ -17,4 +17,5 @@ public interface SchEntityMapper<D, E> {
     public List<E> toEntity(List<D> dtoList);
 
     public List<D> toDto(List<E> entityList);
+
 }

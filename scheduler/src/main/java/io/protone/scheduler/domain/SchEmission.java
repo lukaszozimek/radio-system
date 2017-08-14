@@ -1,6 +1,7 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -40,7 +41,7 @@ public class SchEmission implements Serializable {
     @PodamExclude
     @OneToOne
     @JoinColumn(unique = true)
-    private SchMediaItem mediaItem;
+    private LibMediaItem mediaItem;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -107,15 +108,15 @@ public class SchEmission implements Serializable {
         return this;
     }
 
-    public SchMediaItem getMediaItem() {
+    public LibMediaItem getMediaItem() {
         return mediaItem;
     }
 
-    public void setMediaItem(SchMediaItem mediaItem) {
+    public void setMediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
     }
 
-    public SchEmission mediaItem(SchMediaItem mediaItem) {
+    public SchEmission mediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
