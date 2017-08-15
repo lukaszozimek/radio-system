@@ -40,4 +40,10 @@ public class LibMarkerService {
         }
         return Optional.empty();
     }
+
+    public void deleteLibMarkers(Set<LibMarker> markers) {
+        if (markers != null && !markers.isEmpty()) {
+            libMarkerRepository.delete(markers);
+        }
+    }
 }

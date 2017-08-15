@@ -25,6 +25,10 @@ public class TraInvoiceThinDTO implements Serializable {
 
     private BigDecimal price = null;
 
+    private Boolean discountPerOrder = null;
+
+    private Boolean discountPerInvoice = null;
+
     @NotNull
     private TraInvoiceCustomerThinDTO customerId = null;
 
@@ -188,6 +192,22 @@ public class TraInvoiceThinDTO implements Serializable {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public Boolean getDiscountPerOrder() {
+        return discountPerOrder;
+    }
+
+    public void setDiscountPerOrder(Boolean discountPerOrder) {
+        this.discountPerOrder = discountPerOrder;
+    }
+
+    public Boolean getDiscountPerInvoice() {
+        return discountPerInvoice;
+    }
+
+    public void setDiscountPerInvoice(Boolean discountPerInvoice) {
+        this.discountPerInvoice = discountPerInvoice;
+    }
+
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -234,6 +254,7 @@ public class TraInvoiceThinDTO implements Serializable {
         return result;
     }
 
+
     @Override
     public String toString() {
         return "TraInvoiceThinDTO{" +
@@ -241,6 +262,8 @@ public class TraInvoiceThinDTO implements Serializable {
                 ", paid=" + paid +
                 ", paymentDay=" + paymentDay +
                 ", price=" + price +
+                ", discountPerOrder=" + discountPerOrder +
+                ", discountPerInvoice=" + discountPerInvoice +
                 ", customerId=" + customerId +
                 ", statusId=" + statusId +
                 ", createdBy=" + createdBy +

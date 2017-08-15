@@ -22,6 +22,7 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch i.customer as c " +
             "left join fetch c.addres as ca " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.area as car " +
             "left join fetch c.size as css " +
             " where n.shortcut = :network")
@@ -44,10 +45,10 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch o.emissions as emissions " +
             "left join fetch castom.area as car " +
             "left join fetch castom.size as cs " +
+            "left join fetch castom.discount as disc " +
             "left join fetch castom.range as cr " +
             "left join fetch castom.industry as ind " +
             "left join fetch castom.addres as ca " +
-            "left join fetch castom.discount as disc " +
             "left join fetch castom.range as cr " +
             "left join fetch castom.area as car " +
             "left join fetch castom.size as css " +
@@ -60,6 +61,7 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch c.addres as ca " +
             "left join fetch c.range as cr " +
             "left join fetch c.area as car " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.size as css " +
             " where n.shortcut = :network and c.shortName =:shortName")
     List<TraInvoice> findAllByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String customer, @Param("network") String network, Pageable pageable);

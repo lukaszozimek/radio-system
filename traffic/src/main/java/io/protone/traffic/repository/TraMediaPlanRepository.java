@@ -23,6 +23,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and m.channel.shortcut = :corChannel")
     List<TraMediaPlan> findAllByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("corChannel") String channelShortcut, Pageable pageable);
@@ -35,6 +36,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and m.channel.shortcut = :corChannel and c.shortName = :customerShortcut ")
     List<TraMediaPlan> findAllByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(@Param("customerShortcut") String customerShortcut, @Param("network") String corNetwork, @Param("corChannel") String corChannel, Pageable pageable);
@@ -47,6 +49,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.range as cr " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and m.channel.shortcut = :corChannel and m.id = :id ")

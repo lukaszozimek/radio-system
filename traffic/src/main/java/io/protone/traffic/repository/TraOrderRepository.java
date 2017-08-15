@@ -29,6 +29,7 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network")
     List<TraOrder> findByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
@@ -42,6 +43,7 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and c.shortName=:shortName")
     List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String corNetwork, Pageable pageable);
@@ -58,6 +60,7 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             "left join fetch o.customer as c where n.shortcut = :network and o.id =:id")
     TraOrder findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String corNetwork);

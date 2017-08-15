@@ -35,6 +35,12 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
     @Column(name = "paid")
     private Boolean paid;
 
+    @Column(name = "discount_per_order")
+    private Boolean discountPerOrder;
+
+    @Column(name = "discount_per_invoice")
+    private Boolean discountPerInvoice;
+
     @Column(name = "price", precision = 10, scale = 2)
     @PodamExclude
     private BigDecimal price;
@@ -187,6 +193,21 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         this.company = traCompany;
         return this;
     }
+    public Boolean getDiscountPerOrder() {
+        return discountPerOrder;
+    }
+
+    public void setDiscountPerOrder(Boolean discountPerOrder) {
+        this.discountPerOrder = discountPerOrder;
+    }
+
+    public Boolean getDiscountPerInvoice() {
+        return discountPerInvoice;
+    }
+
+    public void setDiscountPerInvoice(Boolean discountPerInvoice) {
+        this.discountPerInvoice = discountPerInvoice;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -220,11 +241,14 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return result;
     }
 
+
     @Override
     public String toString() {
         return "TraInvoice{" +
                 "id=" + id +
                 ", paid=" + paid +
+                ", discountPerOrder=" + discountPerOrder +
+                ", discountPerInvoice=" + discountPerInvoice +
                 ", price=" + price +
                 ", paymentDay=" + paymentDay +
                 ", customer=" + customer +
@@ -234,6 +258,4 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
                 ", orders=" + orders +
                 '}';
     }
-
-
 }

@@ -22,6 +22,7 @@ public interface CrmAccountRepository extends JpaRepository<CrmAccount, Long> {
             "left join fetch a.size as s " +
             "left join fetch a.range as r " +
             "left join fetch a.industry as ind " +
+            "left join fetch a.discount as disc "+
             "left join fetch a.corImageItem as image " +
             "left join fetch a.keeper as kep  " +
             "left join fetch a.tasks as tasks " +
@@ -35,6 +36,7 @@ public interface CrmAccountRepository extends JpaRepository<CrmAccount, Long> {
             "left join fetch a.addres as adr " +
             "left join fetch a.area as ar " +
             "left join fetch a.size as s " +
+            "left join fetch a.discount as disc "+
             "left join fetch a.range as r " +
             "left join fetch a.industry as ind " +
             "left join fetch a.corImageItem as image " +

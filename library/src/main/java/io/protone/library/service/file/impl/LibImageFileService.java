@@ -78,17 +78,17 @@ public class LibImageFileService implements LibFileService {
             log.debug("Uploading File to Storage: {} ", fileUUID);
             s3Client.upload(libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
-                .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
-                .originalName(originalFileName)
-                .original(Boolean.TRUE)
-                .size(size)
-                .network(corNetwork)
-                .objectType(LibObjectTypeEnum.OT_IMAGE)
-                .hash(ServiceConstants.NO_HASH);
+                    .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
+                    .originalName(originalFileName)
+                    .original(Boolean.TRUE)
+                    .size(size)
+                    .network(corNetwork)
+                    .objectType(LibObjectTypeEnum.OT_IMAGE)
+                    .hash(ServiceConstants.NO_HASH);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibImageObject libImageObject = new LibImageObject();
-            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libImageObject);
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libImageObject, originalFileName);
             libImageObject.setCloudObject(cloudObject);
             libImageObject.mediaItem(libMediaItem);
             libImageObject.setImageSize(LibImageSizeEnum.IS_NORMAL);

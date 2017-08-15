@@ -88,7 +88,7 @@ public class LibDocumentFileService implements LibFileService {
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibDocumentObject libDocumentObject = new LibDocumentObject();
-            libMediaItem = libDocumentMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libDocumentObject);
+            libMediaItem = libDocumentMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libDocumentObject, originalFileName);
             libDocumentObject.setCloudObject(cloudObject);
             libDocumentObject.setMediaItem(libMediaItem);
             log.debug("Persisting LibDocumentObject: {}", libDocumentObject);

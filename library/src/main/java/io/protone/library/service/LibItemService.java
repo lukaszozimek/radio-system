@@ -234,6 +234,8 @@ public class LibItemService {
 
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
         LibMediaItem itemToDelete = getMediaItem(networkShortcut, libraryShortcut, idx);
+        libMarkerService.deleteLibMarkers(itemToDelete.getMarkers());
+        itemToDelete.setMarkers(null);
         libItemTypeFileServiceMap.get(itemToDelete.getItemType().name()).deleteFile(itemToDelete);
         itemRepository.delete(itemToDelete);
     }

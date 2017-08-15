@@ -25,8 +25,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static io.protone.core.constans.ServiceConstants.NO_DATA;
-
 /**
  * Created by lukaszozimek on 14/03/2017.
  */
@@ -52,7 +50,7 @@ public class LibDocumentMetadataService {
     private LibMediaItemRepository mediaItemRepository;
 
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibDocumentObject libImageObject) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibDocumentObject libImageObject,String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Image :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -60,7 +58,7 @@ public class LibDocumentMetadataService {
         if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.TITLE))) {
             mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
         } else {
-            mediaItem.setName(NO_DATA);
+            mediaItem.setName(orginalFileName);
         }
 
         metadata.remove(ProtoneMetadataProperty.TITLE.getName());
