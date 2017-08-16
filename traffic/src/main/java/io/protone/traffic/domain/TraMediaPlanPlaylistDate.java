@@ -10,16 +10,14 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * A TraMediaPlanPlaylist.
+ * A TraMediaPlanPlaylistDate.
  */
 @Entity
-@Table(name = "tra_media_plan_playlist")
+@Table(name = "tra_media_plan_playlist_date")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Serializable {
+public class TraMediaPlanPlaylistDate extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,15 +42,6 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
     private CorNetwork network;
 
 
-    @PodamExclude
-    @OneToMany
-    @JoinTable(
-        name = "tra_media_plan_playlist_tra_block",
-        joinColumns = @JoinColumn(name = "tra_media_plan_playlist_id"),
-        inverseJoinColumns = @JoinColumn(name = "tra_block_id")
-    )
-    private Set<TraBlock> playlists = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -69,7 +58,7 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         this.playlistDate = playlistDate;
     }
 
-    public TraMediaPlanPlaylist playlistDate(LocalDate playlistDate) {
+    public TraMediaPlanPlaylistDate playlistDate(LocalDate playlistDate) {
         this.playlistDate = playlistDate;
         return this;
     }
@@ -82,7 +71,7 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         this.mediaPlan = traMediaPlan;
     }
 
-    public TraMediaPlanPlaylist mediaPlan(TraMediaPlan traMediaPlan) {
+    public TraMediaPlanPlaylistDate mediaPlan(TraMediaPlan traMediaPlan) {
         this.mediaPlan = traMediaPlan;
         return this;
     }
@@ -95,7 +84,7 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         this.channel = corChannel;
     }
 
-    public TraMediaPlanPlaylist channel(CorChannel corChannel) {
+    public TraMediaPlanPlaylistDate channel(CorChannel corChannel) {
         this.channel = corChannel;
         return this;
     }
@@ -108,47 +97,25 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         this.network = corNetwork;
     }
 
-    public TraMediaPlanPlaylist network(CorNetwork corNetwork) {
+    public TraMediaPlanPlaylistDate network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
     }
 
-    public Set<TraBlock> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Set<TraBlock> playlists) {
-        this.playlists = playlists;
-    }
-
-    public TraMediaPlanPlaylist playlists(Set<TraBlock> playlists) {
-        this.playlists = playlists;
-        return this;
-    }
-
-    public TraMediaPlanPlaylist addPlaylists(TraBlock traBlock) {
-        this.playlists.add(traBlock);
-        return this;
-    }
-
-    public TraMediaPlanPlaylist removePlaylists(TraBlock traBlock) {
-        this.playlists.remove(traBlock);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TraMediaPlanPlaylist that = (TraMediaPlanPlaylist) o;
+        TraMediaPlanPlaylistDate that = (TraMediaPlanPlaylistDate) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (playlistDate != null ? !playlistDate.equals(that.playlistDate) : that.playlistDate != null) return false;
         if (mediaPlan != null ? !mediaPlan.equals(that.mediaPlan) : that.mediaPlan != null) return false;
         if (channel != null ? !channel.equals(that.channel) : that.channel != null) return false;
-        if (network != null ? !network.equals(that.network) : that.network != null) return false;
-        return playlists != null ? playlists.equals(that.playlists) : that.playlists == null;
+        return network != null || !network.equals(that.network);
+
     }
 
     @Override
@@ -158,20 +125,18 @@ public class TraMediaPlanPlaylist extends AbstractAuditingEntity implements Seri
         result = 31 * result + (mediaPlan != null ? mediaPlan.hashCode() : 0);
         result = 31 * result + (channel != null ? channel.hashCode() : 0);
         result = 31 * result + (network != null ? network.hashCode() : 0);
-        result = 31 * result + (playlists != null ? playlists.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "TraMediaPlanPlaylist{" +
-            "id=" + id +
-            ", playlistDate=" + playlistDate +
-            ", mediaPlan=" + mediaPlan +
-            ", channel=" + channel +
-            ", network=" + network +
-            ", playlists=" + playlists +
-            '}';
+        return "TraMediaPlanPlaylistDate{" +
+                "id=" + id +
+                ", playlistDate=" + playlistDate +
+                ", mediaPlan=" + mediaPlan +
+                ", channel=" + channel +
+                ", network=" + network +
+                '}';
     }
 
 }

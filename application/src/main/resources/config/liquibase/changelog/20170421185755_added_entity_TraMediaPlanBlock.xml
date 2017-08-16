@@ -12,28 +12,42 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity TraMediaPlanPlaylist.
+        Added the entity TraBlock.
     -->
-    <changeSet id="20170609195122-1" author="jhipster">
-        <createTable tableName="tra_media_plan_playlist">
+    <changeSet id="20170515200401-1" author="jhipster">
+        <createTable tableName="tra_media_plan_block">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="playlist_date" type="date">
-                <constraints nullable="false" />
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true"/>
             </column>
 
-            <column name="media_plan_id" type="bigint">
-                <constraints nullable="false" />
+            <column name="length" type="bigint">
+                <constraints nullable="true"/>
             </column>
 
-            <column name="channel_id" type="bigint">
-                <constraints nullable="false" />
+            <column name="start_block" type="bigint">
+                <constraints nullable="true"/>
             </column>
 
+            <column name="stop_block" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="sequence" type="integer">
+                <constraints nullable="true"/>
+            </column>
             <column name="network_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
+            <column name="media_plan_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="channel_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

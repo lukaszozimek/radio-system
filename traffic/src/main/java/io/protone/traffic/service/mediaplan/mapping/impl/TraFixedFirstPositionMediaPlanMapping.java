@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
+import io.protone.traffic.domain.TraMediaPlanEmission;
 import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.service.TraAdvertisementShuffleService;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static java.util.stream.Collectors.toSet;
-import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 /**
  * Created by lukaszozimek on 31/07/2017.
@@ -28,55 +29,52 @@ public class TraFixedFirstPositionMediaPlanMapping implements TraMediaPlanMappin
     private final Logger log = LoggerFactory.getLogger(TraFixedFirstPositionMediaPlanMapping.class);
 
     @Override
-    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraPlaylist> parsedFromMediaPlan, LibMediaItem libMediaItem) {
+    public TraPlaylistDiff mapToEntityPlaylist(List<TraPlaylist> entiyPlaylists, List<TraMediaPlanEmission> parsedEmissions, LibMediaItem libMediaItem) {
         log.debug("Start mapping entity Playlist with parsed Playlists");
         List<TraPlaylist> traPlaylists = entiyPlaylists;
-        List<TraPlaylist> traPlaylistsExcel = Lists.newArrayList(parsedFromMediaPlan.iterator());
-        traPlaylists.forEach(entiyPlaylist -> {
-            entiyPlaylist.setPlaylists(entiyPlaylist.getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet()));
-            Optional<TraPlaylist> filteredPlaylist = traPlaylistsExcel.stream().filter(parsedPlaylist -> parsedPlaylist.getPlaylistDate().equals(entiyPlaylist.getPlaylistDate())).findFirst();
-            if (filteredPlaylist.isPresent()) {
-                log.debug("Found Playlist for Date {} ", filteredPlaylist.get().getPlaylistDate());
-                filteredPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet()).forEach(parsedFormExcelTraBlock -> {
-                    if (parsedFormExcelTraBlock.getEmissions().stream().count() > 0) {
-                        Set<TraBlock> entityFilteredByRangeBlockSet = entiyPlaylist.getPlaylists().stream().filter(entityTraBlock -> isInRange(parsedFormExcelTraBlock.getStartBlock(), entityTraBlock.getStartBlock(), parsedFormExcelTraBlock.getStopBlock())).collect(toSet());
-                        if (isNotEmpty(entityFilteredByRangeBlockSet)) {
-                            log.debug("Found Block matching to range ");
-                            entityFilteredByRangeBlockSet.stream().forEach(filteredEntityTraBlock -> {
-                                if (isNotEmpty(parsedFormExcelTraBlock.getEmissions())) {
-                                    if (isNotEmpty(filteredEntityTraBlock.getEmissions())) {
-                                        Long lastTimeStop = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
-                                        Integer lastSequence = filteredEntityTraBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
-                                        if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, filteredEntityTraBlock.getLength(), libMediaItem.getLength()) && hasNotFixedFirstPostion(filteredEntityTraBlock)) {
-                                            filteredEntityTraBlock = reindexEmissions(reindexEmissions(filteredEntityTraBlock));
-                                            log.debug("Put commercial into block");
-                                            TraEmission emisssion = new TraEmission().sequence(0).block(filteredEntityTraBlock).firstPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
-                                            filteredEntityTraBlock.addEmissions(emisssion);
-                                            synchronized (lockObject) {
-                                                parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
-                                            }
-                                        } else {
-                                            log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed First postion");
-                                        }
-                                    } else {
-                                        log.debug("Block is empty");
-                                        log.debug("Put commercial into block");
-                                        Long lastTimeStop = 0L;
-                                        TraEmission emisssion = new TraEmission().block(filteredEntityTraBlock).firstPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(filteredEntityTraBlock.getChannel()).network(filteredEntityTraBlock.getNetwork());
-                                        filteredEntityTraBlock.addEmissions(emisssion);
-                                        synchronized (lockObject) {
-                                            parsedFormExcelTraBlock.getEmissions().remove(parsedFormExcelTraBlock.getEmissions().iterator().next());
-                                        }
-                                    }
+        List<TraMediaPlanEmission> excelEmissions = Lists.newArrayList(parsedEmissions.iterator());
+        for (TraMediaPlanEmission traMediaPlanEmission : parsedEmissions) {
+            Optional<TraPlaylist> filteredTraPlaylist = traPlaylists.stream().filter(traPlaylist -> traMediaPlanEmission.getMediaPlanPlaylistDate().getPlaylistDate().equals(traPlaylist.getPlaylistDate())).findFirst();
+            if (filteredTraPlaylist.isPresent()) {
+                log.debug("Found Playlist matching to Excel Playlist", filteredTraPlaylist);
+                Set<TraBlock> traBlockSet = filteredTraPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet());
+                for (TraBlock playlistBlock : traBlockSet) {
+                    if (isInRange(playlistBlock.getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStopBlock())) {
+                        log.debug("Found Block matching to range ");
+                        if (isNotEmpty(playlistBlock.getEmissions())) {
+                            Long lastTimeStop = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
+                            Integer lastSequence = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
+                            if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, playlistBlock.getLength(), libMediaItem.getLength()) && hasNotFixedFirstPostion(playlistBlock)) {
+                                playlistBlock = reindexEmissions(reindexEmissions(playlistBlock));
+                                log.debug("Put commercial into block");
+                                TraEmission emisssion = new TraEmission().sequence(0).block(playlistBlock).firstPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                playlistBlock.addEmissions(emisssion);
+                                synchronized (lockObject) {
+                                    excelEmissions.remove(traMediaPlanEmission);
+
+                                    break;
                                 }
-                            });
+                            } else {
+                                log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed First postion");
+                            }
+                        } else {
+                            log.debug("Block is empty");
+                            log.debug("Put commercial into block");
+                            Long lastTimeStop = 0L;
+                            TraEmission emisssion = new TraEmission().block(playlistBlock).firstPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                            playlistBlock.addEmissions(emisssion);
+                            synchronized (lockObject) {
+                                excelEmissions.remove(traMediaPlanEmission);
+
+                                break;
+                            }
                         }
                     }
-                });
-
+                }
             }
-        });
-        return new TraPlaylistDiff(traPlaylists, traPlaylistsExcel);
+        }
+        return new TraPlaylistDiff(entiyPlaylists, parsedEmissions);
+
     }
 
     private TraBlock reindexEmissions(TraBlock traBlock) {

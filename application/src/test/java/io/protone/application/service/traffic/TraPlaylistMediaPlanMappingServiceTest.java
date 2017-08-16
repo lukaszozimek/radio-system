@@ -6,7 +6,10 @@ import io.protone.application.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.application.util.TestUtil;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.*;
-import io.protone.traffic.mapper.TraMediaPlanMapperPlaylist;
+import io.protone.traffic.mapper.TraMediaPlanBlockMapper;
+import io.protone.traffic.repository.TraMediaPlanBlockRepository;
+import io.protone.traffic.repository.TraMediaPlanEmissionRepository;
+import io.protone.traffic.repository.TraMediaPlanPlaylistDateRepository;
 import io.protone.traffic.service.TraMediaPlanService;
 import io.protone.traffic.service.TraPlaylistService;
 import io.protone.traffic.service.mediaplan.TraPlaylistMediaPlanMappingService;
@@ -60,7 +63,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
     private TraPlaylistService traPlaylistService;
 
     @Autowired
-    private TraMediaPlanMapperPlaylist traMediaPlanMapperPlaylistMapper;
+    private TraMediaPlanBlockMapper traMediaPlanMapperPlaylistMapper;
     @Autowired
     private TraPlaylistMediaPlanMappingService traPlaylistMediaPlanMappingService;
 
@@ -69,6 +72,12 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
     private TraMediaPlanMapping traDefaultMediaPlanMapping;
     @Mock
     private LibItemService libItemService;
+    @Autowired
+    private TraMediaPlanEmissionRepository traMediaPlanEmissionRepository;
+    @Autowired
+    private TraMediaPlanPlaylistDateRepository traMediaPlanPlaylistDateRepository;
+    @Autowired
+    private TraMediaPlanBlockRepository traMediaPlanBlockRepository;
 
     @Before
     public void setup() throws InterruptedException {
@@ -104,26 +113,29 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
+
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
-        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
-        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+
+
+        List<LocalDate> playListsDates = mediaPlanPlaylistDates.stream().map(TraMediaPlanPlaylistDate::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
+
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
-        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
 
         //assert
-        assertEquals(playlistOverview.getEntityPlaylist().size(), playlistOverview.getParsedFromExcel().size());
-        assertEquals(parsedEmssionFlatList.size(), entityEmssionFlatList.size());
-        assertTrue(formPlaylistOverview.isEmpty());
+        assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
+        assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
+        assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
     }
 
     @Test
@@ -148,25 +160,27 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
-        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
-        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+
+
+        List<LocalDate> playListsDates = mediaPlanPlaylistDates.stream().map(TraMediaPlanPlaylistDate::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
-        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
+
         //assert
-        assertEquals(playlistOverview.getEntityPlaylist().size(), playlistOverview.getParsedFromExcel().size());
-        assertEquals(parsedEmssionFlatList.size(), entityEmssionFlatList.size());
-        assertTrue(formPlaylistOverview.isEmpty());
+        assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
+        assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
+        assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
     }
 
     @Test
@@ -192,26 +206,28 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
+
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
-        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
-        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+
+
+        List<LocalDate> playListsDates = mediaPlanPlaylistDates.stream().map(TraMediaPlanPlaylistDate::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
-        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
 
         //assert
-        assertEquals(playlistOverview.getEntityPlaylist().size(), playlistOverview.getParsedFromExcel().size());
-        assertEquals(parsedEmssionFlatList.size(), entityEmssionFlatList.size());
-        assertTrue(formPlaylistOverview.isEmpty());
+        assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
+        assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
+        assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
     }
 
     @Test
@@ -243,22 +259,20 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
-        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
+
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
-        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
 
         //assert
-        assertFalse(formPlaylistOverview.isEmpty());
+        assertFalse(playlistOverview.getParsedFromExcel().isEmpty());
 
     }
 
@@ -290,19 +304,22 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> parsedEmssionFlatList = Lists.newArrayList();
-        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
+
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
-        traMediaPlan.getPlaylists().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> parsedEmssionFlatList.addAll(traBlock.getEmissions())));
+
+        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
+        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists()), libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
-        playlistOverview.getParsedFromExcel().stream().forEach(parsedPlaylist -> parsedPlaylist.getPlaylists().stream().forEach(traBlock -> formPlaylistOverview.addAll(traBlock.getEmissions())));
+
+        //transform to flat emission structure
+        playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
         List<TraBlock> traBlockList = Lists.newArrayList();
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> {
             if (entityTraBlock.getEmissions().stream().filter(traEmission -> traEmission.getAdvertiment().getId() == advertisementToShuffle.getId()).count() > 1) {
@@ -311,7 +328,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         }));
 
         //assert
-        assertFalse(formPlaylistOverview.isEmpty());
+        assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
 
     }
 }

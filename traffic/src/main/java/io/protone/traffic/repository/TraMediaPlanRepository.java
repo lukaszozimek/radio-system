@@ -45,7 +45,6 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch m.network as n " +
             "left join fetch m.channel as cha " +
             "left join fetch m.mediaItem as media " +
-            "left join fetch m.playlists as play " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +

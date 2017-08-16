@@ -32,6 +32,9 @@ import io.protone.traffic.mapper.TraOrderMapper;
 import io.protone.traffic.repository.TraAdvertisementRepository;
 import io.protone.traffic.repository.TraMediaPlanRepository;
 import io.protone.traffic.repository.TraOrderRepository;
+import io.protone.traffic.service.TraMediaPlanBlockService;
+import io.protone.traffic.service.TraMediaPlanEmissionService;
+import io.protone.traffic.service.TraMediaPlanPlaylistDateService;
 import io.protone.traffic.service.TraMediaPlanService;
 import org.junit.Before;
 import org.junit.Test;
@@ -93,6 +96,17 @@ public class TraMediaPlanResourceImplTest {
 
     @Inject
     private CorChannelService corChannelService;
+
+
+    @Inject
+    private TraMediaPlanBlockService traMediaPlanBlockService;
+
+    @Inject
+    private TraMediaPlanPlaylistDateService traMediaPlanPlaylistDateService;
+
+    @Inject
+    private TraMediaPlanEmissionService traMediaPlanEmissionService;
+
 
     @Inject
     private TraMediaPlanDescriptorMapper traMediaPlanDescriptorMapper;
@@ -210,6 +224,9 @@ public class TraMediaPlanResourceImplTest {
 
 
         ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
+        ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanBlockService", traMediaPlanBlockService);
+        ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanPlaylistDateService", traMediaPlanPlaylistDateService);
+        ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanEmissionService", traMediaPlanEmissionService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanService", traMediaPlanService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanMapper", traMediaPlanMapper);
         ReflectionTestUtils.setField(traMediaPlanResource, "corNetworkService", corNetworkService);

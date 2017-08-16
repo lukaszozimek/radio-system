@@ -11,8 +11,14 @@ import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.TraMediaPlanDescriptorDTO;
 import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
 import io.protone.traffic.domain.TraMediaPlan;
+import io.protone.traffic.domain.TraMediaPlanBlock;
+import io.protone.traffic.domain.TraMediaPlanEmission;
+import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.mapper.TraMediaPlanDescriptorMapper;
 import io.protone.traffic.mapper.TraMediaPlanMapper;
+import io.protone.traffic.service.TraMediaPlanBlockService;
+import io.protone.traffic.service.TraMediaPlanEmissionService;
+import io.protone.traffic.service.TraMediaPlanPlaylistDateService;
 import io.protone.traffic.service.TraMediaPlanService;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.swagger.annotations.ApiParam;
@@ -49,6 +55,15 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
 
     @Inject
     private TraMediaPlanService traMediaPlanService;
+
+    @Inject
+    private TraMediaPlanBlockService traMediaPlanBlockService;
+
+    @Inject
+    private TraMediaPlanPlaylistDateService traMediaPlanPlaylistDateService;
+
+    @Inject
+    private TraMediaPlanEmissionService traMediaPlanEmissionService;
 
     @Inject
     private TraMediaPlanMapper traMediaPlanMapper;
@@ -101,7 +116,11 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
                                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraMediaPlan: {}", id);
         TraMediaPlan entity = traMediaPlanService.getMediaPlan(id, networkShortcut, channelShortcut);
-        TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
+        List<TraMediaPlanBlock> blockList = traMediaPlanBlockService.findBlockByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+        List<TraMediaPlanPlaylistDate> dateList = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+        List<TraMediaPlanEmission> emissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+        TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity, blockList, dateList, emissionList);
+
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,

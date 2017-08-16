@@ -14,10 +14,10 @@ import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.traffic.domain.TraMediaPlan;
-import io.protone.traffic.domain.TraMediaPlanPlaylist;
+import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.repository.TraAdvertisementRepository;
 import io.protone.traffic.repository.TraMediaPlanRepository;
-import io.protone.traffic.service.TraMediaPlanPlaylistService;
+import io.protone.traffic.service.TraMediaPlanPlaylistDateService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,9 +40,9 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class TraMediaPlanPlaylistServiceTest {
+public class TraMediaPlanPlaylistDateServiceTest {
     @Autowired
-    private TraMediaPlanPlaylistService traMediaPlanPlaylistService;
+    private TraMediaPlanPlaylistDateService traMediaPlanPlaylistDateService;
 
     @Autowired
     private CorNetworkRepository corNetworkRepository;
@@ -129,19 +129,19 @@ public class TraMediaPlanPlaylistServiceTest {
     @Test
     public void savePlaylist() throws Exception {
         //when
-        TraMediaPlanPlaylist traPlaylist = factory.manufacturePojo(TraMediaPlanPlaylist.class);
+        TraMediaPlanPlaylistDate traPlaylist = factory.manufacturePojo(TraMediaPlanPlaylistDate.class);
         traPlaylist.setNetwork(corNetwork);
         traPlaylist.setChannel(corChannel);
         traPlaylist.setMediaPlan(traMediaPlan);
-        Set<TraMediaPlanPlaylist> traMediaPlanPlaylistSet = Sets.newSet(traPlaylist);
+        Set<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDateSet = Sets.newSet(traPlaylist);
 
         //then
-        Set<TraMediaPlanPlaylist> traMediaPlanPlaylists = traMediaPlanPlaylistService.savePlaylist(traMediaPlanPlaylistSet);
+        Set<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates = traMediaPlanPlaylistDateService.savePlaylist(traMediaPlanPlaylistDateSet);
 
         //assert
-        assertNotNull(traMediaPlanPlaylists);
-        assertEquals(1, traMediaPlanPlaylists.size());
-        traMediaPlanPlaylists.stream().forEach(fetchedEntity -> {
+        assertNotNull(traMediaPlanPlaylistDates);
+        assertEquals(1, traMediaPlanPlaylistDates.size());
+        traMediaPlanPlaylistDates.stream().forEach(fetchedEntity -> {
             assertNotNull(fetchedEntity.getId());
             assertNotNull(fetchedEntity.getPlaylistDate().toString(), traPlaylist.getPlaylistDate().toString());
             assertEquals(traPlaylist.getNetwork(), fetchedEntity.getNetwork());

@@ -111,9 +111,12 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraCompany.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylist.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylistDate.xml"
              relativeToChangelogFile="false"/>
-
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanBlock.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanTemplate.xml"
              relativeToChangelogFile="false"/>
 
@@ -221,7 +224,11 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlan.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylist.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanPlaylistDate.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_TraMediaPlanBlock.xml"
              relativeToChangelogFile="false"/>
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_TraMediaPlanTemplate.xml"
@@ -278,10 +285,6 @@
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibAlbum_LibImageItem.xml"
              relativeToChangelogFile="false"/>
-
-    <include
-            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_TraMediaPlanPlaylist_TraBlock.xml"
-            relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_TraPlaylist_TraBlock.xml"
              relativeToChangelogFile="false"/>
@@ -363,6 +366,10 @@
                   file="/config/liquibase/demo/tra_price.csv"
                   separator=";"
                   tableName="tra_price"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/tra_price_multiplier.csv"
+                  separator=";"
+                  tableName="tra_price_lenght_multiplier"/>
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/tra_block_configuration.csv"
                   separator=";"
