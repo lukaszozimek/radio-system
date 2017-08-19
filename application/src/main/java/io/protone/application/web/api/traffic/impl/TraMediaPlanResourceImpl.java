@@ -116,11 +116,15 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
                                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraMediaPlan: {}", id);
         TraMediaPlan entity = traMediaPlanService.getMediaPlan(id, networkShortcut, channelShortcut);
-        List<TraMediaPlanBlock> blockList = traMediaPlanBlockService.findBlockByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
-        List<TraMediaPlanPlaylistDate> dateList = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
-        List<TraMediaPlanEmission> emissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
-        TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity, blockList, dateList, emissionList);
+        TraMediaPlanDTO response = null;
 
+        if (entity != null) {
+            List<TraMediaPlanBlock> blockList = traMediaPlanBlockService.findBlockByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            List<TraMediaPlanPlaylistDate> dateList = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            List<TraMediaPlanEmission> emissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            response = traMediaPlanMapper.DB2DTO(entity, blockList, dateList, emissionList);
+
+        }
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,

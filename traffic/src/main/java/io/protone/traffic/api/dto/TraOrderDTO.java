@@ -20,6 +20,7 @@ import java.util.List;
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
 public class TraOrderDTO {
+    private Long id = null;
 
     private Long calculatedPrize = null;
 
@@ -32,7 +33,7 @@ public class TraOrderDTO {
 
     private LocalDate endDate = null;
 
-    private Long id = null;
+    private Integer customDiscount;
 
     @NotNull
     private String name = null;
@@ -328,6 +329,14 @@ public class TraOrderDTO {
     }
 
 
+    public Integer getCustomDiscount() {
+        return customDiscount;
+    }
+
+    public void setCustomDiscount(Integer customDiscount) {
+        this.customDiscount = customDiscount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -335,13 +344,15 @@ public class TraOrderDTO {
 
         TraOrderDTO that = (TraOrderDTO) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (calculatedPrize != null ? !calculatedPrize.equals(that.calculatedPrize) : that.calculatedPrize != null)
             return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (campaignId != null ? !campaignId.equals(that.campaignId) : that.campaignId != null) return false;
         if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (customDiscount != null ? !customDiscount.equals(that.customDiscount) : that.customDiscount != null)
+            return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
         if (advertismentId != null ? !advertismentId.equals(that.advertismentId) : that.advertismentId != null)
@@ -361,12 +372,13 @@ public class TraOrderDTO {
 
     @Override
     public int hashCode() {
-        int result = calculatedPrize != null ? calculatedPrize.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (calculatedPrize != null ? calculatedPrize.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (campaignId != null ? campaignId.hashCode() : 0);
         result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (customDiscount != null ? customDiscount.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (advertismentId != null ? advertismentId.hashCode() : 0);
@@ -383,12 +395,13 @@ public class TraOrderDTO {
     @Override
     public String toString() {
         return "TraOrderDTO{" +
-                "calculatedPrize=" + calculatedPrize +
+                "id=" + id +
+                ", calculatedPrize=" + calculatedPrize +
                 ", price=" + price +
                 ", campaignId=" + campaignId +
                 ", customerId=" + customerId +
                 ", endDate=" + endDate +
-                ", id=" + id +
+                ", customDiscount=" + customDiscount +
                 ", name='" + name + '\'' +
                 ", startDate=" + startDate +
                 ", advertismentId=" + advertismentId +

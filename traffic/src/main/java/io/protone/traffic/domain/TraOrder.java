@@ -48,9 +48,13 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "custom_discount")
+    private Integer customDiscount;
+
     @Column(name = "calculated_prize", precision = 10, scale = 2)
     @PodamExclude
     private BigDecimal calculatedPrize;
+
 
     @ManyToOne
     @PodamExclude
@@ -262,6 +266,14 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public Integer getCustomDiscount() {
+        return customDiscount;
+    }
+
+    public void setCustomDiscount(Integer customDiscount) {
+        this.customDiscount = customDiscount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -286,10 +298,19 @@ public class TraOrder extends AbstractAuditingEntity implements Serializable {
     public String toString() {
         return "TraOrder{" +
                 "id=" + id +
-                ", name='" + name + "'" +
-                ", startDate='" + startDate + "'" +
-                ", endDate='" + endDate + "'" +
-                ", calculatedPrize='" + calculatedPrize + "'" +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", customDiscount=" + customDiscount +
+                ", calculatedPrize=" + calculatedPrize +
+                ", customer=" + customer +
+                ", price=" + price +
+                ", network=" + network +
+                ", status=" + status +
+                ", advertisment=" + advertisment +
+                ", campaign=" + campaign +
+                ", invoice=" + invoice +
+                ", emissions=" + emissions +
                 '}';
     }
 }

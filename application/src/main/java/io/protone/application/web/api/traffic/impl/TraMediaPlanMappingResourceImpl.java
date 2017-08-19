@@ -40,17 +40,19 @@ public class TraMediaPlanMappingResourceImpl implements TraMediaPlanMappingResou
 
     @Override
     public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                  @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO")@RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO) {
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                   @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO") @RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO) {
         //TODO:// MAPSTRUCT BUG!!
         TraPlaylistDiff traPlaylistDiff = traPlaylistMediaPlanMappingService.mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(traMediaPlanAdvertisementAssigneDTO, networkShortcut, channelShortcut);
         TraPlaylistDiffDTO response = new TraPlaylistDiffDTO();
-           response.setParsedFromExcel(traMediaPlanEmissionMapper.DBs2DTOs(traPlaylistDiff.getParsedFromExcel()));
+        if (traPlaylistDiff != null) {
+            response.setParsedFromExcel(traMediaPlanEmissionMapper.DBs2DTOs(traPlaylistDiff.getParsedFromExcel()));
             response.setEntityPlaylist(traPlaylistMapper.DBs2DTOs(traPlaylistDiff.getEntityPlaylist()));
+        }
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

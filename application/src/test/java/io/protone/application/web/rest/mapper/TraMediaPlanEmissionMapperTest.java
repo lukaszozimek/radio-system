@@ -4,7 +4,9 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraMediaPlanEmissionDTO;
+import io.protone.traffic.domain.TraMediaPlanBlock;
 import io.protone.traffic.domain.TraMediaPlanEmission;
+import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.mapper.TraMediaPlanEmissionMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +55,8 @@ public class TraMediaPlanEmissionMapperTest {
         traMediaPlanEmissionDTOS.add(traMediaPlanEmissionDTO);
         traMediaPlanEmission = factory.manufacturePojo(TraMediaPlanEmission.class);
         traMediaPlanEmission.setId(1L);
+        traMediaPlanEmission.setMediaPlanPlaylistDate(factory.manufacturePojo(TraMediaPlanPlaylistDate.class));
+        traMediaPlanEmission.setMediaPlanBlock(factory.manufacturePojo(TraMediaPlanBlock.class));
         traMediaPlanEmission.setChannel(corChannel);
         traMediaPlanEmission.setNetwork(corNetwork);
         traMediaPlanEmissions.add(traMediaPlanEmission);
@@ -63,10 +67,8 @@ public class TraMediaPlanEmissionMapperTest {
         TraMediaPlanEmissionDTO dto = traMediaPlanEmissionMapper.DB2DTO(traMediaPlanEmission);
 
         assertNotNull(dto.getId());
-
         assertNotNull(dto.getMediaPlanBlock());
         assertNotNull(dto.getMediaPlanPlaylistDate());
-
         assertNotNull(dto.getSequence());
 
     }
@@ -78,12 +80,10 @@ public class TraMediaPlanEmissionMapperTest {
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-
             assertNotNull(dto.getId());
             assertNotNull(dto.getMediaPlanBlock());
             assertNotNull(dto.getMediaPlanPlaylistDate());
             assertNotNull(dto.getSequence());
-
         });
     }
 

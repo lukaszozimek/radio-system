@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 public class TraPlaylistMediaPlanMappingService {
     private final Logger log = LoggerFactory.getLogger(TraPlaylistMediaPlanMappingService.class);
-
+    private static final String COM_DEFAULT = "com";
     @Inject
     private TraMediaPlanService traMediaPlanService;
 
@@ -62,7 +62,10 @@ public class TraPlaylistMediaPlanMappingService {
     private TraMediaPlanMapping traFixedLastPositionMediaPlanMapping;
 
     public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(TraMediaPlanAdvertisementAssigneDTO assigneDTO, String networkShortcut, String channelShortcut) {
-        LibMediaItem traAdvertisement = libItemService.getMediaItem(networkShortcut, "com", assigneDTO.getLibMediaItemIdx());
+        LibMediaItem traAdvertisement = libItemService.getMediaItem(networkShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
+        if (traAdvertisement == null) {
+            return null;
+        }
         TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(assigneDTO.getMediaPlanId(), networkShortcut, channelShortcut);
         List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, traMediaPlan.getId());
         List<LocalDate> playListsDates = traMediaPlanPlaylistDates.stream().map(TraMediaPlanPlaylistDate::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());

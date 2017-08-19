@@ -43,6 +43,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="custom_discount" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />
             </column>

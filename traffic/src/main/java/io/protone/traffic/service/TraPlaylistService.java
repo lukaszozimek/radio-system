@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -120,6 +121,14 @@ public class TraPlaylistService {
         TraPlaylist traPlaylist = new TraPlaylist().network(traPlaylistWithoutBlocks.getNetwork()).channel((traPlaylistWithoutBlocks.getChannel())).playlistDate((traPlaylistWithoutBlocks.getPlaylistDate())).playlists(traBlockService.buildBlocks(localDate, traPlaylistWithoutBlocks.getNetwork().getShortcut()));
         traPlaylist.setId(traPlaylistWithoutBlocks.getId());
         return traPlaylist;
+    }
+
+    @VisibleForTesting
+    public void deleteAllPlaylist() {
+        List<TraPlaylist> list = traPlaylistRepository.findAll();
+        list.stream().forEach(traPlaylist -> {
+            this.deleteOneTraPlaylistList(traPlaylist.getPlaylistDate(), traPlaylist.getNetwork().getShortcut(), traPlaylist.getChannel().getShortcut());
+        });
     }
 
 }
