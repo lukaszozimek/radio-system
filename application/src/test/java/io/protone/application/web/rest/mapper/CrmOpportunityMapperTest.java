@@ -52,15 +52,15 @@ public class CrmOpportunityMapperTest {
         crmOpportunity = factory.manufacturePojo(CrmOpportunity.class);
         crmOpportunity.setId(1L);
         crmOpportunity.setAccount(factory.manufacturePojo(CrmAccount.class));
-        crmOpportunity.getAccount().setId(1L);
+        crmOpportunity.getAccount().setShortName("test");
         crmOpportunity.setStage(factory.manufacturePojo(CorDictionary.class));
         crmOpportunity.getStage().setId(1L);
         crmOpportunity.setKeeper(factory.manufacturePojo(CorUser.class));
         crmOpportunity.getKeeper().setId(1L);
         crmOpportunity.setContact(factory.manufacturePojo(CrmContact.class));
-        crmOpportunity.getContact().setId(1L);
+        crmOpportunity.getContact().setShortName("test");
         crmOpportunity.setLead(factory.manufacturePojo(CrmLead.class));
-        crmOpportunity.getLead().setId(1L);
+        crmOpportunity.getLead().setShortname("test");
         crmOpportunity.setTasks(Sets.newHashSet(factory.manufacturePojo(CrmTask.class)));
         crmOpportunity.setCreatedBy(factory.manufacturePojo(CorUser.class));
         crmOpportunity.setLastModifiedBy(factory.manufacturePojo(CorUser.class));
@@ -134,11 +134,8 @@ public class CrmOpportunityMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getShortName());
-            assertNotNull(entity.getAccount());
             assertNotNull(entity.getStage());
             assertNotNull(entity.getKeeper());
-            assertNotNull(entity.getContact());
-            assertNotNull(entity.getLead());
             assertNotNull(entity.getDescription());
             assertNotNull(entity.getName());
             assertNotNull(entity.getLastTry());
@@ -156,13 +153,10 @@ public class CrmOpportunityMapperTest {
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getShortName());
-        assertNotNull(entity.getAccount());
         assertNotNull(entity.getDescription());
         assertNotNull(entity.getStage());
         assertNotNull(entity.getKeeper());
-        assertNotNull(entity.getContact());
         assertNotNull(entity.getDescription());
-        assertNotNull(entity.getLead());
         assertNotNull(entity.getName());
         assertNotNull(entity.getLastTry());
         assertNotNull(entity.getCloseDate());

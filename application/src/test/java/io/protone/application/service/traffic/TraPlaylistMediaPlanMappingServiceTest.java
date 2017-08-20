@@ -131,14 +131,14 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
 
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanEmissions, libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
 
         //assert
         assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
-        assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
+        assertEquals(mediaPlanEmissions.size(), entityEmssionFlatList.size());
         assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
     }
 
@@ -176,7 +176,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanEmissions, libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
@@ -189,7 +189,6 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
 
     @Test
     public void shouldMapFullMediaPlanEurozetWithPlaylistWhenPlaylistIsEmpty() throws Exception {
-        traPlaylistService.deleteAllPlaylist();
         when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle.length(0.0));
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle.length(0.0));
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate().sheetIndexOfMediaPlan(0)
@@ -224,7 +223,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), corNetwork.getShortcut(), corChannel.getShortcut());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanEmissions, libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
@@ -318,7 +317,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
         //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists,mediaPlanEmissions , libMediaItemToShuffle);
+        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanEmissions, libMediaItemToShuffle);
 
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
@@ -333,7 +332,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         }));
 
         //assert
-        assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
+        assertFalse(playlistOverview.getParsedFromExcel().isEmpty());
 
     }
 }
