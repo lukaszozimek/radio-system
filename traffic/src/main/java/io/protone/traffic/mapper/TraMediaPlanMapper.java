@@ -23,6 +23,9 @@ public interface TraMediaPlanMapper {
 
     @Mapping(source = "traMediaPlan.account", target = "traCustomerThinDTO")
     @Mapping(source = "traMediaPlan.mediaItem", target = "mediaItemId")
+    @Mapping(source = "traMediaPlanPlaylistDates", target = "traMediaPlan.traMediaPlanPlaylistDateDTOS")
+    @Mapping(source = "traMediaPlanEmissions", target = "traMediaPlan.traMediaPlanEmissionDTOS")
+    @Mapping(source = "traMediaPlanBlockList", target = "traMediaPlan.traMediaPlanBlockDTOS")
     TraMediaPlanDTO DB2DTO(TraMediaPlan traMediaPlan, List<TraMediaPlanBlock> traMediaPlanBlockList, List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates, List<TraMediaPlanEmission> traMediaPlanEmissions);
 
     @Mapping(source = "account", target = "traCustomerThinDTO")

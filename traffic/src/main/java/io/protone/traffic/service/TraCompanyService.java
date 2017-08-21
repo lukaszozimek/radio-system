@@ -1,6 +1,7 @@
 package io.protone.traffic.service;
 
 
+import io.protone.core.service.CorAddressService;
 import io.protone.traffic.domain.TraCompany;
 import io.protone.traffic.repository.TraCompanyRepository;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class TraCompanyService {
     @Inject
     private TraCompanyRepository traCompanyRepository;
 
+    @Inject
+    private CorAddressService corAddressService;
+
 
     public List<TraCompany> getAllCompany(String corNetwork, Pageable pageable) {
         return traCompanyRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
@@ -35,9 +39,12 @@ public class TraCompanyService {
     }
 
 
-    public TraCompany saveCompany(TraCompany traInvoice) {
-        log.debug("Persisting TraCompany: {}", traInvoice);
-        return traCompanyRepository.save(traInvoice);
+    public TraCompany saveCompany(TraCompany traCompany) {
+        log.debug("Persisting TraCompany: {}", traCompany);
+        if(traCompany.getAddres() !=null){
+            traCompany.setAddres(corAddressService.saveCoreAdress(traCompany.getAddres()));
+        }
+        return traCompanyRepository.save(traCompany);
     }
 
     public void deleteCompany(Long id, String corNetwork) {

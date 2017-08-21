@@ -41,14 +41,14 @@ public class TraInvoiceService {
         if (traInvoice.getOrders() != null && !traInvoice.getOrders().isEmpty()) {
             savedInvoice.setOrders(traInvoice.getOrders().stream().map(traOrder -> traOrderService.saveOrder(traOrder.invoice(savedInvoice))).collect(toSet()));
         }
-        return savedInvoice;
+        return getInvoice(savedInvoice.getId(), savedInvoice.getNetwork().getShortcut());
     }
 
     public void deleteInvoice(Long id, String corNetwork) {
         TraInvoice traInvoice = getInvoice(id, corNetwork);
         if (traInvoice != null) {
             if (traInvoice.getOrders() != null && !traInvoice.getOrders().isEmpty()) {
-                traInvoice.setOrders(traInvoice.getOrders().stream().map(traOrder -> traOrderService.saveOrder(traOrder.invoice(null))).collect(toSet()));
+                traInvoice.setOrders(traInvoice.getOrders().stream().map(traOrder -> traOrderService.saveOrder(traOrder.invoice(null).calculatedPrize(null))).collect(toSet()));
             }
             traInvoiceRepository.delete(traInvoice);
         }

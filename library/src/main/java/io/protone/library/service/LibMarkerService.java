@@ -45,5 +45,6 @@ public class LibMarkerService {
         if (markers != null && !markers.isEmpty()) {
             libMarkerRepository.delete(markers);
         }
+        libMarkerRepository.flush();
     }
 }
