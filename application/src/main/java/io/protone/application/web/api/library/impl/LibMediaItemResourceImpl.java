@@ -26,12 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
-import javax.validation.*;
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Created by grzesiek on 27.01.2017.
@@ -198,16 +197,4 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
         libItemService.deleteItem(networkShortcut, libraryPrefix, idx);
         return ResponseEntity.ok().build();
     }
-
-    private LibMediaItemDTO validate(LibMediaItemDTO libMediaItemDTO) throws IOException {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<LibMediaItemDTO>> constraintViolations = validator.validate(libMediaItemDTO);
-        if (constraintViolations.isEmpty()) {
-            return libMediaItemDTO;
-        } else {
-            throw new ValidationException();
-        }
-
-    }
-
 }

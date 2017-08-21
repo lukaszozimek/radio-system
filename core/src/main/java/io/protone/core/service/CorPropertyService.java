@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+import java.util.Set;
+
 import static io.protone.core.constans.ServiceConstants.NO_DATA;
 
 
@@ -54,5 +56,25 @@ public class CorPropertyService {
         corPropertyValue.setPropertyKey(corPropertyKey);
         return corPropertyValueRepository.saveAndFlush(corPropertyValue);
 
+    }
+
+    @Transactional
+    public void deleteProperties(Set<CorPropertyValue> propertyValues) {
+        if (propertyValues != null && !propertyValues.isEmpty()) {
+            propertyValues.stream().forEach(propertyValue -> {
+                corPropertyValueRepository.delete(propertyValue.libItemPropertyValue(null));
+            });
+            corPropertyValueRepository.flush();
+        }
+    }
+
+    @Transactional
+    public void detachProperties(Set<CorPropertyValue> propertyValues) {
+        if (propertyValues != null && !propertyValues.isEmpty()) {
+            propertyValues.stream().forEach(propertyValue -> {
+                corPropertyValueRepository.save(propertyValue.libItemPropertyValue(null));
+            });
+            corPropertyValueRepository.flush();
+        }
     }
 }

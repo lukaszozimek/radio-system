@@ -1,6 +1,7 @@
 package io.protone.library.service;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPropertyService;
@@ -234,16 +235,30 @@ public class LibItemService {
 
     public void deleteItem(String networkShortcut, String libraryShortcut, String idx) {
         LibMediaItem itemToDelete = getMediaItem(networkShortcut, libraryShortcut, idx);
-        libMarkerService.deleteLibMarkers(itemToDelete.getMarkers());
-        itemToDelete.setMarkers(null);
+        libMarkerService.detachLibMarkers(itemToDelete.getMarkers());
+        corPropertyService.detachProperties(itemToDelete.getProperites());
+        itemToDelete.setProperites(Sets.newHashSet());
+        itemToDelete.setMarkers(Sets.newHashSet());
+        itemRepository.saveAndFlush(itemToDelete);
         libItemTypeFileServiceMap.get(itemToDelete.getItemType().name()).deleteFile(itemToDelete);
+        libMarkerService.deleteMarkers(itemToDelete.getMarkers());
+        corPropertyService.deleteProperties(itemToDelete.getProperites());
         itemRepository.delete(itemToDelete);
     }
 
     @Transactional
     public void deleteItem(LibMediaItem libMediaItem) {
-        libItemTypeFileServiceMap.get(libMediaItem.getItemType().name()).deleteFile(libMediaItem);
-        itemRepository.delete(libMediaItem);
+        if (libMediaItem != null) {
+            libMarkerService.detachLibMarkers(libMediaItem.getMarkers());
+            corPropertyService.detachProperties(libMediaItem.getProperites());
+            libMediaItem.setProperites(Sets.newHashSet());
+            libMediaItem.setMarkers(Sets.newHashSet());
+            itemRepository.saveAndFlush(libMediaItem);
+            libItemTypeFileServiceMap.get(libMediaItem.getItemType().name()).deleteFile(libMediaItem);
+            libMarkerService.deleteMarkers(libMediaItem.getMarkers());
+            corPropertyService.deleteProperties(libMediaItem.getProperites());
+            itemRepository.delete(libMediaItem);
+        }
     }
 
     private String resolveType(Metadata metadata) {
