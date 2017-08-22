@@ -37,9 +37,8 @@ public class TraFixedFirstPositionMediaPlanMapping implements TraMediaPlanMappin
             Optional<TraPlaylist> filteredTraPlaylist = traPlaylists.stream().filter(traPlaylist -> traMediaPlanEmission.getMediaPlanPlaylistDate().getPlaylistDate().equals(traPlaylist.getPlaylistDate())).findFirst();
             if (filteredTraPlaylist.isPresent()) {
                 log.debug("Found Playlist matching to Excel Playlist", filteredTraPlaylist);
-                Set<TraBlock> traBlockSet = filteredTraPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet());
-                for (TraBlock playlistBlock : traBlockSet) {
-                    if (isInRange(playlistBlock.getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStopBlock())) {
+                for (TraBlock playlistBlock : filteredTraPlaylist.get().getPlaylists()) {
+                    if (isInRange(traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), playlistBlock.getStartBlock(), playlistBlock.getStopBlock())) {
                         log.debug("Found Block matching to range ");
                         if (isNotEmpty(playlistBlock.getEmissions())) {
                             if (!playlistBlock.getEmissions().stream().filter(entityEmission -> entityEmission.getAdvertiment().getId().equals(traMediaPlanEmission.getAdvertiment().getId())).findFirst().isPresent()) {
@@ -56,15 +55,15 @@ public class TraFixedFirstPositionMediaPlanMapping implements TraMediaPlanMappin
                                 } else {
                                     log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed First postion");
                                 }
-                            } else {
-                                log.debug("Block is empty");
-                                log.debug("Put commercial into block");
-                                Long lastTimeStop = 0L;
-                                TraEmission emisssion = new TraEmission().block(playlistBlock).firstPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
-                                playlistBlock.addEmissions(emisssion);
-                                excelEmissions.remove(traMediaPlanEmission);
-                                break;
                             }
+                        } else {
+                            log.debug("Block is empty");
+                            log.debug("Put commercial into block");
+                            Long lastTimeStop = 0L;
+                            TraEmission emisssion = new TraEmission().block(playlistBlock).firstPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                            playlistBlock.addEmissions(emisssion);
+                            excelEmissions.remove(traMediaPlanEmission);
+                            break;
                         }
                     }
                 }
@@ -104,8 +103,8 @@ public class TraFixedFirstPositionMediaPlanMapping implements TraMediaPlanMappin
         return !traBlock.getEmissions().stream().filter(traEmission -> traEmission.isFirsrPosition() && traEmission.isFixedPosition()).findFirst().isPresent();
     }
 
-    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long parsedEndBlock) {
-        return (parsedStartBlock <= entityStratBlock && entityStratBlock <= parsedEndBlock);
+    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long entityStopBlock) {
+        return (parsedStartBlock <= entityStratBlock && parsedStartBlock <= entityStopBlock);
     }
 
 }

@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 /**
@@ -40,12 +38,10 @@ public class TraFixedLastPositionMediaPlanMapping implements TraMediaPlanMapping
             Optional<TraPlaylist> filteredTraPlaylist = traPlaylists.stream().filter(traPlaylist -> traMediaPlanEmission.getMediaPlanPlaylistDate().getPlaylistDate().equals(traPlaylist.getPlaylistDate())).findFirst();
             if (filteredTraPlaylist.isPresent()) {
                 log.debug("Found Playlist matching to Excel Playlist", filteredTraPlaylist);
-                Set<TraBlock> traBlockSet = filteredTraPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet());
-                for (TraBlock playlistBlock : traBlockSet) {
-                    if (isInRange(playlistBlock.getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStopBlock())) {
+                for (TraBlock playlistBlock : filteredTraPlaylist.get().getPlaylists()) {
+                    if (isInRange(traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), playlistBlock.getStartBlock(), playlistBlock.getStopBlock())) {
                         log.debug("Found Block matching to range ");
                         if (isNotEmpty(playlistBlock.getEmissions())) {
-
                             if (!playlistBlock.getEmissions().stream().filter(entityEmission -> entityEmission.getAdvertiment().getId().equals(traMediaPlanEmission.getAdvertiment().getId())).findFirst().isPresent()) {
                                 Long lastTimeStop = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
                                 Integer lastSequence = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
@@ -58,15 +54,15 @@ public class TraFixedLastPositionMediaPlanMapping implements TraMediaPlanMapping
                                 } else {
                                     log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed last postion");
                                 }
-                            } else {
-                                log.debug("Block is empty");
-                                log.debug("Put commercial into block");
-                                Long lastTimeStop = 0L;
-                                TraEmission emisssion = new TraEmission().block(playlistBlock).lastPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
-                                playlistBlock.addEmissions(emisssion);
-                                excelEmissions.remove(traMediaPlanEmission);
-                                break;
                             }
+                        } else {
+                            log.debug("Block is empty");
+                            log.debug("Put commercial into block");
+                            Long lastTimeStop = 0L;
+                            TraEmission emisssion = new TraEmission().block(playlistBlock).lastPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                            playlistBlock.addEmissions(emisssion);
+                            excelEmissions.remove(traMediaPlanEmission);
+                            break;
                         }
                     }
                 }
@@ -79,8 +75,8 @@ public class TraFixedLastPositionMediaPlanMapping implements TraMediaPlanMapping
         return !traBlock.getEmissions().stream().filter(traEmission -> traEmission.isLastPosition() && traEmission.isFixedPosition()).findFirst().isPresent();
     }
 
-    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long parsedEndBlock) {
-        return (parsedStartBlock <= entityStratBlock && entityStratBlock <= parsedEndBlock);
+    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long entityStopBlock) {
+        return (parsedStartBlock <= entityStratBlock && parsedStartBlock <= entityStopBlock);
     }
 
 }

@@ -185,8 +185,8 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
+        inputStream.close();
         //collect emissions number from parsed excel
-
         List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
         List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
 
@@ -200,10 +200,9 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
 
-        inputStream.close();
         //assert
         assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
-        assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
+        assertEquals(mediaPlanEmissions.size(), entityEmssionFlatList.size());
         assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
 
     }
@@ -257,54 +256,8 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
 
     }
 
-    @Test
-    public void shouldMapMediaPlanWithNoteEmptyBlocks() throws IOException, TikaException, SAXException, InvalidFormatException {
-        LocalDate localDate = LocalDate.of(2017, 06, 12);
-        List<TraPlaylist> entiyPlaylists = Lists.newArrayList();
-        for (int i = 0; i < 35; i++) {
-            entiyPlaylists.add(buildTraPlaylistWithEmissions(localDate.plusDays(i)));
-
-        }
-        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
-        TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate().sheetIndexOfMediaPlan(0)
-                .sheetIndexOfMediaPlan(0)
-                .playlistDatePattern("dd-MMM-yyyy")
-                .playlistDateStartColumn("G")
-                .playlistDateEndColumn("AW")
-                .playlistFirsValueCell("G22")
-                .blockStartCell("A26")
-                .blockEndCell("A63")
-                .blockStartColumn("A")
-                .blockHourSeparator("-")
-                .firstEmissionValueCell("G26")
-                .lastEmissionValueCell("AV64");
-        mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
-
-        //when
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
-        MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
-        List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-
-        TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
-        //collect emissions number from parsed excel
-
-        List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-
-        //then
-        TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanEmissions, libMediaItemToShuffle);
-
-        //transform to flat emission structure
-        playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
-
-        inputStream.close();
-        //assert
-        assertFalse(playlistOverview.getParsedFromExcel().isEmpty());
-    }
 
     @Test
-
     public void shouldMapMediaPlanXlsxWithNumberOfCommerciaLargerThan1InCellWithNoteEmptyBlocks() throws IOException, TikaException, SAXException, InvalidFormatException {
 
         LocalDate localDate = LocalDate.of(2013, 10, 10);

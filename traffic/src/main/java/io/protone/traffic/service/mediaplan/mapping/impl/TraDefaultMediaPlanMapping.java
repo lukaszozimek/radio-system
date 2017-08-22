@@ -17,15 +17,18 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static io.protone.traffic.service.TraAdvertisementShuffleService.canAddEmissionToBlock;
-import static java.util.stream.Collectors.toSet;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
 /**
  * Created by lukaszozimek on 31/07/2017.
  */
+
+/**
+ * Aby badac działanie algorytmu nalezy operowac w klasie TraPlaylistBaseTest metoda buildBlockConfiguration najwazniejsze jest liczba blokow ora z odstepy czasu pomiedzy nimi narazie ustawiony jest
+ * czas 10 blokow w godzinie co 5 min
+**/
 @Service("traDefaultMediaPlanMapping")
 @Qualifier("traDefaultMediaPlanMapping")
 public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
@@ -40,10 +43,9 @@ public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
         for (TraMediaPlanEmission traMediaPlanEmission : parsedEmissions) {
             Optional<TraPlaylist> filteredTraPlaylist = traPlaylists.stream().filter(traPlaylist -> traMediaPlanEmission.getMediaPlanPlaylistDate().getPlaylistDate().equals(traPlaylist.getPlaylistDate())).findFirst();
             if (filteredTraPlaylist.isPresent()) {
-                log.debug("Found Playlist matching to Excel Playlist", filteredTraPlaylist);
-                Set<TraBlock> traBlockSet = filteredTraPlaylist.get().getPlaylists().stream().sorted(Comparator.comparing(TraBlock::getSequence)).collect(toSet());
-                for (TraBlock playlistBlock : traBlockSet) {
-                    if (isInRange( traMediaPlanEmission.getMediaPlanBlock().getStartBlock(),playlistBlock.getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStopBlock())) {
+                log.debug("playlist contains number of blocks {}", filteredTraPlaylist.get().getPlaylists().size());
+                for (TraBlock playlistBlock : filteredTraPlaylist.get().getPlaylists()) {
+                    if (isInRange(traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), playlistBlock.getStartBlock(), playlistBlock.getStopBlock())) {
                         log.debug("Found Block matching to range ");
                         if (isNotEmpty(playlistBlock.getEmissions())) {
                             if (!playlistBlock.getEmissions().stream().filter(entityEmission -> entityEmission.getAdvertiment().getId().equals(traMediaPlanEmission.getAdvertiment().getId())).findFirst().isPresent()) {
@@ -72,30 +74,25 @@ public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
                                 } else {
                                     log.debug("Can't put commercial because block size excide maximum number of seconds");
                                 }
-                            } else {
-                                log.debug("Can't put commercial because it is in a block");
                             }
-
+                            log.debug("commercial not putted");
                         } else {
                             log.debug("Block is empty");
                             log.debug("Put commercial into block");
                             Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                            TraEmission emisssion = new TraEmission().block(playlistBlock).timeStart(playlistBlock.getStartBlock()).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
                             playlistBlock.addEmissions(emisssion);
                             excelEmissions.remove(traMediaPlanEmission);
                             break;
 
                         }
-                    } else {
-
-                        log.debug("Block Not in range ");
+                        log.debug("commercial not putted");
                     }
                 }
-            } else {
-                log.debug("Playlist Not found ");
             }
         }
         return new TraPlaylistDiff(traPlaylists, excelEmissions);
+
     }
 
     private TraBlock reindexToFitLastPostionEmissions(TraBlock traBlock) throws TrafficShuffleReindexException {
@@ -114,8 +111,8 @@ public class TraDefaultMediaPlanMapping implements TraMediaPlanMapping {
         return traBlock.getEmissions().stream().filter(traEmission -> traEmission.isLastPosition() && traEmission.isFixedPosition()).findFirst().isPresent();
     }
 
-    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long parsedEndBlock) {
-        return (parsedStartBlock <= entityStratBlock && entityStratBlock <= parsedEndBlock);
+    private boolean isInRange(long parsedStartBlock, long entityStratBlock, long entityStopBlock) {
+        return (parsedStartBlock <= entityStratBlock && parsedStartBlock <= entityStopBlock);
     }
 
 }
