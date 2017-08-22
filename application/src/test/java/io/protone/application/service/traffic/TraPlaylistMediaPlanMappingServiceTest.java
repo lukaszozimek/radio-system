@@ -6,35 +6,34 @@ import io.protone.application.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.application.util.TestUtil;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.*;
-import io.protone.traffic.mapper.TraMediaPlanBlockMapper;
 import io.protone.traffic.repository.TraMediaPlanBlockRepository;
 import io.protone.traffic.repository.TraMediaPlanEmissionRepository;
 import io.protone.traffic.repository.TraMediaPlanPlaylistDateRepository;
+import io.protone.traffic.repository.TraMediaPlanRepository;
 import io.protone.traffic.service.TraMediaPlanService;
 import io.protone.traffic.service.TraPlaylistService;
-import io.protone.traffic.service.mediaplan.TraPlaylistMediaPlanMappingService;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
 import io.protone.traffic.service.mediaplan.mapping.TraMediaPlanMapping;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.tika.exception.TikaException;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
+import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +53,8 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-@ActiveProfiles("dev")
+@Transactional
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest {
 
     @Autowired
@@ -64,24 +64,42 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
     private TraPlaylistService traPlaylistService;
 
     @Autowired
-    private TraMediaPlanBlockMapper traMediaPlanMapperPlaylistMapper;
-    @Autowired
-    private TraPlaylistMediaPlanMappingService traPlaylistMediaPlanMappingService;
-
-    @Autowired
     @Qualifier("traDefaultMediaPlanMapping")
     private TraMediaPlanMapping traDefaultMediaPlanMapping;
+
     @Mock
     private LibItemService libItemService;
+
     @Autowired
     private TraMediaPlanEmissionRepository traMediaPlanEmissionRepository;
-    @Autowired
-    private TraMediaPlanPlaylistDateRepository traMediaPlanPlaylistDateRepository;
+
     @Autowired
     private TraMediaPlanBlockRepository traMediaPlanBlockRepository;
 
+    @Autowired
+    private TraMediaPlanRepository traMediaPlanRepository;
+
+    @Autowired
+    private TraMediaPlanPlaylistDateRepository traMediaPlanPlaylistDateRepository;
+
     @Before
     public void setup() throws InterruptedException {
+        traMediaPlanEmissionRepository.deleteAllInBatch();
+        traMediaPlanEmissionRepository.flush();
+        traMediaPlanPlaylistDateRepository.deleteAllInBatch();
+        traMediaPlanPlaylistDateRepository.flush();
+        traMediaPlanBlockRepository.deleteAllInBatch();
+        traMediaPlanBlockRepository.flush();
+        traMediaPlanRepository.deleteAllInBatch();
+        traMediaPlanRepository.flush();
+        this.traEmissionRepository.deleteAllInBatch();
+        this.traEmissionRepository.flush();
+        this.trablockRepository.deleteAllInBatch();
+        this.trablockRepository.flush();
+        this.traPlaylistRepository.deleteAllInBatch();
+        this.traPlaylistRepository.flush();
+        this.trablockConfigurationRepository.deleteAllInBatch();
+        this.trablockConfigurationRepository.flush();
 
         MockitoAnnotations.initMocks(this);
         buildMustHavePojos();
@@ -94,8 +112,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
     }
 
     @Test
-    public void shouldMapFullMediaPlanWithPlaylistWhenPlaylistIsEmpty() throws Exception {
-
+    public void bshouldMapFullMediaPlanWithPlaylistWhenPlaylistIsEmpty() throws Exception {
         when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
@@ -136,14 +153,16 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
 
+        inputStream.close();
         //assert
         assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
         assertEquals(mediaPlanEmissions.size(), entityEmssionFlatList.size());
         assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
+
     }
 
     @Test
-    public void shouldMapFullMediaPlanXlsxWithPlaylistWhenPlaylistIsEmptyAndInMediaPlanWeHaveMoreThanTwoCommercialInBlock() throws Exception {
+    public void cshouldMapFullMediaPlanXlsxWithPlaylistWhenPlaylistIsEmptyAndInMediaPlanWeHaveMoreThanTwoCommercialInBlock() throws Exception {
         when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
@@ -181,16 +200,18 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
 
+        inputStream.close();
         //assert
         assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
         assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
         assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
+
     }
 
     @Test
-    public void shouldMapFullMediaPlanEurozetWithPlaylistWhenPlaylistIsEmpty() throws Exception {
-        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle.length(0.0));
-        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle.length(0.0));
+    public void ashouldMapFullMediaPlanEurozetWithPlaylistWhenPlaylistIsEmpty() throws Exception {
+        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate().sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")
                 .playlistDateStartColumn("G")
@@ -228,10 +249,12 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
 
+        inputStream.close();
         //assert
         assertEquals(playlistOverview.getEntityPlaylist().size(), mediaPlanPlaylistDates.size());
-        assertEquals(entityEmssionFlatList.size(), mediaPlanEmissions.size());
+        assertEquals(mediaPlanEmissions.size(), entityEmssionFlatList.size());
         assertTrue(playlistOverview.getParsedFromExcel().isEmpty());
+
     }
 
     @Test
@@ -275,13 +298,15 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         //transform to flat emission structure
         playlistOverview.getEntityPlaylist().stream().forEach(entityPlaylist -> entityPlaylist.getPlaylists().stream().forEach(entityTraBlock -> entityEmssionFlatList.addAll(entityTraBlock.getEmissions())));
 
+        inputStream.close();
         //assert
         assertFalse(playlistOverview.getParsedFromExcel().isEmpty());
-
     }
 
     @Test
+
     public void shouldMapMediaPlanXlsxWithNumberOfCommerciaLargerThan1InCellWithNoteEmptyBlocks() throws IOException, TikaException, SAXException, InvalidFormatException {
+
         LocalDate localDate = LocalDate.of(2013, 10, 10);
         List<TraPlaylist> entiyPlaylists = Lists.newArrayList();
         for (int i = 0; i < 35; i++) {
@@ -308,14 +333,12 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         MultipartFile multipartFile = new MockMultipartFile("test", byteArrayInputStream);
         List<TraEmission> entityEmssionFlatList = Lists.newArrayList();
-
+        inputStream.close();
 
         TraMediaPlan traMediaPlan = traMediaPlanService.saveMediaPlan(multipartFile, mediaPlanDescriptor, corNetwork, corChannel);
         //collect emissions number from parsed excel
 
         List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-        List<TraMediaPlanPlaylistDate> mediaPlanPlaylistDates = traMediaPlanPlaylistDateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
-
         //then
         TraPlaylistDiff playlistOverview = traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanEmissions, libMediaItemToShuffle);
 
@@ -333,6 +356,5 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
 
         //assert
         assertFalse(playlistOverview.getParsedFromExcel().isEmpty());
-
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * Created by lukaszozimek on 15/05/2017.
  */
 @Service
-public class TraBlockConfigurationService {
+public class  TraBlockConfigurationService {
 
     @Inject
     private TraBlockConfigurationRepository traBlockConfigurationRepository;

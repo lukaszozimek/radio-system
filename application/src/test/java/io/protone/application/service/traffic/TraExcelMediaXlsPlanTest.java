@@ -12,6 +12,7 @@ import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,14 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         traPlaylists = new ArrayList<>();
         mediaItemList = buildMediaItems();
         advertisements = buildAdvertisments();
-        buildBlockConfiguration();
+        traMediaPlanEmissionRepository.deleteAllInBatch();
+        traMediaPlanEmissionRepository.flush();
+        traMediaPlanPlaylistDateRepository.deleteAllInBatch();
+        traMediaPlanPlaylistDateRepository.flush();
+        traMediaPlanBlockRepository.deleteAllInBatch();
+        traMediaPlanBlockRepository.flush();
+        traMediaPlanRepository.deleteAllInBatch();
+        traMediaPlanRepository.flush();
     }
 
     @Test
@@ -100,6 +108,9 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         assertEquals(NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1, mediaPlanPlaylistDates.size());
         assertEquals(NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1, mediaPlanEmissions.size());
         assertEquals(NUMBER_OF_BLOCK_IN_MEDIA_PLAN_1, traMediaPlanBlocks.size());
+        inputStream.close();
+
+
     }
 
     @Test
@@ -141,6 +152,9 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         assertEquals(NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1, mediaPlanPlaylistDates.size());
         assertEquals(NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1, mediaPlanEmissions.size());
         assertEquals(NUMBER_OF_BLOCK_IN_MEDIA_PLAN_1, traMediaPlanBlocks.size());
+
+        inputStream.close();
+
     }
 
     @Test
@@ -181,6 +195,8 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         assertEquals(NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1, mediaPlanPlaylistDates.size());
         assertEquals(NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1, mediaPlanEmissions.size());
         assertEquals(NUMBER_OF_BLOCK_IN_MEDIA_PLAN_1, traMediaPlanBlocks.size());
+        inputStream.close();
+
     }
 
     @Test
@@ -188,7 +204,6 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         final int NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1 = 35;
         final int NUMBER_OF_BLOCK_IN_MEDIA_PLAN_1 = 38;
         final int NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1 = 64;
-        List<TraEmission> formPlaylistOverview = Lists.newArrayList();
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
                 .sheetIndexOfMediaPlan(0)
@@ -211,7 +226,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
-
+        inputStream.close();
         //then
         traExcelMediaXlsPlan.parseMediaPlan(byteArrayInputStream, traMediaPlan, mediaPlanDescriptor, corNetwork, corChannel);
         List<TraMediaPlanEmission> mediaPlanEmissions = traMediaPlanEmissionRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndMediaPlan_Id(corNetwork.getShortcut(), corChannel.getShortcut(), traMediaPlan.getId());
@@ -223,6 +238,8 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         assertEquals(NUMBER_OF_PLAYLISTS_IN_MEDIA_PLAN_1, mediaPlanPlaylistDates.size());
         assertEquals(NUMBER_OF_EMISSIONS_IN_MEDIA_PLAN_1, mediaPlanEmissions.size());
         assertEquals(NUMBER_OF_BLOCK_IN_MEDIA_PLAN_1, traMediaPlanBlocks.size());
+
+
     }
 
 

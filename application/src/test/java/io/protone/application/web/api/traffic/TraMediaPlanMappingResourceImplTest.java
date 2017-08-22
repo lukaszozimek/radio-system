@@ -241,7 +241,7 @@ public class TraMediaPlanMappingResourceImplTest {
                 .content(TestUtil.convertObjectToJsonBytes(traMediaPlanAdvertisementAssigneDTO)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-
+        inputStream.close();
     }
 
 

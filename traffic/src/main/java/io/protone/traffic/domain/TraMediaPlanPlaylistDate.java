@@ -10,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A TraMediaPlanPlaylistDate.
@@ -102,30 +103,25 @@ public class TraMediaPlanPlaylistDate extends AbstractAuditingEntity implements 
         return this;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-        TraMediaPlanPlaylistDate that = (TraMediaPlanPlaylistDate) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (playlistDate != null ? !playlistDate.equals(that.playlistDate) : that.playlistDate != null) return false;
-        if (mediaPlan != null ? !mediaPlan.equals(that.mediaPlan) : that.mediaPlan != null) return false;
-        if (channel != null ? !channel.equals(that.channel) : that.channel != null) return false;
-        return network != null || !network.equals(that.network);
-
+        TraMediaPlanPlaylistDate traMediaPlanPlaylistDate = (TraMediaPlanPlaylistDate) o;
+        if (traMediaPlanPlaylistDate.id == null || id == null) {
+            return false;
+        }
+        return Objects.equals(id, traMediaPlanPlaylistDate.id);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (playlistDate != null ? playlistDate.hashCode() : 0);
-        result = 31 * result + (mediaPlan != null ? mediaPlan.hashCode() : 0);
-        result = 31 * result + (channel != null ? channel.hashCode() : 0);
-        result = 31 * result + (network != null ? network.hashCode() : 0);
-        return result;
+        return Objects.hashCode(id);
     }
 
     @Override

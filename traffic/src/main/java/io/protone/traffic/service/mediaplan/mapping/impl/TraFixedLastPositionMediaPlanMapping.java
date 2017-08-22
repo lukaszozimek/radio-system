@@ -45,26 +45,25 @@ public class TraFixedLastPositionMediaPlanMapping implements TraMediaPlanMapping
                     if (isInRange(playlistBlock.getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStartBlock(), traMediaPlanEmission.getMediaPlanBlock().getStopBlock())) {
                         log.debug("Found Block matching to range ");
                         if (isNotEmpty(playlistBlock.getEmissions())) {
-                            Long lastTimeStop = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
-                            Integer lastSequence = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
-                            if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, playlistBlock.getLength(), libMediaItem.getLength()) && hasNotFixedLastPostion(playlistBlock)) {
-                                log.debug("Put commercial into block");
-                                TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).lastPosition(true).fixedPosition(true).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
-                                playlistBlock.addEmissions(emisssion);
-                                synchronized (lockObject) {
+
+                            if (!playlistBlock.getEmissions().stream().filter(entityEmission -> entityEmission.getAdvertiment().getId().equals(traMediaPlanEmission.getAdvertiment().getId())).findFirst().isPresent()) {
+                                Long lastTimeStop = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getTimeStop)).get().getTimeStop();
+                                Integer lastSequence = playlistBlock.getEmissions().stream().max(Comparator.comparingLong(TraEmission::getSequence)).get().getSequence();
+                                if (TraAdvertisementShuffleService.canAddEmissionToBlock(lastTimeStop, playlistBlock.getLength(), libMediaItem.getLength()) && hasNotFixedLastPostion(playlistBlock)) {
+                                    log.debug("Put commercial into block");
+                                    TraEmission emisssion = new TraEmission().sequence(lastSequence + 1).lastPosition(true).fixedPosition(true).block(playlistBlock).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                    playlistBlock.addEmissions(emisssion);
                                     excelEmissions.remove(traMediaPlanEmission);
                                     break;
+                                } else {
+                                    log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed last postion");
                                 }
                             } else {
-                                log.debug("Can't put commercial because block size excide maximum number of seconds or contains fixed last postion");
-                            }
-                        } else {
-                            log.debug("Block is empty");
-                            log.debug("Put commercial into block");
-                            Long lastTimeStop = 0L;
-                            TraEmission emisssion = new TraEmission().block(playlistBlock).lastPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
-                            playlistBlock.addEmissions(emisssion);
-                            synchronized (lockObject) {
+                                log.debug("Block is empty");
+                                log.debug("Put commercial into block");
+                                Long lastTimeStop = 0L;
+                                TraEmission emisssion = new TraEmission().block(playlistBlock).lastPosition(true).fixedPosition(true).timeStart(lastTimeStop).timeStop(lastTimeStop + libMediaItem.getLength().longValue()).advertiment(libMediaItem).sequence(0).channel(playlistBlock.getChannel()).network(playlistBlock.getNetwork());
+                                playlistBlock.addEmissions(emisssion);
                                 excelEmissions.remove(traMediaPlanEmission);
                                 break;
                             }

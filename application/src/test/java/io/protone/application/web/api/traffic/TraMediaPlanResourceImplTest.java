@@ -273,6 +273,7 @@ public class TraMediaPlanResourceImplTest {
         assertThat(traMediaPlanList).hasSize(databaseSizeBeforeCreate + 1);
         TraMediaPlan testTraMediaPlan = traMediaPlanList.get(traMediaPlanList.size() - 1);
         assertThat(testTraMediaPlan.getName()).isEqualTo(DEFAULT_NAME);
+        inputStream.close();
     }
 
 
