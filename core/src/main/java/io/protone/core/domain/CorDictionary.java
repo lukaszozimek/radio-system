@@ -11,9 +11,11 @@ import java.util.Objects;
  * A CorDictionary.
  */
 @Entity
-@Table(name = "cor_dictionary")
+@Table(name = "cor_dictionary", uniqueConstraints =
+@UniqueConstraint(columnNames = {"name", "dictionary_type_name", "module_name", "network_id"}))
+
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorDictionary  extends AbstractAuditingEntity implements Serializable {
+public class CorDictionary extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -150,12 +152,12 @@ public class CorDictionary  extends AbstractAuditingEntity implements Serializab
     @Override
     public String toString() {
         return "CorDictionary{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", description='" + description + "'" +
-            ", corDictionaryType='" + corDictionaryType + "'" +
-            ", seqNumber='" + seqNumber + "'" +
-            ", corModule='" + corModule + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                ", description='" + description + "'" +
+                ", corDictionaryType='" + corDictionaryType + "'" +
+                ", seqNumber='" + seqNumber + "'" +
+                ", corModule='" + corModule + "'" +
+                '}';
     }
 }

@@ -275,6 +275,10 @@
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibMarkerConfiguration.xml"
             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_CorDictionary.xml"
+            relativeToChangelogFile="false"/>
+
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_LibImageItem.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibLibrary_LibImageItem.xml"
