@@ -13,11 +13,11 @@ import io.protone.crm.repostiory.CrmLeadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 17.01.2017.
@@ -45,8 +45,8 @@ public class CrmLeadService {
     private CorPersonService corPersonService;
 
     @Transactional
-    public List<CrmLead> getAllLeads(String corNetwork, Pageable pageable) {
-        return crmLeadRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<CrmLead> getAllLeads(String corNetwork, Pageable pageable) {
+        return crmLeadRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public CrmLead saveLead(CrmLead crmLead) {
@@ -75,7 +75,7 @@ public class CrmLeadService {
         return crmLeadRepository.findOneByShortnameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
-    public List<CrmTask> getTasksAssociatedWithLead(String shortcut, String corNetwork, Pageable pageable) {
+    public Slice<CrmTask> getTasksAssociatedWithLead(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskService.findAllByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
@@ -119,7 +119,7 @@ public class CrmLeadService {
         return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 }

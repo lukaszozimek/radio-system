@@ -5,6 +5,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraOrder;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,7 +33,7 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network")
-    List<TraOrder> findByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+    Slice<TraOrder> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
 
     @Query("select o  from TraOrder as o " +
             "left join fetch o.network as n " +
@@ -46,7 +47,7 @@ public interface TraOrderRepository extends JpaRepository<TraOrder, Long> {
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and c.shortName=:shortName")
-    List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String corNetwork, Pageable pageable);
+    Slice<TraOrder> findSliceByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String corNetwork, Pageable pageable);
 
     List<TraOrder> findByCustomer_ShortNameAndNetwork_Shortcut(String crmAccount, String corNetwork);
 

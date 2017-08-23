@@ -7,10 +7,10 @@ import io.protone.core.repository.CorFilterRepository;
 import io.protone.core.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,8 +34,8 @@ public class CorFilterService {
         return corFilterRepository.findOneByIdAndNetwork_ShortcutAndTypeAndCorUser_Login(id,networkShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin());
     }
 
-    public List<CorFilter> findAll(String networkShortcut, CorEntityTypeEnum corEntityTypeEnum, Pageable pagable) {
-        return corFilterRepository.findByNetwork_ShortcutAndTypeAndCorUser_Login(networkShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin(), pagable);
+    public Slice<CorFilter> findAll(String networkShortcut, CorEntityTypeEnum corEntityTypeEnum, Pageable pagable) {
+        return corFilterRepository.findSliceByNetwork_ShortcutAndTypeAndCorUser_Login(networkShortcut, corEntityTypeEnum, SecurityUtils.getCurrentUserLogin(), pagable);
     }
 
     @Transactional

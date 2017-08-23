@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmOpportunityResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmOpportunityDTO;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,10 +54,10 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(entity);
 
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -71,17 +73,17 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(entity);
 
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/opportunity/" + response.getName()))
-            .body(response);
+                .body(response);
     }
 
     @Override
     public ResponseEntity<List<CrmOpportunityThinDTO>> getAllOpportunitiesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmOpportunity, for Network: {}", networkShortcut);
-        List<CrmOpportunity> entity = crmOpportunityService.getAllOpportunity(networkShortcut, pagable);
-        List<CrmOpportunityThinDTO> response = crmOpportunityMapper.DBs2ThinDTOs(entity);
+        Slice<CrmOpportunity> entity = crmOpportunityService.getAllOpportunity(networkShortcut, pagable);
+        List<CrmOpportunityThinDTO> response = crmOpportunityMapper.DBs2ThinDTOs(entity.getContent());
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entity)).body(response);
     }
 
     @Override
@@ -91,10 +93,10 @@ public class CrmOpportunityResourceImpl implements CrmOpportunityResource {
         CrmOpportunityDTO response = crmOpportunityMapper.DB2DTO(entity);
 
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

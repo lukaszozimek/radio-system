@@ -3,6 +3,7 @@ package io.protone.core.repository;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,6 +19,6 @@ public interface CorChannelRepository extends JpaRepository<CorChannel, Long> {
 
     List<CorChannel> findAllByNetwork(CorNetwork network);
 
-    List<CorChannel> findAllByNetwork_Shortcut(String network, Pageable pagable);
+    Slice<CorChannel> findSliceByNetwork_Shortcut(String network, Pageable pagable);
 
 }

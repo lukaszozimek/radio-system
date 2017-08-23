@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -89,12 +90,12 @@ public class CorChannelServiceTest {
 
     @Test
     public void findAllChannel() throws Exception {
-        List<CorChannel> corChannels = corChannelService.findAllChannel(corNetwork.getShortcut(), new PageRequest(0, 10));
-        assertNotNull(corChannels);
-        assertEquals(corChannels.size(), 1);
-        assertEquals(corChannels.get(0).getId(), corChannel.getId());
+        Slice<CorChannel> corChannels = corChannelService.findAllChannel(corNetwork.getShortcut(), new PageRequest(0, 10));
+        assertNotNull(corChannels.getContent());
+        assertEquals(corChannels.getContent().size(), 1);
+        assertEquals(corChannels.getContent().get(0).getId(), corChannel.getId());
 
-        assertNotNull(corChannels.get(0).getCreatedBy());
+        assertNotNull(corChannels.getContent().get(0).getCreatedBy());
     }
 
     @Test

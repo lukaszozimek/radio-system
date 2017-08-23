@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -78,13 +79,13 @@ public class LibLibraryServiceTest {
         libLibrary = libLibraryRepository.save(libLibrary);
 
         //then
-        List<LibLibrary> fetchedEntity = libLibraryService.findLibraries(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<LibLibrary> fetchedEntity = libLibraryService.findLibraries(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(libLibrary.getId(), fetchedEntity.get(0).getId());
-        assertEquals(libLibrary.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(libLibrary.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(libLibrary.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 

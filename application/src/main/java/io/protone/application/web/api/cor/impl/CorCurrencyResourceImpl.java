@@ -2,6 +2,7 @@ package io.protone.application.web.api.cor.impl;
 
 import io.protone.application.web.api.cor.CorCurrencyResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorCurrencyDTO;
 import io.protone.core.domain.CorCurrency;
 import io.protone.core.domain.CorNetwork;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,13 +46,15 @@ public class CorCurrencyResourceImpl implements CorCurrencyResource {
     public ResponseEntity<List<CorCurrencyDTO>> getAllCurrencyUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorCurrency");
-        List<CorCurrency> corCurrencies = corCurrencyRepository.findAllByNetwork_Shortcut(networkShortcut, pagable);
-        List<CorCurrencyDTO> corCurrencyDTOS = corCurrencyMapper.DBs2DTOs(corCurrencies);
+        Slice<CorCurrency> corCurrencies = corCurrencyRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+        List<CorCurrencyDTO> corCurrencyDTOS = corCurrencyMapper.DBs2DTOs(corCurrencies.getContent());
         return Optional.ofNullable(corCurrencyDTOS)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(corCurrencies),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(corCurrencies),HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -60,10 +64,10 @@ public class CorCurrencyResourceImpl implements CorCurrencyResource {
         CorCurrency corCurrency = corCurrencyRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
         CorCurrencyDTO corCurrencyDTO = corCurrencyMapper.DB2DTO(corCurrency);
         return Optional.ofNullable(corCurrencyDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -78,8 +82,8 @@ public class CorCurrencyResourceImpl implements CorCurrencyResource {
         corCurrency = corCurrencyRepository.save(corCurrency);
         CorCurrencyDTO result = corCurrencyMapper.DB2DTO(corCurrency);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("corCurrency", result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert("corCurrency", result.getId().toString()))
+                .body(result);
     }
 
     @Override
@@ -94,12 +98,12 @@ public class CorCurrencyResourceImpl implements CorCurrencyResource {
         corCurrency = corCurrencyRepository.save(corCurrency);
         CorCurrencyDTO result = corCurrencyMapper.DB2DTO(corCurrency);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/dictionary/currency/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("corCurrency", result.getId().toString())).body(result);
+                .headers(HeaderUtil.createEntityCreationAlert("corCurrency", result.getId().toString())).body(result);
     }
 
     @Override
     public ResponseEntity<Void> deleteCurrencyUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String
-                                                              networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+                                                                  networkShortcut, @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete CorCurrency : {}", id);
         corCurrencyRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("CorTax", id.toString())).build();

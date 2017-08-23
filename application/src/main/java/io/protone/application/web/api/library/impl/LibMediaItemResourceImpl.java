@@ -3,6 +3,7 @@ package io.protone.application.web.api.library.impl;
 
 import io.protone.application.web.api.library.LibMediaItemResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.api.dto.LibMediaItemDTO;
@@ -16,6 +17,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +61,6 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
                                                                                                          @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
                                                                                                          @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
                                                                                                          @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
-
         if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
 
@@ -90,9 +91,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
     @Override
     public ResponseEntity<Void> moveMediaItemUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
-                                                                                                @ApiParam(value = "libraryShortcut", required = true) @PathVariable("libraryShortcut") String libraryShortcut) {
+                                                      @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                      @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
+                                                      @ApiParam(value = "libraryShortcut", required = true) @PathVariable("libraryShortcut") String libraryShortcut) {
         log.debug("REST request to move Libarary Item {} from {} to {}", idx, libraryPrefix, libraryShortcut);
         libItemService.moveMediaItem(networkShortcut, libraryPrefix, idx, libraryShortcut);
         return ResponseEntity.ok().build();
@@ -104,9 +105,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
                                                                                                          @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibLibraryDTO");
-        List<LibMediaItem> entities = libItemService.getMediaItems(networkShortcut, libraryPrefix, pagable);
-        List<LibMediaItemThinDTO> response = libMediaItemThinMapper.DBs2DTOs(entities);
-        return ResponseEntity.ok()
+        Slice<LibMediaItem> entities = libItemService.getMediaItems(networkShortcut, libraryPrefix, pagable);
+        List<LibMediaItemThinDTO> response = libMediaItemThinMapper.DBs2DTOs(entities.getContent());
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entities))
                 .body(response);
     }
 
@@ -141,9 +142,9 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
 
     @Override
     public ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                     @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                     @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
+                                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                         @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
+                                                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         return null;
     }
 

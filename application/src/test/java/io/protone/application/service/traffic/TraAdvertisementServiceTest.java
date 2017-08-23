@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ReflectionUtils;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -103,13 +104,13 @@ public class TraAdvertisementServiceTest {
         traAdvertisement = traAdvertisementRepository.save(traAdvertisement);
 
         //then
-        List<TraAdvertisement> fetchedEntity = traAdvertisementService.getAllAdvertisement(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraAdvertisement> fetchedEntity = traAdvertisementService.getAllAdvertisement(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traAdvertisement.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traAdvertisement.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traAdvertisement.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traAdvertisement.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
     }
 
     @Test

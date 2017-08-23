@@ -17,6 +17,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,8 +54,8 @@ public class CrmContactService {
     @Inject
     private CrmContactMapper crmContactMapper;
 
-    public List<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
-        return crmContactRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<CrmContact> getAllContact(String corNetwork, Pageable pageable) {
+        return crmContactRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public CrmContact saveContact(CrmContact contact) {
@@ -89,7 +90,7 @@ public class CrmContactService {
 
     }
 
-    public List<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
+    public Slice<CrmTask> getTasksAssociatedWithContact(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskService.findAllByContactByShortNameAndNetworkByShortcut(shortcut, corNetwork, pageable);
     }
 
@@ -132,7 +133,7 @@ public class CrmContactService {
         return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 

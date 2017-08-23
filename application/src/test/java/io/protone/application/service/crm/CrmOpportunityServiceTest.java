@@ -21,12 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
-import java.util.List;
 
 import static io.protone.core.security.AuthoritiesConstants.ADMIN;
 import static org.junit.Assert.*;
@@ -85,13 +84,13 @@ public class CrmOpportunityServiceTest {
         crmOpportunityRepository.saveAndFlush(crmOpportunity);
 
         //then
-        List<CrmOpportunity> allOpportunity = crmOpportunityService.getAllOpportunity(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<CrmOpportunity> allOpportunity = crmOpportunityService.getAllOpportunity(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(allOpportunity);
-        assertEquals(1, allOpportunity.size());
-        assertNotNull(allOpportunity.get(0).getId());
-        assertNotNull(allOpportunity.get(0).getCreatedBy());
+        assertEquals(1, allOpportunity.getContent().size());
+        assertNotNull(allOpportunity.getContent().get(0).getId());
+        assertNotNull(allOpportunity.getContent().get(0).getCreatedBy());
 
     }
 
@@ -260,12 +259,12 @@ public class CrmOpportunityServiceTest {
         CrmTask crmTask1 = crmOpportunityService.saveOrUpdateTaskAssociatiedWithOpportunity(crmTask, crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut());
 
         //then
-        List<CrmTask> localTask = crmOpportunityService.getTasksAssociatedWithOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut(), new PageRequest(0, 10));
+        Slice<CrmTask> localTask = crmOpportunityService.getTasksAssociatedWithOpportunity(crmOpportunity.getShortName(), crmOpportunity.getNetwork().getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(localTask);
-        assertEquals(1, localTask.size());
-        assertEquals(crmTask1.getId(), localTask.get(0).getId());
+        assertNotNull(localTask.getContent());
+        assertEquals(1, localTask.getContent().size());
+        assertEquals(crmTask1.getId(), localTask.getContent().get(0).getId());
     }
 
     @Test

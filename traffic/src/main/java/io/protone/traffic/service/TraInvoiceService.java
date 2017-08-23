@@ -7,11 +7,11 @@ import io.protone.traffic.repository.TraInvoiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.List;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -31,8 +31,8 @@ public class TraInvoiceService {
     private TraOrderService traOrderService;
 
 
-    public List<TraInvoice> getAllInvoice(String corNetwork, Pageable pageable) {
-        return traInvoiceRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraInvoice> getAllInvoice(String corNetwork, Pageable pageable) {
+        return traInvoiceRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public TraInvoice saveInvoice(TraInvoice traInvoice) {
@@ -62,8 +62,8 @@ public class TraInvoiceService {
         return traInvoiceRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
     }
 
-    public List<TraInvoice> getCustomerInvoice(String customerShortcut, String corNetwork, Pageable pageable) {
-        return traInvoiceRepository.findAllByCustomer_ShortNameAndNetwork_Shortcut(customerShortcut, corNetwork, pageable);
+    public Slice<TraInvoice> getCustomerInvoice(String customerShortcut, String corNetwork, Pageable pageable) {
+        return traInvoiceRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(customerShortcut, corNetwork, pageable);
     }
 
 }

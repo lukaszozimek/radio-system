@@ -4,6 +4,7 @@ package io.protone.traffic.repository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraMediaPlan;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +27,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and m.channel.shortcut = :corChannel")
-    List<TraMediaPlan> findAllByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("corChannel") String channelShortcut, Pageable pageable);
+    Slice<TraMediaPlan> findSliceByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("corChannel") String channelShortcut, Pageable pageable);
 
     @Query("select m from TraMediaPlan as m " +
             "left join fetch m.network as n " +
@@ -39,7 +40,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
             "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and m.channel.shortcut = :corChannel and c.shortName = :customerShortcut ")
-    List<TraMediaPlan> findAllByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(@Param("customerShortcut") String customerShortcut, @Param("network") String corNetwork, @Param("corChannel") String corChannel, Pageable pageable);
+    Slice<TraMediaPlan> findSliceByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(@Param("customerShortcut") String customerShortcut, @Param("network") String corNetwork, @Param("corChannel") String corChannel, Pageable pageable);
 
     @Query("select m  from TraMediaPlan as m " +
             "left join fetch m.network as n " +

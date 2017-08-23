@@ -4,6 +4,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.traffic.domain.TraInvoice;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +27,7 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch c.area as car " +
             "left join fetch c.size as css " +
             " where n.shortcut = :network")
-    List<TraInvoice> findAllByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+    Slice<TraInvoice> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
 
     void deleteByIdAndNetwork_Shortcut(Long id, String network);
 
@@ -64,6 +65,6 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch c.discount as disc " +
             "left join fetch c.size as css " +
             " where n.shortcut = :network and c.shortName =:shortName")
-    List<TraInvoice> findAllByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String customer, @Param("network") String network, Pageable pageable);
+    Slice<TraInvoice> findSliceByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String customer, @Param("network") String network, Pageable pageable);
 
 }

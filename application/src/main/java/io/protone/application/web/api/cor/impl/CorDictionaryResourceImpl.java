@@ -2,6 +2,7 @@ package io.protone.application.web.api.cor.impl;
 
 import io.protone.application.web.api.cor.CorDictionaryResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorDictionaryType;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,8 +57,8 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
         corDictionary = corDictionaryRepository.save(corDictionary);
         CorDictionaryDTO result = corDictionaryMapper.DB2DTO(corDictionary);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("CorDictionary", result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert("CorDictionary", result.getId().toString()))
+                .body(result);
     }
 
     @Override
@@ -93,13 +95,14 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get CorDictionary : {}", networkShortcut);
 
-        List<CorDictionary> corDictionaries = corDictionaryRepository.findByCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(type, module, networkShortcut);
-        List<CorDictionaryDTO> dictionaryPTS = corDictionaryMapper.DBs2DTOs(corDictionaries);
-        return Optional.ofNullable(dictionaryPTS)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Slice<CorDictionary> corDictionaries = corDictionaryRepository.findSliceByCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(type, module, networkShortcut, pagable);
+        List<CorDictionaryDTO> corDictionaryDTOS = corDictionaryMapper.DBs2DTOs(corDictionaries.getContent());
+        return Optional.ofNullable(corDictionaryDTOS)
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(corDictionaries),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(PaginationUtil.generateSliceHttpHeaders(corDictionaries), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -113,9 +116,9 @@ public class CorDictionaryResourceImpl implements CorDictionaryResource {
         CorDictionary corDictionary = corDictionaryRepository.findByIdAndCorDictionaryTypeAndCorModuleAndNetwork_Shortcut(id, type, module, networkShortcut);
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
         return Optional.ofNullable(corDictionaryDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

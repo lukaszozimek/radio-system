@@ -15,6 +15,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,8 +68,8 @@ public class TraMediaPlanService {
     }
 
     @Transactional
-    public List<TraMediaPlan> getMediaPlans(String corNetwork, String corChannel, Pageable pageable) {
-        return traMediaPlanRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(corNetwork, corChannel, pageable);
+    public Slice<TraMediaPlan> getMediaPlans(String corNetwork, String corChannel, Pageable pageable) {
+        return traMediaPlanRepository.findSliceByNetwork_ShortcutAndChannel_Shortcut(corNetwork, corChannel, pageable);
     }
 
     @Transactional
@@ -101,8 +102,8 @@ public class TraMediaPlanService {
     }
 
     @Transactional
-    public List<TraMediaPlan> getCustomerMediaPlan(String customerShortcut, String corNetwork, String corChannel, Pageable pageable) {
-        return traMediaPlanRepository.findAllByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(customerShortcut, corNetwork, corChannel, pageable);
+    public Slice<TraMediaPlan> getCustomerMediaPlan(String customerShortcut, String corNetwork, String corChannel, Pageable pageable) {
+        return traMediaPlanRepository.findSliceByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(customerShortcut, corNetwork, corChannel, pageable);
     }
 
 

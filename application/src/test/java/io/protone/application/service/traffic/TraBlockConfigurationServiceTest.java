@@ -72,7 +72,7 @@ public class TraBlockConfigurationServiceTest {
         traBlockConfiguration = traBlockRepository.save(traBlockConfiguration);
 
         //then
-        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurations(corNetwork.getShortcut(), new PageRequest(0, 10));
+        List<TraBlockConfiguration> fetchedEntity = traBlockConfigurationService.getAllBlockConfigurations(corNetwork.getShortcut(), corChannel.getShortcut());
 
         //assert
         assertNotNull(fetchedEntity);

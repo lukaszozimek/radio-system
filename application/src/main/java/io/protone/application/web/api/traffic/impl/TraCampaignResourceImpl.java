@@ -3,6 +3,7 @@ package io.protone.application.web.api.traffic.impl;
 
 import io.protone.application.web.api.traffic.TraCampaignResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraCampaignDTO;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,13 +46,15 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
     public ResponseEntity<List<TraCampaignDTO>> getAllCampaignsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCampaign, for Network: {}", networkShortcut);
-        List<TraCampaign> entity = traCampaignService.getAllCampaign(networkShortcut, pagable);
-        List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity);
+        Slice<TraCampaign> entity = traCampaignService.getAllCampaign(networkShortcut, pagable);
+        List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -65,10 +69,10 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
         TraCampaign entity = traCampaignService.saveCampaign(crmAccount);
         TraCampaignDTO response = traCampaignMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -82,7 +86,7 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
         TraCampaign entity = traCampaignService.saveCampaign(crmAccount);
         TraCampaignDTO response = traCampaignMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/campaign/" + response.getName()))
-            .body(response);
+                .body(response);
 
     }
 
@@ -99,10 +103,10 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
         TraCampaign entity = traCampaignService.getCampaign(shortName, networkShortcut);
         TraCampaignDTO response = traCampaignMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -110,12 +114,13 @@ public class TraCampaignResourceImpl implements TraCampaignResource {
                                                                                 @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
                                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraCampaign, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
-        List<TraCampaign> entity = traCampaignService.getCustomerCampaing(customerShortcut, networkShortcut, pagable);
-        List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity);
+        Slice<TraCampaign> entity = traCampaignService.getCustomerCampaing(customerShortcut, networkShortcut, pagable);
+        List<TraCampaignDTO> response = traCampaignMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 }

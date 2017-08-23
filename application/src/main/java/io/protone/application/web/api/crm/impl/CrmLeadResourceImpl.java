@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmLeadResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmLeadDTO;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,10 +53,10 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
         CrmLead entity = crmLeadService.saveLead(crmLead);
         CrmLeadDTO response = crmLeadMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -68,17 +70,17 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
         CrmLead entity = crmLeadService.saveLead(crmLead);
         CrmLeadDTO response = crmLeadMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/lead/" + response.getShortname()))
-            .body(response);
+                .body(response);
     }
 
     @Override
     public ResponseEntity<List<CrmLeadThinDTO>> getAllLeadsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmLead, for Network: {}", networkShortcut);
-        List<CrmLead> entity = crmLeadService.getAllLeads(networkShortcut, pagable);
-        List<CrmLeadThinDTO> response = crmLeadMapper.DBs2ThinDTOs(entity);
+        Slice<CrmLead> entity = crmLeadService.getAllLeads(networkShortcut, pagable);
+        List<CrmLeadThinDTO> response = crmLeadMapper.DBs2ThinDTOs(entity.getContent());
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entity)).body(response);
     }
 
     @Override
@@ -88,10 +90,10 @@ public class CrmLeadResourceImpl implements CrmLeadResource {
         CrmLeadDTO response = crmLeadMapper.DB2DTO(entity);
 
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

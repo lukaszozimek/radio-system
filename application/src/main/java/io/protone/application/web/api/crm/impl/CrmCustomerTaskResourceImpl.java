@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmCustomerTaskResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmTaskDTO;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,13 +48,15 @@ public class CrmCustomerTaskResourceImpl implements CrmCustomerTaskResource {
                                                                                  @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount CrmTask, for CrmAccount: {} and Network: {}", shortName, networkShortcut);
-        List<CrmTask> entities = crmCustomerService.getTasksAssociatedWithAccount(shortName, networkShortcut, pagable);
-        List<CrmTaskThinDTO> response = crmTaskMapper.DBs2ThinDTOs(entities);
+        Slice<CrmTask> entities = crmCustomerService.getTasksAssociatedWithAccount(shortName, networkShortcut, pagable);
+        List<CrmTaskThinDTO> response = crmTaskMapper.DBs2ThinDTOs(entities.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entities),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entities), HttpStatus.NOT_FOUND));
 
     }
 
@@ -80,7 +84,7 @@ public class CrmCustomerTaskResourceImpl implements CrmCustomerTaskResource {
         CrmTask entity = crmCustomerService.saveOrUpdateTaskAssociatiedWithAccount(requestEnitity, shortName, networkShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + shortName + "/task/" + entity.getId()))
-            .body(response);
+                .body(response);
 
     }
 
@@ -98,10 +102,10 @@ public class CrmCustomerTaskResourceImpl implements CrmCustomerTaskResource {
         CrmTask entity = crmCustomerService.getTaskAssociatedWithAccount(id, networkShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
 

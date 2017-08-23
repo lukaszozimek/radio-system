@@ -7,11 +7,11 @@ import io.protone.traffic.repository.TraCompanyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 17.01.2017.
@@ -30,8 +30,8 @@ public class TraCompanyService {
     private CorAddressService corAddressService;
 
 
-    public List<TraCompany> getAllCompany(String corNetwork, Pageable pageable) {
-        return traCompanyRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraCompany> getAllCompany(String corNetwork, Pageable pageable) {
+        return traCompanyRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public TraCompany getCompany(Long id, String corNetwork) {

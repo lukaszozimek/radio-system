@@ -1,6 +1,7 @@
 package io.protone.application.web.rest.util;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -8,7 +9,7 @@ import java.net.URISyntaxException;
 
 /**
  * Utility class for handling pagination.
- *
+ * <p>
  * <p>
  * Pagination uses the same principles as the <a href="https://developer.github.com/v3/#pagination">Github API</a>,
  * and follow <a href="http://tools.ietf.org/html/rfc5988">RFC 5988 (Link header)</a>.
@@ -18,8 +19,14 @@ public final class PaginationUtil {
     private PaginationUtil() {
     }
 
+    public static HttpHeaders generateSliceHttpHeaders(Slice<?> slice) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Has-Next-Page", "" + slice.hasNext());
+        return headers;
+    }
+
     public static HttpHeaders generatePaginationHttpHeaders(Page page, String baseUrl)
-        throws URISyntaxException {
+            throws URISyntaxException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", "" + Long.toString(page.getTotalElements()));

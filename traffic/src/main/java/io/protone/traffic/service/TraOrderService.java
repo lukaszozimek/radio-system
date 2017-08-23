@@ -7,6 +7,7 @@ import io.protone.traffic.repository.TraOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +31,8 @@ public class TraOrderService {
     private TraEmissionService traEmissionService;
 
 
-    public List<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
-        return traOrderRepository.findByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraOrder> getAllOrders(String corNetwork, Pageable pageable) {
+        return traOrderRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public TraOrder saveOrder(TraOrder traOrder) {
@@ -71,8 +72,8 @@ public class TraOrderService {
     }
 
 
-    public List<TraOrder> getCustomerOrders(String shortcut, String corNetwork, Pageable pageable) {
-        return traOrderRepository.findByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<TraOrder> getCustomerOrders(String shortcut, String corNetwork, Pageable pageable) {
+        return traOrderRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
 }

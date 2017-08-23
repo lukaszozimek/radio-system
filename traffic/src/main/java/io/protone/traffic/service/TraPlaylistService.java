@@ -11,6 +11,7 @@ import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.repository.TraPlaylistRepository;
 import io.protone.traffic.service.mediaplan.TraPlaylistMediaPlanMappingService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,8 +86,8 @@ public class TraPlaylistService {
     }
 
     @Transactional
-    public List<TraPlaylist> getAllPlaylistList(String networkshortcut, String channelShortcut, Pageable pageable) {
-        return traPlaylistRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkshortcut, channelShortcut, pageable);
+    public Slice<TraPlaylist> getAllPlaylistList(String networkshortcut, String channelShortcut, Pageable pageable) {
+        return traPlaylistRepository.findSliceByNetwork_ShortcutAndChannel_Shortcut(networkshortcut, channelShortcut, pageable);
     }
 
 

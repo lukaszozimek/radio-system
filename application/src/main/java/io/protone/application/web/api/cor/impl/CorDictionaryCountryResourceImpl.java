@@ -2,6 +2,7 @@ package io.protone.application.web.api.cor.impl;
 
 import io.protone.application.web.api.cor.CorDictionaryCountryResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorCountryDTO;
 import io.protone.core.domain.CorCountry;
 import io.protone.core.domain.CorNetwork;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,8 +52,8 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
         corCountry = corCountryRepository.save(corCountry);
         CorCountryDTO result = corCountryMapper.DB2DTO(corCountry);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("corCountry", result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert("corCountry", result.getId().toString()))
+                .body(result);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
         corCountry = corCountryRepository.save(corCountry);
         CorCountryDTO result = corCountryMapper.DB2DTO(corCountry);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/country/" + result.getId()))
-            .body(result);
+                .body(result);
     }
 
     @Override
@@ -81,13 +83,14 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
         log.debug("REST request to get CorCountry : {}", networkShortcut);
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        List<CorCountry> corCurrencies = corCountryRepository.findByNetwork(corNetwork);
-        List<CorCountryDTO> confCurrencyPTS = corCountryMapper.DBs2DTOs(corCurrencies);
+        Slice<CorCountry> corCurrencies = corCountryRepository.findSliceByNetwork(corNetwork, pagable);
+        List<CorCountryDTO> confCurrencyPTS = corCountryMapper.DBs2DTOs(corCurrencies.getContent());
         return Optional.ofNullable(confCurrencyPTS)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(corCurrencies),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(PaginationUtil.generateSliceHttpHeaders(corCurrencies), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -98,9 +101,9 @@ public class CorDictionaryCountryResourceImpl implements CorDictionaryCountryRes
         CorCountry corTax = corCountryRepository.findOneByIdAndNetwork(id, corNetwork);
         CorCountryDTO confTaxPTS = corCountryMapper.DB2DTO(corTax);
         return Optional.ofNullable(confTaxPTS)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

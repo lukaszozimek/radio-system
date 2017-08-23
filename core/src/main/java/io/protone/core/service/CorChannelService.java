@@ -7,6 +7,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +15,6 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 16.01.2017.
@@ -31,8 +31,8 @@ public class CorChannelService {
     @Inject
     private CorImageItemService corImageItemService;
 
-    public List<CorChannel> findAllChannel(String network, Pageable pageable) {
-        return channelRepository.findAllByNetwork_Shortcut(network, pageable);
+    public Slice<CorChannel> findAllChannel(String network, Pageable pageable) {
+        return channelRepository.findSliceByNetwork_Shortcut(network, pageable);
     }
 
     public CorChannel findChannel(String networkShortcut, String channelShortcut) {

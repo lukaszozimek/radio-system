@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -64,18 +65,18 @@ public class TraPriceServiceTest {
         traPrice = traPriceRepository.save(traPrice);
 
         //then
-        List<TraPrice> fetchedEntity = traPriceService.getAllPrice(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraPrice> fetchedEntity = traPriceService.getAllPrice(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traPrice.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traPrice.getName(), fetchedEntity.get(0).getName());
-        assertEquals(traPrice.getNetwork(), fetchedEntity.get(0).getNetwork());
-        assertNotNull(fetchedEntity.get(0).getLenghtMultiplier());
-        assertNotNull(fetchedEntity.get(0).getLenghtMultiplier().keySet());
-        assertNotEquals(0, fetchedEntity.get(0).getLenghtMultiplier().keySet().size());
-        assertNotNull(fetchedEntity.get(0).getLenghtMultiplier().keySet().stream().findAny().get());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traPrice.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traPrice.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(traPrice.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent().get(0).getLenghtMultiplier());
+        assertNotNull(fetchedEntity.getContent().get(0).getLenghtMultiplier().keySet());
+        assertNotEquals(0, fetchedEntity.getContent().get(0).getLenghtMultiplier().keySet().size());
+        assertNotNull(fetchedEntity.getContent().get(0).getLenghtMultiplier().keySet().stream().findAny().get());
 
     }
 

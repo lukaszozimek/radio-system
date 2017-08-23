@@ -15,6 +15,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +23,6 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 17.01.2017.
@@ -48,8 +48,8 @@ public class CrmCustomerService {
     @Inject
     private CorImageItemService corImageItemService;
 
-    public List<CrmAccount> getAllCustomers(String corNetwork, Pageable pageable) {
-        return accountRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<CrmAccount> getAllCustomers(String corNetwork, Pageable pageable) {
+        return accountRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public CrmAccount saveCustomer(CrmAccount crmAccount) {
@@ -96,7 +96,7 @@ public class CrmCustomerService {
         return null;
     }
 
-    public List<CrmTask> getTasksAssociatedWithAccount(String shortcut, String corNetwork, Pageable pageable) {
+    public Slice<CrmTask> getTasksAssociatedWithAccount(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskService.findAllByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
@@ -128,7 +128,7 @@ public class CrmCustomerService {
         return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 }

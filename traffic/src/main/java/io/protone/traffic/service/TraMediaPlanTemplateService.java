@@ -4,11 +4,11 @@ package io.protone.traffic.service;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
 import io.protone.traffic.repository.TraMediaPlanTemplateRepository;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 15/05/2017.
@@ -34,8 +34,8 @@ public class TraMediaPlanTemplateService {
         return traMediaPlanTemplateRepository.save(traMediaPlanTemplate);
     }
 
-    public List<TraMediaPlanTemplate> findAllMediaPlanTemplates(String networkShortcut, Pageable pagable) {
-        return traMediaPlanTemplateRepository.findAllByNetwork_Shortcut(networkShortcut, pagable);
+    public Slice<TraMediaPlanTemplate> findAllMediaPlanTemplates(String networkShortcut, Pageable pagable) {
+        return traMediaPlanTemplateRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
     }
 
 

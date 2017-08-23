@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -65,12 +66,12 @@ public class CrmLeadServiceTest {
         crmLeadRepository.saveAndFlush(crmLead);
 
         //then
-        List<CrmLead> allCustomers = crmLeadService.getAllLeads(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<CrmLead> allCustomers = crmLeadService.getAllLeads(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(allCustomers);
-        assertEquals(1, allCustomers.size());
-        assertNotNull(allCustomers.get(0).getId());
+        assertNotNull(allCustomers.getContent());
+        assertEquals(1, allCustomers.getContent().size());
+        assertNotNull(allCustomers.getContent().get(0).getId());
     }
 
     @Test
@@ -247,12 +248,12 @@ public class CrmLeadServiceTest {
         CrmTask crmTask1 = crmLeadService.saveOrUpdateTaskAssociatiedWithLead(crmTask, crmLead.getShortname(), crmLead.getNetwork().getShortcut());
 
         //then
-        List<CrmTask> localTask = crmLeadService.getTasksAssociatedWithLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut(), new PageRequest(0, 10));
+        Slice<CrmTask> localTask = crmLeadService.getTasksAssociatedWithLead(crmLead.getShortname(), crmLead.getNetwork().getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(localTask);
-        assertEquals(1, localTask.size());
-        assertEquals(crmTask1.getId(), localTask.get(0).getId());
+        assertNotNull(localTask.getContent());
+        assertEquals(1, localTask.getContent().size());
+        assertEquals(crmTask1.getId(), localTask.getContent().get(0).getId());
     }
 
     @Test

@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmDiscountResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmDiscount;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,13 +52,15 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
         log.debug("REST request to get all TraDiscount");
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
-        List<CrmDiscount> traDiscount = traDiscountRepository.findByNetwork(corNetwork);
-        List<CrmDiscountDTO> traDiscountPT = crmDiscountMapper.DBs2DTOs(traDiscount);
+        Slice<CrmDiscount> traDiscount = traDiscountRepository.findSliceByNetwork(corNetwork, pagable);
+        List<CrmDiscountDTO> traDiscountPT = crmDiscountMapper.DBs2DTOs(traDiscount.getContent());
         return Optional.ofNullable(traDiscountPT)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(traDiscount),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(traDiscount), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -69,10 +73,10 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
         CrmDiscount traDiscount = traDiscountRepository.findOneByIdAndNetwork(id, corNetwork);
         CrmDiscountDTO traDiscountPt = crmDiscountMapper.DB2DTO(traDiscount);
         return Optional.ofNullable(traDiscountPt)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -88,8 +92,8 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
         traDiscount = traDiscountRepository.save(traDiscount);
         CrmDiscountDTO result = crmDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("TraDiscount", result.getId().toString()))
-            .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert("TraDiscount", result.getId().toString()))
+                .body(result);
     }
 
     @Override
@@ -104,7 +108,7 @@ public class CrmDiscountResourceImpl implements CrmDiscountResource {
         traDiscount = traDiscountRepository.save(traDiscount);
         CrmDiscountDTO result = crmDiscountMapper.DB2DTO(traDiscount);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/traffic/dictionary/discount/" + result.getId()))
-            .body(result);
+                .body(result);
     }
 
     @Override

@@ -4,6 +4,7 @@ package io.protone.crm.repostiory;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmOpportunity;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface CrmOpportunityRepository extends JpaRepository<CrmOpportunity, 
 
     void deleteByNameAndNetwork(String name, CorNetwork network);
 
-    List<CrmOpportunity> findAllByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<CrmOpportunity> findSliceByNetwork_Shortcut(String network, Pageable pageable);
 
     CrmOpportunity findOneByNameAndNetwork(String name, CorNetwork network);
 

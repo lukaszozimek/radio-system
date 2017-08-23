@@ -4,7 +4,6 @@ package io.protone.traffic.service;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.traffic.domain.TraBlockConfiguration;
 import io.protone.traffic.repository.TraBlockConfigurationRepository;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * Created by lukaszozimek on 15/05/2017.
  */
 @Service
-public class  TraBlockConfigurationService {
+public class TraBlockConfigurationService {
 
     @Inject
     private TraBlockConfigurationRepository traBlockConfigurationRepository;
@@ -35,8 +34,8 @@ public class  TraBlockConfigurationService {
         return traBlockConfigurationRepository.saveAndFlush(traBlockConfiguration);
     }
 
-    public List<TraBlockConfiguration> getAllBlockConfigurations(String networkShortcut, Pageable pagable) {
-        return traBlockConfigurationRepository.findAllByNetwork_Shortcut(networkShortcut, pagable);
+    public List<TraBlockConfiguration> getAllBlockConfigurations(String networkShortcut, String channelShortcut) {
+        return traBlockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut);
     }
 
     public List<TraBlockConfiguration> getAllBlockConfigurationsByDay(String networkShortcut, CorDayOfWeekEnum day) {

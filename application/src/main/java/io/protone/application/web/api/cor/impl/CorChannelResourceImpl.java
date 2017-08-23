@@ -3,6 +3,7 @@ package io.protone.application.web.api.cor.impl;
 
 import io.protone.application.web.api.cor.CorChannelResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorChannelDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -14,6 +15,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -107,9 +109,9 @@ public class CorChannelResourceImpl implements CorChannelResource {
     public ResponseEntity<List<CorChannelDTO>> getAllChannelsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CORChannels");
-        List<CorChannel> corChannels = channelService.findAllChannel(networkShortcut, pagable);
-        return ResponseEntity.ok()
-                .body(corChannelMapper.DBs2DTOs(corChannels));
+        Slice<CorChannel> corChannels = channelService.findAllChannel(networkShortcut, pagable);
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(corChannels))
+                .body(corChannelMapper.DBs2DTOs(corChannels.getContent()));
     }
 
     @Override

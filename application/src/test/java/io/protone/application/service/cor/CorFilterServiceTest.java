@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -94,14 +95,14 @@ public class CorFilterServiceTest {
         CorFilter corFilter = new CorFilter().name("test").value("test").type(Channel).network(corNetwork).user(corUser);
         CorFilter entity = corFilterRepository.saveAndFlush(corFilter);
 
-        List<CorFilter> fetchedEntity = corFilterService.findAll(corNetwork.getShortcut(), Channel, new PageRequest(0, 10));
+        Slice<CorFilter> fetchedEntity = corFilterService.findAll(corNetwork.getShortcut(), Channel, new PageRequest(0, 10));
 
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(entity.getId(), fetchedEntity.get(0).getId());
-        assertEquals(entity.getName(), fetchedEntity.get(0).getName());
-        assertEquals(entity.getType(), fetchedEntity.get(0).getType());
-        assertEquals(entity.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(entity.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(entity.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(entity.getType(), fetchedEntity.getContent().get(0).getType());
+        assertEquals(entity.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 

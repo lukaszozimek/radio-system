@@ -4,6 +4,7 @@ package io.protone.library.repository;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibLibrary;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public interface LibLibraryRepository extends JpaRepository<LibLibrary, Long> {
 
     List<LibLibrary> findByNetwork(CorNetwork network);
 
-    List<LibLibrary> findAllByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<LibLibrary> findSliceByNetwork_Shortcut(String network, Pageable pageable);
 
-    List<LibLibrary> findAllByNetwork_ShortcutAndChannels_ShortcutIn(String network, String corChannel, Pageable pageable);
+    Slice<LibLibrary> findSliceByNetwork_ShortcutAndChannels_ShortcutIn(String network, String corChannel, Pageable pageable);
 
     void deleteByShortcutAndNetwork_Shortcut(String shortcut, String network);
 
