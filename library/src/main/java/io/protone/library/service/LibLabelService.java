@@ -3,6 +3,8 @@ package io.protone.library.service;
 
 import io.protone.library.domain.LibLabel;
 import io.protone.library.repository.LibLabelRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,4 +29,20 @@ public class LibLabelService {
         return Optional.empty();
     }
 
+    public LibLabel createOrUpdateLabel(LibLabel entity) {
+        return null;
+    }
+
+    public Slice<LibLabel> findLabels(String networkShortcut, Pageable pagable) {
+        return libLabelRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+    }
+
+    public void deleteLabel(Long id, String networkShortcut) {
+
+
+    }
+
+    public LibLabel findLabel(String networkShortcut, Long id) {
+        return libLabelRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
+    }
 }

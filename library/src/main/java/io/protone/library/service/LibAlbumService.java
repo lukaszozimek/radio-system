@@ -11,6 +11,8 @@ import io.protone.library.repository.LibAlbumRepository;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,5 +73,20 @@ public class LibAlbumService {
         Set<CorImageItem> coverBook = corImageItemService.saveImageItems(booklet);
         libAlbum.mainImage(corImageItem).cover(coverBook);
         return libAlbumRepository.saveAndFlush(libAlbum);
+    }
+
+    public LibAlbum saveOrUpdate(LibAlbum entity) {
+        return null;
+    }
+
+    public Slice<LibAlbum> findAlbums(String networkShortcut, Pageable pagable) {
+        return libAlbumRepository.findSliceByNetwork_Shortcut(networkShortcut,pagable);
+    }
+
+    public void deleteAlbum(Long id, String networkShortcut) {
+    }
+
+    public LibAlbum findAlbum(String networkShortcut, Long id) {
+        return libAlbumRepository.findOneByIdAndNetwork_Shortcut(id,networkShortcut);
     }
 }

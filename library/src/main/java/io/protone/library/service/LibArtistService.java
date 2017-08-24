@@ -10,6 +10,8 @@ import io.protone.library.repository.LibArtistRepository;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,5 +51,25 @@ public class LibArtistService {
         CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
         libArtist.mainImage(corImageItem);
         return libArtistRepository.saveAndFlush(libArtist);
+    }
+
+    public LibArtist createOrUpdateArtist(LibArtist entity) {
+        return null;
+    }
+
+    public LibArtist createOrUpdateArtistWithImage(LibArtist entity, MultipartFile cover) throws TikaException, IOException, SAXException {
+        return save(entity, cover);
+    }
+
+    public Slice<LibArtist> findArtists(String networkShortcut, Pageable pagable) {
+        return libArtistRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+    }
+
+    public void deleteArtist(Long id, String networkShortcut) {
+
+    }
+
+    public LibArtist findArtist(String networkShortcut, Long id) {
+        return libArtistRepository.findOneByIdAndNetwork_Shortcut(id,networkShortcut);
     }
 }
