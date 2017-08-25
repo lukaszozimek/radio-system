@@ -1,18 +1,16 @@
-package io.protone.application.web.api.label.impl;
+package io.protone.application.web.api.library.impl;
 
 
 import io.protone.application.web.api.library.LibLabelResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
-import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorNetworkService;
-
 import io.protone.library.api.dto.LibLabelDTO;
 import io.protone.library.domain.LibLabel;
 import io.protone.library.mapper.LibLabelMapper;
 import io.protone.library.service.LibLabelService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
@@ -73,7 +72,7 @@ public class LibLabelResourceImpl implements LibLabelResource {
 
     @Override
     public ResponseEntity<LibLabelDTO> createLabelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                            @ApiParam(value = "labelDTO", required = true) @Valid @RequestPart("labelDTO") LibLabelDTO labelDTO) throws URISyntaxException, TikaException, IOException, SAXException {
+                                                            @ApiParam(value = "labelDTO", required = true) @Valid @RequestBody LibLabelDTO labelDTO) throws URISyntaxException, TikaException, IOException, SAXException {
         log.debug("REST request to create label: {}", labelDTO);
         if (labelDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("libLabel", "idexists", "A new libLabel cannot already have an ID")).body(null);

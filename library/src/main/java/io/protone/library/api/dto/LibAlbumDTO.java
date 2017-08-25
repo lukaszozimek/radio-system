@@ -1,10 +1,11 @@
 package io.protone.library.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -13,22 +14,16 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibAlbumDTO {
-    @JsonProperty("albumType")
+public class LibAlbumDTO implements Serializable {
+
     private AlbumTypeEnum albumType = null;
-    @JsonProperty("artistId")
+
     private Long artistId = null;
-    @JsonProperty("coverId")
-    private Long coverId = null;
-    @JsonProperty("description")
     private String description = null;
-    @JsonProperty("id")
     private Long id = null;
-    @JsonProperty("labelId")
     private Long labelId = null;
-    @JsonProperty("name")
+    @NotNull
     private String name = null;
-    @JsonProperty("releaseDate")
     private LocalDate releaseDate = null;
 
     private String publicUrl = null;
@@ -71,8 +66,8 @@ public class LibAlbumDTO {
         this.artistId = artistId;
     }
 
-    public LibAlbumDTO coverId(Long coverId) {
-        this.coverId = coverId;
+    public LibAlbumDTO coverId(String coverId) {
+        this.publicUrl = coverId;
         return this;
     }
 
@@ -82,12 +77,12 @@ public class LibAlbumDTO {
      * @return coverId
      **/
     @ApiModelProperty(value = "")
-    public Long getCoverId() {
-        return coverId;
+    public String getCoverId() {
+        return publicUrl;
     }
 
-    public void setCoverId(Long coverId) {
-        this.coverId = coverId;
+    public void setCoverId(String coverId) {
+        this.publicUrl = coverId;
     }
 
     public LibAlbumDTO description(String description) {
@@ -209,7 +204,7 @@ public class LibAlbumDTO {
         LibAlbumDTO libAlbumDTO = (LibAlbumDTO) o;
         return Objects.equals(this.albumType, libAlbumDTO.albumType) &&
                 Objects.equals(this.artistId, libAlbumDTO.artistId) &&
-                Objects.equals(this.coverId, libAlbumDTO.coverId) &&
+                Objects.equals(this.publicUrl, libAlbumDTO.publicUrl) &&
                 Objects.equals(this.description, libAlbumDTO.description) &&
                 Objects.equals(this.id, libAlbumDTO.id) &&
                 Objects.equals(this.labelId, libAlbumDTO.labelId) &&
@@ -219,7 +214,7 @@ public class LibAlbumDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(albumType, artistId, coverId, description, id, labelId, name, releaseDate);
+        return Objects.hash(albumType, artistId, publicUrl, description, id, labelId, name, releaseDate);
     }
 
     @Override
@@ -229,7 +224,7 @@ public class LibAlbumDTO {
 
         sb.append("    albumType: ").append(toIndentedString(albumType)).append("\n");
         sb.append("    artistId: ").append(toIndentedString(artistId)).append("\n");
-        sb.append("    coverId: ").append(toIndentedString(coverId)).append("\n");
+        sb.append("    publicUrl: ").append(toIndentedString(publicUrl)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    labelId: ").append(toIndentedString(labelId)).append("\n");

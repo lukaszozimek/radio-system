@@ -3,8 +3,6 @@ package io.protone.application.web.api.library;
 
 import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.api.dto.LibArtistDTO;
-import io.protone.library.api.dto.LibArtistDTO;
-import io.protone.library.api.dto.LibLibraryDTO;
 import io.swagger.annotations.*;
 import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +46,7 @@ public interface LibArtistResource {
             method = RequestMethod.POST)
     ResponseEntity<LibArtistDTO> updateArtistWithImageUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                 @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
-                                                                @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibArtistDTO libraryDTO,
+                                                                @ApiParam(value = "libArtistDTO", required = true) @Valid @RequestPart("libArtistDTO") LibArtistDTO libArtistDTO,
                                                                 @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
 
     ) throws URISyntaxException, TikaException, IOException, SAXException;
@@ -60,7 +58,7 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/artist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/artist",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<LibArtistDTO>> getAllArtistsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -74,11 +72,11 @@ public interface LibArtistResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibArtistDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibArtistDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibArtistDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/artist",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/artist",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibArtistDTO> createArtistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                       @ApiParam(value = "libraryDTO", required = true) @Valid @RequestPart("libraryDTO") LibArtistDTO libraryDTO,
+                                                       @ApiParam(value = "libArtistDTO", required = true) @Valid @RequestPart("libArtistDTO") LibArtistDTO libArtistDTO,
                                                        @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
     ) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException;
 

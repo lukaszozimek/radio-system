@@ -17,6 +17,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -189,5 +191,79 @@ public class LibArtistServiceTest {
         libArtist.network(corNetwork);
         LibArtist newOne = libArtistService.save(libArtist, logo);
         assertNotNull(newOne.getMainImage());
+    }
+
+    @Test
+    public void shouldGetAllCompany() throws Exception {
+        //when
+        LibArtist libArtist = factory.manufacturePojo(LibArtist.class);
+        libArtist.setNetwork(corNetwork);
+        libArtist = libArtistRepository.save(libArtist);
+
+        //then
+        Slice<LibArtist> fetchedEntity = libArtistService.findArtists(corNetwork.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(libArtist.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(libArtist.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(libArtist.getDescription(), fetchedEntity.getContent().get(0).getDescription());
+        assertEquals(libArtist.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+
+
+    }
+
+    @Test
+    public void shouldSaveCompany() throws Exception {
+        //when
+        LibArtist libArtist = factory.manufacturePojo(LibArtist.class);
+
+        libArtist.setNetwork(corNetwork);
+
+        //then
+        LibArtist fetchedEntity = libArtistService.createOrUpdateArtist(libArtist);
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
+        assertNotNull(libArtist.getName());
+        assertNotNull(libArtist.getDescription());
+        assertEquals(libArtist.getNetwork(), fetchedEntity.getNetwork());
+    }
+
+    @Test
+    public void shouldDeleteCompany() throws Exception {
+        //when
+        LibArtist libArtist = factory.manufacturePojo(LibArtist.class);
+
+        libArtist.setNetwork(corNetwork);
+        libArtist = libArtistRepository.save(libArtist);
+        //then
+        libArtistService.deleteArtist(libArtist.getId(), corNetwork.getShortcut());
+        LibArtist fetchedEntity = libArtistService.findArtist(corNetwork.getShortcut(), libArtist.getId());
+
+        //assert
+        assertNull(fetchedEntity);
+    }
+
+    @Test
+    public void shouldGetCompany() throws Exception {
+        //when
+        LibArtist libArtist = factory.manufacturePojo(LibArtist.class);
+        libArtist.setNetwork(corNetwork);
+        libArtist = libArtistRepository.save(libArtist);
+
+        //then
+        LibArtist fetchedEntity = libArtistService.findArtist(corNetwork.getShortcut(), libArtist.getId());
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
+        assertEquals(libArtist.getId(), fetchedEntity.getId());
+        assertEquals(libArtist.getName(), fetchedEntity.getName());
+        assertEquals(libArtist.getDescription(), fetchedEntity.getDescription());
+        assertEquals(libArtist.getNetwork(), fetchedEntity.getNetwork());
     }
 }

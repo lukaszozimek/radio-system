@@ -3,7 +3,6 @@ package io.protone.application.web.api.library;
 
 import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.api.dto.LibAlbumDTO;
-import io.protone.library.api.dto.LibLibraryDTO;
 import io.swagger.annotations.*;
 import org.apache.tika.exception.TikaException;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +58,7 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/album",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<LibAlbumDTO>> getAllAlbumsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -73,7 +72,7 @@ public interface LibAlbumResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibAlbumDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibAlbumDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibAlbumDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/album",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/album",
             produces = {"application/json"},
             method = RequestMethod.POST)
     ResponseEntity<LibAlbumDTO> createAlbumUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

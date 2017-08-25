@@ -30,7 +30,6 @@ import static io.protone.core.constans.ServiceConstants.NO_DATA;
  * Created by lukaszozimek on 14/03/2017.
  */
 @Service
-@Transactional
 public class LibAlbumService {
 
     private final Logger log = LoggerFactory.getLogger(LibAlbumService.class);
@@ -44,6 +43,7 @@ public class LibAlbumService {
     @Inject
     private CorImageItemService corImageItemService;
 
+    @Transactional
     public LibAlbum findOrSaveOne(String name, String albumArtistName, CorNetwork network) {
 
         LibArtist libArtist = libArtistService.findOrSaveOne(albumArtistName, network);
@@ -66,27 +66,40 @@ public class LibAlbumService {
         return libAlbumRepository.saveAndFlush(new LibAlbum().name(NO_DATA).albumType(LibAlbumTypeEnum.AT_ALBUM).network(network));
     }
 
+    @Transactional
     public LibAlbum save(LibAlbum libAlbum, MultipartFile mainImage, MultipartFile[] booklet) throws IOException, TikaException, SAXException {
-        log.debug("Persisting CorImageItem mainImage {}", mainImage.getOriginalFilename());
-        CorImageItem corImageItem = corImageItemService.saveImageItem(mainImage);
-        log.debug("Persisting CorImageItem booklet");
-        Set<CorImageItem> coverBook = corImageItemService.saveImageItems(booklet);
-        libAlbum.mainImage(corImageItem).cover(coverBook);
+        CorImageItem corImageItem;
+        Set<CorImageItem> coverBook;
+        if (mainImage != null) {
+            log.debug("Persisting CorImageItem mainImage {}", mainImage.getOriginalFilename());
+            corImageItem = corImageItemService.saveImageItem(mainImage);
+            libAlbum.mainImage(corImageItem);
+        }
+        if (booklet != null) {
+            log.debug("Persisting CorImageItem booklet");
+            coverBook = corImageItemService.saveImageItems(booklet);
+            libAlbum.cover(coverBook);
+        }
         return libAlbumRepository.saveAndFlush(libAlbum);
     }
 
+    @Transactional
     public LibAlbum saveOrUpdate(LibAlbum entity) {
-        return null;
+        return libAlbumRepository.saveAndFlush(entity);
     }
 
+    @Transactional
     public Slice<LibAlbum> findAlbums(String networkShortcut, Pageable pagable) {
-        return libAlbumRepository.findSliceByNetwork_Shortcut(networkShortcut,pagable);
+        return libAlbumRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
     }
 
+    @Transactional
     public void deleteAlbum(Long id, String networkShortcut) {
+        libAlbumRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
     }
 
+    @Transactional
     public LibAlbum findAlbum(String networkShortcut, Long id) {
-        return libAlbumRepository.findOneByIdAndNetwork_Shortcut(id,networkShortcut);
+        return libAlbumRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface LibArtistMapper {
 
-    @Mapping(source = "mainImage.publicUrl",target = "publicUrl")
+    @Mapping(source = "mainImage.publicUrl", target = "publicUrl")
     LibArtistDTO DB2DTO(LibArtist db);
 
     List<LibArtistDTO> DBs2DTOs(List<LibArtist> dbs);
@@ -41,27 +41,33 @@ public interface LibArtistMapper {
 
 
     default LibArtistDTO.TypeEnum mapLibArtistPT_TypeEnum(LibArtistTypeEnum value) {
-
-        if (value.compareTo(LibArtistTypeEnum.AT_BAND) == 0)
-            return LibArtistDTO.TypeEnum.BAND;
-        else if (value.compareTo(LibArtistTypeEnum.AT_CHOIR) == 0)
-            return LibArtistDTO.TypeEnum.CHOIR;
-        else if (value.compareTo(LibArtistTypeEnum.AT_PERSON) == 0)
-            return LibArtistDTO.TypeEnum.PERSON;
-        else
-            return LibArtistDTO.TypeEnum.OTHER;
+        if (value != null) {
+            if (value.compareTo(LibArtistTypeEnum.AT_BAND) == 0) {
+                return LibArtistDTO.TypeEnum.BAND;
+            } else if (value.compareTo(LibArtistTypeEnum.AT_CHOIR) == 0) {
+                return LibArtistDTO.TypeEnum.CHOIR;
+            } else if (value.compareTo(LibArtistTypeEnum.AT_PERSON) == 0) {
+                return LibArtistDTO.TypeEnum.PERSON;
+            } else {
+                return LibArtistDTO.TypeEnum.OTHER;
+            }
+        }
+        return null;
     }
 
     default LibArtistTypeEnum mapLibArtistTypeEnum(LibArtistDTO.TypeEnum value) {
-
-        if (value.compareTo(LibArtistDTO.TypeEnum.BAND) == 0)
-            return LibArtistTypeEnum.AT_BAND;
-        else if (value.compareTo(LibArtistDTO.TypeEnum.CHOIR) == 0)
-            return LibArtistTypeEnum.AT_CHOIR;
-        else if (value.compareTo(LibArtistDTO.TypeEnum.PERSON) == 0)
-            return LibArtistTypeEnum.AT_PERSON;
-        else
-            return LibArtistTypeEnum.AT_OTHER;
+        if (value != null) {
+            if (value.compareTo(LibArtistDTO.TypeEnum.BAND) == 0) {
+                return LibArtistTypeEnum.AT_BAND;
+            } else if (value.compareTo(LibArtistDTO.TypeEnum.CHOIR) == 0) {
+                return LibArtistTypeEnum.AT_CHOIR;
+            } else if (value.compareTo(LibArtistDTO.TypeEnum.PERSON) == 0) {
+                return LibArtistTypeEnum.AT_PERSON;
+            } else {
+                return LibArtistTypeEnum.AT_OTHER;
+            }
+        }
+        return null;
     }
 
 }

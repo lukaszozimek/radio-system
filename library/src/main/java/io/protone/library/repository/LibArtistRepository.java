@@ -17,4 +17,5 @@ public interface LibArtistRepository extends JpaRepository<LibArtist, Long> {
     Slice<LibArtist> findSliceByNetwork_Shortcut(String networkShortcut, Pageable pagable);
 
     LibArtist findOneByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+    void deleteByIdAndNetwork_Shortcut(Long id, String networkShortcut);
 }

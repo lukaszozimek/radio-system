@@ -1,6 +1,7 @@
-package io.protone.application.web.api.album.impl;
+package io.protone.application.web.api.library.impl;
 
 
+import io.protone.application.web.api.library.LibAlbumResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class LibAlbumResourceImpl {
+public class LibAlbumResourceImpl implements LibAlbumResource {
     private final Logger log = LoggerFactory.getLogger(LibAlbumResourceImpl.class);
 
     @Inject
@@ -43,6 +44,7 @@ public class LibAlbumResourceImpl {
     @Inject
     private CorNetworkService corNetworkService;
 
+    @Override
     public ResponseEntity<LibAlbumDTO> updateAlbumWithOutCoverUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                        @ApiParam(value = "libAlbumDTO", required = true) @Valid @RequestBody LibAlbumDTO libAlbumDTO) throws URISyntaxException, TikaException, IOException, SAXException {
 
@@ -58,20 +60,20 @@ public class LibAlbumResourceImpl {
                 .body(albumDAO);
     }
 
-
+    @Override
     public ResponseEntity<LibAlbumDTO> updateAlbumWithCoverUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                      @ApiParam(value = "id", required = true) @PathVariable("id") Long id,
-                                                                     @ApiParam(value = "albumDTO", required = true) @Valid @RequestPart("albumDTO") LibAlbumDTO albumDTO,
+                                                                     @ApiParam(value = "libAlbumDTO", required = true) @Valid @RequestPart("libAlbumDTO") LibAlbumDTO libAlbumDTO,
                                                                      @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
 
     ) throws URISyntaxException, TikaException, IOException, SAXException {
-        log.debug("REST request to update album: {}", albumDTO);
+        log.debug("REST request to update album: {}", libAlbumDTO);
 
-        if (albumDTO.getId() == null) {
-            return createAlbumUsingPOST(networkShortcut, albumDTO, cover);
+        if (libAlbumDTO.getId() == null) {
+            return createAlbumUsingPOST(networkShortcut, libAlbumDTO, cover);
         }
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
-        LibAlbum entity = libAlbumMapper.DTO2DB(albumDTO, corNetwork);
+        LibAlbum entity = libAlbumMapper.DTO2DB(libAlbumDTO, corNetwork);
         LibAlbum resultDB = libAlbumService.save(entity, cover, null);
         LibAlbumDTO albumDAO = libAlbumMapper.DB2DTO(resultDB);
         return ResponseEntity.ok()
@@ -79,6 +81,7 @@ public class LibAlbumResourceImpl {
     }
 
 
+    @Override
     public ResponseEntity<List<LibAlbumDTO>> getAllAlbumsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
@@ -89,6 +92,7 @@ public class LibAlbumResourceImpl {
     }
 
 
+    @Override
     public ResponseEntity<LibAlbumDTO> createAlbumUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                             @ApiParam(value = "libAlbumDTO", required = true) @Valid @RequestPart("libAlbumDTO") LibAlbumDTO libAlbumDTO,
                                                             @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover
@@ -107,6 +111,7 @@ public class LibAlbumResourceImpl {
     }
 
 
+    @Override
     public ResponseEntity<Void> deleteAlbumUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
 
@@ -116,6 +121,7 @@ public class LibAlbumResourceImpl {
     }
 
 
+    @Override
     public ResponseEntity<LibAlbumDTO> getAlbumUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get album: {}", id);

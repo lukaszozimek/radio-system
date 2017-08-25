@@ -29,19 +29,22 @@ public class LibLabelService {
         return Optional.empty();
     }
 
+    @Transactional
     public LibLabel createOrUpdateLabel(LibLabel entity) {
-        return null;
+        return libLabelRepository.saveAndFlush(entity);
     }
 
+    @Transactional
     public Slice<LibLabel> findLabels(String networkShortcut, Pageable pagable) {
         return libLabelRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
     }
 
+    @Transactional
     public void deleteLabel(Long id, String networkShortcut) {
-
-
+        libLabelRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
     }
 
+    @Transactional
     public LibLabel findLabel(String networkShortcut, Long id) {
         return libLabelRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
     }

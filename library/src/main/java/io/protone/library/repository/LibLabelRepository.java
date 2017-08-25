@@ -15,4 +15,6 @@ public interface LibLabelRepository extends JpaRepository<LibLabel,Long> {
     Slice<LibLabel> findSliceByNetwork_Shortcut(String networkShortcut, Pageable pagable);
 
     LibLabel findOneByIdAndNetwork_Shortcut(Long id, String networkShortcut);
+
+    void deleteByIdAndNetwork_Shortcut(Long id, String networkShortcut);
 }

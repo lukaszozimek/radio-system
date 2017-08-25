@@ -24,7 +24,6 @@ import java.io.IOException;
  * Created by lukaszozimek on 14/03/2017.
  */
 @Service
-@Transactional
 public class LibArtistService {
     private final Logger log = LoggerFactory.getLogger(LibArtistService.class);
 
@@ -34,6 +33,7 @@ public class LibArtistService {
     @Inject
     private CorImageItemService corImageItemService;
 
+    @Transactional
     public LibArtist findOrSaveOne(String name, CorNetwork network) {
         if (name != null && network != null) {
             LibArtist libArtist = libArtistRepository.findOneByNameAndNetwork(name, network);
@@ -47,29 +47,35 @@ public class LibArtistService {
         return null;
     }
 
+    @Transactional
     public LibArtist save(LibArtist libArtist, MultipartFile avatar) throws IOException, TikaException, SAXException {
         CorImageItem corImageItem = corImageItemService.saveImageItem(avatar);
         libArtist.mainImage(corImageItem);
         return libArtistRepository.saveAndFlush(libArtist);
     }
 
+    @Transactional
     public LibArtist createOrUpdateArtist(LibArtist entity) {
-        return null;
+        return libArtistRepository.saveAndFlush(entity);
     }
 
+    @Transactional
     public LibArtist createOrUpdateArtistWithImage(LibArtist entity, MultipartFile cover) throws TikaException, IOException, SAXException {
         return save(entity, cover);
     }
 
+    @Transactional
     public Slice<LibArtist> findArtists(String networkShortcut, Pageable pagable) {
         return libArtistRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
     }
 
+    @Transactional
     public void deleteArtist(Long id, String networkShortcut) {
-
+        libArtistRepository.deleteByIdAndNetwork_Shortcut(id, networkShortcut);
     }
 
+    @Transactional
     public LibArtist findArtist(String networkShortcut, Long id) {
-        return libArtistRepository.findOneByIdAndNetwork_Shortcut(id,networkShortcut);
+        return libArtistRepository.findOneByIdAndNetwork_Shortcut(id, networkShortcut);
     }
 }
