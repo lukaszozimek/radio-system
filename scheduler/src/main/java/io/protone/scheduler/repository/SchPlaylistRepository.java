@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * A Playlist repository.
  */
 public interface SchPlaylistRepository extends JpaRepository<SchPlaylist, Long> {
+
 }

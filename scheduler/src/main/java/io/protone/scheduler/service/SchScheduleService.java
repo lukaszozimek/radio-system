@@ -4,6 +4,4 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class SchClockService {
-
-}
+public class SchScheduleService{}
