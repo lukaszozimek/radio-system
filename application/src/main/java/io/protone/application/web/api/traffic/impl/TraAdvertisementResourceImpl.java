@@ -4,6 +4,7 @@ package io.protone.application.web.api.traffic.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.application.web.api.traffic.TraAdvertisementResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.core.util.ProtoneObjectMapper;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -93,13 +95,15 @@ public class TraAdvertisementResourceImpl implements TraAdvertisementResource {
     public ResponseEntity<List<TraAdvertisementDTO>> getAllAdvertisementsUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraAdvertisement, for Network: {}", networkShortcut);
-        List<TraAdvertisement> entity = traAdvertisementService.getAllAdvertisement(networkShortcut, pagable);
-        List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity);
+        Slice<TraAdvertisement> entity = traAdvertisementService.getAllAdvertisement(networkShortcut, pagable);
+        List<TraAdvertisementDTO> response = traAdvertisementMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
                         HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 
     @Override

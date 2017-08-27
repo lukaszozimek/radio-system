@@ -22,11 +22,21 @@
             <column name="paid" type="boolean">
                 <constraints nullable="true"/>
             </column>
+            <column name="discount_per_order" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="discount_per_invoice" type="boolean">
+                <constraints nullable="true"/>
+            </column>
 
             <column name="price" type="decimal(10,2)">
                 <constraints nullable="true"/>
             </column>
 
+            <column name="custom_discount" type="integer">
+                <constraints nullable="true"/>
+
+            </column>
             <column name="payment_day" type="date">
                 <constraints nullable="true"/>
             </column>

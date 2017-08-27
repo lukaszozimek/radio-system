@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmCustomerTaskCommentResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmTaskCommentDTO;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,13 +47,15 @@ public class CrmCustomerTaskCommentResourceImpl implements CrmCustomerTaskCommen
                                                                                    @ApiParam(value = "taskId", required = true) @PathVariable("taskId") Long taskId,
                                                                                    @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmAccount CrmTask, for CrmAccount: {} and Network: {}", shortName, networkShortcut);
-        List<CrmTaskComment> entities = crmCustomerService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
-        List<CrmTaskCommentDTO> response = crmTaskCommentMapper.DBs2DTOs(entities);
+        Slice<CrmTaskComment> entities = crmCustomerService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
+        List<CrmTaskCommentDTO> response = crmTaskCommentMapper.DBs2DTOs(entities.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entities),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entities), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -68,7 +72,7 @@ public class CrmCustomerTaskCommentResourceImpl implements CrmCustomerTaskCommen
         CrmTaskComment entity = crmCustomerService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/customer/" + shortName + "/task/" + taskId + "/" + "comment/" + response.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -97,10 +101,10 @@ public class CrmCustomerTaskCommentResourceImpl implements CrmCustomerTaskCommen
         CrmTaskComment entity = crmCustomerService.getTaskCommentAssociatedWithTask(networkShortcut, taskId, id);
         CrmTaskCommentDTO response = crmTaskCommentMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,6 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
 @Service
 @Transactional
@@ -42,8 +42,8 @@ public class LibLibraryService {
     @Inject
     private CorImageItemService corImageItemService;
 
-    public List<LibLibrary> findLibraries(String networkShortcut, Pageable pageable) {
-        return libraryRepository.findAllByNetwork_Shortcut(networkShortcut, pageable);
+    public Slice<LibLibrary> findLibraries(String networkShortcut, Pageable pageable) {
+        return libraryRepository.findSliceByNetwork_Shortcut(networkShortcut, pageable);
 
     }
 
@@ -55,8 +55,8 @@ public class LibLibraryService {
         libraryRepository.deleteByShortcutAndNetwork_Shortcut(libraryShortcut, networkShortcut);
     }
 
-    public List<LibLibrary> findLibrariesByChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return libraryRepository.findAllByNetwork_ShortcutAndChannels_ShortcutIn(networkShortcut, channelShortcut, pageable);
+    public Slice<LibLibrary> findLibrariesByChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
+        return libraryRepository.findSliceByNetwork_ShortcutAndChannels_ShortcutIn(networkShortcut, channelShortcut, pageable);
     }
 
     public LibLibrary findLibraryByChannel(String networkShortcut, String channelShortcut, String libraryShortcut) {

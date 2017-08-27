@@ -31,11 +31,11 @@ public class CrmOpportunityDTO implements Serializable {
 
     private String description = null;
 
-    private Long contactId = null;
+    private String contactId = null;
 
-    private Long leadId = null;
+    private String leadId = null;
 
-    private Long accountId = null;
+    private String accountId = null;
 
     private LocalDate lastTry = null;
 
@@ -132,7 +132,7 @@ public class CrmOpportunityDTO implements Serializable {
         this.name = name;
     }
 
-    public CrmOpportunityDTO contactId(Long contact) {
+    public CrmOpportunityDTO contactId(String contact) {
         this.contactId = contact;
         return this;
     }
@@ -143,11 +143,11 @@ public class CrmOpportunityDTO implements Serializable {
      * @return contactId
      **/
     @ApiModelProperty(value = "")
-    public Long getContactId() {
+    public String getContactId() {
         return contactId;
     }
 
-    public void setContactId(Long contactId) {
+    public void setContactId(String contactId) {
         this.contactId = contactId;
     }
 
@@ -167,15 +167,15 @@ public class CrmOpportunityDTO implements Serializable {
      * @return contactId
      **/
     @ApiModelProperty(value = "")
-    public Long getLeadId() {
+    public String getLeadId() {
         return leadId;
     }
 
-    public void setLeadId(Long leadId) {
+    public void setLeadId(String leadId) {
         this.leadId = leadId;
     }
 
-    public CrmOpportunityDTO accountId(Long account) {
+    public CrmOpportunityDTO accountId(String account) {
         this.accountId = account;
         return this;
     }
@@ -186,11 +186,11 @@ public class CrmOpportunityDTO implements Serializable {
      * @return contactId
      **/
     @ApiModelProperty(value = "")
-    public Long getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Long account) {
+    public void setAccountId(String account) {
         this.accountId = account;
     }
 

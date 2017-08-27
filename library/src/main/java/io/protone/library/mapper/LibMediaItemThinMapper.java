@@ -2,7 +2,6 @@ package io.protone.library.mapper;
 
 import io.protone.core.mapper.CorPersonMapper;
 import io.protone.core.mapper.CorPropertyValueMapper;
-import io.protone.library.api.dto.LibMediaItemDTO;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
@@ -26,7 +25,7 @@ public interface LibMediaItemThinMapper {
 
     LibMediaItemThinDTO DB2DTO(LibMediaItem db);
 
-    List<LibMediaItemDTO> DBs2DTOs(List<LibMediaItem> dbs);
+    List<LibMediaItemThinDTO> DBs2DTOs(List<LibMediaItem> dbs);
 
 
     default String map(LibLibrary value) {

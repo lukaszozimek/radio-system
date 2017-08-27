@@ -20,7 +20,7 @@ import java.util.List;
 public interface LibAlbumMapper {
 
     @Mapping(source = "label.id", target = "labelId")
-    @Mapping(source = "mainImage.publicUrl",target = "publicUrl")
+    @Mapping(source = "mainImage.publicUrl", target = "publicUrl")
     @Mapping(source = "artist.id", target = "artistId")
     LibAlbumDTO DB2DTO(LibAlbum db);
 
@@ -74,25 +74,32 @@ public interface LibAlbumMapper {
     }
 
     default LibAlbumDTO.AlbumTypeEnum mapAlbumTypeEnum(LibAlbumTypeEnum value) {
-
-        if (value.compareTo(LibAlbumTypeEnum.AT_ALBUM) == 0)
-            return LibAlbumDTO.AlbumTypeEnum.ALBUM;
-        else if (value.compareTo(LibAlbumTypeEnum.AT_COMPILATION) == 0)
-            return LibAlbumDTO.AlbumTypeEnum.COMPILATION;
-        else if (value.compareTo(LibAlbumTypeEnum.AT_SINGLE) == 0)
-            return LibAlbumDTO.AlbumTypeEnum.SINGLE;
-        else
-            return LibAlbumDTO.AlbumTypeEnum.OTHER;
+        if (value != null) {
+            if (value.compareTo(LibAlbumTypeEnum.AT_ALBUM) == 0) {
+                return LibAlbumDTO.AlbumTypeEnum.ALBUM;
+            } else if (value.compareTo(LibAlbumTypeEnum.AT_COMPILATION) == 0) {
+                return LibAlbumDTO.AlbumTypeEnum.COMPILATION;
+            } else if (value.compareTo(LibAlbumTypeEnum.AT_SINGLE) == 0) {
+                return LibAlbumDTO.AlbumTypeEnum.SINGLE;
+            } else {
+                return LibAlbumDTO.AlbumTypeEnum.OTHER;
+            }
+        }
+        return null;
     }
 
     default LibAlbumTypeEnum mapLibAlbumTypeEnum(LibAlbumDTO.AlbumTypeEnum value) {
-        if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.ALBUM) == 0)
-            return LibAlbumTypeEnum.AT_ALBUM;
-        else if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.COMPILATION) == 0)
-            return LibAlbumTypeEnum.AT_COMPILATION;
-        else if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.SINGLE) == 0)
-            return LibAlbumTypeEnum.AT_SINGLE;
-        else
-            return LibAlbumTypeEnum.AT_OTHER;
+        if (value != null) {
+            if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.ALBUM) == 0) {
+                return LibAlbumTypeEnum.AT_ALBUM;
+            } else if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.COMPILATION) == 0) {
+                return LibAlbumTypeEnum.AT_COMPILATION;
+            } else if (value.compareTo(LibAlbumDTO.AlbumTypeEnum.SINGLE) == 0) {
+                return LibAlbumTypeEnum.AT_SINGLE;
+            } else {
+                return LibAlbumTypeEnum.AT_OTHER;
+            }
+        }
+        return null;
     }
 }

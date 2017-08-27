@@ -3,6 +3,7 @@ package io.protone.application.web.api.traffic.impl;
 
 import io.protone.application.web.api.traffic.TraPlaylistResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
@@ -21,6 +22,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +41,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 14.05.2017.
@@ -112,13 +118,15 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraPlaylist, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        List<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut, channelShortcut, pagable);
-        List<TraPlaylistThinDTO> response = traPlaylistMapper.DBs2ThinDTOs(entity);
+        Slice<TraPlaylist> entity = traPlaylistService.getAllPlaylistList(networkShortcut, channelShortcut, pagable);
+        List<TraPlaylistThinDTO> response = traPlaylistMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
                         HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -176,11 +184,31 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
         String[] header = {"blockName", "timeStart", "timeStop", "mediaItemId", "mediaItemLenght", "mediaItemName"};
 
         csvWriter.writeHeader(header);
-
-        for (TraBlock traBlock : traPlaylist.getPlaylists()) {
-            for (TraEmission traEmission : traBlock.getEmissions()) {
+        List<TraBlock> traBlockList = traPlaylist.getPlaylists().stream().sorted(Comparator.comparingInt(TraBlock::getSequence)).collect(toList());
+        for (TraBlock traBlock : traBlockList) {
+            List<TraEmission> traEmissionList = traBlock.getEmissions().stream().sorted(Comparator.comparingInt(TraEmission::getSequence)).collect(toList());
+            for (TraEmission traEmission : traEmissionList) {
                 TraEmissionCSV emissionCSV = new TraEmissionCSV(traEmission.getBlock().getName(),
-                        traEmission.getTimeStart(), traEmission.getTimeStop(), traEmission.getAdvertiment().getId(), traEmission.getAdvertiment().getLength().longValue(), traEmission.getAdvertiment().getName());
+                        String.format("%02d:%02d:%02d",
+                                TimeUnit.MILLISECONDS.toHours(traEmission.getTimeStart()),
+                                TimeUnit.MILLISECONDS.toMinutes(traEmission.getTimeStart()) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(traEmission.getTimeStart())), // The change is in this line
+                                TimeUnit.MILLISECONDS.toSeconds(traEmission.getTimeStart()) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(traEmission.getTimeStart()))),
+                        String.format("%02d:%02d:%02d",
+                                TimeUnit.MILLISECONDS.toHours(traEmission.getTimeStop()),
+                                TimeUnit.MILLISECONDS.toMinutes(traEmission.getTimeStop()) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(traEmission.getTimeStop())), // The change is in this line
+                                TimeUnit.MILLISECONDS.toSeconds(traEmission.getTimeStop()) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(traEmission.getTimeStop()))),
+                        traEmission.getAdvertiment().getId(),
+                        String.format("%02d:%02d:%02d",
+                                TimeUnit.MILLISECONDS.toHours(traEmission.getAdvertiment().getLength().longValue()),
+                                TimeUnit.MILLISECONDS.toMinutes(traEmission.getAdvertiment().getLength().longValue()) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(traEmission.getAdvertiment().getLength().longValue())), // The change is in this line
+                                TimeUnit.MILLISECONDS.toSeconds(traEmission.getAdvertiment().getLength().longValue()) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(traEmission.getAdvertiment().getLength().longValue()))),
+                        traEmission.getAdvertiment().getName());
                 csvWriter.write(emissionCSV, header);
             }
         }
@@ -218,13 +246,13 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
     public class TraEmissionCSV {
 
         private String blockName;
-        private Long timeStart;
-        private Long timeStop;
+        private String timeStart;
+        private String timeStop;
         private Long mediaItemId;
-        private Long mediaItemLenght;
+        private String mediaItemLenght;
         private String mediaItemName;
 
-        public TraEmissionCSV(String blockName, Long timeStart, Long timeStop, Long mediaItemId, Long mediaItemLenght, String mediaItemName) {
+        public TraEmissionCSV(String blockName, String timeStart, String timeStop, Long mediaItemId, String mediaItemLenght, String mediaItemName) {
             this.blockName = blockName;
             this.timeStart = timeStart;
             this.timeStop = timeStop;
@@ -237,11 +265,11 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
             return blockName;
         }
 
-        public Long getTimeStart() {
+        public String getTimeStart() {
             return timeStart;
         }
 
-        public Long getTimeStop() {
+        public String getTimeStop() {
             return timeStop;
         }
 
@@ -249,7 +277,7 @@ public class TraPlaylistResourceImpl implements TraPlaylistResource {
             return mediaItemId;
         }
 
-        public Long getMediaItemLenght() {
+        public String getMediaItemLenght() {
             return mediaItemLenght;
         }
 

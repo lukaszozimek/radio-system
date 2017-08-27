@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -81,14 +82,14 @@ public class TraInvoiceServiceTest {
         traInvoice = traInvoiceRepository.save(traInvoice);
 
         //then
-        List<TraInvoice> fetchedEntity = traInvoiceService.getAllInvoice(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraInvoice> fetchedEntity = traInvoiceService.getAllInvoice(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traInvoice.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traInvoice.getPaymentDay(), fetchedEntity.get(0).getPaymentDay());
-        assertEquals(traInvoice.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traInvoice.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traInvoice.getPaymentDay(), fetchedEntity.getContent().get(0).getPaymentDay());
+        assertEquals(traInvoice.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -160,14 +161,14 @@ public class TraInvoiceServiceTest {
         traInvoice = traInvoiceRepository.save(traInvoice);
 
         //then
-        List<TraInvoice> fetchedEntity = traInvoiceService.getCustomerInvoice(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraInvoice> fetchedEntity = traInvoiceService.getCustomerInvoice(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traInvoice.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traInvoice.getCustomer(), fetchedEntity.get(0).getCustomer());
-        assertEquals(traInvoice.getPaymentDay(), fetchedEntity.get(0).getPaymentDay());
-        assertEquals(traInvoice.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traInvoice.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traInvoice.getCustomer(), fetchedEntity.getContent().get(0).getCustomer());
+        assertEquals(traInvoice.getPaymentDay(), fetchedEntity.getContent().get(0).getPaymentDay());
+        assertEquals(traInvoice.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
     }
 }

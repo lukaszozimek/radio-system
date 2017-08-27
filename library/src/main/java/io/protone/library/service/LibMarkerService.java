@@ -40,4 +40,22 @@ public class LibMarkerService {
         }
         return Optional.empty();
     }
+
+    public void detachLibMarkers(Set<LibMarker> markers) {
+        if (markers != null && !markers.isEmpty()) {
+            markers.stream().forEach(marker -> {
+                libMarkerRepository.save(marker.mediaItem(null));
+            });
+            libMarkerRepository.flush();
+        }
+    }
+
+    public void deleteMarkers(Set<LibMarker> markers) {
+        if (markers != null && !markers.isEmpty()) {
+            markers.stream().forEach(marker -> {
+                libMarkerRepository.delete(marker);
+            });
+            libMarkerRepository.flush();
+        }
+    }
 }

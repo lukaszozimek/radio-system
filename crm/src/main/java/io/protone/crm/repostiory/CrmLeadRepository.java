@@ -3,6 +3,7 @@ package io.protone.crm.repostiory;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmLead;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface CrmLeadRepository extends JpaRepository<CrmLead, Long> {
 
     List<CrmLead> findByNetwork(CorNetwork network);
 
-    List<CrmLead> findAllByNetwork_Shortcut(String network, Pageable pageable);
+    Slice<CrmLead> findSliceByNetwork_Shortcut(String network, Pageable pageable);
 
     CrmLead findOneByShortnameAndNetwork(String shortName, CorNetwork network);
 

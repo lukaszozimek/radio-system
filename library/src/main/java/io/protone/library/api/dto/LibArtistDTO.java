@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "class io.swagger.codegen.languages.SpringCodegen", date = "2017-01-11T20:29:48.904Z")
 
-public class LibArtistDTO {
+public class LibArtistDTO implements Serializable {
     @JsonProperty("description")
     private String description = null;
 
@@ -20,6 +22,7 @@ public class LibArtistDTO {
     private Long id = null;
 
     @JsonProperty("name")
+    @NotNull
     private String name = null;
     @JsonProperty("type")
     private TypeEnum type = null;

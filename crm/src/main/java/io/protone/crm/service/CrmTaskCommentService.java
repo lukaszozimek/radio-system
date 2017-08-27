@@ -4,10 +4,10 @@ package io.protone.crm.service;
 import io.protone.crm.domain.CrmTaskComment;
 import io.protone.crm.repostiory.CrmTaskCommentRepository;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by lukaszozimek on 15/06/2017.
@@ -22,8 +22,8 @@ public class CrmTaskCommentService {
         return crmTaskCommentRepository.saveAndFlush(crmTaskComment);
     }
 
-    public List<CrmTaskComment> findByCrmTaskId(Long taskId, String networkShortuct, Pageable pageable) {
-        return crmTaskCommentRepository.findAllByTaskComment_IdAndNetwork_Shortcut(taskId, networkShortuct,pageable);
+    public Slice<CrmTaskComment> findByCrmTaskId(Long taskId, String networkShortuct, Pageable pageable) {
+        return crmTaskCommentRepository.findSliceByTaskComment_IdAndNetwork_Shortcut(taskId, networkShortuct,pageable);
     }
 
     public CrmTaskComment findByCrmTaskId(Long commentId, Long taskId, String networkShortuct) {

@@ -27,6 +27,7 @@ public class CrmTaskThinDTO implements Serializable {
     private CoreUserThinDTO lastModifiedBy;
 
     private ZonedDateTime lastModifiedDate;
+
     private CoreUserThinDTO assignedTo = null;
 
     @NotNull

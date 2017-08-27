@@ -3,6 +3,7 @@ package io.protone.application.web.api.traffic.impl;
 
 import io.protone.application.web.api.traffic.TraPriceResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraPriceDTO;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,23 +44,25 @@ public class TraPriceResourceImpl implements TraPriceResource {
 
     @Override
     public ResponseEntity<List<TraPriceDTO>> getAllPriceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                     @ApiParam(value = "pagable", required = true) Pageable pagable) {
+                                                                 @ApiParam(value = "pagable", required = true) Pageable pagable) {
 
 
         log.debug("REST request to get all TraPriceDTO, for Network: {}", networkShortcut);
-        List<TraPrice> entity = traPriceService.getAllPrice(networkShortcut, pagable);
-        List<TraPriceDTO> response = traPriceMapper.DBs2DTOs(entity);
+        Slice<TraPrice> entity = traPriceService.getAllPrice(networkShortcut, pagable);
+        List<TraPriceDTO> response = traPriceMapper.DBs2DTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
                         HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 
 
     @Override
     public ResponseEntity<TraPriceDTO> getPriceUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                            @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+                                                        @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraPriceDTO : {}, for Network: {}", id, networkShortcut);
         TraPrice entity = traPriceService.getPrice(id, networkShortcut);
         TraPriceDTO response = traPriceMapper.DB2DTO(entity);
@@ -71,7 +75,7 @@ public class TraPriceResourceImpl implements TraPriceResource {
 
     @Override
     public ResponseEntity<TraPriceDTO> updatePriceUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                               @ApiParam(value = "discountPT", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException {
+                                                           @ApiParam(value = "discountPT", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException {
         log.debug("REST request to update TraPriceDTO : {}, for Network: {}", traPriceDTO, networkShortcut);
         if (traPriceDTO.getId() == null) {
             return createPriceUsingPOST(networkShortcut, traPriceDTO);
@@ -87,7 +91,7 @@ public class TraPriceResourceImpl implements TraPriceResource {
 
     @Override
     public ResponseEntity<TraPriceDTO> createPriceUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                @ApiParam(value = "traPriceDTO", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException {
+                                                            @ApiParam(value = "traPriceDTO", required = true) @RequestBody TraPriceDTO traPriceDTO) throws URISyntaxException {
         log.debug("REST request to saveCorContact TraPrice : {}, for Network: {}", traPriceDTO, networkShortcut);
         if (traPriceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("TraPrice", "idexists", "A new TraPrice cannot already have an ID")).body(null);
@@ -103,7 +107,7 @@ public class TraPriceResourceImpl implements TraPriceResource {
 
     @Override
     public ResponseEntity<Void> deletePriceUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                         @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
+                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to delete TraPrice : {}", id);
         traPriceService.deletePrice(id, networkShortcut);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("TraPrice", id.toString())).build();

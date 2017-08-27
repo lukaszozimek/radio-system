@@ -2,6 +2,7 @@ package io.protone.traffic.mapper;
 
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
+import io.protone.core.mapper.CorUserMapper;
 import io.protone.traffic.api.dto.TraOrderDTO;
 import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
 import io.protone.traffic.domain.TraCampaign;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertisementMapper.class, TraCustomerMapper.class, TraEmissionMapper.class})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, TraAdvertisementMapper.class, CorUserMapper.class, TraCustomerMapper.class, TraEmissionMapper.class})
 public interface TraOrderMapper {
     @Mapping(source = "customer", target = "customerId")
     @Mapping(source = "status", target = "statusId")

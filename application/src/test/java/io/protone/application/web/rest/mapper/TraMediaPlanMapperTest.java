@@ -90,7 +90,9 @@ public class TraMediaPlanMapperTest {
         TraMediaPlanDTO dto = traMediaPlanMapper.DB2DTO(traMediaPlan);
 
         assertNotNull(dto.getTraCustomerThinDTO());
-        assertNotNull(dto.getMediaPlanPlaylistDTOS());
+        assertNotNull(dto.getTraMediaPlanBlockDTOS());
+        assertNotNull(dto.getTraMediaPlanEmissionDTOS());
+        assertNotNull(dto.getTraMediaPlanPlaylistDateDTOS());
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
         assertNotNull(dto.getMediaItemId());
@@ -106,7 +108,9 @@ public class TraMediaPlanMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getTraCustomerThinDTO());
-            assertNotNull(dto.getMediaPlanPlaylistDTOS());
+            assertNotNull(dto.getTraMediaPlanBlockDTOS());
+            assertNotNull(dto.getTraMediaPlanEmissionDTOS());
+            assertNotNull(dto.getTraMediaPlanPlaylistDateDTOS());
             assertNotNull(dto.getId());
             assertNotNull(dto.getName());
             assertNotNull(dto.getMediaItemId());
@@ -118,8 +122,6 @@ public class TraMediaPlanMapperTest {
     public void DTO2DB() throws Exception {
         TraMediaPlan entity = traMediaPlanMapper.DTO2DB(traMediaPlanDTO, corNetwork, corChannel);
         assertNotNull(entity.getId());
-        assertNotNull(entity.getPlaylists());
-        assertNotEquals(0, entity.getPlaylists().size());
         assertNotNull(entity.getAccount());
         assertNotNull(entity.getName());
         assertNotNull(entity.getMediaItem());
@@ -135,8 +137,6 @@ public class TraMediaPlanMapperTest {
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getId());
-            assertNotNull(entity.getPlaylists());
-            assertNotEquals(0, entity.getPlaylists().size());
             assertNotNull(entity.getAccount());
             assertNotNull(entity.getName());
             assertNotNull(entity.getMediaItem());

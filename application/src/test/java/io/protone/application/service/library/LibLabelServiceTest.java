@@ -13,6 +13,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -20,8 +22,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by lukaszozimek on 05/05/2017.
@@ -54,7 +56,7 @@ public class LibLabelServiceTest {
     }
 
     @Test
-    public void shoudlSaveLibTrack() throws Exception {
+    public void shoudlSaveLibLabel() throws Exception {
         LibLabel libLabel = factory.manufacturePojo(LibLabel.class).network(corNetwork);
 
         Optional<LibLabel> savedLibLabel = libLabelService.saveLibLabel(libLabel);
@@ -65,7 +67,7 @@ public class LibLabelServiceTest {
     }
 
     @Test
-    public void shoudlNotSaveLibTrack() throws Exception {
+    public void shoudlNotSaveLibLabel() throws Exception {
 
         Optional<LibLabel> libLabel = libLabelService.saveLibLabel(null);
 
@@ -110,7 +112,79 @@ public class LibLabelServiceTest {
 
         libArtist = libLabelRepository.saveAndFlush(libArtist);
         libArtist1 = libLabelRepository.saveAndFlush(libArtist1);
+    }
+
+    @Test
+    public void shouldGetAllLabel() throws Exception {
+        //when
+        LibLabel libLabel = factory.manufacturePojo(LibLabel.class);
+        libLabel.setNetwork(corNetwork);
+        libLabel = libLabelRepository.save(libLabel);
+
+        //then
+        Slice<LibLabel> fetchedEntity = libLabelService.findLabels(corNetwork.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(libLabel.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(libLabel.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(libLabel.getDescription(), fetchedEntity.getContent().get(0).getDescription());
+        assertEquals(libLabel.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
 
+    }
+
+    @Test
+    public void shouldSaveLabel() throws Exception {
+        //when
+        LibLabel libLabel = factory.manufacturePojo(LibLabel.class);
+
+        libLabel.setNetwork(corNetwork);
+
+        //then
+        Optional<LibLabel> fetchedEntity = libLabelService.saveLibLabel(libLabel);
+
+        //assert
+        assertNotNull(fetchedEntity.get());
+        assertNotNull(fetchedEntity.get().getId());
+        assertNotNull(fetchedEntity.get().getCreatedBy());
+        assertNotNull(libLabel.getName());
+        assertNotNull(libLabel.getDescription());
+        assertEquals(libLabel.getNetwork(), fetchedEntity.get().getNetwork());
+    }
+
+    @Test
+    public void shouldDeleteLabel() throws Exception {
+        //when
+        LibLabel libLabel = factory.manufacturePojo(LibLabel.class);
+
+        libLabel.setNetwork(corNetwork);
+        libLabel = libLabelRepository.save(libLabel);
+        //then
+        libLabelService.deleteLabel(libLabel.getId(), corNetwork.getShortcut());
+        LibLabel fetchedEntity = libLabelService.findLabel(corNetwork.getShortcut(), libLabel.getId());
+
+        //assert
+        assertNull(fetchedEntity);
+    }
+
+    @Test
+    public void shouldGetLabel() throws Exception {
+        //when
+        LibLabel libLabel = factory.manufacturePojo(LibLabel.class);
+        libLabel.setNetwork(corNetwork);
+        libLabel = libLabelRepository.save(libLabel);
+
+        //then
+        LibLabel fetchedEntity = libLabelService.findLabel(corNetwork.getShortcut(), libLabel.getId());
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
+        assertEquals(libLabel.getId(), fetchedEntity.getId());
+        assertEquals(libLabel.getName(), fetchedEntity.getName());
+        assertEquals(libLabel.getDescription(), fetchedEntity.getDescription());
+        assertEquals(libLabel.getNetwork(), fetchedEntity.getNetwork());
     }
 }

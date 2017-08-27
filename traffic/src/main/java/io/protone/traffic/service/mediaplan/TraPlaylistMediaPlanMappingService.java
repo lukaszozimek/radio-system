@@ -4,9 +4,12 @@ import io.protone.library.domain.LibMediaItem;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.domain.TraMediaPlan;
-import io.protone.traffic.domain.TraMediaPlanPlaylist;
+import io.protone.traffic.domain.TraMediaPlanEmission;
+import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.domain.TraPlaylist;
-import io.protone.traffic.mapper.TraMediaPlanMapperPlaylist;
+import io.protone.traffic.mapper.TraMediaPlanBlockMapper;
+import io.protone.traffic.service.TraMediaPlanEmissionService;
+import io.protone.traffic.service.TraMediaPlanPlaylistDateService;
 import io.protone.traffic.service.TraMediaPlanService;
 import io.protone.traffic.service.TraPlaylistService;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
@@ -28,11 +31,15 @@ import java.util.stream.Collectors;
  */
 @Service
 public class TraPlaylistMediaPlanMappingService {
-    private final Object lockObject = new Object();
     private final Logger log = LoggerFactory.getLogger(TraPlaylistMediaPlanMappingService.class);
-
+    private static final String COM_DEFAULT = "com";
     @Inject
     private TraMediaPlanService traMediaPlanService;
+
+    @Inject
+    private TraMediaPlanEmissionService traMediaPlanEmissionService;
+    @Inject
+    private TraMediaPlanPlaylistDateService traMediaPlanPlaylistDateService;
 
     @Inject
     private TraPlaylistService traPlaylistService;
@@ -41,7 +48,7 @@ public class TraPlaylistMediaPlanMappingService {
     private LibItemService libItemService;
 
     @Inject
-    private TraMediaPlanMapperPlaylist traMediaPlanMapperPlaylistMapper;
+    private TraMediaPlanBlockMapper traMediaPlanMapperPlaylistMapper;
     @Autowired
     @Qualifier("traDefaultMediaPlanMapping")
     private TraMediaPlanMapping traDefaultMediaPlanMapping;
@@ -55,18 +62,23 @@ public class TraPlaylistMediaPlanMappingService {
     private TraMediaPlanMapping traFixedLastPositionMediaPlanMapping;
 
     public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(TraMediaPlanAdvertisementAssigneDTO assigneDTO, String networkShortcut, String channelShortcut) {
-        LibMediaItem traAdvertisement = libItemService.getMediaItem(networkShortcut, "com", assigneDTO.getLibMediaItemIdx());
+        LibMediaItem traAdvertisement = libItemService.getMediaItem(networkShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
+        if (traAdvertisement == null) {
+            return null;
+        }
         TraMediaPlan traMediaPlan = traMediaPlanService.getMediaPlan(assigneDTO.getMediaPlanId(), networkShortcut, channelShortcut);
-        List<LocalDate> playListsDates = traMediaPlan.getPlaylists().stream().map(TraMediaPlanPlaylist::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+        List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, traMediaPlan.getId());
+        List<LocalDate> playListsDates = traMediaPlanPlaylistDates.stream().map(TraMediaPlanPlaylistDate::getPlaylistDate).sorted(Comparator.comparing(LocalDate::toString)).collect(Collectors.toList());
+
         List<TraPlaylist> entiyPlaylists = traPlaylistService.getTraPlaylistListInRange(playListsDates.get(0), playListsDates.get(playListsDates.size() - 1).plusDays(1), networkShortcut, channelShortcut);
-        List<TraPlaylist> mediaPlanPlaylists = traMediaPlanMapperPlaylistMapper.mediaPlanPlaylistsToTraPlaylists(traMediaPlan.getPlaylists());
+        List<TraMediaPlanEmission> traMediaPlanEmissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, traMediaPlan.getId());
         if (assigneDTO.isFirstPostion()) {
-            return traFixedFirstPositionMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanPlaylists, traAdvertisement);
+            return traFixedFirstPositionMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanEmissionList, traAdvertisement);
         }
         if (assigneDTO.isLasPosition()) {
-            return traFixedLastPositionMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanPlaylists, traAdvertisement);
+            return traFixedLastPositionMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanEmissionList, traAdvertisement);
         }
-        return traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, mediaPlanPlaylists, traAdvertisement);
+        return traDefaultMediaPlanMapping.mapToEntityPlaylist(entiyPlaylists, traMediaPlanEmissionList, traAdvertisement);
 
     }
 

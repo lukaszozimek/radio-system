@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -122,13 +123,13 @@ public class TraOrderServiceTest {
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
-        List<TraOrder> fetchedEntity = traOrderService.getAllOrders(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraOrder> fetchedEntity = traOrderService.getAllOrders(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traOrder.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traOrder.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traOrder.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traOrder.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -202,14 +203,14 @@ public class TraOrderServiceTest {
         traOrder = customTraOrderRepository.save(traOrder);
 
         //then
-        List<TraOrder> fetchedEntity = traOrderService.getCustomerOrders(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraOrder> fetchedEntity = traOrderService.getCustomerOrders(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traOrder.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traOrder.getCustomer(), fetchedEntity.get(0).getCustomer());
-        assertEquals(traOrder.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traOrder.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traOrder.getCustomer(), fetchedEntity.getContent().get(0).getCustomer());
+        assertEquals(traOrder.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
     }
 
     @Test(expected = DataIntegrityViolationException.class)

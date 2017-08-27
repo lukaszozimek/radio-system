@@ -3,6 +3,7 @@ package io.protone.traffic.repository;
 
 import io.protone.traffic.domain.TraPlaylist;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +26,7 @@ public interface TraPlaylistRepository extends JpaRepository<TraPlaylist, Long> 
             "left join fetch p.channel as c " +
             "left join fetch p.playlists as b " +
             " where n.shortcut = :network AND c.shortcut = :channelShortcut")
-    List<TraPlaylist> findAllByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("channelShortcut") String channelShortcut, Pageable pageable);
+    Slice<TraPlaylist> findSliceByNetwork_ShortcutAndChannel_Shortcut(@Param("network") String shortcut, @Param("channelShortcut") String channelShortcut, Pageable pageable);
 
     @Query("select p  from TraPlaylist as p " +
             "left join fetch p.network as n " +

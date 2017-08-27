@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -103,25 +104,25 @@ public class TraMediaPlanTemplateServiceTest {
 
         TraMediaPlanTemplate entity = traMediaPlanTemplateRepository.saveAndFlush(traMediaPlanTemplate.network(corNetwork));
 
-        List<TraMediaPlanTemplate> fetchedEntity = traMediaPlanTemplateService.findAllMediaPlanTemplates(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraMediaPlanTemplate> fetchedEntity = traMediaPlanTemplateService.findAllMediaPlanTemplates(corNetwork.getShortcut(), new PageRequest(0, 10));
 
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(entity.getId(), fetchedEntity.get(0).getId());
-        assertEquals(entity.getName(), fetchedEntity.get(0).getName());
-        assertEquals(entity.getBlockStartCell(), fetchedEntity.get(0).getBlockStartCell());
-        assertEquals(entity.getBlockEndCell(), fetchedEntity.get(0).getBlockEndCell());
-        assertEquals(entity.getBlockHourSeparator(), fetchedEntity.get(0).getBlockHourSeparator());
-        assertEquals(entity.getPlaylistDateStartColumn(), fetchedEntity.get(0).getPlaylistDateStartColumn());
-        assertEquals(entity.getBlockStartColumn(), fetchedEntity.get(0).getBlockStartColumn());
-        assertEquals(entity.getPlaylistDateEndColumn(), fetchedEntity.get(0).getPlaylistDateEndColumn());
-        assertEquals(entity.getPlaylistFirsValueCell(), fetchedEntity.get(0).getPlaylistFirsValueCell());
-        assertEquals(entity.getPlaylistDatePattern(), fetchedEntity.get(0).getPlaylistDatePattern());
-        assertEquals(entity.getSheetIndexOfMediaPlan(), fetchedEntity.get(0).getSheetIndexOfMediaPlan());
-        assertEquals(entity.getFirstEmissionValueCell(), fetchedEntity.get(0).getFirstEmissionValueCell());
-        assertEquals(entity.getLastEmissionValueCell(), fetchedEntity.get(0).getLastEmissionValueCell());
-        assertEquals(entity.getName(), fetchedEntity.get(0).getName());
-        assertEquals(entity.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(entity.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(entity.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(entity.getBlockStartCell(), fetchedEntity.getContent().get(0).getBlockStartCell());
+        assertEquals(entity.getBlockEndCell(), fetchedEntity.getContent().get(0).getBlockEndCell());
+        assertEquals(entity.getBlockHourSeparator(), fetchedEntity.getContent().get(0).getBlockHourSeparator());
+        assertEquals(entity.getPlaylistDateStartColumn(), fetchedEntity.getContent().get(0).getPlaylistDateStartColumn());
+        assertEquals(entity.getBlockStartColumn(), fetchedEntity.getContent().get(0).getBlockStartColumn());
+        assertEquals(entity.getPlaylistDateEndColumn(), fetchedEntity.getContent().get(0).getPlaylistDateEndColumn());
+        assertEquals(entity.getPlaylistFirsValueCell(), fetchedEntity.getContent().get(0).getPlaylistFirsValueCell());
+        assertEquals(entity.getPlaylistDatePattern(), fetchedEntity.getContent().get(0).getPlaylistDatePattern());
+        assertEquals(entity.getSheetIndexOfMediaPlan(), fetchedEntity.getContent().get(0).getSheetIndexOfMediaPlan());
+        assertEquals(entity.getFirstEmissionValueCell(), fetchedEntity.getContent().get(0).getFirstEmissionValueCell());
+        assertEquals(entity.getLastEmissionValueCell(), fetchedEntity.getContent().get(0).getLastEmissionValueCell());
+        assertEquals(entity.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(entity.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 

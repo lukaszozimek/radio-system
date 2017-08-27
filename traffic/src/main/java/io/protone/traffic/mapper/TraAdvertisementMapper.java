@@ -2,6 +2,7 @@ package io.protone.traffic.mapper;
 
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
+import io.protone.core.mapper.CorUserMapper;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.library.mapper.LibItemMapper;
 import io.protone.library.mapper.LibMediaItemThinMapper;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 21.01.2017.
  */
-@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, LibItemMapper.class, LibMediaItemThinMapper.class})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, LibItemMapper.class, CorUserMapper.class, LibMediaItemThinMapper.class})
 public interface TraAdvertisementMapper {
     @Mapping(source = "industry", target = "industryId")
     @Mapping(source = "customer", target = "customerId")

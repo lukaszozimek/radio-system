@@ -11,12 +11,12 @@ public class TraPlaylistDiffDTO {
     private List<TraPlaylistDTO> entityPlaylist;
 
 
-    private List<TraPlaylistDTO> parsedFromExcel;
+    private List<TraMediaPlanEmissionDTO> parsedFromExcel;
 
     public TraPlaylistDiffDTO() {
     }
 
-    public TraPlaylistDiffDTO(List<TraPlaylistDTO> entityPlaylist, List<TraPlaylistDTO> parsedFromExcel) {
+    public TraPlaylistDiffDTO(List<TraPlaylistDTO> entityPlaylist, List<TraMediaPlanEmissionDTO> parsedFromExcel) {
         this.entityPlaylist = entityPlaylist;
         this.parsedFromExcel = parsedFromExcel;
     }
@@ -29,19 +29,19 @@ public class TraPlaylistDiffDTO {
         this.entityPlaylist = entityPlaylist;
     }
 
-    public List<TraPlaylistDTO> getParsedFromExcel() {
+    public List<TraMediaPlanEmissionDTO> getParsedFromExcel() {
         return parsedFromExcel;
     }
 
-    public void setParsedFromExcel(List<TraPlaylistDTO> parsedFromExcel) {
+    public void setParsedFromExcel(List<TraMediaPlanEmissionDTO> parsedFromExcel) {
         this.parsedFromExcel = parsedFromExcel;
     }
 
     @Override
     public String toString() {
         return "PlaylistDiff{" +
-            "entityPlaylist=" + entityPlaylist +
-            ", parsedFromExcel=" + parsedFromExcel +
-            '}';
+                "entityPlaylist=" + entityPlaylist +
+                ", parsedFromExcel=" + parsedFromExcel +
+                '}';
     }
 }

@@ -23,15 +23,12 @@ public class TraMediaPlanDTO implements Serializable {
 
     @NotNull
     private TraCustomerThinDTO traCustomerThinDTO;
-    private Set<TraMediaPlanPlaylistDTO> mediaPlanPlaylistDTOS = new HashSet<>();
 
-    public Set<TraMediaPlanPlaylistDTO> getMediaPlanPlaylistDTOS() {
-        return mediaPlanPlaylistDTOS;
-    }
+    private Set<TraMediaPlanPlaylistDateDTO> traMediaPlanPlaylistDateDTOS = new HashSet<>();
+    private Set<TraMediaPlanBlockDTO> traMediaPlanBlockDTOS = new HashSet<>();
 
-    public void setMediaPlanPlaylistDTOS(Set<TraMediaPlanPlaylistDTO> mediaPlanPlaylistDTOS) {
-        this.mediaPlanPlaylistDTOS = mediaPlanPlaylistDTOS;
-    }
+    private Set<TraMediaPlanEmissionDTO> traMediaPlanEmissionDTOS = new HashSet<>();
+
 
     public Long getId() {
         return id;
@@ -65,6 +62,30 @@ public class TraMediaPlanDTO implements Serializable {
         this.traCustomerThinDTO = traCustomerThinDTO;
     }
 
+    public Set<TraMediaPlanPlaylistDateDTO> getTraMediaPlanPlaylistDateDTOS() {
+        return traMediaPlanPlaylistDateDTOS;
+    }
+
+    public void setTraMediaPlanPlaylistDateDTOS(Set<TraMediaPlanPlaylistDateDTO> traMediaPlanPlaylistDateDTOS) {
+        this.traMediaPlanPlaylistDateDTOS = traMediaPlanPlaylistDateDTOS;
+    }
+
+    public Set<TraMediaPlanBlockDTO> getTraMediaPlanBlockDTOS() {
+        return traMediaPlanBlockDTOS;
+    }
+
+    public void setTraMediaPlanBlockDTOS(Set<TraMediaPlanBlockDTO> traMediaPlanBlockDTOS) {
+        this.traMediaPlanBlockDTOS = traMediaPlanBlockDTOS;
+    }
+
+    public Set<TraMediaPlanEmissionDTO> getTraMediaPlanEmissionDTOS() {
+        return traMediaPlanEmissionDTOS;
+    }
+
+    public void setTraMediaPlanEmissionDTOS(Set<TraMediaPlanEmissionDTO> traMediaPlanEmissionDTOS) {
+        this.traMediaPlanEmissionDTOS = traMediaPlanEmissionDTOS;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,7 +98,11 @@ public class TraMediaPlanDTO implements Serializable {
         if (mediaItemId != null ? !mediaItemId.equals(that.mediaItemId) : that.mediaItemId != null) return false;
         if (traCustomerThinDTO != null ? !traCustomerThinDTO.equals(that.traCustomerThinDTO) : that.traCustomerThinDTO != null)
             return false;
-        return mediaPlanPlaylistDTOS != null ? mediaPlanPlaylistDTOS.equals(that.mediaPlanPlaylistDTOS) : that.mediaPlanPlaylistDTOS == null;
+        if (traMediaPlanPlaylistDateDTOS != null ? !traMediaPlanPlaylistDateDTOS.equals(that.traMediaPlanPlaylistDateDTOS) : that.traMediaPlanPlaylistDateDTOS != null)
+            return false;
+        if (traMediaPlanBlockDTOS != null ? !traMediaPlanBlockDTOS.equals(that.traMediaPlanBlockDTOS) : that.traMediaPlanBlockDTOS != null)
+            return false;
+        return traMediaPlanEmissionDTOS != null ? traMediaPlanEmissionDTOS.equals(that.traMediaPlanEmissionDTOS) : that.traMediaPlanEmissionDTOS == null;
     }
 
     @Override
@@ -86,18 +111,22 @@ public class TraMediaPlanDTO implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (mediaItemId != null ? mediaItemId.hashCode() : 0);
         result = 31 * result + (traCustomerThinDTO != null ? traCustomerThinDTO.hashCode() : 0);
-        result = 31 * result + (mediaPlanPlaylistDTOS != null ? mediaPlanPlaylistDTOS.hashCode() : 0);
+        result = 31 * result + (traMediaPlanPlaylistDateDTOS != null ? traMediaPlanPlaylistDateDTOS.hashCode() : 0);
+        result = 31 * result + (traMediaPlanBlockDTOS != null ? traMediaPlanBlockDTOS.hashCode() : 0);
+        result = 31 * result + (traMediaPlanEmissionDTOS != null ? traMediaPlanEmissionDTOS.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "TraMediaPlanDTO{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", mediaItemId=" + mediaItemId +
-            ", traCustomerThinDTO=" + traCustomerThinDTO +
-            ", playlists=" + mediaPlanPlaylistDTOS +
-            '}';
+        return "TraMediaPla{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", mediaItemId=" + mediaItemId +
+                ", traCustomerThinDTO=" + traCustomerThinDTO +
+                ", traMediaPlanPlaylistDateDTOS=" + traMediaPlanPlaylistDateDTOS +
+                ", traMediaPlanBlockDTOS=" + traMediaPlanBlockDTOS +
+                ", traMediaPlanEmissionDTOS=" + traMediaPlanEmissionDTOS +
+                '}';
     }
 }

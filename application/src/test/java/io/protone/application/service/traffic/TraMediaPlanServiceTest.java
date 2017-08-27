@@ -34,6 +34,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -42,7 +43,6 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -156,15 +156,15 @@ public class TraMediaPlanServiceTest {
         mediaPlan = traMediaPlanRepository.save(mediaPlan);
 
         //then
-        List<TraMediaPlan> fetchedEntity = traMediaPlanService.getMediaPlans(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<TraMediaPlan> fetchedEntity = traMediaPlanService.getMediaPlans(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(mediaPlan.getId(), fetchedEntity.get(0).getId());
-        assertEquals(mediaPlan.getAccount(), fetchedEntity.get(0).getAccount());
-        assertEquals(mediaPlan.getMediaItem(), fetchedEntity.get(0).getMediaItem());
-        assertEquals(mediaPlan.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(mediaPlan.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(mediaPlan.getAccount(), fetchedEntity.getContent().get(0).getAccount());
+        assertEquals(mediaPlan.getMediaItem(), fetchedEntity.getContent().get(0).getMediaItem());
+        assertEquals(mediaPlan.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 
@@ -212,7 +212,6 @@ public class TraMediaPlanServiceTest {
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
         assertNotNull(fetchedEntity.getCreatedBy());
-        assertNotNull(fetchedEntity.getPlaylists().stream().findAny().get().getCreatedBy());
         assertNotNull(fetchedEntity.getName());
         assertEquals("test", fetchedEntity.getName());
 

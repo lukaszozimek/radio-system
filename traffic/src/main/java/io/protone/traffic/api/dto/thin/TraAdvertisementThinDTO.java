@@ -2,10 +2,12 @@ package io.protone.traffic.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * TraAdvertisementDTO
@@ -33,6 +35,14 @@ public class TraAdvertisementThinDTO implements Serializable {
 
     @JsonProperty("customerId")
     private Integer customerId;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public TraAdvertisementThinDTO() {
     }
@@ -155,6 +165,38 @@ public class TraAdvertisementThinDTO implements Serializable {
         this.customerId = customerId;
     }
 
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -169,6 +211,12 @@ public class TraAdvertisementThinDTO implements Serializable {
         if (mediaItemId != null ? !mediaItemId.equals(that.mediaItemId) : that.mediaItemId != null) return false;
         if (typeId != null ? !typeId.equals(that.typeId) : that.typeId != null) return false;
         if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
+        if (lastModifiedBy != null ? !lastModifiedBy.equals(that.lastModifiedBy) : that.lastModifiedBy != null)
+            return false;
+        if (lastModifiedDate != null ? !lastModifiedDate.equals(that.lastModifiedDate) : that.lastModifiedDate != null)
+            return false;
 
         return true;
     }
@@ -182,20 +230,28 @@ public class TraAdvertisementThinDTO implements Serializable {
         result = 31 * result + (mediaItemId != null ? mediaItemId.hashCode() : 0);
         result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
         result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedBy != null ? lastModifiedBy.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "TraAdvertisementThinDTO{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", industryId=" + industryId +
-            ", mediaItemId=" + mediaItemId +
-            ", typeId=" + typeId +
-            ", customerId=" + customerId +
-            '}';
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", industryId=" + industryId +
+                ", mediaItemId=" + mediaItemId +
+                ", typeId=" + typeId +
+                ", customerId=" + customerId +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
     }
 }
 

@@ -2,6 +2,7 @@ package io.protone.application.web.api.cor.impl;
 
 import io.protone.application.web.api.cor.CorPropertyKeyResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorKeyDTO;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPropertyKey;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,10 +47,10 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
         CorPropertyKey cORPropertyKey = corPropertyKeyRepository.findByIdAndNetwork_Shortcut(Long.parseLong(id), networkShortcut);
         CorKeyDTO cORPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return Optional.ofNullable(cORPropertyKeyDTO)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -63,13 +65,14 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
     public ResponseEntity<List<CorKeyDTO>> getAllPropertyKeysUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CorPropertyKeys");
-        List<CorPropertyKey> cORPropertyKeys = corPropertyKeyRepository.findByNetwork_Shortcut(networkShortcut, pagable);
-        List<CorKeyDTO> corKeyDTOList = corPropertyKeyMapper.DBs2DTOs(cORPropertyKeys);
+        Slice<CorPropertyKey> cORPropertyKeys = corPropertyKeyRepository.findSliceByNetwork_Shortcut(networkShortcut, pagable);
+        List<CorKeyDTO> corKeyDTOList = corPropertyKeyMapper.DBs2DTOs(cORPropertyKeys.getContent());
         return Optional.ofNullable(corKeyDTOList)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(cORPropertyKeys),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(PaginationUtil.generateSliceHttpHeaders(cORPropertyKeys), HttpStatus.NOT_FOUND));
     }
 
 
@@ -84,7 +87,7 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
         cORPropertyKey = corPropertyKeyRepository.save(cORPropertyKey);
         CorKeyDTO result = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("cORPropertyKey", propertyKeyDTO.getId().toString()))
-            .body(result);
+                .body(result);
     }
 
     @Override
@@ -98,7 +101,7 @@ public class CorPropertyKeyResourceImpl implements CorPropertyKeyResource {
         cORPropertyKey = corPropertyKeyRepository.save(cORPropertyKey);
         CorKeyDTO cORPropertyKeyDTO = corPropertyKeyMapper.DB2DTO(cORPropertyKey);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/configuration/network/dictionary/property/key" + cORPropertyKeyDTO.getId()))
-            .headers(HeaderUtil.createEntityUpdateAlert("cORPropertyKey", cORPropertyKeyDTO.getId().toString()))
-            .body(cORPropertyKeyDTO);
+                .headers(HeaderUtil.createEntityUpdateAlert("cORPropertyKey", cORPropertyKeyDTO.getId().toString()))
+                .body(cORPropertyKeyDTO);
     }
 }

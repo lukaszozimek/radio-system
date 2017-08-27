@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -122,13 +123,13 @@ public class TraCampaignServiceTest {
         campaign = traCampaignRepository.save(campaign);
 
         //then
-        List<TraCampaign> fetchedEntity = traCampaignService.getAllCampaign(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraCampaign> fetchedEntity = traCampaignService.getAllCampaign(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(campaign.getId(), fetchedEntity.get(0).getId());
-        assertEquals(campaign.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(campaign.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(campaign.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
     }
 
     @Test
@@ -222,14 +223,14 @@ public class TraCampaignServiceTest {
         traCampaign = traCampaignRepository.save(traCampaign);
 
         //then
-        List<TraCampaign> fetchedEntity = traCampaignService.getCustomerCampaing(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraCampaign> fetchedEntity = traCampaignService.getCustomerCampaing(crmAccount.getShortName(), corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traCampaign.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traCampaign.getCustomer(), fetchedEntity.get(0).getCustomer());
-        assertEquals(traCampaign.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traCampaign.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traCampaign.getCustomer(), fetchedEntity.getContent().get(0).getCustomer());
+        assertEquals(traCampaign.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
     }
 
     @Test(expected = DataIntegrityViolationException.class)

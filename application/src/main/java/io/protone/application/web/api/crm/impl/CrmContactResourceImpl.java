@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmContactResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmContactDTO;
@@ -15,6 +16,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,12 +99,14 @@ public class CrmContactResourceImpl implements CrmContactResource {
     public ResponseEntity<List<CrmContactThinDTO>> getAllContactUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmContact, for Network: {}", networkShortcut);
-        List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactService.getAllContact(networkShortcut, pagable));
+        Slice<CrmContact> crmContactSlice = crmContactService.getAllContact(networkShortcut, pagable);
+        List<CrmContactThinDTO> response = crmContactMapper.DBs2ThinDTOs(crmContactSlice.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
+                        PaginationUtil.generateSliceHttpHeaders(crmContactSlice),
                         HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(PaginationUtil.generateSliceHttpHeaders(crmContactSlice), HttpStatus.NOT_FOUND));
 
     }
 

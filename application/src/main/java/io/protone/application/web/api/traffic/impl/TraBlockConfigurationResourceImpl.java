@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,25 +60,24 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
-        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork,corChannel);
+        TraBlockConfiguration traBlockConfiguration = traBlockConfigurationMapper.DTO2DB(traBlockConfigurationDTO, corNetwork, corChannel);
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/traffic/block/" + response.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
     public ResponseEntity<List<TraBlockConfigurationDTO>> getAllTrafficBlockConfigurationUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
+                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut) {
         log.debug("REST request to get all TraBlockConfiguration, for Channel {},  Network: {}", channelShortcut, networkShortcut);
-        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurations(networkShortcut, pagable);
+        List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurations(networkShortcut, channelShortcut);
         List<TraBlockConfigurationDTO> response = traBlockConfigurationMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -90,10 +88,10 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
         List<TraBlockConfiguration> entity = traBlockConfigurationService.getAllBlockConfigurationsByDay(networkShortcut, day);
         List<TraBlockConfigurationDTO> response = traBlockConfigurationMapper.DBs2DTOs(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -104,10 +102,10 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
         TraBlockConfiguration entity = traBlockConfigurationService.findConfigurationBlock(id, networkShortcut);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -125,7 +123,7 @@ public class TraBlockConfigurationResourceImpl implements TraBlockConfigurationR
         TraBlockConfiguration entity = traBlockConfigurationService.saveBlockConfiguration(traBlockConfiguration);
         TraBlockConfigurationDTO response = traBlockConfigurationMapper.DB2DTO(entity);
         return ResponseEntity.ok()
-            .body(response);
+                .body(response);
     }
 
     @Override

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity TraMediaPlan.
+    -->
+    <changeSet id="20170609195122-2" author="jhipster">
+
+
+        <addForeignKeyConstraint baseColumnNames="media_plan_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_edia_plan"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_media_plan"/>
+
+        <addForeignKeyConstraint baseColumnNames="media_plan_playlist_date_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_media_plan_playlist_date"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_media_plan_playlist_date"/>
+
+        <addForeignKeyConstraint baseColumnNames="media_plan_block_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_media_plan_block"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tra_media_plan_block"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crm_account"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="tra_media_plan_emission"
+                                 constraintName="fk_tra_media_plan_emission_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+    </changeSet>
+</databaseChangeLog>

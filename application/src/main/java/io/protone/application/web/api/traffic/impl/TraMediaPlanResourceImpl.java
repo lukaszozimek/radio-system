@@ -3,6 +3,7 @@ package io.protone.application.web.api.traffic.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.protone.application.web.api.traffic.TraMediaPlanResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
@@ -11,8 +12,14 @@ import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.TraMediaPlanDescriptorDTO;
 import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
 import io.protone.traffic.domain.TraMediaPlan;
+import io.protone.traffic.domain.TraMediaPlanBlock;
+import io.protone.traffic.domain.TraMediaPlanEmission;
+import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.mapper.TraMediaPlanDescriptorMapper;
 import io.protone.traffic.mapper.TraMediaPlanMapper;
+import io.protone.traffic.service.TraMediaPlanBlockService;
+import io.protone.traffic.service.TraMediaPlanEmissionService;
+import io.protone.traffic.service.TraMediaPlanPlaylistDateService;
 import io.protone.traffic.service.TraMediaPlanService;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
 import io.swagger.annotations.ApiParam;
@@ -21,6 +28,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +57,15 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
 
     @Inject
     private TraMediaPlanService traMediaPlanService;
+
+    @Inject
+    private TraMediaPlanBlockService traMediaPlanBlockService;
+
+    @Inject
+    private TraMediaPlanPlaylistDateService traMediaPlanPlaylistDateService;
+
+    @Inject
+    private TraMediaPlanEmissionService traMediaPlanEmissionService;
 
     @Inject
     private TraMediaPlanMapper traMediaPlanMapper;
@@ -101,7 +118,15 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
                                                                               @ApiParam(value = "id", required = true) @PathVariable("id") Long id) {
         log.debug("REST request to get TraMediaPlan: {}", id);
         TraMediaPlan entity = traMediaPlanService.getMediaPlan(id, networkShortcut, channelShortcut);
-        TraMediaPlanDTO response = traMediaPlanMapper.DB2DTO(entity);
+        TraMediaPlanDTO response = null;
+
+        if (entity != null) {
+            List<TraMediaPlanBlock> blockList = traMediaPlanBlockService.findBlockByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            List<TraMediaPlanPlaylistDate> dateList = traMediaPlanPlaylistDateService.findMediaPlanDatesByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            List<TraMediaPlanEmission> emissionList = traMediaPlanEmissionService.findEmissionsByNetworkShortcutAndChannelShortcutAndMediaplanId(networkShortcut, channelShortcut, id);
+            response = traMediaPlanMapper.DB2DTO(entity, blockList, dateList, emissionList);
+
+        }
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -114,9 +139,9 @@ public class TraMediaPlanResourceImpl implements TraMediaPlanResource {
                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                            @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraMediaPlan");
-        List<TraMediaPlan> entities = traMediaPlanService.getMediaPlans(networkShortcut, channelShortcut, pagable);
-        List<TraMediaPlanThinDTO> response = traMediaPlanMapper.DBsThin2DTOsThin(entities);
-        return ResponseEntity.ok()
+        Slice<TraMediaPlan> entities = traMediaPlanService.getMediaPlans(networkShortcut, channelShortcut, pagable);
+        List<TraMediaPlanThinDTO> response = traMediaPlanMapper.DBsThin2DTOsThin(entities.getContent());
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(entities))
                 .body(response);
     }
 

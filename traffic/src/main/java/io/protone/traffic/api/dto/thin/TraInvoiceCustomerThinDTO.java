@@ -2,6 +2,7 @@ package io.protone.traffic.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.CoreAddressDTO;
+import io.protone.crm.api.dto.CrmDiscountDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -32,6 +33,10 @@ public class TraInvoiceCustomerThinDTO {
     @NotNull
     @JsonProperty("name")
     private String name = null;
+
+
+    private CrmDiscountDTO discount = null;
+
 
     @JsonProperty("paymentDate")
     private Integer paymentDate = null;
@@ -208,6 +213,14 @@ public class TraInvoiceCustomerThinDTO {
         this.addres = addres;
     }
 
+    public CrmDiscountDTO getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(CrmDiscountDTO discount) {
+        this.discount = discount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -218,35 +231,19 @@ public class TraInvoiceCustomerThinDTO {
         }
         TraInvoiceCustomerThinDTO traCustomerPT = (TraInvoiceCustomerThinDTO) o;
         return Objects.equals(this.id, traCustomerPT.id) &&
-            Objects.equals(this.shortName, traCustomerPT.shortName) &&
-            Objects.equals(this.idNumber1, traCustomerPT.idNumber1) &&
-            Objects.equals(this.idNumber2, traCustomerPT.idNumber2) &&
-            Objects.equals(this.name, traCustomerPT.name) &&
-            Objects.equals(this.paymentDate, traCustomerPT.paymentDate) &&
-            Objects.equals(this.vatNumber, traCustomerPT.vatNumber) &&
-            Objects.equals(this.addres, traCustomerPT.addres);
+                Objects.equals(this.shortName, traCustomerPT.shortName) &&
+                Objects.equals(this.idNumber1, traCustomerPT.idNumber1) &&
+                Objects.equals(this.idNumber2, traCustomerPT.idNumber2) &&
+                Objects.equals(this.name, traCustomerPT.name) &&
+                Objects.equals(this.paymentDate, traCustomerPT.paymentDate) &&
+                Objects.equals(this.vatNumber, traCustomerPT.vatNumber) &&
+                Objects.equals(this.addres, traCustomerPT.addres);
 
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, shortName, idNumber1, idNumber2, name, paymentDate, vatNumber, addres);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TraCustomerDTO {\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("    idNumber1: ").append(toIndentedString(idNumber1)).append("\n");
-        sb.append("    idNumber2: ").append(toIndentedString(idNumber2)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    paymentDate: ").append(toIndentedString(paymentDate)).append("\n");
-        sb.append("    vatNumber: ").append(toIndentedString(vatNumber)).append("\n");
-        sb.append("    addres: ").append(toIndentedString(addres)).append("\n");
-        sb.append("}");
-        return sb.toString();
     }
 
     /**
@@ -258,6 +255,22 @@ public class TraInvoiceCustomerThinDTO {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public String toString() {
+        return "TraInvoiceCustomerThinDTO{" +
+                "id=" + id +
+                ", shortName='" + shortName + '\'' +
+                ", idNumber1='" + idNumber1 + '\'' +
+                ", idNumber2='" + idNumber2 + '\'' +
+                ", paymentDelay=" + paymentDelay +
+                ", name='" + name + '\'' +
+                ", discount=" + discount +
+                ", paymentDate=" + paymentDate +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", addres=" + addres +
+                '}';
     }
 }
 

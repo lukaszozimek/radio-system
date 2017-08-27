@@ -7,6 +7,7 @@ import io.protone.crm.repostiory.CrmOpportunityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,8 @@ public class CrmOpportunityService {
     @Inject
     private CrmOpportunityMapper crmOpportunityMapper;
 
-    public List<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
-        return opportunityRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<CrmOpportunity> getAllOpportunity(String corNetwork, Pageable pageable) {
+        return opportunityRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public CrmOpportunity saveOpportunity(CrmOpportunity crmOpportunity) {
@@ -63,7 +64,7 @@ public class CrmOpportunityService {
         return null;
     }
 
-    public List<CrmTask> getTasksAssociatedWithOpportunity(String shortcut, String corNetwork, Pageable pageable) {
+    public Slice<CrmTask> getTasksAssociatedWithOpportunity(String shortcut, String corNetwork, Pageable pageable) {
         return crmTaskService.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
@@ -96,7 +97,7 @@ public class CrmOpportunityService {
         return crmTaskService.saveOrUpdateTaskCommentAssociatedWithTask(requestEnitity, taskId, networkShortcut);
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskService.getTaskCommentsAssociatedWithTask(taskId, networkShortcut, pagable);
     }
 

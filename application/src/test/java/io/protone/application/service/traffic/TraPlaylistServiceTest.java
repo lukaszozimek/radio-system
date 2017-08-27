@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -99,14 +100,14 @@ public class TraPlaylistServiceTest {
         traPlaylist = traPlaylistRepository.save(traPlaylist);
 
         //then
-        List<TraPlaylist> fetchedEntity = traPlaylistService.getAllPlaylistList(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<TraPlaylist> fetchedEntity = traPlaylistService.getAllPlaylistList(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traPlaylist.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traPlaylist.getPlaylistDate(), fetchedEntity.get(0).getPlaylistDate());
-        assertEquals(traPlaylist.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traPlaylist.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traPlaylist.getPlaylistDate(), fetchedEntity.getContent().get(0).getPlaylistDate());
+        assertEquals(traPlaylist.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
 

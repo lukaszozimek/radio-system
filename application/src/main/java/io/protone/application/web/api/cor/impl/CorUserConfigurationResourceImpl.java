@@ -7,6 +7,7 @@ package io.protone.application.web.api.cor.impl;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.protone.application.web.api.cor.CorUserConfigurationResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.api.dto.CorUserDTO;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorUser;
@@ -20,6 +21,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -182,9 +184,9 @@ public class CorUserConfigurationResourceImpl implements CorUserConfigurationRes
     @Override
     public ResponseEntity<List<CorUserDTO>> getAllUsersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut, @ApiParam(value = "pagable", required = true) Pageable pagable) {
         CorNetwork network = corNetworkService.findNetwork(networkShortcut);
-        List<CorUser> corUserList = userService.getAllManagedUsers(network, pagable);
-        List<CorUserDTO> corUserDTOList = corUserMapper.DBs2DTOs(corUserList);
-        return ResponseEntity.ok().body(corUserDTOList);
+        Slice<CorUser> corUserList = userService.getAllManagedUsers(network, pagable);
+        List<CorUserDTO> corUserDTOList = corUserMapper.DBs2DTOs(corUserList.getContent());
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(corUserList)).body(corUserDTOList);
     }
 
     /**

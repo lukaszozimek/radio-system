@@ -7,7 +7,6 @@ import io.protone.crm.domain.CrmAccount;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.service.LibItemService;
 import io.protone.traffic.domain.TraMediaPlan;
-import io.protone.traffic.domain.TraMediaPlanPlaylist;
 import io.protone.traffic.repository.TraMediaPlanRepository;
 import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
@@ -16,6 +15,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +26,6 @@ import javax.persistence.EntityNotFoundException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 08/06/2017.
@@ -46,7 +44,7 @@ public class TraMediaPlanService {
     private TraExcelMediaParserXlsPlan traExcelMediaXlsPlan;
 
     @Inject
-    private TraMediaPlanPlaylistService traPlaylistService;
+    private TraMediaPlanPlaylistDateService traPlaylistService;
 
     @Inject
     private LibItemService libItemService;
@@ -56,24 +54,22 @@ public class TraMediaPlanService {
         TraMediaPlan mediaPlan = new TraMediaPlan();
         ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile.getBytes());
         LibMediaItem libMediaItem = libItemService.upload(corNetwork.getShortcut(), MEDIA_PLAN_LIBRARY_SHORTCUT, multipartFile);
-        Set<TraMediaPlanPlaylist> parseMediaPlanPlaylists = traExcelMediaXlsPlan.parseMediaPlan(bais, traMediaPlanDescriptor, corNetwork, corChannel);
-        mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getOrder().getAdvertisment().getCustomer()).name(multipartFile.getOriginalFilename()).playlists(parseMediaPlanPlaylists);
+        mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getOrder().getAdvertisment().getCustomer()).name(multipartFile.getOriginalFilename());
         mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
         TraMediaPlan finalMediaPlan = mediaPlan;
-        parseMediaPlanPlaylists = traPlaylistService.savePlaylist(parseMediaPlanPlaylists.stream().map(traMediaPlanPlaylist -> traMediaPlanPlaylist.mediaPlan(finalMediaPlan)).collect(Collectors.toSet()));
-        return traMediaPlanRepository.saveAndFlush(mediaPlan.playlists(parseMediaPlanPlaylists));
+        traExcelMediaXlsPlan.parseMediaPlan(bais, mediaPlan, traMediaPlanDescriptor, corNetwork, corChannel);
+        return finalMediaPlan;
 
     }
 
     @Transactional
     public TraMediaPlan updateMediaPlan(TraMediaPlan traMediaPlan) {
-        traMediaPlan.setPlaylists(traPlaylistService.savePlaylist(traMediaPlan.getPlaylists()));
         return traMediaPlanRepository.saveAndFlush(traMediaPlan);
     }
 
     @Transactional
-    public List<TraMediaPlan> getMediaPlans(String corNetwork, String corChannel, Pageable pageable) {
-        return traMediaPlanRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(corNetwork, corChannel, pageable);
+    public Slice<TraMediaPlan> getMediaPlans(String corNetwork, String corChannel, Pageable pageable) {
+        return traMediaPlanRepository.findSliceByNetwork_ShortcutAndChannel_Shortcut(corNetwork, corChannel, pageable);
     }
 
     @Transactional
@@ -83,7 +79,6 @@ public class TraMediaPlanService {
             throw new EntityNotFoundException();
         }
         libItemService.deleteItem(traMediaPlan.getMediaItem());
-        traPlaylistService.deletePlaylist(traMediaPlan.getPlaylists());
         traMediaPlanRepository.delete(traMediaPlan);
 
     }
@@ -95,7 +90,6 @@ public class TraMediaPlanService {
         if (traMediaPlans != null) {
             traMediaPlans.stream().forEach(traMediaPlan -> {
                 libItemService.deleteItem(traMediaPlan.getMediaItem());
-                traPlaylistService.deletePlaylist(traMediaPlan.getPlaylists());
                 traMediaPlanRepository.delete(traMediaPlan);
             });
         }
@@ -108,8 +102,8 @@ public class TraMediaPlanService {
     }
 
     @Transactional
-    public List<TraMediaPlan> getCustomerMediaPlan(String customerShortcut, String corNetwork, String corChannel, Pageable pageable) {
-        return traMediaPlanRepository.findAllByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(customerShortcut, corNetwork, corChannel, pageable);
+    public Slice<TraMediaPlan> getCustomerMediaPlan(String customerShortcut, String corNetwork, String corChannel, Pageable pageable) {
+        return traMediaPlanRepository.findSliceByAccount_ShortNameAndNetwork_ShortcutAndChannel_Shortcut(customerShortcut, corNetwork, corChannel, pageable);
     }
 
 

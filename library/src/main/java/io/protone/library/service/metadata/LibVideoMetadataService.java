@@ -54,7 +54,7 @@ public class LibVideoMetadataService {
     private LibMediaItemRepository mediaItemRepository;
 
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibVideoObject libVideoObject) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibVideoObject libVideoObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Video :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -62,7 +62,7 @@ public class LibVideoMetadataService {
         if (!Strings.isNullOrEmpty(metadata.get(ProtoneMetadataProperty.TITLE))) {
             mediaItem.setName(metadata.get(ProtoneMetadataProperty.TITLE));
         } else {
-            mediaItem.setName(NO_DATA);
+            mediaItem.setName(orginalFileName);
         }
 
         metadata.remove(ProtoneMetadataProperty.TITLE.getName());

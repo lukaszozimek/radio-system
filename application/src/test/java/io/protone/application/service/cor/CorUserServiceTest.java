@@ -22,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -239,11 +240,11 @@ public class CorUserServiceTest {
         corUser = corUserRepository.saveAndFlush(corUser);
 
         //then
-        List<CorUser> corUsersList = corUserService.getAllManagedUsers(corNetwork, new PageRequest(0, 10));
+        Slice<CorUser> corUsersList = corUserService.getAllManagedUsers(corNetwork, new PageRequest(0, 10));
 
         //assert
-        Assert.notNull(corUsersList);
-        assertFalse(corUsersList.isEmpty());
+        Assert.notNull(corUsersList.getContent());
+        assertFalse(corUsersList.getContent().isEmpty());
 
 
     }

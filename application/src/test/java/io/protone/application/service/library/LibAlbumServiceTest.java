@@ -19,6 +19,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -32,6 +34,7 @@ import javax.transaction.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -150,5 +153,79 @@ public class LibAlbumServiceTest {
         assertNotNull(newOne.getMainImage());
         assertNotNull(newOne.getCover());
         assertEquals(1, newOne.getCover().size());
+    }
+
+    @Test
+    public void shouldGetAllAlbum() throws Exception {
+        //when
+        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class);
+        libAlbum.setNetwork(corNetwork);
+        libAlbum = libAlbumRepository.save(libAlbum);
+
+        //then
+        Slice<LibAlbum> fetchedEntity = libAlbumService.findAlbums(corNetwork.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(libAlbum.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(libAlbum.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(libAlbum.getDescription(), fetchedEntity.getContent().get(0).getDescription());
+        assertEquals(libAlbum.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+
+
+    }
+
+    @Test
+    public void shouldSaveAlbum() throws Exception {
+        //when
+        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class);
+
+        libAlbum.setNetwork(corNetwork);
+
+        //then
+        LibAlbum fetchedEntity = libAlbumService.saveOrUpdate(libAlbum);
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getId());
+        assertNotNull(fetchedEntity.getCreatedBy());
+        assertNotNull(libAlbum.getName());
+        assertNotNull(libAlbum.getDescription());
+        assertEquals(libAlbum.getNetwork(), fetchedEntity.getNetwork());
+    }
+
+    @Test
+    public void shouldDeleteAlbum() throws Exception {
+        //when
+        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class);
+
+        libAlbum.setNetwork(corNetwork);
+        libAlbum = libAlbumRepository.save(libAlbum);
+        //then
+        libAlbumService.deleteAlbum(libAlbum.getId(), corNetwork.getShortcut());
+        LibAlbum fetchedEntity = libAlbumService.findAlbum(corNetwork.getShortcut(), libAlbum.getId());
+
+        //assert
+        assertNull(fetchedEntity);
+    }
+
+    @Test
+    public void shouldGetAlbum() throws Exception {
+        //when
+        LibAlbum libAlbum = factory.manufacturePojo(LibAlbum.class);
+        libAlbum.setNetwork(corNetwork);
+        libAlbum = libAlbumRepository.save(libAlbum);
+
+        //then
+        LibAlbum fetchedEntity = libAlbumService.findAlbum(corNetwork.getShortcut(), libAlbum.getId());
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getCreatedBy());
+        assertEquals(libAlbum.getId(), fetchedEntity.getId());
+        assertEquals(libAlbum.getName(), fetchedEntity.getName());
+        assertEquals(libAlbum.getDescription(), fetchedEntity.getDescription());
+        assertEquals(libAlbum.getNetwork(), fetchedEntity.getNetwork());
     }
 }

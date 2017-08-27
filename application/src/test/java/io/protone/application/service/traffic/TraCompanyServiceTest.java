@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -60,17 +61,17 @@ public class TraCompanyServiceTest {
         traCompany = traCompanyRepository.save(traCompany);
 
         //then
-        List<TraCompany> fetchedEntity = traCompanyService.getAllCompany(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<TraCompany> fetchedEntity = traCompanyService.getAllCompany(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(fetchedEntity);
-        assertEquals(1, fetchedEntity.size());
-        assertEquals(traCompany.getId(), fetchedEntity.get(0).getId());
-        assertEquals(traCompany.getName(), fetchedEntity.get(0).getName());
-        assertEquals(traCompany.getDescription(), fetchedEntity.get(0).getDescription());
-        assertEquals(traCompany.getTaxId1(), fetchedEntity.get(0).getTaxId1());
-        assertEquals(traCompany.getTaxId2(), fetchedEntity.get(0).getTaxId2());
-        assertEquals(traCompany.getNetwork(), fetchedEntity.get(0).getNetwork());
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(traCompany.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(traCompany.getName(), fetchedEntity.getContent().get(0).getName());
+        assertEquals(traCompany.getDescription(), fetchedEntity.getContent().get(0).getDescription());
+        assertEquals(traCompany.getTaxId1(), fetchedEntity.getContent().get(0).getTaxId1());
+        assertEquals(traCompany.getTaxId2(), fetchedEntity.getContent().get(0).getTaxId2());
+        assertEquals(traCompany.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
 
     }

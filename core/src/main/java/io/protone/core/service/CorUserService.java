@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Service class for managing users.
@@ -281,8 +281,8 @@ public class CorUserService {
         });
     }
 
-    public List<CorUser> getAllManagedUsers(CorNetwork corNetwork, Pageable pageable) {
-        return userRepository.findByNetworks(newHashSet(corNetwork), pageable).stream().map(corUser -> corUser.avatar(corImageItemService.getValidLinkToResource(corUser.getCorImageItem()))).collect(toList());
+    public Slice<CorUser> getAllManagedUsers(CorNetwork corNetwork, Pageable pageable) {
+        return userRepository.findSliceByNetworks(newHashSet(corNetwork), pageable);
 
     }
 

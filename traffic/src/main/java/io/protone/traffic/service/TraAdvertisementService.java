@@ -8,6 +8,7 @@ import io.protone.traffic.repository.TraAdvertisementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +32,8 @@ public class TraAdvertisementService {
     private LibItemService libItemService;
 
 
-    public List<TraAdvertisement> getAllAdvertisement(String corNetwork, Pageable pageable) {
-        return traAdvertisementRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraAdvertisement> getAllAdvertisement(String corNetwork, Pageable pageable) {
+        return traAdvertisementRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public TraAdvertisement saveAdvertisement(TraAdvertisement traAdvertisement) {

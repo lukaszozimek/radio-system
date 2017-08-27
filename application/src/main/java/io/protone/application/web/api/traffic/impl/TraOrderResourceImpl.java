@@ -3,6 +3,7 @@ package io.protone.application.web.api.traffic.impl;
 
 import io.protone.application.web.api.traffic.TraOrderResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.traffic.api.dto.TraOrderDTO;
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,20 +70,22 @@ public class TraOrderResourceImpl implements TraOrderResource {
         TraOrder entity = traOrderService.saveOrder(traOrder);
         TraOrderDTO response = traOrderMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/traffic/order/" + response.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
     public ResponseEntity<List<TraOrderThinDTO>> getAllAnOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                         @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraOrder, for Network: {}", networkShortcut);
-        List<TraOrder> entity = traOrderService.getAllOrders(networkShortcut, pagable);
-        List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity);
+        Slice<TraOrder> entity = traOrderService.getAllOrders(networkShortcut, pagable);
+        List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -90,10 +94,10 @@ public class TraOrderResourceImpl implements TraOrderResource {
         TraOrder entity = traOrderService.getOrder(id, networkShortcut);
         TraOrderDTO response = traOrderMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -105,16 +109,18 @@ public class TraOrderResourceImpl implements TraOrderResource {
 
     @Override
     public ResponseEntity<List<TraOrderThinDTO>> getAllCustomerOrdersUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                          @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
-                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
+                                                                              @ApiParam(value = "customerShortcut", required = true) @PathVariable("customerShortcut") String customerShortcut,
+                                                                              @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all TraOrder, for TraCustomer: {} and Network: {}", customerShortcut, networkShortcut);
-        List<TraOrder> entity = traOrderService.getCustomerOrders(customerShortcut, networkShortcut, pagable);
-        List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity);
+        Slice<TraOrder> entity = traOrderService.getCustomerOrders(customerShortcut, networkShortcut, pagable);
+        List<TraOrderThinDTO> response = traOrderMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
     }
 
     @Override

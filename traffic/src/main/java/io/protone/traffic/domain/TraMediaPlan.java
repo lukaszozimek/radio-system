@@ -1,6 +1,5 @@
 package io.protone.traffic.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -12,9 +11,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A TraMediaPlan.
@@ -50,12 +47,6 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
     @ManyToOne
     @PodamExclude
     private CorNetwork network;
-
-    @OneToMany(mappedBy = "mediaPlan")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @PodamExclude
-    private Set<TraMediaPlanPlaylist> playlists = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -130,30 +121,6 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
         this.network = corNetwork;
     }
 
-    public Set<TraMediaPlanPlaylist> getPlaylists() {
-        return playlists;
-    }
-
-    public TraMediaPlan playlists(Set<TraMediaPlanPlaylist> traMediaPlanPlaylists) {
-        this.playlists = traMediaPlanPlaylists;
-        return this;
-    }
-
-    public TraMediaPlan addPlaylists(TraMediaPlanPlaylist traMediaPlanPlaylist) {
-        this.playlists.add(traMediaPlanPlaylist);
-        traMediaPlanPlaylist.setMediaPlan(this);
-        return this;
-    }
-
-    public TraMediaPlan removePlaylists(TraMediaPlanPlaylist traMediaPlanPlaylist) {
-        this.playlists.remove(traMediaPlanPlaylist);
-        traMediaPlanPlaylist.setMediaPlan(null);
-        return this;
-    }
-
-    public void setPlaylists(Set<TraMediaPlanPlaylist> traMediaPlanPlaylists) {
-        this.playlists = traMediaPlanPlaylists;
-    }
 
     @Override
     public boolean equals(Object o) {

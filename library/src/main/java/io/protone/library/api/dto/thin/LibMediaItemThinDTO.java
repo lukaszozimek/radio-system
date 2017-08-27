@@ -3,6 +3,8 @@ package io.protone.library.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.LibMarkerDTO;
+import io.protone.library.domain.enumeration.LibItemStateEnum;
+import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -35,6 +37,12 @@ public class LibMediaItemThinDTO implements Serializable {
     @JsonProperty("idx")
     @NotNull
     private String idx = null;
+
+    @JsonProperty("itemType")
+    private LibItemTypeEnum itemType = null;
+
+    @JsonProperty("state")
+    private LibItemStateEnum state = null;
 
     @JsonProperty("length")
     private Integer length = null;
@@ -243,7 +251,20 @@ public class LibMediaItemThinDTO implements Serializable {
         this.stream = stream;
     }
 
+    public LibItemStateEnum getState() {
+        return state;
+    }
 
+    public void setState(LibItemStateEnum state) {
+        this.state = state;
+    }
+    public LibItemTypeEnum getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(LibItemTypeEnum itemType) {
+        this.itemType = itemType;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -270,25 +291,6 @@ public class LibMediaItemThinDTO implements Serializable {
         return Objects.hash(library, album, artist, cover, id, idx, length, markers, name, stream);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class LibMediaItemThinDTO {\n");
-
-        sb.append("    library: ").append(toIndentedString(library)).append("\n");
-        sb.append("    album: ").append(toIndentedString(album)).append("\n");
-        sb.append("    artist: ").append(toIndentedString(artist)).append("\n");
-        sb.append("    cover: ").append(toIndentedString(cover)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    idx: ").append(toIndentedString(idx)).append("\n");
-        sb.append("    length: ").append(toIndentedString(length)).append("\n");
-        sb.append("    markers: ").append(toIndentedString(markers)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -300,4 +302,23 @@ public class LibMediaItemThinDTO implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
+
+
+    @Override
+    public String toString() {
+        return "LibMediaItemThinDTO{" +
+                "library='" + library + '\'' +
+                ", album='" + album + '\'' +
+                ", artist='" + artist + '\'' +
+                ", cover='" + cover + '\'' +
+                ", id=" + id +
+                ", idx='" + idx + '\'' +
+                ", itemType=" + itemType +
+                ", state=" + state +
+                ", length=" + length +
+                ", markers=" + markers +
+                ", name='" + name + '\'' +
+                ", stream='" + stream + '\'' +
+                '}';
+    }
 }

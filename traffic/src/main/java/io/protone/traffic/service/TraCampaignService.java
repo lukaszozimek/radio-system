@@ -7,11 +7,11 @@ import io.protone.traffic.repository.TraCampaignRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -30,8 +30,8 @@ public class TraCampaignService {
     @Inject
     private TraOrderService traOrderService;
 
-    public List<TraCampaign> getAllCampaign(String corNetwork, Pageable pageable) {
-        return traCampaignRepository.findAllByNetwork_Shortcut(corNetwork, pageable);
+    public Slice<TraCampaign> getAllCampaign(String corNetwork, Pageable pageable) {
+        return traCampaignRepository.findSliceByNetwork_Shortcut(corNetwork, pageable);
     }
 
     public TraCampaign saveCampaign(TraCampaign campaign) {
@@ -56,8 +56,8 @@ public class TraCampaignService {
         return traCampaignRepository.findByShortNameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
-    public List<TraCampaign> getCustomerCampaing(String shortcut, String corNetwork, Pageable pageable) {
-        return traCampaignRepository.findByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<TraCampaign> getCustomerCampaing(String shortcut, String corNetwork, Pageable pageable) {
+        return traCampaignRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
 }

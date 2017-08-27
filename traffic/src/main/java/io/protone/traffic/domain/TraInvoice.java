@@ -35,12 +35,21 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
     @Column(name = "paid")
     private Boolean paid;
 
+    @Column(name = "discount_per_order")
+    private Boolean discountPerOrder;
+
+    @Column(name = "discount_per_invoice")
+    private Boolean discountPerInvoice;
+
     @Column(name = "price", precision = 10, scale = 2)
     @PodamExclude
     private BigDecimal price;
 
     @Column(name = "payment_day")
     private LocalDate paymentDay;
+
+    @Column(name = "custom_discount")
+    private Integer customDiscount;
 
     @ManyToOne
     @PodamExclude
@@ -188,6 +197,35 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public Boolean getDiscountPerOrder() {
+        return discountPerOrder;
+    }
+
+    public void setDiscountPerOrder(Boolean discountPerOrder) {
+        this.discountPerOrder = discountPerOrder;
+    }
+
+    public Boolean getDiscountPerInvoice() {
+        return discountPerInvoice;
+    }
+
+    public void setDiscountPerInvoice(Boolean discountPerInvoice) {
+        this.discountPerInvoice = discountPerInvoice;
+    }
+
+
+    public Integer getCustomDiscount() {
+        return customDiscount;
+    }
+
+    public void setCustomDiscount(Integer customDiscount) {
+        this.customDiscount = customDiscount;
+    }
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -197,8 +235,14 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (paid != null ? !paid.equals(that.paid) : that.paid != null) return false;
+        if (discountPerOrder != null ? !discountPerOrder.equals(that.discountPerOrder) : that.discountPerOrder != null)
+            return false;
+        if (discountPerInvoice != null ? !discountPerInvoice.equals(that.discountPerInvoice) : that.discountPerInvoice != null)
+            return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (paymentDay != null ? !paymentDay.equals(that.paymentDay) : that.paymentDay != null) return false;
+        if (customDiscount != null ? !customDiscount.equals(that.customDiscount) : that.customDiscount != null)
+            return false;
         if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
         if (network != null ? !network.equals(that.network) : that.network != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
@@ -210,8 +254,11 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (paid != null ? paid.hashCode() : 0);
+        result = 31 * result + (discountPerOrder != null ? discountPerOrder.hashCode() : 0);
+        result = 31 * result + (discountPerInvoice != null ? discountPerInvoice.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (paymentDay != null ? paymentDay.hashCode() : 0);
+        result = 31 * result + (customDiscount != null ? customDiscount.hashCode() : 0);
         result = 31 * result + (customer != null ? customer.hashCode() : 0);
         result = 31 * result + (network != null ? network.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
@@ -225,8 +272,11 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
         return "TraInvoice{" +
                 "id=" + id +
                 ", paid=" + paid +
+                ", discountPerOrder=" + discountPerOrder +
+                ", discountPerInvoice=" + discountPerInvoice +
                 ", price=" + price +
                 ", paymentDay=" + paymentDay +
+                ", customDiscount=" + customDiscount +
                 ", customer=" + customer +
                 ", network=" + network +
                 ", status=" + status +
@@ -234,6 +284,4 @@ public class TraInvoice extends AbstractAuditingEntity implements Serializable {
                 ", orders=" + orders +
                 '}';
     }
-
-
 }

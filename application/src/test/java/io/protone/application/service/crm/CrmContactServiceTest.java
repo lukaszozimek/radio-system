@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -102,13 +103,13 @@ public class CrmContactServiceTest {
         crmContactRepository.saveAndFlush(crmContact);
 
         //then
-        List<CrmContact> crmContactList = crmContactService.getAllContact(corNetwork.getShortcut(), new PageRequest(0, 10));
+        Slice<CrmContact> crmContactList = crmContactService.getAllContact(corNetwork.getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(crmContactList);
-        assertEquals(1, crmContactList.size());
-        assertNotNull(crmContactList.get(0).getId());
-        assertNotNull(crmContactList.get(0).getCreatedBy());
+        assertNotNull(crmContactList.getContent());
+        assertEquals(1, crmContactList.getContent().size());
+        assertNotNull(crmContactList.getContent().get(0).getId());
+        assertNotNull(crmContactList.getContent().get(0).getCreatedBy());
     }
 
     @Test
@@ -284,12 +285,12 @@ public class CrmContactServiceTest {
         CrmTask crmTask1 = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, crmContact.getShortName(), crmContact.getNetwork().getShortcut());
 
         //then
-        List<CrmTask> localTask = crmContactService.getTasksAssociatedWithContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut(), new PageRequest(0, 10));
+        Slice<CrmTask> localTask = crmContactService.getTasksAssociatedWithContact(crmContact.getShortName(), crmContact.getNetwork().getShortcut(), new PageRequest(0, 10));
 
         //assert
-        assertNotNull(localTask);
-        assertEquals(1, localTask.size());
-        assertEquals(crmTask1.getId(), localTask.get(0).getId());
+        assertNotNull(localTask.getContent());
+        assertEquals(1, localTask.getContent().size());
+        assertEquals(crmTask1.getId(), localTask.getContent().get(0).getId());
     }
 
     @Test

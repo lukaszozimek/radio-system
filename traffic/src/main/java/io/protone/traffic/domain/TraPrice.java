@@ -1,7 +1,6 @@
 package io.protone.traffic.domain;
 
 import io.protone.core.domain.AbstractAuditingEntity;
-import io.protone.core.domain.CorCurrency;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -25,7 +24,7 @@ import java.util.Objects;
 public class TraPrice extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name = "lenght")
     @Column(name = "multiplier")
     @CollectionTable(name = "tra_price_lenght_multiplier")

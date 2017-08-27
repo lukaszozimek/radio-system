@@ -3,6 +3,7 @@ package io.protone.application.web.api.library.impl;
 
 import io.protone.application.web.api.library.LibraryResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorNetworkService;
@@ -15,6 +16,7 @@ import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +52,7 @@ public class LibraryResourceImpl implements LibraryResource {
     @Override
     public ResponseEntity<LibLibraryDTO> updateLibraryWithOutCoverUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                            @ApiParam(value = "library", required = true)
-                                                                           @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException,CreateBucketException, TikaException, IOException, SAXException {
+                                                                           @Valid @RequestBody LibLibraryDTO library) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException {
         log.debug("REST request to update library: {}", library);
         if (library.getId() == null) {
             return createLibraryUsingPOST(networkShortcut, library, null);
@@ -85,9 +87,9 @@ public class LibraryResourceImpl implements LibraryResource {
     public ResponseEntity<List<LibLibraryDTO>> getAllLibrariesUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibLibraryDTO");
-        List<LibLibrary> libraries = libLibraryService.findLibraries(networkShortcut, pagable);
-        return ResponseEntity.ok()
-                .body(libLibraryMapper.DBs2DTOs(libraries));
+        Slice<LibLibrary> libraries = libLibraryService.findLibraries(networkShortcut, pagable);
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(libraries))
+                .body(libLibraryMapper.DBs2DTOs(libraries.getContent()));
     }
 
     @Override
@@ -132,9 +134,9 @@ public class LibraryResourceImpl implements LibraryResource {
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all LibLibraryDTO");
-        List<LibLibrary> libraries = libLibraryService.findLibrariesByChannel(networkShortcut, channelShortcut, pagable);
-        return ResponseEntity.ok()
-                .body(libLibraryMapper.DBs2DTOs(libraries));
+        Slice<LibLibrary> libraries = libLibraryService.findLibrariesByChannel(networkShortcut, channelShortcut, pagable);
+        return ResponseEntity.ok().headers(PaginationUtil.generateSliceHttpHeaders(libraries))
+                .body(libLibraryMapper.DBs2DTOs(libraries.getContent()));
     }
 
     @Override
@@ -159,7 +161,7 @@ public class LibraryResourceImpl implements LibraryResource {
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                    @ApiParam(value = "library", required = true) @Valid @RequestPart("libraryDTO") LibLibraryDTO libraryDTO,
-                                                                                   @ApiParam(value = "cover")  @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException {
+                                                                                   @ApiParam(value = "cover") @RequestPart("cover") MultipartFile cover) throws URISyntaxException, CreateBucketException, TikaException, IOException, SAXException {
         log.debug("REST request to update library: {}", libraryDTO);
 
         if (libraryDTO.getId() == null) {

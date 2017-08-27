@@ -4,6 +4,7 @@ package io.protone.application.web.api.traffic.impl;
 import io.protone.application.web.api.traffic.TraMediaPlanMappingResource;
 import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.api.dto.TraPlaylistDiffDTO;
+import io.protone.traffic.mapper.TraMediaPlanEmissionMapper;
 import io.protone.traffic.mapper.TraPlaylistMapper;
 import io.protone.traffic.service.mediaplan.TraPlaylistMediaPlanMappingService;
 import io.protone.traffic.service.mediaplan.diff.TraPlaylistDiff;
@@ -34,19 +35,24 @@ public class TraMediaPlanMappingResourceImpl implements TraMediaPlanMappingResou
     @Inject
     private TraPlaylistMapper traPlaylistMapper;
 
+    @Inject
+    private TraMediaPlanEmissionMapper traMediaPlanEmissionMapper;
+
     @Override
     public ResponseEntity<TraPlaylistDiffDTO> assigneMediaPlanOnPlaylistsUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                  @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO")@RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO) {
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                   @ApiParam(value = "traMediaPlanAdvertisementAssigneDTO") @RequestBody TraMediaPlanAdvertisementAssigneDTO traMediaPlanAdvertisementAssigneDTO) {
         //TODO:// MAPSTRUCT BUG!!
         TraPlaylistDiff traPlaylistDiff = traPlaylistMediaPlanMappingService.mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(traMediaPlanAdvertisementAssigneDTO, networkShortcut, channelShortcut);
         TraPlaylistDiffDTO response = new TraPlaylistDiffDTO();
-        response.setParsedFromExcel(traPlaylistMapper.DBs2DTOs(traPlaylistDiff.getParsedFromExcel()));
-        response.setEntityPlaylist(traPlaylistMapper.DBs2DTOs(traPlaylistDiff.getEntityPlaylist()));
+        if (traPlaylistDiff != null) {
+            response.setParsedFromExcel(traMediaPlanEmissionMapper.DBs2DTOs(traPlaylistDiff.getParsedFromExcel()));
+            response.setEntityPlaylist(traPlaylistMapper.DBs2DTOs(traPlaylistDiff.getEntityPlaylist()));
+        }
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

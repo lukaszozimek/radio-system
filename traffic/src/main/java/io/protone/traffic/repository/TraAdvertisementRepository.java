@@ -4,6 +4,7 @@ package io.protone.traffic.repository;
 import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.domain.TraAdvertisement;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,9 +24,10 @@ public interface TraAdvertisementRepository extends JpaRepository<TraAdvertiseme
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network")
-    List<TraAdvertisement> findAllByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
+    Slice<TraAdvertisement> findSliceByNetwork_Shortcut(@Param("network") String network, Pageable pageable);
 
     @Query("select a  from TraAdvertisement as a " +
             "left join fetch a.network as n " +
@@ -33,6 +35,7 @@ public interface TraAdvertisementRepository extends JpaRepository<TraAdvertiseme
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network  and a.id =:id")
     TraAdvertisement findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
@@ -43,6 +46,7 @@ public interface TraAdvertisementRepository extends JpaRepository<TraAdvertiseme
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
             "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
             "left join fetch c.industry as ind " +
             " where n.shortcut = :network and c.shortName = :shortName")
     List<TraAdvertisement> findByCustomer_ShortNameAndNetwork_Shortcut(@Param("shortName") String crmAccount, @Param("network") String network, Pageable pageable);

@@ -34,7 +34,7 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     private String idx;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
     @NotNull

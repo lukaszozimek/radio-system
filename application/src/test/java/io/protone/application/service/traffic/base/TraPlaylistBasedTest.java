@@ -60,7 +60,7 @@ public class TraPlaylistBasedTest {
     @Inject
     protected TraBlockConfigurationRepository trablockConfigurationRepository;
     @Inject
-    private TraPlaylistService traPlaylistService;
+    protected TraPlaylistService traPlaylistService;
     @Inject
     private TraAdvertisementService traAdvertisementService;
     @Inject
@@ -70,11 +70,11 @@ public class TraPlaylistBasedTest {
     @Inject
     private CorNetworkRepository corNetworkRepository;
     @Inject
-    private TraBlockRepository trablockRepository;
+    protected TraBlockRepository trablockRepository;
     @Inject
-    private TraPlaylistRepository traPlaylistRepository;
+    protected TraPlaylistRepository traPlaylistRepository;
     @Inject
-    private TraEmissionRepository traEmissionRepository;
+    protected TraEmissionRepository traEmissionRepository;
     @Inject
     private LibLibraryRepository libLibraryRepository;
     @Inject
@@ -117,7 +117,7 @@ public class TraPlaylistBasedTest {
         for (int i = 1; i < DAILY_BLOCK_NUMBER; i++) {
             TraBlock trablock = factory.manufacturePojo(TraBlock.class);
             trablock.sequence(i);
-            trablock.setLength(Long.valueOf((3 * 60000)));
+            trablock.setLength(Long.valueOf((180000)));
             trablock.setChannel(corChannel);
             trablock.setNetwork(corNetwork);
             trablock = trablockRepository.saveAndFlush(trablock);
@@ -132,13 +132,12 @@ public class TraPlaylistBasedTest {
     protected Set<TraBlockConfiguration> buildBlockConfiguration(CorDayOfWeekEnum corDayOfWeekEnum) {
         Set<TraBlockConfiguration> traBlocks = new HashSet<>();
         for (int hour = 0; hour < 24; hour++) {
-            for (int blockInHour = 0; blockInHour < 3; blockInHour++) {
+            for (int blockInHour = 0; blockInHour < 11; blockInHour++) {
                 TraBlockConfiguration trablock = factory.manufacturePojo(TraBlockConfiguration.class);
                 trablock.sequence(hour + blockInHour);
-                trablock.setLength(Long.valueOf((3 * 60000)));
+                trablock.setLength(Long.valueOf(120000));
                 if (blockInHour > 0) {
-                    trablock.setStartBlock(LocalTime.of(hour, blockInHour * 15).toNanoOfDay());
-
+                    trablock.setStartBlock(LocalTime.of(hour, blockInHour * 5).toNanoOfDay());
                 } else {
                     trablock.setStartBlock(LocalTime.of(hour, 0).toNanoOfDay());
                 }
@@ -156,13 +155,13 @@ public class TraPlaylistBasedTest {
     protected Set<TraBlock> buildBlockWithEmission() {
         Set<TraBlock> traBlocks = new HashSet<>();
         for (int hour = 0; hour < 24; hour++) {
-            for (int blockInHour = 0; blockInHour < 3; blockInHour++) {
+            for (int blockInHour = 0; blockInHour < 4; blockInHour++) {
                 TraBlock trablock = factory.manufacturePojo(TraBlock.class);
                 trablock.sequence(hour + blockInHour);
-                trablock.setLength(Long.valueOf((3 * 60000)));
+                trablock.setLength(Long.valueOf((180000)));
 
                 if (blockInHour > 0) {
-                    trablock.setStartBlock(LocalTime.of(hour, blockInHour * 15).toNanoOfDay());
+                    trablock.setStartBlock(LocalTime.of(hour, blockInHour * (15 - 3)).toNanoOfDay());
 
                 } else {
                     trablock.setStartBlock(LocalTime.of(hour, 0).toNanoOfDay());
@@ -247,7 +246,7 @@ public class TraPlaylistBasedTest {
         libMediaItemToShuffle.setLibrary(libLibrary);
         LibLibrary libLibrary = new LibLibrary();
         libLibrary.setId(2L);
-        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.library(libLibrary));
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.length(30000.0).library(libLibrary));
         libMediaItemToShuffleThinDTO = thinMapper.DB2DTO(libMediaItemToShuffle);
         advertisementToShuffle.setCustomer(crmAccount);
         advertisementToShuffle.setNetwork(corNetwork);

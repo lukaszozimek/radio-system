@@ -5,6 +5,7 @@ import io.protone.crm.repostiory.CrmTaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,16 +77,16 @@ public class CrmTaskService {
     }
 
     @Transactional
-    public List<CrmTask> findAllByContactByShortNameAndNetworkByShortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByContactByShortNameAndNetworkByShortcut(String shortcut, String corNetwork, Pageable pageable) {
+        return crmTaskRepository.findSliceByContact_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     public CrmTask findOneByIdAndNetwork_Shortcut(Long taskId, String corNetwork) {
         return crmTaskRepository.findOneByIdAndNetwork_Shortcut(taskId, corNetwork);
     }
 
-    public List<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByAccount_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
+        return crmTaskRepository.findSliceByAccount_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     @Transactional
@@ -134,12 +135,12 @@ public class CrmTaskService {
         crmTaskRepository.deleteByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork);
     }
 
-    public List<CrmTask> findAllByLead_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByLead_ShortnameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
+        return crmTaskRepository.findSliceByLead_ShortnameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
-    public List<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
-        return crmTaskRepository.findAllByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
+    public Slice<CrmTask> findAllByOpportunity_ShortNameAndNetwork_Shortcut(String shortcut, String corNetwork, Pageable pageable) {
+        return crmTaskRepository.findSliceByOpportunity_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);
     }
 
     public void deleteCustomerTaskComment(Long taskId, Long id, String networkShortcut) {
@@ -166,7 +167,7 @@ public class CrmTaskService {
 
     }
 
-    public List<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
+    public Slice<CrmTaskComment> getTaskCommentsAssociatedWithTask(Long taskId, String networkShortcut, Pageable pagable) {
         return crmTaskCommentService.findByCrmTaskId(taskId, networkShortcut, pagable);
     }
 

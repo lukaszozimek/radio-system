@@ -3,6 +3,7 @@ package io.protone.application.web.api.crm.impl;
 
 import io.protone.application.web.api.crm.CrmContactTaskResource;
 import io.protone.application.web.rest.util.HeaderUtil;
+import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.api.dto.CrmTaskDTO;
@@ -13,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,13 +47,15 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
                                                                             @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName,
                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all CrmContact CrmTask,for CrmContact: {} and Network: {}", shortName, networkShortcut);
-        List<CrmTask> reposesEntity = crmContactService.getTasksAssociatedWithContact(shortName, networkShortcut, pagable);
-        List<CrmTaskDTO> response = crmTaskMapper.DBs2DTOs(reposesEntity);
+        Slice<CrmTask> reposesEntity = crmContactService.getTasksAssociatedWithContact(shortName, networkShortcut, pagable);
+        List<CrmTaskDTO> response = crmTaskMapper.DBs2DTOs(reposesEntity.getContent());
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(reposesEntity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(reposesEntity), HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -83,7 +87,7 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
         CrmTask reposesEntity = crmContactService.saveOrUpdateTaskAssociatiedWithAccount(crmTask, shortName, corNetwork.getShortcut());
         CrmTaskDTO response = crmTaskMapper.DB2DTO(reposesEntity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/crm/contact/" + shortName + "/task/" + crmTask.getId()))
-            .body(response);
+                .body(response);
     }
 
     @Override
@@ -104,10 +108,10 @@ public class CrmContactTaskResourceImpl implements CrmContactTaskResource {
         CrmTask reposesEntity = crmContactService.getTaskAssociatedWithContact(id, networkShortcut);
         CrmTaskDTO response = crmTaskMapper.DB2DTO(reposesEntity);
         return Optional.ofNullable(response)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 

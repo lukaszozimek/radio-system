@@ -23,28 +23,29 @@ public interface CrmOpportunityMapper {
 
     @Mapping(source = "stage", target = "stage")
     @Mapping(source = "keeper", target = "opportunityOwner")
-    @Mapping(source = "contact.id", target = "contactId")
-    @Mapping(source = "account.id", target = "accountId")
-    @Mapping(source = "lead.id", target = "leadId")
+    @Mapping(source = "contact.shortName", target = "contactId")
+    @Mapping(source = "account.shortName", target = "accountId")
+    @Mapping(source = "lead.shortname", target = "leadId")
     CrmOpportunityDTO DB2DTO(CrmOpportunity crmOpportunity);
 
     List<CrmOpportunityDTO> DBs2DTOs(List<CrmOpportunity> crmOpportunities);
 
     @Mapping(source = "stage", target = "stage")
     @Mapping(source = "keeper", target = "opportunityOwner")
-    @Mapping(source = "contact.id", target = "contactId")
-    @Mapping(source = "account.id", target = "accountId")
-    @Mapping(source = "lead.id", target = "leadId")
+    @Mapping(source = "contact.shortName", target = "contactId")
+    @Mapping(source = "account.shortName", target = "accountId")
+    @Mapping(source = "lead.shortname", target = "leadId")
     CrmOpportunityThinDTO DB2ThinDTO(CrmOpportunity crmOpportunity);
+
 
     List<CrmOpportunityThinDTO> DBs2ThinDTOs(List<CrmOpportunity> crmOpportunities);
 
 
     @Mapping(source = "stage", target = "stage")
     @Mapping(source = "opportunityOwner", target = "keeper")
-    @Mapping(source = "contactId", target = "contact")
-    @Mapping(source = "accountId", target = "account")
-    @Mapping(source = "leadId", target = "lead")
+    @Mapping(source = "contactId", target = "contact", ignore = true)
+    @Mapping(source = "accountId", target = "account", ignore = true)
+    @Mapping(source = "leadId", target = "lead", ignore = true)
     CrmOpportunity DTO2DB(CrmOpportunityDTO crmOpportunityDTO, @Context CorNetwork corNetwork);
 
     @AfterMapping
