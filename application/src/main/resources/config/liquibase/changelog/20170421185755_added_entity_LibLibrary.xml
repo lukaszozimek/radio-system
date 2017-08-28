@@ -23,7 +23,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="shortcut" type="varchar(3)">
+            <column name="shortcut" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
 

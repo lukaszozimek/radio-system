@@ -1,17 +1,24 @@
 package io.protone.scheduler.service;
 
-import io.protone.scheduler.domain.SchPlaylist;
-import io.protone.scheduler.repository.SchPlaylistRepository;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import io.protone.scheduler.domain.SchSchedule;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
 
 
 @Service
 public class SchMergLogService {
 
-  }
+    private static final String LOG_COMMERCIAL_LIBRARY = "loc";
+
+    private static final String LOG_MUSIC_LIBRARY = "lom";
+
+    private static final String LOG_OTHER_LIBRARY = "loo";
+    @Inject
+    private SchGridService schGridService;
+
+
+    public SchSchedule mergeLogs() {
+        return null;
+    }
+}

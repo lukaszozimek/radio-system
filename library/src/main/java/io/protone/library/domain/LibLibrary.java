@@ -40,8 +40,8 @@ public class LibLibrary extends AbstractAuditingEntity implements Serializable {
     private String prefix;
 
     @NotNull
-    @Size(max = 3)
-    @Column(name = "shortcut", length = 3, nullable = false, unique = true)
+    @Size(max = 10)
+    @Column(name = "shortcut", length = 10, nullable = false, unique = true)
     private String shortcut;
 
     @NotNull
