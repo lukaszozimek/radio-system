@@ -31,12 +31,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -269,26 +267,6 @@ public class SchClockResourceImplTest {
         // Validate the database is empty
         List<SchClock> traPlaylistList = schClockRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void checkDateIsRequired() throws Exception {
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
-
-        int databaseSizeBeforeTest = schClockRepository.findAll().size();
-        // set the field null
-
-        // Create the TraOrder, which fails.
-        SchClockDTO traOrderDTO = schClockMapper.DB2DTO(traPlaylist);
-
-        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock", corNetwork.getShortcut(), corChannel.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
-                .andExpect(status().isBadRequest());
-
-        List<SchClock> traOrderList = schClockRepository.findAll();
-        assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

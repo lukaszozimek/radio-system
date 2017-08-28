@@ -2,6 +2,8 @@ package io.protone.application.web.api.scheduler.impl;
 
 
 import io.protone.application.web.api.scheduler.SchPlaylistResource;
+import io.protone.core.service.CorChannelService;
+import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.api.dto.thin.SchPlaylistThinDTO;
@@ -31,6 +33,12 @@ public class SchPlaylistResourceImpl implements SchPlaylistResource {
 
     @Inject
     private SchPlaylistMapper schPlaylistMapper;
+
+    @Inject
+    private CorNetworkService corNetworkService;
+
+    @Inject
+    private CorChannelService corChannelService;
 
     @Override
     public ResponseEntity<List<SchPlaylistThinDTO>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

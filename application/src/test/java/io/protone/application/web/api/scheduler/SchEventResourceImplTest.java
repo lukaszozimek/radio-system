@@ -51,14 +51,14 @@ public class SchEventResourceImplTest {
     private static final String DEFAULT_SHORTNAME = "AAAAAAAAAA";
     private static final String UPDATED_SHORTNAME = "BBBBBBBBBB";
     @Autowired
-    private SchEventRepository traPlaylistRepository;
+    private SchEventRepository schEventRepository;
 
 
     @Autowired
-    private SchEventService traPlaylistService;
+    private SchEventService schEventService;
 
     @Autowired
-    private SchEventMapper traPlaylistMapper;
+    private SchEventMapper schEventMapper;
 
     @Autowired
     private CorChannelService corChannelService;
@@ -103,8 +103,8 @@ public class SchEventResourceImplTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         SchEventResourceImpl traPlaylistResource = new SchEventResourceImpl();
-        ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistService", traPlaylistService);
-        ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistMapper", traPlaylistMapper);
+        ReflectionTestUtils.setField(traPlaylistResource, "schEventService", schEventService);
+        ReflectionTestUtils.setField(traPlaylistResource, "schEventMapper", schEventMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
@@ -127,10 +127,10 @@ public class SchEventResourceImplTest {
     @Test
     @Transactional
     public void createSchEvent() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schEventRepository.findAll().size();
 
         // Create the SchEvent
-        SchEventDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchEventDTO traPlaylistDTO = schEventMapper.DB2DTO(traPlaylist);
 
         restSchEventMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -138,7 +138,7 @@ public class SchEventResourceImplTest {
                 .andExpect(status().isCreated());
 
         // Validate the SchEvent in the database
-        List<SchEvent> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchEvent> traPlaylistList = schEventRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate + 1);
         SchEvent testSchEvent = traPlaylistList.get(traPlaylistList.size() - 1);
         assertThat(testSchEvent.getName()).isEqualTo(DEFAULT_NAME);
@@ -149,12 +149,12 @@ public class SchEventResourceImplTest {
     @Test
     @Transactional
     public void createSchEventWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schEventRepository.findAll().size();
 
         // Create the SchEvent with an existing ID
         SchEvent existingSchEvent = new SchEvent();
         existingSchEvent.setId(1L);
-        SchEventDTO existingSchEventDTO = traPlaylistMapper.DB2DTO(existingSchEvent);
+        SchEventDTO existingSchEventDTO = schEventMapper.DB2DTO(existingSchEvent);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSchEventMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event", corNetwork.getShortcut(), corChannel.getShortcut())
@@ -163,7 +163,7 @@ public class SchEventResourceImplTest {
                 .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<SchEvent> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchEvent> traPlaylistList = schEventRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -171,7 +171,7 @@ public class SchEventResourceImplTest {
     @Transactional
     public void getAllSchEvents() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schEventRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
         restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -187,7 +187,7 @@ public class SchEventResourceImplTest {
     @Transactional
     public void getSchEvent() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schEventRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
 
         // Get the traPlaylist
         restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
@@ -210,14 +210,14 @@ public class SchEventResourceImplTest {
     @Transactional
     public void updateSchEvent() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
+        schEventRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeUpdate = schEventRepository.findAll().size();
 
         // Update the traPlaylist
-        SchEvent updatedSchEvent = traPlaylistRepository.findOne(traPlaylist.getId());
+        SchEvent updatedSchEvent = schEventRepository.findOne(traPlaylist.getId());
         updatedSchEvent
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
-        SchEventDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(updatedSchEvent);
+        SchEventDTO traPlaylistDTO = schEventMapper.DB2DTO(updatedSchEvent);
 
         restSchEventMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -225,7 +225,7 @@ public class SchEventResourceImplTest {
                 .andExpect(status().isOk());
 
         // Validate the SchEvent in the database
-        List<SchEvent> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchEvent> traPlaylistList = schEventRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeUpdate);
         SchEvent testSchEvent = traPlaylistList.get(traPlaylistList.size() - 1);
         assertThat(testSchEvent.getName()).isEqualTo(UPDATED_NAME);
@@ -235,10 +235,10 @@ public class SchEventResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingSchEvent() throws Exception {
-        int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeUpdate = schEventRepository.findAll().size();
 
         // Create the SchEvent
-        SchEventDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchEventDTO traPlaylistDTO = schEventMapper.DB2DTO(traPlaylist);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSchEventMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event", corNetwork.getShortcut(), corChannel.getShortcut())
@@ -247,7 +247,7 @@ public class SchEventResourceImplTest {
                 .andExpect(status().isCreated());
 
         // Validate the SchEvent in the database
-        List<SchEvent> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchEvent> traPlaylistList = schEventRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -255,8 +255,8 @@ public class SchEventResourceImplTest {
     @Transactional
     public void deleteSchEvent() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeDelete = traPlaylistRepository.findAll().size();
+        schEventRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeDelete = schEventRepository.findAll().size();
 
         // Get the traPlaylist
         restSchEventMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
@@ -264,7 +264,7 @@ public class SchEventResourceImplTest {
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<SchEvent> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchEvent> traPlaylistList = schEventRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
