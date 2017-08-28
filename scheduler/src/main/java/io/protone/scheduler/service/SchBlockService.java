@@ -28,4 +28,8 @@ public class SchBlockService {
             return schBlockRepository.saveAndFlush(schBlock);
         }).collect(toSet());
     }
+    @Transactional
+    public void deleteBlock(Set<SchBlock> blocks){
+
+    }
 }

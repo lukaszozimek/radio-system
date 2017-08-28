@@ -17,9 +17,7 @@ public class SchAttachmentService {
 
     @Transactional
     public Set<SchAttachment> saveAttachmenst(Set<SchAttachment> schAttachmentSet) {
-        return schAttachmentSet.stream().map(schAttachment -> {
-            return schAttachmentRepository.saveAndFlush(schAttachment);
-        }).collect(toSet());
+        return schAttachmentSet.stream().map(schAttachment -> schAttachmentRepository.saveAndFlush(schAttachment)).collect(toSet());
     }
 
 
