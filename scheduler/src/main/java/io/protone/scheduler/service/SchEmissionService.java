@@ -24,7 +24,13 @@ public class SchEmissionService {
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
             return schEmissionRepository.saveAndFlush(schEmission);
         }).collect(toSet());
+    }
 
-
+    @Transactional
+    public void deleteEmissions(Set<SchEmission> emissionSet) {
+        emissionSet.stream().forEach(schEmission -> {
+            schAttachmentService.deleteAttachments(schEmission.getAttachments());
+             schEmissionRepository.saveAndFlush(schEmission);
+        });
     }
 }

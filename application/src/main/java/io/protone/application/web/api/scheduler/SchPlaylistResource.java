@@ -3,6 +3,7 @@ package io.protone.application.web.api.scheduler;
 
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
+import io.protone.scheduler.api.dto.thin.SchPlaylistThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,57 +24,57 @@ public interface SchPlaylistResource {
 
     @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
-    ResponseEntity<List<SchPlaylistDTO>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                   @ApiParam(value = "pagable", required = true) Pageable pagable);
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<SchPlaylistThinDTO>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.POST)
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> creatSchedulerPlaylistForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "schPlaylistDTO", required = true) @Valid @RequestBody SchPlaylistDTO schPlaylistDTO);
 
     @ApiOperation(value = "deleteSchedulerPlaylistForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-        @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
+            @ApiResponse(code = 200, message = "OK", response = Void.class),
+            @ApiResponse(code = 204, message = "No Content", response = Void.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
+            @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}",
-        produces = {"application/json"},
-        method = RequestMethod.DELETE)
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                       @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
     @ApiOperation(value = "deleteSchedulerPlaylistElementForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = Void.class),
-        @ApiResponse(code = 204, message = "No Content", response = Void.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-        @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
+            @ApiResponse(code = 200, message = "OK", response = Void.class),
+            @ApiResponse(code = 204, message = "No Content", response = Void.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
+            @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}/{seqNumber}",
-        produces = {"application/json"},
-        method = RequestMethod.DELETE)
+            produces = {"application/json"},
+            method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistElementForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "date", required = true) @PathVariable("date") String date,
@@ -82,26 +83,26 @@ public interface SchPlaylistResource {
 
     @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<SchPlaylistDTO> getSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") String date);
 
     @ApiOperation(value = "getSchedulerPlaylistElementForChannel", notes = "", response = SchEmissionDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchEmissionDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchEmissionDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchEmissionDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchEmissionDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchEmissionDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchEmissionDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchEmissionDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchEmissionDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}/{seqNumber}",
-        produces = {"application/json"},
-        method = RequestMethod.GET)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<SchEmissionDTO> getSchedulerPlaylistElementForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") String date,
@@ -110,29 +111,29 @@ public interface SchPlaylistResource {
 
     @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist",
-        produces = {"application/json"},
-        consumes = {"application/json"},
-        method = RequestMethod.PUT)
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.PUT)
     ResponseEntity<SchPlaylistDTO> updateSchedulerPlaylistForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "schPlaylistDTO", required = true) @Valid @RequestBody SchPlaylistDTO schPlaylistDTO);
 
     @ApiOperation(value = "moveSchedulerChannelPlaylistElement", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}/{from}/move/{to}",
-        produces = {"application/json"},
-        method = RequestMethod.POST)
+            produces = {"application/json"},
+            method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> moveElementInPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") String date,
@@ -141,13 +142,13 @@ public interface SchPlaylistResource {
 
     @ApiOperation(value = "addSchedulerChannelPlaylistElement", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
-        @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}/add/{seqNumber}", produces = {"application/json"},
-        method = RequestMethod.POST)
+            method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> addElementInPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") String date,

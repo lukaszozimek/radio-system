@@ -1,48 +1,27 @@
-package io.protone.scheduler.api.dto;
+package io.protone.scheduler.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Objects;
 
 /**
- * SchGridThinDTO
+ * SchClockThinDTO
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchGridThinDTO {
-    @JsonProperty("dayOfWeek")
-    private DayOfWeekEnum dayOfWeek = null;
+public class SchClockThinDTO {
     @JsonProperty("id")
     private Long id = null;
+
     @JsonProperty("name")
     private String name = null;
+
     @JsonProperty("shortName")
     private String shortName = null;
 
-    public SchGridThinDTO dayOfWeek(DayOfWeekEnum dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-        return this;
-    }
 
-    /**
-     * Get dayOfWeek
-     *
-     * @return dayOfWeek
-     **/
-    @ApiModelProperty(value = "")
-    public DayOfWeekEnum getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public SchGridThinDTO id(Long id) {
+    public SchClockThinDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -61,7 +40,7 @@ public class SchGridThinDTO {
         this.id = id;
     }
 
-    public SchGridThinDTO name(String name) {
+    public SchClockThinDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -71,9 +50,7 @@ public class SchGridThinDTO {
      *
      * @return name
      **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 0, max = 100)
+    @ApiModelProperty(value = "")
     public String getName() {
         return name;
     }
@@ -82,7 +59,7 @@ public class SchGridThinDTO {
         this.name = name;
     }
 
-    public SchGridThinDTO shortName(String shortName) {
+    public SchClockThinDTO shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -92,9 +69,7 @@ public class SchGridThinDTO {
      *
      * @return shortName
      **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 0, max = 3)
+    @ApiModelProperty(value = "")
     public String getShortName() {
         return shortName;
     }
@@ -102,6 +77,9 @@ public class SchGridThinDTO {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -111,24 +89,22 @@ public class SchGridThinDTO {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchGridThinDTO schGridThinDTO = (SchGridThinDTO) o;
-        return Objects.equals(this.dayOfWeek, schGridThinDTO.dayOfWeek) &&
-                Objects.equals(this.id, schGridThinDTO.id) &&
-                Objects.equals(this.name, schGridThinDTO.name) &&
-                Objects.equals(this.shortName, schGridThinDTO.shortName);
+        SchClockThinDTO schClockThinDTO = (SchClockThinDTO) o;
+        return Objects.equals(this.id, schClockThinDTO.id) &&
+                Objects.equals(this.name, schClockThinDTO.name) &&
+                Objects.equals(this.shortName, schClockThinDTO.shortName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dayOfWeek, id, name, shortName);
+        return Objects.hash(id, name, shortName);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class SchGridThinDTO {\n");
+        sb.append("class SchClockThinDTO {\n");
 
-        sb.append("    dayOfWeek: ").append(toIndentedString(dayOfWeek)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
@@ -146,6 +122,5 @@ public class SchGridThinDTO {
         }
         return o.toString().replace("\n", "\n    ");
     }
-
 }
 

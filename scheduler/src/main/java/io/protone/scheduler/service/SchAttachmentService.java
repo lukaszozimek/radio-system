@@ -20,5 +20,9 @@ public class SchAttachmentService {
         return schAttachmentSet.stream().map(schAttachment -> schAttachmentRepository.saveAndFlush(schAttachment)).collect(toSet());
     }
 
+    @Transactional
+    public void deleteAttachments(Set<SchAttachment> schAttachmentSet) {
+         schAttachmentSet.stream().forEach(schAttachment -> schAttachmentRepository.delete(schAttachment));
+    }
 
 }

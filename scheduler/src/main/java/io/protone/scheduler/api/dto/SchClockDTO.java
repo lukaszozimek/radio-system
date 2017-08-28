@@ -30,6 +30,11 @@ public class SchClockDTO {
     @JsonProperty("name")
     private String name = null;
 
+
+
+    @JsonProperty("shortName")
+    private String shortName = null;
+
     @JsonProperty("timeParams")
     private SchTimeParamsDTO timeParams = null;
 
@@ -160,7 +165,13 @@ public class SchClockDTO {
     public void setQueueParams(SchQueueParamsDTO queueParams) {
         this.queueParams = queueParams;
     }
+    public String getShortName() {
+        return shortName;
+    }
 
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
 
     @Override
     public boolean equals(Object o) {

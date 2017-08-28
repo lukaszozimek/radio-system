@@ -15,20 +15,19 @@ import java.util.List;
  */
 public interface SchEntityMapper<D, E> {
 
-    public E toEntity(D dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    public E DTO2DB(D dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-    public D toDto(E entity);
+    public D DB2DTO(E entity);
 
+    public List<D> DBs2DTOs(List<E> entityList);
 
-    public List<D> toDto(List<E> entityList);
-
-    default List<E> toEntity(List<D> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default List<E> DTOs2DBs(List<D> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<E> eList = new ArrayList<>();
         if (dList.isEmpty() || dList == null) {
             return null;
         }
         for (D dto : dList) {
-            eList.add(toEntity(dto, network, corChannel));
+            eList.add(DTO2DB(dto, network, corChannel));
         }
         return eList;
     }

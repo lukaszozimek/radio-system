@@ -2,6 +2,7 @@ package io.protone.application.web.api.scheduler;
 
 
 import io.protone.scheduler.api.dto.SchGridDTO;
+import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -42,9 +44,9 @@ public interface SchGridResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
         produces = {"application/json"},
         method = RequestMethod.GET)
-    ResponseEntity<List<SchGridDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                           @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
     @ApiOperation(value = "createSchedulerGridForChannel", notes = "", response = SchGridDTO.class, tags = {"SCHEDULER",})
@@ -60,7 +62,7 @@ public interface SchGridResource {
         method = RequestMethod.POST)
     ResponseEntity<SchGridDTO> creatSchedulerPlaylistForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                         @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO);
+                                                                         @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO) throws URISyntaxException;
 
 
     @ApiOperation(value = "deleteSchedulerGridForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
@@ -90,7 +92,7 @@ public interface SchGridResource {
         method = RequestMethod.PUT)
     ResponseEntity<SchGridDTO> updateSchedulerGridForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                     @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO);
+                                                                     @ApiParam(value = "schGridDTO", required = true) @Valid @RequestBody SchGridDTO schGridDTO) throws URISyntaxException;
 
 
 }

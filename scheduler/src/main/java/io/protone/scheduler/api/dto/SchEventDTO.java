@@ -24,7 +24,8 @@ public class SchEventDTO {
 
     @JsonProperty("name")
     private String name = null;
-
+    @JsonProperty("shortName")
+    private String shortName = null;
     @JsonProperty("queueParams")
     private SchQueueParamsDTO queueParams = null;
     @JsonProperty("eventType")
@@ -151,6 +152,13 @@ public class SchEventDTO {
 
     public void setTimeParams(SchTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
+    }
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     @Override

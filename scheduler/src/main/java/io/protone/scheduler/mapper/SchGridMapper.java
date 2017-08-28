@@ -2,8 +2,9 @@ package io.protone.scheduler.mapper;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.api.dto.SchClockThinDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
+import io.protone.scheduler.api.dto.thin.SchClockThinDTO;
+import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchGrid;
 import org.mapstruct.AfterMapping;
@@ -11,6 +12,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,10 +21,7 @@ import java.util.Set;
  */
 @Mapper(componentModel = "spring", uses = {SchScheduleMapper.class,})
 public interface SchGridMapper extends SchEntityMapper<SchGridDTO, SchGrid> {
-
-    SchGridDTO toDto(SchGrid grid);
-
-    SchGrid toEntity(SchGridDTO gridDTO);
+    List<SchGridThinDTO> DBs2ThinDTOs(List<SchGrid> schClockList);
 
     default SchGrid fromId(Long id) {
         if (id == null) {
@@ -40,8 +39,9 @@ public interface SchGridMapper extends SchEntityMapper<SchGridDTO, SchGrid> {
     default Set<SchClock> map(Map<String, SchClockThinDTO> value) {
         return null;
     }
+
     @AfterMapping
-    default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity,  @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }

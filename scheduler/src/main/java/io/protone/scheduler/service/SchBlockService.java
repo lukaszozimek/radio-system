@@ -28,8 +28,15 @@ public class SchBlockService {
             return schBlockRepository.saveAndFlush(schBlock);
         }).collect(toSet());
     }
-    @Transactional
-    public void deleteBlock(Set<SchBlock> blocks){
 
+    @Transactional
+    public void deleteBlock(Set<SchBlock> blocks) {
+        blocks.stream().map(schBlock -> {
+            if (!schBlock.getBlocks().isEmpty()) {
+                this.deleteBlock(schBlock.getBlocks());
+            }
+            schEmissionService.deleteEmissions(schBlock.getEmissions());
+            return schBlockRepository.saveAndFlush(schBlock);
+        }).collect(toSet());
     }
 }

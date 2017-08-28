@@ -37,7 +37,7 @@ public class SchClockService {
     }
 
     @Transactional
-    public void deleteSchClockByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, String shortName) {
+    public void deleteSchClockByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
         schClockRepository.deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
     }
 

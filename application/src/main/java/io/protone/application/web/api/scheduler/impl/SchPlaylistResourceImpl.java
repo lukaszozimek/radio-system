@@ -4,13 +4,19 @@ package io.protone.application.web.api.scheduler.impl;
 import io.protone.application.web.api.scheduler.SchPlaylistResource;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
+import io.protone.scheduler.api.dto.thin.SchPlaylistThinDTO;
+import io.protone.scheduler.mapper.SchPlaylistMapper;
+import io.protone.scheduler.service.SchPlaylistService;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,11 +25,17 @@ import java.util.List;
  */
 @RestController
 public class SchPlaylistResourceImpl implements SchPlaylistResource {
+    private final Logger log = LoggerFactory.getLogger(SchPlaylistResourceImpl.class);
+    @Inject
+    private SchPlaylistService schPlaylistService;
+
+    @Inject
+    private SchPlaylistMapper schPlaylistMapper;
 
     @Override
-    public ResponseEntity<List<SchPlaylistDTO>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                          @ApiParam(value = "pagable", required = true) Pageable pagable) {
+    public ResponseEntity<List<SchPlaylistThinDTO>> getAllSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                              @ApiParam(value = "pagable", required = true) Pageable pagable) {
         return null;
     }
 
