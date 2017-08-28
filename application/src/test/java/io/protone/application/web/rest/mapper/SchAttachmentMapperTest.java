@@ -54,7 +54,7 @@ public class SchAttachmentMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchAttachmentDTO dto = attachmentMapper.toDto(attachment);
+        SchAttachmentDTO dto = attachmentMapper.DB2DTO(attachment);
 
         assertNotNull(dto.getAttachmentType());
         assertNotNull(dto.getFadeInLength());
@@ -67,7 +67,7 @@ public class SchAttachmentMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchAttachmentDTO> dtos = attachmentMapper.toDto(attachments);
+        List<SchAttachmentDTO> dtos = attachmentMapper.DBs2DTOs(attachments);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -83,8 +83,8 @@ public class SchAttachmentMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchAttachment entity = attachmentMapper.toEntity(attachmentDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchAttachment entity = attachmentMapper.DTO2DB(attachmentDTO, network, corChannel);
 
         assertNotNull(entity.getAttachmentType());
         assertNotNull(entity.getFadeInLength());
@@ -100,7 +100,7 @@ public class SchAttachmentMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchAttachment> entities = attachmentMapper.toEntity(attachmentDTOs, network, corChannel);
+        List<SchAttachment> entities = attachmentMapper.DTOs2DBs(attachmentDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

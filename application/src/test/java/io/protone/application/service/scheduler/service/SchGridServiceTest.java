@@ -1,4 +1,4 @@
-package io.protone.scheduler.service;
+package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
@@ -7,6 +7,7 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.repository.SchGridRepository;
+import io.protone.scheduler.service.SchGridService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

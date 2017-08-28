@@ -10,11 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SchGridRepository extends JpaRepository<SchGrid, Long> {
 
-
     Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
-
 
     SchGrid findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
 
-    void deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
 }

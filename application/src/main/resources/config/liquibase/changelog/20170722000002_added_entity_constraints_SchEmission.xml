@@ -26,17 +26,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_media_item"/>
 
-        <addForeignKeyConstraint baseColumnNames="queue_params_id"
-                                 baseTableName="sch_emission"
-                                 constraintName="fk_emission_queue_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_queue_params"/>
-
-        <addForeignKeyConstraint baseColumnNames="time_params_id"
-                                 baseTableName="sch_emission"
-                                 constraintName="fk_emission_time_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_time_params"/>
 
         <addForeignKeyConstraint baseColumnNames="block_id"
                                  baseTableName="sch_emission"

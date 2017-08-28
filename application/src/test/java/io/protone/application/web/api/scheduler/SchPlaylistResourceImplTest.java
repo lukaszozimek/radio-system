@@ -15,10 +15,7 @@ import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.mapper.SchPlaylistMapper;
 import io.protone.scheduler.repository.SchPlaylistRepository;
 import io.protone.scheduler.service.SchPlaylistService;
-import io.protone.traffic.domain.TraBlock;
-import io.protone.traffic.domain.TraEmission;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +50,14 @@ public class SchPlaylistResourceImplTest {
     private static final LocalDate UPDATED_PLAYLIST_DATE = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
-    private SchPlaylistRepository traPlaylistRepository;
+    private SchPlaylistRepository schPlaylistRepository;
 
 
     @Autowired
-    private SchPlaylistService traPlaylistService;
+    private SchPlaylistService schPlaylistService;
 
     @Autowired
-    private SchPlaylistMapper traPlaylistMapper;
+    private SchPlaylistMapper schPlaylistMapper;
 
     @Autowired
     private CorChannelService corChannelService;
@@ -82,7 +79,7 @@ public class SchPlaylistResourceImplTest {
 
     private MockMvc restSchPlaylistMockMvc;
 
-    private SchPlaylist traPlaylist;
+    private SchPlaylist schPlaylist;
 
     private CorNetwork corNetwork;
 
@@ -96,7 +93,7 @@ public class SchPlaylistResourceImplTest {
      */
     public static SchPlaylist createEntity(EntityManager em) {
         SchPlaylist traPlaylist = new SchPlaylist()
-                .playlistDate(DEFAULT_PLAYLIST_DATE);
+                .date(DEFAULT_PLAYLIST_DATE);
         return traPlaylist;
     }
 
@@ -104,8 +101,8 @@ public class SchPlaylistResourceImplTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         SchPlaylistResourceImpl traPlaylistResource = new SchPlaylistResourceImpl();
-        ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistService", traPlaylistService);
-        ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistMapper", traPlaylistMapper);
+        ReflectionTestUtils.setField(traPlaylistResource, "schPlaylistService", schPlaylistService);
+        ReflectionTestUtils.setField(traPlaylistResource, "schPlaylistMapper", schPlaylistMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
@@ -122,69 +119,69 @@ public class SchPlaylistResourceImplTest {
         corNetwork.setId(1L);
         corChannel = new CorChannel().shortcut("tes");
         corChannel.setId(1L);
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        schPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
     }
 
     @Test
     @Transactional
     public void createSchPlaylist() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schPlaylistRepository.findAll().size();
 
         // Create the SchPlaylist
-        SchPlaylistDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
-        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the SchPlaylist in the database
-        List<SchPlaylist> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate + 1);
         SchPlaylist testSchPlaylist = traPlaylistList.get(traPlaylistList.size() - 1);
-        assertThat(testSchPlaylist.getPlaylistDate()).isEqualTo(DEFAULT_PLAYLIST_DATE);
+        assertThat(testSchPlaylist.getDate()).isEqualTo(DEFAULT_PLAYLIST_DATE);
     }
 
     @Test
     @Transactional
     public void createBatchSchPlaylist() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schPlaylistRepository.findAll().size();
 
 
         SchPlaylist traPlaylist1 = createEntity(em).network(corNetwork).channel(corChannel);
-        traPlaylist1.playlistDate(LocalDate.now().plusMonths(1));
+        traPlaylist1.date(LocalDate.now().plusMonths(1));
         // Create the SchPlaylist
-        List<SchPlaylistDTO> traPlaylistDTOS = traPlaylistMapper.DBs2DTOs(Lists.newArrayList(traPlaylist, traPlaylist1));
+        List<SchPlaylistDTO> schPlaylistDTOS = schPlaylistMapper.DBs2DTOs(Lists.newArrayList(schPlaylist, traPlaylist1));
 
 
-        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/batch", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/batch", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTOS)))
+                .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTOS)))
                 .andExpect(status().isCreated());
 
         // Validate the SchPlaylist in the database
-        List<SchPlaylist> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate + 2);
     }
 
     @Test
     @Transactional
     public void createSchPlaylistWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schPlaylistRepository.findAll().size();
 
         // Create the SchPlaylist with an existing ID
         SchPlaylist existingSchPlaylist = new SchPlaylist();
         existingSchPlaylist.setId(1L);
-        SchPlaylistDTO existingSchPlaylistDTO = traPlaylistMapper.DB2DTO(existingSchPlaylist);
+        SchPlaylistDTO existingSchPlaylistDTO = schPlaylistMapper.DB2DTO(existingSchPlaylist);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchPlaylistDTO)))
                 .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<SchPlaylist> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -192,13 +189,13 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void getAllSchPlaylists() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(traPlaylist.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(schPlaylist.getId().intValue())))
                 .andExpect(jsonPath("$.[*].playlistDate").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
     }
 
@@ -206,22 +203,22 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void getSchPlaylist() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
 
-        // Get the traPlaylist
-        restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
+        // Get the schPlaylist
+        restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id").value(traPlaylist.getId().intValue()))
+                .andExpect(jsonPath("$.id").value(schPlaylist.getId().intValue()))
                 .andExpect(jsonPath("$.playlistDate").value(DEFAULT_PLAYLIST_DATE.toString()));
     }
 
     @Test
     @Transactional
     public void getNonExistingSchPlaylist() throws Exception {
-        // Get the traPlaylist
+        // Get the schPlaylist
         LocalDate localDate = LocalDate.now();
-        restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
+        restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(notNullValue()))
                 .andExpect(jsonPath("$.playlistDate").value(localDate.toString()));
@@ -231,43 +228,43 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void updateSchPlaylist() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
+        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeUpdate = schPlaylistRepository.findAll().size();
 
-        // Update the traPlaylist
-        SchPlaylist updatedSchPlaylist = traPlaylistRepository.findOne(traPlaylist.getId());
+        // Update the schPlaylist
+        SchPlaylist updatedSchPlaylist = schPlaylistRepository.findOne(schPlaylist.getId());
         updatedSchPlaylist
-                .playlistDate(UPDATED_PLAYLIST_DATE);
-        SchPlaylistDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(updatedSchPlaylist);
+                .date(UPDATED_PLAYLIST_DATE);
+        SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(updatedSchPlaylist);
 
-        restSchPlaylistMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isOk());
 
         // Validate the SchPlaylist in the database
-        List<SchPlaylist> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeUpdate);
         SchPlaylist testSchPlaylist = traPlaylistList.get(traPlaylistList.size() - 1);
-        assertThat(testSchPlaylist.getPlaylistDate()).isEqualTo(UPDATED_PLAYLIST_DATE);
+        assertThat(testSchPlaylist.getDate()).isEqualTo(UPDATED_PLAYLIST_DATE);
     }
 
     @Test
     @Transactional
     public void updateNonExistingSchPlaylist() throws Exception {
-        int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeUpdate = schPlaylistRepository.findAll().size();
 
         // Create the SchPlaylist
-        SchPlaylistDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchPlaylistMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the SchPlaylist in the database
-        List<SchPlaylist> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -275,16 +272,16 @@ public class SchPlaylistResourceImplTest {
     @Transactional
     public void deleteSchPlaylist() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeDelete = traPlaylistRepository.findAll().size();
+        schPlaylistRepository.saveAndFlush(schPlaylist.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeDelete = schPlaylistRepository.findAll().size();
 
-        // Get the traPlaylist
-        restSchPlaylistMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+        // Get the schPlaylist
+        restSchPlaylistMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<SchPlaylist> traPlaylistList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -292,21 +289,21 @@ public class SchPlaylistResourceImplTest {
     @Test
     @Transactional
     public void checkDateIsRequired() throws Exception {
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        schPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
 
-        int databaseSizeBeforeTest = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeTest = schPlaylistRepository.findAll().size();
         // set the field null
-        traPlaylist.setPlaylistDate(null);
+        schPlaylist.date(null);
 
         // Create the TraOrder, which fails.
-        SchPlaylistDTO traOrderDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchPlaylistDTO traOrderDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
-        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isBadRequest());
 
-        List<SchPlaylist> traOrderList = traPlaylistRepository.findAll();
+        List<SchPlaylist> traOrderList = schPlaylistRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
     }
 

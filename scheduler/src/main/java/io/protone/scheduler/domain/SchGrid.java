@@ -19,7 +19,7 @@ import java.util.Set;
  * A Grid.
  */
 @Entity
-@Table(name = "sch_grid")
+@Table(name = "sch_grid",uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchGrid  extends AbstractAuditingEntity implements Serializable {
 

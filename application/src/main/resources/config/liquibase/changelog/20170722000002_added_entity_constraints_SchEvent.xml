@@ -8,18 +8,7 @@
     -->
     <changeSet id="20170720190704-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="queue_params_id"
-                                 baseTableName="sch_event"
-                                 constraintName="fk_event_queue_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_queue_params"/>
 
-        <addForeignKeyConstraint baseColumnNames="time_params_id"
-                                 baseTableName="sch_event"
-                                 constraintName="fk_event_time_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_time_params"/>
-        
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_event"
                                  constraintName="fk_sch_event_network_id"

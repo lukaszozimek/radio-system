@@ -53,7 +53,7 @@ public class SchQueueParamsMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchQueueParamsDTO dto = queueParamsMapper.toDto(queueParam);
+        SchQueueParamsDTO dto = queueParamsMapper.DB2DTO(queueParam);
 
         assertNotNull(dto.getNextId());
         assertNotNull(dto.getNextType());
@@ -64,7 +64,7 @@ public class SchQueueParamsMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchQueueParamsDTO> dtos = queueParamsMapper.toDto(queueParams);
+        List<SchQueueParamsDTO> dtos = queueParamsMapper.DBs2DTOs(queueParams);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -78,22 +78,19 @@ public class SchQueueParamsMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchQueueParams entity = queueParamsMapper.toEntity(queueParamDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchQueueParams entity = queueParamsMapper.DTO2DB(queueParamDTO, network, corChannel);
 
         assertNotNull(entity.getNextId());
         assertNotNull(entity.getNextType());
         assertNotNull(entity.getPreviousId());
         assertNotNull(entity.getPreviousType());
-        assertNotNull(entity.getSeq());
 
-        assertNotNull(entity.getNetwork());
-        assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchQueueParams> entities = queueParamsMapper.toEntity(queueParamDTOS, network, corChannel);
+        List<SchQueueParams> entities = queueParamsMapper.DTOs2DBs(queueParamDTOS, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -102,10 +99,7 @@ public class SchQueueParamsMapperTest {
             assertNotNull(entity.getNextType());
             assertNotNull(entity.getPreviousId());
             assertNotNull(entity.getPreviousType());
-            assertNotNull(entity.getSeq());
 
-            assertNotNull(entity.getNetwork());
-            assertNotNull(entity.getChannel());
         });
     }
 

@@ -68,7 +68,7 @@ public class SchEventMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchEventDTO dto = eventMapper.toDto(event);
+        SchEventDTO dto = eventMapper.DB2DTO(event);
         assertNotNull(dto.getEmissions());
         assertNotNull(dto.getName());
         assertNotNull(dto.getQueueParams());
@@ -78,7 +78,7 @@ public class SchEventMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchEventDTO> dtos = eventMapper.toDto(events);
+        List<SchEventDTO> dtos = eventMapper.DBs2DTOs(events);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -92,8 +92,8 @@ public class SchEventMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchEvent entity = eventMapper.toEntity(eventDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchEvent entity = eventMapper.DTO2DB(eventDTO, network, corChannel);
 
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getName());
@@ -107,7 +107,7 @@ public class SchEventMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEvent> entities = eventMapper.toEntity(eventDTOs, network, corChannel);
+        List<SchEvent> entities = eventMapper.DTOs2DBs(eventDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -36,11 +36,33 @@
             <column name="clock_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="queue_params_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>            <column name="time_params_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+            <column name="previous_id" type="bigint">
+                <constraints nullable="true" />
             </column>
+
+            <column name="previous_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="next_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="next_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="relative_delay" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="block_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -1,31 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
         Added the constraints for entity Clock.
     -->
     <changeSet id="20170720190703-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="grid_id"
                                  baseTableName="sch_clock"
                                  constraintName="fk_clock_grid_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sch_grid"/>
 
-        <addForeignKeyConstraint baseColumnNames="queue_params_id"
-                                 baseTableName="sch_clock"
-                                 constraintName="fk_clock_queue_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_queue_params"/>
-
-        <addForeignKeyConstraint baseColumnNames="time_params_id"
-                                 baseTableName="sch_clock"
-                                 constraintName="fk_clock_time_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_time_params"/>
-    
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_clock"
                                  constraintName="fk_sch_clock_network_id"

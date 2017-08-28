@@ -15,5 +15,5 @@ public interface SchScheduleRepository extends JpaRepository<SchSchedule, Long> 
 
     SchSchedule findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
 
-    void deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
 }

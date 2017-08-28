@@ -102,19 +102,19 @@ public class SchClockMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchClockDTO dto = clockMapper.toDto(clock);
+        SchClockDTO dto = clockMapper.DB2DTO(clock);
 
         assertEquals(dto.getBlocks().size(), 3);
         assertEquals(dto.getEmissions().size(), 3);
         assertNotNull(dto.getName());
         assertNotNull(dto.getName());
-        //assertNotNull(dto.getQueueParams());
-        //assertNotNull(dto.getTimeParams());
+        assertNotNull(dto.getQueueParams());
+        assertNotNull(dto.getTimeParams());
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchClockDTO> dtos = clockMapper.toDto(clocks);
+        List<SchClockDTO> dtos = clockMapper.DBs2DTOs(clocks);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -123,14 +123,14 @@ public class SchClockMapperTest {
             assertEquals(dto.getEmissions().size(), 3);
             assertNotNull(dto.getName());
             assertNotNull(dto.getName());
-            //assertNotNull(dto.getQueueParams());
-            //assertNotNull(dto.getTimeParams());
+            assertNotNull(dto.getQueueParams());
+            assertNotNull(dto.getTimeParams());
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchClock entity = clockMapper.toEntity(clockDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchClock entity = clockMapper.DTO2DB(clockDTO, network, corChannel);
 
         assertEquals(entity.getBlocks().size(), 3);
         assertEquals(entity.getEmissions().size(), 3);
@@ -145,7 +145,7 @@ public class SchClockMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchClock> entities = clockMapper.toEntity(clockDTOs, network, corChannel);
+        List<SchClock> entities = clockMapper.DTOs2DBs(clockDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

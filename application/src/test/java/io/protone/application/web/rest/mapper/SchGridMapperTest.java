@@ -3,7 +3,6 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.to.delete.factory.SchGridFactory;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class SchGridMapperTest {
-    
+
     private static final PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
@@ -47,15 +46,15 @@ public class SchGridMapperTest {
         corChannel = factory.manufacturePojo(CorChannel.class);
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
-        grid = SchGridFactory.produceEntity();
+        grid = factory.manufacturePojo(SchGrid.class);
         grids.add(grid);
-        gridDTO = SchGridFactory.produceDTO();
+        gridDTO = factory.manufacturePojo(SchGridDTO.class);
         gridDTOs.add(gridDTO);
     }
 
     @Test
     public void toDTO() throws Exception {
-        SchGridDTO dto = gridMapper.toDto(grid);
+        SchGridDTO dto = gridMapper.DB2DTO(grid);
         assertEquals(dto.getClocks().size(), 3);
         assertNotNull(dto.getName());
         assertNotNull(dto.getDayOfWeek());
@@ -64,7 +63,7 @@ public class SchGridMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchGridDTO> dtos = gridMapper.toDto(grids);
+        List<SchGridDTO> dtos = gridMapper.DBs2DTOs(grids);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -77,8 +76,8 @@ public class SchGridMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchGrid entity = gridMapper.toEntity(gridDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchGrid entity = gridMapper.DTO2DB(gridDTO, network, corChannel);
 
         assertEquals(entity.getClocks().size(), 3);
         assertNotNull(entity.getName());
@@ -91,7 +90,7 @@ public class SchGridMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchGrid> entities = gridMapper.toEntity(gridDTOs, network, corChannel);
+        List<SchGrid> entities = gridMapper.DTOs2DBs(gridDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

@@ -19,7 +19,7 @@ import java.util.Set;
  * A Block.
  */
 @Entity
-@Table(name = "sch_event")
+@Table(name = "sch_event", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchEvent extends AbstractAuditingEntity implements Serializable {
 

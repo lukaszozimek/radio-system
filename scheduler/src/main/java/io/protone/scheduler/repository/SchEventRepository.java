@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * An Event repository.
  */
 public interface SchEventRepository extends JpaRepository<SchEvent, Long> {
-    void deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortCut, String channelShortcut, String shortName);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortCut, String channelShortcut, String shortName);
 
     Slice<SchEvent> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
 

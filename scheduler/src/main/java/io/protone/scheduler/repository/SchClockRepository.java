@@ -16,5 +16,5 @@ public interface SchClockRepository extends JpaRepository<SchClock, Long> {
 
     SchClock findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
 
-    void deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
 }

@@ -33,6 +33,6 @@ public class SchScheduleService {
 
     @Transactional
     public void deleteSchScheduleByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, LocalDate date) {
-        schScheduleRepository.deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+        schScheduleRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
     }
 }

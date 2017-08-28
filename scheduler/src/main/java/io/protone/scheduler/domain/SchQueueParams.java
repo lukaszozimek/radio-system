@@ -13,10 +13,8 @@ import java.io.Serializable;
  * A QueueParams.
  */
 @Embeddable
-public class SchQueueParams  extends AbstractAuditingEntity implements Serializable {
+public class SchQueueParams implements Serializable {
 
-    @Column(name = "seq")
-    private Long seq;
 
     @Column(name = "previous_id")
     private Long previousId;
@@ -33,18 +31,6 @@ public class SchQueueParams  extends AbstractAuditingEntity implements Serializa
     private ObjectTypeEnum nextType;
 
 
-    public Long getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Long seq) {
-        this.seq = seq;
-    }
-
-    public SchQueueParams seq(Long seq) {
-        this.seq = seq;
-        return this;
-    }
 
     public Long getPreviousId() {
         return previousId;
@@ -102,7 +88,6 @@ public class SchQueueParams  extends AbstractAuditingEntity implements Serializa
     @Override
     public String toString() {
         return "QueueParams{" +
-                ", seq='" + getSeq() + "'" +
                 ", previousId='" + getPreviousId() + "'" +
                 ", previousType='" + getPreviousType() + "'" +
                 ", nextId='" + getNextId() + "'" +

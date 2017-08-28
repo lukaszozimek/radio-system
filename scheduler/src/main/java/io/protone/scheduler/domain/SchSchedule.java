@@ -19,9 +19,9 @@ import java.util.Set;
  * A Schedule.
  */
 @Entity
-@Table(name = "sch_schedule")
+@Table(name = "sch_schedule", uniqueConstraints = @UniqueConstraint(columnNames = {"date", "channel_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchSchedule  extends AbstractAuditingEntity implements Serializable {
+public class SchSchedule extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class SchSchedule  extends AbstractAuditingEntity implements Serializable
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "jhi_date")
+    @Column(name = "date")
     private LocalDate date;
 
     @PodamExclude
@@ -96,26 +96,26 @@ public class SchSchedule  extends AbstractAuditingEntity implements Serializable
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchSchedule network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchSchedule channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override

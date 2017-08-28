@@ -19,9 +19,9 @@ import java.util.Set;
  * A Playlist.
  */
 @Entity
-@Table(name = "sch_playlist")
+@Table(name = "sch_playlist", uniqueConstraints = @UniqueConstraint(columnNames = {"date", "channel_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchPlaylist  extends AbstractAuditingEntity implements Serializable {
+public class SchPlaylist extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "jhi_date")
+    @Column(name = "date")
     private LocalDate date;
 
     @PodamExclude
@@ -92,8 +92,13 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
         emission.setPlaylist(null);
         return this;
     }
+
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
     }
 
     public SchPlaylist network(CorNetwork network) {
@@ -101,12 +106,12 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchPlaylist channel(CorChannel channel) {
@@ -114,9 +119,6 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

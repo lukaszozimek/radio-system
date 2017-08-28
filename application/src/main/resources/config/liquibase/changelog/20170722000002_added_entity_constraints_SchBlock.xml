@@ -14,17 +14,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="sch_clock"/>
 
-        <addForeignKeyConstraint baseColumnNames="queue_params_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_block_queue_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_queue_params"/>
-
-        <addForeignKeyConstraint baseColumnNames="time_params_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_block_time_params_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_time_params"/>
 
         <addForeignKeyConstraint baseColumnNames="block_id"
                                  baseTableName="sch_block"

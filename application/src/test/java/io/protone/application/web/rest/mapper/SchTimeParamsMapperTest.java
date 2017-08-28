@@ -53,7 +53,7 @@ public class SchTimeParamsMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchTimeParamsDTO dto = timeParamsMapper.toDto(timeParam);
+        SchTimeParamsDTO dto = timeParamsMapper.DB2DTO(timeParam);
 
         assertNotNull(dto.getStartTime());
         assertNotNull(dto.getEndTime());
@@ -62,7 +62,7 @@ public class SchTimeParamsMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchTimeParamsDTO> dtos = timeParamsMapper.toDto(timeParams);
+        List<SchTimeParamsDTO> dtos = timeParamsMapper.DBs2DTOs(timeParams);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -74,8 +74,8 @@ public class SchTimeParamsMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchTimeParams entity = timeParamsMapper.toEntity(timeParamDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchTimeParams entity = timeParamsMapper.DTO2DB(timeParamDTO, network, corChannel);
 
         assertNotNull(entity.getStartTime());
         assertNotNull(entity.getEndTime());
@@ -84,7 +84,7 @@ public class SchTimeParamsMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchTimeParams> entities = timeParamsMapper.toEntity(timeParamDTOS, network, corChannel);
+        List<SchTimeParams> entities = timeParamsMapper.DTOs2DBs(timeParamDTOS, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -93,8 +93,6 @@ public class SchTimeParamsMapperTest {
             assertNotNull(entity.getEndTime());
             assertNotNull(entity.getRelativeDelay());
 
-            assertNotNull(entity.getNetwork());
-            assertNotNull(entity.getChannel());
         });
     }
 

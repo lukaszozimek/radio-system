@@ -55,7 +55,7 @@ public class SchScheduleMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchScheduleDTO dto = scheduleMapper.toDto(schedule);
+        SchScheduleDTO dto = scheduleMapper.DB2DTO(schedule);
 
         assertNotNull(dto.getDate());
         //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
@@ -63,7 +63,7 @@ public class SchScheduleMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchScheduleDTO> dtos = scheduleMapper.toDto(schedules);
+        List<SchScheduleDTO> dtos = scheduleMapper.DBs2DTOs(schedules);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -74,8 +74,8 @@ public class SchScheduleMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchSchedule entity = scheduleMapper.toEntity(scheduleDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchSchedule entity = scheduleMapper.DTO2DB(scheduleDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
         //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
@@ -83,7 +83,7 @@ public class SchScheduleMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchSchedule> entities = scheduleMapper.toEntity(scheduleDTOs, network, corChannel);
+        List<SchSchedule> entities = scheduleMapper.DTOs2DBs(scheduleDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

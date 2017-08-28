@@ -56,7 +56,7 @@ public class SchEmissionMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchEmissionDTO dto = emissionMapper.toDto(emission);
+        SchEmissionDTO dto = emissionMapper.DB2DTO(emission);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getSeq());
@@ -67,7 +67,7 @@ public class SchEmissionMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchEmissionDTO> dtos = emissionMapper.toDto(emissions);
+        List<SchEmissionDTO> dtos = emissionMapper.DBs2DTOs(emissions);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -81,8 +81,8 @@ public class SchEmissionMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchEmission entity = emissionMapper.toEntity(emissionDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchEmission entity = emissionMapper.DTO2DB(emissionDTO, network, corChannel);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getSeq());
@@ -96,7 +96,7 @@ public class SchEmissionMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEmission> entities = emissionMapper.toEntity(emissionDTOs, network, corChannel);
+        List<SchEmission> entities = emissionMapper.DTOs2DBs(emissionDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

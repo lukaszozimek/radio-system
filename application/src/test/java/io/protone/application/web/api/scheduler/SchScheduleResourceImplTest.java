@@ -94,7 +94,7 @@ public class SchScheduleResourceImplTest {
      */
     public static SchSchedule createEntity(EntityManager em) {
         SchSchedule traPlaylist = new SchSchedule()
-                .playlistDate(DEFAULT_PLAYLIST_DATE);
+                .date(DEFAULT_PLAYLIST_DATE);
         return traPlaylist;
     }
 
@@ -131,7 +131,7 @@ public class SchScheduleResourceImplTest {
         // Create the SchSchedule
         SchScheduleDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
 
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -142,27 +142,7 @@ public class SchScheduleResourceImplTest {
         SchSchedule testSchSchedule = traPlaylistList.get(traPlaylistList.size() - 1);
     }
 
-    @Test
-    @Transactional
-    public void createBatchSchSchedule() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
 
-
-        SchSchedule traPlaylist1 = createEntity(em).network(corNetwork).channel(corChannel);
-        traPlaylist1.playlistDate(LocalDate.now().plusMonths(1));
-        // Create the SchSchedule
-        List<SchScheduleDTO> traPlaylistDTOS = traPlaylistMapper.DBs2DTOs(Lists.newArrayList(traPlaylist, traPlaylist1));
-
-
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/batch", corNetwork.getShortcut(), corChannel.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTOS)))
-                .andExpect(status().isCreated());
-
-        // Validate the SchSchedule in the database
-        List<SchSchedule> traPlaylistList = traPlaylistRepository.findAll();
-        assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate + 2);
-    }
 
     @Test
     @Transactional
@@ -175,7 +155,7 @@ public class SchScheduleResourceImplTest {
         SchScheduleDTO existingSchScheduleDTO = traPlaylistMapper.DB2DTO(existingSchSchedule);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(existingSchScheduleDTO)))
                 .andExpect(status().isBadRequest());
@@ -192,11 +172,11 @@ public class SchScheduleResourceImplTest {
         traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(traPlaylist.getId().intValue())))
-                .andExpect(jsonPath("$.[*].playlistDate").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
+                .andExpect(jsonPath("$.[*].scheduleDate").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
     }
 
     @Test
@@ -206,11 +186,11 @@ public class SchScheduleResourceImplTest {
         traPlaylistRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
 
         // Get the traPlaylist
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
+        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(traPlaylist.getId().intValue()))
-                .andExpect(jsonPath("$.playlistDate").value(DEFAULT_PLAYLIST_DATE.toString()));
+                .andExpect(jsonPath("$.scheduleDate").value(DEFAULT_PLAYLIST_DATE.toString()));
     }
 
     @Test
@@ -218,10 +198,10 @@ public class SchScheduleResourceImplTest {
     public void getNonExistingSchSchedule() throws Exception {
         // Get the traPlaylist
         LocalDate localDate = LocalDate.now();
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
+        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(notNullValue()))
-                .andExpect(jsonPath("$.playlistDate").value(localDate.toString()));
+                .andExpect(jsonPath("$.scheduleDate").value(localDate.toString()));
     }
 
     @Test
@@ -234,10 +214,10 @@ public class SchScheduleResourceImplTest {
         // Update the traPlaylist
         SchSchedule updatedSchSchedule = traPlaylistRepository.findOne(traPlaylist.getId());
         updatedSchSchedule
-                .playlistDate(UPDATED_PLAYLIST_DATE);
+                .date(UPDATED_PLAYLIST_DATE);
         SchScheduleDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(updatedSchSchedule);
 
-        restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isOk());
@@ -257,7 +237,7 @@ public class SchScheduleResourceImplTest {
         SchScheduleDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -275,7 +255,7 @@ public class SchScheduleResourceImplTest {
         int databaseSizeBeforeDelete = traPlaylistRepository.findAll().size();
 
         // Get the traPlaylist
-        restSchScheduleMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
+            restSchScheduleMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -296,7 +276,7 @@ public class SchScheduleResourceImplTest {
         // Create the TraOrder, which fails.
         SchScheduleDTO traOrderDTO = traPlaylistMapper.DB2DTO(traPlaylist);
 
-        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
                 .andExpect(status().isBadRequest());

@@ -34,6 +34,6 @@ public class SchPlaylistService{
 
     @Transactional
     public void deleteSchScheduleByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, LocalDate date) {
-        schPlaylistRepository.deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+        schPlaylistRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
     }
 }

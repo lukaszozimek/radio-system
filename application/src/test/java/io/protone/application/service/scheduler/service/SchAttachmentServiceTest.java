@@ -1,4 +1,4 @@
-package io.protone.scheduler.service;
+package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import org.junit.Test;
@@ -14,11 +14,10 @@ import javax.transaction.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEmissionServiceTest {
+public class SchAttachmentServiceTest {
 
     @Test
-    public void shouldSaveEmission(){
+    public void shouldSaveAttachment(){
 
     }
-
 }

@@ -37,7 +37,7 @@ public class SchEventService {
 
     @Transactional
     public void deleteSchEventByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        schEventRepository.deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        schEventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
     }
 
 }

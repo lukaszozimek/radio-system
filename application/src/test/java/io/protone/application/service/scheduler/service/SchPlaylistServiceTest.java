@@ -1,4 +1,4 @@
-package io.protone.scheduler.service;
+package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import org.junit.runner.RunWith;

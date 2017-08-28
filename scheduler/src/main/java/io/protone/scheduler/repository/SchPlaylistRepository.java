@@ -16,5 +16,5 @@ public interface SchPlaylistRepository extends JpaRepository<SchPlaylist, Long> 
 
     SchPlaylist findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
 
-    void deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
 }

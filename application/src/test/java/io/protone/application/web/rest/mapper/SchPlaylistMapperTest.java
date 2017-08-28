@@ -53,7 +53,7 @@ public class SchPlaylistMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchPlaylistDTO dto = playlistMapper.toDto(playlist);
+        SchPlaylistDTO dto = playlistMapper.DB2DTO(playlist);
 
         assertNotNull(dto.getDate());
         //assertNotNull(dto.getEmissions()); //TODO: test emission instances mapping
@@ -61,7 +61,7 @@ public class SchPlaylistMapperTest {
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchPlaylistDTO> dtos = playlistMapper.toDto(playlists);
+        List<SchPlaylistDTO> dtos = playlistMapper.DBs2DTOs(playlists);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -72,8 +72,8 @@ public class SchPlaylistMapperTest {
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchPlaylist entity = playlistMapper.toEntity(playlistDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchPlaylist entity = playlistMapper.DTO2DB(playlistDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
 
@@ -84,7 +84,7 @@ public class SchPlaylistMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchPlaylist> entities = playlistMapper.toEntity(playlistDTOs, network, corChannel);
+        List<SchPlaylist> entities = playlistMapper.DTOs2DBs(playlistDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

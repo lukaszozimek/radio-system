@@ -1,4 +1,4 @@
-package io.protone.scheduler.service;
+package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
@@ -7,6 +7,7 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchScheduleRepository;
+import io.protone.scheduler.service.SchScheduleService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,13 +77,12 @@ public class SchScheduleServiceTest {
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        Slice<SchSchedule> fetchedEntity = schScheduleService.findSchSchedulesForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchSchedule> fetchedEntity = schScheduleService.findSchGridsForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
         assertEquals(1, fetchedEntity.getContent().size());
         assertEquals(schSchedule.getId(), fetchedEntity.getContent().get(0).getId());
-        assertEquals(schSchedule.getGridDate(), fetchedEntity.getContent().get(0).getGridDate());
         assertEquals(schSchedule.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
 
     }
@@ -94,12 +94,11 @@ public class SchScheduleServiceTest {
         schSchedule.setNetwork(corNetwork);
         schSchedule.setChannel(corChannel);
         //then
-        SchSchedule fetchedEntity = schScheduleService.saveGrid(schSchedule);
+        SchSchedule fetchedEntity = schScheduleService.saveSchedule(schSchedule);
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertNotNull(fetchedEntity.getGridDate().toString(), schSchedule.getGridDate().toString());
         assertEquals(schSchedule.getNetwork(), fetchedEntity.getNetwork());
     }
 
@@ -111,8 +110,8 @@ public class SchScheduleServiceTest {
         schSchedule.setChannel(corChannel);
         schSchedule = schScheduleRepository.saveAndFlush(schSchedule);
         //then
-        schScheduleService.deleteOneSchScheduleList(schSchedule.getGridDate(), corNetwork.getShortcut(), corChannel.getShortcut());
-        SchSchedule fetchedEntity = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(schSchedule.getGridDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        schScheduleService.deleteSchScheduleByNetworkAndChannelAndShortNAme(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchSchedule fetchedEntity = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
 
         //assert
         assertNull(fetchedEntity);
@@ -127,12 +126,11 @@ public class SchScheduleServiceTest {
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        SchSchedule fetchedEntity = schScheduleService.findSchSchedulesForNetworkAndChannelAndShortName(schSchedule.getGridDate(), corNetwork.getShortcut(), corChannel.getShortcut());
+        SchSchedule fetchedEntity = schScheduleService.findSchGridForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(),schSchedule.getDate());
 
         //assert
         assertNotNull(fetchedEntity);
         assertEquals(schSchedule.getId(), fetchedEntity.getId());
-        assertEquals(schSchedule.getGridDate(), fetchedEntity.getGridDate());
         assertEquals(schSchedule.getNetwork(), fetchedEntity.getNetwork());
 
     }

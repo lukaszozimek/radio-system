@@ -18,9 +18,9 @@ import java.util.Set;
  * A Clock.
  */
 @Entity
-@Table(name = "sch_clock")
+@Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock  extends AbstractAuditingEntity implements Serializable {
+public class SchClock extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -85,6 +85,7 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
         this.shortName = shortName;
         return this;
     }
+
     public String getName() {
         return name;
     }
@@ -187,26 +188,26 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchClock network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchClock channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
