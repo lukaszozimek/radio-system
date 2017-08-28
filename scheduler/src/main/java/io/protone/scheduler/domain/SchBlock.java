@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchBlock  extends AbstractAuditingEntity implements Serializable {
+public class SchBlock extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,14 +44,10 @@ public class SchBlock  extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClock clock;
 
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchQueueParams queueParams;
 
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchTimeParams timeParams;
 
     @PodamExclude

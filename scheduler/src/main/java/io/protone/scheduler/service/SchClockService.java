@@ -14,10 +14,16 @@ import javax.inject.Inject;
 public class SchClockService {
     @Inject
     private SchClockRepository schClockRepository;
+    @Inject
+    private SchBlockService schBlockService;
+    @Inject
+    private SchEmissionService schEmissionService;
 
     @Transactional
-    public SchClock saveClock(SchClock schGrid) {
-        return schClockRepository.saveAndFlush(schGrid);
+    public SchClock saveClock(SchClock schClock) {
+        schClock.emissions(schEmissionService.saveEmission(schClock.getEmissions()));
+        schClock.blocks(schBlockService.saveBlocks(schClock.getBlocks()));
+        return schClockRepository.saveAndFlush(schClock);
     }
 
     @Transactional(readOnly = true)
