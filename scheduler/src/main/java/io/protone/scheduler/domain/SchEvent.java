@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
@@ -36,6 +37,9 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
+    @ManyToOne
+    @PodamExclude
+    private CorDictionary eventCategory;
 
     @OneToMany(mappedBy = "block")
     @JsonIgnore
@@ -45,6 +49,10 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
     private EventTypeEnum eventType;
+
+    @PodamExclude
+    @ManyToOne
+    private SchLogConfiguration schLogConfiguration;
 
     @Embedded
     private SchQueueParams queueParams;
@@ -181,6 +189,19 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.channel = channel;
     }
 
+    public CorDictionary getEventCategory() {
+        return eventCategory;
+    }
+
+    public SchEvent eventCategory(CorDictionary eventCategory) {
+        this.eventCategory = eventCategory;
+        return this;
+    }
+
+    public void setEventCategory(CorDictionary eventCategory) {
+        this.eventCategory = eventCategory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -208,5 +229,14 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
                 ", name='" + getName() + "'" +
                 ", eventType='" + getEventType() + "'" +
                 "}";
+    }
+
+
+    public SchLogConfiguration getSchLogConfiguration() {
+        return schLogConfiguration;
+    }
+
+    public void setSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
+        this.schLogConfiguration = schLogConfiguration;
     }
 }

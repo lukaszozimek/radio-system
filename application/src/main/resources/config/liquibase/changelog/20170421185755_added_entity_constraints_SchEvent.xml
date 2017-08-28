@@ -7,41 +7,39 @@
         Added the constraints for entity Block.
     -->
     <changeSet id="20170720190704-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="clock_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_block_clock_id"
+        <addForeignKeyConstraint baseColumnNames="sch_log_configuration_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_sch_log_configuration_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="sch_clock"/>
+                                 referencedTableName="sch_log_configuration"/>
 
-
-        <addForeignKeyConstraint baseColumnNames="block_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_block_block_id"
+        <addForeignKeyConstraint baseColumnNames="event_category_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_event_category_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="sch_block"/>
+                                 referencedTableName="cor_dictionary"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_sch_block_network_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
         <addForeignKeyConstraint baseColumnNames="channel_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_sch_block_channel_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_channel_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="created_by_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_sch_block_created_by_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_created_by_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
 
         <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_sch_block_last_modified_by_id"
+                                 baseTableName="sch_event"
+                                 constraintName="fk_sch_event_last_modified_by_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
     </changeSet>

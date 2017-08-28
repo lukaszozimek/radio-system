@@ -33,7 +33,9 @@
             <column name="seq" type="bigint">
                 <constraints nullable="true" />
             </column>
-
+            <column name="sch_log_configuration_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="previous_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -59,6 +61,9 @@
 
             <column name="relative_delay" type="integer">
                 <constraints nullable="true" />
+            </column>
+            <column name="event_category_id" type="bigint">
+                <constraints nullable="false" />
             </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />

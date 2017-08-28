@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -32,7 +32,7 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "day_of_week")
-    private DayOfWeekEnum dayOfWeek;
+    private CorDayOfWeekEnum dayOfWeek;
 
     @Column(name = "name")
     private String name;
@@ -66,15 +66,15 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
     }
 
 
-    public DayOfWeekEnum getDayOfWeek() {
+    public CorDayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public void setDayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public SchGrid dayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public SchGrid dayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         return this;
     }

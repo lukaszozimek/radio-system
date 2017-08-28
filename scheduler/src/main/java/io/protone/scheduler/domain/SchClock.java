@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -35,12 +36,17 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
+
     @PodamExclude
     @ManyToOne
     private SchGrid grid;
 
     @Embedded
     private SchQueueParams queueParams;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @PodamExclude
+    private CorDictionary clockCategory;
 
     @Embedded
     private SchTimeParams timeParams;
@@ -210,6 +216,14 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public CorDictionary getClockCategory() {
+        return clockCategory;
+    }
+
+    public void setClockCategory(CorDictionary clockCategory) {
+        this.clockCategory = clockCategory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -230,13 +244,21 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         return Objects.hashCode(getId());
     }
 
+
     @Override
     public String toString() {
-        return "Clock{" +
-                "id=" + getId() +
-                ", name='" + getName() + "'" +
-                "}";
+        return "SchClock{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", grid=" + grid +
+                ", queueParams=" + queueParams +
+                ", clockCategory=" + clockCategory +
+                ", timeParams=" + timeParams +
+                ", blocks=" + blocks +
+                ", emissions=" + emissions +
+                ", network=" + network +
+                ", channel=" + channel +
+                '}';
     }
-
-
 }

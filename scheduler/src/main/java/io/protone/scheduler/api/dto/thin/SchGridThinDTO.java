@@ -1,7 +1,7 @@
 package io.protone.scheduler.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class SchGridThinDTO {
     @JsonProperty("dayOfWeek")
-    private DayOfWeekEnum dayOfWeek = null;
+    private CorDayOfWeekEnum dayOfWeek = null;
     @JsonProperty("id")
     private Long id = null;
     @JsonProperty("name")
@@ -23,7 +23,7 @@ public class SchGridThinDTO {
     @JsonProperty("shortName")
     private String shortName = null;
 
-    public SchGridThinDTO dayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public SchGridThinDTO dayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         return this;
     }
@@ -34,11 +34,11 @@ public class SchGridThinDTO {
      * @return dayOfWeek
      **/
     @ApiModelProperty(value = "")
-    public DayOfWeekEnum getDayOfWeek() {
+    public CorDayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public void setDayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 

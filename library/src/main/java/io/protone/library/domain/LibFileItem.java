@@ -43,6 +43,10 @@ public class LibFileItem implements Serializable {
     @ManyToOne
     private LibLibrary library;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private LibCloudObject cloudObject;
+
     @ManyToOne
     private LibFileItem parentFile;
 
@@ -119,6 +123,13 @@ public class LibFileItem implements Serializable {
         return this;
     }
 
+    public LibCloudObject getCloudObject() {
+        return cloudObject;
+    }
+
+    public void setCloudObject(LibCloudObject cloudObject) {
+        this.cloudObject = cloudObject;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -148,4 +159,5 @@ public class LibFileItem implements Serializable {
             ", type='" + type + "'" +
             '}';
     }
+
 }
