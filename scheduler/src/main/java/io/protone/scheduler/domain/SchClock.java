@@ -39,14 +39,10 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchGrid grid;
 
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchQueueParams queueParams;
 
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchTimeParams timeParams;
 
     @PodamExclude

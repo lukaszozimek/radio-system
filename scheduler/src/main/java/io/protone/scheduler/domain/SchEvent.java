@@ -46,12 +46,10 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @Column(name = "event_type")
     private EventTypeEnum eventType;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchQueueParams queueParams;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchTimeParams timeParams;
 
     @ManyToOne

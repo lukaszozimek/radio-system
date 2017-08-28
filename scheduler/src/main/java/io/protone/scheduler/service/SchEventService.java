@@ -1,10 +1,43 @@
 package io.protone.scheduler.service;
 
+import io.protone.scheduler.domain.SchEvent;
+import io.protone.scheduler.repository.SchEventRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
 
 
 @Service
 public class SchEventService {
+
+    @Inject
+    private SchEventRepository schEventRepository;
+
+    @Inject
+    private SchEmissionService schEmissionService;
+
+    @Transactional
+    public SchEvent saveEvent(SchEvent schEvent) {
+        schEvent.emissions(schEmissionService.saveEmission(schEvent.getEmissions()));
+        return schEventRepository.saveAndFlush(schEvent);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<SchEvent> findSchEventsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
+        return schEventRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public SchEvent findSchEventsForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
+        return schEventRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+    }
+
+    @Transactional
+    public void deleteSchEventByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, String shortName) {
+        schEventRepository.deleteByShortNameAndNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+    }
 
 }

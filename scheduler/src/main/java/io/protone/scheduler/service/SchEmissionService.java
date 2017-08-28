@@ -1,9 +1,30 @@
 package io.protone.scheduler.service;
 
+import io.protone.scheduler.domain.SchEmission;
+import io.protone.scheduler.repository.SchEmissionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.inject.Inject;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 
 @Service
-public class SchEmissionService  {
+public class SchEmissionService {
+    @Inject
+    private SchEmissionRepository schEmissionRepository;
+    @Inject
+    private SchAttachmentService schAttachmentService;
+
+    @Transactional
+    public Set<SchEmission> saveEmission(Set<SchEmission> emissionSet) {
+        return emissionSet.stream().map(schEmission -> {
+            schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
+            return schEmissionRepository.saveAndFlush(schEmission);
+        }).collect(toSet());
+
+
+    }
 }

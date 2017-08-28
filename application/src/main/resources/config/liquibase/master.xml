@@ -310,11 +310,8 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchPlaylist.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchQueueParams.xml"
-             relativeToChangelogFile="false"/>
+
     <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchSchedule.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchTimeParams.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchAttachment.xml"
              relativeToChangelogFile="false"/>

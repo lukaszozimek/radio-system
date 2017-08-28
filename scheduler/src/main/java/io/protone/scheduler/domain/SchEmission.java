@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmission  extends AbstractAuditingEntity implements Serializable {
+public class SchEmission extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,12 +46,10 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
     @JoinColumn(unique = true)
     private LibMediaItem mediaItem;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchQueueParams queueParams;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @Embedded
     private SchTimeParams timeParams;
 
     @PodamExclude
