@@ -37,6 +37,10 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch i.network as n " +
             "left join fetch i.customer as c " +
             "left join fetch c.addres as ica " +
+            "left join fetch c.range as cr " +
+            "left join fetch c.discount as disc " +
+            "left join fetch c.area as car " +
+            "left join fetch c.size as css " +
             "left join fetch i.company as comp " +
             "left join fetch i.orders as o " +
             "left join fetch o.advertisment as a " +
@@ -44,15 +48,15 @@ public interface TraInvoiceRepository extends JpaRepository<TraInvoice, Long> {
             "left join fetch o.campaign as camp " +
             "left join fetch o.customer as castom " +
             "left join fetch o.emissions as emissions " +
-            "left join fetch castom.area as car " +
+            "left join fetch castom.area as castomr " +
             "left join fetch castom.size as cs " +
-            "left join fetch castom.discount as disc " +
-            "left join fetch castom.range as cr " +
-            "left join fetch castom.industry as ind " +
-            "left join fetch castom.addres as ca " +
-            "left join fetch castom.range as cr " +
-            "left join fetch castom.area as car " +
-            "left join fetch castom.size as css " +
+            "left join fetch castom.discount as castomdisc " +
+            "left join fetch castom.range as castomr " +
+            "left join fetch castom.industry as castomind " +
+            "left join fetch castom.addres as castomca " +
+            "left join fetch castom.range as castomr " +
+            "left join fetch castom.area as castomar " +
+            "left join fetch castom.size as castomss " +
             " where n.shortcut = :network and i.id =:id")
     TraInvoice findByIdAndNetwork_Shortcut(@Param("id") Long id, @Param("network") String network);
 
