@@ -12,37 +12,59 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Grid.
+        Added the entity Clock.
     -->
-    <changeSet id="20170720190702-1" author="jhipster">
-        <createTable tableName="sch_grid">
+    <changeSet id="20170720190703-1" author="jhipster">
+        <createTable tableName="sch_clock_configuration">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="day_of_week" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-
             <column name="name" type="varchar(255)">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
-
             <column name="short_name" type="varchar(255)">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
 
-            <column name="default" type="boolean">
-                <constraints nullable="true"/>
+            <column name="grid_id" type="bigint">
+                <constraints nullable="true" />
             </column>
-           <column name="grid_category_id" type="bigint">
-               <constraints nullable="false"/>
-           </column>
+
+            <column name="previous_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="previous_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="next_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="next_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="relative_delay" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="clock_category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <column name="network_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
 
             <column name="channel_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>
@@ -54,6 +76,6 @@
             <column name="last_modified_date" type="timestamp"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-
+        
     </changeSet>
 </databaseChangeLog>

@@ -41,6 +41,20 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="channel_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="network_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by_id" type="bigint"/>
+            <column name="last_modified_date" type="timestamp"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 

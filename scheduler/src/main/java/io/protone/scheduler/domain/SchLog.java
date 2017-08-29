@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibFileItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -35,6 +36,10 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
     private SchLogConfiguration schLogConfiguration;
 
     @ManyToOne
+    @PodamExclude
+    private LibFileItem libFileItem;
+
+    @ManyToOne
     private CorNetwork network;
 
     @ManyToOne
@@ -64,6 +69,14 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
 
     public void setSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
         this.schLogConfiguration = schLogConfiguration;
+    }
+
+    public LibFileItem getLibFileItem() {
+        return libFileItem;
+    }
+
+    public void setLibFileItem(LibFileItem libFileItem) {
+        this.libFileItem = libFileItem;
     }
 
     public CorNetwork getNetwork() {

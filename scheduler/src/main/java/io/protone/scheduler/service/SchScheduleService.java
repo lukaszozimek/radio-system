@@ -2,6 +2,8 @@ package io.protone.scheduler.service;
 
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchScheduleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.time.LocalDate;
 
 @Service
 public class SchScheduleService {
+    private final Logger log = LoggerFactory.getLogger(SchScheduleService.class);
     @Inject
     private SchScheduleRepository schScheduleRepository;
 

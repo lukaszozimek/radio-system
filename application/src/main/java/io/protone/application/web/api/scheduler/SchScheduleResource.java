@@ -23,7 +23,7 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface SchScheduleResource {
 
-    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
@@ -37,7 +37,7 @@ public interface SchScheduleResource {
                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "createSchedulerForChannelSchedule", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
             @ApiResponse(code = 201, message = "Created", response = SchScheduleDTO.class),
@@ -52,7 +52,7 @@ public interface SchScheduleResource {
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException;
 
-    @ApiOperation(value = "deleteSchedulerPlaylistForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "deleteSchedulerScheduleForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Void.class),
             @ApiResponse(code = 204, message = "No Content", response = Void.class),
@@ -67,7 +67,7 @@ public interface SchScheduleResource {
                                                                       @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);
 
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
@@ -80,7 +80,7 @@ public interface SchScheduleResource {
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);
 
-    @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "updateSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
             @ApiResponse(code = 201, message = "Created", response = SchScheduleDTO.class),
@@ -95,5 +95,35 @@ public interface SchScheduleResource {
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException;
 
+    @ApiOperation(value = "buildSchedulerScheduleForDateForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchScheduleDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}/{gridShortName}",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                            @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                            @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws URISyntaxException;
+
+    @ApiOperation(value = "buildDefaultSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchScheduleDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+            produces = {"application/json"},
+            consumes = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) throws URISyntaxException;
 
 }

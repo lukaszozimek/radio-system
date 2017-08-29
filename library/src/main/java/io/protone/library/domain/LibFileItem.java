@@ -1,9 +1,13 @@
 package io.protone.library.domain;
 
 
+import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibFileTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,7 +21,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_file_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibFileItem implements Serializable {
+public class LibFileItem extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,6 +53,15 @@ public class LibFileItem implements Serializable {
 
     @ManyToOne
     private LibFileItem parentFile;
+
+    @ManyToOne
+    @PodamExclude
+    private CorNetwork network;
+
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
 
     public Long getId() {
         return id;
@@ -130,6 +143,7 @@ public class LibFileItem implements Serializable {
     public void setCloudObject(LibCloudObject cloudObject) {
         this.cloudObject = cloudObject;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -153,11 +167,26 @@ public class LibFileItem implements Serializable {
     @Override
     public String toString() {
         return "LibFileItem{" +
-            "id=" + id +
-            ", idx='" + idx + "'" +
-            ", name='" + name + "'" +
-            ", type='" + type + "'" +
-            '}';
+                "id=" + id +
+                ", idx='" + idx + "'" +
+                ", name='" + name + "'" +
+                ", type='" + type + "'" +
+                '}';
     }
 
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
 }

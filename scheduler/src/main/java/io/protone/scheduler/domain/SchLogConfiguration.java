@@ -45,6 +45,7 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
     @PodamExclude
     private CorChannel channel;
 
+
     @OneToMany(mappedBy = "schLogConfiguration")
     @JsonIgnore
     @PodamExclude
@@ -100,6 +101,19 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
 
     public void setChannel(CorChannel channel) {
         this.channel = channel;
+    }
+
+    public Set<SchLogColumn> getLogColumns() {
+        return logColumns;
+    }
+
+    public SchLogConfiguration columns(Set<SchLogColumn> logColumns) {
+        this.logColumns = logColumns;
+        return this;
+    }
+
+    public void setLogColumns(Set<SchLogColumn> logColumns) {
+        this.logColumns = logColumns;
     }
 
     @Override

@@ -81,6 +81,10 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @PodamExclude
     private CorNetwork network;
 
+    @ManyToOne
+    @PodamExclude
+    private CorChannel channel;
+
     @PodamExclude
     @OneToMany(mappedBy = "author", fetch = EAGER)
     @JsonIgnore
@@ -423,6 +427,13 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
         this.imageItems = imageItems;
     }
 
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

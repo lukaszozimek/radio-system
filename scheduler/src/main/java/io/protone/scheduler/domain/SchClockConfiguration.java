@@ -19,9 +19,9 @@ import java.util.Set;
  * A Clock.
  */
 @Entity
-@Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
+@Table(name = "sch_clock_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock extends AbstractAuditingEntity implements Serializable {
+public class SchClockConfiguration extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,10 +36,9 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
-
     @PodamExclude
     @ManyToOne
-    private SchSchedule schSchedule;
+    private SchGrid grid;
 
     @Embedded
     private SchQueueParams queueParams;
@@ -52,10 +51,10 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     private SchTimeParams timeParams;
 
     @PodamExclude
-    @OneToMany(mappedBy = "clock")
+    @OneToMany(mappedBy = "clockConfiguration")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchBlock> blocks = new HashSet<>();
+    private Set<SchEvent> events = new HashSet<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "clock")
@@ -87,7 +86,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.shortName = shortName;
     }
 
-    public SchClock shortName(String shortName) {
+    public SchClockConfiguration shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -100,21 +99,21 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
-    public SchClock name(String name) {
+    public SchClockConfiguration name(String name) {
         this.name = name;
         return this;
     }
 
-    public SchSchedule getSchSchedule() {
-        return schSchedule;
+    public SchGrid getGrid() {
+        return grid;
     }
 
-    public void setSchSchedule(SchSchedule schSchedule) {
-        this.schSchedule = schSchedule;
+    public void setGrid(SchGrid grid) {
+        this.grid = grid;
     }
 
-    public SchClock grid(SchSchedule schSchedule) {
-        this.schSchedule = schSchedule;
+    public SchClockConfiguration grid(SchGrid grid) {
+        this.grid = grid;
         return this;
     }
 
@@ -126,7 +125,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.queueParams = queueParams;
     }
 
-    public SchClock queueParams(SchQueueParams queueParams) {
+    public SchClockConfiguration queueParams(SchQueueParams queueParams) {
         this.queueParams = queueParams;
         return this;
     }
@@ -139,31 +138,31 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.timeParams = timeParams;
     }
 
-    public SchClock timeParams(SchTimeParams timeParams) {
+    public SchClockConfiguration timeParams(SchTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }
 
-    public Set<SchBlock> getBlocks() {
-        return blocks;
+    public Set<SchEvent> getEvents() {
+        return events;
     }
 
-    public void setBlocks(Set<SchBlock> blocks) {
-        this.blocks = blocks;
+    public void setEvents(Set<SchEvent> schEvents) {
+        this.events = schEvents;
     }
 
-    public SchClock blocks(Set<SchBlock> blocks) {
-        this.blocks = blocks;
+    public SchClockConfiguration events(Set<SchEvent> schEvents) {
+        this.events = schEvents;
         return this;
     }
 
-    public SchClock addBlock(SchBlock block) {
-        this.blocks.add(block);
+    public SchClockConfiguration addBlock(SchEvent schEvent) {
+        this.events.add(schEvent);
         return this;
     }
 
-    public SchClock removeBlock(SchBlock block) {
-        this.blocks.remove(block);
+    public SchClockConfiguration removeBlock(SchEvent schEvent) {
+        this.events.remove(schEvent);
         return this;
     }
 
@@ -175,17 +174,17 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.emissions = emissions;
     }
 
-    public SchClock emissions(Set<SchEmission> emissions) {
+    public SchClockConfiguration emissions(Set<SchEmission> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchClock addEmission(SchEmission emission) {
+    public SchClockConfiguration addEmission(SchEmission emission) {
         this.emissions.add(emission);
         return this;
     }
 
-    public SchClock removeEmission(SchEmission emission) {
+    public SchClockConfiguration removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
         return this;
     }
@@ -198,7 +197,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.network = network;
     }
 
-    public SchClock network(CorNetwork network) {
+    public SchClockConfiguration network(CorNetwork network) {
         this.network = network;
         return this;
     }
@@ -211,7 +210,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.channel = channel;
     }
 
-    public SchClock channel(CorChannel channel) {
+    public SchClockConfiguration channel(CorChannel channel) {
         this.channel = channel;
         return this;
     }
@@ -232,7 +231,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchClock clock = (SchClock) o;
+        SchClockConfiguration clock = (SchClockConfiguration) o;
         if (clock.getId() == null || getId() == null) {
             return false;
         }
@@ -251,11 +250,11 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
-                ", schSchedule=" + schSchedule +
+                ", grid=" + grid +
                 ", queueParams=" + queueParams +
                 ", clockCategory=" + clockCategory +
                 ", timeParams=" + timeParams +
-                ", blocks=" + blocks +
+                ", events=" + events +
                 ", emissions=" + emissions +
                 ", network=" + network +
                 ", channel=" + channel +

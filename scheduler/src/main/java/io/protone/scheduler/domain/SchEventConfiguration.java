@@ -20,9 +20,9 @@ import java.util.Set;
  * A Block.
  */
 @Entity
-@Table(name = "sch_event", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
+@Table(name = "sch_event_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEvent extends AbstractAuditingEntity implements Serializable {
+public class SchEventConfiguration extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,24 +41,10 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorDictionary eventCategory;
 
-    @PodamExclude
-    @ManyToOne
-    private SchClockConfiguration clockConfiguration;
-
     @OneToMany(mappedBy = "block")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
-
-    @PodamExclude
-    @OneToMany(mappedBy = "event")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEvent> events = new HashSet<>();
-
-    @PodamExclude
-    @ManyToOne
-    private SchEvent event;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
@@ -97,7 +83,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.shortName = shortName;
     }
 
-    public SchEvent shortName(String shortName) {
+    public SchEventConfiguration shortName(String shortName) {
         this.shortName = shortName;
         return this;
     }
@@ -110,7 +96,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
-    public SchEvent name(String name) {
+    public SchEventConfiguration name(String name) {
         this.name = name;
         return this;
     }
@@ -123,17 +109,17 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.emissions = emissions;
     }
 
-    public SchEvent emissions(Set<SchEmission> emissions) {
+    public SchEventConfiguration emissions(Set<SchEmission> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchEvent addEmission(SchEmission emission) {
+    public SchEventConfiguration addEmission(SchEmission emission) {
         this.emissions.add(emission);
         return this;
     }
 
-    public SchEvent removeEmission(SchEmission emission) {
+    public SchEventConfiguration removeEmission(SchEmission emission) {
         this.emissions.remove(emission);
         return this;
     }
@@ -146,7 +132,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.eventType = eventType;
     }
 
-    public SchEvent eventType(EventTypeEnum eventType) {
+    public SchEventConfiguration eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
         return this;
     }
@@ -159,7 +145,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.queueParams = queueParams;
     }
 
-    public SchEvent queueParams(SchQueueParams queueParams) {
+    public SchEventConfiguration queueParams(SchQueueParams queueParams) {
         this.queueParams = queueParams;
         return this;
     }
@@ -172,31 +158,8 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.timeParams = timeParams;
     }
 
-    public SchEvent timeParams(SchTimeParams timeParams) {
+    public SchEventConfiguration timeParams(SchTimeParams timeParams) {
         this.timeParams = timeParams;
-        return this;
-    }
-
-    public Set<SchEvent> getBlocks() {
-        return events;
-    }
-
-    public void setBlocks(Set<SchEvent> blocks) {
-        this.events = blocks;
-    }
-
-    public SchEvent blocks(Set<SchEvent> blocks) {
-        this.events = blocks;
-        return this;
-    }
-
-    public SchEvent addBlock(SchEvent block) {
-        this.events.add(block);
-        return this;
-    }
-
-    public SchEvent removeBlock(SchEvent block) {
-        this.events.remove(block);
         return this;
     }
 
@@ -204,7 +167,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
-    public SchEvent network(CorNetwork network) {
+    public SchEventConfiguration network(CorNetwork network) {
         this.network = network;
         return this;
     }
@@ -217,7 +180,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return channel;
     }
 
-    public SchEvent channel(CorChannel channel) {
+    public SchEventConfiguration channel(CorChannel channel) {
         this.channel = channel;
         return this;
     }
@@ -230,38 +193,13 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return eventCategory;
     }
 
-    public SchEvent eventCategory(CorDictionary eventCategory) {
+    public SchEventConfiguration eventCategory(CorDictionary eventCategory) {
         this.eventCategory = eventCategory;
         return this;
     }
 
     public void setEventCategory(CorDictionary eventCategory) {
         this.eventCategory = eventCategory;
-    }
-
-    public SchEvent getEvent() {
-        return event;
-    }
-
-    public void setEvent(SchEvent event) {
-        this.event = event;
-    }
-
-    public SchLogConfiguration getSchLogConfiguration() {
-        return schLogConfiguration;
-    }
-
-    public void setSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
-        this.schLogConfiguration = schLogConfiguration;
-    }
-
-
-    public SchClockConfiguration getClockConfiguration() {
-        return clockConfiguration;
-    }
-
-    public void setClockConfiguration(SchClockConfiguration clockConfiguration) {
-        this.clockConfiguration = clockConfiguration;
     }
 
     @Override
@@ -272,7 +210,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchEvent block = (SchEvent) o;
+        SchEventConfiguration block = (SchEventConfiguration) o;
         if (block.getId() == null || getId() == null) {
             return false;
         }
@@ -294,4 +232,11 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     }
 
 
+    public SchLogConfiguration getSchLogConfiguration() {
+        return schLogConfiguration;
+    }
+
+    public void setSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
+        this.schLogConfiguration = schLogConfiguration;
+    }
 }

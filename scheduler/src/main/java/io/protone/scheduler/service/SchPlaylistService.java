@@ -2,6 +2,8 @@ package io.protone.scheduler.service;
 
 import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.repository.SchPlaylistRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 
 @Service
 public class SchPlaylistService{
-
+    private final Logger log = LoggerFactory.getLogger(SchPlaylistService.class);
     @Inject
     private SchPlaylistRepository schPlaylistRepository;
 

@@ -2,6 +2,8 @@ package io.protone.scheduler.service;
 
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.repository.SchAttachmentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,7 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class SchAttachmentService {
 
+    private final Logger log = LoggerFactory.getLogger(SchAttachmentService.class);
     private SchAttachmentRepository schAttachmentRepository;
 
     @Transactional
@@ -22,7 +25,7 @@ public class SchAttachmentService {
 
     @Transactional
     public void deleteAttachments(Set<SchAttachment> schAttachmentSet) {
-         schAttachmentSet.stream().forEach(schAttachment -> schAttachmentRepository.delete(schAttachment));
+        schAttachmentSet.stream().forEach(schAttachment -> schAttachmentRepository.delete(schAttachment));
     }
 
 }

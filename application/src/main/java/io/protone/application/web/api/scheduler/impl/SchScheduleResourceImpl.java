@@ -12,8 +12,8 @@ import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.api.dto.thin.SchScheduleThinDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
+import io.protone.scheduler.service.SchScheduleBuilderService;
 import io.protone.scheduler.service.SchScheduleService;
-
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +42,9 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
 
     @Inject
     private SchScheduleService schScheduleService;
+
+    @Inject
+    private SchScheduleBuilderService schScheduleBuilderService;
 
     @Inject
     private SchScheduleMapper schScheduleMapper;
@@ -92,7 +95,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
         log.debug("REST request to delete SchSchedule : {}, for Network: {}", date, networkShortcut);
-        schScheduleService.deleteSchScheduleByNetworkAndChannelAndShortNAme( networkShortcut, channelShortcut,date);
+        schScheduleService.deleteSchScheduleByNetworkAndChannelAndShortNAme(networkShortcut, channelShortcut, date);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();
     }
 
@@ -126,5 +129,20 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
         SchSchedule entity = schScheduleService.saveSchedule(traOrder);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    public ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                                   @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws URISyntaxException {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) throws URISyntaxException {
+        return null;
     }
 }

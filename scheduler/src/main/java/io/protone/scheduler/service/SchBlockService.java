@@ -2,6 +2,8 @@ package io.protone.scheduler.service;
 
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.repository.SchBlockRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,7 @@ import static java.util.stream.Collectors.toSet;
 
 @Service
 public class SchBlockService {
+    private final Logger log = LoggerFactory.getLogger(SchBlockService.class);
     @Inject
     private SchEmissionService schEmissionService;
     @Inject

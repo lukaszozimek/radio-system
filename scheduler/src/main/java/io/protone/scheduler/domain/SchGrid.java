@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import org.hibernate.annotations.Cache;
@@ -19,9 +20,11 @@ import java.util.Set;
  * A Grid.
  */
 @Entity
-@Table(name = "sch_grid",uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
+@Table(name = "sch_grid", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"})
+})
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchGrid  extends AbstractAuditingEntity implements Serializable {
+public class SchGrid extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,15 +43,18 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name")
     private String shortName;
 
-    @PodamExclude
+    @Column(name = "default")
+    private Boolean defaultGrid = null;
+
     @ManyToOne
-    private SchSchedule schedule;
+    @PodamExclude
+    private CorDictionary gridCategory;
 
     @PodamExclude
     @OneToMany(mappedBy = "grid")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchClock> clocks = new HashSet<>();
+    private Set<SchClockConfiguration> clocks = new HashSet<>();
 
     @ManyToOne
     private CorNetwork network;
@@ -105,33 +111,36 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public SchSchedule getSchedule() {
-        return schedule;
+    public Boolean getDefaultGrid() {
+        return defaultGrid;
     }
 
-    public void setSchedule(SchSchedule schedule) {
-        this.schedule = schedule;
+    public void setDefaultGrid(Boolean defaultGrid) {
+        this.defaultGrid = defaultGrid;
     }
 
-    public SchGrid schedule(SchSchedule schedule) {
-        this.schedule = schedule;
-        return this;
+    public CorDictionary getGridCategory() {
+        return gridCategory;
     }
 
-    public Set<SchClock> getClocks() {
+    public void setGridCategory(CorDictionary gridCategory) {
+        this.gridCategory = gridCategory;
+    }
+
+    public Set<SchClockConfiguration> getClocks() {
         return clocks;
     }
 
-    public void setClocks(Set<SchClock> clocks) {
+    public void setClocks(Set<SchClockConfiguration> clocks) {
         this.clocks = clocks;
     }
 
-    public SchGrid clocks(Set<SchClock> clocks) {
+    public SchGrid clocks(Set<SchClockConfiguration> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGrid addClock(SchClock clock) {
+    public SchGrid addClock(SchClockConfiguration clock) {
         this.clocks.add(clock);
         return this;
     }
@@ -140,6 +149,7 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
         this.clocks.remove(clock);
         return this;
     }
+
     public CorNetwork getNetwork() {
         return network;
     }
@@ -165,6 +175,7 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
     public void setChannel(CorChannel channel) {
         this.channel = channel;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -194,4 +205,6 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
                 ", shortName='" + getShortName() + "'" +
                 "}";
     }
+
+
 }

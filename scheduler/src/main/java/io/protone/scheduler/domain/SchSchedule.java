@@ -34,10 +34,10 @@ public class SchSchedule extends AbstractAuditingEntity implements Serializable 
     private LocalDate date;
 
     @PodamExclude
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schSchedule")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchGrid> grids = new HashSet<>();
+    private Set<SchClock> clocks = new HashSet<>();
 
     @ManyToOne
     private CorNetwork network;
@@ -67,28 +67,26 @@ public class SchSchedule extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public Set<SchGrid> getGrids() {
-        return grids;
+    public Set<SchClock> getClocks() {
+        return clocks;
     }
 
-    public void setGrids(Set<SchGrid> grids) {
-        this.grids = grids;
+    public void setClocks(Set<SchClock> clocks) {
+        this.clocks = clocks;
     }
 
-    public SchSchedule grids(Set<SchGrid> grids) {
-        this.grids = grids;
+    public SchSchedule clocks(Set<SchClock> clocks) {
+        this.clocks = clocks;
         return this;
     }
 
-    public SchSchedule addGrid(SchGrid grid) {
-        this.grids.add(grid);
-        grid.setSchedule(this);
+    public SchSchedule addClock(SchClock clock) {
+        this.clocks.add(clock);
         return this;
     }
 
-    public SchSchedule removeGrid(SchGrid grid) {
-        this.grids.remove(grid);
-        grid.setSchedule(null);
+    public SchSchedule removeClock(SchClock clock) {
+        this.clocks.remove(clock);
         return this;
     }
 

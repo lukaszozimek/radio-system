@@ -3,6 +3,7 @@ package io.protone.scheduler.domain;
 import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -26,8 +27,9 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "column_type")
+    private LogColumnTypEnum columnTypEnum;
 
     @Column(name = "lenght")
     private Integer lenght;
@@ -62,12 +64,12 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
         return schLogConfiguration;
     }
 
-    public String getName() {
-        return name;
+    public LogColumnTypEnum getName() {
+        return columnTypEnum;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(LogColumnTypEnum name) {
+        this.columnTypEnum = name;
     }
 
     public Integer getLenght() {
@@ -148,7 +150,7 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
     public String toString() {
         return "SchLogColumn{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + columnTypEnum + '\'' +
                 ", lenght=" + lenght +
                 ", delimiter='" + delimiter + '\'' +
                 ", columnSequence=" + columnSequence +

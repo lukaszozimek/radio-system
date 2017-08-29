@@ -12,29 +12,56 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Schedule.
+        Added the entity Block.
     -->
-    <changeSet id="20170720190700-1" author="jhipster">
-        <createTable tableName="sch_log_column">
+    <changeSet id="20170720190704-1" author="jhipster">
+        <createTable tableName="sch_event_configuration">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="column_type" type="varchar(255)">
+            <column name="short_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="lenght" type="integer">
+            <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="delimiter" type="varchar(255)">
+            <column name="event_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="column_sequence" type="integer">
+            <column name="seq" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="sch_log_configuration_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="previous_id" type="bigint">
                 <constraints nullable="true" />
+            </column>
+
+            <column name="previous_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="next_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="next_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="relative_delay" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="event_category_id" type="bigint">
+                <constraints nullable="false" />
             </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />
