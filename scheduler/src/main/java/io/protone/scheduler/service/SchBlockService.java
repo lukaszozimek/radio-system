@@ -1,5 +1,6 @@
 package io.protone.scheduler.service;
 
+import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.repository.SchBlockRepository;
 import org.slf4j.Logger;
@@ -23,23 +24,29 @@ public class SchBlockService {
 
     @Transactional
     public Set<SchBlock> saveBlocks(Set<SchBlock> blocks) {
-        return blocks.stream().map(schBlock -> {
-            if (!schBlock.getBlocks().isEmpty()) {
-                this.saveBlocks(schBlock.getBlocks());
-            }
-            schBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions()));
-            return schBlockRepository.saveAndFlush(schBlock);
-        }).collect(toSet());
+        if (blocks != null && !blocks.isEmpty()) {
+            return blocks.stream().map(schBlock -> {
+                if (!schBlock.getBlocks().isEmpty()) {
+                    this.saveBlocks(schBlock.getBlocks());
+                }
+                schBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions()));
+                return schBlockRepository.saveAndFlush(schBlock);
+            }).collect(toSet());
+        }
+        return Sets.newHashSet();
     }
 
     @Transactional
     public void deleteBlock(Set<SchBlock> blocks) {
-        blocks.stream().map(schBlock -> {
-            if (!schBlock.getBlocks().isEmpty()) {
-                this.deleteBlock(schBlock.getBlocks());
-            }
-            schEmissionService.deleteEmissions(schBlock.getEmissions());
-            return schBlockRepository.saveAndFlush(schBlock);
-        }).collect(toSet());
+        if (blocks != null && !blocks.isEmpty()) {
+            blocks.stream().forEach(schBlock -> {
+                if (!schBlock.getBlocks().isEmpty()) {
+                    this.deleteBlock(schBlock.getBlocks());
+                }
+                schEmissionService.deleteEmissions(schBlock.getEmissions());
+                schBlockRepository.delete(schBlock);
+            });
+        }
+
     }
 }

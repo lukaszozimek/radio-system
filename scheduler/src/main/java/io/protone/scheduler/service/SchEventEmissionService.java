@@ -1,8 +1,8 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
-import io.protone.scheduler.domain.SchEmissionConfiguration;
-import io.protone.scheduler.repository.SchEmissionConfigurationRepository;
+import io.protone.scheduler.domain.SchEventEmission;
+import io.protone.scheduler.repository.SchEventEmissionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,18 +15,19 @@ import static java.util.stream.Collectors.toSet;
 
 
 @Service
-public class SchEmissionConfigurationService {
-    private final Logger log = LoggerFactory.getLogger(SchEmissionConfigurationService.class);
+public class SchEventEmissionService {
+    private final Logger log = LoggerFactory.getLogger(SchEventEmissionService.class);
     @Inject
-    private SchEmissionConfigurationRepository schEmissionConfigurationRepository;
+    private SchEventEmissionRepository schEmissionConfigurationRepository;
+
     @Inject
-    private SchAttachmentConfigurationService schAttachmentService;
+    private SchEventEmissionAttachmentService schEventEmissionAttachmentService;
 
     @Transactional
-    public Set<SchEmissionConfiguration> saveEmission(Set<SchEmissionConfiguration> emissionSet) {
+    public Set<SchEventEmission> saveEmission(Set<SchEventEmission> emissionSet) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
-                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
+                schEmission.attachments(schEventEmissionAttachmentService.saveAttachmenst(schEmission.getAttachments()));
                 return schEmissionConfigurationRepository.saveAndFlush(schEmission);
             }).collect(toSet());
         }
@@ -34,12 +35,13 @@ public class SchEmissionConfigurationService {
     }
 
     @Transactional
-    public void deleteEmissions(Set<SchEmissionConfiguration> emissionSet) {
-        if (emissionSet != null && !emissionSet.isEmpty()) {
+    public void deleteEmissions(Set<SchEventEmission> emissionSet) {
+        if (emissionSet != null) {
             emissionSet.stream().forEach(schEmission -> {
-                schAttachmentService.deleteAttachments(schEmission.getAttachments());
+                schEventEmissionAttachmentService.deleteAttachments(schEmission.getAttachments());
                 schEmissionConfigurationRepository.saveAndFlush(schEmission);
             });
         }
+
     }
 }

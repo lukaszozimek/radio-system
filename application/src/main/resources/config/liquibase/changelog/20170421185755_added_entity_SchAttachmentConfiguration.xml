@@ -46,7 +46,7 @@
                 <constraints nullable="true"/>
             </column>
             <column name="media_item_id" type="bigint">
-                <constraints unique="true" nullable="true"/>
+                <constraints  nullable="true"/>
             </column>
             <column name="emission_id" type="bigint">
                 <constraints nullable="true"/>

@@ -16,7 +16,7 @@ import java.util.*;
 
 public class SchEventDTO {
     @JsonProperty("emissions")
-    private List<SchEmissionConfigurationDTO> emissions = new ArrayList<SchEmissionConfigurationDTO>();
+    private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
 
     @JsonProperty("id")
     private Long id = null;
@@ -36,12 +36,12 @@ public class SchEventDTO {
 
     private CorDictionaryDTO eventCategory;
 
-    public SchEventDTO emissions(List<SchEmissionConfigurationDTO> emissions) {
+    public SchEventDTO emissions(List<SchEventEmissionDTO> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchEventDTO addEmissionsItem(SchEmissionConfigurationDTO emissionsItem) {
+    public SchEventDTO addEmissionsItem(SchEventEmissionDTO emissionsItem) {
         this.emissions.add(emissionsItem);
         return this;
     }
@@ -52,11 +52,11 @@ public class SchEventDTO {
      * @return emissions
      **/
     @ApiModelProperty(value = "")
-    public List<SchEmissionConfigurationDTO> getEmissions() {
+    public List<SchEventEmissionDTO> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(List<SchEmissionConfigurationDTO> emissions) {
+    public void setEmissions(List<SchEventEmissionDTO> emissions) {
         this.emissions = emissions;
     }
 

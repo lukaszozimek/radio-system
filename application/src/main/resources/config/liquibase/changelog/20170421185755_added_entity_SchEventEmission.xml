@@ -15,18 +15,13 @@
         Added the entity Emission.
     -->
     <changeSet id="20170720190706-1" author="jhipster">
-        <createTable tableName="sch_emission">
+        <createTable tableName="sch_event_emission">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="seq" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
-            <column name="playlist_id" type="bigint">
-                <constraints nullable="true"/>
-            </column>
-
             <column name="clock_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
@@ -34,33 +29,41 @@
                 <constraints  nullable="true"/>
             </column>
             <column name="previous_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="sequence" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="previous_type" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+
             <column name="next_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+
             <column name="next_type" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="start_time" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+
             <column name="end_time" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+
             <column name="relative_delay" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
+
             <column name="block_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="network_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sch_event_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="channel_id" type="bigint">

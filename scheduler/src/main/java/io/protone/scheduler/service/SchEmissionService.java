@@ -23,6 +23,7 @@ public class SchEmissionService {
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissionSet) {
+
         return emissionSet.stream().map(schEmission -> {
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
             return schEmissionRepository.saveAndFlush(schEmission);

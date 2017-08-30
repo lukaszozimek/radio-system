@@ -19,9 +19,9 @@ import java.util.Objects;
  * A Attachment.
  */
 @Entity
-@Table(name = "sch_attachment")
+@Table(name = "sch_event_emission_attachment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachment extends AbstractAuditingEntity implements Serializable {
+public class SchEventEmissionAttachment extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,12 +52,13 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     private FadeTypeEnum fadeType;
 
     @PodamExclude
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private LibMediaItem mediaItem;
 
     @PodamExclude
     @ManyToOne
-    private SchEmission emission;
+    private SchEventEmission emission;
 
     @ManyToOne
     private CorNetwork network;
@@ -83,7 +84,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.attachmentType = attachmentType;
     }
 
-    public SchAttachment attachmentType(AttachmentTypeEnum attachementType) {
+    public SchEventEmissionAttachment attachmentType(AttachmentTypeEnum attachementType) {
         this.attachmentType = attachementType;
         return this;
     }
@@ -96,7 +97,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.fadeStart = fadeStart;
     }
 
-    public SchAttachment fadeStart(Long fadeStart) {
+    public SchEventEmissionAttachment fadeStart(Long fadeStart) {
         this.fadeStart = fadeStart;
         return this;
     }
@@ -109,7 +110,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.fadeInLength = fadeInLength;
     }
 
-    public SchAttachment fadeInLength(Long fadeInLength) {
+    public SchEventEmissionAttachment fadeInLength(Long fadeInLength) {
         this.fadeInLength = fadeInLength;
         return this;
     }
@@ -122,7 +123,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.volumeLevel = volumeLevel;
     }
 
-    public SchAttachment volumeLevel(Long volumeLevel) {
+    public SchEventEmissionAttachment volumeLevel(Long volumeLevel) {
         this.volumeLevel = volumeLevel;
         return this;
     }
@@ -135,7 +136,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.fadeOutLength = fadeOutLength;
     }
 
-    public SchAttachment fadeOutLength(Long fadeOutLength) {
+    public SchEventEmissionAttachment fadeOutLength(Long fadeOutLength) {
         this.fadeOutLength = fadeOutLength;
         return this;
     }
@@ -148,7 +149,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.fadeType = fadeType;
     }
 
-    public SchAttachment fadeType(FadeTypeEnum fadeType) {
+    public SchEventEmissionAttachment fadeType(FadeTypeEnum fadeType) {
         this.fadeType = fadeType;
         return this;
     }
@@ -161,20 +162,20 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.mediaItem = mediaItem;
     }
 
-    public SchAttachment mediaItem(LibMediaItem mediaItem) {
+    public SchEventEmissionAttachment mediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
 
-    public SchEmission getEmission() {
+    public SchEventEmission getEmission() {
         return emission;
     }
 
-    public void setEmission(SchEmission emission) {
+    public void setEmission(SchEventEmission emission) {
         this.emission = emission;
     }
 
-    public SchAttachment emission(SchEmission emission) {
+    public SchEventEmissionAttachment emission(SchEventEmission emission) {
         this.emission = emission;
         return this;
     }
@@ -183,7 +184,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         return network;
     }
 
-    public SchAttachment network(CorNetwork network) {
+    public SchEventEmissionAttachment network(CorNetwork network) {
         this.network = network;
         return this;
     }
@@ -196,7 +197,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         return channel;
     }
 
-    public SchAttachment channel(CorChannel channel) {
+    public SchEventEmissionAttachment channel(CorChannel channel) {
         this.channel = channel;
         return this;
     }
@@ -213,7 +214,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchAttachment attachment = (SchAttachment) o;
+        SchEventEmissionAttachment attachment = (SchEventEmissionAttachment) o;
         if (attachment.getId() == null || getId() == null) {
             return false;
         }

@@ -5,10 +5,10 @@ import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.api.dto.SchEmissionConfigurationDTO;
 import io.protone.scheduler.api.dto.SchEventDTO;
-import io.protone.scheduler.domain.SchEmissionConfiguration;
+import io.protone.scheduler.api.dto.SchEventEmissionDTO;
 import io.protone.scheduler.domain.SchEvent;
+import io.protone.scheduler.domain.SchEventEmission;
 import io.protone.scheduler.mapper.SchEventMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,17 +50,17 @@ public class SchEventMapperTest {
         corChannel = factory.manufacturePojo(CorChannel.class);
         network = factory.manufacturePojo(CorNetwork.class);
         event = factory.manufacturePojo(SchEvent.class);
-        event.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 1 @ rootEvent
-        event.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 2 @ rootEvent
-        event.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 3 @ rootEvent
+        event.addEmission(factory.manufacturePojo(SchEventEmission.class)); //Emission 1 @ rootEvent
+        event.addEmission(factory.manufacturePojo(SchEventEmission.class)); //Emission 2 @ rootEvent
+        event.addEmission(factory.manufacturePojo(SchEventEmission.class)); //Emission 3 @ rootEvent
         event.setBlocks(Sets.newSet(factory.manufacturePojo(SchEvent.class)));
         event.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         events.add(event);
         //Fill DTO instance
         eventDTO = factory.manufacturePojo(SchEventDTO.class);
-        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 1 @ rootEvent
-        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 2 @ rootEvent
-        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 3 @ rootEvent
+        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEventEmissionDTO.class)); //Emission 1 @ rootEvent
+        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEventEmissionDTO.class)); //Emission 2 @ rootEvent
+        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEventEmissionDTO.class)); //Emission 3 @ rootEvent
         eventDTO.setBlocks(Sets.newSet(factory.manufacturePojo(SchEventDTO.class)));
         eventDTO.setEventCategory(factory.manufacturePojo(CorDictionaryDTO.class));
 

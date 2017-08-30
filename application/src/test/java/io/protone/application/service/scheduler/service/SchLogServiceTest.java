@@ -1,10 +1,7 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.scheduler.domain.SchLog;
 import io.protone.scheduler.repository.SchLogRepository;
 import io.protone.scheduler.service.SchLogService;
@@ -19,8 +16,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.io.InputStream;
@@ -35,40 +30,16 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchLogServiceTest {
+public class SchLogServiceTest extends SchedulerBaseTest {
 
     private SchLogService schLogService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
-
-
-    @Autowired
-    private CorChannelRepository corChannelRepository;
-
-    @Autowired
     private SchLogRepository schLogRepository;
-
-
-    private CorNetwork corNetwork;
-
-    private CorChannel corChannel;
-
-    private PodamFactory factory;
-
 
     @Before
     public void setUp() throws Exception {
-        factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel.setShortcut("Clc");
-        corChannel.network(corNetwork);
-        corChannelRepository.saveAndFlush(corChannel);
+        super.setUp();
 
     }
 

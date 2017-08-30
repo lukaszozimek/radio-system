@@ -1,5 +1,7 @@
 package io.protone.application.service.library.util;
 
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.library.domain.LibAudioObject;
@@ -23,7 +25,6 @@ import java.util.List;
 
 public class LibraryGenerator {
 
-    PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
     protected CorNetworkRepository corNetworkRepository;
@@ -40,15 +41,21 @@ public class LibraryGenerator {
     @Autowired
     private LibCloudObjectRepository cloudObjectRepository;
 
+
     protected CorNetwork corNetwork;
+
+    protected CorChannel corChannel;
+
+    protected PodamFactory factory;
 
     protected LibLibrary libLibrary;
 
 
     public void initializeLibarary() {
         initializeRequiredEntities();
-        initializeLibaryEntity();
-
+        if (libLibrary == null) {
+            initializeLibaryEntity();
+        }
     }
 
     public List<LibMediaItem> generateFullItemListWithLenghtInRange(double lenghtMin, double lenghtMax, Long librarySize) throws InterruptedException {
@@ -92,9 +99,10 @@ public class LibraryGenerator {
 
     private void initializeRequiredEntities() {
         factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        this.corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
     }
 
     private void initializeLibaryEntity() {

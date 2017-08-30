@@ -1,6 +1,8 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
+import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +16,12 @@ import javax.transaction.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchParseLogServiceTest {
+public class SchParseLogServiceTest extends SchedulerBaseTest {
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+
+    }
     @Test
     public void shouldParseLog(){
 

@@ -19,9 +19,9 @@ import java.util.Set;
  * A Emission.
  */
 @Entity
-@Table(name = "sch_emission")
+@Table(name = "sch_event_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmission extends AbstractAuditingEntity implements Serializable {
+public class SchEventEmission extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,14 +35,11 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
 
     @PodamExclude
     @ManyToOne
-    private SchPlaylist playlist;
+    private SchClockConfiguration clock;
 
     @PodamExclude
-    @ManyToOne
-    private SchClock clock;
-
-    @PodamExclude
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private LibMediaItem mediaItem;
 
     @Embedded
@@ -55,11 +52,11 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     @OneToMany(mappedBy = "emission")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchAttachment> attachments = new HashSet<>();
+    private Set<SchEventEmissionAttachment> attachments = new HashSet<>();
 
     @PodamExclude
     @ManyToOne
-    private SchBlock block = null;
+    private SchEvent schEvent = null;
 
     @ManyToOne
     private CorNetwork network;
@@ -85,33 +82,21 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         this.seq = seq;
     }
 
-    public SchEmission seq(Long seq) {
+    public SchEventEmission seq(Long seq) {
         this.seq = seq;
         return this;
     }
 
-    public SchPlaylist getPlaylist() {
-        return playlist;
-    }
 
-    public void setPlaylist(SchPlaylist playlist) {
-        this.playlist = playlist;
-    }
-
-    public SchEmission playlist(SchPlaylist playlist) {
-        this.playlist = playlist;
-        return this;
-    }
-
-    public SchClock getClock() {
+    public SchClockConfiguration getClock() {
         return clock;
     }
 
-    public void setClock(SchClock clock) {
+    public void setClock(SchClockConfiguration clock) {
         this.clock = clock;
     }
 
-    public SchEmission clock(SchClock clock) {
+    public SchEventEmission clock(SchClockConfiguration clock) {
         this.clock = clock;
         return this;
     }
@@ -124,7 +109,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         this.mediaItem = mediaItem;
     }
 
-    public SchEmission mediaItem(LibMediaItem mediaItem) {
+    public SchEventEmission mediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
         return this;
     }
@@ -137,7 +122,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         this.queueParams = queueParams;
     }
 
-    public SchEmission queueParams(SchQueueParams queueParams) {
+    public SchEventEmission queueParams(SchQueueParams queueParams) {
         this.queueParams = queueParams;
         return this;
     }
@@ -150,46 +135,46 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         this.timeParams = timeParams;
     }
 
-    public SchEmission timeParams(SchTimeParams timeParams) {
+    public SchEventEmission timeParams(SchTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }
 
-    public Set<SchAttachment> getAttachments() {
+    public Set<SchEventEmissionAttachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<SchAttachment> attachments) {
+    public void setAttachments(Set<SchEventEmissionAttachment> attachments) {
         this.attachments = attachments;
     }
 
-    public SchEmission attachments(Set<SchAttachment> attachments) {
+    public SchEventEmission attachments(Set<SchEventEmissionAttachment> attachments) {
         this.attachments = attachments;
         return this;
     }
 
-    public SchEmission addAttachment(SchAttachment attachment) {
+    public SchEventEmission addAttachment(SchEventEmissionAttachment attachment) {
         this.attachments.add(attachment);
         attachment.setEmission(this);
         return this;
     }
 
-    public SchEmission removeAttachment(SchAttachment attachment) {
+    public SchEventEmission removeAttachment(SchEventEmissionAttachment attachment) {
         this.attachments.remove(attachment);
         attachment.setEmission(null);
         return this;
     }
 
-    public SchBlock getBlock() {
-        return block;
+    public SchEvent getSchEvent() {
+        return schEvent;
     }
 
-    public void setBlock(SchBlock block) {
-        this.block = block;
+    public void setSchEvent(SchEvent schEvent) {
+        this.schEvent = schEvent;
     }
 
-    public SchEmission block(SchBlock block) {
-        this.block = block;
+    public SchEventEmission event(SchEvent schEvent) {
+        this.schEvent = schEvent;
         return this;
     }
 
@@ -197,7 +182,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         return network;
     }
 
-    public SchEmission network(CorNetwork network) {
+    public SchEventEmission network(CorNetwork network) {
         this.network = network;
         return this;
     }
@@ -210,7 +195,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         return channel;
     }
 
-    public SchEmission channel(CorChannel channel) {
+    public SchEventEmission channel(CorChannel channel) {
         this.channel = channel;
         return this;
     }
@@ -227,7 +212,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SchEmission emission = (SchEmission) o;
+        SchEventEmission emission = (SchEventEmission) o;
         if (emission.getId() == null || getId() == null) {
             return false;
         }
@@ -246,4 +231,6 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
                 ", seq='" + getSeq() + "'" +
                 "}";
     }
+
+
 }

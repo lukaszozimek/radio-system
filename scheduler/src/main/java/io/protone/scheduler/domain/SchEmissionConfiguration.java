@@ -56,10 +56,6 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
 
     @PodamExclude
     @ManyToOne
-    private SchEvent schEvent = null;
-
-    @PodamExclude
-    @ManyToOne
     private SchEventConfiguration schEventConfiguration = null;
 
     @ManyToOne
@@ -175,19 +171,6 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
 
     public void setSchEventConfiguration(SchEventConfiguration schEventConfiguration) {
         this.schEventConfiguration = schEventConfiguration;
-    }
-
-    public SchEvent getSchEvent() {
-        return schEvent;
-    }
-
-    public void setSchEvent(SchEvent schEvent) {
-        this.schEvent = schEvent;
-    }
-
-    public SchEmissionConfiguration event(SchEvent schEvent) {
-        this.schEvent = schEvent;
-        return this;
     }
 
     public CorNetwork getNetwork() {

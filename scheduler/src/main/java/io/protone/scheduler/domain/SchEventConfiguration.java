@@ -41,7 +41,7 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
     @PodamExclude
     private CorDictionary eventCategory;
 
-    @OneToMany(mappedBy = "schEvent")
+    @OneToMany(mappedBy = "schEventConfiguration")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmissionConfiguration> emissions = new HashSet<>();

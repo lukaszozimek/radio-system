@@ -1,10 +1,7 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorNetwork;
-import io.protone.core.repository.CorChannelRepository;
-import io.protone.core.repository.CorNetworkRepository;
+import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.repository.SchEventConfigurationRepository;
 import io.protone.scheduler.service.SchEventConfigurationService;
@@ -16,8 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
@@ -29,43 +24,22 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEventConfigurationServiceTest {
+public class SchEventConfigurationServiceTest  extends SchedulerBaseTest {
 
 
     @Autowired
     private SchEventConfigurationService schEventConfigurationService;
 
     @Autowired
-    private CorNetworkRepository corNetworkRepository;
-
-    @Autowired
-    private CorChannelRepository corChannelRepository;
-
-    @Autowired
     private SchEventConfigurationRepository schEventConfigurationRepository;
-
-
-    private CorNetwork corNetwork;
-
-    private CorChannel corChannel;
-
-    private PodamFactory factory;
 
 
     @Before
     public void setUp() throws Exception {
-        factory = new PodamFactoryImpl();
-        corNetwork = factory.manufacturePojo(CorNetwork.class);
-        corNetwork.setId(null);
-        corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-
-        corChannel = factory.manufacturePojo(CorChannel.class);
-        corChannel.setId(null);
-        corChannel.setShortcut("CEv");
-        corChannel.network(corNetwork);
-        corChannelRepository.saveAndFlush(corChannel);
+        super.setUp();
 
     }
+
 
 
     @Test
@@ -116,6 +90,12 @@ public class SchEventConfigurationServiceTest {
         //assert
         assertNull(fetchedEntity);
     }
+
+    @Test
+    public void shouldDeleteEventConfigurationWithRecusriveStrategy() throws Exception {
+
+    }
+
 
     @Test
     public void shouldGetEventConfiguration() throws Exception {

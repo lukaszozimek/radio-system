@@ -293,6 +293,11 @@
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchAttachment.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchAttachmentConfiguration.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEventEmissionAttachment.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchBlock.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchClock.xml"
@@ -300,6 +305,8 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchClockConfiguration.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEventEmission.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEmissionConfiguration.xml"
              relativeToChangelogFile="false"/>
@@ -336,7 +343,11 @@
             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmission.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEventEmission.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmissionConfiguration.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEventEmissionAttachment.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEvent.xml"
              relativeToChangelogFile="false"/>
