@@ -1,6 +1,7 @@
 package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -30,7 +31,8 @@ public class SchClockDTO {
     @JsonProperty("name")
     private String name = null;
 
-
+    @JsonProperty("category")
+    private CorDictionaryDTO clockCategory;
 
     @JsonProperty("shortName")
     private String shortName = null;
@@ -152,6 +154,14 @@ public class SchClockDTO {
         return this;
     }
 
+    public CorDictionaryDTO getClockCategory() {
+        return clockCategory;
+    }
+
+    public void setClockCategory(CorDictionaryDTO clockCategory) {
+        this.clockCategory = clockCategory;
+    }
+
     /**
      * Get queueParams
      *
@@ -165,6 +175,7 @@ public class SchClockDTO {
     public void setQueueParams(SchQueueParamsDTO queueParams) {
         this.queueParams = queueParams;
     }
+
     public String getShortName() {
         return shortName;
     }
@@ -206,6 +217,7 @@ public class SchClockDTO {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
         sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+        sb.append("    clockCategory: ").append(toIndentedString(clockCategory)).append("\n");
         sb.append("}");
         return sb.toString();
     }

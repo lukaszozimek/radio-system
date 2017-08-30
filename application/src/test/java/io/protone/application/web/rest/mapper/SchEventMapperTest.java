@@ -1,16 +1,19 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.api.dto.SchEmissionConfigurationDTO;
 import io.protone.scheduler.api.dto.SchEventDTO;
-import io.protone.scheduler.api.dto.SchEmissionDTO;
+import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchEvent;
-import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchEventMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -46,22 +49,20 @@ public class SchEventMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         corChannel = factory.manufacturePojo(CorChannel.class);
         network = factory.manufacturePojo(CorNetwork.class);
-        // Fill entity instance
-        // Fill entity instance
         event = factory.manufacturePojo(SchEvent.class);
-
-        event.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ rootEvent
-        event.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 2 @ rootEvent
-        event.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 3 @ rootEvent
-
+        event.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 1 @ rootEvent
+        event.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 2 @ rootEvent
+        event.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 3 @ rootEvent
+        event.setBlocks(Sets.newSet(factory.manufacturePojo(SchEvent.class)));
+        event.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         events.add(event);
-
         //Fill DTO instance
         eventDTO = factory.manufacturePojo(SchEventDTO.class);
-
-        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 1 @ rootEvent
-        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 2 @ rootEvent
-        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 3 @ rootEvent
+        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 1 @ rootEvent
+        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 2 @ rootEvent
+        eventDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 3 @ rootEvent
+        eventDTO.setBlocks(Sets.newSet(factory.manufacturePojo(SchEventDTO.class)));
+        eventDTO.setEventCategory(factory.manufacturePojo(CorDictionaryDTO.class));
 
         eventDTOs.add(eventDTO);
     }
@@ -88,6 +89,8 @@ public class SchEventMapperTest {
             assertNotNull(dto.getQueueParams());
             assertNotNull(dto.getEventType());
             assertNotNull(dto.getTimeParams());
+            assertNotNull(dto.getEventCategory());
+            assertNotNull(dto.getBlocks());
         });
     }
 
@@ -100,7 +103,8 @@ public class SchEventMapperTest {
         assertNotNull(entity.getQueueParams());
         assertNotNull(entity.getEventType());
         assertNotNull(entity.getTimeParams());
-
+        assertNotNull(entity.getEventCategory());
+        assertNotNull(entity.getBlocks());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
@@ -117,7 +121,8 @@ public class SchEventMapperTest {
             assertNotNull(entity.getQueueParams());
             assertNotNull(entity.getEventType());
             assertNotNull(entity.getTimeParams());
-
+            assertNotNull(entity.getEventCategory());
+            assertNotNull(entity.getBlocks());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

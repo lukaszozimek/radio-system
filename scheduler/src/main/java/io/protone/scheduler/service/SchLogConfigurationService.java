@@ -28,30 +28,29 @@ public class SchLogConfigurationService {
 
 
     @Transactional
-    public SchLogConfiguration saveEvent(SchLogConfiguration schLogConfiguration) {
+    public SchLogConfiguration saveSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
         if (schLogConfiguration != null) {
-            schLogConfiguration.columns(schLogColumnService.saveLogColumn(schLogConfiguration.getLogColumns()));
             return schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         }
         return null;
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchLogConfiguration> findSchLogForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
+    public Slice<SchLogConfiguration> findSchLogConfigurationForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
         return schLogConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
     }
 
-    public SchLogConfiguration findOneByrNetworkAndChannelAndExtension(String networkShortcut, String channelShortcut, String extension) {
+    public SchLogConfiguration findOneSchlogConfigurationByNetworkAndChannelAndExtension(String networkShortcut, String channelShortcut, String extension) {
         return this.schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(networkShortcut, channelShortcut, extension);
     }
 
     @Transactional(readOnly = true)
-    public SchLogConfiguration findSchLogForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, Long id) {
+    public SchLogConfiguration findSchLogConfigurationForNetworkAndChannelAndId(String networkShortcut, String channelShortcut, Long id) {
         return schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(networkShortcut, channelShortcut, id);
     }
 
     @Transactional
-    public void deleteSchLogByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, Long id) {
+    public void deleteSchLogConfigurationByNetworkAndChannelAndId(String networkShortcut, String channelShortcut, Long id) {
         SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(networkShortcut, channelShortcut, id);
         if (schLogConfiguration != null) {
             schLogColumnService.deleteColumns(schLogConfiguration.getLogColumns());

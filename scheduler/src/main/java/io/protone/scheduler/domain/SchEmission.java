@@ -182,11 +182,11 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     }
 
     public SchBlock getBlock() {
-        return null; //block;
+        return null; //event;
     }
 
     public void setBlock(SchBlock block) {
-        //this.block = block;
+        //this.event = event;
     }
 
     public SchEmission block(SchBlock block) {

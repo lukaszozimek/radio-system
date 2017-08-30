@@ -3,6 +3,8 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
+import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.mapper.SchAttachmentMapper;
@@ -46,9 +48,10 @@ public class SchAttachmentMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         attachment = factory.manufacturePojo(SchAttachment.class);
+        attachment.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
         attachments.add(attachment);
         attachmentDTO = factory.manufacturePojo(SchAttachmentDTO.class);
-        attachmentDTO.setMediaItem(null); //TODO: extend test scenarios to media item
+        attachmentDTO.setMediaItem(factory.manufacturePojo(LibMediaItemThinDTO.class));
         attachmentDTOs.add(attachmentDTO);
     }
 
@@ -61,7 +64,7 @@ public class SchAttachmentMapperTest {
         assertNotNull(dto.getFadeOutLength());
         assertNotNull(dto.getFadeStart());
         assertNotNull(dto.getFadeType());
-        //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+        assertNotNull(dto.getMediaItem());
         assertNotNull(dto.getVolumeLevel());
     }
 
@@ -77,7 +80,7 @@ public class SchAttachmentMapperTest {
             assertNotNull(dto.getFadeOutLength());
             assertNotNull(dto.getFadeStart());
             assertNotNull(dto.getFadeType());
-            //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+            assertNotNull(dto.getMediaItem());
             assertNotNull(dto.getVolumeLevel());
         });
     }
@@ -91,7 +94,7 @@ public class SchAttachmentMapperTest {
         assertNotNull(entity.getFadeOutLength());
         assertNotNull(entity.getFadeStart());
         assertNotNull(entity.getFadeType());
-        //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+        assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getVolumeLevel());
 
         assertNotNull(entity.getNetwork());
@@ -110,7 +113,7 @@ public class SchAttachmentMapperTest {
             assertNotNull(entity.getFadeOutLength());
             assertNotNull(entity.getFadeStart());
             assertNotNull(entity.getFadeType());
-            //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+            assertNotNull(entity.getMediaItem());
             assertNotNull(entity.getVolumeLevel());
 
             assertNotNull(entity.getNetwork());

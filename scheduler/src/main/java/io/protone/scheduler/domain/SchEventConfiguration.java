@@ -41,10 +41,10 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
     @PodamExclude
     private CorDictionary eventCategory;
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "schEvent")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private Set<SchEmissionConfiguration> emissions = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
@@ -101,25 +101,25 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public Set<SchEmission> getEmissions() {
+    public Set<SchEmissionConfiguration> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
+    public void setEmissions(Set<SchEmissionConfiguration> emissions) {
         this.emissions = emissions;
     }
 
-    public SchEventConfiguration emissions(Set<SchEmission> emissions) {
+    public SchEventConfiguration emissions(Set<SchEmissionConfiguration> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchEventConfiguration addEmission(SchEmission emission) {
+    public SchEventConfiguration addEmission(SchEmissionConfiguration emission) {
         this.emissions.add(emission);
         return this;
     }
 
-    public SchEventConfiguration removeEmission(SchEmission emission) {
+    public SchEventConfiguration removeEmission(SchEmissionConfiguration emission) {
         this.emissions.remove(emission);
         return this;
     }

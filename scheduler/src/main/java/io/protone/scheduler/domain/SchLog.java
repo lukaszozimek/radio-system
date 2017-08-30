@@ -59,6 +59,11 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
         return date;
     }
 
+    public SchLog date(LocalDate date) {
+        this.date = date;
+        return this;
+    }
+
     public void setDate(LocalDate date) {
         this.date = date;
     }

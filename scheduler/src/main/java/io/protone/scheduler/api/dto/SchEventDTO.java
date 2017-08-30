@@ -1,14 +1,13 @@
 package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * SchEventDTO
@@ -17,7 +16,7 @@ import java.util.Objects;
 
 public class SchEventDTO {
     @JsonProperty("emissions")
-    private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
+    private List<SchEmissionConfigurationDTO> emissions = new ArrayList<SchEmissionConfigurationDTO>();
 
     @JsonProperty("id")
     private Long id = null;
@@ -33,12 +32,16 @@ public class SchEventDTO {
     @JsonProperty("timeParams")
     private SchTimeParamsDTO timeParams = null;
 
-    public SchEventDTO emissions(List<SchEmissionDTO> emissions) {
+    private Set<SchEventDTO> blocks = new HashSet<>();
+
+    private CorDictionaryDTO eventCategory;
+
+    public SchEventDTO emissions(List<SchEmissionConfigurationDTO> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchEventDTO addEmissionsItem(SchEmissionDTO emissionsItem) {
+    public SchEventDTO addEmissionsItem(SchEmissionConfigurationDTO emissionsItem) {
         this.emissions.add(emissionsItem);
         return this;
     }
@@ -49,11 +52,11 @@ public class SchEventDTO {
      * @return emissions
      **/
     @ApiModelProperty(value = "")
-    public List<SchEmissionDTO> getEmissions() {
+    public List<SchEmissionConfigurationDTO> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(List<SchEmissionDTO> emissions) {
+    public void setEmissions(List<SchEmissionConfigurationDTO> emissions) {
         this.emissions = emissions;
     }
 
@@ -153,12 +156,30 @@ public class SchEventDTO {
     public void setTimeParams(SchTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
+
     public String getShortName() {
         return shortName;
     }
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    public Set<SchEventDTO> getBlocks() {
+        return blocks;
+    }
+
+    public void setBlocks(Set<SchEventDTO> events) {
+        this.blocks = events;
+    }
+
+    public void setEventCategory(CorDictionaryDTO eventCategory) {
+        this.eventCategory = eventCategory;
+
+    }
+
+    public CorDictionaryDTO getEventCategory() {
+        return eventCategory;
     }
 
     @Override
@@ -208,6 +229,7 @@ public class SchEventDTO {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
 
 }
 

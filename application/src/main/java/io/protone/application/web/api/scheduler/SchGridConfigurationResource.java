@@ -20,14 +20,14 @@ import java.util.List;
  */
 
 @Api(value = "protone", description = "Protone backend API documentation")
-public interface SchGridResource {
+public interface SchGridConfigurationResource {
     @ApiOperation(value = "getSchedulerGridForChannel", notes = "", response = SchGridDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchGridDTO.class),
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/{shortName}",
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchGridDTO> getSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -41,7 +41,7 @@ public interface SchGridResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -56,7 +56,7 @@ public interface SchGridResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -72,7 +72,7 @@ public interface SchGridResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/{shortName}",
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerGridForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -86,7 +86,7 @@ public interface SchGridResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchGridDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchGridDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchGridDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid",
+    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)

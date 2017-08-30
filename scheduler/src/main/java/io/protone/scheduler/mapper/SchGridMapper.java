@@ -3,42 +3,39 @@ package io.protone.scheduler.mapper;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchGridDTO;
-import io.protone.scheduler.api.dto.thin.SchClockThinDTO;
 import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
-import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchGrid;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchScheduleMapper.class,})
-public interface SchGridMapper extends SchEntityMapper<SchGridDTO, SchGrid> {
-    List<SchGridThinDTO> DBs2ThinDTOs(List<SchGrid> schClockList);
+@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class,})
+public interface SchGridMapper {
+     SchGrid DTO2DB(SchGridDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-    default SchGrid fromId(Long id) {
-        if (id == null) {
+     SchGridDTO DB2DTO(SchGrid entity);
+
+     List<SchGridDTO> DBs2DTOs(List<SchGrid> entityList);
+
+    default List<SchGrid> DTOs2DBs(List<SchGridDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+        List<SchGrid> eList = new ArrayList<>();
+        if (dList.isEmpty() || dList == null) {
             return null;
         }
-        SchGrid grid = new SchGrid();
-        grid.setId(id);
-        return grid;
+        for (SchGridDTO dto : dList) {
+            eList.add(DTO2DB(dto, network, corChannel));
+        }
+        return eList;
     }
+    List<SchGridThinDTO> DBs2ThinDTOs(List<SchGrid> schClockList);
 
-    default Map<String, SchClockThinDTO> map(Set<SchClock> value) {
-        return null;
-    }
-
-    default Set<SchClock> map(Map<String, SchClockThinDTO> value) {
-        return null;
-    }
 
     @AfterMapping
     default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity, @Context CorNetwork network, @Context CorChannel corChannel) {

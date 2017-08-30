@@ -60,7 +60,7 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
     @OneToMany(mappedBy = "clock")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private Set<SchEmissionConfiguration> emissions = new HashSet<>();
 
     @ManyToOne
     private CorNetwork network;
@@ -166,25 +166,25 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public Set<SchEmission> getEmissions() {
+    public Set<SchEmissionConfiguration> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
+    public void setEmissions(Set<SchEmissionConfiguration> emissions) {
         this.emissions = emissions;
     }
 
-    public SchClockConfiguration emissions(Set<SchEmission> emissions) {
+    public SchClockConfiguration emissions(Set<SchEmissionConfiguration> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchClockConfiguration addEmission(SchEmission emission) {
+    public SchClockConfiguration addEmission(SchEmissionConfiguration emission) {
         this.emissions.add(emission);
         return this;
     }
 
-    public SchClockConfiguration removeEmission(SchEmission emission) {
+    public SchClockConfiguration removeEmission(SchEmissionConfiguration emission) {
         this.emissions.remove(emission);
         return this;
     }

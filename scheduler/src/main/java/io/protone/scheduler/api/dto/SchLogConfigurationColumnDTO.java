@@ -1,5 +1,7 @@
 package io.protone.scheduler.api.dto;
 
+import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
+
 /**
  * SchGridDTO
  */
@@ -9,7 +11,7 @@ public class SchLogConfigurationColumnDTO {
 
     private Long id;
 
-    private String name;
+    private LogColumnTypEnum name;
 
     private Integer lenght;
 
@@ -25,11 +27,11 @@ public class SchLogConfigurationColumnDTO {
         this.id = id;
     }
 
-    public String getName() {
+    public LogColumnTypEnum getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(LogColumnTypEnum name) {
         this.name = name;
     }
 

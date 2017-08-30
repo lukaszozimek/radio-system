@@ -4,17 +4,18 @@ package io.protone.application.web.api.scheduler;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
-import io.protone.application.web.api.scheduler.impl.SchClockResourceImpl;
+import io.protone.application.web.api.scheduler.impl.SchClockConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
-import io.protone.scheduler.api.dto.SchClockDTO;
+import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
 import io.protone.scheduler.domain.SchClock;
-import io.protone.scheduler.mapper.SchClockMapper;
-import io.protone.scheduler.repository.SchClockRepository;
-import io.protone.scheduler.service.SchClockService;
+import io.protone.scheduler.domain.SchClockConfiguration;
+import io.protone.scheduler.mapper.SchClockConfigurationMapper;
+import io.protone.scheduler.repository.SchClockConfigurationRepository;
+import io.protone.scheduler.service.SchClockConfigurationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class SchClockResourceImplTest {
+public class SchClockConfigurationResourceImplTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -52,14 +53,14 @@ public class SchClockResourceImplTest {
     private static final String DEFAULT_SHORTNAME = "AAAAAAAAAA";
     private static final String UPDATED_SHORTNAME = "BBBBBBBBBB";
     @Autowired
-    private SchClockRepository schClockRepository;
+    private SchClockConfigurationRepository schClockConfigurationRepository;
 
 
     @Autowired
-    private SchClockService schClockService;
+    private SchClockConfigurationService schClockConfigurationService;
 
     @Autowired
-    private SchClockMapper schClockMapper;
+    private SchClockConfigurationMapper clockConfigurationMapper;
 
     @Autowired
     private CorChannelService corChannelService;
@@ -81,7 +82,7 @@ public class SchClockResourceImplTest {
 
     private MockMvc restSchClockMockMvc;
 
-    private SchClock traPlaylist;
+    private SchClockConfiguration clockConfiguration;
 
     private CorNetwork corNetwork;
 
@@ -93,19 +94,19 @@ public class SchClockResourceImplTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static SchClock createEntity(EntityManager em) {
-        SchClock traPlaylist = new SchClock()
+    public static SchClockConfiguration createEntity(EntityManager em) {
+        SchClockConfiguration schClockConfiguration = new SchClockConfiguration()
                 .name(DEFAULT_NAME)
                 .shortName(DEFAULT_SHORTNAME);
-        return traPlaylist;
+        return schClockConfiguration;
     }
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        SchClockResourceImpl traPlaylistResource = new SchClockResourceImpl();
-        ReflectionTestUtils.setField(traPlaylistResource, "schClockService", schClockService);
-        ReflectionTestUtils.setField(traPlaylistResource, "schClockMapper", schClockMapper);
+        SchClockConfigurationResourceImpl traPlaylistResource = new SchClockConfigurationResourceImpl();
+        ReflectionTestUtils.setField(traPlaylistResource, "schClockConfigurationService", schClockConfigurationService);
+        ReflectionTestUtils.setField(traPlaylistResource, "clockConfigurationMapper", clockConfigurationMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
@@ -122,62 +123,62 @@ public class SchClockResourceImplTest {
         corNetwork.setId(1L);
         corChannel = new CorChannel().shortcut("tes");
         corChannel.setId(1L);
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        clockConfiguration = createEntity(em).network(corNetwork).channel(corChannel);
     }
 
     @Test
     @Transactional
-    public void createSchClock() throws Exception {
-        int databaseSizeBeforeCreate = schClockRepository.findAll().size();
+    public void createSchClockConfiguration() throws Exception {
+        int databaseSizeBeforeCreate = schClockConfigurationRepository.findAll().size();
 
         // Create the SchClock
-        SchClockDTO traPlaylistDTO = schClockMapper.DB2DTO(traPlaylist);
+        SchClockConfigurationDTO schClockConfigurationDTO = clockConfigurationMapper.DB2DTO(clockConfiguration);
 
-        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schClockConfigurationDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the SchClock in the database
-        List<SchClock> traPlaylistList = schClockRepository.findAll();
+        List<SchClockConfiguration> traPlaylistList = schClockConfigurationRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate + 1);
-        SchClock testSchClock = traPlaylistList.get(traPlaylistList.size() - 1);
+        SchClockConfiguration testSchClock = traPlaylistList.get(traPlaylistList.size() - 1);
         assertThat(testSchClock.getName()).isEqualTo(DEFAULT_NAME);
     }
 
 
     @Test
     @Transactional
-    public void createSchClockWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = schClockRepository.findAll().size();
+    public void createSchClockConfigurationWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = schClockConfigurationRepository.findAll().size();
 
         // Create the SchClock with an existing ID
-        SchClock existingSchClock = new SchClock();
+        SchClockConfiguration existingSchClock = new SchClockConfiguration();
         existingSchClock.setId(1L);
-        SchClockDTO existingSchClockDTO = schClockMapper.DB2DTO(existingSchClock);
+        SchClockConfigurationDTO existingSchClockConfigurationDTO = clockConfigurationMapper.DB2DTO(existingSchClock);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(existingSchClockDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(existingSchClockConfigurationDTO)))
                 .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<SchClock> traPlaylistList = schClockRepository.findAll();
+        List<SchClockConfiguration> traPlaylistList = schClockConfigurationRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
     @Transactional
-    public void getAllSchClocks() throws Exception {
+    public void getAllSchClockConfiguration() throws Exception {
         // Initialize the database
-        schClockRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(traPlaylist.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(clockConfiguration.getId().intValue())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORTNAME.toString())));
 
@@ -185,87 +186,87 @@ public class SchClockResourceImplTest {
 
     @Test
     @Transactional
-    public void getSchClock() throws Exception {
+    public void getSchClockConfiguration() throws Exception {
         // Initialize the database
-        schClockRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
 
-        // Get the traPlaylist
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
+        // Get the clockConfiguration
+        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id").value(traPlaylist.getId().intValue()))
+                .andExpect(jsonPath("$.id").value(clockConfiguration.getId().intValue()))
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
                 .andExpect(jsonPath("$.shortName").value(DEFAULT_SHORTNAME.toString()));
     }
 
     @Test
     @Transactional
-    public void getNonExistingSchClock() throws Exception {
-        // Get the traPlaylist
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
+    public void getNonExistingSchClockConfiguration() throws Exception {
+        // Get the clockConfiguration
+        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
 
     }
 
     @Test
     @Transactional
-    public void updateSchClock() throws Exception {
+    public void updateSchClockConfiguration() throws Exception {
         // Initialize the database
-        schClockRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeUpdate = schClockRepository.findAll().size();
+        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeUpdate = schClockConfigurationRepository.findAll().size();
 
-        // Update the traPlaylist
-        SchClock updatedSchClock = schClockRepository.findOne(traPlaylist.getId());
+        // Update the clockConfiguration
+        SchClockConfiguration updatedSchClock = schClockConfigurationRepository.findOne(clockConfiguration.getId());
         updatedSchClock
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
-        SchClockDTO traPlaylistDTO = schClockMapper.DB2DTO(updatedSchClock);
+        SchClockConfigurationDTO schClockConfigurationDTO = clockConfigurationMapper.DB2DTO(updatedSchClock);
 
-        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/configuration/clock", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schClockConfigurationDTO)))
                 .andExpect(status().isOk());
 
         // Validate the SchClock in the database
-        List<SchClock> traPlaylistList = schClockRepository.findAll();
+        List<SchClockConfiguration> traPlaylistList = schClockConfigurationRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeUpdate);
-        SchClock testSchClock = traPlaylistList.get(traPlaylistList.size() - 1);
+        SchClockConfiguration testSchClock = traPlaylistList.get(traPlaylistList.size() - 1);
         assertThat(testSchClock.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testSchClock.getShortName()).isEqualTo(UPDATED_SHORTNAME);
     }
 
     @Test
     @Transactional
-    public void updateNonExistingSchClock() throws Exception {
-        int databaseSizeBeforeUpdate = schClockRepository.findAll().size();
+    public void updateNonExistingSchClockConfiguration() throws Exception {
+        int databaseSizeBeforeUpdate = schClockConfigurationRepository.findAll().size();
 
         // Create the SchClock
-        SchClockDTO traPlaylistDTO = schClockMapper.DB2DTO(traPlaylist);
+        SchClockConfigurationDTO schClockConfigurationDTO = clockConfigurationMapper.DB2DTO(clockConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/configuration/clock", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schClockConfigurationDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the SchClock in the database
-        List<SchClock> traPlaylistList = schClockRepository.findAll();
+        List<SchClockConfiguration> traPlaylistList = schClockConfigurationRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test
     @Transactional
-    public void deleteSchClock() throws Exception {
+    public void deleteSchClockConfiguration() throws Exception {
         // Initialize the database
-        schClockRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeDelete = schClockRepository.findAll().size();
+        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeDelete = schClockConfigurationRepository.findAll().size();
 
-        // Get the traPlaylist
-        restSchClockMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
+        // Get the clockConfiguration
+        restSchClockMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<SchClock> traPlaylistList = schClockRepository.findAll();
+        List<SchClockConfiguration> traPlaylistList = schClockConfigurationRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeDelete - 1);
     }
 

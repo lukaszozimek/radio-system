@@ -2,7 +2,6 @@ package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
-import io.protone.scheduler.api.dto.thin.SchClockThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -21,7 +20,7 @@ public class SchGridDTO {
 
     @PodamExclude
     @JsonProperty("clocks")
-    private List<SchClockThinDTO> clocks = new ArrayList<SchClockThinDTO>();
+    private List<SchClockConfigurationDTO> clocks = new ArrayList<SchClockConfigurationDTO>();
 
     @JsonProperty("dayOfWeek")
     private CorDayOfWeekEnum dayOfWeek = null;
@@ -35,19 +34,31 @@ public class SchGridDTO {
     @JsonProperty("shortName")
     private String shortName = null;
 
-    public SchGridDTO clocks(List<SchClockThinDTO> clocks) {
+
+    @JsonProperty("default")
+    private Boolean defaultGrid = null;
+
+    public SchGridDTO clocks(List<SchClockConfigurationDTO> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGridDTO addClock(SchClockThinDTO clock) {
+    public SchGridDTO addClock(SchClockConfigurationDTO clock) {
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGridDTO removeClock(SchClockThinDTO clock) {
+    public SchGridDTO removeClock(SchClockConfigurationDTO clock) {
         this.clocks.remove(clock);
         return this;
+    }
+
+    public Boolean getDefaultGrid() {
+        return defaultGrid;
+    }
+
+    public void setDefaultGrid(Boolean defaultGrid) {
+        this.defaultGrid = defaultGrid;
     }
 
     /**
@@ -56,11 +67,11 @@ public class SchGridDTO {
      * @return clocks
      **/
     @ApiModelProperty(value = "")
-    public List<SchClockThinDTO> getClocks() {
+    public List<SchClockConfigurationDTO> getClocks() {
         return clocks;
     }
 
-    public void setClocks(List<SchClockThinDTO> clocks) {
+    public void setClocks(List<SchClockConfigurationDTO> clocks) {
         this.clocks = clocks;
     }
 
@@ -165,20 +176,6 @@ public class SchGridDTO {
         return Objects.hash(clocks, dayOfWeek, id, name, shortName);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SchGridDTO {\n");
-
-        sb.append("    clocks: ").append(toIndentedString(clocks)).append("\n");
-        sb.append("    dayOfWeek: ").append(toIndentedString(dayOfWeek)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -190,5 +187,16 @@ public class SchGridDTO {
         return o.toString().replace("\n", "\n    ");
     }
 
+    @Override
+    public String toString() {
+        return "SchGridDTO{" +
+                "clocks=" + clocks +
+                ", dayOfWeek=" + dayOfWeek +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", deafualtValue=" + defaultGrid +
+                '}';
+    }
 }
 

@@ -1,8 +1,8 @@
 package io.protone.application.web.api.scheduler;
 
 
-import io.protone.scheduler.api.dto.SchScheduleDTO;
-import io.protone.scheduler.api.dto.thin.SchScheduleThinDTO;
+import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
+import io.protone.scheduler.api.dto.thin.SchLogConfigurationThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -23,34 +22,34 @@ import java.util.List;
 @Api(value = "protone", description = "Protone backend API documentation")
 public interface SchLogConfigurationResource {
 
-    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getAllSchedulerPlaylistForChannel", notes = "", response = SchLogConfigurationThinDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
-            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchLogConfigurationThinDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationThinDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationThinDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationThinDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
+    ResponseEntity<List<SchLogConfigurationThinDTO>> getAllLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
-    @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "createSchedulerForChannelPlaylist", notes = "", response = SchLogConfigurationDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
-            @ApiResponse(code = 201, message = "Created", response = SchScheduleDTO.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
-            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SchScheduleDTO> creatSchedulerScheduleForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException;
+    ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException;
 
     @ApiOperation(value = "deleteSchedulerPlaylistForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -62,38 +61,38 @@ public interface SchLogConfigurationResource {
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                      @ApiParam(value = "id", required = true) @PathVariable("id") LocalDate date);
+    ResponseEntity<Void> deleteLogsConfigurationsForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                       @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
 
-    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "getSchedulerPlaylistForChannel", notes = "", response = SchLogConfigurationDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
-            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "id", required = true) @PathVariable("id") LocalDate date);
+    ResponseEntity<SchLogConfigurationDTO> getLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                           @ApiParam(value = "id", required = true) @PathVariable("id") Long id);
 
-    @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiOperation(value = "updateSchedulerPlaylistForChannel", notes = "", response = SchLogConfigurationDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
-            @ApiResponse(code = 201, message = "Created", response = SchScheduleDTO.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
-            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+            @ApiResponse(code = 200, message = "OK", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
-    ResponseEntity<SchScheduleDTO> updateSchedulerScheduleForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchScheduleDTO schScheduleDTO) throws URISyntaxException;
+    ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException;
 
 
 }

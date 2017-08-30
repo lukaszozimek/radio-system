@@ -1,10 +1,18 @@
 package io.protone.application.web.rest.mapper;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
+import io.protone.scheduler.api.dto.SchQueueParamsDTO;
+import io.protone.scheduler.api.dto.SchTimeParamsDTO;
+import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.domain.SchEmission;
+import io.protone.scheduler.domain.SchQueueParams;
+import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.mapper.SchEmissionMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,10 +55,20 @@ public class SchEmissionMapperTest {
         // Fill entity instance
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmission.class);
+        emission.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
+        emission.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
+        emission.setAttachments(Sets.newHashSet(factory.manufacturePojo(SchAttachment.class)));
+        emission.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
+        emission.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
         emissions.add(emission);
 
         //Fill DTO instance
         emissionDTO = factory.manufacturePojo(SchEmissionDTO.class);
+        emissionDTO.setAttachment(Lists.newArrayList(factory.manufacturePojo(SchAttachmentDTO.class)));
+        emissionDTO.setQueueParams(factory.manufacturePojo(SchQueueParamsDTO.class));
+        emissionDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
+
+
         emissionDTOs.add(emissionDTO);
     }
 
@@ -62,7 +80,7 @@ public class SchEmissionMapperTest {
         assertNotNull(dto.getSeq());
         assertNotNull(dto.getTimeParams());
         assertNotNull(dto.getQueueParams());
-        //TODO: Consider assertions for attachments
+        assertNotNull(dto.getAttachment());
     }
 
     @Test
@@ -76,7 +94,7 @@ public class SchEmissionMapperTest {
             assertNotNull(dto.getSeq());
             assertNotNull(dto.getTimeParams());
             assertNotNull(dto.getQueueParams());
-            //TODO: Consider assertions for attachments
+            assertNotNull(dto.getAttachment());
         });
     }
 
@@ -91,7 +109,7 @@ public class SchEmissionMapperTest {
 
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
-        //TODO: Consider assertions for attachments
+        assertNotNull(entity.getAttachments());
     }
 
     @Test
@@ -108,7 +126,7 @@ public class SchEmissionMapperTest {
 
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
-            //TODO: Consider assertions for attachments
+            assertNotNull(entity.getAttachments());
         });
     }
 }

@@ -1,11 +1,15 @@
 package io.protone.application.web.rest.mapper;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
+import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +42,7 @@ public class SchGridMapperTest {
     private List<SchGrid> grids = new ArrayList<>();
 
     private List<SchGridDTO> gridDTOs = new ArrayList<>();
+
     private CorNetwork network;
     private CorChannel corChannel;
 
@@ -47,17 +52,21 @@ public class SchGridMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         grid = factory.manufacturePojo(SchGrid.class);
+        grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchClockConfiguration.class)));
         grids.add(grid);
         gridDTO = factory.manufacturePojo(SchGridDTO.class);
+        gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchClockConfigurationDTO.class)));
         gridDTOs.add(gridDTO);
     }
 
     @Test
     public void toDTO() throws Exception {
         SchGridDTO dto = gridMapper.DB2DTO(grid);
-        assertEquals(dto.getClocks().size(), 3);
         assertNotNull(dto.getName());
         assertNotNull(dto.getDayOfWeek());
+        assertNotNull(dto.getShortName());
+        assertNotNull(dto.getDefaultGrid());
+        assertNotNull(dto.getClocks());
         assertNotNull(dto.getShortName());
     }
 
@@ -68,10 +77,12 @@ public class SchGridMapperTest {
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-            assertEquals(dto.getClocks().size(), 3);
             assertNotNull(dto.getName());
+            assertNotNull(dto.getDefaultGrid());
+            assertNotNull(dto.getShortName());
             assertNotNull(dto.getDayOfWeek());
             assertNotNull(dto.getShortName());
+            assertNotNull(dto.getClocks());
         });
     }
 
@@ -79,11 +90,11 @@ public class SchGridMapperTest {
     public void DTO2DB() throws Exception {
         SchGrid entity = gridMapper.DTO2DB(gridDTO, network, corChannel);
 
-        assertEquals(entity.getClocks().size(), 3);
+        assertNotNull(entity.getClocks());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDayOfWeek());
         assertNotNull(entity.getShortName());
-
+        assertNotNull(entity.getClocks());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
@@ -95,11 +106,10 @@ public class SchGridMapperTest {
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
-            assertEquals(entity.getClocks().size(), 3);
             assertNotNull(entity.getName());
             assertNotNull(entity.getDayOfWeek());
             assertNotNull(entity.getShortName());
-
+            assertNotNull(entity.getClocks());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

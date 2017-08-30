@@ -4,7 +4,7 @@ package io.protone.application.web.api.scheduler;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
-import io.protone.application.web.api.scheduler.impl.SchGridResourceImpl;
+import io.protone.application.web.api.scheduler.impl.SchGridConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -104,7 +104,7 @@ public class SchGridResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        SchGridResourceImpl traPlaylistResource = new SchGridResourceImpl();
+        SchGridConfigurationResourceImpl traPlaylistResource = new SchGridConfigurationResourceImpl();
         ReflectionTestUtils.setField(traPlaylistResource, "schGridService", schGridService);
         ReflectionTestUtils.setField(traPlaylistResource, "schGridMapper", schGridMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);

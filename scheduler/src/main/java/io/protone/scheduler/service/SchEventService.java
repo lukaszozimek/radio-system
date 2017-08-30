@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 
 @Service
@@ -19,11 +22,11 @@ public class SchEventService {
     private SchEventRepository schEventRepository;
 
     @Inject
-    private SchEmissionService schEmissionService;
+    private SchEmissionConfigurationService schEmissionConfigurationService;
 
     @Transactional
     public SchEvent saveEvent(SchEvent schEvent) {
-        schEvent.emissions(schEmissionService.saveEmission(schEvent.getEmissions()));
+        schEvent.emissions(schEmissionConfigurationService.saveEmission(schEvent.getEmissions()));
         return schEventRepository.saveAndFlush(schEvent);
     }
 
@@ -42,4 +45,13 @@ public class SchEventService {
         schEventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
     }
 
+    public Set<SchEvent> saveEvent(Set<SchEvent> events) {
+        return events.stream().map(event -> {
+            if (!event.getBlocks().isEmpty()) {
+                this.saveEvent(event.getBlocks());
+            }
+            event.emissions(schEmissionConfigurationService.saveEmission(event.getEmissions()));
+            return schEventRepository.saveAndFlush(event);
+        }).collect(toSet());
+    }
 }

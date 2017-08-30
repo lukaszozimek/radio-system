@@ -1,6 +1,5 @@
 package io.protone.scheduler.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.scheduler.domain.enumeration.ObjectTypeEnum;
 
 import javax.persistence.Column;
@@ -18,6 +17,9 @@ public class SchQueueParams implements Serializable {
 
     @Column(name = "previous_id")
     private Long previousId;
+
+    @Column(name = "sequence")
+    private Long seq;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "previous_type")
@@ -93,5 +95,13 @@ public class SchQueueParams implements Serializable {
                 ", nextId='" + getNextId() + "'" +
                 ", nextType='" + getNextType() + "'" +
                 "}";
+    }
+
+    public Long getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Long seq) {
+        this.seq = seq;
     }
 }

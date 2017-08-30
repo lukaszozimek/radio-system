@@ -1,7 +1,7 @@
 package io.protone.application.web.api.scheduler.impl;
 
 
-import io.protone.application.web.api.scheduler.SchGridResource;
+import io.protone.application.web.api.scheduler.SchGridConfigurationResource;
 import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorChannel;
@@ -35,8 +35,8 @@ import java.util.Optional;
  * Created by lukaszozimek on 14.05.2017.
  */
 @RestController
-public class SchGridResourceImpl implements SchGridResource {
-    private final Logger log = LoggerFactory.getLogger(SchGridResourceImpl.class);
+public class SchGridConfigurationResourceImpl implements SchGridConfigurationResource {
+    private final Logger log = LoggerFactory.getLogger(SchGridConfigurationResourceImpl.class);
 
     @Inject
     private SchGridService schGridService;

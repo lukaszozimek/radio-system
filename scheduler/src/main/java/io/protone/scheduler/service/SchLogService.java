@@ -1,5 +1,7 @@
 package io.protone.scheduler.service;
 
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.service.LibFileItemService;
@@ -47,16 +49,16 @@ public class SchLogService {
 
 
     @Transactional
-    public List<SchLog> saveEvent(MultipartFile[] multipartFile, String networkShortcut, String channelShortcut) {
+    public List<SchLog> saveSchLog(MultipartFile[] multipartFile, CorNetwork networkShortcut, CorChannel channelShortcut) {
 
         if (multipartFile != null) {
             return Arrays.asList(multipartFile).stream().map(multipartFile1 -> {
 
-                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneByrNetworkAndChannelAndExtension(networkShortcut, channelShortcut, multipartFile1.getOriginalFilename().split("\\.")[0]);
+                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1.getOriginalFilename().split("\\.")[0]);
                 if (schLogConfiguration != null) {
                     SchLog logtoSave = new SchLog();
-                    logtoSave.network(corNetworkService.findNetwork(networkShortcut));
-                    logtoSave.channel(corChannelService.findChannel(networkShortcut, channelShortcut));
+                    logtoSave.network(networkShortcut);
+                    logtoSave.channel(channelShortcut);
                     logtoSave.setSchLogConfiguration(schLogConfiguration);
                     Pattern pattern = Pattern.compile(schLogConfiguration.getPattern());
                     Matcher matcher = pattern.matcher(multipartFile1.getOriginalFilename());
@@ -67,7 +69,7 @@ public class SchLogService {
                     }
                     System.out.print(matcher.find());
                     try {
-                        logtoSave.setLibFileItem(libFileItemService.uploadFileItem(networkShortcut, channelShortcut, multipartFile1));
+                        logtoSave.setLibFileItem(libFileItemService.uploadFileItem(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1));
                     } catch (IOException e) {
                         log.error("There was a problem with storing Item in Storage");
                     }
@@ -94,7 +96,6 @@ public class SchLogService {
     public void deleteSchLogByNetworkAndChannelAndDateAndExtension(String networkShortcut, String channelShortcut, LocalDate date, String extension) {
         schLogRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, date, extension);
     }
-
 
 
 }

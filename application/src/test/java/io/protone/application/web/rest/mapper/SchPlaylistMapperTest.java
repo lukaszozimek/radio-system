@@ -3,7 +3,9 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
+import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.mapper.SchPlaylistMapper;
 import org.junit.Before;
@@ -46,8 +48,11 @@ public class SchPlaylistMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         playlist = factory.manufacturePojo(SchPlaylist.class);
+        playlist.addEmission(factory.manufacturePojo(SchEmission.class));
+
         playlists.add(playlist);
         playlistDTO = factory.manufacturePojo(SchPlaylistDTO.class);
+        playlistDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class));
         playlistDTOs.add(playlistDTO);
     }
 
@@ -56,7 +61,7 @@ public class SchPlaylistMapperTest {
         SchPlaylistDTO dto = playlistMapper.DB2DTO(playlist);
 
         assertNotNull(dto.getDate());
-        //assertNotNull(dto.getEmissions()); //TODO: test emission instances mapping
+        assertNotNull(dto.getEmissions());
     }
 
     @Test
@@ -67,7 +72,7 @@ public class SchPlaylistMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getDate());
-            //assertNotNull(dto.getEmissions()); //TODO: test emission instances mapping
+            assertNotNull(dto.getEmissions());
         });
     }
 
@@ -76,10 +81,9 @@ public class SchPlaylistMapperTest {
         SchPlaylist entity = playlistMapper.DTO2DB(playlistDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
-
+        assertNotNull(entity.getEmissions());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
-        //assertNotNull(entity.getEmissions()); //TODO: test emission instances mapping
     }
 
     @Test
@@ -90,10 +94,9 @@ public class SchPlaylistMapperTest {
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getDate());
-
+            assertNotNull(entity.getEmissions());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
-            //assertNotNull(entity.getEmissions()); //TODO: test emission instances mapping
         });
     }
 

@@ -45,10 +45,10 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClockConfiguration clockConfiguration;
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "schEvent")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private Set<SchEmissionConfiguration> emissions = new HashSet<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "event")
@@ -115,25 +115,25 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public Set<SchEmission> getEmissions() {
+    public Set<SchEmissionConfiguration> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
+    public void setEmissions(Set<SchEmissionConfiguration> emissions) {
         this.emissions = emissions;
     }
 
-    public SchEvent emissions(Set<SchEmission> emissions) {
+    public SchEvent emissions(Set<SchEmissionConfiguration> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchEvent addEmission(SchEmission emission) {
+    public SchEvent addEmission(SchEmissionConfiguration emission) {
         this.emissions.add(emission);
         return this;
     }
 
-    public SchEvent removeEmission(SchEmission emission) {
+    public SchEvent removeEmission(SchEmissionConfiguration emission) {
         this.emissions.remove(emission);
         return this;
     }

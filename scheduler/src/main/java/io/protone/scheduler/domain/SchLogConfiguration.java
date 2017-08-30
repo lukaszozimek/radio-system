@@ -78,12 +78,23 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
         this.name = name;
     }
 
+    public SchLogConfiguration name(String name) {
+        this.name = name;
+        return this;
+    }
+
+
     public String getPattern() {
         return pattern;
     }
 
     public void setPattern(String pattern) {
         this.pattern = pattern;
+    }
+
+    public SchLogConfiguration pattern(String pattern) {
+        this.pattern = pattern;
+        return this;
     }
 
     public void setNetwork(CorNetwork network) {

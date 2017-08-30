@@ -13,7 +13,8 @@ public class SchLogConfigurationDTO {
 
     private String extension;
 
-    private List<SchLogConfigurationColumnDTO> columnDTOList;
+
+    private List<SchLogConfigurationColumnDTO> logColumns;
 
     public Long getId() {
         return id;
@@ -47,14 +48,14 @@ public class SchLogConfigurationDTO {
         this.extension = extension;
     }
 
-    public List<SchLogConfigurationColumnDTO> getColumnDTOList() {
-        return columnDTOList;
+
+    public List<SchLogConfigurationColumnDTO> getLogColumns() {
+        return logColumns;
     }
 
-    public void setColumnDTOList(List<SchLogConfigurationColumnDTO> columnDTOList) {
-        this.columnDTOList = columnDTOList;
+    public void setLogColumns(List<SchLogConfigurationColumnDTO> logColumns) {
+        this.logColumns = logColumns;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,7 +67,7 @@ public class SchLogConfigurationDTO {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pattern != null ? !pattern.equals(that.pattern) : that.pattern != null) return false;
         if (extension != null ? !extension.equals(that.extension) : that.extension != null) return false;
-        return columnDTOList != null ? columnDTOList.equals(that.columnDTOList) : that.columnDTOList == null;
+        return logColumns != null ? logColumns.equals(that.logColumns) : that.logColumns == null;
     }
 
     @Override
@@ -75,7 +76,7 @@ public class SchLogConfigurationDTO {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (pattern != null ? pattern.hashCode() : 0);
         result = 31 * result + (extension != null ? extension.hashCode() : 0);
-        result = 31 * result + (columnDTOList != null ? columnDTOList.hashCode() : 0);
+        result = 31 * result + (logColumns != null ? logColumns.hashCode() : 0);
         return result;
     }
 
@@ -86,8 +87,9 @@ public class SchLogConfigurationDTO {
                 ", name='" + name + '\'' +
                 ", pattern='" + pattern + '\'' +
                 ", extension='" + extension + '\'' +
-                ", columnDTOList=" + columnDTOList +
+                ", columnDTOList=" + logColumns +
                 '}';
     }
+
 }
 

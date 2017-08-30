@@ -37,6 +37,9 @@
            <column name="grid_category_id" type="bigint">
                <constraints nullable="false"/>
            </column>
+            <column name="sequence" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
