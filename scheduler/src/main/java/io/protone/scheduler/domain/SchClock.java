@@ -64,6 +64,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     private Set<SchEmission> emissions = new HashSet<>();
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
 

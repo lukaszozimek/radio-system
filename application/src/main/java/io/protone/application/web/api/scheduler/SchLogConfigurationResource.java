@@ -28,7 +28,7 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationThinDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<SchLogConfigurationThinDTO>> getAllLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -43,7 +43,7 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
@@ -58,7 +58,7 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLogsConfigurationsForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -72,7 +72,7 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<SchLogConfigurationDTO> getLogsConfigurationsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -86,7 +86,7 @@ public interface SchLogConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)

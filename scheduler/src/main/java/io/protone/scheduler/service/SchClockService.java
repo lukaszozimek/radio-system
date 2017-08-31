@@ -1,5 +1,6 @@
 package io.protone.scheduler.service;
 
+import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.repository.SchClockRepository;
 import org.slf4j.Logger;
@@ -41,7 +42,12 @@ public class SchClockService {
 
     @Transactional
     public void deleteSchClockByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        schClockRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        SchClock schClock = schClockRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        schEmissionService.deleteEmissions(schClock.getEmissions());
+        schBlockService.deleteBlock(schClock.getBlocks());
+        schClock.setEmissions(Sets.newHashSet());
+        schClock.setBlocks(Sets.newHashSet());
+        schClockRepository.delete(schClock);
     }
 
 }

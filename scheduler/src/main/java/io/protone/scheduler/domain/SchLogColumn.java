@@ -45,6 +45,7 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
     private SchLogConfiguration schLogConfiguration;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

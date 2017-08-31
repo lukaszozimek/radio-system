@@ -40,6 +40,7 @@ public class SchSchedule extends AbstractAuditingEntity implements Serializable 
     private Set<SchClock> clocks = new HashSet<>();
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

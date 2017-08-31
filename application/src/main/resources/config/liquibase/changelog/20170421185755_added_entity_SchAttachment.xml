@@ -22,23 +22,18 @@
             <column name="attachement_type" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-
             <column name="fade_start" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
             <column name="fade_in_length" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
             <column name="volume_level" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
             <column name="fade_out_length" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
             <column name="fade_type" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
@@ -54,7 +49,6 @@
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-
             <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

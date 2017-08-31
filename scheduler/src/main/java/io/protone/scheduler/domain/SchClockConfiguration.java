@@ -63,6 +63,7 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
     private Set<SchEmissionConfiguration> emissions = new HashSet<>();
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
 

@@ -32,7 +32,6 @@ public class SchEventEmissionServiceTest extends SchedulerBaseTest {
     private SchEventEmissionRepository schEventEmissionRepository;
 
 
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -63,7 +62,7 @@ public class SchEventEmissionServiceTest extends SchedulerBaseTest {
         schEventEmission.setChannel(corChannel);
         schEventEmission = schEventEmissionRepository.saveAndFlush(schEventEmission);
         //then
-        schEventEmissionService.saveEmission(Sets.newSet(schEventEmission));
+        schEventEmissionService.deleteEmissions(Sets.newSet(schEventEmission));
         SchEventEmission fetchedEntity = schEventEmissionRepository.findOne(schEventEmission.getId());
 
         //assert

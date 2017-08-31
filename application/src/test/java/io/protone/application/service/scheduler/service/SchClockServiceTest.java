@@ -1,9 +1,13 @@
 package io.protone.application.service.scheduler.service;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.scheduler.domain.SchClock;
+import io.protone.scheduler.repository.SchAttachmentRepository;
+import io.protone.scheduler.repository.SchBlockRepository;
 import io.protone.scheduler.repository.SchClockRepository;
+import io.protone.scheduler.repository.SchEmissionRepository;
 import io.protone.scheduler.service.SchClockService;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +34,15 @@ public class SchClockServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchClockRepository schClockRepository;
+
+    @Autowired
+    private SchBlockRepository schBlockRepository;
+
+    @Autowired
+    private SchEmissionRepository schEmissionRepository;
+
+    @Autowired
+    private SchAttachmentRepository schAttachmentRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -73,6 +86,23 @@ public class SchClockServiceTest extends SchedulerBaseTest {
     }
 
     @Test
+    public void shouldSaveClockWithRecursiveStrategy() throws Exception {
+        //when
+        SchClock schClock = factory.manufacturePojo(SchClock.class);
+        schClock.setBlocks(buildNestedSetBlocks());
+        schClock.setEmissions(Sets.newHashSet(buildEmissionForWithAttachment(), buildEmissionForWithAttachment(), buildEmissionForWithAttachment()));
+        schClock.setNetwork(corNetwork);
+        schClock.setChannel(corChannel);
+        //then
+        SchClock fetchedEntity = schClockService.saveClock(schClock);
+
+        //assert
+        assertNotNull(fetchedEntity);
+        assertNotNull(fetchedEntity.getId());
+        assertEquals(schClock.getNetwork(), fetchedEntity.getNetwork());
+    }
+
+    @Test
     public void shouldDeleteClock() throws Exception {
         //when
         SchClock schClock = factory.manufacturePojo(SchClock.class);
@@ -80,29 +110,52 @@ public class SchClockServiceTest extends SchedulerBaseTest {
         schClock.setChannel(corChannel);
         schClock = schClockRepository.saveAndFlush(schClock);
         //then
-        schClockService.deleteSchClockByNetworkAndChannelAndShortName( corNetwork.getShortcut(), corChannel.getShortcut(),schClock.getShortName());
+        schClockService.deleteSchClockByNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
         SchClock fetchedEntity = schClockRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
 
         //assert
         assertNull(fetchedEntity);
     }
+
     @Test
-    public void shouldDeleteClockWithEvents() throws Exception {
-    }
-    @Test
-    public void shouldGetClock() throws Exception {
-        //when
+    public void shouldDeleteClockWithBlock() throws Exception {
         SchClock schClock = factory.manufacturePojo(SchClock.class);
+        schClock.setBlocks(buildNestedSetBlocks());
+        schClock.setEmissions(Sets.newHashSet(buildEmissionForWithAttachment(), buildEmissionForWithAttachment(), buildEmissionForWithAttachment()));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
-        schClock = schClockRepository.save(schClock);
+        SchClock fetchedEntity = schClockService.saveClock(schClock);
+        long clockNumberAfterSave = schClockRepository.count();
+        long blockNumberAfterSave = schBlockRepository.count();
+        long emissionNumberAfterSave = schEmissionRepository.count();
+        long attachmentNumberAfterSave = schAttachmentRepository.count();
+        //then
+        schClockService.deleteSchClockByNetworkAndChannelAndShortName(schClock.getNetwork().getShortcut(), schClock.getChannel().getShortcut(), schClock.getShortName());
+
+
+        assertEquals(clockNumberAfterSave - 1, schClockRepository.count());
+        assertEquals(blockNumberAfterSave - 9, schBlockRepository.count());
+        assertEquals(emissionNumberAfterSave - 9, schEmissionRepository.count());
+        assertEquals(attachmentNumberAfterSave - 9, schAttachmentRepository.count());
+
+    }
+
+    @Test
+    public void shouldGetClock() throws Exception {
+        SchClock schClock = factory.manufacturePojo(SchClock.class);
+        schClock.setBlocks(buildNestedSetBlocks());
+        schClock.setEmissions(Sets.newHashSet(buildEmissionForWithAttachment(), buildEmissionForWithAttachment(), buildEmissionForWithAttachment()));
+        schClock.setId(null);
+        schClock.setNetwork(corNetwork);
+        schClock.setChannel(corChannel);
+        SchClock saveClock = schClockService.saveClock(schClock);
 
         //then
         SchClock fetchedEntity = schClockService.findSchClockForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
 
         //assert
         assertNotNull(fetchedEntity);
-        assertEquals(schClock.getId(), fetchedEntity.getId());
+        assertEquals(saveClock.getId(), fetchedEntity.getId());
         assertEquals(schClock.getNetwork(), fetchedEntity.getNetwork());
 
     }

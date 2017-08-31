@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEmissionServiceTest  extends SchedulerBaseTest {
+public class SchEmissionServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchEmissionService schEmissionService;
@@ -37,7 +37,6 @@ public class SchEmissionServiceTest  extends SchedulerBaseTest {
         super.setUp();
 
     }
-
 
 
     @Test
@@ -57,8 +56,21 @@ public class SchEmissionServiceTest  extends SchedulerBaseTest {
 
     @Test
     public void shouldSaveSchEmissionWithAttachment() throws Exception {
+        //when
+        Set<SchEmission> schEmissions = Sets.newSet(buildEmissionForWithAttachment());
 
+        //then
+        Set<SchEmission> savedEmissions = schEmissionService.saveEmission(schEmissions);
+
+        //assert
+        //assert
+        assertNotNull(savedEmissions);
+        assertNotNull(savedEmissions.stream().findFirst().get().getId());
+        assertEquals(schEmissions.stream().findFirst().get().getNetwork(), savedEmissions.stream().findFirst().get().getNetwork());
+        assertNotNull(savedEmissions.stream().findFirst().get().getAttachments());
+        assertNotNull(savedEmissions.stream().findFirst().get().getAttachments().stream().findFirst().get().getId());
     }
+
     @Test
     public void shouldDeleteSchEmission() throws Exception {
         //when

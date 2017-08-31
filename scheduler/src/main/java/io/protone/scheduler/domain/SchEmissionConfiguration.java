@@ -38,8 +38,7 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     private SchClockConfiguration clock;
 
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private LibMediaItem mediaItem;
 
     @Embedded
@@ -59,6 +58,7 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     private SchEventConfiguration schEventConfiguration = null;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

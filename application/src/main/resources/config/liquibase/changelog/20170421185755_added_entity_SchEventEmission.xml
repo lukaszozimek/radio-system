@@ -56,15 +56,11 @@
             <column name="relative_delay" type="integer">
                 <constraints nullable="true"/>
             </column>
-
-            <column name="block_id" type="bigint">
-                <constraints nullable="true"/>
-            </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="sch_event_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>

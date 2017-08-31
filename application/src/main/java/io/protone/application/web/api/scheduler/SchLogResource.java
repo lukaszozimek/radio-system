@@ -29,7 +29,7 @@ public interface SchLogResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<SchLogThinDTO>> getAllLogsForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -45,7 +45,7 @@ public interface SchLogResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchLogDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchLogDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchLogDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
@@ -62,7 +62,7 @@ public interface SchLogResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteLogForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

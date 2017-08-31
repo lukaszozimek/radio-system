@@ -58,7 +58,6 @@
             <column name="end_time" type="timestamp">
                 <constraints nullable="true"/>
             </column>
-
             <column name="relative_delay" type="integer">
                 <constraints nullable="true"/>
             </column>

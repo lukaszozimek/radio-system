@@ -45,6 +45,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClockConfiguration clockConfiguration;
 
+    @PodamExclude
     @OneToMany(mappedBy = "schEvent")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -75,6 +76,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     private SchTimeParams timeParams;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

@@ -59,7 +59,7 @@
                 <constraints nullable="true" />
             </column>
             <column name="clock_category_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />

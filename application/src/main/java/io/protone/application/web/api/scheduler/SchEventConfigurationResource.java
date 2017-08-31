@@ -27,7 +27,7 @@ public interface SchEventConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventConfigurationThinDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventConfigurationThinDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventConfigurationThinDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<SchEventConfigurationThinDTO>> getAllSchedulerTemplatesForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -42,7 +42,7 @@ public interface SchEventConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.POST)
@@ -59,7 +59,7 @@ public interface SchEventConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerEventForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -72,7 +72,7 @@ public interface SchEventConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<SchEventConfigurationDTO> getSchedulerEventForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

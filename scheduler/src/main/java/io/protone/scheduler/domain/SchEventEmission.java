@@ -38,8 +38,7 @@ public class SchEventEmission extends AbstractAuditingEntity implements Serializ
     private SchClockConfiguration clock;
 
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private LibMediaItem mediaItem;
 
     @Embedded
@@ -59,6 +58,7 @@ public class SchEventEmission extends AbstractAuditingEntity implements Serializ
     private SchEvent schEvent = null;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

@@ -39,6 +39,7 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
     private String extension;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

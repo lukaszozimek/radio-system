@@ -57,6 +57,7 @@ public class SchGrid extends AbstractAuditingEntity implements Serializable {
     private Set<SchClockConfiguration> clocks = new HashSet<>();
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

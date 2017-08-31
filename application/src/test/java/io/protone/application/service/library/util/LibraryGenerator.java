@@ -58,6 +58,25 @@ public class LibraryGenerator {
         }
     }
 
+    private void initializeRequiredEntities() {
+        factory = new PodamFactoryImpl();
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
+    }
+
+    private void initializeLibaryEntity() {
+        libLibrary = new LibLibrary();
+        libLibrary.setId(null);
+        libLibrary.setCounter(0L);
+        libLibrary.setPrefix("v");
+        libLibrary.shortcut("100");
+        libLibrary.setName("Testowa Bliblioteka Schedulera");
+        libLibrary.setNetwork(corNetwork);
+        this.libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+    }
+
     public List<LibMediaItem> generateFullItemListWithLenghtInRange(double lenghtMin, double lenghtMax, Long librarySize) throws InterruptedException {
         List<LibMediaItem> libMediaItems = Lists.newArrayList();
         for (long i = 0; i < librarySize; i++) {
@@ -97,19 +116,5 @@ public class LibraryGenerator {
 
     }
 
-    private void initializeRequiredEntities() {
-        factory = new PodamFactoryImpl();
-        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
-        corNetwork.setId(1L);
-        corChannel = new CorChannel().shortcut("tes");
-        corChannel.setId(1L);
-    }
-
-    private void initializeLibaryEntity() {
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
-        libLibrary.setId(null);
-        libLibrary.setNetwork(corNetwork);
-        this.libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
-    }
 
 }

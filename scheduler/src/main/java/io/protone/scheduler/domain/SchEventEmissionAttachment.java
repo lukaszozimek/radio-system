@@ -52,8 +52,7 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     private FadeTypeEnum fadeType;
 
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private LibMediaItem mediaItem;
 
     @PodamExclude
@@ -61,6 +60,7 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     private SchEventEmission emission;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

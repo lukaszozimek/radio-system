@@ -34,7 +34,8 @@ public class SchEmissionService {
     public void deleteEmissions(Set<SchEmission> emissionSet) {
         emissionSet.stream().forEach(schEmission -> {
             schAttachmentService.deleteAttachments(schEmission.getAttachments());
-             schEmissionRepository.saveAndFlush(schEmission);
+            schEmissionRepository.saveAndFlush(schEmission.clock(null).block(null));
+            schEmissionRepository.delete(schEmission);
         });
     }
 }

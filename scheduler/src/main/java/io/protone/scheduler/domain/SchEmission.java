@@ -62,6 +62,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     private SchBlock block = null;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

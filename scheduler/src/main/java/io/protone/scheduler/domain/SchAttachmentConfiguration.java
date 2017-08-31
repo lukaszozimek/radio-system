@@ -52,8 +52,7 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
     private FadeTypeEnum fadeType;
 
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private LibMediaItem mediaItem;
 
     @PodamExclude
@@ -61,6 +60,7 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
     private SchEmissionConfiguration emission;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

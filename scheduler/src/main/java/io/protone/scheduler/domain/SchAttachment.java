@@ -60,6 +60,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     private SchEmission emission;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

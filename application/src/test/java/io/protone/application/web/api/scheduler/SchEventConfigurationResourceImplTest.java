@@ -131,11 +131,11 @@ public class SchEventConfigurationResourceImplTest {
         int databaseSizeBeforeCreate = schEventRepository.findAll().size();
 
         // Create the SchEvent
-        SchEventConfigurationDTO traPlaylistDTO = schEventConfigurationMapper.DB2DTO(schEventConfiguration);
+        SchEventConfigurationDTO schEventConfigurationDTO = schEventConfigurationMapper.DB2DTO(schEventConfiguration);
 
         restSchEventMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schEventConfigurationDTO)))
                 .andExpect(status().isCreated());
 
         // Validate the SchEvent in the database

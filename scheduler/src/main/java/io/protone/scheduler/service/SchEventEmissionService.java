@@ -40,6 +40,8 @@ public class SchEventEmissionService {
             emissionSet.stream().forEach(schEmission -> {
                 schEventEmissionAttachmentService.deleteAttachments(schEmission.getAttachments());
                 schEmissionConfigurationRepository.saveAndFlush(schEmission);
+                schEmissionConfigurationRepository.delete(schEmission);
+
             });
         }
 

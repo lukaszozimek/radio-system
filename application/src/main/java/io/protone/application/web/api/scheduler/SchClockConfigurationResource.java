@@ -30,7 +30,7 @@ public interface SchClockConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
@@ -44,7 +44,7 @@ public interface SchClockConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockConfigurationThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockConfigurationThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockConfigurationThinDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<SchClockConfigurationThinDTO>> getAllSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -58,7 +58,7 @@ public interface SchClockConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<SchClockConfigurationDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -74,7 +74,7 @@ public interface SchClockConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchClockConfigurationDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchClockConfigurationDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchClockConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.PUT)
@@ -90,7 +90,7 @@ public interface SchClockConfigurationResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/{shortName}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerClockForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,

@@ -41,6 +41,7 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
     @PodamExclude
     private CorDictionary eventCategory;
 
+    @PodamExclude
     @OneToMany(mappedBy = "schEventConfiguration")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -61,6 +62,7 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
     private SchTimeParams timeParams;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne

@@ -40,6 +40,7 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
     private LibFileItem libFileItem;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
