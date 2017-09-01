@@ -60,7 +60,7 @@ public class SchClockConfigurationResourceImplTest {
     private SchClockConfigurationService schClockConfigurationService;
 
     @Autowired
-    private SchClockConfigurationMapper clockConfigurationMapper;
+    private SchClockConfigurationMapper schClockConfigurationMapper;
 
     @Autowired
     private CorChannelService corChannelService;
@@ -106,7 +106,7 @@ public class SchClockConfigurationResourceImplTest {
         MockitoAnnotations.initMocks(this);
         SchClockConfigurationResourceImpl traPlaylistResource = new SchClockConfigurationResourceImpl();
         ReflectionTestUtils.setField(traPlaylistResource, "schClockConfigurationService", schClockConfigurationService);
-        ReflectionTestUtils.setField(traPlaylistResource, "clockConfigurationMapper", clockConfigurationMapper);
+        ReflectionTestUtils.setField(traPlaylistResource, "schClockConfigurationMapper", schClockConfigurationMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
@@ -132,7 +132,7 @@ public class SchClockConfigurationResourceImplTest {
         int databaseSizeBeforeCreate = schClockConfigurationRepository.findAll().size();
 
         // Create the SchClock
-        SchClockConfigurationDTO schClockConfigurationDTO = clockConfigurationMapper.DB2DTO(clockConfiguration);
+        SchClockConfigurationDTO schClockConfigurationDTO = schClockConfigurationMapper.DB2DTO(clockConfiguration);
 
         restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -155,7 +155,7 @@ public class SchClockConfigurationResourceImplTest {
         // Create the SchClock with an existing ID
         SchClockConfiguration existingSchClock = new SchClockConfiguration();
         existingSchClock.setId(1L);
-        SchClockConfigurationDTO existingSchClockConfigurationDTO = clockConfigurationMapper.DB2DTO(existingSchClock);
+        SchClockConfigurationDTO existingSchClockConfigurationDTO = schClockConfigurationMapper.DB2DTO(existingSchClock);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSchClockMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
@@ -219,9 +219,9 @@ public class SchClockConfigurationResourceImplTest {
         SchClockConfiguration updatedSchClock = schClockConfigurationRepository.findOne(clockConfiguration.getId());
         updatedSchClock
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
-        SchClockConfigurationDTO schClockConfigurationDTO = clockConfigurationMapper.DB2DTO(updatedSchClock);
+        SchClockConfigurationDTO schClockConfigurationDTO = schClockConfigurationMapper.DB2DTO(updatedSchClock);
 
-        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/configuration/clock", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schClockConfigurationDTO)))
                 .andExpect(status().isOk());
@@ -240,10 +240,10 @@ public class SchClockConfigurationResourceImplTest {
         int databaseSizeBeforeUpdate = schClockConfigurationRepository.findAll().size();
 
         // Create the SchClock
-        SchClockConfigurationDTO schClockConfigurationDTO = clockConfigurationMapper.DB2DTO(clockConfiguration);
+        SchClockConfigurationDTO schClockConfigurationDTO = schClockConfigurationMapper.DB2DTO(clockConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/configuration/clock", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchClockMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(schClockConfigurationDTO)))
                 .andExpect(status().isCreated());

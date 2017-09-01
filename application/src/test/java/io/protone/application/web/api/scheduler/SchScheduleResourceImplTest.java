@@ -1,7 +1,6 @@
 package io.protone.application.web.api.scheduler;
 
 
-import com.google.common.collect.Lists;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchScheduleResourceImpl;
@@ -17,7 +16,6 @@ import io.protone.scheduler.repository.SchScheduleRepository;
 import io.protone.scheduler.service.SchScheduleService;
 import io.swagger.annotations.Api;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +53,10 @@ public class SchScheduleResourceImplTest {
 
 
     @Autowired
-    private SchScheduleService traPlaylistService;
+    private SchScheduleService schScheduleService;
 
     @Autowired
-    private SchScheduleMapper traPlaylistMapper;
+    private SchScheduleMapper schScheduleMapper;
 
     @Autowired
     private CorChannelService corChannelService;
@@ -102,8 +100,8 @@ public class SchScheduleResourceImplTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         SchScheduleResourceImpl traPlaylistResource = new SchScheduleResourceImpl();
-        ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistService", traPlaylistService);
-        ReflectionTestUtils.setField(traPlaylistResource, "traPlaylistMapper", traPlaylistMapper);
+        ReflectionTestUtils.setField(traPlaylistResource, "schScheduleService", schScheduleService);
+        ReflectionTestUtils.setField(traPlaylistResource, "schScheduleMapper", schScheduleMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
         ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
 
@@ -129,7 +127,7 @@ public class SchScheduleResourceImplTest {
         int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
 
         // Create the SchSchedule
-        SchScheduleDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(traPlaylist);
 
         restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -152,7 +150,7 @@ public class SchScheduleResourceImplTest {
         // Create the SchSchedule with an existing ID
         SchSchedule existingSchSchedule = new SchSchedule();
         existingSchSchedule.setId(1L);
-        SchScheduleDTO existingSchScheduleDTO = traPlaylistMapper.DB2DTO(existingSchSchedule);
+        SchScheduleDTO existingSchScheduleDTO = schScheduleMapper.DB2DTO(existingSchSchedule);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
@@ -215,7 +213,7 @@ public class SchScheduleResourceImplTest {
         SchSchedule updatedSchSchedule = traPlaylistRepository.findOne(traPlaylist.getId());
         updatedSchSchedule
                 .date(UPDATED_PLAYLIST_DATE);
-        SchScheduleDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(updatedSchSchedule);
+        SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(updatedSchSchedule);
 
         restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -234,7 +232,7 @@ public class SchScheduleResourceImplTest {
         int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
 
         // Create the SchSchedule
-        SchScheduleDTO traPlaylistDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(traPlaylist);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSchScheduleMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
@@ -274,7 +272,7 @@ public class SchScheduleResourceImplTest {
         // set the field null
 
         // Create the TraOrder, which fails.
-        SchScheduleDTO traOrderDTO = traPlaylistMapper.DB2DTO(traPlaylist);
+        SchScheduleDTO traOrderDTO = schScheduleMapper.DB2DTO(traPlaylist);
 
         restSchScheduleMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)

@@ -1,5 +1,8 @@
 package io.protone.scheduler.api.dto;
 
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
+
+import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -13,8 +16,15 @@ public class SchLogConfigurationDTO {
 
     private String extension;
 
-
     private List<SchLogConfigurationColumnDTO> logColumns;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -56,6 +66,39 @@ public class SchLogConfigurationDTO {
     public void setLogColumns(List<SchLogConfigurationColumnDTO> logColumns) {
         this.logColumns = logColumns;
     }
+
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

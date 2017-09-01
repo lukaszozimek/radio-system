@@ -4,6 +4,8 @@ import io.protone.scheduler.domain.SchEventConfiguration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -13,5 +15,11 @@ public interface SchEventConfigurationRepository extends JpaRepository<SchEventC
 
     Slice<SchEventConfiguration> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
 
-    SchEventConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortCut, String channelShortcut, String shortName);
+    @Query("select event from SchEventConfiguration as event " +
+            "left join fetch event.network as n " +
+            "left join fetch event.channel as ch " +
+            "left join fetch event.emissions as eventE " +
+            "left join fetch eventE.attachments as emissionAttachments " +
+            "where n.shortcut = :network and event.shortName =:shortName and ch.shortcut= :channelShortcut")
+    SchEventConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("shortName") String shortName);
 }

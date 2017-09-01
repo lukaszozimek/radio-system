@@ -12,3 +12,6 @@ traCampaignStatus
 traIndustry
 traInvoiceStatus
 traOrderStatus
+clockCategory
+eventCategory
+gridCategory

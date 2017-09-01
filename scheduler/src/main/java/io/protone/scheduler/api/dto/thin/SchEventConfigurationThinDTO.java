@@ -2,11 +2,14 @@ package io.protone.scheduler.api.dto.thin;
 
 
 import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.api.dto.SchQueueParamsDTO;
+import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -30,7 +33,15 @@ public class SchEventConfigurationThinDTO implements Serializable {
 
     private SchQueueParamsDTO queueParams;
 
-    private SchQueueParamsDTO timeParams;
+    private SchTimeParamsDTO timeParams;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -93,15 +104,15 @@ public class SchEventConfigurationThinDTO implements Serializable {
         return this;
     }
 
-    public SchQueueParamsDTO getTimeParams() {
+    public SchTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchQueueParamsDTO timeParams) {
+    public void setTimeParams(SchTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEventConfigurationThinDTO timeParams(SchQueueParamsDTO timeParams) {
+    public SchEventConfigurationThinDTO timeParams(SchTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }
@@ -127,6 +138,39 @@ public class SchEventConfigurationThinDTO implements Serializable {
     public void setSchLogConfiguration(SchLogConfigurationDTO schLogConfiguration) {
         this.schLogConfiguration = schLogConfiguration;
     }
+
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
 
     @Override
     public boolean equals(Object o) {

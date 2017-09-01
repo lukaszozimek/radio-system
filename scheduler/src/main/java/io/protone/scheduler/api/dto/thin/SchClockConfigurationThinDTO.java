@@ -1,17 +1,18 @@
 package io.protone.scheduler.api.dto.thin;
 
 import io.protone.core.api.dto.CorDictionaryDTO;
-import io.protone.core.domain.AbstractAuditingEntity;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.scheduler.api.dto.SchQueueParamsDTO;
 import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
  * A Clock.
  */
-public class SchClockConfigurationThinDTO extends AbstractAuditingEntity implements Serializable {
+public class SchClockConfigurationThinDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long id;
@@ -26,6 +27,13 @@ public class SchClockConfigurationThinDTO extends AbstractAuditingEntity impleme
 
     private SchTimeParamsDTO timeParams;
 
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -95,6 +103,40 @@ public class SchClockConfigurationThinDTO extends AbstractAuditingEntity impleme
     public void setClockCategory(CorDictionaryDTO clockCategory) {
         this.clockCategory = clockCategory;
     }
+
+
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
 
     @Override
     public boolean equals(Object o) {

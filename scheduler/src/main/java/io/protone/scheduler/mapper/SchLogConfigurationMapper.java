@@ -2,6 +2,8 @@ package io.protone.scheduler.mapper;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.mapper.CorDictionaryMapper;
+import io.protone.core.mapper.CorUserMapper;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.api.dto.thin.SchLogConfigurationThinDTO;
 import io.protone.scheduler.domain.SchLogConfiguration;
@@ -16,13 +18,13 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 30/08/2017.
  */
-@Mapper(componentModel = "spring", uses = {SchLogColumnConfigurationMapper.class})
+@Mapper(componentModel = "spring", uses = {SchLogColumnConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchLogConfigurationMapper {
-     SchLogConfiguration DTO2DB(SchLogConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchLogConfiguration DTO2DB(SchLogConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-     SchLogConfigurationDTO DB2DTO(SchLogConfiguration entity);
+    SchLogConfigurationDTO DB2DTO(SchLogConfiguration entity);
 
-     List<SchLogConfigurationDTO> DBs2DTOs(List<SchLogConfiguration> entityList);
+    List<SchLogConfigurationDTO> DBs2DTOs(List<SchLogConfiguration> entityList);
 
     default List<SchLogConfiguration> DTOs2DBs(List<SchLogConfigurationDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<SchLogConfiguration> eList = new ArrayList<>();

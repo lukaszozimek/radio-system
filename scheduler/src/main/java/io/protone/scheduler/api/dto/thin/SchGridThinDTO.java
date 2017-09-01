@@ -1,11 +1,14 @@
 package io.protone.scheduler.api.dto.thin;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.core.api.dto.CorDictionaryDTO;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -13,15 +16,29 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchGridThinDTO {
-    @JsonProperty("dayOfWeek")
+public class SchGridThinDTO implements Serializable {
+
     private CorDayOfWeekEnum dayOfWeek = null;
-    @JsonProperty("id")
+
     private Long id = null;
-    @JsonProperty("name")
+
     private String name = null;
-    @JsonProperty("shortName")
+
     private String shortName = null;
+
+
+    private Boolean defaultGrid = null;
+
+
+    private CorDictionaryDTO gridCategory;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public SchGridThinDTO dayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
@@ -103,6 +120,44 @@ public class SchGridThinDTO {
         this.shortName = shortName;
     }
 
+    public CorDictionaryDTO getGridCategory() {
+        return gridCategory;
+    }
+
+    public void setGridCategory(CorDictionaryDTO gridCategory) {
+        this.gridCategory = gridCategory;
+    }
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
