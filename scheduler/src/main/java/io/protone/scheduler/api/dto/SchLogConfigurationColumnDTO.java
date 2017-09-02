@@ -91,7 +91,7 @@ public class SchLogConfigurationColumnDTO {
         return "SchLogConfigurationColumnDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", lenght=" + lenght +
+                ", length=" + lenght +
                 ", delimiter='" + delimiter + '\'' +
                 ", columnSequence=" + columnSequence +
                 '}';

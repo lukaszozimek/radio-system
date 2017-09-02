@@ -45,7 +45,7 @@ public class SchEventEmission extends AbstractAuditingEntity implements Serializ
     private SchQueueParams queueParams;
 
     @Embedded
-    private SchTimeParams timeParams;
+    private SchConfigurationTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "emission")
@@ -127,15 +127,15 @@ public class SchEventEmission extends AbstractAuditingEntity implements Serializ
         return this;
     }
 
-    public SchTimeParams getTimeParams() {
+    public SchConfigurationTimeParams getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEventEmission timeParams(SchTimeParams timeParams) {
+    public SchEventEmission timeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }

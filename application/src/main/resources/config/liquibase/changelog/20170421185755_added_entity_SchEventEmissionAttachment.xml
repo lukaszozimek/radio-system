@@ -51,6 +51,12 @@
             <column name="emission_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="length" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="relative_delay" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

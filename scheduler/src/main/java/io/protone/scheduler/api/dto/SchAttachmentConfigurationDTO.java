@@ -1,6 +1,5 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
@@ -16,26 +15,31 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchAttachmentConfigurationDTO {
-    @JsonProperty("attachmentType")
     private AttachmentTypeEnum attachmentType = null;
 
     @PodamExclude
-    @JsonProperty("mediaItem")
     private LibMediaItemThinDTO mediaItem = null;
 
-    @JsonProperty("fadeStart")
     private Long fadeStart = null;
 
     @PodamLongValue
-    @JsonProperty("fadeInLength")
     private Long fadeInLength = null;
 
-    @JsonProperty("volumeLevel")
     private Long volumeLevel = null;
-    @JsonProperty("fadeOutLength")
+
     private Long fadeOutLength = null;
-    @JsonProperty("fadeType")
+
     private FadeTypeEnum fadeType = null;
+
+    private SchConfigurationTimeParamsDTO timeParamsDTO;
+
+    public SchConfigurationTimeParamsDTO getTimeParamsDTO() {
+        return timeParamsDTO;
+    }
+
+    public void setTimeParamsDTO(SchConfigurationTimeParamsDTO timeParamsDTO) {
+        this.timeParamsDTO = timeParamsDTO;
+    }
 
     public SchAttachmentConfigurationDTO attachmentType(AttachmentTypeEnum attachmentType) {
         this.attachmentType = attachmentType;

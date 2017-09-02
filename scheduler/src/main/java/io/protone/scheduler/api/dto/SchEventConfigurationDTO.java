@@ -34,7 +34,7 @@ public class SchEventConfigurationDTO implements Serializable {
 
     private SchQueueParamsDTO queueParams;
 
-    private SchTimeParamsDTO timeParams;
+    private SchConfigurationTimeParamsDTO timeParams;
 
     private CoreUserThinDTO createdBy;
 
@@ -127,15 +127,15 @@ public class SchEventConfigurationDTO implements Serializable {
         return this;
     }
 
-    public SchTimeParamsDTO getTimeParams() {
+    public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
+    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEventConfigurationDTO timeParams(SchTimeParamsDTO timeParams) {
+    public SchEventConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }

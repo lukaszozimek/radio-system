@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Mapper for the entity Attachment and its DTO AttachmentDTO.
  */
-@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchEmissionMapper.class,})
+@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchEmissionMapper.class, SchTimeParamsMapper.class})
 public interface SchAttachmentMapper {
-     SchAttachment DTO2DB(SchAttachmentDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchAttachment DTO2DB(SchAttachmentDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-     SchAttachmentDTO DB2DTO(SchAttachment entity);
+    SchAttachmentDTO DB2DTO(SchAttachment entity);
 
-     List<SchAttachmentDTO> DBs2DTOs(List<SchAttachment> entityList);
+    List<SchAttachmentDTO> DBs2DTOs(List<SchAttachment> entityList);
 
     default List<SchAttachment> DTOs2DBs(List<SchAttachmentDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<SchAttachment> eList = new ArrayList<>();

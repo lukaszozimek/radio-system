@@ -85,7 +85,7 @@ public class SchLogColumnConfigurationMapperTest {
         SchLogColumn entity = schLogColumnConfigurationMapper.DTO2DB(schLogConfigurationColumnDTO, network, corChannel);
         assertNotNull(entity.getName());
         assertNotNull(entity.getColumnSequence());
-        assertNotNull(entity.getLenght());
+        assertNotNull(entity.getLength());
         assertNotNull(entity.getDelimiter());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
@@ -100,7 +100,7 @@ public class SchLogColumnConfigurationMapperTest {
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getName());
             assertNotNull(entity.getColumnSequence());
-            assertNotNull(entity.getLenght());
+            assertNotNull(entity.getLength());
             assertNotNull(entity.getDelimiter());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());

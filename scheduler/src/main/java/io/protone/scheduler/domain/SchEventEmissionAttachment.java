@@ -55,6 +55,9 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     @ManyToOne
     private LibMediaItem mediaItem;
 
+    @Embedded
+    private SchConfigurationTimeParams timeParams;
+
     @PodamExclude
     @ManyToOne
     private SchEventEmission emission;
@@ -237,5 +240,13 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
                 ", fadeOutLength='" + getFadeOutLength() + "'" +
                 ", fadeType='" + getFadeType() + "'" +
                 "}";
+    }
+
+    public SchConfigurationTimeParams getTimeParams() {
+        return timeParams;
+    }
+
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
+        this.timeParams = timeParams;
     }
 }

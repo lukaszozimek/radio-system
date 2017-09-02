@@ -45,7 +45,7 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     private SchQueueParams queueParams;
 
     @Embedded
-    private SchTimeParams timeParams;
+    private SchConfigurationTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "emission")
@@ -127,15 +127,15 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
         return this;
     }
 
-    public SchTimeParams getTimeParams() {
+    public SchConfigurationTimeParams getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEmissionConfiguration timeParams(SchTimeParams timeParams) {
+    public SchEmissionConfiguration timeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }

@@ -51,11 +51,13 @@
             <column name="start_time" type="timestamp">
                 <constraints nullable="true" />
             </column>
+
             <column name="end_time" type="timestamp">
                 <constraints nullable="true" />
             </column>
-            <column name="relative_delay" type="integer">
-                <constraints nullable="true" />
+
+            <column name="relative_delay" type="bigint">
+                <constraints nullable="true"/>
             </column>
             <column name="block_id" type="bigint">
                 <constraints nullable="true"/>

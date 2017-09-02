@@ -20,7 +20,7 @@ import java.util.List;
 /*
 FIXME: LibItem mapper refers to class in inner module which will become separate microservice in near future
  */
-@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, LibMediaItemThinMapper.class, SchQueueParamsMapper.class, SchTimeParamsMapper.class, SchEventConfigurationMapper.class, SchEventMapper.class})
+@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, LibMediaItemThinMapper.class, SchQueueParamsMapper.class, SchConfigurationTimeParamsMapper.class, SchEventConfigurationMapper.class, SchEventMapper.class})
 public interface SchEmissionConfigurationMapper {
      SchEmissionConfiguration DTO2DB(SchEmissionConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

@@ -25,7 +25,7 @@ public class SchClockConfigurationDTO implements Serializable {
 
     private CorDictionaryDTO clockCategory;
 
-    private SchTimeParamsDTO timeParams;
+    private SchConfigurationTimeParamsDTO timeParams;
 
     private Set<SchEventDTO> events = new HashSet<>();
 
@@ -87,15 +87,15 @@ public class SchClockConfigurationDTO implements Serializable {
         return this;
     }
 
-    public SchTimeParamsDTO getTimeParams() {
+    public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
+    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchClockConfigurationDTO timeParams(SchTimeParamsDTO timeParams) {
+    public SchClockConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }

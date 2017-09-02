@@ -54,14 +54,14 @@ public class SchClockConfigurationMapperTest {
         clockConfiguration.setEmissions(Sets.newHashSet(factory.manufacturePojo(SchEmissionConfiguration.class)));
         clockConfiguration.setEvents(Sets.newHashSet(factory.manufacturePojo(SchEvent.class)));
         clockConfiguration.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
-        clockConfiguration.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
+        clockConfiguration.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParams.class));
         clockConfiguration.setClockCategory(factory.manufacturePojo(CorDictionary.class));
         schClockConfigurations.add(clockConfiguration);
         schClockConfigurationDTO = factory.manufacturePojo(SchClockConfigurationDTO.class);
         schClockConfigurationDTO.setEmissions(Sets.newHashSet(factory.manufacturePojo(SchEmissionConfigurationDTO.class)));
         schClockConfigurationDTO.setEvents(Sets.newHashSet(factory.manufacturePojo(SchEventDTO.class)));
         schClockConfigurationDTO.setQueueParams(factory.manufacturePojo(SchQueueParamsDTO.class));
-        schClockConfigurationDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
+        schClockConfigurationDTO.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParamsDTO.class));
         schClockConfigurationDTO.setClockCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         schClockConfigurationDTOS.add(schClockConfigurationDTO);
     }

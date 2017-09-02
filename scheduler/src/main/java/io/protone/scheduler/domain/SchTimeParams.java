@@ -1,7 +1,5 @@
 package io.protone.scheduler.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -22,7 +20,7 @@ public class SchTimeParams implements Serializable {
     private ZonedDateTime endTime;
 
     @Column(name = "relative_delay")
-    private Integer relativeDelay;
+    private Long relativeDelay;
 
 
     public ZonedDateTime getStartTime() {
@@ -51,15 +49,15 @@ public class SchTimeParams implements Serializable {
         return this;
     }
 
-    public Integer getRelativeDelay() {
+    public Long getRelativeDelay() {
         return relativeDelay;
     }
 
-    public void setRelativeDelay(Integer relativeDelay) {
+    public void setRelativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
     }
 
-    public SchTimeParams relativeDelay(Integer relativeDelay) {
+    public SchTimeParams relativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
         return this;
     }

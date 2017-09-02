@@ -47,6 +47,9 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
     @Column(name = "fade_out_length")
     private Long fadeOutLength;
 
+    @Column(name = "sequence")
+    private Long sequence;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "fade_type")
     private FadeTypeEnum fadeType;
@@ -58,6 +61,9 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
     @PodamExclude
     @ManyToOne
     private SchEmissionConfiguration emission;
+
+    @Embedded
+    private SchConfigurationTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -237,5 +243,21 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
                 ", fadeOutLength='" + getFadeOutLength() + "'" +
                 ", fadeType='" + getFadeType() + "'" +
                 "}";
+    }
+
+    public SchConfigurationTimeParams getTimeParams() {
+        return timeParams;
+    }
+
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
+        this.timeParams = timeParams;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

@@ -30,7 +30,7 @@ public class SchEventDTO {
     @JsonProperty("eventType")
     private EventTypeEnum eventType = null;
     @JsonProperty("timeParams")
-    private SchTimeParamsDTO timeParams = null;
+    private SchConfigurationTimeParamsDTO timeParams = null;
 
     private Set<SchEventDTO> blocks = new HashSet<>();
 
@@ -138,7 +138,7 @@ public class SchEventDTO {
         this.eventType = eventType;
     }
 
-    public SchEventDTO timeParams(SchTimeParamsDTO timeParams) {
+    public SchEventDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }
@@ -149,11 +149,11 @@ public class SchEventDTO {
      * @return timeParams
      **/
     @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
+    public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
+    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 30/08/2017.
  */
-@Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchQueueParamsMapper.class, SchTimeParamsMapper.class, SchEventMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchQueueParamsMapper.class, SchConfigurationTimeParamsMapper.class, SchEventMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchClockConfigurationMapper {
     SchClockConfiguration DTO2DB(SchClockConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

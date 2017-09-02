@@ -44,10 +44,6 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClock clock;
 
-    @PodamExclude
-    @ManyToOne
-    private SchLogConfiguration schLogConfiguration;
-
     @Embedded
     private SchQueueParams queueParams;
 

@@ -73,7 +73,7 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     private SchQueueParams queueParams;
 
     @Embedded
-    private SchTimeParams timeParams;
+    private SchConfigurationTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -166,15 +166,15 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public SchTimeParams getTimeParams() {
+    public SchConfigurationTimeParams getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEvent timeParams(SchTimeParams timeParams) {
+    public SchEvent timeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }

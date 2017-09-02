@@ -6,13 +6,13 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchAttachmentConfigurationDTO;
+import io.protone.scheduler.api.dto.SchConfigurationTimeParamsDTO;
 import io.protone.scheduler.api.dto.SchEmissionConfigurationDTO;
 import io.protone.scheduler.api.dto.SchQueueParamsDTO;
-import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.SchAttachmentConfiguration;
+import io.protone.scheduler.domain.SchConfigurationTimeParams;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchQueueParams;
-import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.mapper.SchEmissionConfigurationMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public class SchEmissionConfigurationMapperTest {
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmissionConfiguration.class);
         emission.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
-        emission.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
+        emission.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParams.class));
         emission.setAttachments(Sets.newHashSet(factory.manufacturePojo(SchAttachmentConfiguration.class)));
         emissions.add(emission);
 
@@ -64,7 +64,7 @@ public class SchEmissionConfigurationMapperTest {
         emissionDTO = factory.manufacturePojo(SchEmissionConfigurationDTO.class);
         emissionDTO.setAttachment(Lists.newArrayList(factory.manufacturePojo(SchAttachmentConfigurationDTO.class)));
         emissionDTO.setQueueParams(factory.manufacturePojo(SchQueueParamsDTO.class));
-        emissionDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
+        emissionDTO.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParamsDTO.class));
         emissionDTOs.add(emissionDTO);
     }
 

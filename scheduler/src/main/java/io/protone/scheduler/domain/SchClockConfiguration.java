@@ -48,7 +48,7 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
     private CorDictionary clockCategory;
 
     @Embedded
-    private SchTimeParams timeParams;
+    private SchConfigurationTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "clockConfiguration")
@@ -131,15 +131,15 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public SchTimeParams getTimeParams() {
+    public SchConfigurationTimeParams getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchClockConfiguration timeParams(SchTimeParams timeParams) {
+    public SchClockConfiguration timeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }

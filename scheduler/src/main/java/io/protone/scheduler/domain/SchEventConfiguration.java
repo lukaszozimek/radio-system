@@ -59,7 +59,7 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
     private SchQueueParams queueParams;
 
     @Embedded
-    private SchTimeParams timeParams;
+    private SchConfigurationTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -152,15 +152,15 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
         return this;
     }
 
-    public SchTimeParams getTimeParams() {
+    public SchConfigurationTimeParams getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParams timeParams) {
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEventConfiguration timeParams(SchTimeParams timeParams) {
+    public SchEventConfiguration timeParams(SchConfigurationTimeParams timeParams) {
         this.timeParams = timeParams;
         return this;
     }

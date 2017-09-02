@@ -1,6 +1,5 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,25 +14,24 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchEventEmissionDTO {
-    @JsonProperty("blockId")
+
     private Long blockId = null;
 
-    @JsonProperty("id")
+
     private Long id = null;
 
-    @JsonProperty("mediaItem")
     private LibMediaItemThinDTO mediaItem = null;
 
-    @JsonProperty("seq")
+
     private Integer seq = null;
 
-    @JsonProperty("attachment")
+
     private List<SchEventEmissionAttachmentDTO> attachment = new ArrayList<SchEventEmissionAttachmentDTO>();
 
-    @JsonProperty("timeParams")
-    private SchTimeParamsDTO timeParams = null;
 
-    @JsonProperty("queueParams")
+    private SchConfigurationTimeParamsDTO timeParams = null;
+
+
     private SchQueueParamsDTO queueParams = null;
 
     public SchEventEmissionDTO blockId(Long blockId) {
@@ -137,7 +135,7 @@ public class SchEventEmissionDTO {
         this.attachment = attachment;
     }
 
-    public SchEventEmissionDTO timeParams(SchTimeParamsDTO timeParams) {
+    public SchEventEmissionDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }
@@ -148,11 +146,11 @@ public class SchEventEmissionDTO {
      * @return timeParams
      **/
     @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
+    public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
+    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 

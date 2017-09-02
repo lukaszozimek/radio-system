@@ -31,7 +31,7 @@ public class SchEmissionConfigurationDTO {
     private List<SchAttachmentConfigurationDTO> attachment = new ArrayList<SchAttachmentConfigurationDTO>();
 
     @JsonProperty("timeParams")
-    private SchTimeParamsDTO timeParams = null;
+    private SchConfigurationTimeParamsDTO timeParams = null;
 
     @JsonProperty("queueParams")
     private SchQueueParamsDTO queueParams = null;
@@ -137,7 +137,7 @@ public class SchEmissionConfigurationDTO {
         this.attachment = attachment;
     }
 
-    public SchEmissionConfigurationDTO timeParams(SchTimeParamsDTO timeParams) {
+    public SchEmissionConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }
@@ -148,11 +148,11 @@ public class SchEmissionConfigurationDTO {
      * @return timeParams
      **/
     @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
+    public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
+    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 

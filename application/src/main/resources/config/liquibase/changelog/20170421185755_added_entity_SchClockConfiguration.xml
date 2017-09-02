@@ -47,16 +47,11 @@
             <column name="next_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="start_time" type="timestamp">
-                <constraints nullable="true" />
+            <column name="length" type="bigint">
+                <constraints nullable="true"/>
             </column>
-
-            <column name="end_time" type="timestamp">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="relative_delay" type="integer">
-                <constraints nullable="true" />
+            <column name="relative_delay" type="bigint">
+                <constraints nullable="true"/>
             </column>
             <column name="clock_category_id" type="bigint">
                 <constraints nullable="true" />

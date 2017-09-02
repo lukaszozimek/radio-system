@@ -47,6 +47,9 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     @Column(name = "fade_out_length")
     private Long fadeOutLength;
 
+    @Column(name = "sequence")
+    private Long sequence;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "fade_type")
     private FadeTypeEnum fadeType;
@@ -58,6 +61,9 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     @PodamExclude
     @ManyToOne
     private SchEmission emission;
+
+    @Embedded
+    private SchTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -237,5 +243,21 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
                 ", fadeOutLength='" + getFadeOutLength() + "'" +
                 ", fadeType='" + getFadeType() + "'" +
                 "}";
+    }
+
+    public SchTimeParams getTimeParams() {
+        return timeParams;
+    }
+
+    public void setTimeParams(SchTimeParams timeParams) {
+        this.timeParams = timeParams;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

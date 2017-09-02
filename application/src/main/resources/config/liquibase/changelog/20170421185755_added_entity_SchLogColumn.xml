@@ -23,7 +23,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="lenght" type="integer">
+            <column name="length" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="delimiter" type="varchar(255)">

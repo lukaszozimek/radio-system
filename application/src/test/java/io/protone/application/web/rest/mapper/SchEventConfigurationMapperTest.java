@@ -55,7 +55,7 @@ public class SchEventConfigurationMapperTest {
         schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 2 @ rootEvent
         schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 3 @ rootEvent
         schEventConfiguration.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
-        schEventConfiguration.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
+        schEventConfiguration.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParams.class));
         schEventConfiguration.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         schEventConfiguration.setSchLogConfiguration(factory.manufacturePojo(SchLogConfiguration.class));
 
@@ -67,7 +67,7 @@ public class SchEventConfigurationMapperTest {
         schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 2 @ rootEvent
         schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 3 @ rootEvent
         schEventConfigurationDTO.setQueueParams(factory.manufacturePojo(SchQueueParamsDTO.class));
-        schEventConfigurationDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
+        schEventConfigurationDTO.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParamsDTO.class));
         schEventConfigurationDTO.setEventCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         schEventConfigurationDTO.setSchLogConfiguration(factory.manufacturePojo(SchLogConfigurationDTO.class));
         schEventConfigurationDTOS.add(schEventConfigurationDTO);
