@@ -35,6 +35,7 @@ public interface SchEventConfigurationResource {
                                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable);
 
 
+
     @ApiOperation(value = "createSchedulerTemplatesForChannel", notes = "", response = SchEventConfigurationDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = SchEventConfigurationDTO.class),
@@ -87,7 +88,7 @@ public interface SchEventConfigurationResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = SchEventConfigurationDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = SchEventConfigurationDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = SchEventConfigurationDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)

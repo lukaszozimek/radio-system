@@ -17,16 +17,13 @@ import java.util.List;
 /**
  * Mapper for the entity Emission and its DTO EmissionDTO.
  */
-/*
-FIXME: LibItem mapper refers to class in inner module which will become separate microservice in near future
- */
-@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, LibMediaItemThinMapper.class, SchQueueParamsMapper.class, SchConfigurationTimeParamsMapper.class, SchEventConfigurationMapper.class, SchEventMapper.class})
+@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, LibMediaItemThinMapper.class, SchQueueParamsMapper.class, SchConfigurationTimeParamsMapper.class, SchEventConfigurationMapper.class, SchEventMapper.class, SchAttachmentConfigurationMapper.class})
 public interface SchEmissionConfigurationMapper {
-     SchEmissionConfiguration DTO2DB(SchEmissionConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchEmissionConfiguration DTO2DB(SchEmissionConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-     SchEmissionConfigurationDTO DB2DTO(SchEmissionConfiguration entity);
+    SchEmissionConfigurationDTO DB2DTO(SchEmissionConfiguration entity);
 
-     List<SchEmissionConfigurationDTO> DBs2DTOs(List<SchEmissionConfiguration> entityList);
+    List<SchEmissionConfigurationDTO> DBs2DTOs(List<SchEmissionConfiguration> entityList);
 
     default List<SchEmissionConfiguration> DTOs2DBs(List<SchEmissionConfigurationDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<SchEmissionConfiguration> eList = new ArrayList<>();
@@ -44,7 +41,7 @@ public interface SchEmissionConfigurationMapper {
     }
 
     @AfterMapping
-    default void schSchEmissionToSchEmissionAfterMapping(SchEmissionConfigurationDTO dto, @MappingTarget SchEmissionConfiguration entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schEmissionConfigurationDTOToSchEmissionConfigurationAfterMapping(SchEmissionConfigurationDTO dto, @MappingTarget SchEmissionConfiguration entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }

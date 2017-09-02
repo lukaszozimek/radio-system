@@ -36,7 +36,7 @@ public interface SchAttachmentConfigurationMapper {
     }
 
     @AfterMapping
-    default void SchAttachmentConfigurationDTOToSchAttachmentConfigurationAfterMapping(SchAttachmentConfigurationDTO dto, @MappingTarget SchAttachmentConfiguration entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schAttachmentConfigurationDTOToSchAttachmentConfigurationAfterMapping(SchAttachmentConfigurationDTO dto, @MappingTarget SchAttachmentConfiguration entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }

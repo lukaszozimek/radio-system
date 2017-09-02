@@ -1,5 +1,6 @@
 package io.protone.scheduler.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.FadeTypeEnum;
@@ -16,6 +17,9 @@ import java.util.Objects;
 
 public class SchAttachmentDTO {
     private AttachmentTypeEnum attachmentType = null;
+
+    @JsonProperty("id")
+    private Long id = null;
 
     @PodamExclude
     private LibMediaItemThinDTO mediaItem = null;
@@ -34,6 +38,15 @@ public class SchAttachmentDTO {
     private Long sequence;
 
     private SchTimeParamsDTO timeParamsDTO;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public SchTimeParamsDTO getTimeParamsDTO() {
         return timeParamsDTO;

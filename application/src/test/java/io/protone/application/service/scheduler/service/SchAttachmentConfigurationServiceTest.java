@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchAttachmentConfigurationServiceTest extends SchedulerBaseTest{
+public class SchAttachmentConfigurationServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchAttachmentConfigurationService schAttachmentConfigurationService;
 
@@ -46,7 +46,7 @@ public class SchAttachmentConfigurationServiceTest extends SchedulerBaseTest{
         schAttachmentConfiguration.setNetwork(corNetwork);
         schAttachmentConfiguration.setChannel(corChannel);
         //then
-        Set<SchAttachmentConfiguration> fetchedEntity = schAttachmentConfigurationService.saveAttachmenst(Sets.newSet(schAttachmentConfiguration));
+        Set<SchAttachmentConfiguration> fetchedEntity = schAttachmentConfigurationService.saveAttachmenst(Sets.newSet(schAttachmentConfiguration), null);
 
         //assert
         assertNotNull(fetchedEntity);

@@ -249,6 +249,11 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         this.event = event;
     }
 
+    public SchEvent event(SchEvent event) {
+        this.event = event;
+        return this;
+    }
+
     public SchLogConfiguration getSchLogConfiguration() {
         return schLogConfiguration;
     }
@@ -264,6 +269,11 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
 
     public void setClockConfiguration(SchClockConfiguration clockConfiguration) {
         this.clockConfiguration = clockConfiguration;
+    }
+
+    public SchEvent clockConfiguration(SchClockConfiguration clockConfiguration) {
+        this.clockConfiguration = clockConfiguration;
+        return this;
     }
 
     @Override

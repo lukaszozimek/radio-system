@@ -39,7 +39,6 @@ public class SchEventEmissionAttachmentServiceTest extends SchedulerBaseTest {
     }
 
 
-
     @Test
     public void shouldSaveSchEventEmissionAttachment() throws Exception {
         //when
@@ -47,7 +46,7 @@ public class SchEventEmissionAttachmentServiceTest extends SchedulerBaseTest {
         schEventEmissionAttachment.setNetwork(corNetwork);
         schEventEmissionAttachment.setChannel(corChannel);
         //then
-        Set<SchEventEmissionAttachment> fetchedEntity = schEventEmissionAttachmentService.saveAttachmenst(Sets.newSet(schEventEmissionAttachment));
+        Set<SchEventEmissionAttachment> fetchedEntity = schEventEmissionAttachmentService.saveAttachmenst(Sets.newSet(schEventEmissionAttachment), null);
 
         //assert
         assertNotNull(fetchedEntity);

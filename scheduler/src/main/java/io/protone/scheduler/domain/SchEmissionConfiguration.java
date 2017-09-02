@@ -169,6 +169,11 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
         return schEventConfiguration;
     }
 
+    public SchEmissionConfiguration schEventConfiguration(SchEventConfiguration schEventConfiguration) {
+        this.schEventConfiguration = schEventConfiguration;
+        return this;
+    }
+
     public void setSchEventConfiguration(SchEventConfiguration schEventConfiguration) {
         this.schEventConfiguration = schEventConfiguration;
     }

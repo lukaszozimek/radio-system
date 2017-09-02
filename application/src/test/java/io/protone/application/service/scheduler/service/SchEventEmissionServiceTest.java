@@ -46,7 +46,7 @@ public class SchEventEmissionServiceTest extends SchedulerBaseTest {
         schEventEmission.setNetwork(corNetwork);
         schEventEmission.setChannel(corChannel);
         //then
-        Set<SchEventEmission> fetchedEntity = schEventEmissionService.saveEmission(Sets.newSet(schEventEmission));
+        Set<SchEventEmission> fetchedEntity = schEventEmissionService.saveEmission(Sets.newSet(schEventEmission), null);
 
         //assert
         assertNotNull(fetchedEntity);

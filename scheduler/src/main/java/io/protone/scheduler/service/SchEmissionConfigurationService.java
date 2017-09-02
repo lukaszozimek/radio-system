@@ -1,7 +1,9 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
+import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
+import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.repository.SchEmissionConfigurationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +25,12 @@ public class SchEmissionConfigurationService {
     private SchAttachmentConfigurationService schAttachmentService;
 
     @Transactional
-    public Set<SchEmissionConfiguration> saveEmission(Set<SchEmissionConfiguration> emissionSet) {
+    public Set<SchEmissionConfiguration> saveEmissionEvent(Set<SchEmissionConfiguration> emissionSet, SchEventConfiguration schEventConfiguration) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
-                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
-                return schEmissionConfigurationRepository.saveAndFlush(schEmission);
+                SchEmissionConfiguration schEmissionConfiguration = schEmissionConfigurationRepository.saveAndFlush(schEmission.schEventConfiguration(schEventConfiguration));
+                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEmissionConfiguration));
+                return schEmissionConfiguration;
             }).collect(toSet());
         }
         return Sets.newHashSet();
@@ -42,5 +45,16 @@ public class SchEmissionConfigurationService {
                 schEmissionConfigurationRepository.delete(schEmission);
             });
         }
+    }
+
+    public Set<SchEmissionConfiguration> saveEmissionClock(Set<SchEmissionConfiguration> emissionSet, SchClockConfiguration schClockConfiguration) {
+        if (emissionSet != null && !emissionSet.isEmpty()) {
+            return emissionSet.stream().map(schEmission -> {
+                SchEmissionConfiguration schEmissionConfiguration = schEmissionConfigurationRepository.saveAndFlush(schEmission.clock(schClockConfiguration));
+                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEmissionConfiguration));
+                return schEmissionConfiguration;
+            }).collect(toSet());
+        }
+        return Sets.newHashSet();
     }
 }

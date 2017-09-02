@@ -18,7 +18,8 @@
                                  baseTableName="sch_event_emission_attachment"
                                  constraintName="fk_sch_event_emission_attachment_emission_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="sch_emission"/>
+                                 referencedTableName="sch_event_emission"/>
+
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_event_emission_attachment"
                                  constraintName="fk_sch_event_emission_attachment_network_id"

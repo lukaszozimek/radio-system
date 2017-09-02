@@ -27,8 +27,8 @@ public class SchEmissionConfigurationDTO {
     @JsonProperty("seq")
     private Integer seq = null;
 
-    @JsonProperty("attachment")
-    private List<SchAttachmentConfigurationDTO> attachment = new ArrayList<SchAttachmentConfigurationDTO>();
+    @JsonProperty("attachments")
+    private List<SchAttachmentConfigurationDTO> attachments = new ArrayList<SchAttachmentConfigurationDTO>();
 
     @JsonProperty("timeParams")
     private SchConfigurationTimeParamsDTO timeParams = null;
@@ -114,27 +114,27 @@ public class SchEmissionConfigurationDTO {
     }
 
     public SchEmissionConfigurationDTO attachment(List<SchAttachmentConfigurationDTO> attachment) {
-        this.attachment = attachment;
+        this.attachments = attachment;
         return this;
     }
 
     public SchEmissionConfigurationDTO addAttachmentItem(SchAttachmentConfigurationDTO attachmentItem) {
-        this.attachment.add(attachmentItem);
+        this.attachments.add(attachmentItem);
         return this;
     }
 
     /**
-     * Get attachment
+     * Get attachments
      *
-     * @return attachment
+     * @return attachments
      **/
     @ApiModelProperty(value = "")
-    public List<SchAttachmentConfigurationDTO> getAttachment() {
-        return attachment;
+    public List<SchAttachmentConfigurationDTO> getAttachments() {
+        return attachments;
     }
 
-    public void setAttachment(List<SchAttachmentConfigurationDTO> attachment) {
-        this.attachment = attachment;
+    public void setAttachments(List<SchAttachmentConfigurationDTO> attachments) {
+        this.attachments = attachments;
     }
 
     public SchEmissionConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
@@ -189,14 +189,14 @@ public class SchEmissionConfigurationDTO {
                 Objects.equals(this.id, schEmissionDTO.id) &&
                 Objects.equals(this.mediaItem, schEmissionDTO.mediaItem) &&
                 Objects.equals(this.seq, schEmissionDTO.seq) &&
-                Objects.equals(this.attachment, schEmissionDTO.attachment) &&
+                Objects.equals(this.attachments, schEmissionDTO.attachments) &&
                 Objects.equals(this.timeParams, schEmissionDTO.timeParams) &&
                 Objects.equals(this.queueParams, schEmissionDTO.queueParams);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blockId, id, mediaItem, seq, attachment, timeParams, queueParams);
+        return Objects.hash(blockId, id, mediaItem, seq, attachments, timeParams, queueParams);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class SchEmissionConfigurationDTO {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    mediaItem: ").append(toIndentedString(mediaItem)).append("\n");
         sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
-        sb.append("    attachment: ").append(toIndentedString(attachment)).append("\n");
+        sb.append("    attachments: ").append(toIndentedString(attachments)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
         sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
         sb.append("}");

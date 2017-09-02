@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEmissionConfigurationServiceTest  extends SchedulerBaseTest {
+public class SchEmissionConfigurationServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchEmissionConfigurationService schEmissionConfigurationService;
@@ -40,7 +40,6 @@ public class SchEmissionConfigurationServiceTest  extends SchedulerBaseTest {
     }
 
 
-
     @Test
     public void shouldSaveSchEmissionConfiguration() throws Exception {
         //when
@@ -48,7 +47,7 @@ public class SchEmissionConfigurationServiceTest  extends SchedulerBaseTest {
         schEmissionConfiguration.setNetwork(corNetwork);
         schEmissionConfiguration.setChannel(corChannel);
         //then
-        Set<SchEmissionConfiguration> fetchedEntity = schEmissionConfigurationService.saveEmission(Sets.newSet(schEmissionConfiguration));
+        Set<SchEmissionConfiguration> fetchedEntity = schEmissionConfigurationService.saveEmissionEvent(Sets.newSet(schEmissionConfiguration), null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -75,6 +74,7 @@ public class SchEmissionConfigurationServiceTest  extends SchedulerBaseTest {
         //assert
         assertNull(fetchedEntity);
     }
+
     @Test
     public void shouldDeleteSchEmissionConfigurationWithAttachment() throws Exception {
 

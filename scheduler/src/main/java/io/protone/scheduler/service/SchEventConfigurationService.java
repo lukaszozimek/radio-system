@@ -32,8 +32,12 @@ public class SchEventConfigurationService {
 
     @Transactional
     public SchEventConfiguration saveEventConfiguration(SchEventConfiguration schEventConfiguration) {
-        schEventConfiguration.emissions(schEmissionConfigurationService.saveEmission(schEventConfiguration.getEmissions()));
-        return eventRepository.saveAndFlush(schEventConfiguration);
+        SchEventConfiguration beforeSave;
+        beforeSave = eventRepository.saveAndFlush(schEventConfiguration);
+        beforeSave.emissions(schEmissionConfigurationService.saveEmissionEvent(schEventConfiguration.getEmissions(), beforeSave));
+        eventRepository.saveAndFlush(beforeSave);
+        eventRepository.flush();
+        return findSchEventConfigurationsForNetworkAndChannelAndShortName(schEventConfiguration.getNetwork().getShortcut(), schEventConfiguration.getChannel().getShortcut(), schEventConfiguration.getShortName());
     }
 
     @Transactional

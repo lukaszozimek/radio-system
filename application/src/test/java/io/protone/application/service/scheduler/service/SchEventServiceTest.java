@@ -53,7 +53,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
         schEvent.setNetwork(corNetwork);
         schEvent.setChannel(corChannel);
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEvent));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEvent), null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -119,7 +119,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -206,7 +206,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -297,7 +297,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -398,7 +398,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
 
         //assert
         long dbSize = schEventRepository.count();
@@ -475,7 +475,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
         schEventRoot2.addBlock(schEventRootChild2);
 
 
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
         long dbSizeBlocks = schEventRepository.count();
         long emissionDbSize = schEventEmissionRepository.count();
         //then
@@ -556,7 +556,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
         schEventRoot2.addBlock(schEventRootChild2);
 
 
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
         long dbSizeBlocks = schEventRepository.count();
         long emissionDbSize = schEventEmissionRepository.count();
         long attachmentDbSize = schEventEmissionAttachmentRepository.count();

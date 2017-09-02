@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchAttachmentConfiguration;
+import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.repository.SchAttachmentConfigurationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,9 @@ public class SchAttachmentConfigurationService {
     private SchAttachmentConfigurationRepository schAttachmentConfigurationRepository;
 
     @Transactional
-    public Set<SchAttachmentConfiguration> saveAttachmenst(Set<SchAttachmentConfiguration> schAttachmentSet) {
+    public Set<SchAttachmentConfiguration> saveAttachmenst(Set<SchAttachmentConfiguration> schAttachmentSet, SchEmissionConfiguration schEmissionConfiguration) {
         if (schAttachmentSet != null && !schAttachmentSet.isEmpty()) {
-            return schAttachmentSet.stream().map(schAttachment -> schAttachmentConfigurationRepository.saveAndFlush(schAttachment)).collect(toSet());
+            return schAttachmentSet.stream().map(schAttachment -> schAttachmentConfigurationRepository.saveAndFlush(schAttachment.emission(schEmissionConfiguration))).collect(toSet());
         }
         return Sets.newHashSet();
     }
