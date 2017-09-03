@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
+import static io.protone.core.constans.MinioFoldersConstants.FILE;
 import static io.protone.core.service.CorImageItemService.PUBLIC_CONTENT;
 
 /**
@@ -62,7 +63,7 @@ public class CorNetworkService {
     public void createPublicBucketForThisNetwork(CorNetwork network) {
         log.debug("Persisting CorNetwork: {}", network);
         try {
-            s3Client.makeBucketPublicBucket(network.getShortcut() + "-" + PUBLIC_CONTENT);
+            s3Client.makeBucketPublicBucket(network.getShortcut(), FILE + PUBLIC_CONTENT);
         } catch (CreateBucketException e) {
             log.error(e.getLocalizedMessage());
         }

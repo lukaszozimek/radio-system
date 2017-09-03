@@ -25,8 +25,8 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -65,7 +65,7 @@ public class LibLibraryServiceTest {
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
+        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corNetwork.getShortcut() + MEDIA_ITEM + "testBucket");
         ReflectionTestUtils.setField(libLibraryService, "s3Client", s3Client);
 
     }

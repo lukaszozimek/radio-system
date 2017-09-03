@@ -24,18 +24,9 @@ import static javax.persistence.FetchType.EAGER;
 @Table(name = "lib_media_item", uniqueConstraints =
 @UniqueConstraint(columnNames = {"idx", "library_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibMediaItem extends CorMediaItem implements Serializable {
+public class LibMediaItem extends CorItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-
-    @NotNull
-    @Column(name = "idx", nullable = false)
-    private String idx;
-
-    @NotNull
-    @Column(name = "name")
-    private String name;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -54,8 +45,6 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @Column(name = "command")
     private String command;
 
-    @Column(name = "description")
-    private String description;
 
     @ManyToOne
     @PodamExclude
@@ -77,14 +66,6 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @PodamExclude
     private LibTrack track;
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
-    private CorChannel channel;
-
     @PodamExclude
     @OneToMany(mappedBy = "author", fetch = EAGER)
     @JsonIgnore
@@ -104,18 +85,6 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     private Set<LibMarker> markers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "tags", fetch = EAGER)
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CorTag> tags = new HashSet<>();
-
-    @PodamExclude
-    @OneToMany(mappedBy = "libItemPropertyValue", fetch = EAGER)
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CorPropertyValue> properites = new HashSet<>();
-
-    @PodamExclude
     @OneToMany
     @JoinTable(
         name = "lib_media_item_cor_image_item",
@@ -123,7 +92,6 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
     private Set<CorImageItem> imageItems = new HashSet<>();
-
 
     public String getIdx() {
         return idx;

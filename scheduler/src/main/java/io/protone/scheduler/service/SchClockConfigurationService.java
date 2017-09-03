@@ -21,12 +21,16 @@ import javax.inject.Inject;
 @Service
 public class SchClockConfigurationService {
     private final Logger log = LoggerFactory.getLogger(SchClockConfigurationService.class);
+
     @Inject
     private SchClockConfigurationRepository schClockConfigurationRepository;
+
     @Inject
     private SchEventService schEventService;
+
     @Inject
     private SchEmissionConfigurationService schEmissionConfigurationService;
+
     @Inject
     private SchClockConfigurationMapper schClockConfigurationMapper;
 

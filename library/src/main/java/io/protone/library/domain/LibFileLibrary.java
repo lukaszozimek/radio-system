@@ -1,7 +1,6 @@
 package io.protone.library.domain;
 
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorLibrary;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
@@ -17,34 +16,20 @@ import java.util.Set;
 /**
  * A LibLibrary.
  */
-//TODO: ad commercial Libary Entity where id is fk
 @Entity
-@Table(name = "lib_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
-
+@Table(name = "lib_file_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibLibrary extends CorLibrary implements Serializable {
-
-    @OneToOne
-    @PodamExclude
-    private CorImageItem mainImage;
+public class LibFileLibrary extends CorLibrary implements Serializable {
 
 
     @OneToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "lib_library_channel",
-            joinColumns = @JoinColumn(name = "lib_library_id", referencedColumnName = "id"),
+    @JoinTable(name = "lib_file_library_channel",
+            joinColumns = @JoinColumn(name = "lib_file_library_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     @PodamExclude
     private Set<CorChannel> channels = new HashSet<>();
 
-    @PodamExclude
-    @OneToMany
-    @JoinTable(
-            name = "lib_library_cor_image_item",
-            joinColumns = @JoinColumn(name = "lib_library_id"),
-            inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
-    )
-    private Set<CorImageItem> imageItems = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -62,7 +47,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.prefix = prefix;
     }
 
-    public LibLibrary prefix(String prefix) {
+    public LibFileLibrary prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -75,7 +60,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.shortcut = shortcut;
     }
 
-    public LibLibrary shortcut(String shortcut) {
+    public LibFileLibrary shortcut(String shortcut) {
         this.shortcut = shortcut;
         return this;
     }
@@ -88,7 +73,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.name = name;
     }
 
-    public LibLibrary name(String name) {
+    public LibFileLibrary name(String name) {
         this.name = name;
         return this;
     }
@@ -101,7 +86,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.counter = counter;
     }
 
-    public LibLibrary counter(Long counter) {
+    public LibFileLibrary counter(Long counter) {
         this.counter = counter;
         return this;
     }
@@ -114,7 +99,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.description = description;
     }
 
-    public LibLibrary description(String description) {
+    public LibFileLibrary description(String description) {
         this.description = description;
         return this;
     }
@@ -127,7 +112,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.network = corNetwork;
     }
 
-    public LibLibrary network(CorNetwork corNetwork) {
+    public LibFileLibrary network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
     }
@@ -140,54 +125,23 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.channels = corChannels;
     }
 
-    public LibLibrary channels(Set<CorChannel> corChannels) {
+    public LibFileLibrary channels(Set<CorChannel> corChannels) {
         this.channels = corChannels;
         return this;
     }
 
-    public LibLibrary addChannel(CorChannel corChannel) {
+    public LibFileLibrary addChannel(CorChannel corChannel) {
         this.channels.add(corChannel);
 
         return this;
     }
 
-    public LibLibrary removeChannel(CorChannel corChannel) {
+    public LibFileLibrary removeChannel(CorChannel corChannel) {
         this.channels.remove(corChannel);
 
         return this;
     }
 
-    public Set<CorImageItem> getImageItems() {
-        return imageItems;
-    }
-
-    public void setImageItems(Set<CorImageItem> imageItems) {
-        this.imageItems = imageItems;
-    }
-
-    public LibLibrary addImageItems(CorImageItem imageItems) {
-        this.imageItems.add(imageItems);
-        return this;
-    }
-
-    public LibLibrary removeImageItems(CorImageItem imageItems) {
-        this.imageItems.remove(imageItems);
-        return this;
-    }
-
-
-    public LibLibrary mainImage(CorImageItem mainImage) {
-        this.mainImage = mainImage;
-        return this;
-    }
-
-    public CorImageItem getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(CorImageItem mainImage) {
-        this.mainImage = mainImage;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -197,7 +151,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LibLibrary libLibrary = (LibLibrary) o;
+        LibFileLibrary libLibrary = (LibFileLibrary) o;
         if (libLibrary.id == null || id == null) {
             return false;
         }

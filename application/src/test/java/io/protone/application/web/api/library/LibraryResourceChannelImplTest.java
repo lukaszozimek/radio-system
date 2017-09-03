@@ -45,6 +45,7 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.List;
 
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
@@ -121,7 +122,8 @@ public class LibraryResourceChannelImplTest {
     private LibLibrary libLibrary;
     private CorNetwork corNetwork;
     private CorChannel corChannel;
-   private CorImageItem corImageItem;
+    private CorImageItem corImageItem;
+
     /**
      * Create an entity for this test.
      * <p>
@@ -130,11 +132,11 @@ public class LibraryResourceChannelImplTest {
      */
     public static LibLibrary createEntity(EntityManager em) {
         LibLibrary libLibrary = new LibLibrary()
-            .prefix(DEFAULT_PREFIX)
-            .shortcut(DEFAULT_SHORTCUT)
-            .name(DEFAULT_NAME)
-            .counter(DEFAULT_COUNTER)
-            .description(DEFAULT_DESCRIPTION);
+                .prefix(DEFAULT_PREFIX)
+                .shortcut(DEFAULT_SHORTCUT)
+                .name(DEFAULT_NAME)
+                .counter(DEFAULT_COUNTER)
+                .description(DEFAULT_DESCRIPTION);
         return libLibrary;
     }
 
@@ -157,11 +159,11 @@ public class LibraryResourceChannelImplTest {
         corChannel = new CorChannel().shortcut("tes");
         corChannel.setId(1L);
 
-        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
+        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corNetwork.getShortcut() + MEDIA_ITEM + "testBucket");
         this.restLibLibraryMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+                .setCustomArgumentResolvers(pageableArgumentResolver)
+                .setControllerAdvice(exceptionTranslator)
+                .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -182,7 +184,7 @@ public class LibraryResourceChannelImplTest {
         restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
-            .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
 
         // Validate the LibLibrary in the database
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
@@ -211,7 +213,7 @@ public class LibraryResourceChannelImplTest {
         restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
-            .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
@@ -320,14 +322,14 @@ public class LibraryResourceChannelImplTest {
 
         // Get all the libLibraryList
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
-            .andExpect(jsonPath("$.[*].prefix").value(hasItem(DEFAULT_PREFIX.toString())))
-            .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].counter").value(hasItem(DEFAULT_COUNTER.intValue())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
+                .andExpect(jsonPath("$.[*].prefix").value(hasItem(DEFAULT_PREFIX.toString())))
+                .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].counter").value(hasItem(DEFAULT_COUNTER.intValue())))
+                .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test
@@ -339,14 +341,14 @@ public class LibraryResourceChannelImplTest {
 
         // Get the libLibrary
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), "123"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
-            .andExpect(jsonPath("$.prefix").value(DEFAULT_PREFIX.toString()))
-            .andExpect(jsonPath("$.shortcut").value("123"))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.counter").value(DEFAULT_COUNTER.intValue()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
+                .andExpect(jsonPath("$.prefix").value(DEFAULT_PREFIX.toString()))
+                .andExpect(jsonPath("$.shortcut").value("123"))
+                .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                .andExpect(jsonPath("$.counter").value(DEFAULT_COUNTER.intValue()))
+                .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
     @Test
@@ -394,7 +396,7 @@ public class LibraryResourceChannelImplTest {
     public void getNonExistingLibLibrary() throws Exception {
         // Get the libLibrary
         restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -407,17 +409,17 @@ public class LibraryResourceChannelImplTest {
         // Update the libLibrary
         LibLibrary updatedLibLibrary = libLibraryRepository.findOne(libLibrary.getId());
         updatedLibLibrary
-            .prefix(UPDATED_PREFIX)
-            .shortcut(UPDATED_SHORTCUT)
-            .name(UPDATED_NAME)
-            .counter(UPDATED_COUNTER)
-            .description(UPDATED_DESCRIPTION);
+                .prefix(UPDATED_PREFIX)
+                .shortcut(UPDATED_SHORTCUT)
+                .name(UPDATED_NAME)
+                .counter(UPDATED_COUNTER)
+                .description(UPDATED_DESCRIPTION);
         LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
 
         restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isOk());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
+                .andExpect(status().isOk());
 
         // Validate the LibLibrary in the database
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
@@ -440,9 +442,9 @@ public class LibraryResourceChannelImplTest {
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library", corNetwork.getShortcut(), corChannel.getShortcut())
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
-            .andExpect(status().isCreated());
+                .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
+                .andExpect(status().isCreated());
 
         // Validate the LibLibrary in the database
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
@@ -458,8 +460,8 @@ public class LibraryResourceChannelImplTest {
 
         // Get the libLibrary
         restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), corChannel.getShortcut(), libLibrary.getShortcut())
-            .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
 
         // Validate the database is empty
         List<LibLibrary> libLibraryList = libLibraryRepository.findAll();

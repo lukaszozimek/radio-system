@@ -76,7 +76,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shoulDownloadAudioFile() throws Exception {
         //when
-        when(s3Client.download(anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3"));
+        when(s3Client.download(anyString(), anyString(), anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3"));
         ReflectionTestUtils.setField(libAudioFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libAudioFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());

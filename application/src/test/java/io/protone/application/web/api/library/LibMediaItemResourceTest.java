@@ -173,8 +173,8 @@ public class LibMediaItemResourceTest {
         corUser.setChannels(null);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser = corUserRepository.saveAndFlush(corUser);
-        doNothing().when(s3Client).delete(anyString(), anyObject());
-        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
+        doNothing().when(s3Client).delete(anyString(), anyString(), anyObject());
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyString(), anyObject(), anyString());
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
         LibMediaItemResourceImpl libMediaItemResource = new LibMediaItemResourceImpl();
 
@@ -416,10 +416,10 @@ public class LibMediaItemResourceTest {
     @Transactional
     public void deleteLibMediaItem() throws Exception {
         // Initialize the database
-        doNothing().when(s3Client).delete(anyObject(), anyObject());
+        doNothing().when(s3Client).delete(anyString(), anyObject(), anyObject());
         libMediaItemRepository.saveAndFlush(libMediaItem.library(libLibrary).network(corNetwork));
         int databaseSizeBeforeDelete = libMediaItemRepository.findAll().size();
-        doNothing().when(s3Client).delete(anyString(), anyObject());
+        doNothing().when(s3Client).delete(anyString(), anyString(), anyObject());
         // Get the libMediaItem
         restLibMediaItemMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item/{id}", corNetwork.getShortcut(), libLibrary.getShortcut(), libMediaItem.getIdx())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
@@ -433,7 +433,7 @@ public class LibMediaItemResourceTest {
     @Test
     @Transactional
     public void shouldUploadMediaItemVideo() throws Exception {
-        MockMultipartFile firstFile = new MockMultipartFile("files",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
+        MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
                 .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_VIDEO.toString()));
@@ -443,7 +443,7 @@ public class LibMediaItemResourceTest {
     @Test
     @Transactional
     public void shouldUploadMediaItemAudio() throws Exception {
-        MockMultipartFile firstFile = new MockMultipartFile("files",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3"));
+        MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
                 .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_AUDIO.toString()));
@@ -452,7 +452,7 @@ public class LibMediaItemResourceTest {
     @Test
     @Transactional
     public void shouldUploadMediaItemImage() throws Exception {
-        MockMultipartFile firstFile = new MockMultipartFile("files",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
+        MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
                 .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_IMAGE.toString()));
@@ -461,7 +461,7 @@ public class LibMediaItemResourceTest {
     @Test
     @Transactional
     public void shouldUploadMediaItemDocument() throws Exception {
-        MockMultipartFile firstFile = new MockMultipartFile("files",  Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
+        MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}/item", corNetwork.getShortcut(), libLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
                 .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_DOCUMENT.toString()));

@@ -41,7 +41,7 @@ public class S3Client {
         return client;
     }
 
-    public String makeBucket(String bucketName) throws CreateBucketException {
+    public String makeBucket(String prefix, String bucketName) throws CreateBucketException {
         try {
             boolean isExist = getClient().bucketExists(bucketName);
             if (!isExist) {
@@ -72,7 +72,8 @@ public class S3Client {
             throw new CreateBucketException(e.getMessage());
         }
     }
-    public String makeBucketPublicBucket(String bucketName) throws CreateBucketException {
+
+    public String makeBucketPublicBucket(String prefix, String bucketName) throws CreateBucketException {
         try {
             boolean isExist = getClient().bucketExists(bucketName);
             if (!isExist) {
@@ -108,7 +109,7 @@ public class S3Client {
         }
     }
 
-    public String removeBucket(String bucketName) throws DeleteBucketException {
+    public String removeBucket(String prefix, String bucketName) throws DeleteBucketException {
         try {
             getClient().removeBucket(bucketName);
             return bucketName;
@@ -162,7 +163,7 @@ public class S3Client {
         }
     }
 
-    public void upload(String bucketName, String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {
+    public void upload(String prefix, String bucketName, String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {
 
         try {
             getClient().putObject(bucketName, uuid, bais, bais.available(), contentType);
@@ -190,7 +191,7 @@ public class S3Client {
     }
 
 
-    public InputStream download(String minioBucket, String uuid) throws DownloadException, S3Exception {
+    public InputStream download(String prefix, String minioBucket, String uuid) throws DownloadException, S3Exception {
         try {
             ObjectStat so = getClient().statObject(minioBucket, uuid);
             return getClient().getObject(minioBucket, uuid);
@@ -217,7 +218,7 @@ public class S3Client {
         }
     }
 
-    public void delete(String minioBucket, String uuid) throws DeleteException, S3Exception {
+    public void delete(String prefix, String minioBucket, String uuid) throws DeleteException, S3Exception {
         try {
             ObjectStat so = getClient().statObject(minioBucket, uuid);
             getClient().removeObject(minioBucket, uuid);
@@ -242,7 +243,7 @@ public class S3Client {
         }
     }
 
-    public String getCover(String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
+    public String getCover(String prefix, String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
         try {
             return getClient().presignedGetObject(minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
@@ -268,7 +269,7 @@ public class S3Client {
         }
     }
 
-    public String getObjectUrl(String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
+    public String getObjectUrl(String prefix, String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
         try {
 
             return getClient().getObjectUrl(minioBucket, uuid);

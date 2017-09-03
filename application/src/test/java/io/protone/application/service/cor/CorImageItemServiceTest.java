@@ -54,8 +54,8 @@ public class CorImageItemServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
-        when(s3Client.getCover(anyString(), anyString())).thenReturn("test");
+        doNothing().when(s3Client).upload(anyString(),anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(),anyString(), anyString())).thenReturn("test");
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);

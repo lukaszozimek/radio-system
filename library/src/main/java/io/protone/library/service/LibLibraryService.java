@@ -22,6 +22,8 @@ import org.xml.sax.SAXException;
 import javax.inject.Inject;
 import java.io.IOException;
 
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
+
 @Service
 @Transactional
 public class LibLibraryService {
@@ -69,7 +71,7 @@ public class LibLibraryService {
 
     public LibLibrary createOrUpdateLibrary(LibLibrary libLibrary) throws CreateBucketException {
         log.debug("Persisting LibLibrary: {}", libLibrary);
-        s3Client.makeBucket(libLibrary.getShortcut());
+        s3Client.makeBucket(libLibrary.getNetwork().getShortcut(), MEDIA_ITEM + libLibrary.getShortcut());
         libLibrary = libraryRepository.saveAndFlush(libLibrary);
         return libLibrary;
     }
@@ -77,7 +79,7 @@ public class LibLibraryService {
     public LibLibrary createOrUpdateLibraryWithImage(LibLibrary libLibrary, MultipartFile cover) throws CreateBucketException, IOException, TikaException, SAXException {
         CorImageItem imageItem = corImageItemService.saveImageItem(cover);
         log.debug("Persisting LibLibrary: {}", libLibrary);
-        s3Client.makeBucket(libLibrary.getShortcut());
+        s3Client.makeBucket(libLibrary.getNetwork().getShortcut(), MEDIA_ITEM + libLibrary.getShortcut());
         if (imageItem == null) {
             imageItem = corImageItemService.getDefualtImageItem();
         }

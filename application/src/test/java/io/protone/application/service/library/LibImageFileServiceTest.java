@@ -70,7 +70,7 @@ public class LibImageFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shoulDownloadImageFile() throws Exception {
         //when
-        when(s3Client.download(anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
+        when(s3Client.download(anyString(),anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
         ReflectionTestUtils.setField(libImageFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libImageFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());

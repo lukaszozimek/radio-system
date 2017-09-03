@@ -76,6 +76,8 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibLibrary.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibFileLibrary.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibMarker.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibMediaItem.xml"
@@ -188,6 +190,9 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibLibrary.xml"
              relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibFileLibrary.xml"
+             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibMarker.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibMediaItem.xml"
@@ -280,6 +285,9 @@
              relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Lib_Library_Channel.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Lib_File_Library_Channel.xml"
              relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibAlbum_LibImageItem.xml"

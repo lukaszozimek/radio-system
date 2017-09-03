@@ -8,7 +8,7 @@ import io.protone.core.s3.exceptions.S3Exception;
 import io.protone.core.s3.exceptions.UploadException;
 import io.protone.library.domain.LibCloudObject;
 import io.protone.library.domain.LibFileItem;
-import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibFileItemRepository;
@@ -37,12 +37,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import static io.protone.core.constans.MinioFoldersConstants.FILE;
+
 @Service
 public class LibFileItemService {
 
     private final Logger log = LoggerFactory.getLogger(LibFileItemService.class);
     @Inject
-    private LibLibraryService libraryService;
+    private LibFileLibraryService libraryService;
 
     @Inject
     private LibFileItemRepository libFileItemRepository;
@@ -62,7 +64,7 @@ public class LibFileItemService {
 
     public LibFileItem uploadFileItem(String networkShortcut, String libraryShortcut, MultipartFile file) throws IOException {
         LibFileItem libFileItem = new LibFileItem();
-        LibLibrary libLibrary = libraryService.findLibrary(libraryShortcut, networkShortcut);
+        LibFileLibrary libFileLibrary = libraryService.findLibrary(libraryShortcut, networkShortcut);
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         byte[] inputStream = new byte[bais.available()];
         Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
@@ -74,20 +76,20 @@ public class LibFileItemService {
         try {
             parser.parse(inputStreamSupplier.get(), handler, metadata, pcontext);
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libLibrary.getShortcut(), fileUUID, inputStreamSupplier.get(), metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libFileLibrary.getNetwork().getShortcut(), FILE + libFileLibrary.getShortcut(), fileUUID, inputStreamSupplier.get(), metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                     .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                     .originalName(file.getOriginalFilename())
                     .original(Boolean.TRUE)
                     .size(file.getSize())
-                    .network(libLibrary.getNetwork())
+                    .network(libFileLibrary.getNetwork())
                     .hash(ServiceConstants.NO_HASH)
                     .objectType(LibObjectTypeEnum.OT_AUDIO);
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
 
             libFileItem.setCloudObject(cloudObject);
-            libFileItem.setLibrary(libLibrary);
+            libFileItem.setLibrary(libFileLibrary);
             log.debug("Persisting LibDocumentObject: {}", libFileItem);
             libFileItemRepository.saveAndFlush(libFileItem);
         } catch (UploadException e) {
@@ -118,7 +120,7 @@ public class LibFileItemService {
         LibCloudObject cloudObject = libFileItem.getCloudObject();
         InputStream stream = null;
         try {
-            stream = s3Client.download(itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getNetwork().getShortcut(), FILE + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
             responseHeaders.add("Content-Length", String.format("%d", cloudObject.getSize()));
@@ -143,7 +145,7 @@ public class LibFileItemService {
 
                 LibCloudObject cloudObject = libFileItem.getCloudObject();
                 try {
-                    s3Client.delete(libFileItem.getLibrary().getShortcut(), cloudObject.getUuid());
+                    s3Client.delete(itemDB.getNetwork().getShortcut(), FILE + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
                     libFileItemRepository.delete(libFileItem);
                     libFileItemRepository.flush();
                     cloudObjectRepository.delete(cloudObject);

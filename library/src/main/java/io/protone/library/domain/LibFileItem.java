@@ -1,17 +1,14 @@
 package io.protone.library.domain;
 
 
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibFileTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,46 +18,21 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_file_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibFileItem extends AbstractAuditingEntity implements Serializable {
+public class LibFileItem extends CorItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
-
-    @NotNull
-    @Size(max = 15)
-    @Column(name = "idx", length = 15, nullable = false)
-    private String idx;
-
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private LibFileTypeEnum type;
 
     @ManyToOne
-    private LibLibrary library;
+    private LibFileLibrary library;
 
     @OneToOne
     @JoinColumn(unique = true)
     private LibCloudObject cloudObject;
-
-    @ManyToOne
-    private LibFileItem parentFile;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
-    private CorChannel channel;
 
 
     public Long getId() {
@@ -110,29 +82,16 @@ public class LibFileItem extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public LibLibrary getLibrary() {
+    public LibFileLibrary getLibrary() {
         return library;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
+    public void setLibrary(LibFileLibrary libLibrary) {
         this.library = libLibrary;
     }
 
-    public LibFileItem library(LibLibrary libLibrary) {
+    public LibFileItem library(LibFileLibrary libLibrary) {
         this.library = libLibrary;
-        return this;
-    }
-
-    public LibFileItem getParentFile() {
-        return parentFile;
-    }
-
-    public void setParentFile(LibFileItem libFileItem) {
-        this.parentFile = libFileItem;
-    }
-
-    public LibFileItem parentFile(LibFileItem libFileItem) {
-        this.parentFile = libFileItem;
         return this;
     }
 

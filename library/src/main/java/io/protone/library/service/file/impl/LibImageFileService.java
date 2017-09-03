@@ -39,6 +39,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
+
 /**
  * Created by lukaszozimek on 28/05/2017.
  */
@@ -76,7 +78,7 @@ public class LibImageFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libraryDB.getNetwork().getShortcut(), MEDIA_ITEM + libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                     .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                     .originalName(originalFileName)
@@ -127,7 +129,7 @@ public class LibImageFileService implements LibFileService {
 
         InputStream stream = null;
         try {
-            stream = s3Client.download(itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getNetwork().getShortcut(), MEDIA_ITEM + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
@@ -155,7 +157,7 @@ public class LibImageFileService implements LibFileService {
                 for (LibImageObject libImageObject : libImageObjects) {
                     LibCloudObject cloudObject = libImageObject.getCloudObject();
                     try {
-                        s3Client.delete(libMediaItem.getLibrary().getShortcut(), cloudObject.getUuid());
+                        s3Client.delete(libMediaItem.getNetwork().getShortcut(), MEDIA_ITEM + libMediaItem.getLibrary().getShortcut(), cloudObject.getUuid());
                         libImageObjectRepository.delete(libImageObject);
                         libImageObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);

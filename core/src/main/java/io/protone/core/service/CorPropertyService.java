@@ -1,7 +1,7 @@
 package io.protone.core.service;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import io.protone.core.domain.CorMediaItem;
+import io.protone.core.domain.CorItem;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.domain.CorPropertyKey;
 import io.protone.core.domain.CorPropertyValue;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-
 import java.util.Set;
 
 import static io.protone.core.constans.ServiceConstants.NO_DATA;
@@ -34,7 +33,7 @@ public class CorPropertyService {
     private CorPropertyKeyRepository corPropertyKeyRepository;
 
     @Transactional
-    public CorPropertyValue saveCorProperty(String metadataName, CorMediaItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
+    public CorPropertyValue saveCorProperty(String metadataName, CorItem libMediaItem, Metadata metadata, CorNetwork corNetwork) {
         CorPropertyKey corPropertyKey;
         if (Strings.isNullOrEmpty(metadataName)) {
             corPropertyKey = new CorPropertyKey().key(NO_DATA).network(corNetwork);

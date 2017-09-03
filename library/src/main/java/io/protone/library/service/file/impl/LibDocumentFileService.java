@@ -38,6 +38,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
+
 /**
  * Created by lukaszozimek on 08/06/2017.
  */
@@ -76,7 +78,7 @@ public class LibDocumentFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libraryDB.getNetwork().getShortcut(), MEDIA_ITEM + libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
@@ -127,7 +129,7 @@ public class LibDocumentFileService implements LibFileService {
 
         InputStream stream = null;
         try {
-            stream = s3Client.download(itemDB.getLibrary().getShortcut(),cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getNetwork().getShortcut(), MEDIA_ITEM + itemDB.getLibrary().getShortcut(),cloudObject.getUuid());
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
@@ -156,7 +158,7 @@ public class LibDocumentFileService implements LibFileService {
                 for (LibDocumentObject audioObject : objects) {
                     LibCloudObject cloudObject = audioObject.getCloudObject();
                     try {
-                        s3Client.delete(libMediaItem.getLibrary().getShortcut(),cloudObject.getUuid());
+                        s3Client.delete(libMediaItem.getNetwork().getShortcut(), MEDIA_ITEM + libMediaItem.getLibrary().getShortcut(),cloudObject.getUuid());
                         libDocumentObjectRepository.delete(audioObject);
                         libDocumentObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);
