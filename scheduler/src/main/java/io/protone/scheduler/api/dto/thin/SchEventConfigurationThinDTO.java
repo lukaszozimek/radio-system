@@ -3,9 +3,9 @@ package io.protone.scheduler.api.dto.thin;
 
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.scheduler.api.dto.SchConfigurationTimeParamsDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.api.dto.SchQueueParamsDTO;
-import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 
 import java.io.Serializable;
@@ -33,7 +33,7 @@ public class SchEventConfigurationThinDTO implements Serializable {
 
     private SchQueueParamsDTO queueParams;
 
-    private SchTimeParamsDTO timeParams;
+    private SchConfigurationTimeParamsDTO timeParams;
 
     private CoreUserThinDTO createdBy;
 
@@ -104,15 +104,15 @@ public class SchEventConfigurationThinDTO implements Serializable {
         return this;
     }
 
-    public SchTimeParamsDTO getTimeParams() {
+    public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
+    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
 
-    public SchEventConfigurationThinDTO timeParams(SchTimeParamsDTO timeParams) {
+    public SchEventConfigurationThinDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
         return this;
     }
