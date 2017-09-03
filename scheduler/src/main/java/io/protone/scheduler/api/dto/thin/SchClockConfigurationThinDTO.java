@@ -2,7 +2,6 @@ package io.protone.scheduler.api.dto.thin;
 
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
-import io.protone.scheduler.api.dto.SchQueueParamsDTO;
 import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 
 import java.io.Serializable;
@@ -20,8 +19,6 @@ public class SchClockConfigurationThinDTO implements Serializable {
     private String name;
 
     private String shortName;
-
-    private SchQueueParamsDTO queueParams;
 
     private CorDictionaryDTO clockCategory;
 
@@ -69,19 +66,6 @@ public class SchClockConfigurationThinDTO implements Serializable {
         return this;
     }
 
-
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchClockConfigurationThinDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
 
     public SchTimeParamsDTO getTimeParams() {
         return timeParams;
@@ -165,7 +149,6 @@ public class SchClockConfigurationThinDTO implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
-                ", queueParams=" + queueParams +
                 ", clockCategory=" + clockCategory +
                 ", timeParams=" + timeParams +
                 '}';

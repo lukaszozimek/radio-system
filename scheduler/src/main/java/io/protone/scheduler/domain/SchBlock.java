@@ -44,8 +44,8 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClock clock;
 
-    @Embedded
-    private SchQueueParams queueParams;
+    @Column(name = "sequence")
+    private Long sequence;
 
     @Embedded
     private SchTimeParams timeParams;
@@ -131,19 +131,6 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
 
     public SchBlock clock(SchClock clock) {
         this.clock = clock;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchBlock queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
         return this;
     }
 
@@ -273,5 +260,13 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
                 ", length='" + getLength() + "'" +
                 ", eventType='" + getEventType() + "'" +
                 "}";
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

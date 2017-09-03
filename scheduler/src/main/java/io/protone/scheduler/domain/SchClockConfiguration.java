@@ -40,8 +40,8 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
     @ManyToOne
     private SchGrid grid;
 
-    @Embedded
-    private SchQueueParams queueParams;
+    @Column(name = "sequence")
+    private Long sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
@@ -115,19 +115,6 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
 
     public SchClockConfiguration grid(SchGrid grid) {
         this.grid = grid;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchClockConfiguration queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
         return this;
     }
 
@@ -215,7 +202,13 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
         this.channel = channel;
         return this;
     }
+    public Long getSequence() {
+        return sequence;
+    }
 
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
     public CorDictionary getClockCategory() {
         return clockCategory;
     }
@@ -252,7 +245,6 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
                 ", grid=" + grid +
-                ", queueParams=" + queueParams +
                 ", clockCategory=" + clockCategory +
                 ", timeParams=" + timeParams +
                 ", events=" + events +
@@ -261,4 +253,6 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
                 ", channel=" + channel +
                 '}';
     }
+
+
 }

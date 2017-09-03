@@ -30,8 +30,6 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "seq")
-    private Long seq;
 
     @PodamExclude
     @ManyToOne
@@ -45,8 +43,8 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     @ManyToOne
     private LibMediaItem mediaItem;
 
-    @Embedded
-    private SchQueueParams queueParams;
+    @Column(name = "sequence")
+    private Long sequence;
 
     @Embedded
     private SchTimeParams timeParams;
@@ -78,16 +76,16 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         this.id = id;
     }
 
-    public Long getSeq() {
-        return seq;
+    public Long getSequence() {
+        return sequence;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
     public SchEmission seq(Long seq) {
-        this.seq = seq;
+        this.sequence = seq;
         return this;
     }
 
@@ -130,18 +128,8 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
 
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
 
-    public SchEmission queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
 
     public SchTimeParams getTimeParams() {
         return timeParams;
@@ -244,7 +232,7 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     public String toString() {
         return "Emission{" +
                 "id=" + getId() +
-                ", seq='" + getSeq() + "'" +
+                ", sequence='" + getSequence() + "'" +
                 "}";
     }
 }

@@ -41,6 +41,9 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @PodamExclude
     private CorDictionary eventCategory;
 
+    @Column(name = "sequence")
+    private Long sequence;
+
     @PodamExclude
     @ManyToOne
     private SchClockConfiguration clockConfiguration;
@@ -69,8 +72,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchLogConfiguration schLogConfiguration;
 
-    @Embedded
-    private SchQueueParams queueParams;
 
     @Embedded
     private SchConfigurationTimeParams timeParams;
@@ -150,19 +151,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
 
     public SchEvent eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchEvent queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
         return this;
     }
 
@@ -306,4 +294,11 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     }
 
 
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
 }

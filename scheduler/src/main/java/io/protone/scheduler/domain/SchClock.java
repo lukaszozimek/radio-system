@@ -41,8 +41,8 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchSchedule schSchedule;
 
-    @Embedded
-    private SchQueueParams queueParams;
+    @Column(name = "sequence")
+    private Long sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
@@ -116,19 +116,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
 
     public SchClock grid(SchSchedule schSchedule) {
         this.schSchedule = schSchedule;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchClock queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
         return this;
     }
 
@@ -253,7 +240,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
                 ", schSchedule=" + schSchedule +
-                ", queueParams=" + queueParams +
                 ", clockCategory=" + clockCategory +
                 ", timeParams=" + timeParams +
                 ", blocks=" + blocks +
@@ -261,5 +247,13 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
                 ", network=" + network +
                 ", channel=" + channel +
                 '}';
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

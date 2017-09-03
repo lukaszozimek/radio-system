@@ -72,7 +72,7 @@ public class SchEventMapperTest {
         SchEventDTO dto = eventMapper.DB2DTO(event);
         assertNotNull(dto.getEmissions());
         assertNotNull(dto.getName());
-        assertNotNull(dto.getQueueParams());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getEventType());
         assertNotNull(dto.getTimeParams());
     }
@@ -86,7 +86,7 @@ public class SchEventMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getEmissions());
             assertNotNull(dto.getName());
-            assertNotNull(dto.getQueueParams());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getEventType());
             assertNotNull(dto.getTimeParams());
             assertNotNull(dto.getEventCategory());
@@ -100,7 +100,7 @@ public class SchEventMapperTest {
 
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getName());
-        assertNotNull(entity.getQueueParams());
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getEventType());
         assertNotNull(entity.getTimeParams());
         assertNotNull(entity.getEventCategory());
@@ -118,7 +118,7 @@ public class SchEventMapperTest {
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getName());
-            assertNotNull(entity.getQueueParams());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getEventType());
             assertNotNull(entity.getTimeParams());
             assertNotNull(entity.getEventCategory());

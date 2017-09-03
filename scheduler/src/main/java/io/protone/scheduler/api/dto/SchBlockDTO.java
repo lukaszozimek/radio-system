@@ -19,27 +19,23 @@ import java.util.Objects;
 public class SchBlockDTO {
 
     @PodamExclude
-    @JsonProperty("blocks")
     private List<SchBlockDTO> blocks = new ArrayList<SchBlockDTO>();
 
     @PodamExclude
-    @JsonProperty("emissions")
     private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
 
-    @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("length")
+
     private Long length = null;
 
-    @JsonProperty("name")
+
     private String name = null;
 
-    @JsonProperty("timeParams")
+
     private SchTimeParamsDTO timeParams = null;
 
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
+    private Long sequence;
 
     @JsonProperty("schEventType")
     private EventTypeEnum eventType = null;
@@ -170,25 +166,6 @@ public class SchBlockDTO {
         this.timeParams = timeParams;
     }
 
-    public SchBlockDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
     public SchBlockDTO eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
         return this;
@@ -223,13 +200,13 @@ public class SchBlockDTO {
                 Objects.equals(this.length, schBlockDTO.length) &&
                 Objects.equals(this.name, schBlockDTO.name) &&
                 Objects.equals(this.timeParams, schBlockDTO.timeParams) &&
-                Objects.equals(this.queueParams, schBlockDTO.queueParams) &&
+                Objects.equals(this.sequence, schBlockDTO.sequence) &&
                 Objects.equals(this.eventType, schBlockDTO.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blocks, emissions, id, length, name, timeParams, queueParams, eventType);
+        return Objects.hash(blocks, emissions, id, length, name, timeParams, sequence, eventType);
     }
 
     @Override
@@ -243,7 +220,7 @@ public class SchBlockDTO {
         sb.append("    length: ").append(toIndentedString(length)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
         sb.append("}");
         return sb.toString();

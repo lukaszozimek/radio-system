@@ -1,6 +1,5 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -18,30 +17,35 @@ import java.util.Objects;
 public class SchClockDTO {
 
     @PodamExclude
-    @JsonProperty("blocks")
     private List<SchBlockDTO> blocks = new ArrayList<SchBlockDTO>();
 
     @PodamExclude
-    @JsonProperty("emissions")
     private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
 
-    @JsonProperty("id")
+
     private Long id = null;
 
-    @JsonProperty("name")
+
     private String name = null;
 
-    @JsonProperty("category")
+
     private CorDictionaryDTO clockCategory;
 
-    @JsonProperty("shortName")
+
     private String shortName = null;
 
-    @JsonProperty("timeParams")
     private SchTimeParamsDTO timeParams = null;
 
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
+
+    private Long sequence;
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
 
     public SchClockDTO blocks(List<SchBlockDTO> blocks) {
         this.blocks = blocks;
@@ -149,11 +153,6 @@ public class SchClockDTO {
         this.timeParams = timeParams;
     }
 
-    public SchClockDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
     public CorDictionaryDTO getClockCategory() {
         return clockCategory;
     }
@@ -162,19 +161,6 @@ public class SchClockDTO {
         this.clockCategory = clockCategory;
     }
 
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
 
     public String getShortName() {
         return shortName;
@@ -198,12 +184,12 @@ public class SchClockDTO {
                 Objects.equals(this.id, schClockDTO.id) &&
                 Objects.equals(this.name, schClockDTO.name) &&
                 Objects.equals(this.timeParams, schClockDTO.timeParams) &&
-                Objects.equals(this.queueParams, schClockDTO.queueParams);
+                Objects.equals(this.sequence, schClockDTO.sequence);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blocks, emissions, id, name, timeParams, queueParams);
+        return Objects.hash(blocks, emissions, id, name, timeParams, sequence);
     }
 
     @Override
@@ -216,7 +202,7 @@ public class SchClockDTO {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    clockCategory: ").append(toIndentedString(clockCategory)).append("\n");
         sb.append("}");
         return sb.toString();

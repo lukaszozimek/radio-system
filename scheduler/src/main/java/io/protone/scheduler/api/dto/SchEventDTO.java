@@ -1,6 +1,5 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,21 +14,24 @@ import java.util.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchEventDTO {
-    @JsonProperty("emissions")
+
     private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
 
-    @JsonProperty("id")
+
     private Long id = null;
 
-    @JsonProperty("name")
     private String name = null;
-    @JsonProperty("shortName")
+
     private String shortName = null;
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
-    @JsonProperty("eventType")
+
+
+
+    private Long sequence;
+
+
     private EventTypeEnum eventType = null;
-    @JsonProperty("timeParams")
+
+
     private SchConfigurationTimeParamsDTO timeParams = null;
 
     private Set<SchEventDTO> blocks = new HashSet<>();
@@ -100,25 +102,6 @@ public class SchEventDTO {
         this.name = name;
     }
 
-    public SchEventDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
     public SchEventDTO eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
         return this;
@@ -177,7 +160,13 @@ public class SchEventDTO {
         this.eventCategory = eventCategory;
 
     }
+    public Long getSequence() {
+        return sequence;
+    }
 
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
     public CorDictionaryDTO getEventCategory() {
         return eventCategory;
     }
@@ -194,14 +183,14 @@ public class SchEventDTO {
         return Objects.equals(this.emissions, schEventDTO.emissions) &&
                 Objects.equals(this.id, schEventDTO.id) &&
                 Objects.equals(this.name, schEventDTO.name) &&
-                Objects.equals(this.queueParams, schEventDTO.queueParams) &&
+                Objects.equals(this.sequence, schEventDTO.sequence) &&
                 Objects.equals(this.eventType, schEventDTO.eventType) &&
                 Objects.equals(this.timeParams, schEventDTO.timeParams);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(emissions, id, name, queueParams, eventType, timeParams);
+        return Objects.hash(emissions, id, name, sequence, eventType, timeParams);
     }
 
     @Override
@@ -212,7 +201,7 @@ public class SchEventDTO {
         sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
         sb.append("}");

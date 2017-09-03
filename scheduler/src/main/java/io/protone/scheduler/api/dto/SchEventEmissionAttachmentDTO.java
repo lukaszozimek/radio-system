@@ -22,6 +22,8 @@ public class SchEventEmissionAttachmentDTO {
 
     private Long fadeStart = null;
 
+
+    private Long sequence;
     @PodamLongValue
     private Long fadeInLength = null;
     private Long volumeLevel = null;
@@ -155,6 +157,14 @@ public class SchEventEmissionAttachmentDTO {
     public SchEventEmissionAttachmentDTO fadeType(FadeTypeEnum fadeType) {
         this.fadeType = fadeType;
         return this;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
     /**

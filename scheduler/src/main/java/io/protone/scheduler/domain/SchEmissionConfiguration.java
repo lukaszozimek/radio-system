@@ -30,9 +30,6 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "seq")
-    private Long seq;
-
     @PodamExclude
     @ManyToOne
     private SchClockConfiguration clock;
@@ -41,8 +38,8 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     @ManyToOne
     private LibMediaItem mediaItem;
 
-    @Embedded
-    private SchQueueParams queueParams;
+    @Column(name = "sequence")
+    private Long sequence;
 
     @Embedded
     private SchConfigurationTimeParams timeParams;
@@ -74,16 +71,16 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
         this.id = id;
     }
 
-    public Long getSeq() {
-        return seq;
+    public Long getSequence() {
+        return sequence;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
     public SchEmissionConfiguration seq(Long seq) {
-        this.seq = seq;
+        this.sequence = seq;
         return this;
     }
 
@@ -111,19 +108,6 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
 
     public SchEmissionConfiguration mediaItem(LibMediaItem mediaItem) {
         this.mediaItem = mediaItem;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchEmissionConfiguration queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
         return this;
     }
 
@@ -228,7 +212,7 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     public String toString() {
         return "Emission{" +
                 "id=" + getId() +
-                ", seq='" + getSeq() + "'" +
+                ", sequence='" + getSequence() + "'" +
                 "}";
     }
 

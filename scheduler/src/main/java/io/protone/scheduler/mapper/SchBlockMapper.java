@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Mapper for the entity Block and its DTO BlockDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchQueueParamsMapper.class, SchEmissionMapper.class, SchTimeParamsMapper.class,})
+@Mapper(componentModel = "spring", uses = {SchEmissionMapper.class, SchTimeParamsMapper.class,})
 public interface SchBlockMapper  {
      SchBlock DTO2DB(SchBlockDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

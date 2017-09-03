@@ -94,7 +94,13 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.attachmentType = attachementType;
         return this;
     }
+    public Long getSequence() {
+        return sequence;
+    }
 
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
     public Long getFadeStart() {
         return fadeStart;
     }
@@ -253,11 +259,6 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.timeParams = timeParams;
     }
 
-    public Long getSequence() {
-        return sequence;
-    }
 
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
+
 }

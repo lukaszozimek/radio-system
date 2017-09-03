@@ -21,7 +21,7 @@ public class SchClockConfigurationDTO implements Serializable {
 
     private String shortName;
 
-    private SchQueueParamsDTO queueParams;
+    private Long sequence;
 
     private CorDictionaryDTO clockCategory;
 
@@ -73,19 +73,6 @@ public class SchClockConfigurationDTO implements Serializable {
         return this;
     }
 
-
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchClockConfigurationDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
 
     public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
@@ -213,11 +200,19 @@ public class SchClockConfigurationDTO implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
-                ", queueParams=" + queueParams +
+                ", sequence=" + sequence +
                 ", clockCategory=" + clockCategory +
                 ", timeParams=" + timeParams +
                 ", events=" + events +
                 ", emissions=" + emissions +
                 '}';
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

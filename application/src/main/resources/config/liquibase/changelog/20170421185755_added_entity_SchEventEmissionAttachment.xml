@@ -34,7 +34,9 @@
             <column name="volume_level" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
+            <column name="sequence" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="fade_out_length" type="bigint">
                 <constraints nullable="true"/>
             </column>

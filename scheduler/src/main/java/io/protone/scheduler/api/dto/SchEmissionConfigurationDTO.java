@@ -1,10 +1,8 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,26 +13,20 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchEmissionConfigurationDTO {
-    @JsonProperty("blockId")
     private Long blockId = null;
 
-    @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("mediaItem")
     private LibMediaItemThinDTO mediaItem = null;
 
-    @JsonProperty("seq")
-    private Integer seq = null;
 
-    @JsonProperty("attachments")
     private List<SchAttachmentConfigurationDTO> attachments = new ArrayList<SchAttachmentConfigurationDTO>();
 
-    @JsonProperty("timeParams")
     private SchConfigurationTimeParamsDTO timeParams = null;
 
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
+
+
+    private Long sequence;
 
     public SchEmissionConfigurationDTO blockId(Long blockId) {
         this.blockId = blockId;
@@ -93,25 +85,6 @@ public class SchEmissionConfigurationDTO {
         this.mediaItem = mediaItem;
     }
 
-    public SchEmissionConfigurationDTO seq(Integer seq) {
-        this.seq = seq;
-        return this;
-    }
-
-    /**
-     * Get seq
-     *
-     * @return seq
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    public Integer getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
 
     public SchEmissionConfigurationDTO attachment(List<SchAttachmentConfigurationDTO> attachment) {
         this.attachments = attachment;
@@ -155,26 +128,13 @@ public class SchEmissionConfigurationDTO {
     public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
         this.timeParams = timeParams;
     }
-
-    public SchEmissionConfigurationDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
+    public Long getSequence() {
+        return sequence;
     }
 
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -188,15 +148,14 @@ public class SchEmissionConfigurationDTO {
         return Objects.equals(this.blockId, schEmissionDTO.blockId) &&
                 Objects.equals(this.id, schEmissionDTO.id) &&
                 Objects.equals(this.mediaItem, schEmissionDTO.mediaItem) &&
-                Objects.equals(this.seq, schEmissionDTO.seq) &&
+                Objects.equals(this.sequence, schEmissionDTO.sequence) &&
                 Objects.equals(this.attachments, schEmissionDTO.attachments) &&
-                Objects.equals(this.timeParams, schEmissionDTO.timeParams) &&
-                Objects.equals(this.queueParams, schEmissionDTO.queueParams);
+                Objects.equals(this.timeParams, schEmissionDTO.timeParams) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blockId, id, mediaItem, seq, attachments, timeParams, queueParams);
+        return Objects.hash(blockId, id, mediaItem,  attachments, timeParams, sequence);
     }
 
     @Override
@@ -207,10 +166,9 @@ public class SchEmissionConfigurationDTO {
         sb.append("    blockId: ").append(toIndentedString(blockId)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    mediaItem: ").append(toIndentedString(mediaItem)).append("\n");
-        sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
+        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    attachments: ").append(toIndentedString(attachments)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
         sb.append("}");
         return sb.toString();
     }

@@ -37,6 +37,9 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     @Column(name = "fade_start")
     private Long fadeStart;
 
+    @Column(name = "sequence")
+    private Long sequence;
+
     @PodamLongValue
     @Column(name = "fade_in_length")
     private Long fadeInLength;
@@ -209,6 +212,21 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
         this.channel = channel;
     }
 
+    public SchConfigurationTimeParams getTimeParams() {
+        return timeParams;
+    }
+
+    public void setTimeParams(SchConfigurationTimeParams timeParams) {
+        this.timeParams = timeParams;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -242,11 +260,5 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
                 "}";
     }
 
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
 
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
 }

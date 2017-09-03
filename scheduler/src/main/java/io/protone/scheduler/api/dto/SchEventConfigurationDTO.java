@@ -32,7 +32,7 @@ public class SchEventConfigurationDTO implements Serializable {
 
     private SchLogConfigurationDTO schLogConfiguration;
 
-    private SchQueueParamsDTO queueParams;
+    private Long sequence;
 
     private SchConfigurationTimeParamsDTO timeParams;
 
@@ -114,18 +114,6 @@ public class SchEventConfigurationDTO implements Serializable {
         return this;
     }
 
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchEventConfigurationDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
 
     public SchConfigurationTimeParamsDTO getTimeParams() {
         return timeParams;
@@ -224,8 +212,16 @@ public class SchEventConfigurationDTO implements Serializable {
                 ", emissions=" + emissions +
                 ", eventType=" + eventType +
                 ", schLogConfiguration=" + schLogConfiguration +
-                ", queueParams=" + queueParams +
+                ", sequence=" + sequence +
                 ", timeParams=" + timeParams +
                 '}';
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Mapper for the entity Clock and its DTO ClockDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchEmissionMapper.class, SchQueueParamsMapper.class, SchTimeParamsMapper.class, CorDictionaryMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEmissionMapper.class, SchTimeParamsMapper.class, CorDictionaryMapper.class})
 public interface SchClockMapper {
     SchClock DTO2DB(SchClockDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

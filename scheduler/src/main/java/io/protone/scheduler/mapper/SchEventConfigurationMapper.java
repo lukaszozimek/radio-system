@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 30/08/2017.
  */
-@Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchQueueParamsMapper.class, SchAttachmentConfigurationMapper.class, SchConfigurationTimeParamsMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchAttachmentConfigurationMapper.class, SchConfigurationTimeParamsMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchEventConfigurationMapper {
     List<SchEventConfigurationThinDTO> DBs2ThinDTOs(List<SchEventConfiguration> schClockList);
 

@@ -63,6 +63,7 @@ public class SchEventEmissionAttachmentMapperTest {
         assertNotNull(dto.getFadeInLength());
         assertNotNull(dto.getFadeOutLength());
         assertNotNull(dto.getFadeStart());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getFadeType());
         assertNotNull(dto.getMediaItem());
         assertNotNull(dto.getVolumeLevel());
@@ -78,6 +79,7 @@ public class SchEventEmissionAttachmentMapperTest {
             assertNotNull(dto.getAttachmentType());
             assertNotNull(dto.getFadeInLength());
             assertNotNull(dto.getFadeOutLength());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getFadeStart());
             assertNotNull(dto.getFadeType());
             assertNotNull(dto.getMediaItem());
@@ -96,7 +98,7 @@ public class SchEventEmissionAttachmentMapperTest {
         assertNotNull(entity.getFadeType());
         assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getVolumeLevel());
-
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
@@ -115,6 +117,7 @@ public class SchEventEmissionAttachmentMapperTest {
             assertNotNull(entity.getFadeType());
             assertNotNull(entity.getMediaItem());
             assertNotNull(entity.getVolumeLevel());
+            assertNotNull(entity.getSequence());
 
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());

@@ -55,8 +55,8 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
     @ManyToOne
     private SchLogConfiguration schLogConfiguration;
 
-    @Embedded
-    private SchQueueParams queueParams;
+    @Column(name = "sequence")
+    private Long sequence;
 
     @Embedded
     private SchConfigurationTimeParams timeParams;
@@ -136,19 +136,6 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
 
     public SchEventConfiguration eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchEventConfiguration queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
         return this;
     }
 
@@ -240,5 +227,13 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
 
     public void setSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
         this.schLogConfiguration = schLogConfiguration;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 }

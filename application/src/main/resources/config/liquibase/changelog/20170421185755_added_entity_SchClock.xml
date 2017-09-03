@@ -30,20 +30,9 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="previous_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="sequence" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
-            <column name="previous_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="next_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="next_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

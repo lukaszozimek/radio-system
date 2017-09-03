@@ -7,11 +7,9 @@ import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
-import io.protone.scheduler.api.dto.SchQueueParamsDTO;
 import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.domain.SchEmission;
-import io.protone.scheduler.domain.SchQueueParams;
 import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.mapper.SchEmissionMapper;
 import org.junit.Before;
@@ -55,17 +53,15 @@ public class SchEmissionMapperTest {
         // Fill entity instance
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmission.class);
-        emission.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
         emission.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
         emission.setAttachments(Sets.newHashSet(factory.manufacturePojo(SchAttachment.class)));
-        emission.setQueueParams(factory.manufacturePojo(SchQueueParams.class));
+
         emission.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
         emissions.add(emission);
 
         //Fill DTO instance
         emissionDTO = factory.manufacturePojo(SchEmissionDTO.class);
         emissionDTO.setAttachment(Lists.newArrayList(factory.manufacturePojo(SchAttachmentDTO.class)));
-        emissionDTO.setQueueParams(factory.manufacturePojo(SchQueueParamsDTO.class));
         emissionDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
 
 
@@ -77,9 +73,8 @@ public class SchEmissionMapperTest {
         SchEmissionDTO dto = emissionMapper.DB2DTO(emission);
 
         assertNotNull(dto.getId());
-        assertNotNull(dto.getSeq());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getTimeParams());
-        assertNotNull(dto.getQueueParams());
         assertNotNull(dto.getAttachment());
     }
 
@@ -91,9 +86,9 @@ public class SchEmissionMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
-            assertNotNull(dto.getSeq());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getTimeParams());
-            assertNotNull(dto.getQueueParams());
+
             assertNotNull(dto.getAttachment());
         });
     }
@@ -103,9 +98,9 @@ public class SchEmissionMapperTest {
         SchEmission entity = emissionMapper.DTO2DB(emissionDTO, network, corChannel);
 
         assertNotNull(entity.getId());
-        assertNotNull(entity.getSeq());
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getTimeParams());
-        assertNotNull(entity.getQueueParams());
+
 
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
@@ -120,9 +115,9 @@ public class SchEmissionMapperTest {
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getId());
-            assertNotNull(entity.getSeq());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getTimeParams());
-            assertNotNull(entity.getQueueParams());
+
 
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());

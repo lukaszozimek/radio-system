@@ -34,6 +34,9 @@
             <column name="fade_out_length" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="sequence" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="fade_type" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
@@ -58,9 +61,6 @@
             </column>
 
             <column name="relative_delay" type="bigint">
-                <constraints nullable="true"/>
-            </column>
-            <column name="sequence" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="channel_id" type="bigint">

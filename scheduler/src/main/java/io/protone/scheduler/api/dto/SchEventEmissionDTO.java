@@ -3,7 +3,6 @@ package io.protone.scheduler.api.dto;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,17 +21,22 @@ public class SchEventEmissionDTO {
 
     private LibMediaItemThinDTO mediaItem = null;
 
-
-    private Integer seq = null;
-
-
     private List<SchEventEmissionAttachmentDTO> attachment = new ArrayList<SchEventEmissionAttachmentDTO>();
 
 
     private SchConfigurationTimeParamsDTO timeParams = null;
 
 
-    private SchQueueParamsDTO queueParams = null;
+    private Long sequence;
+
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
 
     public SchEventEmissionDTO blockId(Long blockId) {
         this.blockId = blockId;
@@ -91,25 +95,6 @@ public class SchEventEmissionDTO {
         this.mediaItem = mediaItem;
     }
 
-    public SchEventEmissionDTO seq(Integer seq) {
-        this.seq = seq;
-        return this;
-    }
-
-    /**
-     * Get seq
-     *
-     * @return seq
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    public Integer getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
 
     public SchEventEmissionDTO attachment(List<SchEventEmissionAttachmentDTO> attachment) {
         this.attachment = attachment;
@@ -154,25 +139,6 @@ public class SchEventEmissionDTO {
         this.timeParams = timeParams;
     }
 
-    public SchEventEmissionDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -186,15 +152,15 @@ public class SchEventEmissionDTO {
         return Objects.equals(this.blockId, schEmissionDTO.blockId) &&
                 Objects.equals(this.id, schEmissionDTO.id) &&
                 Objects.equals(this.mediaItem, schEmissionDTO.mediaItem) &&
-                Objects.equals(this.seq, schEmissionDTO.seq) &&
+                Objects.equals(this.sequence, schEmissionDTO.sequence) &&
                 Objects.equals(this.attachment, schEmissionDTO.attachment) &&
-                Objects.equals(this.timeParams, schEmissionDTO.timeParams) &&
-                Objects.equals(this.queueParams, schEmissionDTO.queueParams);
+                Objects.equals(this.timeParams, schEmissionDTO.timeParams);
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blockId, id, mediaItem, seq, attachment, timeParams, queueParams);
+        return Objects.hash(blockId, id, mediaItem, attachment, timeParams, sequence);
     }
 
     @Override
@@ -205,10 +171,9 @@ public class SchEventEmissionDTO {
         sb.append("    blockId: ").append(toIndentedString(blockId)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    mediaItem: ").append(toIndentedString(mediaItem)).append("\n");
-        sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
+        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    attachment: ").append(toIndentedString(attachment)).append("\n");
         sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
         sb.append("}");
         return sb.toString();
     }

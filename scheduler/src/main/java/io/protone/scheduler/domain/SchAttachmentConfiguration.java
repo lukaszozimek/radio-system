@@ -94,6 +94,13 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
         this.attachmentType = attachementType;
         return this;
     }
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
 
     public Long getFadeStart() {
         return fadeStart;
@@ -253,11 +260,5 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
         this.timeParams = timeParams;
     }
 
-    public Long getSequence() {
-        return sequence;
-    }
 
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
 }

@@ -65,6 +65,7 @@ public class SchAttachmentMapperTest {
         assertNotNull(dto.getFadeStart());
         assertNotNull(dto.getFadeType());
         assertNotNull(dto.getMediaItem());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getVolumeLevel());
     }
 
@@ -80,6 +81,7 @@ public class SchAttachmentMapperTest {
             assertNotNull(dto.getFadeOutLength());
             assertNotNull(dto.getFadeStart());
             assertNotNull(dto.getFadeType());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getMediaItem());
             assertNotNull(dto.getVolumeLevel());
         });
@@ -96,7 +98,7 @@ public class SchAttachmentMapperTest {
         assertNotNull(entity.getFadeType());
         assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getVolumeLevel());
-
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
@@ -115,7 +117,7 @@ public class SchAttachmentMapperTest {
             assertNotNull(entity.getFadeType());
             assertNotNull(entity.getMediaItem());
             assertNotNull(entity.getVolumeLevel());
-
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });
