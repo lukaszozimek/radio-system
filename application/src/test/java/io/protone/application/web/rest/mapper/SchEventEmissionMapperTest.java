@@ -59,7 +59,7 @@ public class SchEventEmissionMapperTest {
 
         //Fill DTO instance
         emissionDTO = factory.manufacturePojo(SchEventEmissionDTO.class);
-        emissionDTO.setAttachment(Lists.newArrayList(factory.manufacturePojo(SchEventEmissionAttachmentDTO.class)));
+        emissionDTO.setAttachments(Lists.newArrayList(factory.manufacturePojo(SchEventEmissionAttachmentDTO.class)));
 
         emissionDTO.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParamsDTO.class));
         emissionDTOs.add(emissionDTO);
@@ -72,7 +72,7 @@ public class SchEventEmissionMapperTest {
         assertNotNull(dto.getId());
         assertNotNull(dto.getSequence());
         assertNotNull(dto.getTimeParams());
-        assertNotNull(dto.getAttachment());
+        assertNotNull(dto.getAttachments());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class SchEventEmissionMapperTest {
             assertNotNull(dto.getId());
             assertNotNull(dto.getSequence());
             assertNotNull(dto.getTimeParams());
-            assertNotNull(dto.getAttachment());
+            assertNotNull(dto.getAttachments());
         });
     }
 

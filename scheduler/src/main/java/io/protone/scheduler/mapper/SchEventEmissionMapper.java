@@ -18,7 +18,7 @@ import java.util.List;
  * Mapper for the entity Emission and its DTO EmissionDTO.
  */
 
-@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, LibMediaItemThinMapper.class,  SchConfigurationTimeParamsMapper.class, SchEventConfigurationMapper.class, SchEventMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEventEmissionAttachmentMapper.class, LibMediaItemThinMapper.class, SchConfigurationTimeParamsMapper.class, SchEventConfigurationMapper.class, SchEventMapper.class})
 public interface SchEventEmissionMapper {
     SchEventEmission DTO2DB(SchEventEmissionDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
@@ -42,7 +42,7 @@ public interface SchEventEmissionMapper {
     }
 
     @AfterMapping
-    default void schSchEmissionToSchEmissionAfterMapping(SchEventEmissionDTO dto, @MappingTarget SchEventEmission entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schEventEmissionDTOToSchEventEmissionAfterMapping(SchEventEmissionDTO dto, @MappingTarget SchEventEmission entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }

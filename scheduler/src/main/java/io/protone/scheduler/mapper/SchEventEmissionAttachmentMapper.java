@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Mapper for the entity Attachment and its SchAttachmentDTOTO AttachmentSchAttachmentDTOTO.
  */
-@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchEmissionConfigurationMapper.class,SchConfigurationTimeParamsMapper.class})
+@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchEmissionConfigurationMapper.class, SchConfigurationTimeParamsMapper.class})
 public interface SchEventEmissionAttachmentMapper {
     SchEventEmissionAttachment DTO2DB(SchEventEmissionAttachmentDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
@@ -36,7 +36,7 @@ public interface SchEventEmissionAttachmentMapper {
     }
 
     @AfterMapping
-    default void SchAttachmentConfigurationDTOToSchAttachmentConfigurationAfterMapping(SchEventEmissionAttachmentDTO dto, @MappingTarget SchEventEmissionAttachment entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+    default void schEventEmissionAttachmentDTOToSchEventEmissionAttachmentAfterMapping(SchEventEmissionAttachmentDTO dto, @MappingTarget SchEventEmissionAttachment entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }

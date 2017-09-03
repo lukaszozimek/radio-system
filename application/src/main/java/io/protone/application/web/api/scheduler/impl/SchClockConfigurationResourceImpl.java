@@ -87,11 +87,11 @@ public class SchClockConfigurationResourceImpl implements SchClockConfigurationR
 
     @Override
     public ResponseEntity<SchClockConfigurationDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
+                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                        @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get SchClockConfiguration : {}, for Network: {}", shortName, networkShortcut);
-        SchClockConfiguration entity = schClockConfigurationService.findSchClockConfigurationForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
-        SchClockConfigurationDTO response = schClockConfigurationMapper.DB2DTO(entity);
+        SchClockConfigurationDTO response = schClockConfigurationService.findDTOSchClockConfigurationForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
@@ -101,8 +101,8 @@ public class SchClockConfigurationResourceImpl implements SchClockConfigurationR
 
     @Override
     public ResponseEntity<SchClockConfigurationDTO> updateSchedulerClockForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                              @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockConfigurationDTO clockDTO) throws URISyntaxException {
+                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                           @ApiParam(value = "clockDTO", required = true) @Valid @RequestBody SchClockConfigurationDTO clockDTO) throws URISyntaxException {
         log.debug("REST request to saveSchClockConfigurationDTO SchClockConfigurationDTO : {}, for Channel {} Network: {}", clockDTO, channelShortcut, networkShortcut);
 
         if (clockDTO.getId() == null) {

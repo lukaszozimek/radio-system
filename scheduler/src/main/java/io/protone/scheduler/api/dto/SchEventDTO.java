@@ -34,7 +34,7 @@ public class SchEventDTO {
 
     private SchConfigurationTimeParamsDTO timeParams = null;
 
-    private Set<SchEventDTO> blocks = new HashSet<>();
+    private Set<SchEventDTO> events = new HashSet<>();
 
     private CorDictionaryDTO eventCategory;
 
@@ -148,12 +148,12 @@ public class SchEventDTO {
         this.shortName = shortName;
     }
 
-    public Set<SchEventDTO> getBlocks() {
-        return blocks;
+    public Set<SchEventDTO> getEvents() {
+        return events;
     }
 
-    public void setBlocks(Set<SchEventDTO> events) {
-        this.blocks = events;
+    public void setEvents(Set<SchEventDTO> events) {
+        this.events = events;
     }
 
     public void setEventCategory(CorDictionaryDTO eventCategory) {

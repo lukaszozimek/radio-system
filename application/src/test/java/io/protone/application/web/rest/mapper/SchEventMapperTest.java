@@ -61,7 +61,7 @@ public class SchEventMapperTest {
         eventDTO.addEmissionsItem(factory.manufacturePojo(SchEventEmissionDTO.class)); //Emission 1 @ rootEvent
         eventDTO.addEmissionsItem(factory.manufacturePojo(SchEventEmissionDTO.class)); //Emission 2 @ rootEvent
         eventDTO.addEmissionsItem(factory.manufacturePojo(SchEventEmissionDTO.class)); //Emission 3 @ rootEvent
-        eventDTO.setBlocks(Sets.newSet(factory.manufacturePojo(SchEventDTO.class)));
+        eventDTO.setEvents(Sets.newSet(factory.manufacturePojo(SchEventDTO.class)));
         eventDTO.setEventCategory(factory.manufacturePojo(CorDictionaryDTO.class));
 
         eventDTOs.add(eventDTO);
@@ -90,7 +90,7 @@ public class SchEventMapperTest {
             assertNotNull(dto.getEventType());
             assertNotNull(dto.getTimeParams());
             assertNotNull(dto.getEventCategory());
-            assertNotNull(dto.getBlocks());
+            assertNotNull(dto.getEvents());
         });
     }
 

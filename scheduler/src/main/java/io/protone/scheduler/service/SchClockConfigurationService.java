@@ -1,7 +1,9 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
+import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
 import io.protone.scheduler.domain.SchClockConfiguration;
+import io.protone.scheduler.mapper.SchClockConfigurationMapper;
 import io.protone.scheduler.repository.SchClockConfigurationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ public class SchClockConfigurationService {
     private SchEventService schEventService;
     @Inject
     private SchEmissionConfigurationService schEmissionConfigurationService;
+    @Inject
+    private SchClockConfigurationMapper schClockConfigurationMapper;
 
     @Transactional
     public SchClockConfiguration saveClockConfiguration(SchClockConfiguration schClockConfiguration) {
@@ -44,6 +48,11 @@ public class SchClockConfigurationService {
     @Transactional(readOnly = true)
     public SchClockConfiguration findSchClockConfigurationForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
         return schClockConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+    }
+
+    @Transactional(readOnly = true)
+    public SchClockConfigurationDTO findDTOSchClockConfigurationForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
+        return schClockConfigurationMapper.DB2DTO(schClockConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName));
     }
 
     @Transactional
