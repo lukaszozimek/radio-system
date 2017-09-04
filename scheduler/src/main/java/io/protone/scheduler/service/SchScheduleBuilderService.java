@@ -76,13 +76,11 @@ public class SchScheduleBuilderService {
         scheduleLogs.stream().forEach(schLog -> {
             Set<SchEmission> schEmissionSet = Sets.newHashSet();
             try {
-                schEmissionSet = schParseLogService.parseLog(schLog, schGrid.getChannel(), schGrid.getNetwork(), schPlaylist);
+                schEmissionSet = schParseLogService.parseLog(schLog);
             } catch (IOException e) {
                 log.error("Wrong log configuration or log doesn't exist");
             }
 
-            //TODO: Dodaj rekord do bazy bez pliku
-            //TODO: dodaj funkcjonalność podmiany kontentu dla Rekordu
             //TODO: Import Maksymalnej liczby elementów do godziny
             Set<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toSet());
             Set<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);

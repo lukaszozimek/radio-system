@@ -43,6 +43,7 @@ import static io.protone.library.service.file.impl.LibDocumentFileService.DOCUME
 import static io.protone.library.service.file.impl.LibImageFileService.IMAGE;
 import static io.protone.library.service.file.impl.LibVideoFileService.VIDEO;
 
+//TODO Extract uploading to separate service
 @Service
 public class LibMediaItemService {
 
@@ -132,6 +133,11 @@ public class LibMediaItemService {
     @Transactional
     public Slice<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
         return itemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
+    }
+
+    @Transactional
+    public LibMediaItem saveMediaItem(LibMediaItem libMediaItem) {
+        return itemRepository.saveAndFlush(libMediaItem);
     }
 
 

@@ -5,7 +5,6 @@ import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.domain.SchLog;
-import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.repository.SchPlaylistRepository;
 import io.protone.scheduler.service.SchParseLogService;
 import org.apache.commons.compress.utils.IOUtils;
@@ -22,8 +21,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -56,17 +53,32 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
     @Test
     public void shouldParseRekLogWithoutSeparator() throws IOException {
         //when
-        SchPlaylist schPlaylist = factory.manufacturePojo(SchPlaylist.class);
-        schPlaylist.channel(corChannel);
-        schPlaylist.network(corNetwork);
-        schPlaylist.date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
-        schPlaylist = schPlaylistRepository.saveAndFlush(schPlaylist);
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withoutseparator/commercialLog/20170826.rek");
 
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
 
         //then
-        parseLogService.parseLog(new SchLog().fileItem(new LibFileItem()), corChannel, corNetwork, schPlaylist);
+        parseLogService.parseLog(new SchLog().fileItem(new LibFileItem()));
+    }
+
+    @Test
+    public void shouldParseRekLogWithSeparator() throws IOException {
+    }
+
+    @Test
+    public void shouldParseMusLogWithoutSeparator() throws IOException {
+    }
+
+    @Test
+    public void shouldParseMusLogWithSeparator() throws IOException {
+    }
+
+    @Test
+    public void shouldParseOprLogWithoutSeparator() throws IOException {
+    }
+
+    @Test
+    public void shouldParseOprLogWithSeparator() throws IOException {
     }
 
 }
