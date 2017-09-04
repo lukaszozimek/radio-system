@@ -1,11 +1,10 @@
 package io.protone.application.web.rest.mapper;
 
-
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
-import io.protone.library.api.dto.LibLibraryDTO;
-import io.protone.library.domain.LibLibrary;
-import io.protone.library.mapper.LibLibraryMapper;
+import io.protone.library.api.dto.LibFileLibraryDTO;
+import io.protone.library.domain.LibFileLibrary;
+import io.protone.library.mapper.LibFileLibraryMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,32 +21,33 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Created by lukaszozimek on 27/04/2017.
+ * Created by lukaszozimek on 04/09/2017.
  */
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class LibLibraryMapperTest {
+public class LibFileLibraryMapperTest {
+
     @Autowired
-    private LibLibraryMapper libLibraryMapper;
+    private LibFileLibraryMapper libLibraryMapper;
 
-    private LibLibrary libLibrary;
+    private LibFileLibrary libLibrary;
 
-    private LibLibraryDTO libLibraryDTO;
+    private LibFileLibraryDTO libLibraryDTO;
 
-    private List<LibLibraryDTO> libLibraryDTOS = new ArrayList<>();
+    private List<LibFileLibraryDTO> libLibraryDTOS = new ArrayList<>();
 
-    private List<LibLibrary> libLibraries = new ArrayList<>();
+    private List<LibFileLibrary> libLibraries = new ArrayList<>();
 
     private CorNetwork corNetwork;
 
     @Before
     public void initPojos() {
         PodamFactory factory = new PodamFactoryImpl();
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        libLibrary = factory.manufacturePojo(LibFileLibrary.class);
         libLibrary.setId(1L);
         libLibraries.add(libLibrary);
-        libLibraryDTO = factory.manufacturePojo(LibLibraryDTO.class);
+        libLibraryDTO = factory.manufacturePojo(LibFileLibraryDTO.class);
         libLibraryDTOS.add(libLibraryDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
 
@@ -55,7 +55,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DB2DTO() throws Exception {
-        LibLibraryDTO dto = libLibraryMapper.DB2DTO(libLibrary);
+        LibFileLibraryDTO dto = libLibraryMapper.DB2DTO(libLibrary);
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getPrefix());
@@ -70,7 +70,7 @@ public class LibLibraryMapperTest {
     @Test
     public void DBs2DTOs() throws Exception {
 
-        List<LibLibraryDTO> dtos = libLibraryMapper.DBs2DTOs(libLibraries);
+        List<LibFileLibraryDTO> dtos = libLibraryMapper.DBs2DTOs(libLibraries);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -86,10 +86,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        LibLibrary entity = libLibraryMapper.DTO2DB(libLibraryDTO, corNetwork);
-
-
-        LibLibrary libLibrary = new LibLibrary();
+        LibFileLibrary entity = libLibraryMapper.DTO2DB(libLibraryDTO, corNetwork);
 
         assertNotNull(entity.getId());
         assertNotNull(entity.getPrefix());
@@ -103,7 +100,7 @@ public class LibLibraryMapperTest {
 
     @Test
     public void DTOs2DBs() throws Exception {
-        List<LibLibrary> entities = libLibraryMapper.DTOs2DBs(libLibraryDTOS, corNetwork);
+        List<LibFileLibrary> entities = libLibraryMapper.DTOs2DBs(libLibraryDTOS, corNetwork);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -119,5 +116,4 @@ public class LibLibraryMapperTest {
 
         });
     }
-
 }

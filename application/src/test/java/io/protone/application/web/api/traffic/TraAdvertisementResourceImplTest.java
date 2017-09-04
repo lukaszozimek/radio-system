@@ -11,10 +11,10 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibMediaItemRepository;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraAdvertisementDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.mapper.TraAdvertisementMapper;
@@ -92,7 +92,7 @@ public class TraAdvertisementResourceImplTest {
     @Autowired
     private EntityManager em;
     @Mock
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
     private MockMvc restTraAdvertisementMockMvc;
 
@@ -121,7 +121,7 @@ public class TraAdvertisementResourceImplTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         TraAdvertisementResourceImpl traAdvertisementResource = new TraAdvertisementResourceImpl();
-        ReflectionTestUtils.setField(traAdvertisementService, "libItemService", libItemService);
+        ReflectionTestUtils.setField(traAdvertisementService, "libMediaItemService", libMediaItemService);
         ReflectionTestUtils.setField(traAdvertisementResource, "traAdvertisementService", traAdvertisementService);
         ReflectionTestUtils.setField(traAdvertisementResource, "traAdvertisementMapper", traAdvertisementMapper);
         ReflectionTestUtils.setField(traAdvertisementResource, "corNetworkService", corNetworkService);
@@ -139,10 +139,10 @@ public class TraAdvertisementResourceImplTest {
         crmAccountRepository.deleteAllInBatch();
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
-        libMediaItem = libMediaItemRepository.saveAndFlush(LibMediaItemResourceTest.createEntity(em).network(corNetwork).library(libLibrary));
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
+        libMediaItem = libMediaItemRepository.saveAndFlush(LibMediaItemResourceTest.createEntity(em).network(corNetwork).library(libMediaLibrary));
         crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));
         traAdvertisement = createEntity(em).network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem));
     }
@@ -150,7 +150,7 @@ public class TraAdvertisementResourceImplTest {
     @Test
     @Transactional
     public void createTraAdvertisement() throws Exception {
-        when(libItemService.upload(any(), any(), (MultipartFile) any())).thenReturn(libMediaItem);
+        when(libMediaItemService.upload(any(), any(), (MultipartFile) any())).thenReturn(libMediaItem);
         int databaseSizeBeforeCreate = traAdvertisementRepository.findAll().size();
 
         // Create the TraAdvertisement
@@ -268,7 +268,7 @@ public class TraAdvertisementResourceImplTest {
     @Transactional
     public void updateTraAdvertisement() throws Exception {
         // Initialize the database
-        when(libItemService.upload(any(), any(), (MultipartFile) any())).thenReturn(libMediaItem);
+        when(libMediaItemService.upload(any(), any(), (MultipartFile) any())).thenReturn(libMediaItem);
 
         traAdvertisementRepository.saveAndFlush(traAdvertisement.network(corNetwork).customer(crmAccount).mediaItem(Sets.newHashSet(libMediaItem)));
         int databaseSizeBeforeUpdate = traAdvertisementRepository.findAll().size();

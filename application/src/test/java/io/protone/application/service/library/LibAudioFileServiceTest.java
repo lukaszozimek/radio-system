@@ -57,7 +57,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         List<LibAudioObject> libAudioObjects = audioObjectRepository.findByMediaItem(libMediaItem);
         //assert
         Assert.notNull(libMediaItem);
@@ -65,7 +65,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         Assert.notNull(libMediaItem.getIdx());
         Assert.notNull(libMediaItem.getProperites());
         Assert.notNull(libMediaItem.getNetwork());
-        Assert.isTrue(libMediaItem.getLibrary().getName().equals(libLibrary.getName()));
+        Assert.isTrue(libMediaItem.getLibrary().getName().equals(libMediaLibrary.getName()));
         Assert.isTrue(libMediaItem.getNetwork().getName().equals(corNetwork.getName()));
         Assert.isTrue(libMediaItem.getItemType().equals(LibItemTypeEnum.IT_AUDIO));
         Assert.isTrue(libMediaItem.getProperites().size() > 1);
@@ -83,7 +83,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         byte[] bytes = libAudioFileService.download(libMediaItem);
 
         //assert
@@ -100,7 +100,7 @@ public class LibAudioFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libAudioFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         libAudioFileService.deleteFile(libMediaItem);
         List<LibAudioObject> audioObjectList = audioObjectRepository.findByMediaItem(libMediaItem);
 

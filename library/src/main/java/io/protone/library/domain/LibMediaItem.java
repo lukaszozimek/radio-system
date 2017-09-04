@@ -48,7 +48,7 @@ public class LibMediaItem extends CorItem implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private LibLibrary library;
+    private LibMediaLibrary library;
 
     @ManyToOne
     @PodamExclude
@@ -184,16 +184,16 @@ public class LibMediaItem extends CorItem implements Serializable {
         return this;
     }
 
-    public LibLibrary getLibrary() {
+    public LibMediaLibrary getLibrary() {
         return library;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
-        this.library = libLibrary;
+    public void setLibrary(LibMediaLibrary libMediaLibrary) {
+        this.library = libMediaLibrary;
     }
 
-    public LibMediaItem library(LibLibrary libLibrary) {
-        this.library = libLibrary;
+    public LibMediaItem library(LibMediaLibrary libMediaLibrary) {
+        this.library = libMediaLibrary;
         return this;
     }
 

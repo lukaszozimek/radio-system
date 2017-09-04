@@ -17,11 +17,11 @@ import java.util.List;
         LibArtistMapper.class,
         CorPersonMapper.class,
         LibLabelMapper.class,
-        LibLibraryMapper.class,
+        LibLibraryMediaMapper.class,
         LibMarkerMapper.class,
         LibTrackMapper.class,
         CorPropertyValueMapper.class})
-public interface LibItemMapper {
+public interface LibMediaItemMapper {
 
     @Mapping(source = "properites", target = "properties")
     LibMediaItemDTO DB2DTO(LibMediaItem db);

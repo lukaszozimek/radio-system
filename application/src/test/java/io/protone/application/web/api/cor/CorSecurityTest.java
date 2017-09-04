@@ -8,7 +8,7 @@ import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorChannelResourceImpl;
 import io.protone.application.web.api.cor.impl.CorNetworkResourceImpl;
 import io.protone.application.web.api.cor.impl.CorUserJWTController;
-import io.protone.application.web.api.library.impl.LibraryResourceImpl;
+import io.protone.application.web.api.library.impl.LibraryMediaResourceImpl;
 import io.protone.application.web.rest.JWTToken;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.application.web.rest.vm.LoginVM;
@@ -16,8 +16,8 @@ import io.protone.core.mapper.CorChannelMapper;
 import io.protone.core.mapper.CorNetworkMapper;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
-import io.protone.library.mapper.LibLibraryMapper;
-import io.protone.library.service.LibLibraryService;
+import io.protone.library.mapper.LibLibraryMediaMapper;
+import io.protone.library.service.LibLibraryMediaService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,10 +76,10 @@ public class CorSecurityTest {
     private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
-    private LibLibraryService libLibraryService;
+    private LibLibraryMediaService libLibraryMediaService;
 
     @Autowired
-    private LibLibraryMapper libLibraryMapper;
+    private LibLibraryMediaMapper libLibraryMediaMapper;
 
     @Autowired
     private CorNetworkService corNetworkService;
@@ -96,9 +96,9 @@ public class CorSecurityTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
+        LibraryMediaResourceImpl libLibraryResource = new LibraryMediaResourceImpl();
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaService", libLibraryMediaService);
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaMapper", libLibraryMediaMapper);
         ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
 
         CorUserJWTController corUserJWTController = new CorUserJWTController(tokenProvider, authenticationManager);
@@ -132,8 +132,8 @@ public class CorSecurityTest {
         LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
         List<LinkedHashMap<String, String>> corChannelSet = (ArrayList<LinkedHashMap<String, String>>) jwsHeader.get(CHANNEL);
 
-        // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/", corNetworkMap.get("shortcut"), corChannelSet.stream().findFirst().get().get("shortcut"))
+        // Get the libMediaLibrary
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media", corNetworkMap.get("shortcut"), corChannelSet.stream().findFirst().get().get("shortcut"))
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
@@ -153,8 +153,8 @@ public class CorSecurityTest {
 
         JwsHeader jwsHeader = tokenProvider.getUserAuthorizationAccess(token.getIdToken());
         LinkedHashMap<String, String> corNetworkMap = (LinkedHashMap<String, String>) jwsHeader.get(NETWORK);
-        // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/", corNetworkMap.get("shortcut"))
+        // Get the libMediaLibrary
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media", corNetworkMap.get("shortcut"))
             .header("Authorization", "Bearer " + token.getIdToken()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));

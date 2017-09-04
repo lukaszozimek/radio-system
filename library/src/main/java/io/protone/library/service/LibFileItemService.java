@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -58,7 +57,7 @@ public class LibFileItemService {
         return libFileItemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pageable);
     }
 
-    public Optional<LibFileItem> findLibFileItem(String networkShortcut, String libraryShortcut, String idx) {
+    public LibFileItem findLibFileItem(String networkShortcut, String libraryShortcut, String idx) {
         return libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
     }
 
@@ -107,17 +106,19 @@ public class LibFileItemService {
         }
     }
 
+    public byte[] download(String networkShortcut, String libraryShortcut, String idx) throws IOException {
+        LibFileItem libFileItem = this.findLibFileItem(networkShortcut, libraryShortcut, idx);
+        return download(libFileItem);
+    }
+
     public byte[] download(LibFileItem itemDB) throws IOException {
         byte[] result = null;
 
         if (itemDB == null) {
             return result;
         }
-        LibFileItem libFileItem = libFileItemRepository.findOne(itemDB.getId());
-        if (libFileItem == null) {
-            return result;
-        }
-        LibCloudObject cloudObject = libFileItem.getCloudObject();
+
+        LibCloudObject cloudObject = itemDB.getCloudObject();
         InputStream stream = null;
         try {
             stream = s3Client.download(itemDB.getNetwork().getShortcut(), FILE + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
@@ -137,27 +138,38 @@ public class LibFileItemService {
     }
 
     @Transactional
-    public void deleteFile(LibFileItem itemDB, String networkShortcut, String channelShortcut) {
-        if (itemDB != null) {
+    public void deleteFile(String networkShortcut, String libraryShortcut, String idx) {
+        LibFileItem libFileItem = this.findLibFileItem(networkShortcut, libraryShortcut, idx);
+        if (libFileItem != null) {
+            LibCloudObject cloudObject = libFileItem.getCloudObject();
+            try {
+                s3Client.delete(libFileItem.getNetwork().getShortcut(), FILE + libFileItem.getLibrary().getShortcut(), cloudObject.getUuid());
+                libFileItemRepository.delete(libFileItem);
+                libFileItemRepository.flush();
+                cloudObjectRepository.delete(cloudObject);
+                cloudObjectRepository.flush();
 
-            LibFileItem libFileItem = libFileItemRepository.findOne(itemDB.getId());
-            if (itemDB != null) {
+            } catch (DeleteException e) {
+                e.printStackTrace();
+            } catch (S3Exception e) {
+                e.printStackTrace();
+            }
 
-                LibCloudObject cloudObject = libFileItem.getCloudObject();
-                try {
-                    s3Client.delete(itemDB.getNetwork().getShortcut(), FILE + itemDB.getLibrary().getShortcut(), cloudObject.getUuid());
-                    libFileItemRepository.delete(libFileItem);
-                    libFileItemRepository.flush();
-                    cloudObjectRepository.delete(cloudObject);
-                    cloudObjectRepository.flush();
+        }
+    }
 
-                } catch (DeleteException e) {
-                    e.printStackTrace();
-                } catch (S3Exception e) {
-                    e.printStackTrace();
-                }
-
+    public void moveFileItem(String networkShortcut, String libraryPrefix, String idx, String libraryShortcut) {
+        LibFileLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, libraryShortcut);
+        if (dstLibarary != null) {
+            LibFileItem optionalItemDB = libFileItemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
+            if (optionalItemDB != null) {
+                optionalItemDB.setLibrary(dstLibarary);
+                libFileItemRepository.saveAndFlush(optionalItemDB);
             }
         }
+    }
+
+    public LibFileItem update(LibFileItem requestEntity) {
+        return this.libFileItemRepository.saveAndFlush(requestEntity);
     }
 }

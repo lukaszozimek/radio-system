@@ -1,7 +1,6 @@
 package io.protone.application.web.api.scheduler;
 
 
-import com.google.common.collect.Lists;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchPlaylistResourceImpl;
@@ -142,27 +141,6 @@ public class SchPlaylistResourceImplTest {
         assertThat(testSchPlaylist.getDate()).isEqualTo(DEFAULT_PLAYLIST_DATE);
     }
 
-    @Test
-    @Transactional
-    public void createBatchSchPlaylist() throws Exception {
-        int databaseSizeBeforeCreate = schPlaylistRepository.findAll().size();
-
-
-        SchPlaylist traPlaylist1 = createEntity(em).network(corNetwork).channel(corChannel);
-        traPlaylist1.date(LocalDate.now().plusMonths(1));
-        // Create the SchPlaylist
-        List<SchPlaylistDTO> schPlaylistDTOS = schPlaylistMapper.DBs2DTOs(Lists.newArrayList(schPlaylist, traPlaylist1));
-
-
-        restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/batch", corNetwork.getShortcut(), corChannel.getShortcut())
-                .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTOS)))
-                .andExpect(status().isCreated());
-
-        // Validate the SchPlaylist in the database
-        List<SchPlaylist> traPlaylistList = schPlaylistRepository.findAll();
-        assertThat(traPlaylistList).hasSize(databaseSizeBeforeCreate + 2);
-    }
 
     @Test
     @Transactional

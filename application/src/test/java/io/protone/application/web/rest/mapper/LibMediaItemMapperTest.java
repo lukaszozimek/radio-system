@@ -7,7 +7,7 @@ import io.protone.core.domain.CorPerson;
 import io.protone.core.domain.CorTag;
 import io.protone.library.api.dto.LibMediaItemDTO;
 import io.protone.library.domain.*;
-import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.mapper.LibMediaItemMapper;
 import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,12 +30,12 @@ import static org.junit.Assert.assertNotNull;
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class LibItemMapperTest {
+public class LibMediaItemMapperTest {
 
     private static final String TEST_TAG = "SimpleTag";
 
     @Autowired
-    private LibItemMapper customItemMapperExt;
+    private LibMediaItemMapper customItemMapperExt;
 
     private LibMediaItem libMediaItem;
 
@@ -61,7 +61,7 @@ public class LibItemMapperTest {
         libMediaItem.setAuthors(Sets.newLinkedHashSet(factory.manufacturePojo(CorPerson.class)));
         libMediaItem.setComposers(Sets.newLinkedHashSet(factory.manufacturePojo(CorPerson.class)));
         libMediaItem.setLabel(factory.manufacturePojo(LibLabel.class));
-        libMediaItem.setLibrary(factory.manufacturePojo(LibLibrary.class));
+        libMediaItem.setLibrary(factory.manufacturePojo(LibMediaLibrary.class));
         libMediaItem.setMarkers(Sets.newLinkedHashSet(factory.manufacturePojo(LibMarker.class)));
         libMediaItem.setTags(Sets.newLinkedHashSet(factory.manufacturePojo(CorTag.class)));
         libMediaItem.setTrack(factory.manufacturePojo(LibTrack.class));

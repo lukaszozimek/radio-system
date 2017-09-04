@@ -12,7 +12,7 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity LibLibrary.
+        Added the entLibMediaLibraryrary.
     -->
     <changeSet id="20170421185755-1" author="jhipster">
         <createTable tableName="lib_file_library">

@@ -12,13 +12,13 @@ import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
-import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.mapper.LibMediaItemMapper;
 import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.repository.LibMediaItemRepository;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.TraMediaPlanDescriptorDTO;
 import io.protone.traffic.api.dto.TraMediaPlanTemplateDTO;
@@ -135,11 +135,11 @@ public class TraMediaPlanResourceImplTest {
     private TraOrderMapper traOrderMapper;
 
     @Autowired
-    private LibItemMapper libItemMapper;
+    private LibMediaItemMapper libMediaItemMapper;
     @Autowired
     private LibMediaItemThinMapper libMediaItemThinMapper;
     @Mock
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
@@ -156,7 +156,7 @@ public class TraMediaPlanResourceImplTest {
 
     private TraMediaPlanDescriptorDTO mediaPlanDescriptor;
 
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
 
     private PodamFactory factory;
 
@@ -186,15 +186,15 @@ public class TraMediaPlanResourceImplTest {
         factory = new PodamFactoryImpl();
 
         TraMediaPlanResourceImpl traMediaPlanResource = new TraMediaPlanResourceImpl();
-        libLibrary = new LibLibrary().shortcut("tes").network(corNetwork);
-        libLibrary.setId(1L);
+        libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
+        libMediaLibrary.setId(1L);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
-        libMediaItem.library(libLibrary);
+        libMediaItem.library(libMediaLibrary);
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
@@ -223,7 +223,7 @@ public class TraMediaPlanResourceImplTest {
         mediaPlanDescriptor.setTraMediaPlanTemplateDTO(traMediaPlanTemplateDTO);
 
 
-        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanBlockService", traMediaPlanBlockService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanPlaylistDateService", traMediaPlanPlaylistDateService);
         ReflectionTestUtils.setField(traMediaPlanResource, "traMediaPlanEmissionService", traMediaPlanEmissionService);
@@ -254,7 +254,7 @@ public class TraMediaPlanResourceImplTest {
     public void createTraMediaPlan() throws Exception {
 
         int databaseSizeBeforeCreate = traMediaPlanRepository.findAll().size();
-        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
+        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
         // Create the TraMediaPlan
@@ -342,7 +342,7 @@ public class TraMediaPlanResourceImplTest {
     @Transactional
     public void deleteTraMediaPlan() throws Exception {
         // Initialize the database
-        doNothing().when(libItemService).deleteItem(any(LibMediaItem.class));
+        doNothing().when(libMediaItemService).deleteItem(any(LibMediaItem.class));
         traMediaPlanRepository.saveAndFlush(traMediaPlan.mediaItem(libMediaItem).channel(corChannel).network(corNetwork).account(crmAccount));
         int databaseSizeBeforeDelete = traMediaPlanRepository.findAll().size();
 

@@ -4,9 +4,9 @@ package io.protone.application.service.library;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMarker;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibMarkerTypeEnum;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibMarkerService;
@@ -61,12 +61,12 @@ public class LibMarkerServiceTest {
     @Test
     public void shouldSaveMarker() throws Exception {
         //when
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItemRepository.save(libMediaItem);
 
         //then
@@ -84,12 +84,12 @@ public class LibMarkerServiceTest {
     @Test
     public void saveLibMarkers() throws Exception {
         //when
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItemRepository.save(libMediaItem);
         LibMarker libMarker = new LibMarker().markerType(LibMarkerTypeEnum.MT_BASIC).mediaItem(libMediaItem).startTime(SAMPLE_MARKER_START_TIME).name(SAMPLE_MARKER_NAME);
         Set<LibMarker> libMarkerSet = Sets.newSet(libMarker);

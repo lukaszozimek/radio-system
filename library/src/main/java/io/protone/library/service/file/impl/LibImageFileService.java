@@ -12,8 +12,8 @@ import io.protone.core.security.SecurityUtils;
 import io.protone.core.service.CorUserService;
 import io.protone.library.domain.LibCloudObject;
 import io.protone.library.domain.LibImageObject;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibImageSizeEnum;
 import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.repository.LibCloudObjectRepository;
@@ -70,7 +70,7 @@ public class LibImageFileService implements LibFileService {
 
     @Override
     @Transactional
-    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibLibrary libraryDB) throws IOException, SAXException {
+    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
         CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
         CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
         LibMediaItem libMediaItem = new LibMediaItem();
@@ -170,5 +170,10 @@ public class LibImageFileService implements LibFileService {
                 }
             }
         }
+    }
+
+    @Override
+    public LibMediaItem updateContent(ByteArrayInputStream bais, Metadata metadata, LibMediaItem libMediaItem, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
+        return null;
     }
 }

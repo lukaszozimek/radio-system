@@ -12,11 +12,11 @@ import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibMediaItemRepository;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
@@ -55,7 +55,6 @@ import java.io.InputStream;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -104,7 +103,7 @@ public class TraMediaPlanMappingResourceImplTest {
     private LibMediaItemRepository libMediaItemRepository;
 
     @Mock
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
@@ -129,7 +128,7 @@ public class TraMediaPlanMappingResourceImplTest {
 
     private CorChannel corChannel;
 
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
 
     private PodamFactory factory;
 
@@ -160,15 +159,15 @@ public class TraMediaPlanMappingResourceImplTest {
         factory = new PodamFactoryImpl();
 
         TraMediaPlanMappingResourceImpl traMediaPlanMappingResource = new TraMediaPlanMappingResourceImpl();
-        libLibrary = new LibLibrary().shortcut("tes").network(corNetwork);
-        libLibrary.setId(1L);
+        libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
+        libMediaLibrary.setId(1L);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
-        libMediaItem.library(libLibrary);
+        libMediaItem.library(libMediaLibrary);
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
@@ -181,8 +180,8 @@ public class TraMediaPlanMappingResourceImplTest {
         traOrder.setNetwork(corNetwork);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
 
-        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
-        ReflectionTestUtils.setField(traPlaylistMediaPlanMappingService, "libItemService", libItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
+        ReflectionTestUtils.setField(traPlaylistMediaPlanMappingService, "libMediaItemService", libMediaItemService);
 
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMediaPlanMappingService", traPlaylistMediaPlanMappingService);
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMediaPlanMappingService", traPlaylistMediaPlanMappingService);
@@ -209,10 +208,10 @@ public class TraMediaPlanMappingResourceImplTest {
     @Test
     @Transactional
     public void shouldMapMediaPlanWithPlaylist() throws Exception {
-        when(libItemService.getMediaItem(libMediaItem.getNetwork().getShortcut(), "com", libMediaItem.getIdx())).thenReturn(libMediaItem);
-        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
+        when(libMediaItemService.getMediaItem(libMediaItem.getNetwork().getShortcut(), "com", libMediaItem.getIdx())).thenReturn(libMediaItem);
+        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItem);
-        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
                 .sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")

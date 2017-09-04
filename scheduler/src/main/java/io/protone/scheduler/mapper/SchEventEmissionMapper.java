@@ -2,7 +2,7 @@ package io.protone.scheduler.mapper;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.scheduler.api.dto.SchEventEmissionDTO;
 import io.protone.scheduler.domain.SchEventEmission;
@@ -37,7 +37,7 @@ public interface SchEventEmissionMapper {
         return eList;
     }
 
-    default String map(LibLibrary value) {
+    default String map(LibMediaLibrary value) {
         return null;
     }
 

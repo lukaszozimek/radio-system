@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * LibLibraryDTO
+ * LibMediaLibraryDTO
  */
 
-public class LibLibraryDTO implements Serializable {
+public class LibFileLibraryDTO implements Serializable {
 
     private Long id = null;
 
@@ -35,9 +35,7 @@ public class LibLibraryDTO implements Serializable {
     private String description = null;
 
 
-    private String publicUrl = null;
-
-    public LibLibraryDTO id(Long id) {
+    public LibFileLibraryDTO id(Long id) {
         this.id = id;
         return this;
     }
@@ -56,7 +54,7 @@ public class LibLibraryDTO implements Serializable {
         this.id = id;
     }
 
-    public LibLibraryDTO prefix(String prefix) {
+    public LibFileLibraryDTO prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -75,7 +73,7 @@ public class LibLibraryDTO implements Serializable {
         this.prefix = prefix;
     }
 
-    public LibLibraryDTO name(String name) {
+    public LibFileLibraryDTO name(String name) {
         this.name = name;
         return this;
     }
@@ -95,7 +93,7 @@ public class LibLibraryDTO implements Serializable {
     }
 
 
-    public LibLibraryDTO description(String description) {
+    public LibFileLibraryDTO description(String description) {
         this.description = description;
         return this;
     }
@@ -139,22 +137,10 @@ public class LibLibraryDTO implements Serializable {
         this.channels = channels;
     }
 
-    public String getPublicUrl() {
-        return publicUrl;
-    }
-
-    public void setPublicUrl(String publicUrl) {
-        this.publicUrl = publicUrl;
-    }
-
-    public LibLibraryDTO publicUrl(String publicUrl) {
-        this.publicUrl = publicUrl;
-        return this;
-    }
 
     @Override
     public String toString() {
-        return "LibLibraryDTO{" +
+        return "LibMediaLibraryDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", counter=" + counter +
@@ -162,7 +148,6 @@ public class LibLibraryDTO implements Serializable {
                 ", prefix='" + prefix + '\'' +
                 ", channels=" + channels +
                 ", description='" + description + '\'' +
-                ", publicUrl='" + publicUrl + '\'' +
                 '}';
     }
 
@@ -170,9 +155,9 @@ public class LibLibraryDTO implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LibLibraryDTO)) return false;
+        if (!(o instanceof LibFileLibraryDTO)) return false;
 
-        LibLibraryDTO libLibraryDTO = (LibLibraryDTO) o;
+        LibFileLibraryDTO libLibraryDTO = (LibFileLibraryDTO) o;
 
         if (getId() != null ? !getId().equals(libLibraryDTO.getId()) : libLibraryDTO.getId() != null) return false;
         if (getPrefix() != null ? !getPrefix().equals(libLibraryDTO.getPrefix()) : libLibraryDTO.getPrefix() != null)

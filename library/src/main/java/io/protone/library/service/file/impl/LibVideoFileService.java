@@ -11,8 +11,8 @@ import io.protone.core.s3.exceptions.UploadException;
 import io.protone.core.security.SecurityUtils;
 import io.protone.core.service.CorUserService;
 import io.protone.library.domain.LibCloudObject;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.LibVideoObject;
 import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.repository.LibCloudObjectRepository;
@@ -70,7 +70,7 @@ public class LibVideoFileService implements LibFileService {
 
     @Override
     @Transactional
-    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibLibrary libraryDB) throws IOException, SAXException {
+    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
         CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
         CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
         LibMediaItem libMediaItem = new LibMediaItem();
@@ -167,6 +167,45 @@ public class LibVideoFileService implements LibFileService {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public LibMediaItem updateContent(ByteArrayInputStream bais, Metadata metadata, LibMediaItem libMediaItem, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
+        CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
+
+        String fileUUID = UUID.randomUUID().toString();
+        try {
+            log.debug("Uploading File to Storage: {} ", fileUUID);
+            s3Client.upload(libraryDB.getNetwork().getShortcut(), MEDIA_ITEM + libraryDB.getShortcut(), fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            LibCloudObject cloudObject = new LibCloudObject()
+                    .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
+                    .originalName(libMediaItem.getName())
+                    .original(Boolean.TRUE)
+                    .size(size)
+                    .network(libraryDB.getNetwork()).objectType(LibObjectTypeEnum.OT_VIDEO)
+                    .hash(ServiceConstants.NO_HASH);
+            log.debug("Persisting LibCloudObject: {}", cloudObject);
+            cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
+            LibVideoObject libVideoObject = new LibVideoObject();
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libVideoObject, libMediaItem.getName());
+            libVideoObject.setCloudObject(cloudObject);
+            libVideoObject.setMediaItem(libMediaItem);
+            log.debug("Persisting LibAudioObject: {}", libVideoObject);
+            libVideoObjectRepository.saveAndFlush(libVideoObject);
+        } catch (UploadException e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", libMediaItem.getName());
+
+        } catch (S3Exception e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", libMediaItem.getName());
+        } catch (TikaException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            log.error("There is a problem with processing the file  :{}", libMediaItem.getName());
+        } finally {
+            bais.close();
+            return libMediaItem;
         }
     }
 

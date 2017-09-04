@@ -5,8 +5,8 @@ import io.protone.core.mapper.CorPropertyValueMapper;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
         LibArtistMapper.class,
         CorPersonMapper.class,
         LibLabelMapper.class,
-        LibLibraryMapper.class,
+        LibLibraryMediaMapper.class,
         LibMarkerMapper.class,
         CorPropertyValueMapper.class})
 public interface LibMediaItemThinMapper {
@@ -28,7 +28,7 @@ public interface LibMediaItemThinMapper {
     List<LibMediaItemThinDTO> DBs2DTOs(List<LibMediaItem> dbs);
 
 
-    default String map(LibLibrary value) {
+    default String map(LibMediaLibrary value) {
         if(value==null){
             return null;
         }

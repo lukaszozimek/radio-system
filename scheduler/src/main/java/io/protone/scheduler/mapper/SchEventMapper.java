@@ -5,7 +5,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.library.domain.LibAlbum;
 import io.protone.library.domain.LibArtist;
-import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.scheduler.api.dto.SchEventDTO;
 import io.protone.scheduler.api.dto.thin.SchEventThinDTO;
 import io.protone.scheduler.domain.SchEvent;
@@ -41,7 +41,7 @@ public interface SchEventMapper {
 
     List<SchEventThinDTO> DBs2ThinDTOs(List<SchEvent> schClockList);
 
-    default String map(LibLibrary value) {
+    default String map(LibMediaLibrary value) {
         return null;
     }
 

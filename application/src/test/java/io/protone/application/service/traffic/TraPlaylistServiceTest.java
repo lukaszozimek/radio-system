@@ -8,8 +8,8 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.traffic.domain.*;
 import io.protone.traffic.repository.TraAdvertisementRepository;
@@ -190,12 +190,12 @@ public class TraPlaylistServiceTest {
     public void shouldSaveBlockWithEmissions() throws Exception {
         //when
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);
@@ -254,12 +254,12 @@ public class TraPlaylistServiceTest {
     @Test
     public void shouldSaveBlocksWithEmissions() throws Exception {
         //when
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
         TraAdvertisement traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);
         traAdvertisement.setNetwork(corNetwork);

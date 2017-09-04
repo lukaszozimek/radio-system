@@ -6,7 +6,7 @@ import io.protone.core.s3.S3Client;
 import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorImageItemService;
 import io.protone.library.domain.LibFileLibrary;
-import io.protone.library.mapper.LibLibraryMapper;
+import io.protone.library.mapper.LibLibraryMediaMapper;
 import io.protone.library.repository.LibFileLibraryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class LibFileLibraryService {
     private LibFileLibraryRepository libFileLibraryRepository;
 
     @Inject
-    private LibLibraryMapper customLibLibraryMapper;
+    private LibLibraryMediaMapper customLibLibraryMediaMapper;
 
     @Inject
     private S3Client s3Client;

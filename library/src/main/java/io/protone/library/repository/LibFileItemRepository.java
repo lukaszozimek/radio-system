@@ -6,8 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
 /**
  * Spring Data JPA repository for the LibFileItem entity.
  */
@@ -18,5 +16,5 @@ public interface LibFileItemRepository extends JpaRepository<LibFileItem, Long> 
 
     Slice<LibFileItem> findSliceByNetwork_ShortcutAndLibrary_Shortcut(String networkShortcut, String libraryDB, Pageable pageable);
 
-    Optional<LibFileItem> findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(String networkShortcut, String libraryDB, String idx);
+    LibFileItem findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(String networkShortcut, String libraryDB, String idx);
 }

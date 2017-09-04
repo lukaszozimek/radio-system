@@ -1,7 +1,7 @@
 package io.protone.traffic.service.shuffle.impl;
 
 import io.protone.library.domain.LibMediaItem;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.protone.traffic.domain.TraBlock;
 import io.protone.traffic.domain.TraEmission;
@@ -39,14 +39,14 @@ public class TraAdvertismentShuffleDefault implements TraAdvertismentShuffle {
     private TraPlaylistService traPlaylistService;
 
     @Inject
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
     @Inject
     private TraOrderService traOrderService;
 
     public List<TraPlaylist> shuffleCommercials(TraShuffleAdvertisementDTO tarShuffleAdvertisementPT, String networkShortcut, String channelShortcut) throws InterruptedException, TrafficShuffleReindexException {
         log.debug("Start shuffling commercial");
         log.debug("Commercial to shuffle {}", tarShuffleAdvertisementPT.getNumber());
-        LibMediaItem mediaItem = libItemService.getMediaItem(networkShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
+        LibMediaItem mediaItem = libMediaItemService.getMediaItem(networkShortcut, "com", tarShuffleAdvertisementPT.getLibMediaItemThinDTO().getIdx());
         log.debug("Found advertisment {}", mediaItem.getId());
         TraOrder traOrder = traOrderService.getOrder(tarShuffleAdvertisementPT.getTraOrderThinDTO().getId(), networkShortcut);
         log.debug("Found Order {}", traOrder.getId());

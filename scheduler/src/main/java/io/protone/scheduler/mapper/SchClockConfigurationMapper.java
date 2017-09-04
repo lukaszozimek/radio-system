@@ -4,7 +4,7 @@ import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorUserMapper;
-import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
 import io.protone.scheduler.api.dto.thin.SchClockConfigurationThinDTO;
 import io.protone.scheduler.domain.SchClockConfiguration;
@@ -40,7 +40,7 @@ public interface SchClockConfigurationMapper {
 
     List<SchClockConfigurationThinDTO> DBs2ThinDTOs(List<SchClockConfiguration> schClockList);
 
-    default String map(LibLibrary value) {
+    default String map(LibMediaLibrary value) {
         return null;
     }
 

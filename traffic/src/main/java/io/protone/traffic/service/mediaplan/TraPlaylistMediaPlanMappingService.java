@@ -1,7 +1,7 @@
 package io.protone.traffic.service.mediaplan;
 
 import io.protone.library.domain.LibMediaItem;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.domain.TraMediaPlanEmission;
@@ -45,7 +45,7 @@ public class TraPlaylistMediaPlanMappingService {
     private TraPlaylistService traPlaylistService;
 
     @Inject
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
     @Inject
     private TraMediaPlanBlockMapper traMediaPlanMapperPlaylistMapper;
@@ -62,7 +62,7 @@ public class TraPlaylistMediaPlanMappingService {
     private TraMediaPlanMapping traFixedLastPositionMediaPlanMapping;
 
     public TraPlaylistDiff mapMediaPlanEntriesToPlaylistWithSelectedAdvertisment(TraMediaPlanAdvertisementAssigneDTO assigneDTO, String networkShortcut, String channelShortcut) {
-        LibMediaItem traAdvertisement = libItemService.getMediaItem(networkShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
+        LibMediaItem traAdvertisement = libMediaItemService.getMediaItem(networkShortcut, COM_DEFAULT, assigneDTO.getLibMediaItemIdx());
         if (traAdvertisement == null) {
             return null;
         }

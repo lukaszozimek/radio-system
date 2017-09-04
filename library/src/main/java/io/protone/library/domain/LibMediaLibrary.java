@@ -15,14 +15,14 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A LibLibrary.
+ * A LibMediaLibrary.
  */
 //TODO: ad commercial Libary Entity where id is fk
 @Entity
-@Table(name = "lib_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
+@Table(name = "lib_media_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibLibrary extends CorLibrary implements Serializable {
+public class LibMediaLibrary extends CorLibrary implements Serializable {
 
     @OneToOne
     @PodamExclude
@@ -31,8 +31,8 @@ public class LibLibrary extends CorLibrary implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "lib_library_channel",
-            joinColumns = @JoinColumn(name = "lib_library_id", referencedColumnName = "id"),
+    @JoinTable(name = "lib_media_library_channel",
+            joinColumns = @JoinColumn(name = "lib_media_library_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "channels_id", referencedColumnName = "id"))
     @PodamExclude
     private Set<CorChannel> channels = new HashSet<>();
@@ -40,8 +40,8 @@ public class LibLibrary extends CorLibrary implements Serializable {
     @PodamExclude
     @OneToMany
     @JoinTable(
-            name = "lib_library_cor_image_item",
-            joinColumns = @JoinColumn(name = "lib_library_id"),
+            name = "lib_media_library_cor_image_item",
+            joinColumns = @JoinColumn(name = "lib_media_library_id"),
             inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
     private Set<CorImageItem> imageItems = new HashSet<>();
@@ -62,7 +62,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.prefix = prefix;
     }
 
-    public LibLibrary prefix(String prefix) {
+    public LibMediaLibrary prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -75,7 +75,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.shortcut = shortcut;
     }
 
-    public LibLibrary shortcut(String shortcut) {
+    public LibMediaLibrary shortcut(String shortcut) {
         this.shortcut = shortcut;
         return this;
     }
@@ -88,7 +88,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.name = name;
     }
 
-    public LibLibrary name(String name) {
+    public LibMediaLibrary name(String name) {
         this.name = name;
         return this;
     }
@@ -101,7 +101,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.counter = counter;
     }
 
-    public LibLibrary counter(Long counter) {
+    public LibMediaLibrary counter(Long counter) {
         this.counter = counter;
         return this;
     }
@@ -114,7 +114,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.description = description;
     }
 
-    public LibLibrary description(String description) {
+    public LibMediaLibrary description(String description) {
         this.description = description;
         return this;
     }
@@ -127,7 +127,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.network = corNetwork;
     }
 
-    public LibLibrary network(CorNetwork corNetwork) {
+    public LibMediaLibrary network(CorNetwork corNetwork) {
         this.network = corNetwork;
         return this;
     }
@@ -140,18 +140,18 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.channels = corChannels;
     }
 
-    public LibLibrary channels(Set<CorChannel> corChannels) {
+    public LibMediaLibrary channels(Set<CorChannel> corChannels) {
         this.channels = corChannels;
         return this;
     }
 
-    public LibLibrary addChannel(CorChannel corChannel) {
+    public LibMediaLibrary addChannel(CorChannel corChannel) {
         this.channels.add(corChannel);
 
         return this;
     }
 
-    public LibLibrary removeChannel(CorChannel corChannel) {
+    public LibMediaLibrary removeChannel(CorChannel corChannel) {
         this.channels.remove(corChannel);
 
         return this;
@@ -165,18 +165,18 @@ public class LibLibrary extends CorLibrary implements Serializable {
         this.imageItems = imageItems;
     }
 
-    public LibLibrary addImageItems(CorImageItem imageItems) {
+    public LibMediaLibrary addImageItems(CorImageItem imageItems) {
         this.imageItems.add(imageItems);
         return this;
     }
 
-    public LibLibrary removeImageItems(CorImageItem imageItems) {
+    public LibMediaLibrary removeImageItems(CorImageItem imageItems) {
         this.imageItems.remove(imageItems);
         return this;
     }
 
 
-    public LibLibrary mainImage(CorImageItem mainImage) {
+    public LibMediaLibrary mainImage(CorImageItem mainImage) {
         this.mainImage = mainImage;
         return this;
     }
@@ -197,11 +197,11 @@ public class LibLibrary extends CorLibrary implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LibLibrary libLibrary = (LibLibrary) o;
-        if (libLibrary.id == null || id == null) {
+        LibMediaLibrary libMediaLibrary = (LibMediaLibrary) o;
+        if (libMediaLibrary.id == null || id == null) {
             return false;
         }
-        return Objects.equals(id, libLibrary.id);
+        return Objects.equals(id, libMediaLibrary.id);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class LibLibrary extends CorLibrary implements Serializable {
 
     @Override
     public String toString() {
-        return "LibLibrary{" +
+        return "LibMediaLibrary{" +
                 "id=" + id +
                 ", prefix='" + prefix + "'" +
                 ", shortcut='" + shortcut + "'" +

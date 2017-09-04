@@ -12,7 +12,7 @@
                                  baseTableName="lib_media_item"
                                  constraintName="fk_lib_media_item_library_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="lib_library"/>
+                                 referencedTableName="lib_media_library"/>
 
         <addForeignKeyConstraint baseColumnNames="label_id"
                                  baseTableName="lib_media_item"

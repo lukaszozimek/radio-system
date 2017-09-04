@@ -1,8 +1,6 @@
 package io.protone.language.pql.visitor.library;
 
-import io.protone.language.pal.impl.ProtoneAutomationLanguageListenerImpl;
 import io.protone.language.pql.impl.visitor.library.ProtoneQueryLanguageLibraryEntityVisitorImpl;
-import io.protone.language.pql.impl.visitor.traffic.ProtoneQueryLanguageTrafficEntityVisitorImpl;
 import org.antlr.v4.runtime.*;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -62,7 +60,7 @@ public class LibraryModuleSelectStatemantTest {
     public void simpleLibraryQuery() throws IOException {
 
         String simpleQuery = "Library  Library";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary l";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibMediaLibrary l";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

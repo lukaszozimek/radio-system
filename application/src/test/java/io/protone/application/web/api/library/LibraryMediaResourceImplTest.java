@@ -3,7 +3,7 @@ package io.protone.application.web.api.library;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
-import io.protone.application.web.api.library.impl.LibraryResourceImpl;
+import io.protone.application.web.api.library.impl.LibraryMediaResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
@@ -11,11 +11,11 @@ import io.protone.core.repository.CorImageItemRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
-import io.protone.library.api.dto.LibLibraryDTO;
-import io.protone.library.domain.LibLibrary;
-import io.protone.library.mapper.LibLibraryMapper;
+import io.protone.library.api.dto.LibMediaLibraryDTO;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.mapper.LibLibraryMediaMapper;
 import io.protone.library.repository.LibLibraryRepository;
-import io.protone.library.service.LibLibraryService;
+import io.protone.library.service.LibLibraryMediaService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-public class LibraryResourceImplTest {
+public class LibraryMediaResourceImplTest {
     private static final String DEFAULT_PREFIX = "A";
     private static final String UPDATED_PREFIX = "B";
 
@@ -71,10 +71,10 @@ public class LibraryResourceImplTest {
     private LibLibraryRepository libLibraryRepository;
 
     @Autowired
-    private LibLibraryMapper libLibraryMapper;
+    private LibLibraryMediaMapper libLibraryMediaMapper;
 
     @Autowired
-    private LibLibraryService libLibraryService;
+    private LibLibraryMediaService libLibraryMediaService;
 
     @Mock
     private S3Client s3Client;
@@ -102,7 +102,7 @@ public class LibraryResourceImplTest {
 
     private MockMvc restLibLibraryMockMvc;
 
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
 
     private CorNetwork corNetwork;
     private CorImageItem corImageItem;
@@ -113,27 +113,27 @@ public class LibraryResourceImplTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static LibLibrary createEntity(EntityManager em) {
-        LibLibrary libLibrary = new LibLibrary()
+    public static LibMediaLibrary createEntity(EntityManager em) {
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary()
                 .prefix(DEFAULT_PREFIX)
                 .shortcut(DEFAULT_SHORTCUT)
                 .name(DEFAULT_NAME)
                 .counter(DEFAULT_COUNTER)
                 .description(DEFAULT_DESCRIPTION);
-        return libLibrary;
+        return libMediaLibrary;
     }
 
     @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
-        LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
+        LibraryMediaResourceImpl libLibraryResource = new LibraryMediaResourceImpl();
         corImageItem = new CorImageItem().publicUrl(PUBLIC_URL_STRING).name("test").network(corNetwork);
         corImageItemRepository.saveAndFlush(corImageItem);
         when(corImageItemService.saveImageItem(any())).thenReturn(corImageItem);
-        ReflectionTestUtils.setField(libLibraryService, "corImageItemService", corImageItemService);
-        ReflectionTestUtils.setField(libLibraryService, "s3Client", s3Client);
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
+        ReflectionTestUtils.setField(libLibraryMediaService, "corImageItemService", corImageItemService);
+        ReflectionTestUtils.setField(libLibraryMediaService, "s3Client", s3Client);
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaService", libLibraryMediaService);
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaMapper", libLibraryMediaMapper);
         ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
 
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
@@ -147,7 +147,7 @@ public class LibraryResourceImplTest {
 
     @Before
     public void initTest() {
-        libLibrary = createEntity(em).network(corNetwork);
+        libMediaLibrary = createEntity(em).network(corNetwork);
     }
 
     @Test
@@ -155,26 +155,26 @@ public class LibraryResourceImplTest {
     public void createLibLibrary() throws Exception {
         int databaseSizeBeforeCreate = libLibraryRepository.findAll().size();
 
-        // Create the LibLibrary
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        // Create the LibMediaLibrary
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isCreated());
 
-        // Validate the LibLibrary in the database
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeCreate + 1);
-        LibLibrary testLibLibrary = libLibraryList.get(libLibraryList.size() - 1);
-        assertThat(testLibLibrary.getPrefix()).isEqualTo(DEFAULT_PREFIX);
-        assertThat(testLibLibrary.getShortcut()).isEqualTo(DEFAULT_SHORTCUT);
-        assertThat(testLibLibrary.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testLibLibrary.getCounter()).isEqualTo(DEFAULT_COUNTER);
-        assertThat(testLibLibrary.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        // Validate the LibMediaLibrary in the database
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeCreate + 1);
+        LibMediaLibrary testLibMediaLibrary = libMediaLibraryList.get(libMediaLibraryList.size() - 1);
+        assertThat(testLibMediaLibrary.getPrefix()).isEqualTo(DEFAULT_PREFIX);
+        assertThat(testLibMediaLibrary.getShortcut()).isEqualTo(DEFAULT_SHORTCUT);
+        assertThat(testLibMediaLibrary.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testLibMediaLibrary.getCounter()).isEqualTo(DEFAULT_COUNTER);
+        assertThat(testLibMediaLibrary.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -182,23 +182,23 @@ public class LibraryResourceImplTest {
     public void createLibLibraryWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = libLibraryRepository.findAll().size();
 
-        // Create the LibLibrary with an existing ID
-        LibLibrary existingLibLibrary = new LibLibrary();
-        existingLibLibrary.setId(1L);
-        LibLibraryDTO existingLibLibraryDTO = libLibraryMapper.DB2DTO(existingLibLibrary);
+        // Create the LibMediaLibrary with an existing ID
+        LibMediaLibrary existingLibMediaLibrary = new LibMediaLibrary();
+        existingLibMediaLibrary.setId(1L);
+        LibMediaLibraryDTO existingLibMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(existingLibMediaLibrary);
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(existingLibLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(existingLibMediaLibraryDTO));
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeCreate);
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeCreate);
     }
 
     @Test
@@ -206,21 +206,21 @@ public class LibraryResourceImplTest {
     public void checkPrefixIsRequired() throws Exception {
         int databaseSizeBeforeTest = libLibraryRepository.findAll().size();
         // set the field null
-        libLibrary.setPrefix(null);
+        libMediaLibrary.setPrefix(null);
 
-        // Create the LibLibrary, which fails.
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        // Create the LibMediaLibrary, which fails.
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
 
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeTest);
     }
 
 
@@ -229,21 +229,21 @@ public class LibraryResourceImplTest {
     public void checkShortcutIsRequired() throws Exception {
         int databaseSizeBeforeTest = libLibraryRepository.findAll().size();
         // set the field null
-        libLibrary.setShortcut(null);
+        libMediaLibrary.setShortcut(null);
 
-        // Create the LibLibrary, which fails.
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        // Create the LibMediaLibrary, which fails.
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
 
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -251,21 +251,21 @@ public class LibraryResourceImplTest {
     public void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = libLibraryRepository.findAll().size();
         // set the field null
-        libLibrary.setName(null);
+        libMediaLibrary.setName(null);
 
-        // Create the LibLibrary, which fails.
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        // Create the LibMediaLibrary, which fails.
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
 
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -273,21 +273,21 @@ public class LibraryResourceImplTest {
     public void checkCounterIsRequired() throws Exception {
         int databaseSizeBeforeTest = libLibraryRepository.findAll().size();
         // set the field null
-        libLibrary.setCounter(null);
+        libMediaLibrary.setCounter(null);
 
-        // Create the LibLibrary, which fails.
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        // Create the LibMediaLibrary, which fails.
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isBadRequest());
 
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeTest);
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeTest);
     }
 
 
@@ -296,13 +296,13 @@ public class LibraryResourceImplTest {
     public void getAllLibLibraries() throws Exception {
         // Initialize the database
         when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library?sort=id,desc", corNetwork.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaLibrary.getId().intValue())))
                 .andExpect(jsonPath("$.[*].prefix").value(hasItem(DEFAULT_PREFIX.toString())))
                 .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
@@ -315,13 +315,13 @@ public class LibraryResourceImplTest {
     public void getLibLibrary() throws Exception {
         // Initialize the database
         when(corImageItemService.saveImageItem(any())).thenReturn(null);
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("123"));
 
-        // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), "123"))
+        // Get the libMediaLibrary
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
+                .andExpect(jsonPath("$.id").value(libMediaLibrary.getId().intValue()))
                 .andExpect(jsonPath("$.prefix").value(DEFAULT_PREFIX.toString()))
                 .andExpect(jsonPath("$.shortcut").value("123"))
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
@@ -334,13 +334,13 @@ public class LibraryResourceImplTest {
     public void getAllLibLibrariesWithImages() throws Exception {
         // Initialize the database
 
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).mainImage(corImageItem));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).mainImage(corImageItem));
 
         // Get all the libLibraryList
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library?sort=id,desc", corNetwork.getShortcut()))
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media?sort=id,desc", corNetwork.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(libLibrary.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(libMediaLibrary.getId().intValue())))
                 .andExpect(jsonPath("$.[*].prefix").value(hasItem(DEFAULT_PREFIX.toString())))
                 .andExpect(jsonPath("$.[*].shortcut").value(hasItem(DEFAULT_SHORTCUT.toString())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
@@ -353,13 +353,13 @@ public class LibraryResourceImplTest {
     @Transactional
     public void getLibLibraryWithImage() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("123").mainImage(corImageItem));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("123").mainImage(corImageItem));
 
-        // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), "123"))
+        // Get the libMediaLibrary
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), "123"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.id").value(libLibrary.getId().intValue()))
+                .andExpect(jsonPath("$.id").value(libMediaLibrary.getId().intValue()))
                 .andExpect(jsonPath("$.prefix").value(DEFAULT_PREFIX.toString()))
                 .andExpect(jsonPath("$.shortcut").value("123"))
                 .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
@@ -371,8 +371,8 @@ public class LibraryResourceImplTest {
     @Test
     @Transactional
     public void getNonExistingLibLibrary() throws Exception {
-        // Get the libLibrary
-        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), Long.MAX_VALUE))
+        // Get the libMediaLibrary
+        restLibLibraryMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -380,69 +380,69 @@ public class LibraryResourceImplTest {
     @Transactional
     public void updateLibLibrary() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tst"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("Tst"));
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
-        // Update the libLibrary
-        LibLibrary updatedLibLibrary = libLibraryRepository.findOne(libLibrary.getId());
-        updatedLibLibrary
+        // Update the libMediaLibrary
+        LibMediaLibrary updatedLibMediaLibrary = libLibraryRepository.findOne(libMediaLibrary.getId());
+        updatedLibMediaLibrary
                 .prefix(UPDATED_PREFIX)
                 .shortcut(UPDATED_SHORTCUT)
                 .name(UPDATED_NAME)
                 .counter(UPDATED_COUNTER)
                 .description(UPDATED_DESCRIPTION);
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO((updatedLibMediaLibrary));
 
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO)))
                 .andExpect(status().isOk());
 
-        // Validate the LibLibrary in the database
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeUpdate);
-        LibLibrary testLibLibrary = libLibraryList.get(libLibraryList.size() - 1);
-        assertThat(testLibLibrary.getPrefix()).isEqualTo(UPDATED_PREFIX);
-        assertThat(testLibLibrary.getShortcut()).isEqualTo(UPDATED_SHORTCUT);
-        assertThat(testLibLibrary.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testLibLibrary.getCounter()).isEqualTo(UPDATED_COUNTER);
-        assertThat(testLibLibrary.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        // Validate the LibMediaLibrary in the database
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeUpdate);
+        LibMediaLibrary testLibMediaLibrary = libMediaLibraryList.get(libMediaLibraryList.size() - 1);
+        assertThat(testLibMediaLibrary.getPrefix()).isEqualTo(UPDATED_PREFIX);
+        assertThat(testLibMediaLibrary.getShortcut()).isEqualTo(UPDATED_SHORTCUT);
+        assertThat(testLibMediaLibrary.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testLibMediaLibrary.getCounter()).isEqualTo(UPDATED_COUNTER);
+        assertThat(testLibMediaLibrary.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test
     @Transactional
     public void updateLibLibraryWithImage() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tst"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("Tst"));
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
-        // Update the libLibrary
-        LibLibrary updatedLibLibrary = libLibraryRepository.findOne(libLibrary.getId());
-        updatedLibLibrary
+        // Update the libMediaLibrary
+        LibMediaLibrary updatedLibMediaLibrary = libLibraryRepository.findOne(libMediaLibrary.getId());
+        updatedLibMediaLibrary
                 .prefix(UPDATED_PREFIX)
                 .shortcut(UPDATED_SHORTCUT)
                 .name(UPDATED_NAME)
                 .counter(UPDATED_COUNTER)
                 .description(UPDATED_DESCRIPTION);
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO((updatedLibLibrary));
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO((updatedLibMediaLibrary));
         MockMultipartFile emptyFile = new MockMultipartFile("cover", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/avatar/crm/customer/logo.png"));
         MockMultipartFile jsonFile = new MockMultipartFile("libraryDTO", "",
-                "application/json", TestUtil.convertObjectToJsonBytes(libLibraryDTO));
+                "application/json", TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO));
 
-        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), libLibrary.getShortcut())
+        restLibLibraryMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
                 .file(emptyFile)
                 .file(jsonFile))
                 .andExpect(status().isOk());
 
-        // Validate the LibLibrary in the database
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeUpdate);
-        LibLibrary testLibLibrary = libLibraryList.get(libLibraryList.size() - 1);
-        assertThat(testLibLibrary.getPrefix()).isEqualTo(UPDATED_PREFIX);
-        assertThat(testLibLibrary.getShortcut()).isEqualTo(UPDATED_SHORTCUT);
-        assertThat(testLibLibrary.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testLibLibrary.getCounter()).isEqualTo(UPDATED_COUNTER);
-        assertThat(testLibLibrary.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        // Validate the LibMediaLibrary in the database
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeUpdate);
+        LibMediaLibrary testLibMediaLibrary = libMediaLibraryList.get(libMediaLibraryList.size() - 1);
+        assertThat(testLibMediaLibrary.getPrefix()).isEqualTo(UPDATED_PREFIX);
+        assertThat(testLibMediaLibrary.getShortcut()).isEqualTo(UPDATED_SHORTCUT);
+        assertThat(testLibMediaLibrary.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testLibMediaLibrary.getCounter()).isEqualTo(UPDATED_COUNTER);
+        assertThat(testLibMediaLibrary.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test
@@ -450,40 +450,40 @@ public class LibraryResourceImplTest {
     public void updateNonExistingLibLibrary() throws Exception {
         int databaseSizeBeforeUpdate = libLibraryRepository.findAll().size();
 
-        // Create the LibLibrary
-        LibLibraryDTO libLibraryDTO = libLibraryMapper.DB2DTO(libLibrary);
+        // Create the LibMediaLibrary
+        LibMediaLibraryDTO libMediaLibraryDTO = libLibraryMediaMapper.DB2DTO(libMediaLibrary);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library", corNetwork.getShortcut())
+        restLibLibraryMockMvc.perform(put("/api/v1/network/{networkShortcut}/library/media", corNetwork.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(libLibraryDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(libMediaLibraryDTO)))
                 .andExpect(status().isCreated());
 
-        // Validate the LibLibrary in the database
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeUpdate + 1);
+        // Validate the LibMediaLibrary in the database
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
     @Test
     @Transactional
     public void deleteLibLibrary() throws Exception {
         // Initialize the database
-        libLibraryRepository.saveAndFlush(libLibrary.network(corNetwork).shortcut("Tet"));
+        libLibraryRepository.saveAndFlush(libMediaLibrary.network(corNetwork).shortcut("Tet"));
         int databaseSizeBeforeDelete = libLibraryRepository.findAll().size();
 
-        // Get the libLibrary
-        restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/{libraryPrefix}", corNetwork.getShortcut(), libLibrary.getShortcut())
+        // Get the libMediaLibrary
+        restLibLibraryMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<LibLibrary> libLibraryList = libLibraryRepository.findAll();
-        assertThat(libLibraryList).hasSize(databaseSizeBeforeDelete - 1);
+        List<LibMediaLibrary> libMediaLibraryList = libLibraryRepository.findAll();
+        assertThat(libMediaLibraryList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
     @Test
     public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(LibLibrary.class);
+        TestUtil.equalsVerifier(LibMediaLibrary.class);
     }
 
 }

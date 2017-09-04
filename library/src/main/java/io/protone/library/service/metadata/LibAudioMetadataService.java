@@ -69,7 +69,7 @@ public class LibAudioMetadataService {
         metadataMap.put(MarkerConstans.INT, MarkerConstans.INT);
     }
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject, String orginalFileName) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibAudioObject audioObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Audio :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -95,7 +95,9 @@ public class LibAudioMetadataService {
             LibAlbum libAlbum = libAlbumService.findOrSaveOne(metadata.get(NO_DATA), metadata.get(ProtoneMetadataProperty.ARTIST), corNetwork);
             mediaItem.album(libAlbum);
         }
-        mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
+        if (mediaItem.getIdx() == null) {
+            mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
+        }
         if (metadata.get(XMPDM.DURATION) != null) {
             mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
 

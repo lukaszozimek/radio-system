@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A LibLibrary.
+ * A LibMediaLibrary.
  */
 @Entity
 @Table(name = "lib_file_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
@@ -165,7 +165,7 @@ public class LibFileLibrary extends CorLibrary implements Serializable {
 
     @Override
     public String toString() {
-        return "LibLibrary{" +
+        return "LibMediaLibrary{" +
                 "id=" + id +
                 ", prefix='" + prefix + "'" +
                 ", shortcut='" + shortcut + "'" +

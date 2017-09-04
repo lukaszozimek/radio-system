@@ -6,8 +6,8 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.library.domain.LibAudioObject;
 import io.protone.library.domain.LibCloudObject;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibAudioObjectRepository;
 import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibLibraryRepository;
@@ -48,12 +48,12 @@ public class LibraryGenerator {
 
     protected PodamFactory factory;
 
-    protected LibLibrary libLibrary;
+    protected LibMediaLibrary libMediaLibrary;
 
 
     public void initializeLibarary() {
         initializeRequiredEntities();
-        if (libLibrary == null) {
+        if (libMediaLibrary == null) {
             initializeLibaryEntity();
         }
     }
@@ -67,14 +67,14 @@ public class LibraryGenerator {
     }
 
     private void initializeLibaryEntity() {
-        libLibrary = new LibLibrary();
-        libLibrary.setId(null);
-        libLibrary.setCounter(0L);
-        libLibrary.setPrefix("v");
-        libLibrary.shortcut("100");
-        libLibrary.setName("Testowa Bliblioteka Schedulera");
-        libLibrary.setNetwork(corNetwork);
-        this.libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(null);
+        libMediaLibrary.setCounter(0L);
+        libMediaLibrary.setPrefix("v");
+        libMediaLibrary.shortcut("100");
+        libMediaLibrary.setName("Testowa Bliblioteka Schedulera");
+        libMediaLibrary.setNetwork(corNetwork);
+        this.libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
     }
 
     public List<LibMediaItem> generateFullItemListWithLenghtInRange(double lenghtMin, double lenghtMax, Long librarySize) throws InterruptedException {
@@ -109,7 +109,7 @@ public class LibraryGenerator {
         LibMediaItem libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setId(null);
         libMediaItem.length(lenght);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem.setNetwork(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
         return libMediaItem;

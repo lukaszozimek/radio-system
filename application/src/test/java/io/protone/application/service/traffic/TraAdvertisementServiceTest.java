@@ -6,11 +6,11 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibMediaItemRepository;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.repository.TraAdvertisementRepository;
 import io.protone.traffic.service.TraAdvertisementService;
@@ -59,7 +59,7 @@ public class TraAdvertisementServiceTest {
     private LibMediaItemRepository libMediaItemRepository;
 
     @Mock
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
     private CorNetwork corNetwork;
 
@@ -76,21 +76,21 @@ public class TraAdvertisementServiceTest {
         factory = new PodamFactoryImpl();
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount = crmAccountRepository.save(crmAccount);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
 
         libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem.setItemType(LibItemTypeEnum.IT_AUDIO);
         libMediaItem = libMediaItemRepository.save(libMediaItem);
 
-        doNothing().when(libItemService).deleteItem(anyObject());
-        ReflectionUtils.setField(FieldUtils.getField(TraAdvertisementService.class, "libItemService", true), traAdvertisementService, libItemService);
+        doNothing().when(libMediaItemService).deleteItem(anyObject());
+        ReflectionUtils.setField(FieldUtils.getField(TraAdvertisementService.class, "libMediaItemService", true), traAdvertisementService, libMediaItemService);
 
     }
 

@@ -4,7 +4,7 @@ package io.protone.application.service.library;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.repository.CorNetworkRepository;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import javax.transaction.Transactional;
 public class LibMetadataServiceTest {
 
     @Autowired
-    private LibItemService libArtistService;
+    private LibMediaItemService libArtistService;
 
     @Autowired
     private CorNetworkRepository corNetworkRepository;

@@ -4,25 +4,25 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
-        Added the constraints for entity LibLibrary.
+        Added the constraints for entLibMediaLibraryrary.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="network_id"
-                                 baseTableName="lib_library"
-                                 constraintName="fk_lib_library_network_id"
+                                 baseTableName="lib_media_library"
+                                 constraintName="fk_lib_media_library_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
         <addForeignKeyConstraint baseColumnNames="created_by_id"
-                                 baseTableName="lib_library"
-                                 constraintName="fk_lib_library_created_by_id"
+                                 baseTableName="lib_media_library"
+                                 constraintName="fk_lib_media_library_created_by_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
 
         <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
-                                 baseTableName="lib_library"
-                                 constraintName="fk_lib_library_last_modified_by_idy"
+                                 baseTableName="lib_media_library"
+                                 constraintName="fk_lib_media_library_last_modified_by_idy"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_user"/>
     </changeSet>

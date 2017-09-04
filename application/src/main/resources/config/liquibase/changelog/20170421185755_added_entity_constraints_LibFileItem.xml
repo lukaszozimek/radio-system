@@ -30,7 +30,7 @@
                                  baseTableName="lib_file_item"
                                  constraintName="fk_lib_file_item_library_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="lib_library"/>
+                                 referencedTableName="lib_media_library"/>
 
         <addForeignKeyConstraint baseColumnNames="parent_file_id"
                                  baseTableName="lib_file_item"

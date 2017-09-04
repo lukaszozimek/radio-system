@@ -3,7 +3,7 @@ package io.protone.application.web.api.scheduler;
 import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
-import io.protone.application.web.api.scheduler.impl.SchLogConfigurationResourceImpl;
+import io.protone.application.web.api.scheduler.impl.SchLogResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -100,7 +100,7 @@ public class SchLogResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        SchLogConfigurationResourceImpl traPlaylistResource = new SchLogConfigurationResourceImpl();
+        SchLogResourceImpl traPlaylistResource = new SchLogResourceImpl();
         ReflectionTestUtils.setField(traPlaylistResource, "schLogService", schLogService);
         ReflectionTestUtils.setField(traPlaylistResource, "schLogMapper", schLogMapper);
         ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
@@ -130,7 +130,7 @@ public class SchLogResourceImplTest {
         // Create the SchLog
         SchLogDTO traPlaylistDTO = schLogMapper.DB2DTO(schLog);
 
-        restSchLogMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchLogMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -150,7 +150,7 @@ public class SchLogResourceImplTest {
         schLogRepository.saveAndFlush(schLog.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
-        restSchLogMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchLogMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schLog.getId().intValue())))
@@ -166,7 +166,7 @@ public class SchLogResourceImplTest {
         schLogRepository.saveAndFlush(schLog.network(corNetwork).channel(corChannel));
 
         // Get the schLog
-        restSchLogMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getId()))
+        restSchLogMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schLog.getId().intValue()))
@@ -182,7 +182,7 @@ public class SchLogResourceImplTest {
         int databaseSizeBeforeDelete = schLogRepository.findAll().size();
 
         // Get the schLog
-        restSchLogMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getId())
+        restSchLogMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/{extension}/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), schLog.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

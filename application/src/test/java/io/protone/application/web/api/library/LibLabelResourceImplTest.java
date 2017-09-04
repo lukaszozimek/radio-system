@@ -222,7 +222,7 @@ public class LibLabelResourceImplTest {
         when(corImageItemService.saveImageItem(any())).thenReturn(null);
         libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
 
-        // Get the libLibrary
+        // Get the libMediaLibrary
         restLibLabelMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -235,7 +235,7 @@ public class LibLabelResourceImplTest {
     @Test
     @Transactional
     public void getNonExistingLibLabel() throws Exception {
-        // Get the libLibrary
+        // Get the libMediaLibrary
         restLibLabelMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/{id}", corNetwork.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
@@ -247,7 +247,7 @@ public class LibLabelResourceImplTest {
         libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
         int databaseSizeBeforeUpdate = libLabelRepository.findAll().size();
 
-        // Update the libLibrary
+        // Update the libMediaLibrary
         LibLabel updatedLibLabel = libLabelRepository.findOne(libLibrary.getId());
         updatedLibLabel
                 .name(UPDATED_NAME)
@@ -294,7 +294,7 @@ public class LibLabelResourceImplTest {
         libLabelRepository.saveAndFlush(libLibrary.network(corNetwork));
         int databaseSizeBeforeDelete = libLabelRepository.findAll().size();
 
-        // Get the libLibrary
+        // Get the libMediaLibrary
         restLibLabelMockMvc.perform(delete("/api/v1/network/{networkShortcut}/library/label/{id}", corNetwork.getShortcut(), libLibrary.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());

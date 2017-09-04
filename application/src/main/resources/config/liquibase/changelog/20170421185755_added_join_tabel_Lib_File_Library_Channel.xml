@@ -33,7 +33,7 @@
 
         <addForeignKeyConstraint baseColumnNames="channels_id"
                                  baseTableName="lib_file_library_channel"
-                                 constraintName="fk_channel_lib_library_file__id"
+                                 constraintName="fk_channel_lib_media_library_file__id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_channel"/>
     </changeSet>

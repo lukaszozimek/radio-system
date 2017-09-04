@@ -9,12 +9,12 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.thin.TraAdvertisementThinDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
@@ -89,7 +89,7 @@ public class TraMediaPlanServiceTest {
     private TraOrderRepository traOrderRepository;
 
     @Mock
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
     private CorNetwork corNetwork;
 
@@ -101,7 +101,7 @@ public class TraMediaPlanServiceTest {
 
     private LibMediaItem libMediaItem;
 
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
 
     private TraOrder traOrder;
 
@@ -122,11 +122,11 @@ public class TraMediaPlanServiceTest {
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
 
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
-        libLibrary.setShortcut("ppp");
-        libLibrary.network(corNetwork);
-        libLibrary.addChannel(corChannel);
-        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
+        libMediaLibrary.setShortcut("ppp");
+        libMediaLibrary.network(corNetwork);
+        libMediaLibrary.addChannel(corChannel);
+        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
 
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
@@ -134,14 +134,14 @@ public class TraMediaPlanServiceTest {
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
-        libMediaItem.library(libLibrary);
+        libMediaItem.library(libMediaLibrary);
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.network(corNetwork);
 
-        ReflectionTestUtils.setField(traMediaPlanService, "libItemService", libItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
 
     }
 
@@ -173,11 +173,11 @@ public class TraMediaPlanServiceTest {
 
         //when
         MultipartFile multipartFile = new MockMultipartFile("test", "test", "", Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls"));
-        when(libItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
+        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
 
         LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
         libMediaItemToShuffle.setNetwork(corNetwork);
-        libMediaItemToShuffle.setLibrary(libLibrary);
+        libMediaItemToShuffle.setLibrary(libMediaLibrary);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
 
         TraAdvertisement advertisementToShuffle = factory.manufacturePojo(TraAdvertisement.class);
@@ -219,7 +219,7 @@ public class TraMediaPlanServiceTest {
 
     @Test
     public void shouldDeleteMediaPlan() throws Exception {
-        doNothing().when(libItemService).deleteItem(any(LibMediaItem.class));
+        doNothing().when(libMediaItemService).deleteItem(any(LibMediaItem.class));
         //when
         TraMediaPlan mediaPlan = factory.manufacturePojo(TraMediaPlan.class);
         mediaPlan.mediaItem(libMediaItem);

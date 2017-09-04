@@ -6,8 +6,8 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.domain.LibArtist;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.file.LibFileService;
@@ -44,13 +44,13 @@ import static io.protone.library.service.file.impl.LibImageFileService.IMAGE;
 import static io.protone.library.service.file.impl.LibVideoFileService.VIDEO;
 
 @Service
-public class LibItemService {
+public class LibMediaItemService {
 
     private static final String CONTENT_TYPE_SEPARATOR = "/";
 
-    private final Logger log = LoggerFactory.getLogger(LibItemService.class);
+    private final Logger log = LoggerFactory.getLogger(LibMediaItemService.class);
     @Inject
-    private LibLibraryService libraryService;
+    private LibLibraryMediaService libraryService;
 
     @Inject
     private LibMediaItemRepository itemRepository;
@@ -118,7 +118,7 @@ public class LibItemService {
 
     @Transactional
     public void moveMediaItem(String networkShortcut, String libraryShortcut, String idx, String dstLibararyShortcut) {
-        LibLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, dstLibararyShortcut);
+        LibMediaLibrary dstLibarary = this.libraryService.findLibrary(networkShortcut, dstLibararyShortcut);
         if (dstLibarary != null) {
             Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
             if (optionalItemDB.isPresent()) {
@@ -131,7 +131,7 @@ public class LibItemService {
 
     @Transactional
     public Slice<LibMediaItem> getMediaItems(String networkShortcut, String libraryShortcut, Pageable pagable) {
-        return  itemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
+        return itemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pagable);
     }
 
 
@@ -168,7 +168,7 @@ public class LibItemService {
         if (files == null || files.length == 0) {
             return result;
         }
-        LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        LibMediaLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
         if (libraryDB == null) {
             return result;
         }
@@ -200,7 +200,7 @@ public class LibItemService {
 
     @Transactional
     public LibMediaItem upload(String networkShortcut, String libraryShortcut, MultipartFile file) throws IOException, TikaException, SAXException {
-        LibLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        LibMediaLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
         if (libraryDB == null) {
             return null;
         }
@@ -222,6 +222,36 @@ public class LibItemService {
             return libMediaItem;
         } else {
             log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", fileName, metadata.get(HttpHeaders.CONTENT_TYPE));
+        }
+        return null;
+    }
+
+    @Transactional
+    public LibMediaItem updateItemContent(String networkShortcut, String libraryShortcut, String idx, MultipartFile file) throws IOException, TikaException, SAXException {
+        LibMediaLibrary libraryDB = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        if (libraryDB == null) {
+            return null;
+        }
+        LibMediaItem mediaItem = getMediaItem(networkShortcut, libraryShortcut, idx);
+        if (mediaItem == null) {
+            return null;
+        }
+        ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+        byte[] inputStream = new byte[bais.available()];
+        bais.read(inputStream);
+        Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
+        Parser parser = new AutoDetectParser();
+        BodyContentHandler handler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        ParseContext pcontext = new ParseContext();
+        parser.parse(inputStreamSupplier.get(), handler, metadata, pcontext);
+        String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
+        if (!Strings.isNullOrEmpty(libItemType)) {
+            log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
+            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).updateContent(inputStreamSupplier.get(), metadata, mediaItem, file.getSize(), libraryDB);
+            return libMediaItem;
+        } else {
+            log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", mediaItem.getName(), metadata.get(HttpHeaders.CONTENT_TYPE));
         }
         return null;
     }
