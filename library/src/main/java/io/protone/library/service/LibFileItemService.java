@@ -141,6 +141,13 @@ public class LibFileItemService {
     public void deleteFile(String networkShortcut, String libraryShortcut, String idx) {
         LibFileItem libFileItem = this.findLibFileItem(networkShortcut, libraryShortcut, idx);
         if (libFileItem != null) {
+            deleteFile(libFileItem);
+        }
+    }
+
+    @Transactional
+    public void deleteFile(LibFileItem libFileItem) {
+        if (libFileItem != null) {
             LibCloudObject cloudObject = libFileItem.getCloudObject();
             try {
                 s3Client.delete(libFileItem.getNetwork().getShortcut(), FILE + libFileItem.getLibrary().getShortcut(), cloudObject.getUuid());

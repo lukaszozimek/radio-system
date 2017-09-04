@@ -17,14 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 
@@ -54,20 +51,13 @@ public class SchLogService {
         if (multipartFile != null) {
             return Arrays.asList(multipartFile).stream().map(multipartFile1 -> {
 
-                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1.getOriginalFilename().split("\\.")[0]);
+                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1.getOriginalFilename().split("\\.")[1]);
                 if (schLogConfiguration != null) {
                     SchLog logtoSave = new SchLog();
                     logtoSave.network(networkShortcut);
                     logtoSave.channel(channelShortcut);
                     logtoSave.setSchLogConfiguration(schLogConfiguration);
-                    Pattern pattern = Pattern.compile(schLogConfiguration.getPattern());
-                    Matcher matcher = pattern.matcher(multipartFile1.getOriginalFilename());
-                    if (matcher.find()) {
-                        logtoSave.setDate(LocalDate.parse(matcher.group(1), DateTimeFormatter.ofPattern(pattern.toString())));
-                    } else {
-                        new BadRequestException("Log doesn't Match to Pattern in configuration");
-                    }
-                    System.out.print(matcher.find());
+                    logtoSave.setDate(LocalDate.parse(multipartFile1.getOriginalFilename().split("\\.")[0], DateTimeFormatter.ofPattern(schLogConfiguration.getPattern())));
                     try {
                         logtoSave.setLibFileItem(libFileItemService.uploadFileItem(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1));
                     } catch (IOException e) {
@@ -94,7 +84,9 @@ public class SchLogService {
 
     @Transactional
     public void deleteSchLogByNetworkAndChannelAndDateAndExtension(String networkShortcut, String channelShortcut, LocalDate date, String extension) {
-        schLogRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, date, extension);
+        SchLog schLog = schLogRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, date, extension);
+        this.libFileItemService.deleteFile(schLog.getLibFileItem());
+        this.schLogRepository.delete(schLog);
     }
 
 

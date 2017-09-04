@@ -39,10 +39,6 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            <column name="parent_file_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="channel_id" type="bigint">
                 <constraints nullable="false" />
             </column>

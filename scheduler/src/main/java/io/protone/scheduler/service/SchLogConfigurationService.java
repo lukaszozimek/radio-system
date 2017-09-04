@@ -52,6 +52,16 @@ public class SchLogConfigurationService {
     @Transactional
     public void deleteSchLogConfigurationByNetworkAndChannelAndId(String networkShortcut, String channelShortcut, Long id) {
         SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndId(networkShortcut, channelShortcut, id);
+        delete(schLogConfiguration);
+    }
+
+    @Transactional
+    public void deleteSchLogConfigurationByNetworkAndChannelAndId(String networkShortcut, String channelShortcut, String extension) {
+        SchLogConfiguration schLogConfiguration = schLogConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndExtension(networkShortcut, channelShortcut, extension);
+        delete(schLogConfiguration);
+    }
+
+    private void delete(SchLogConfiguration schLogConfiguration) {
         if (schLogConfiguration != null) {
             schLogColumnService.deleteColumns(schLogConfiguration.getLogColumns());
             schLogConfiguration.columns(Sets.newHashSet());
@@ -60,5 +70,4 @@ public class SchLogConfigurationService {
 
         }
     }
-
 }
