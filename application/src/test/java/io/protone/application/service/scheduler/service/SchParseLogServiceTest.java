@@ -2,6 +2,7 @@ package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.scheduler.domain.SchLogConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +25,11 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
     }
     @Test
     public void shouldParseLog(){
-
+        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
+        schLogConfiguration.setExtension("MUS");
+        schLogConfiguration.setPattern("yyyyMMdd");
+        schLogConfiguration.setChannel(corChannel);
+        schLogConfiguration.setNetwork(corNetwork);
     }
 
 }

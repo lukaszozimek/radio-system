@@ -106,7 +106,7 @@ public class SchLogServiceTest extends SchedulerBaseTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
 
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/musicLog/20160703.MUS");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/withseparator/musicLog/20160703.MUS");
         MultipartFile multipartFile = new MockMultipartFile("testFile", "20160703.MUS", "test", inputStream);
         MultipartFile[] multipartFiles = Arrays.array(multipartFile);
 
