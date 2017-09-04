@@ -1,0 +1,13 @@
+package io.protone.scheduler.service.log.parser;
+
+import io.protone.scheduler.domain.SchEmission;
+import io.protone.scheduler.domain.SchLogColumn;
+
+/**
+ * Created by lukaszozimek on 04.09.2017.
+ */
+public interface SchColumnParser {
+
+    SchEmission parseColumnLog(SchEmission schEmission, SchLogColumn schLogColumn, String logLine);
+
+}

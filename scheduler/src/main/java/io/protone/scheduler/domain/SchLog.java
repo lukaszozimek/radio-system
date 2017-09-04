@@ -60,13 +60,13 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
         return date;
     }
 
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
     public SchLog date(LocalDate date) {
         this.date = date;
         return this;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public SchLogConfiguration getSchLogConfiguration() {
@@ -89,26 +89,26 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchLog network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchLog channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
@@ -141,4 +141,8 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
     }
 
 
+    public SchLog fileItem(LibFileItem libFileItem) {
+        this.libFileItem = libFileItem;
+        return this;
+    }
 }

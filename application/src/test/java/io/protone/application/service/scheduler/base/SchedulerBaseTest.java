@@ -4,14 +4,24 @@ import com.google.common.collect.Sets;
 import io.protone.application.service.library.util.LibraryGenerator;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.domain.*;
+import io.protone.scheduler.repository.SchLogColumnRepostiory;
+import io.protone.scheduler.repository.SchLogConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
+
+import static io.protone.scheduler.domain.enumeration.LogColumnTypEnum.*;
 
 /**
  * Created by lukaszozimek on 14/08/2017.
  */
 public class SchedulerBaseTest extends LibraryGenerator {
+    @Autowired
+    private SchLogColumnRepostiory schLogColumnRepostiory;
+
+    @Autowired
+    private SchLogConfigurationRepository schLogConfigurationRepository;
 
     private List<LibMediaItem> libMediaItemList;
 
@@ -175,5 +185,58 @@ public class SchedulerBaseTest extends LibraryGenerator {
         schEventRoot2.setChannel(corChannel);
         schEventRoot2.addBlock(schEventRootChild2);
         return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
+    }
+
+    public void buildRekLogConfiguration() {
+        //configuration
+        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
+        schLogConfiguration.setExtension("rek");
+        schLogConfiguration.setPattern("yyyyMMdd");
+        schLogConfiguration.setChannel(corChannel);
+        schLogConfiguration.setNetwork(corNetwork);
+        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
+        //columnConfiguration
+        SchLogColumn schLogColumnTime = new SchLogColumn();
+        schLogColumnTime.setColumnSequence(1);
+        schLogColumnTime.setName(LCT_START_TIME);
+        schLogColumnTime.setLength(9);
+        schLogColumnTime.channel(corChannel);
+        schLogColumnTime.setSchLogConfiguration(schLogConfiguration);
+        schLogColumnTime.network(corNetwork);
+
+        SchLogColumn schLogColumnIdx = new SchLogColumn();
+        schLogColumnIdx.setColumnSequence(2);
+        schLogColumnIdx.setName(LCT_IDX);
+        schLogColumnIdx.setLength(14);
+        schLogColumnIdx.channel(corChannel);
+        schLogColumnIdx.setSchLogConfiguration(schLogConfiguration);
+        schLogColumnIdx.network(corNetwork);
+
+        SchLogColumn schLogColumnLibrary = new SchLogColumn();
+        schLogColumnLibrary.setColumnSequence(3);
+        schLogColumnLibrary.setName(LCT_LIBRARY);
+        schLogColumnLibrary.setLength(14);
+        schLogColumnLibrary.setSchLogConfiguration(schLogConfiguration);
+        schLogColumnLibrary.channel(corChannel);
+        schLogColumnLibrary.network(corNetwork);
+
+        SchLogColumn schLogColumnLenght = new SchLogColumn();
+        schLogColumnLenght.setColumnSequence(4);
+        schLogColumnLenght.setName(LCT_LENGHT);
+        schLogColumnLenght.setLength(14);
+        schLogColumnLenght.setSchLogConfiguration(schLogConfiguration);
+        schLogColumnLenght.channel(corChannel);
+        schLogColumnLenght.network(corNetwork);
+
+        SchLogColumn schLogColumnName = new SchLogColumn();
+        schLogColumnName.setColumnSequence(5);
+        schLogColumnName.setName(LCT_NAME);
+        schLogColumnName.setLength(22);
+        schLogColumnName.setSchLogConfiguration(schLogConfiguration);
+        schLogColumnName.channel(corChannel);
+        schLogColumnName.network(corNetwork);
+
+        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
+
     }
 }

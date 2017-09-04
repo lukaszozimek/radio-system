@@ -67,6 +67,9 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     @PodamExclude
     private CorChannel channel;
 
+    @Transient
+    @JsonIgnore
+    private String libraryElementShortCut;
 
     public Long getId() {
         return id;
@@ -129,8 +132,6 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     }
 
 
-
-
     public SchTimeParams getTimeParams() {
         return timeParams;
     }
@@ -186,17 +187,21 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchEmission network(CorNetwork network) {
         this.network = network;
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchEmission channel(CorChannel channel) {
@@ -204,8 +209,12 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
+    public String getLibraryElementShortCut() {
+        return libraryElementShortCut;
+    }
+
+    public void setLibraryElementShortCut(String libraryElementShortCut) {
+        this.libraryElementShortCut = libraryElementShortCut;
     }
 
     @Override
@@ -235,4 +244,5 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
                 ", sequence='" + getSequence() + "'" +
                 "}";
     }
+
 }

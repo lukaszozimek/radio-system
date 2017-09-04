@@ -140,3 +140,5 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+!/scheduler/src/main/java/io/protone/scheduler/service/log/parser/SchColumnParse.java
+!/scheduler/src/main/java/io/protone/scheduler/service/log/
