@@ -1,4 +1,4 @@
-package io.protone.scheduler.service;
+package io.protone.scheduler.service.schedule.build;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -6,12 +6,15 @@ import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.domain.*;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
+import io.protone.scheduler.service.*;
+import io.protone.scheduler.service.schedule.factory.SchClockBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -27,6 +30,8 @@ public class SchScheduleBuilderService {
     private SchGridService schGridService;
 
     @Inject
+    private SchClockService schClockService;
+    @Inject
     private SchLogService schLogService;
 
     @Inject
@@ -38,6 +43,9 @@ public class SchScheduleBuilderService {
     @Inject
     private SchParseLogService schParseLogService;
 
+
+    @Inject
+    private SchClockBuilder schClockBuilder;
     private Map<DayOfWeek, CorDayOfWeekEnum> corDayOfWeekEnumMap;
 
     @PostConstruct
@@ -61,29 +69,36 @@ public class SchScheduleBuilderService {
     public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
         CorDayOfWeekEnum corDayOfWeekEnum = corDayOfWeekEnumMap.get(localDate.getDayOfWeek());
         SchGrid schGrid = this.schGridService.findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, true, corDayOfWeekEnum);
-        SchPlaylist schPlaylist = schPlaylistService.saveSchedule(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
-
-        return buildScheduleFromGrid(schGrid, schPlaylist);
+        if (schGrid != null) {
+            if (schGrid.getClocks() != null || !schGrid.getClocks().isEmpty()) {
+                SchPlaylist schPlaylist = schPlaylistService.saveSchedule(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
+                return buildScheduleFromGrid(schGrid, schPlaylist);
+            }
+            return new SchSchedule().date(localDate).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        }
+        throw new BadRequestException("There is no grid for this day");
     }
 
     private SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
         Set<SchEvent> importEvents = getImportLogEventFlatList(schGrid.getClocks());
-        Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEvent::getSchLogConfiguration).distinct().collect(Collectors.toSet());
-        Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
-        scheduleLogs.stream().forEach(schLog -> {
-            List<SchEmission> schEmissionSet = Lists.newArrayList();
-            try {
-                schEmissionSet = schParseLogService.parseLog(schLog);
-            } catch (Exception e) {
-                log.error("Wrong log configuration or log doesn't exist");
-            }
+        if (importEvents != null) {
+            Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEvent::getSchLogConfiguration).distinct().collect(Collectors.toSet());
+            Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
+            scheduleLogs.stream().forEach(schLog -> {
+                List<SchEmission> schEmissionSet = Lists.newArrayList();
+                try {
+                    schEmissionSet = schParseLogService.parseLog(schLog);
+                } catch (Exception e) {
+                    log.error("Wrong log configuration or log doesn't exist");
+                }
 
-            //TODO: Import Maksymalnej liczby elementów do godziny
-            Set<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toSet());
-            Set<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);
-            schGrid.clocks(fillClockWithEvents(schGrid.getClocks(), filledEvnts));
-        });
-        return new SchSchedule().date(schPlaylist.getDate()).clocks(buildClocks(schGrid.getClocks())).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+                //TODO: Import Maksymalnej liczby elementów do godziny
+                Set<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toSet());
+                Set<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);
+                schGrid.clocks(fillClockWithEvents(schGrid.getClocks(), filledEvnts));
+            });
+        }
+        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getClocks())).network(schGrid.getNetwork()).channel(schGrid.getChannel());
     }
 
 
@@ -111,28 +126,6 @@ public class SchScheduleBuilderService {
         }).collect(toSet());
     }
 
-    private Set<SchClock> buildClocks(Set<SchClockConfiguration> clocks) {
-        return clocks.stream().map(clock -> new SchClock().network(clock.getNetwork()).channel(clock.getChannel()).blocks(buildClockBlocks(clock))).collect(toSet());
-    }
-
-    private Set<SchBlock> buildClockBlocks(SchClockConfiguration clock) {
-        return mapEventsToBlock(clock.getEvents());
-    }
-
-    public Set<SchBlock> mapEventsToBlock(Set<SchEvent> events) {
-        Set<SchBlock> schBlocks = new HashSet<>();
-        return events.stream().map(event -> {
-            if (!event.getBlocks().isEmpty()) {
-                schBlocks.addAll(this.mapEventsToBlock(event.getBlocks()));
-            }
-            return blockFactoryMethod(event);
-        }).collect(toSet());
-    }
-
-    private SchBlock blockFactoryMethod(SchEvent schEvent) {
-
-        return new SchBlock();
-    }
 
     private Set<SchClockConfiguration> fillClockWithEvents(Set<SchClockConfiguration> clockConfigurationSet, Set<SchEvent> eventSet) {
         return null;

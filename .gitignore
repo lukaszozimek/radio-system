@@ -142,3 +142,5 @@ Desktop.ini
 .eslintcache
 !/scheduler/src/main/java/io/protone/scheduler/service/log/parser/SchColumnParse.java
 !/scheduler/src/main/java/io/protone/scheduler/service/log/
+!/scheduler/src/main/java/io/protone/scheduler/service/schedule/build/SchScheduleBuilderService.java
+!/scheduler/src/main/java/io/protone/scheduler/service/schedule/build/

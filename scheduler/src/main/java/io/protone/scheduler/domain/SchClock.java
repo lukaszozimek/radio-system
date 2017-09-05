@@ -256,4 +256,9 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
+
+    public SchClock sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 }

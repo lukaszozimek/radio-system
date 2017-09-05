@@ -18,18 +18,15 @@ import static io.protone.scheduler.domain.enumeration.LogColumnTypEnum.*;
  * Created by lukaszozimek on 14/08/2017.
  */
 public class SchedulerBaseTest extends LibraryGenerator {
+    protected List<LibMediaItem> libMediaItemList;
     @Autowired
     private SchLogColumnRepostiory schLogColumnRepostiory;
-
     @Autowired
     private SchLogConfigurationRepository schLogConfigurationRepository;
-
-    private List<LibMediaItem> libMediaItemList;
 
     public void setUp() throws Exception {
         initializeLibarary();
         libMediaItemList = generateFullItemListWithLenghtInRange(30000, 500000, 10L);
-
     }
 
     protected SchEmission buildEmissionForBlock() {
@@ -188,7 +185,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
     }
 
-    public SchLogConfiguration buildRekLogConfiguration() {
+    protected SchLogConfiguration buildRekLogConfiguration() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("rek");
@@ -207,7 +204,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogConfiguration;
     }
 
-    public SchLogConfiguration buildMusLogConfiguration() {
+    protected SchLogConfiguration buildMusLogConfiguration() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("MUS");
@@ -226,7 +223,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogConfiguration;
     }
 
-    public SchLogConfiguration buildOPRLogConfiguration() {
+    protected SchLogConfiguration buildOPRLogConfiguration() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("opr");
@@ -245,7 +242,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogConfiguration;
     }
 
-    public SchLogConfiguration buildRekLogConfigurationWithSeparator() {
+    protected SchLogConfiguration buildRekLogConfigurationWithSeparator() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("rek");
@@ -264,7 +261,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogConfiguration;
     }
 
-    public SchLogConfiguration buildMusLogConfigurationWithSeparator() {
+    protected SchLogConfiguration buildMusLogConfigurationWithSeparator() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("MUS");
@@ -283,7 +280,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogConfiguration;
     }
 
-    public SchLogConfiguration buildOPRLogConfigurationWithSeparator() {
+    protected SchLogConfiguration buildOPRLogConfigurationWithSeparator() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("opr");
@@ -302,7 +299,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogConfiguration;
     }
 
-    private SchLogColumn buildLogColumn(LogColumnTypEnum logColumnTypEnum, Integer lenght, Integer sequence, SchLogConfiguration schLogConfiguration) {
+    protected SchLogColumn buildLogColumn(LogColumnTypEnum logColumnTypEnum, Integer lenght, Integer sequence, SchLogConfiguration schLogConfiguration) {
         SchLogColumn schLogColumn = new SchLogColumn();
         schLogColumn.setColumnSequence(sequence);
         schLogColumn.setName(logColumnTypEnum);
@@ -313,7 +310,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schLogColumn;
     }
 
-    private SchLogColumn buildLogColumnWithoutLenght(LogColumnTypEnum logColumnTypEnum, Integer sequence, SchLogConfiguration schLogConfiguration) {
+    protected SchLogColumn buildLogColumnWithoutLenght(LogColumnTypEnum logColumnTypEnum, Integer sequence, SchLogConfiguration schLogConfiguration) {
         SchLogColumn schLogColumn = new SchLogColumn();
         schLogColumn.setColumnSequence(sequence);
         schLogColumn.setName(logColumnTypEnum);
@@ -322,4 +319,6 @@ public class SchedulerBaseTest extends LibraryGenerator {
         schLogColumn.network(corNetwork);
         return schLogColumn;
     }
+
+
 }
