@@ -15,7 +15,6 @@ public class SchLogConfigurationColumnDTO {
 
     private Integer lenght;
 
-    private String delimiter;
 
     private Integer columnSequence;
 
@@ -43,13 +42,6 @@ public class SchLogConfigurationColumnDTO {
         this.lenght = lenght;
     }
 
-    public String getDelimiter() {
-        return delimiter;
-    }
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-    }
 
     public Integer getColumnSequence() {
         return columnSequence;
@@ -69,7 +61,6 @@ public class SchLogConfigurationColumnDTO {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (lenght != null ? !lenght.equals(that.lenght) : that.lenght != null) return false;
-        if (delimiter != null ? !delimiter.equals(that.delimiter) : that.delimiter != null) return false;
         if (columnSequence != null ? !columnSequence.equals(that.columnSequence) : that.columnSequence != null)
             return false;
 
@@ -81,7 +72,6 @@ public class SchLogConfigurationColumnDTO {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (lenght != null ? lenght.hashCode() : 0);
-        result = 31 * result + (delimiter != null ? delimiter.hashCode() : 0);
         result = 31 * result + (columnSequence != null ? columnSequence.hashCode() : 0);
         return result;
     }
@@ -92,7 +82,6 @@ public class SchLogConfigurationColumnDTO {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", length=" + lenght +
-                ", delimiter='" + delimiter + '\'' +
                 ", columnSequence=" + columnSequence +
                 '}';
     }

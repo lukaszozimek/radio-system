@@ -26,9 +26,6 @@
             <column name="length" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="delimiter" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
 
             <column name="column_sequence" type="integer">
                 <constraints nullable="true" />

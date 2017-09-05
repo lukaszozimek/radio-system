@@ -63,7 +63,7 @@ public class SchLogColumnConfigurationMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getColumnSequence());
         assertNotNull(dto.getLenght());
-        assertNotNull(dto.getDelimiter());
+
     }
 
     @Test
@@ -76,7 +76,6 @@ public class SchLogColumnConfigurationMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getColumnSequence());
             assertNotNull(dto.getLenght());
-            assertNotNull(dto.getDelimiter());
         });
     }
 
@@ -86,7 +85,6 @@ public class SchLogColumnConfigurationMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getColumnSequence());
         assertNotNull(entity.getLength());
-        assertNotNull(entity.getDelimiter());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
@@ -101,7 +99,6 @@ public class SchLogColumnConfigurationMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getColumnSequence());
             assertNotNull(entity.getLength());
-            assertNotNull(entity.getDelimiter());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

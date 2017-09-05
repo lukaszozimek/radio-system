@@ -34,9 +34,6 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
     @Column(name = "length")
     private Integer length;
 
-    @Column(name = "delimiter")
-    private String delimiter;
-
     @Column(name = "column_sequence")
     private Integer columnSequence;
 
@@ -79,14 +76,6 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
 
     public void setLength(Integer length) {
         this.length = length;
-    }
-
-    public String getDelimiter() {
-        return delimiter;
-    }
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
     }
 
     public Integer getColumnSequence() {
@@ -153,7 +142,6 @@ public class SchLogColumn extends AbstractAuditingEntity implements Serializable
                 "id=" + id +
                 ", name='" + columnTypEnum + '\'' +
                 ", length=" + length +
-                ", delimiter='" + delimiter + '\'' +
                 ", columnSequence=" + columnSequence +
                 ", network=" + network +
                 ", channel=" + channel +

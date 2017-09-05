@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withseparator/commercialLog/20170826.rek");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -96,7 +97,7 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withseparator/musicLog/20160703.MUS");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -122,12 +123,125 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withseparator/newsCollect/20170828.OPR");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
         assertNotNull(schEmissions);
         assertEquals(3, schEmissions.size());
+    }
+
+    @Test
+    public void shouldParseOneLineRekLogWithoutSeparator() throws IOException {
+        //when
+        InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withoutseparator/commercialLog/20170826.rek");
+        when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        //then
+        List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
+
+        assertNotNull(schEmissions);
+        assertEquals(1, schEmissions.size());
+        assertNotNull(schEmissions.get(0).getMediaItem());
+        assertNotNull(schEmissions.get(0).getTimeParams());
+        assertEquals(LocalDateTime.of(2017, 8, 26, 8, 40, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertEquals("com", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("REKLAMA1", schEmissions.get(0).getMediaItem().getIdx());
+
+    }
+
+    @Test
+    public void shouldParseOneLineRekLogWithSeparator() throws IOException {
+        //when
+        InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withseparator/commercialLog/20170826.rek");
+        when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        //then
+        List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
+
+        assertNotNull(schEmissions);
+        assertEquals(1, schEmissions.size());
+        assertNotNull(schEmissions.get(0).getMediaItem());
+        assertNotNull(schEmissions.get(0).getTimeParams());
+        assertEquals(LocalDateTime.of(2017, 8, 26, 8, 40, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertEquals("com", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("REKLAMA1", schEmissions.get(0).getMediaItem().getIdx());
+    }
+
+    @Test
+    public void shouldParseOneLineMusLogWithoutSeparator() throws IOException {
+        //when
+        InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withoutseparator/musicLog/20160703.MUS");
+        when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        //then
+        List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
+
+        assertNotNull(schEmissions);
+        assertEquals(1, schEmissions.size());
+        assertNotNull(schEmissions.get(0).getMediaItem());
+        assertNotNull(schEmissions.get(0).getTimeParams());
+        assertEquals(LocalDateTime.of(2016, 7, 3, 0, 0, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("MPI_003", schEmissions.get(0).getMediaItem().getIdx());
+    }
+
+    @Test
+    public void shouldParseOneLineMusLogWithSeparator() throws IOException {
+        //when
+        InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withseparator/musicLog/20160703.MUS");
+        when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        //then
+        List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
+
+        assertNotNull(schEmissions);
+        assertEquals(1, schEmissions.size());
+        assertNotNull(schEmissions.get(0).getMediaItem());
+        assertNotNull(schEmissions.get(0).getTimeParams());
+        assertEquals(LocalDateTime.of(2016, 7, 3, 0, 0, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("MPI_003", schEmissions.get(0).getMediaItem().getIdx());
+
+    }
+
+    @Test
+    public void shouldParseOneLineOprLogWithoutSeparator() throws IOException {
+        //when
+        InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withoutseparator/newsCollect/20170828.OPR");
+        when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        //then
+        List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
+
+        assertNotNull(schEmissions);
+        assertEquals(1, schEmissions.size());
+        assertNotNull(schEmissions.get(0).getMediaItem());
+        assertNotNull(schEmissions.get(0).getTimeParams());
+        assertEquals(LocalDateTime.of(2017, 8, 28, 07, 33, 54), schEmissions.get(0).getTimeParams().getStartTime());
+        assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("DROGI", schEmissions.get(0).getMediaItem().getIdx());
+
+    }
+
+    @Test
+    public void shouldParseOneLineOprLogWithSeparator() throws IOException {
+        //when
+        InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withseparator/newsCollect/20170828.OPR");
+        when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        //then
+        List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
+
+        assertNotNull(schEmissions);
+        assertEquals(1, schEmissions.size());
+
+        assertNotNull(schEmissions.get(0).getMediaItem());
+        assertNotNull(schEmissions.get(0).getTimeParams());
+        assertEquals(LocalDateTime.of(2017, 8, 28, 7, 33, 54), schEmissions.get(0).getTimeParams().getStartTime());
+        assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("DROGI", schEmissions.get(0).getMediaItem().getIdx());
+
     }
 
 }

@@ -59,6 +59,7 @@ public class SchLogConfigurationMapperTest {
         SchLogConfigurationDTO dto = schLogMapper.DB2DTO(schLog);
         assertNotNull(dto.getLogColumns());
         assertNotNull(dto.getName());
+        assertNotNull(dto.getSpearator());
         assertNotNull(dto.getExtension());
         assertNotNull(dto.getPattern());
     }
@@ -72,6 +73,7 @@ public class SchLogConfigurationMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getLogColumns());
             assertNotNull(dto.getName());
+            assertNotNull(dto.getSpearator());
             assertNotNull(dto.getExtension());
             assertNotNull(dto.getPattern());
         });
@@ -82,6 +84,7 @@ public class SchLogConfigurationMapperTest {
         SchLogConfiguration entity = schLogMapper.DTO2DB(schLogDTO, network, corChannel);
         assertNotNull(entity.getLogColumns());
         assertNotNull(entity.getName());
+        assertNotNull(entity.getSpearator());
         assertNotNull(entity.getExtension());
         assertNotNull(entity.getPattern());
         assertNotNull(entity.getNetwork());
@@ -97,6 +100,7 @@ public class SchLogConfigurationMapperTest {
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getLogColumns());
             assertNotNull(entity.getName());
+            assertNotNull(entity.getSpearator());
             assertNotNull(entity.getExtension());
             assertNotNull(entity.getPattern());
             assertNotNull(entity.getNetwork());

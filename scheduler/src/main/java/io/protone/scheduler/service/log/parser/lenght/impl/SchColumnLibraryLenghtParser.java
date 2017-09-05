@@ -1,8 +1,8 @@
-package io.protone.scheduler.service.log.parser.impl;
+package io.protone.scheduler.service.log.parser.lenght.impl;
 
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
-import io.protone.scheduler.service.log.parser.SchColumnParser;
+import io.protone.scheduler.service.log.parser.lenght.SchColumnLenghtParser;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,12 +13,16 @@ import java.util.List;
  * Created by lukaszozimek on 04.09.2017.
  */
 @Service
-public class SchColumnLibraryParser implements SchColumnParser {
+public class SchColumnLibraryLenghtParser implements SchColumnLenghtParser {
 
 
     @Override
     public SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, LocalDate localDate, String logLine) {
         if (schEmission == null) {
+            return schEmission;
+        }
+
+        if(logLine==null || logLine.isEmpty()){
             return schEmission;
         }
         if (schLogColumn.getColumnSequence() == 0) {

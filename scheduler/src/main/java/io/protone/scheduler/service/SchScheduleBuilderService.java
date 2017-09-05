@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
@@ -75,7 +74,7 @@ public class SchScheduleBuilderService {
             List<SchEmission> schEmissionSet = Lists.newArrayList();
             try {
                 schEmissionSet = schParseLogService.parseLog(schLog);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.error("Wrong log configuration or log doesn't exist");
             }
 

@@ -16,6 +16,8 @@ public class SchLogConfigurationDTO {
 
     private String extension;
 
+    private String spearator;
+
     private List<SchLogConfigurationColumnDTO> logColumns;
 
     private CoreUserThinDTO createdBy;
@@ -58,7 +60,13 @@ public class SchLogConfigurationDTO {
         this.extension = extension;
     }
 
+    public String getSpearator() {
+        return spearator;
+    }
 
+    public void setSpearator(String spearator) {
+        this.spearator = spearator;
+    }
     public List<SchLogConfigurationColumnDTO> getLogColumns() {
         return logColumns;
     }
@@ -130,9 +138,13 @@ public class SchLogConfigurationDTO {
                 ", name='" + name + '\'' +
                 ", pattern='" + pattern + '\'' +
                 ", extension='" + extension + '\'' +
-                ", columnDTOList=" + logColumns +
+                ", spearator='" + spearator + '\'' +
+                ", logColumns=" + logColumns +
+                ", createdBy=" + createdBy +
+                ", createdDate=" + createdDate +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", lastModifiedDate=" + lastModifiedDate +
                 '}';
     }
-
 }
 

@@ -38,6 +38,9 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
     @Column(name = "extension")
     private String extension;
 
+    @Column(name = "spearator")
+    private String spearator;
+
     @ManyToOne
     @PodamExclude
     private CorNetwork network;
@@ -167,5 +170,13 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public String getSpearator() {
+        return spearator;
+    }
+
+    public void setSpearator(String spearator) {
+        this.spearator = spearator;
     }
 }
