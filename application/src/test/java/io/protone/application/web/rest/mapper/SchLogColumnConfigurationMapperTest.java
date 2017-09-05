@@ -62,7 +62,7 @@ public class SchLogColumnConfigurationMapperTest {
         SchLogConfigurationColumnDTO dto = schLogColumnConfigurationMapper.DB2DTO(schLogColumn);
         assertNotNull(dto.getName());
         assertNotNull(dto.getColumnSequence());
-        assertNotNull(dto.getLenght());
+        assertNotNull(dto.getLength());
 
     }
 
@@ -75,7 +75,7 @@ public class SchLogColumnConfigurationMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getName());
             assertNotNull(dto.getColumnSequence());
-            assertNotNull(dto.getLenght());
+            assertNotNull(dto.getLength());
         });
     }
 

@@ -94,6 +94,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         this.attachmentType = attachementType;
         return this;
     }
+
     public Long getSequence() {
         return sequence;
     }
@@ -101,6 +102,7 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
+
     public Long getFadeStart() {
         return fadeStart;
     }
@@ -196,26 +198,26 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchAttachment network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchAttachment channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
@@ -260,5 +262,8 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     }
 
 
-
+    public SchAttachment sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 }

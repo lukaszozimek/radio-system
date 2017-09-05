@@ -11,6 +11,7 @@ import io.protone.scheduler.service.schedule.factory.SchClockBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -31,6 +32,7 @@ public class SchScheduleBuilderService {
 
     @Inject
     private SchClockService schClockService;
+
     @Inject
     private SchLogService schLogService;
 
@@ -43,9 +45,9 @@ public class SchScheduleBuilderService {
     @Inject
     private SchParseLogService schParseLogService;
 
-
     @Inject
     private SchClockBuilder schClockBuilder;
+
     private Map<DayOfWeek, CorDayOfWeekEnum> corDayOfWeekEnumMap;
 
     @PostConstruct
@@ -60,12 +62,13 @@ public class SchScheduleBuilderService {
         corDayOfWeekEnumMap.put(DayOfWeek.SUNDAY, CorDayOfWeekEnum.DW_SUNDAY);
     }
 
+    @Transactional
     public SchSchedule buildScheduleForDate(LocalDate localDate, String gridShortName, String networkShortcut, String channelShortcut) throws Exception {
         SchGrid schGrid = this.schGridService.findSchGridForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, gridShortName);
         return null;
     }
 
-
+    @Transactional
     public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
         CorDayOfWeekEnum corDayOfWeekEnum = corDayOfWeekEnumMap.get(localDate.getDayOfWeek());
         SchGrid schGrid = this.schGridService.findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, true, corDayOfWeekEnum);
@@ -118,14 +121,16 @@ public class SchScheduleBuilderService {
 
     public Set<SchEvent> getImportEvents(Set<SchEvent> blocks) {
         Set<SchEvent> schEventsImports = new HashSet<>();
-        return blocks.stream().filter(schBlock -> {
-            if (!schBlock.getBlocks().isEmpty()) {
-                schEventsImports.addAll(this.getImportEvents(schBlock.getBlocks()));
-            }
-            return schBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG);
-        }).collect(toSet());
+        if (blocks != null) {
+            return blocks.stream().filter(schBlock -> {
+                if (!schBlock.getBlocks().isEmpty()) {
+                    schEventsImports.addAll(this.getImportEvents(schBlock.getBlocks()));
+                }
+                return schBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG);
+            }).collect(toSet());
+        }
+        return Sets.newHashSet();
     }
-
 
     private Set<SchClockConfiguration> fillClockWithEvents(Set<SchClockConfiguration> clockConfigurationSet, Set<SchEvent> eventSet) {
         return null;

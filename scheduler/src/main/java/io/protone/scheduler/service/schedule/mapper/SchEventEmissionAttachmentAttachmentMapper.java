@@ -19,6 +19,7 @@ public class SchEventEmissionAttachmentAttachmentMapper {
             return attachments.stream().map(attachment -> new SchAttachment()
                     .attachmentType(attachment.getAttachmentType())
                     .channel(attachment.getChannel())
+                    .sequence(attachment.getSequence())
                     .network(attachment.getNetwork())
                     .fadeInLength(attachment.getFadeInLength())
                     .fadeOutLength(attachment.getFadeOutLength())

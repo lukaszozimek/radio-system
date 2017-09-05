@@ -210,26 +210,26 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchBlock network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchBlock channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
@@ -268,5 +268,10 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
 
     public void setSequence(Long sequence) {
         this.sequence = sequence;
+    }
+
+    public SchBlock sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
     }
 }

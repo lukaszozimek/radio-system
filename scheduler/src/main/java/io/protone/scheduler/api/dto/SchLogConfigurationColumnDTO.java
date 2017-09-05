@@ -13,7 +13,7 @@ public class SchLogConfigurationColumnDTO {
 
     private LogColumnTypEnum name;
 
-    private Integer lenght;
+    private Integer length;
 
 
     private Integer columnSequence;
@@ -34,12 +34,12 @@ public class SchLogConfigurationColumnDTO {
         this.name = name;
     }
 
-    public Integer getLenght() {
-        return lenght;
+    public Integer getLength() {
+        return length;
     }
 
-    public void setLenght(Integer lenght) {
-        this.lenght = lenght;
+    public void setLength(Integer length) {
+        this.length = length;
     }
 
 
@@ -60,7 +60,7 @@ public class SchLogConfigurationColumnDTO {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (lenght != null ? !lenght.equals(that.lenght) : that.lenght != null) return false;
+        if (length != null ? !length.equals(that.length) : that.length != null) return false;
         if (columnSequence != null ? !columnSequence.equals(that.columnSequence) : that.columnSequence != null)
             return false;
 
@@ -71,7 +71,7 @@ public class SchLogConfigurationColumnDTO {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (lenght != null ? lenght.hashCode() : 0);
+        result = 31 * result + (length != null ? length.hashCode() : 0);
         result = 31 * result + (columnSequence != null ? columnSequence.hashCode() : 0);
         return result;
     }
@@ -81,7 +81,7 @@ public class SchLogConfigurationColumnDTO {
         return "SchLogConfigurationColumnDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", length=" + lenght +
+                ", length=" + length +
                 ", columnSequence=" + columnSequence +
                 '}';
     }

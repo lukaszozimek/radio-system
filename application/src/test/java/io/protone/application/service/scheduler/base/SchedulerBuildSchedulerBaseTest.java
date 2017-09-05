@@ -23,6 +23,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
 
     @Autowired
     private SchEmissionConfigurationRepository schEmissionConfigurationRepository;
+
     @Autowired
     private SchClockConfigurationRepository schClockConfigurationRepository;
 
@@ -62,7 +63,6 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-
         schGrid.addClock(buildClockWithNestedEventsConfiguration());
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
@@ -106,16 +106,21 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
-        schClockConfiguration.emissions(buildOneHourEmissionConfiguration(schClockConfiguration));
-
+        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 4));
+        schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
         return schClockConfiguration;
     }
 
     protected SchClockConfiguration buildClockWithNestedEventsConfiguration() {
         SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
+        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(3600000L));
+        schClockConfiguration.setSequence(1L);
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
-        return schClockConfiguration;
+        schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
+        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 2));
+        schClockConfiguration.events(buildNestedSetEventsWithLenght30minoutes(schClockConfiguration));
+        return schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
     }
 
     protected SchClockConfiguration buildClockWithNestedEventsAndEmissionsConfiguration() {
@@ -139,9 +144,9 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         return schClockConfiguration;
     }
 
-    private Set<SchEmissionConfiguration> buildOneHourEmissionConfiguration(SchClockConfiguration schClockConfiguration) {
+    private Set<SchEmissionConfiguration> buildQuatreEmissionConfiguration(SchClockConfiguration schClockConfiguration, int quaterNumber) {
         Set<SchEmissionConfiguration> emissionConfigurations = new HashSet<>();
-        for (int i = 0; i == 4; i++) {
+        for (int i = 0; i < quaterNumber; i++) {
             SchEmissionConfiguration schEmissionConfiguration = new SchEmissionConfiguration();
             schEmissionConfiguration.setTimeParams(new SchConfigurationTimeParams().length(900000L));
             schEmissionConfiguration.mediaItem(libMediaItemList.get(0));
@@ -152,4 +157,6 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         }
         return emissionConfigurations;
     }
+
+
 }

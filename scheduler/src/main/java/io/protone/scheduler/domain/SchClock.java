@@ -44,6 +44,9 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @Column(name = "sequence")
     private Long sequence;
 
+    @Column(name = "length")
+    private Long length;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary clockCategory;
@@ -62,6 +65,7 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
+
 
     @ManyToOne
     @PodamExclude
@@ -212,6 +216,33 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         this.clockCategory = clockCategory;
     }
 
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public SchClock sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
+    public SchClock length(Long length) {
+        this.length = length;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -232,7 +263,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         return Objects.hashCode(getId());
     }
 
-
     @Override
     public String toString() {
         return "SchClock{" +
@@ -240,6 +270,8 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
                 ", schSchedule=" + schSchedule +
+                ", sequence=" + sequence +
+                ", length=" + length +
                 ", clockCategory=" + clockCategory +
                 ", timeParams=" + timeParams +
                 ", blocks=" + blocks +
@@ -247,18 +279,5 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
                 ", network=" + network +
                 ", channel=" + channel +
                 '}';
-    }
-
-    public Long getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
-
-    public SchClock sequence(Long sequence) {
-        this.sequence = sequence;
-        return this;
     }
 }

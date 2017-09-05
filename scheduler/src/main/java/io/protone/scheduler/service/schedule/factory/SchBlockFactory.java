@@ -16,7 +16,7 @@ public class SchBlockFactory {
     private SchEventEmissionEmissionMapper schEventEmissionEmissionMapper;
 
     public SchBlock blockFactoryMethod(SchEvent schEvent) {
-        return new SchBlock().network(schEvent.getNetwork()).channel(schEvent.getChannel()).length(schEvent.getTimeParams().getLength()).emissions(schEventEmissionEmissionMapper.mapEventEmissionsToBlockEmissions(schEvent.getEmissions()));
+        return new SchBlock().sequence(schEvent.getSequence()).network(schEvent.getNetwork()).channel(schEvent.getChannel()).length(schEvent.getTimeParams().getLength()).emissions(schEventEmissionEmissionMapper.mapEventEmissionsToBlockEmissions(schEvent.getEmissions()));
     }
 
 }

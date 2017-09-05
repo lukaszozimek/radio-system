@@ -4,9 +4,10 @@ import com.google.common.collect.Sets;
 import io.protone.application.service.library.util.LibraryGenerator;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.domain.*;
+import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
+import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
-import io.protone.scheduler.repository.SchLogColumnRepostiory;
-import io.protone.scheduler.repository.SchLogConfigurationRepository;
+import io.protone.scheduler.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -23,6 +24,13 @@ public class SchedulerBaseTest extends LibraryGenerator {
     private SchLogColumnRepostiory schLogColumnRepostiory;
     @Autowired
     private SchLogConfigurationRepository schLogConfigurationRepository;
+    @Autowired
+    private SchEventEmissionRepository schEmissionRepository;
+    @Autowired
+    private SchEventEmissionAttachmentRepository schEventEmissionAttachmentRepository;
+    @Autowired
+    private SchEventRepository schEventRepository;
+
 
     public void setUp() throws Exception {
         initializeLibarary();
@@ -183,6 +191,72 @@ public class SchedulerBaseTest extends LibraryGenerator {
         schEventRoot2.setChannel(corChannel);
         schEventRoot2.addBlock(schEventRootChild2);
         return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
+    }
+
+    protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutes(SchClockConfiguration schClockConfiguration) {
+        return Sets.newHashSet(buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration),
+                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration),
+                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration));
+
+    }
+
+    protected SchEvent buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockConfiguration schClockConfiguration) {
+        SchEvent schEvent = new SchEvent()
+                .eventType(EventTypeEnum.ET_MUSIC)
+                .timeParams(new SchConfigurationTimeParams().length(600000L))
+                .clockConfiguration(schClockConfiguration)
+                .channel(corChannel)
+                .network(corNetwork);
+
+
+        schEventRepository.save(schEvent);
+        schEvent.blocks(Sets.newHashSet(
+                buildEventWithEmissionAndAttachmentsLenght(300000L, schEvent)))
+                .emissions(Sets.newHashSet(
+                        buildEmissionWithAttachment(1, 100000L, schEvent),
+                        buildEmissionWithAttachment(2, 100000L, schEvent),
+                        buildEmissionWithAttachment(3, 100000L, schEvent))
+                );
+        return schEvent;
+    }
+
+    protected SchEvent buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEvent schEvent) {
+        SchEvent schEvent1 = new SchEvent()
+                .eventType(EventTypeEnum.ET_MUSIC)
+                .timeParams(new SchConfigurationTimeParams().length(lenght))
+                .event(schEvent).channel(corChannel)
+                .network(corNetwork);
+        schEventRepository.save(schEvent1);
+        schEvent1.emissions(Sets.newHashSet(
+                buildEmissionWithAttachment(1, lenght / 3, schEvent1),
+                buildEmissionWithAttachment(2, lenght / 3, schEvent1),
+                buildEmissionWithAttachment(3, lenght / 3, schEvent1))
+        );
+        return schEvent1;
+    }
+
+    protected SchEventEmission buildEmissionWithAttachment(long sequence, long lenght, SchEvent schEvent) {
+        SchEventEmission schEventEmission = new SchEventEmission().mediaItem(libMediaItemList.get(0))
+                .seq(sequence)
+                .event(schEvent)
+                .timeParams(new SchConfigurationTimeParams().length(lenght))
+                .channel(corChannel)
+                .network(corNetwork);
+
+        schEventEmission = schEmissionRepository.saveAndFlush(schEventEmission);
+        schEventEmission.attachments(Sets.newHashSet(buildAttachmentWithSequence(1, schEventEmission),
+                buildAttachmentWithSequence(2, schEventEmission),
+                buildAttachmentWithSequence(3, schEventEmission)));
+        return schEventEmission;
+    }
+
+    protected SchEventEmissionAttachment buildAttachmentWithSequence(long sequence, SchEventEmission schEventEmission) {
+        return schEventEmissionAttachmentRepository.saveAndFlush(new SchEventEmissionAttachment().attachmentType(AttachmentTypeEnum.AT_OTHER)
+                .emission(schEventEmission)
+                .sequence(sequence)
+                .mediaItem(libMediaItemList.get(0))
+                .channel(corChannel)
+                .network(corNetwork));
     }
 
     protected SchLogConfiguration buildRekLogConfiguration() {

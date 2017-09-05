@@ -194,17 +194,21 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchEvent network(CorNetwork network) {
         this.network = network;
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchEvent channel(CorChannel channel) {
@@ -212,21 +216,17 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
-
     public CorDictionary getEventCategory() {
         return eventCategory;
+    }
+
+    public void setEventCategory(CorDictionary eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     public SchEvent eventCategory(CorDictionary eventCategory) {
         this.eventCategory = eventCategory;
         return this;
-    }
-
-    public void setEventCategory(CorDictionary eventCategory) {
-        this.eventCategory = eventCategory;
     }
 
     public SchEvent getEvent() {
@@ -300,5 +300,10 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
 
     public void setSequence(Long sequence) {
         this.sequence = sequence;
+    }
+
+    public SchEvent sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
     }
 }

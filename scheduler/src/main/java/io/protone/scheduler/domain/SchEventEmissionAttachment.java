@@ -190,26 +190,26 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchEventEmissionAttachment network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchEventEmissionAttachment channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     public SchConfigurationTimeParams getTimeParams() {
@@ -227,6 +227,7 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -261,4 +262,8 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     }
 
 
+    public SchEventEmissionAttachment sequence(long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 }
