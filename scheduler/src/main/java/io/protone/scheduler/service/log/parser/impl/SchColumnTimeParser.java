@@ -2,8 +2,11 @@ package io.protone.scheduler.service.log.parser.impl;
 
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
+import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.service.log.parser.SchColumnParser;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -12,12 +15,25 @@ import java.util.List;
 public class SchColumnTimeParser implements SchColumnParser {
 
     @Override
-    public SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, String logLine) {
+    public SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, LocalDate localDate, String logLine) {
         if (schEmission == null) {
             return schEmission;
         }
+        if (schLogColumn.getColumnSequence() == 0) {
+            String startTime = logLine.substring(schLogColumn.getColumnSequence(), schLogColumn.getLength()).trim();
+            String[] splitedTime = startTime.split(":");
+            schEmission.setTimeParams(new SchTimeParams().startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2]))));
+        } else {
+            int columnIndex = schLogColumnList.indexOf(schLogColumn);
+            int elementStartPostion = 0;
+            for (int i = 0; i < columnIndex; i++) {
+                elementStartPostion = elementStartPostion + schLogColumnList.get(i).getLength();
+            }
+            String startTime = logLine.substring(elementStartPostion, elementStartPostion + schLogColumn.getLength()).trim();
+            String[] splitedTime = startTime.split(":");
+            schEmission.setTimeParams(new SchTimeParams().startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2]))));
+        }
         return schEmission;
-
     }
 
 

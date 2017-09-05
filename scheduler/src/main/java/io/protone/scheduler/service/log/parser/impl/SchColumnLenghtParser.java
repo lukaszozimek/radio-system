@@ -4,6 +4,7 @@ import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.service.log.parser.SchColumnParser;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,9 +13,28 @@ import java.util.List;
 public class SchColumnLenghtParser implements SchColumnParser {
 
     @Override
-    public SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, String logLine) {
+    public SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, LocalDate localDate, String logLine) {
         if (schEmission == null) {
             return schEmission;
+        }
+        if (schLogColumn.getColumnSequence() == 0) {
+            if (schEmission.getMediaItem() != null) {
+                //     schEmission.getMediaItem().length(logLine.substring(schLogColumn.getColumnSequence(), schLogColumn.getLength()).trim());
+            } else {
+                //       schEmission.mediaItem(new LibMediaItem().length((logLine.substring(schLogColumn.getColumnSequence(), schLogColumn.getLength()).trim()));
+            }
+        } else {
+            int columnIndex = schLogColumnList.indexOf(schLogColumn);
+            int elementStartPostion = 0;
+            for (int i = 0; i < columnIndex; i++) {
+                elementStartPostion = elementStartPostion + schLogColumnList.get(i).getLength();
+            }
+
+            if (schEmission.getMediaItem() != null) {
+                //     schEmission.getMediaItem().length((logLine.substring(schLogColumn.getColumnSequence(), schLogColumn.getLength()).trim()));
+            } else {
+                //   schEmission.mediaItem(new LibMediaItem().length(logLine.substring(elementStartPostion, schLogColumn.getLength()).trim()));
+            }
         }
         return schEmission;
 

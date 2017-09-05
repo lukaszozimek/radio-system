@@ -3,7 +3,7 @@ package io.protone.scheduler.domain;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 /**
  * A TimeParams.
@@ -14,37 +14,37 @@ public class SchTimeParams implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "start_time")
-    private ZonedDateTime startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    private ZonedDateTime endTime;
+    private LocalDateTime endTime;
 
     @Column(name = "relative_delay")
     private Long relativeDelay;
 
 
-    public ZonedDateTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public SchTimeParams startTime(ZonedDateTime startTime) {
+    public SchTimeParams startTime(LocalDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
 
-    public ZonedDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public SchTimeParams endTime(ZonedDateTime endTime) {
+    public SchTimeParams endTime(LocalDateTime endTime) {
         this.endTime = endTime;
         return this;
     }

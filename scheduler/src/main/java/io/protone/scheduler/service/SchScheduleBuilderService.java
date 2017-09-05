@@ -1,5 +1,6 @@
 package io.protone.scheduler.service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.library.service.LibFileItemService;
@@ -14,10 +15,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
@@ -74,7 +72,7 @@ public class SchScheduleBuilderService {
         Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEvent::getSchLogConfiguration).distinct().collect(Collectors.toSet());
         Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
         scheduleLogs.stream().forEach(schLog -> {
-            Set<SchEmission> schEmissionSet = Sets.newHashSet();
+            List<SchEmission> schEmissionSet = Lists.newArrayList();
             try {
                 schEmissionSet = schParseLogService.parseLog(schLog);
             } catch (IOException e) {
@@ -90,7 +88,7 @@ public class SchScheduleBuilderService {
     }
 
 
-    private Set<SchEvent> fillEventWithEmissions(Set<SchEvent> schEvents, Set<SchEmission> schEmissions) {
+    private Set<SchEvent> fillEventWithEmissions(Set<SchEvent> schEvents, List<SchEmission> schEmissions) {
         return null;
     }
 

@@ -3,6 +3,7 @@ package io.protone.scheduler.service.log.parser;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -10,6 +11,6 @@ import java.util.List;
  */
 public interface SchColumnParser {
 
-    SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, String logLine);
+    SchEmission parseColumnLog(SchEmission schEmission, List<SchLogColumn> schLogColumnList, SchLogColumn schLogColumn, LocalDate localDate, String logLine);
 
 }

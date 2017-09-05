@@ -3,7 +3,7 @@ package io.protone.scheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -16,10 +16,10 @@ public class SchTimeParamsDTO {
     private Long relativeDelay = null;
 
     @JsonProperty("endTime")
-    private ZonedDateTime endTime = null;
+    private LocalDateTime endTime = null;
 
     @JsonProperty("startTime")
-    private ZonedDateTime startTime = null;
+    private LocalDateTime startTime = null;
 
     public SchTimeParamsDTO relativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
@@ -40,7 +40,7 @@ public class SchTimeParamsDTO {
         this.relativeDelay = relativeDelay;
     }
 
-    public SchTimeParamsDTO endTime(ZonedDateTime endTime) {
+    public SchTimeParamsDTO endTime(LocalDateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -51,15 +51,15 @@ public class SchTimeParamsDTO {
      * @return endTime
      **/
     @ApiModelProperty(value = "")
-    public ZonedDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public SchTimeParamsDTO startTime(ZonedDateTime startTime) {
+    public SchTimeParamsDTO startTime(LocalDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -70,11 +70,11 @@ public class SchTimeParamsDTO {
      * @return startTime
      **/
     @ApiModelProperty(value = "")
-    public ZonedDateTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 

@@ -145,4 +145,9 @@ public class SchLog extends AbstractAuditingEntity implements Serializable {
         this.libFileItem = libFileItem;
         return this;
     }
+
+    public SchLog schLogConfiguration(SchLogConfiguration schLogConfiguration) {
+        this.schLogConfiguration = schLogConfiguration;
+        return this;
+    }
 }

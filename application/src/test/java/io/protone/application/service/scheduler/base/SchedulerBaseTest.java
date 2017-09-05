@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import io.protone.application.service.library.util.LibraryGenerator;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.domain.*;
+import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
 import io.protone.scheduler.repository.SchLogColumnRepostiory;
 import io.protone.scheduler.repository.SchLogConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,7 +188,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
     }
 
-    public void buildRekLogConfiguration() {
+    public SchLogConfiguration buildRekLogConfiguration() {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("rek");
@@ -196,47 +197,59 @@ public class SchedulerBaseTest extends LibraryGenerator {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = new SchLogColumn();
-        schLogColumnTime.setColumnSequence(1);
-        schLogColumnTime.setName(LCT_START_TIME);
-        schLogColumnTime.setLength(9);
-        schLogColumnTime.channel(corChannel);
-        schLogColumnTime.setSchLogConfiguration(schLogConfiguration);
-        schLogColumnTime.network(corNetwork);
-
-        SchLogColumn schLogColumnIdx = new SchLogColumn();
-        schLogColumnIdx.setColumnSequence(2);
-        schLogColumnIdx.setName(LCT_IDX);
-        schLogColumnIdx.setLength(14);
-        schLogColumnIdx.channel(corChannel);
-        schLogColumnIdx.setSchLogConfiguration(schLogConfiguration);
-        schLogColumnIdx.network(corNetwork);
-
-        SchLogColumn schLogColumnLibrary = new SchLogColumn();
-        schLogColumnLibrary.setColumnSequence(3);
-        schLogColumnLibrary.setName(LCT_LIBRARY);
-        schLogColumnLibrary.setLength(14);
-        schLogColumnLibrary.setSchLogConfiguration(schLogConfiguration);
-        schLogColumnLibrary.channel(corChannel);
-        schLogColumnLibrary.network(corNetwork);
-
-        SchLogColumn schLogColumnLenght = new SchLogColumn();
-        schLogColumnLenght.setColumnSequence(4);
-        schLogColumnLenght.setName(LCT_LENGHT);
-        schLogColumnLenght.setLength(14);
-        schLogColumnLenght.setSchLogConfiguration(schLogConfiguration);
-        schLogColumnLenght.channel(corChannel);
-        schLogColumnLenght.network(corNetwork);
-
-        SchLogColumn schLogColumnName = new SchLogColumn();
-        schLogColumnName.setColumnSequence(5);
-        schLogColumnName.setName(LCT_NAME);
-        schLogColumnName.setLength(22);
-        schLogColumnName.setSchLogConfiguration(schLogConfiguration);
-        schLogColumnName.channel(corChannel);
-        schLogColumnName.network(corNetwork);
-
+        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 9, 0, schLogConfiguration);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 1, schLogConfiguration);
+        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 14, 2, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 14, 3, schLogConfiguration);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 4, schLogConfiguration);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
+        return schLogConfiguration;
+    }
 
+    public SchLogConfiguration buildMusLogConfiguration() {
+        //configuration
+        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
+        schLogConfiguration.setExtension("MUS");
+        schLogConfiguration.setPattern("yyyyMMdd");
+        schLogConfiguration.setChannel(corChannel);
+        schLogConfiguration.setNetwork(corNetwork);
+        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
+        //columnConfiguration
+        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 9, 1, schLogConfiguration);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration);
+        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 14, 3, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 14, 4, schLogConfiguration);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 5, schLogConfiguration);
+        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
+        return schLogConfiguration;
+    }
+
+    public SchLogConfiguration buildOPRLogConfiguration() {
+        //configuration
+        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
+        schLogConfiguration.setExtension("opr");
+        schLogConfiguration.setPattern("yyyyMMdd");
+        schLogConfiguration.setChannel(corChannel);
+        schLogConfiguration.setNetwork(corNetwork);
+        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
+        //columnConfiguration
+        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 9, 1, schLogConfiguration);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration);
+        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 14, 3, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 14, 4, schLogConfiguration);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 5, schLogConfiguration);
+        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
+        return schLogConfiguration;
+    }
+
+    private SchLogColumn buildLogColumn(LogColumnTypEnum logColumnTypEnum, Integer lenght, Integer sequence, SchLogConfiguration schLogConfiguration) {
+        SchLogColumn schLogColumn = new SchLogColumn();
+        schLogColumn.setColumnSequence(sequence);
+        schLogColumn.setName(logColumnTypEnum);
+        schLogColumn.setLength(lenght);
+        schLogColumn.setSchLogConfiguration(schLogConfiguration);
+        schLogColumn.channel(corChannel);
+        schLogColumn.network(corNetwork);
+        return schLogColumn;
     }
 }

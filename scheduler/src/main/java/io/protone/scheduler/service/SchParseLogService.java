@@ -1,5 +1,6 @@
 package io.protone.scheduler.service;
 
+import com.google.common.collect.Lists;
 import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLog;
@@ -18,7 +19,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -43,24 +48,25 @@ public class SchParseLogService {
     }
 
     @Transactional
-    public Set<SchEmission> parseLog(SchLog schLog) throws IOException {
-        InputStreamReader reader = null;
-        Set<SchEmission> schEmissions = new HashSet<>();
+    public List<SchEmission> parseLog(SchLog schLog) throws IOException {
+        InputStreamReader reader;
+        List<SchEmission> schEmissions = Lists.newArrayList();
         List<SchLogColumn> schLogColumns = schLog.getSchLogConfiguration().getLogColumns().stream().sorted(Comparator.comparing(SchLogColumn::getColumnSequence)).collect(Collectors.toList());
         reader = new InputStreamReader(new ByteArrayInputStream(libFileItemService.download(schLog.getLibFileItem())));
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
         while ((line = bufferedReader.readLine()) != null) {
-            parseLogLine(schLogColumns, line);
+            schEmissions.add(parseLogLine(schLogColumns, line, schLog.getDate()));
         }
         bufferedReader.close();
         return schEmissions;
     }
 
-    private SchEmission parseLogLine(List<SchLogColumn> schLogColumns, String line) {
+    private SchEmission parseLogLine(List<SchLogColumn> schLogColumns, String line, LocalDate localDate) {
         SchEmission schEmission = new SchEmission();
+        String lineLine = line + "                                                      "; //Add some empty space to avoid indexUnBound exception buffered reader trim lines;
         schLogColumns.stream().forEach(schLogColumn -> {
-            this.columnParserMap.get(schLogColumn.getName()).parseColumnLog(schEmission, schLogColumns, schLogColumn, line);
+            this.columnParserMap.get(schLogColumn.getName()).parseColumnLog(schEmission, schLogColumns, schLogColumn, localDate, lineLine);
         });
         return schEmission;
     }
