@@ -44,7 +44,7 @@ public class SchScheduleServiceTest extends SchedulerBaseTest {
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        Slice<SchSchedule> fetchedEntity = schScheduleService.findSchGridsForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchSchedule> fetchedEntity = schScheduleService.findSchSchedulesForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
@@ -93,7 +93,7 @@ public class SchScheduleServiceTest extends SchedulerBaseTest {
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        SchSchedule fetchedEntity = schScheduleService.findSchGridForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchSchedule fetchedEntity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
 
         //assert
         assertNotNull(fetchedEntity);

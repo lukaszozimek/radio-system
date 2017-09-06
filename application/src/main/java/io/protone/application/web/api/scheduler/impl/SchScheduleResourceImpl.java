@@ -60,7 +60,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable) {
         log.debug("REST request to get all SchSchedule, for Channel {}, Network: {}", channelShortcut, networkShortcut);
-        Slice<SchSchedule> entity = schScheduleService.findSchGridsForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
+        Slice<SchSchedule> entity = schScheduleService.findSchSchedulesForNetworkAndChannel(networkShortcut, channelShortcut, pagable);
         List<SchScheduleThinDTO> response = schScheduleMapper.DBs2ThinDTOs(entity.getContent());
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -103,7 +103,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     public ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
-        SchSchedule entity = schScheduleService.findSchGridForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        SchSchedule entity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
@@ -135,14 +135,23 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     public ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
-                                                                                   @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws URISyntaxException {
-        return null;
+                                                                                   @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception {
+        SchSchedule schSchedule = schScheduleBuilderService.buildScheduleForDate(date, gridShortName, networkShortcut, channelShortcut);
+        SchSchedule entity = this.schScheduleService.saveSchedule(schSchedule);
+
+        SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+                .body(response);
     }
 
     @Override
     public ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) throws URISyntaxException {
-        return null;
+        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(date, networkShortcut, channelShortcut);
+        SchSchedule entity = this.schScheduleService.saveSchedule(schSchedule);
+        SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
+        return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
+                .body(response);
     }
 }

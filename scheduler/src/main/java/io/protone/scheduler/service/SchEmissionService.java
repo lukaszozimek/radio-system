@@ -1,5 +1,7 @@
 package io.protone.scheduler.service;
 
+import io.protone.scheduler.domain.SchBlock;
+import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.repository.SchEmissionRepository;
 import org.slf4j.Logger;
@@ -37,5 +39,23 @@ public class SchEmissionService {
             schEmissionRepository.saveAndFlush(schEmission.clock(null).block(null));
             schEmissionRepository.delete(schEmission);
         });
+    }
+
+    @Transactional
+    public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchClock entity) {
+        return emissions.stream().map(schEmission -> {
+            SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.clock(entity));
+            schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+            return schEmissionRepository.saveAndFlush(schEmission);
+        }).collect(toSet());
+    }
+
+    @Transactional
+    public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchBlock entity) {
+        return emissions.stream().map(schEmission -> {
+            SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity));
+            schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+            return schEmissionRepository.saveAndFlush(schEmission);
+        }).collect(toSet());
     }
 }

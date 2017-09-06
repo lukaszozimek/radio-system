@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchClock;
+import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchClockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,15 @@ public class SchClockService {
     public SchClock saveClock(SchClock schClock) {
         schClock.emissions(schEmissionService.saveEmission(schClock.getEmissions()));
         schClock.blocks(schBlockService.saveBlocks(schClock.getBlocks()));
+        return schClockRepository.saveAndFlush(schClock);
+    }
+
+    @Transactional
+    public SchClock saveClock(SchClock schClock, SchSchedule schSchedule) {
+        SchClock entity = schClockRepository.saveAndFlush(schClock);
+        entity.setSchSchedule(schSchedule);
+        entity.emissions(schEmissionService.saveEmission(schClock.getEmissions(), entity));
+        entity.blocks(schBlockService.saveBlocks(schClock.getBlocks(), entity));
         return schClockRepository.saveAndFlush(schClock);
     }
 

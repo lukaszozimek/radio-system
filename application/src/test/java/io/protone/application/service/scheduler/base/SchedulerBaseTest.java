@@ -218,7 +218,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
 
 
         schEventRepository.save(schEvent);
-        schEvent.blocks(Sets.newHashSet(buildOprImportEvent(1, 100000L, schEvent)))
+        schEvent.blocks(Sets.newHashSet(buildOprImportEvent(1, 1000000L, schEvent)))
                 .emissions(Sets.newHashSet(
                         buildEmissionWithAttachment(2, 100000L, schEvent),
                         buildEmissionWithAttachment(3, 100000L, schEvent))

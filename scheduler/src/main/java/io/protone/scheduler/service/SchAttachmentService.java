@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchAttachment;
+import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.repository.SchAttachmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,4 +38,10 @@ public class SchAttachmentService {
         }
     }
 
+    public Set<SchAttachment> saveAttachmenst(Set<SchAttachment> attachments, SchEmission entitiy) {
+        if (attachments != null && !attachments.isEmpty()) {
+            return attachments.stream().map(schAttachment -> schAttachmentRepository.saveAndFlush(schAttachment.emission(entitiy))).collect(toSet());
+        }
+        return Sets.newHashSet();
+    }
 }

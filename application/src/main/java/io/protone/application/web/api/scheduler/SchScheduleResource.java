@@ -109,7 +109,7 @@ public interface SchScheduleResource {
     ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
-                                                                            @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws URISyntaxException;
+                                                                            @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception;
 
     @ApiOperation(value = "buildDefaultSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {

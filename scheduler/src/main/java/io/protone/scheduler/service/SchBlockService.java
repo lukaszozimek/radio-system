@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchBlock;
+import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.repository.SchBlockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,5 +49,35 @@ public class SchBlockService {
             });
         }
 
+    }
+
+    public Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchClock entity) {
+        if (blocks != null && !blocks.isEmpty()) {
+            return blocks.stream().map(schBlock -> {
+                SchBlock entityBlock = schBlockRepository.saveAndFlush(schBlock);
+                if (!schBlock.getBlocks().isEmpty()) {
+                    this.saveBlocks(schBlock.getBlocks(), entityBlock);
+                }
+                entityBlock.clock(entity);
+                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock));
+                return schBlockRepository.saveAndFlush(entityBlock);
+            }).collect(toSet());
+        }
+        return Sets.newHashSet();
+    }
+
+    private Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchBlock entity) {
+        if (blocks != null && !blocks.isEmpty()) {
+            return blocks.stream().map(schBlock -> {
+                SchBlock entityBlock = schBlockRepository.saveAndFlush(schBlock);
+                if (!schBlock.getBlocks().isEmpty()) {
+                    this.saveBlocks(schBlock.getBlocks(), entityBlock);
+                }
+                entityBlock.block(entity);
+                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions()));
+                return schBlockRepository.saveAndFlush(entityBlock);
+            }).collect(toSet());
+        }
+        return Sets.newHashSet();
     }
 }
