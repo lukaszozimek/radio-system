@@ -194,14 +194,69 @@ public class SchedulerBaseTest extends LibraryGenerator {
     }
 
     protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutes(SchClockConfiguration schClockConfiguration) {
-        return Sets.newHashSet(buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration));
+        return Sets.newHashSet(buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 1),
+                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 2),
+                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 3));
 
     }
 
-    protected SchEvent buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockConfiguration schClockConfiguration) {
+    protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutesWithMusicImport(SchClockConfiguration schClockConfiguration) {
+        return Sets.newHashSet(buildEventWithsLenght10minoutesMusicImport(schClockConfiguration,1),
+                buildEventWithsEmissionsAndOprImport10minoutes(schClockConfiguration,2),
+                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 3));
+
+    }
+
+    protected SchEvent buildEventWithsEmissionsAndOprImport10minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
         SchEvent schEvent = new SchEvent()
+                .eventType(EventTypeEnum.ET_MUSIC)
+                .sequence(sequence)
+                .timeParams(new SchConfigurationTimeParams().length(600000L))
+                .clockConfiguration(schClockConfiguration)
+                .channel(corChannel)
+                .network(corNetwork);
+
+
+        schEventRepository.save(schEvent);
+        schEvent.blocks(Sets.newHashSet(buildOprImportEvent(1, 100000L, schEvent)))
+                .emissions(Sets.newHashSet(
+                        buildEmissionWithAttachment(2, 100000L, schEvent),
+                        buildEmissionWithAttachment(3, 100000L, schEvent))
+                );
+        return schEvent;
+    }
+
+    private SchEvent buildOprImportEvent(long i, long l, SchEvent schEventParent) {
+        SchEvent schEvent = new SchEvent()
+                .sequence(i)
+                .eventType(EventTypeEnum.ET_IMPORT_LOG)
+                .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
+                .timeParams(new SchConfigurationTimeParams().length(l))
+                .event(schEventParent)
+                .schLogConfiguration(buildMusLogConfigurationWithSeparator())
+                .channel(corChannel)
+                .network(corNetwork);
+        schEventRepository.save(schEvent);
+        return schEvent;
+    }
+
+
+    protected SchEvent buildEventWithsLenght10minoutesMusicImport(SchClockConfiguration schClockConfiguration, long sequence) {
+        SchEvent schEvent = new SchEvent()
+                .eventType(EventTypeEnum.ET_IMPORT_LOG)
+                .sequence(sequence)
+                .timeParams(new SchConfigurationTimeParams().length(600000L))
+                .clockConfiguration(schClockConfiguration)
+                .schLogConfiguration(buildMusLogConfigurationWithSeparator())
+                .channel(corChannel)
+                .network(corNetwork);
+        schEventRepository.save(schEvent);
+        return schEvent;
+    }
+
+    protected SchEvent buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
+        SchEvent schEvent = new SchEvent()
+                .sequence(sequence)
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .timeParams(new SchConfigurationTimeParams().length(600000L))
                 .clockConfiguration(schClockConfiguration)
@@ -272,7 +327,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
         SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration);
         SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 14, 3, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 3, schLogConfiguration);
         SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 4, schLogConfiguration);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
@@ -308,10 +363,10 @@ public class SchedulerBaseTest extends LibraryGenerator {
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
         SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 9, 2, schLogConfiguration);
         SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 14, 3, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 4, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 10, 3, schLogConfiguration);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
@@ -348,7 +403,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
         SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
         SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 3, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration);
         SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
@@ -367,7 +422,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
         SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
         SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 3, schLogConfiguration);
+        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration);
         SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;

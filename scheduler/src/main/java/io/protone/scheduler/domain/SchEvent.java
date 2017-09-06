@@ -13,7 +13,6 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -53,6 +52,9 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEventEmission> emissions = new HashSet<>();
+
+    @Transient
+    private Set<SchEmission> emissionsLog = new HashSet<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "event")
@@ -265,26 +267,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SchEvent block = (SchEvent) o;
-        if (block.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), block.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
     public String toString() {
         return "Event{" +
                 "id=" + getId() +
@@ -304,6 +286,73 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
 
     public SchEvent sequence(Long sequence) {
         this.sequence = sequence;
+        return this;
+    }
+
+    public SchEvent schLogConfiguration(SchLogConfiguration schLogConfiguration) {
+        this.schLogConfiguration = schLogConfiguration;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SchEvent schEvent = (SchEvent) o;
+
+        if (getId() != null ? !getId().equals(schEvent.getId()) : schEvent.getId() != null) return false;
+        if (getName() != null ? !getName().equals(schEvent.getName()) : schEvent.getName() != null) return false;
+        if (getShortName() != null ? !getShortName().equals(schEvent.getShortName()) : schEvent.getShortName() != null)
+            return false;
+        if (getEventCategory() != null ? !getEventCategory().equals(schEvent.getEventCategory()) : schEvent.getEventCategory() != null)
+            return false;
+        if (getSequence() != null ? !getSequence().equals(schEvent.getSequence()) : schEvent.getSequence() != null)
+            return false;
+        if (getClockConfiguration() != null ? !getClockConfiguration().equals(schEvent.getClockConfiguration()) : schEvent.getClockConfiguration() != null)
+            return false;
+        if (getEvent() != null ? !getEvent().equals(schEvent.getEvent()) : schEvent.getEvent() != null) return false;
+        if (getEventType() != schEvent.getEventType()) return false;
+        if (getSchLogConfiguration() != null ? !getSchLogConfiguration().equals(schEvent.getSchLogConfiguration()) : schEvent.getSchLogConfiguration() != null)
+            return false;
+        if (getTimeParams() != null ? !getTimeParams().equals(schEvent.getTimeParams()) : schEvent.getTimeParams() != null)
+            return false;
+        if (getNetwork() != null ? !getNetwork().equals(schEvent.getNetwork()) : schEvent.getNetwork() != null)
+            return false;
+        return getChannel() != null ? getChannel().equals(schEvent.getChannel()) : schEvent.getChannel() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getShortName() != null ? getShortName().hashCode() : 0);
+        result = 31 * result + (getEventCategory() != null ? getEventCategory().hashCode() : 0);
+        result = 31 * result + (getSequence() != null ? getSequence().hashCode() : 0);
+        result = 31 * result + (getClockConfiguration() != null ? getClockConfiguration().hashCode() : 0);
+        result = 31 * result + (getEventType() != null ? getEventType().hashCode() : 0);
+        result = 31 * result + (getSchLogConfiguration() != null ? getSchLogConfiguration().hashCode() : 0);
+        result = 31 * result + (getTimeParams() != null ? getTimeParams().hashCode() : 0);
+        result = 31 * result + (getNetwork() != null ? getNetwork().hashCode() : 0);
+        result = 31 * result + (getChannel() != null ? getChannel().hashCode() : 0);
+        return result;
+    }
+
+    public Set<SchEmission> getEmissionsLog() {
+        return emissionsLog;
+    }
+
+    public void setEmissionsLog(Set<SchEmission> emissionsLog) {
+        this.emissionsLog = emissionsLog;
+    }
+
+    public SchEvent addEmission(SchEmission emission) {
+        this.emissionsLog.add(emission);
+        return this;
+    }
+
+    public SchEvent removeEmission(SchEmission emission) {
+        this.emissionsLog.remove(emission);
         return this;
     }
 }

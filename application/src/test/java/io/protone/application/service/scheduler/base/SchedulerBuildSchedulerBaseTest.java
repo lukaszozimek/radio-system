@@ -69,25 +69,6 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         return schGrid;
     }
 
-    protected SchGrid buildGridForDayWitClockWithNestedEventsAndEmissionsConfiguration(CorDayOfWeekEnum dayOfWeekEnum, boolean defaultGrid) {
-        SchGrid schGrid = new SchGrid();
-        schGrid.setDayOfWeek(dayOfWeekEnum);
-        schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(buildClockWithNestedEventsAndEmissionsConfiguration());
-        schGrid.channel(corChannel);
-        schGrid.network(corNetwork);
-        return schGrid;
-    }
-
-    protected SchGrid buildGridForDayWitClockNestedEventsMusinOnlyAndEmissionsConfiguration(CorDayOfWeekEnum dayOfWeekEnum, boolean defaultGrid) {
-        SchGrid schGrid = new SchGrid();
-        schGrid.setDayOfWeek(dayOfWeekEnum);
-        schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(buildClockWithNestedEventsMusinOnlyAndEmissionsConfiguration());
-        schGrid.channel(corChannel);
-        schGrid.network(corNetwork);
-        return schGrid;
-    }
 
     protected SchGrid buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(CorDayOfWeekEnum dayOfWeekEnum, boolean defaultGrid) {
         SchGrid schGrid = new SchGrid();
@@ -123,26 +104,21 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         return schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
     }
 
-    protected SchClockConfiguration buildClockWithNestedEventsAndEmissionsConfiguration() {
-        SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
-        schClockConfiguration.channel(corChannel);
-        schClockConfiguration.network(corNetwork);
-        return schClockConfiguration;
-    }
-
-    protected SchClockConfiguration buildClockWithNestedEventsMusinOnlyAndEmissionsConfiguration() {
-        SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
-        schClockConfiguration.channel(corChannel);
-        schClockConfiguration.network(corNetwork);
-        return schClockConfiguration;
-    }
 
     protected SchClockConfiguration buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration() {
         SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
+        schClockConfiguration.setSequence(1L);
+        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(3600000L));
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
+        schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
+        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 2));
+        schClockConfiguration.events(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockConfiguration));
+        schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
+
         return schClockConfiguration;
     }
+
 
     private Set<SchEmissionConfiguration> buildQuatreEmissionConfiguration(SchClockConfiguration schClockConfiguration, int quaterNumber) {
         Set<SchEmissionConfiguration> emissionConfigurations = new HashSet<>();

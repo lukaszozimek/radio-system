@@ -141,6 +141,11 @@ public class LibFileItem extends CorItem implements Serializable {
         this.network = network;
     }
 
+    public LibFileItem network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
     public CorChannel getChannel() {
         return channel;
     }
@@ -148,4 +153,10 @@ public class LibFileItem extends CorItem implements Serializable {
     public void setChannel(CorChannel channel) {
         this.channel = channel;
     }
+
+    public LibFileItem channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
 }

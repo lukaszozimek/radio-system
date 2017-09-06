@@ -1,7 +1,6 @@
 package io.protone.scheduler.service.schedule.build;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.domain.*;
@@ -21,6 +20,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 
@@ -83,56 +83,68 @@ public class SchScheduleBuilderService {
     }
 
     private SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
-        Set<SchEvent> importEvents = getImportLogEventFlatList(schGrid.getClocks());
+        List<SchEvent> importEvents = getImportLogEventFlatList(schGrid.getClocks());
         if (importEvents != null) {
             Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEvent::getSchLogConfiguration).distinct().collect(Collectors.toSet());
             Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
-            scheduleLogs.stream().forEach(schLog -> {
+            scheduleLogs.stream().forEach((SchLog schLog) -> {
                 List<SchEmission> schEmissionSet = Lists.newArrayList();
                 try {
                     schEmissionSet = schParseLogService.parseLog(schLog);
                 } catch (Exception e) {
                     log.error("Wrong log configuration or log doesn't exist");
-                }
 
-                //TODO: Import Maksymalnej liczby elementów do godziny
-                Set<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toSet());
-                Set<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);
-                schGrid.clocks(fillClockWithEvents(schGrid.getClocks(), filledEvnts));
+                }
+                if (schEmissionSet != null && !schEmissionSet.isEmpty()) {
+                    List<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toList());
+                    List<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);
+                    schGrid.clocks(fillClockWithEvents(schGrid.getClocks(), filledEvnts));
+                }
             });
         }
         return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getClocks())).network(schGrid.getNetwork()).channel(schGrid.getChannel());
     }
 
 
-    private Set<SchEvent> fillEventWithEmissions(Set<SchEvent> schEvents, List<SchEmission> schEmissions) {
-        return null;
+    private List<SchEvent> fillEventWithEmissions(List<SchEvent> schEvents, List<SchEmission> schEmissions) {
+        for (int i = 0; i < schEvents.size(); i++) {
+
+            schEmissions.stream().forEach(schEmission -> {
+                Long logEmissionsLenght = schEvents.get(0).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
+                if (logEmissionsLenght < schEvents.get(0).getTimeParams().getLength()) {
+                    schEvents.get(0).addEmission(schEmission);
+                }
+
+            });
+        }
+        return schEvents;
     }
 
 
-    private Set<SchEvent> getImportLogEventFlatList(Set<SchClockConfiguration> schClockConfigurationSet) {
-        Set<SchEvent> schEvents = Sets.newHashSet();
-        schClockConfigurationSet.forEach(schClockConfiguration -> {
+    private List<SchEvent> getImportLogEventFlatList(Set<SchClockConfiguration> schClockConfigurationSet) {
+        List<SchEvent> schEvents = Lists.newArrayList();
+        schClockConfigurationSet.stream().sorted(Comparator.comparing(SchClockConfiguration::getSequence)).forEach(schClockConfiguration -> {
             schEvents.addAll(getImportEvents(schClockConfiguration.getEvents()));
         });
         return schEvents;
     }
 
 
-    public Set<SchEvent> getImportEvents(Set<SchEvent> blocks) {
-        Set<SchEvent> schEventsImports = new HashSet<>();
+    public List<SchEvent> getImportEvents(Set<SchEvent> blocks) {
+        List<SchEvent> events = Lists.newArrayList();
         if (blocks != null) {
-            return blocks.stream().filter(schBlock -> {
+            events.addAll(blocks.stream().sorted(Comparator.comparing(SchEvent::getSequence)).filter(schBlock -> {
                 if (!schBlock.getBlocks().isEmpty()) {
-                    schEventsImports.addAll(this.getImportEvents(schBlock.getBlocks()));
+                    events.addAll(this.getImportEvents(schBlock.getBlocks()));
                 }
                 return schBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG);
-            }).collect(toSet());
+            }).collect(toList()));
+            return events;
         }
-        return Sets.newHashSet();
+        return Lists.newArrayList();
     }
 
-    private Set<SchClockConfiguration> fillClockWithEvents(Set<SchClockConfiguration> clockConfigurationSet, Set<SchEvent> eventSet) {
+    private Set<SchClockConfiguration> fillClockWithEvents(Set<SchClockConfiguration> clockConfigurationSet, List<SchEvent> eventSet) {
         return null;
     }
 

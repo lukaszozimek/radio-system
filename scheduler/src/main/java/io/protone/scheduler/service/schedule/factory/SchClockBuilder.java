@@ -1,5 +1,6 @@
 package io.protone.scheduler.service.schedule.factory;
 
+import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.service.schedule.mapper.SchClockBlockMapper;
@@ -23,13 +24,16 @@ public class SchClockBuilder {
     private SchClockBlockMapper schClockBlockMapper;
 
     public Set<SchClock> buildClocks(Set<SchClockConfiguration> clocks) {
-        return clocks.stream().map(clock -> new SchClock()
-                .sequence(clock.getSequence())
-                .length(clock.getTimeParams().getLength())
-                .network(clock.getNetwork())
-                .channel(clock.getChannel())
-                .emissions(schEmissionConfigurationSchEmissionMapper.mapEmissionConfigurationToEmission(clock.getEmissions()))
-                .blocks(schClockBlockMapper.buildClockBlocks(clock))).collect(toSet());
+        if (clocks != null) {
+            return clocks.stream().map(clock -> new SchClock()
+                    .sequence(clock.getSequence())
+                    .length(clock.getTimeParams().getLength())
+                    .network(clock.getNetwork())
+                    .channel(clock.getChannel())
+                    .emissions(schEmissionConfigurationSchEmissionMapper.mapEmissionConfigurationToEmission(clock.getEmissions()))
+                    .blocks(schClockBlockMapper.buildClockBlocks(clock))).collect(toSet());
+        }
+        return Sets.newHashSet();
     }
 
 }

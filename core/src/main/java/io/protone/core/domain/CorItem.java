@@ -24,32 +24,25 @@ public abstract class CorItem extends AbstractAuditingEntity {
     @SequenceGenerator(name = "sequenceGenerator")
     @PodamExclude
     protected Long id;
-
     @NotNull
     @Column(name = "idx", nullable = false)
     protected String idx;
-
     @NotNull
     @Column(name = "name")
     protected String name;
-
     @Column(name = "description")
     protected String description;
-
     @ManyToOne
     @PodamExclude
     protected CorNetwork network;
-
     @ManyToOne
     @PodamExclude
     protected CorChannel channel;
-
     @PodamExclude
     @OneToMany(mappedBy = "tags", fetch = EAGER)
     @JsonIgnore
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     protected Set<CorTag> tags = new HashSet<>();
-
     @PodamExclude
     @OneToMany(mappedBy = "libItemPropertyValue", fetch = EAGER)
     @JsonIgnore
@@ -63,6 +56,4 @@ public abstract class CorItem extends AbstractAuditingEntity {
     public void setId(Long id) {
         this.id = id;
     }
-
-
 }
