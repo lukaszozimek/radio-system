@@ -107,15 +107,21 @@ public class SchScheduleBuilderService {
 
 
     private List<SchEvent> fillEventWithEmissions(List<SchEvent> schEvents, List<SchEmission> schEmissions) {
-        for (int i = 0; i < schEvents.size(); i++) {
-
-            schEmissions.stream().forEach(schEmission -> {
-                Long logEmissionsLenght = schEvents.get(0).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
-                if (logEmissionsLenght < schEvents.get(0).getTimeParams().getLength()) {
-                    schEvents.get(0).addEmission(schEmission);
+        int i = 0;
+        for (SchEmission schEmission : schEmissions) {
+            if (schEvents.size() > i) {
+                Long logEmissionsLenght = schEvents.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
+                if (logEmissionsLenght < schEvents.get(i).getTimeParams().getLength()) {
+                    schEvents.get(i).addEmission(schEmission);
+                    log.debug("put emission in to Block {}", schEmission);
+                } else {
+                    log.debug("Block is full skip to next one");
+                    i++;
                 }
-
-            });
+            } else {
+                log.debug("There is no more import events. Finish parsing");
+                break;
+            }
         }
         return schEvents;
     }

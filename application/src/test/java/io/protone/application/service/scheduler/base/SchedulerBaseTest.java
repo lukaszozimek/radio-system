@@ -201,17 +201,17 @@ public class SchedulerBaseTest extends LibraryGenerator {
     }
 
     protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutesWithMusicImport(SchClockConfiguration schClockConfiguration) {
-        return Sets.newHashSet(buildEventWithsLenght10minoutesMusicImport(schClockConfiguration,1),
-                buildEventWithsEmissionsAndOprImport10minoutes(schClockConfiguration,2),
+        return Sets.newHashSet(buildEventWithsLenght20minoutesMusicImport(schClockConfiguration,1),
+                buildEventWithsEmissionsAndOprImport20minoutes(schClockConfiguration,2),
                 buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 3));
 
     }
 
-    protected SchEvent buildEventWithsEmissionsAndOprImport10minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
+    protected SchEvent buildEventWithsEmissionsAndOprImport20minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
         SchEvent schEvent = new SchEvent()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .sequence(sequence)
-                .timeParams(new SchConfigurationTimeParams().length(600000L))
+                .timeParams(new SchConfigurationTimeParams().length(12000000L ))
                 .clockConfiguration(schClockConfiguration)
                 .channel(corChannel)
                 .network(corNetwork);
@@ -233,7 +233,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
                 .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
                 .timeParams(new SchConfigurationTimeParams().length(l))
                 .event(schEventParent)
-                .schLogConfiguration(buildMusLogConfigurationWithSeparator())
+                .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
                 .channel(corChannel)
                 .network(corNetwork);
         schEventRepository.save(schEvent);
@@ -241,11 +241,11 @@ public class SchedulerBaseTest extends LibraryGenerator {
     }
 
 
-    protected SchEvent buildEventWithsLenght10minoutesMusicImport(SchClockConfiguration schClockConfiguration, long sequence) {
+    protected SchEvent buildEventWithsLenght20minoutesMusicImport(SchClockConfiguration schClockConfiguration, long sequence) {
         SchEvent schEvent = new SchEvent()
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
                 .sequence(sequence)
-                .timeParams(new SchConfigurationTimeParams().length(600000L))
+                .timeParams(new SchConfigurationTimeParams().length(1200000L))
                 .clockConfiguration(schClockConfiguration)
                 .schLogConfiguration(buildMusLogConfigurationWithSeparator())
                 .channel(corChannel)

@@ -5,11 +5,9 @@ import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.service.log.parser.lenght.SchColumnLenghtParser;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static java.time.LocalTime.parse;
 
 /**
  * Created by lukaszozimek on 04.09.2017.
@@ -28,14 +26,10 @@ public class SchColumnLenghtLenghtParser implements SchColumnLenghtParser {
         if (schLogColumn.getColumnSequence() == 0) {
             if (schEmission.getMediaItem() != null) {
                 String length = logLine.substring(schLogColumn.getColumnSequence(), schLogColumn.getLength()).trim();
-                double lenghtInMili = (double) parse(length, DateTimeFormatter.ofPattern("HH:MM")).toNanoOfDay();
-
-                schEmission.getMediaItem().length(lenghtInMili);
+                schEmission.getMediaItem().length(parseLenght(length));
             } else {
                 String length = logLine.substring(schLogColumn.getColumnSequence(), schLogColumn.getLength()).trim();
-                double lenghtInMili;
-                lenghtInMili = (double) parse(length, DateTimeFormatter.ofPattern("HH:MM")).toNanoOfDay();
-                schEmission.mediaItem(new LibMediaItem().length(lenghtInMili));
+                schEmission.mediaItem(new LibMediaItem().length(parseLenght(length)));
             }
         } else {
             int columnIndex = schLogColumnList.indexOf(schLogColumn);
@@ -45,19 +39,21 @@ public class SchColumnLenghtLenghtParser implements SchColumnLenghtParser {
             }
 
             if (schEmission.getMediaItem() != null) {
-                String length = logLine.substring(elementStartPostion, elementStartPostion+schLogColumn.getLength()).trim();
-                double lenghtInMili;
-                lenghtInMili = (double) parse(length, DateTimeFormatter.ofPattern("HH:MM")).toNanoOfDay();
-
-                schEmission.getMediaItem().length(lenghtInMili);
+                String length = logLine.substring(elementStartPostion, elementStartPostion + schLogColumn.getLength()).trim();
+                schEmission.getMediaItem().length(parseLenght(length));
             } else {
-                String length = logLine.substring(elementStartPostion, elementStartPostion+schLogColumn.getLength()).trim();
-                double lenghtInMili;
-                lenghtInMili = (double) parse(length, DateTimeFormatter.ofPattern("HH:MM")).toNanoOfDay();
-                schEmission.mediaItem(new LibMediaItem().length(lenghtInMili));
+                String length = logLine.substring(elementStartPostion, elementStartPostion + schLogColumn.getLength()).trim();
+                schEmission.mediaItem(new LibMediaItem().length(parseLenght(length)));
             }
         }
         return schEmission;
+    }
+
+    private double parseLenght(String length) {
+        String[] time = length.split(":");
+        int minutes = Integer.valueOf(time[0]);
+        int seconds = Integer.valueOf(time[1]);
+        return Duration.ofMinutes(minutes).plusSeconds(seconds).toMillis();
 
     }
 

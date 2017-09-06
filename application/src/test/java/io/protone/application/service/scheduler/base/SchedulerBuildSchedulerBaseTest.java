@@ -108,7 +108,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
     protected SchClockConfiguration buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration() {
         SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
         schClockConfiguration.setSequence(1L);
-        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(3600000L));
+        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(7200000L));
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);

@@ -5,9 +5,8 @@ import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.service.log.parser.separator.SchColumnSeparatorParser;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -25,12 +24,20 @@ public class SchColumnLenghtSeparatorParser implements SchColumnSeparatorParser 
         }
         String[] separatedStrings = logLine.split(separator);
         if (schEmission.getMediaItem() != null) {
-            schEmission.getMediaItem().length((double) LocalTime.parse(separatedStrings[schLogColumn.getColumnSequence()].trim(), DateTimeFormatter.ofPattern("HH:MM")).toNanoOfDay());
+            String length = separatedStrings[schLogColumn.getColumnSequence()].trim();
+            schEmission.getMediaItem().length(parseLenght(length));
         } else {
-            schEmission.mediaItem(new LibMediaItem().length((double) LocalTime.parse(separatedStrings[schLogColumn.getColumnSequence()].trim(), DateTimeFormatter.ofPattern("HH:MM")).toNanoOfDay()));
+            String length = separatedStrings[schLogColumn.getColumnSequence()].trim();
+            schEmission.mediaItem(new LibMediaItem().length(parseLenght(length)));
         }
         return schEmission;
+    }
 
+    private double parseLenght(String length) {
+        String[] time = length.split(":");
+        int minutes = Integer.valueOf(time[0]);
+        int seconds = Integer.valueOf(time[1]);
+        return Duration.ofMinutes(minutes).plusSeconds(seconds).toMillis();
     }
 
 }
