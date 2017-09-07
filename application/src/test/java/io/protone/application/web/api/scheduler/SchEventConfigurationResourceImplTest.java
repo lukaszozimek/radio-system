@@ -10,7 +10,6 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchEventConfigurationDTO;
-import io.protone.scheduler.domain.SchEvent;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.mapper.SchEventConfigurationMapper;
 import io.protone.scheduler.repository.SchEventConfigurationRepository;
@@ -270,8 +269,5 @@ public class SchEventConfigurationResourceImplTest {
     }
 
 
-    @Test
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(SchEvent.class);
-    }
+
 }

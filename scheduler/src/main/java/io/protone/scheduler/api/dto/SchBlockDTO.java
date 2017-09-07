@@ -35,6 +35,7 @@ public class SchBlockDTO {
 
     private SchTimeParamsDTO timeParams = null;
 
+
     private Long sequence;
 
     @JsonProperty("schEventType")
@@ -152,6 +153,13 @@ public class SchBlockDTO {
         return this;
     }
 
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
     /**
      * Get timeParams
      *

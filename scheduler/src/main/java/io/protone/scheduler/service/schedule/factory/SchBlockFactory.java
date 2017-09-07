@@ -17,6 +17,7 @@ public class SchBlockFactory {
 
     public SchBlock blockFactoryMethod(SchEvent schEvent) {
         SchBlock schBlock = new SchBlock()
+                .eventType(schEvent.getEventType())
                 .sequence(schEvent.getSequence())
                 .network(schEvent.getNetwork())
                 .channel(schEvent.getChannel())

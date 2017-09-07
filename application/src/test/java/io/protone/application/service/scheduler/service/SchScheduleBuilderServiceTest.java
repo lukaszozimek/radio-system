@@ -8,6 +8,7 @@ import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.domain.SchLog;
 import io.protone.scheduler.domain.SchSchedule;
+import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.protone.scheduler.repository.SchGridRepository;
 import io.protone.scheduler.repository.SchLogRepository;
 import io.protone.scheduler.service.SchParseLogService;
@@ -200,11 +201,56 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
 
         //then
         SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
+        assertNotNull(schSchedule);
+        assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
+        assertEquals(schSchedule.getChannel(), schGrid.getChannel());
+        assertEquals(schSchedule.getDate(), localDate);
+        assertTrue(!schSchedule.getClocks().isEmpty());
+        assertEquals(1, schSchedule.getClocks().size());
+        assertNotNull(schSchedule.getClocks().stream().findFirst().get());
+        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getSequence());
+        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getLength());
+        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getEmissions());
+        assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
+        assertEquals(3, schSchedule.getClocks().stream().findFirst().get().getBlocks().size());
+        schSchedule.getClocks().stream().findFirst().get().getBlocks().stream().forEach(block -> {
+            if (block.getEventType() != null && block.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
+                assertEquals(7, block.getEmissions().size());
+                assertEquals(2, block.getBlocks().size());
 
-    }
+                assertNotNull(block.getChannel());
+                assertNotNull(block.getNetwork());
+            }
+            if (block.getEventType() != null && block.getEventType().equals(EventTypeEnum.ET_MUSIC)) {
+                block.getBlocks().stream().forEach(nestedBlock -> {
+                    if (nestedBlock.getEventType() != null && nestedBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
+                        assertEquals(4, nestedBlock.getEmissions().size());
+                        assertEquals(0, nestedBlock.getBlocks().size());
 
-    @Test
-    public void shouldBuildScheduleWithOneHourContainingEventsImportEventsAndEmissionsGrid() {
+                        assertNotNull(nestedBlock.getChannel());
+                        assertNotNull(nestedBlock.getNetwork());
+                    } else {
+                        assertTrue(nestedBlock.getBlocks().isEmpty());
+                        assertEquals(3, nestedBlock.getEmissions().size());
+                        nestedBlock.getEmissions().stream().forEach(emissionsInNestedBlock -> {
+                            assertNotNull(emissionsInNestedBlock.getSequence());
+                            assertNotNull(emissionsInNestedBlock.getMediaItem());
+                            assertEquals(3, emissionsInNestedBlock.getAttachments().size());
+                            assertNotNull(emissionsInNestedBlock.getChannel());
+                            assertNotNull(emissionsInNestedBlock.getNetwork());
+                            emissionsInNestedBlock.getAttachments().stream().forEach(nestedAttachments -> {
+                                assertNotNull(nestedAttachments);
+                                assertNotNull(nestedAttachments.getSequence());
+                                assertNotNull(nestedAttachments.getNetwork());
+                                assertNotNull(nestedAttachments.getChannel());
+
+                            });
+                        });
+                    }
+
+                });
+            }
+        });
 
     }
 
