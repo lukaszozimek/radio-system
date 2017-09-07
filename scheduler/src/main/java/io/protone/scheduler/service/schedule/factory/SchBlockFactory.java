@@ -21,7 +21,7 @@ public class SchBlockFactory {
                 .sequence(schEvent.getSequence())
                 .network(schEvent.getNetwork())
                 .channel(schEvent.getChannel())
-                .length(schEvent.getTimeParams().getLength());
+                .length(schEvent.getLength());
         if (!schEvent.getEmissions().isEmpty()) {
             schBlock.emissions(schEventEmissionEmissionMapper.mapEventEmissionsToBlockEmissions(schEvent.getEmissions()));
         } else {

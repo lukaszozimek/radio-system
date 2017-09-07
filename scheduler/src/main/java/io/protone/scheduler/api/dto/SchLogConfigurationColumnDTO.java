@@ -7,14 +7,12 @@ import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchLogConfigurationColumnDTO {
+public class SchLogConfigurationColumnDTO extends SchBaseDTO {
 
-    private Long id;
 
     private LogColumnTypEnum name;
 
     private Integer length;
-
 
     private Integer columnSequence;
 

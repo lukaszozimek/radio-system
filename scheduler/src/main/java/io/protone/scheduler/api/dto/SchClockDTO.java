@@ -14,17 +14,13 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchClockDTO {
+public class SchClockDTO extends SchTimeParamsDTO {
 
     @PodamExclude
     private List<SchBlockDTO> blocks = new ArrayList<SchBlockDTO>();
 
     @PodamExclude
     private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
-
-
-    private Long id = null;
-
 
     private String name = null;
 
@@ -34,18 +30,6 @@ public class SchClockDTO {
 
     private String shortName = null;
 
-    private SchTimeParamsDTO timeParams = null;
-
-
-    private Long sequence;
-
-    public Long getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
 
     public SchClockDTO blocks(List<SchBlockDTO> blocks) {
         this.blocks = blocks;
@@ -134,25 +118,6 @@ public class SchClockDTO {
         this.name = name;
     }
 
-    public SchClockDTO timeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
-
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
     public CorDictionaryDTO getClockCategory() {
         return clockCategory;
     }
@@ -182,14 +147,12 @@ public class SchClockDTO {
         return Objects.equals(this.blocks, schClockDTO.blocks) &&
                 Objects.equals(this.emissions, schClockDTO.emissions) &&
                 Objects.equals(this.id, schClockDTO.id) &&
-                Objects.equals(this.name, schClockDTO.name) &&
-                Objects.equals(this.timeParams, schClockDTO.timeParams) &&
-                Objects.equals(this.sequence, schClockDTO.sequence);
+                Objects.equals(this.name, schClockDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blocks, emissions, id, name, timeParams, sequence);
+        return Objects.hash(blocks, emissions, id, name);
     }
 
     @Override
@@ -201,8 +164,6 @@ public class SchClockDTO {
         sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    clockCategory: ").append(toIndentedString(clockCategory)).append("\n");
         sb.append("}");
         return sb.toString();

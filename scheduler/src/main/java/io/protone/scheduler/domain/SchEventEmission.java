@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -21,14 +20,10 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_event_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEventEmission extends AbstractAuditingEntity implements Serializable {
+public class SchEventEmission extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @PodamExclude
     @ManyToOne
@@ -37,9 +32,6 @@ public class SchEventEmission extends AbstractAuditingEntity implements Serializ
     @PodamExclude
     @ManyToOne
     private LibMediaItem mediaItem;
-
-    @Column(name = "sequence")
-    private Long sequence;
 
     @Embedded
     private SchConfigurationTimeParams timeParams;
@@ -166,26 +158,26 @@ public class SchEventEmission extends AbstractAuditingEntity implements Serializ
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchEventEmission network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchEventEmission channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override

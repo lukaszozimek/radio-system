@@ -1,6 +1,5 @@
 package io.protone.scheduler.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
@@ -18,14 +17,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_log_column")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchLogColumn extends AbstractAuditingEntity implements Serializable {
+public class SchLogColumn extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "column_type")

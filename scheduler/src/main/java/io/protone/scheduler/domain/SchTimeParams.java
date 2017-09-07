@@ -1,17 +1,23 @@
 package io.protone.scheduler.domain;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * A TimeParams.
  */
-@Embeddable
-public class SchTimeParams implements Serializable {
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class SchTimeParams extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Column(name = "sequence")
+    protected Long sequence;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -21,7 +27,6 @@ public class SchTimeParams implements Serializable {
 
     @Column(name = "relative_delay")
     private Long relativeDelay;
-
 
     public LocalDateTime getStartTime() {
         return startTime;
@@ -60,6 +65,14 @@ public class SchTimeParams implements Serializable {
     public SchTimeParams relativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
         return this;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
 

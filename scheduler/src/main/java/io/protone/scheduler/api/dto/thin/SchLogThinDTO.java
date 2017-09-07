@@ -1,15 +1,15 @@
 package io.protone.scheduler.api.dto.thin;
 
 
+import io.protone.scheduler.api.dto.SchBaseDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 
 import java.time.LocalDate;
 
-public class SchLogThinDTO {
+public class SchLogThinDTO extends SchBaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
 
     private LocalDate date;
 

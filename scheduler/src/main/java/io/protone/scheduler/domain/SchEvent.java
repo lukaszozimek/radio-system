@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -21,14 +20,10 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_event", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEvent extends AbstractAuditingEntity implements Serializable {
+public class SchEvent extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -74,9 +69,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchLogConfiguration schLogConfiguration;
 
-
-    @Embedded
-    private SchConfigurationTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -153,19 +145,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
 
     public SchEvent eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
-        return this;
-    }
-
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEvent timeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
         return this;
     }
 
@@ -315,8 +294,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         if (getEventType() != schEvent.getEventType()) return false;
         if (getSchLogConfiguration() != null ? !getSchLogConfiguration().equals(schEvent.getSchLogConfiguration()) : schEvent.getSchLogConfiguration() != null)
             return false;
-        if (getTimeParams() != null ? !getTimeParams().equals(schEvent.getTimeParams()) : schEvent.getTimeParams() != null)
-            return false;
         if (getNetwork() != null ? !getNetwork().equals(schEvent.getNetwork()) : schEvent.getNetwork() != null)
             return false;
         return getChannel() != null ? getChannel().equals(schEvent.getChannel()) : schEvent.getChannel() == null;
@@ -332,7 +309,6 @@ public class SchEvent extends AbstractAuditingEntity implements Serializable {
         result = 31 * result + (getClockConfiguration() != null ? getClockConfiguration().hashCode() : 0);
         result = 31 * result + (getEventType() != null ? getEventType().hashCode() : 0);
         result = 31 * result + (getSchLogConfiguration() != null ? getSchLogConfiguration().hashCode() : 0);
-        result = 31 * result + (getTimeParams() != null ? getTimeParams().hashCode() : 0);
         result = 31 * result + (getNetwork() != null ? getNetwork().hashCode() : 0);
         result = 31 * result + (getChannel() != null ? getChannel().hashCode() : 0);
         return result;

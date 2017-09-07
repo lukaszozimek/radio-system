@@ -3,7 +3,6 @@ package io.protone.scheduler.api.dto;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,20 +11,17 @@ import java.util.Set;
 /**
  * A Clock.
  */
-public class SchClockConfigurationDTO implements Serializable {
+public class SchClockConfigurationDTO extends SchConfigurationTimeParamsDTO {
 
     private static final long serialVersionUID = 1L;
-    private Long id;
 
     private String name;
 
     private String shortName;
 
-    private Long sequence;
 
     private CorDictionaryDTO clockCategory;
 
-    private SchConfigurationTimeParamsDTO timeParams;
 
     private Set<SchEventDTO> events = new HashSet<>();
 
@@ -73,19 +69,6 @@ public class SchClockConfigurationDTO implements Serializable {
         return this;
     }
 
-
-    public SchConfigurationTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchClockConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
 
     public Set<SchEventDTO> getEvents() {
         return events;
@@ -202,7 +185,6 @@ public class SchClockConfigurationDTO implements Serializable {
                 ", shortName='" + shortName + '\'' +
                 ", sequence=" + sequence +
                 ", clockCategory=" + clockCategory +
-                ", timeParams=" + timeParams +
                 ", events=" + events +
                 ", emissions=" + emissions +
                 '}';

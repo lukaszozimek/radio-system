@@ -11,11 +11,10 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchLogDTO {
+public class SchLogDTO extends SchBaseDTO{
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
 
     private LocalDate date;
 

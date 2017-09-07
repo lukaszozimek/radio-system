@@ -11,7 +11,10 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchTimeParamsDTO {
+public class SchTimeParamsDTO extends SchBaseDTO {
+
+    private Long sequence;
+
     @JsonProperty("relativeDelay")
     private Long relativeDelay = null;
 
@@ -20,6 +23,17 @@ public class SchTimeParamsDTO {
 
     @JsonProperty("startTime")
     private LocalDateTime startTime = null;
+
+    private Long length = null;
+
+    @ApiModelProperty(value = "")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public SchTimeParamsDTO relativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
@@ -78,6 +92,21 @@ public class SchTimeParamsDTO {
         this.startTime = startTime;
     }
 
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
 
     @Override
     public boolean equals(Object o) {

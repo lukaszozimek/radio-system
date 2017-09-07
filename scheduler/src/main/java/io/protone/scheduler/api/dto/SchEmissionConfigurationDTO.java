@@ -12,18 +12,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchEmissionConfigurationDTO {
+public class SchEmissionConfigurationDTO extends SchConfigurationTimeParamsDTO {
     private Long blockId = null;
 
-    private Long id = null;
 
     private LibMediaItemThinDTO mediaItem = null;
 
 
     private List<SchAttachmentConfigurationDTO> attachments = new ArrayList<SchAttachmentConfigurationDTO>();
-
-    private SchConfigurationTimeParamsDTO timeParams = null;
-
 
 
     private Long sequence;
@@ -110,24 +106,7 @@ public class SchEmissionConfigurationDTO {
         this.attachments = attachments;
     }
 
-    public SchEmissionConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
 
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchConfigurationTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
     public Long getSequence() {
         return sequence;
     }
@@ -149,13 +128,12 @@ public class SchEmissionConfigurationDTO {
                 Objects.equals(this.id, schEmissionDTO.id) &&
                 Objects.equals(this.mediaItem, schEmissionDTO.mediaItem) &&
                 Objects.equals(this.sequence, schEmissionDTO.sequence) &&
-                Objects.equals(this.attachments, schEmissionDTO.attachments) &&
-                Objects.equals(this.timeParams, schEmissionDTO.timeParams) ;
+                Objects.equals(this.attachments, schEmissionDTO.attachments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blockId, id, mediaItem,  attachments, timeParams, sequence);
+        return Objects.hash(blockId, id, mediaItem, attachments, sequence);
     }
 
     @Override
@@ -168,7 +146,6 @@ public class SchEmissionConfigurationDTO {
         sb.append("    mediaItem: ").append(toIndentedString(mediaItem)).append("\n");
         sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    attachments: ").append(toIndentedString(attachments)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
         sb.append("}");
         return sb.toString();
     }

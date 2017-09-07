@@ -1,14 +1,15 @@
 package io.protone.scheduler.api.dto.thin;
 
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.scheduler.api.dto.SchBaseDTO;
 
 import java.time.ZonedDateTime;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
  */
-public class SchLogConfigurationThinDTO {
-    private Long id;
+public class SchLogConfigurationThinDTO extends SchBaseDTO {
+
 
     private String name;
 

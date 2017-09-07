@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class SchPlaylistDTOTimeCalculatorService {
 
 
-    private SchPlaylistDTO calculateTimeInScheduleDTO(SchPlaylistDTO schPlaylistDTO) {
+    private SchPlaylistDTO calculateTimeInScheduleDTO(SchPlaylistDTO playlistDTO) {
         return null;
     }
 

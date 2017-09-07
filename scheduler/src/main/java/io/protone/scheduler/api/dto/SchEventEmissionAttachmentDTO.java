@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchEventEmissionAttachmentDTO {
+public class SchEventEmissionAttachmentDTO extends SchConfigurationTimeParamsDTO {
     private AttachmentTypeEnum attachmentType = null;
 
     @PodamExclude
@@ -22,23 +22,11 @@ public class SchEventEmissionAttachmentDTO {
 
     private Long fadeStart = null;
 
-
-    private Long sequence;
     @PodamLongValue
     private Long fadeInLength = null;
     private Long volumeLevel = null;
     private Long fadeOutLength = null;
     private FadeTypeEnum fadeType = null;
-
-    private SchConfigurationTimeParamsDTO timeParamsDTO;
-
-    public SchConfigurationTimeParamsDTO getTimeParamsDTO() {
-        return timeParamsDTO;
-    }
-
-    public void setTimeParamsDTO(SchConfigurationTimeParamsDTO timeParamsDTO) {
-        this.timeParamsDTO = timeParamsDTO;
-    }
 
     public SchEventEmissionAttachmentDTO attachmentType(AttachmentTypeEnum attachmentType) {
         this.attachmentType = attachmentType;

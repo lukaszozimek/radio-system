@@ -1,6 +1,5 @@
 package io.protone.scheduler.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -21,14 +20,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_event_emission_attachment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEventEmissionAttachment extends AbstractAuditingEntity implements Serializable {
+public class SchEventEmissionAttachment extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attachment_type")
@@ -37,8 +31,7 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     @Column(name = "fade_start")
     private Long fadeStart;
 
-    @Column(name = "sequence")
-    private Long sequence;
+
 
     @PodamLongValue
     @Column(name = "fade_in_length")
@@ -57,9 +50,6 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
     @PodamExclude
     @ManyToOne
     private LibMediaItem mediaItem;
-
-    @Embedded
-    private SchConfigurationTimeParams timeParams;
 
     @PodamExclude
     @ManyToOne
@@ -212,13 +202,6 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
         return this;
     }
 
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
 
     public Long getSequence() {
         return sequence;
@@ -263,7 +246,7 @@ public class SchEventEmissionAttachment extends AbstractAuditingEntity implement
 
 
     public SchEventEmissionAttachment sequence(long sequence) {
-        this.sequence = sequence;
+        super.sequence = sequence;
         return this;
     }
 }

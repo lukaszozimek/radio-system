@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto.thin;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.scheduler.api.dto.SchBaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -16,11 +17,9 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchGridThinDTO implements Serializable {
+public class SchGridThinDTO  extends SchBaseDTO implements Serializable {
 
     private CorDayOfWeekEnum dayOfWeek = null;
-
-    private Long id = null;
 
     private String name = null;
 

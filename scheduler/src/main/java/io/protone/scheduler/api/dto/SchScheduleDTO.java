@@ -1,12 +1,12 @@
 package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,16 +14,13 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchScheduleDTO {
+public class SchScheduleDTO extends SchBaseDTO {
     @JsonProperty("date")
     private LocalDate date = null;
 
-    @JsonProperty("id")
-    private Long id = null;
 
     @PodamExclude
-    @JsonProperty("schGridPT")
-    private SchGridThinDTO schGrid = null;
+    private List<SchClockDTO> schClockDTOS = null;
 
     public SchScheduleDTO date(LocalDate date) {
         this.date = date;
@@ -64,8 +61,8 @@ public class SchScheduleDTO {
         this.id = id;
     }
 
-    public SchScheduleDTO schGrid(SchGridThinDTO schGrid) {
-        this.schGrid = schGrid;
+    public SchScheduleDTO schGrid(List<SchClockDTO> schGrid) {
+        this.schClockDTOS = schGrid;
         return this;
     }
 
@@ -75,12 +72,12 @@ public class SchScheduleDTO {
      * @return schGridPT
      **/
     @ApiModelProperty(value = "")
-    public SchGridThinDTO getSchGrid() {
-        return schGrid;
+    public List<SchClockDTO> getSchClockDTOS() {
+        return schClockDTOS;
     }
 
-    public void setSchGrid(SchGridThinDTO schGrid) {
-        this.schGrid = schGrid;
+    public void setSchClockDTOS(List<SchClockDTO> schClockDTOS) {
+        this.schClockDTOS = schClockDTOS;
     }
 
 
@@ -95,12 +92,12 @@ public class SchScheduleDTO {
         SchScheduleDTO schScheduleDTO = (SchScheduleDTO) o;
         return Objects.equals(this.date, schScheduleDTO.date) &&
                 Objects.equals(this.id, schScheduleDTO.id) &&
-                Objects.equals(this.schGrid, schScheduleDTO.schGrid);
+                Objects.equals(this.schClockDTOS, schScheduleDTO.schClockDTOS);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, id, schGrid);
+        return Objects.hash(date, id, schClockDTOS);
     }
 
     @Override
@@ -110,7 +107,7 @@ public class SchScheduleDTO {
 
         sb.append("    date: ").append(toIndentedString(date)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    schGrid: ").append(toIndentedString(schGrid)).append("\n");
+        sb.append("    schClockDTOS: ").append(toIndentedString(schClockDTOS)).append("\n");
         sb.append("}");
         return sb.toString();
     }

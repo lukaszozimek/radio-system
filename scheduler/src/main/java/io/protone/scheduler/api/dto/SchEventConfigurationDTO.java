@@ -14,12 +14,11 @@ import java.util.Set;
 /**
  * A Block.
  */
-public class SchEventConfigurationDTO implements Serializable {
+public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-
+  
     private String name;
 
     private String shortName;
@@ -32,9 +31,6 @@ public class SchEventConfigurationDTO implements Serializable {
 
     private SchLogConfigurationDTO schLogConfiguration;
 
-    private Long sequence;
-
-    private SchConfigurationTimeParamsDTO timeParams;
 
     private CoreUserThinDTO createdBy;
 
@@ -115,31 +111,17 @@ public class SchEventConfigurationDTO implements Serializable {
     }
 
 
-    public SchConfigurationTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEventConfigurationDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
-
-
     public CorDictionaryDTO getEventCategory() {
         return eventCategory;
+    }
+
+    public void setEventCategory(CorDictionaryDTO eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     public SchEventConfigurationDTO eventCategory(CorDictionaryDTO eventCategory) {
         this.eventCategory = eventCategory;
         return this;
-    }
-
-    public void setEventCategory(CorDictionaryDTO eventCategory) {
-        this.eventCategory = eventCategory;
     }
 
     public SchLogConfigurationDTO getSchLogConfiguration() {
@@ -149,6 +131,7 @@ public class SchEventConfigurationDTO implements Serializable {
     public void setSchLogConfiguration(SchLogConfigurationDTO schLogConfiguration) {
         this.schLogConfiguration = schLogConfiguration;
     }
+
     public CoreUserThinDTO getCreatedBy() {
         return createdBy;
     }
@@ -213,7 +196,7 @@ public class SchEventConfigurationDTO implements Serializable {
                 ", eventType=" + eventType +
                 ", schLogConfiguration=" + schLogConfiguration +
                 ", sequence=" + sequence +
-                ", timeParams=" + timeParams +
+
                 '}';
     }
 

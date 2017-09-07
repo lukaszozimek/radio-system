@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Mapper for the entity Attachment and its DTO AttachmentDTO.
  */
-@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchEmissionMapper.class, SchTimeParamsMapper.class})
+@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchEmissionMapper.class})
 public interface SchAttachmentMapper {
     SchAttachment DTO2DB(SchAttachmentDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

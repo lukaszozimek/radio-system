@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -21,14 +20,10 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClockConfiguration extends AbstractAuditingEntity implements Serializable {
+public class SchClockConfiguration extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -46,9 +41,6 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary clockCategory;
-
-    @Embedded
-    private SchConfigurationTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "clockConfiguration")
@@ -115,19 +107,6 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
 
     public SchClockConfiguration grid(SchGrid grid) {
         this.grid = grid;
-        return this;
-    }
-
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchClockConfiguration timeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
         return this;
     }
 
@@ -202,6 +181,7 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
         this.channel = channel;
         return this;
     }
+
     public Long getSequence() {
         return sequence;
     }
@@ -209,6 +189,7 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
+
     public CorDictionary getClockCategory() {
         return clockCategory;
     }
@@ -246,7 +227,6 @@ public class SchClockConfiguration extends AbstractAuditingEntity implements Ser
                 ", shortName='" + shortName + '\'' +
                 ", grid=" + grid +
                 ", clockCategory=" + clockCategory +
-                ", timeParams=" + timeParams +
                 ", events=" + events +
                 ", emissions=" + emissions +
                 ", network=" + network +

@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -21,14 +20,9 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock extends AbstractAuditingEntity implements Serializable {
+public class SchClock extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -41,8 +35,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchSchedule schSchedule;
 
-    @Column(name = "sequence")
-    private Long sequence;
 
     @Column(name = "length")
     private Long length;
@@ -50,9 +42,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary clockCategory;
-
-    @Embedded
-    private SchTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "clock")
@@ -123,18 +112,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public SchTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchClock timeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
 
     public Set<SchBlock> getBlocks() {
         return blocks;
@@ -273,7 +250,6 @@ public class SchClock extends AbstractAuditingEntity implements Serializable {
                 ", sequence=" + sequence +
                 ", length=" + length +
                 ", clockCategory=" + clockCategory +
-                ", timeParams=" + timeParams +
                 ", blocks=" + blocks +
                 ", emissions=" + emissions +
                 ", network=" + network +

@@ -116,7 +116,7 @@ public class SchScheduleBuilderService {
         for (SchEmission schEmission : schEmissions) {
             if (schEvents.size() > i) {
                 Long logEmissionsLenght = schEvents.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
-                if (logEmissionsLenght < schEvents.get(i).getTimeParams().getLength()) {
+                if (logEmissionsLenght < schEvents.get(i).getLength()) {
                     if (schEvents.get(i).getEmissionsLog().isEmpty()) {
                         schEvents.get(i).addEmission(schEmission.seq(1L));
                     } else {

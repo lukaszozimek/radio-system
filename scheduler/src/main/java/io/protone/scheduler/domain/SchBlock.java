@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
@@ -21,14 +20,9 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchBlock extends AbstractAuditingEntity implements Serializable {
+public class SchBlock extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -44,11 +38,7 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClock clock;
 
-    @Column(name = "sequence")
-    private Long sequence;
 
-    @Embedded
-    private SchTimeParams timeParams;
 
     @PodamExclude
     @ManyToOne
@@ -131,19 +121,6 @@ public class SchBlock extends AbstractAuditingEntity implements Serializable {
 
     public SchBlock clock(SchClock clock) {
         this.clock = clock;
-        return this;
-    }
-
-    public SchTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchBlock timeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
         return this;
     }
 

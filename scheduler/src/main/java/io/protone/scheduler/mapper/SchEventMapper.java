@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class, SchConfigurationTimeParamsMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class})
 public interface SchEventMapper {
     SchEvent DTO2DB(SchEventDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

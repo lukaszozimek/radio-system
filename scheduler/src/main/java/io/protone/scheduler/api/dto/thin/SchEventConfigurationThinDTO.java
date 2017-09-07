@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * A Block.
  */
-public class SchEventConfigurationThinDTO implements Serializable {
+public class SchEventConfigurationThinDTO extends SchConfigurationTimeParamsDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,6 @@ public class SchEventConfigurationThinDTO implements Serializable {
 
     private SchLogConfigurationDTO schLogConfiguration;
 
-    private SchConfigurationTimeParamsDTO timeParams;
 
     private CoreUserThinDTO createdBy;
 
@@ -88,32 +87,17 @@ public class SchEventConfigurationThinDTO implements Serializable {
         return this;
     }
 
-
-    public SchConfigurationTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEventConfigurationThinDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
-
-
     public CorDictionaryDTO getEventCategory() {
         return eventCategory;
+    }
+
+    public void setEventCategory(CorDictionaryDTO eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     public SchEventConfigurationThinDTO eventCategory(CorDictionaryDTO eventCategory) {
         this.eventCategory = eventCategory;
         return this;
-    }
-
-    public void setEventCategory(CorDictionaryDTO eventCategory) {
-        this.eventCategory = eventCategory;
     }
 
     public SchLogConfigurationDTO getSchLogConfiguration() {
@@ -187,7 +171,6 @@ public class SchEventConfigurationThinDTO implements Serializable {
                 ", eventCategory=" + eventCategory +
                 ", eventType=" + eventType +
                 ", schLogConfiguration=" + schLogConfiguration +
-                ", timeParams=" + timeParams +
                 '}';
     }
 }

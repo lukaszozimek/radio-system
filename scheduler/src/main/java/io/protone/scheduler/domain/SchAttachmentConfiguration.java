@@ -1,6 +1,5 @@
 package io.protone.scheduler.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -21,14 +20,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_attachment_configuration")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachmentConfiguration extends AbstractAuditingEntity implements Serializable {
+public class SchAttachmentConfiguration extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attachment_type")
@@ -47,8 +41,6 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
     @Column(name = "fade_out_length")
     private Long fadeOutLength;
 
-    @Column(name = "sequence")
-    private Long sequence;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "fade_type")
@@ -62,8 +54,6 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
     @ManyToOne
     private SchEmissionConfiguration emission;
 
-    @Embedded
-    private SchConfigurationTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -252,13 +242,6 @@ public class SchAttachmentConfiguration extends AbstractAuditingEntity implement
                 "}";
     }
 
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
 
 
 }

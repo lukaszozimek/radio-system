@@ -13,24 +13,17 @@ import java.util.*;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchEventDTO {
+public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
 
     private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
-
-
+    
     private Long id = null;
 
     private String name = null;
 
     private String shortName = null;
 
-
-
-    private Long sequence;
-
-
     private EventTypeEnum eventType = null;
-
 
     private SchConfigurationTimeParamsDTO timeParams = null;
 

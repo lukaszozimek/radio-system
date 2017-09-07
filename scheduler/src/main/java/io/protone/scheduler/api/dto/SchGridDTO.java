@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchGridDTO {
+public class SchGridDTO  extends SchBaseDTO{
 
     @PodamExclude
     @JsonProperty("clocks")
@@ -26,9 +26,6 @@ public class SchGridDTO {
 
     @JsonProperty("dayOfWeek")
     private CorDayOfWeekEnum dayOfWeek = null;
-
-    @JsonProperty("id")
-    private Long id = null;
 
     @JsonProperty("name")
     private String name = null;

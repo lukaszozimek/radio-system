@@ -6,9 +6,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 
-public class SchLogConfigurationDTO {
+public class SchLogConfigurationDTO extends SchBaseDTO {
 
-    private Long id;
 
     private String name;
 
@@ -67,6 +66,7 @@ public class SchLogConfigurationDTO {
     public void setSpearator(String spearator) {
         this.spearator = spearator;
     }
+
     public List<SchLogConfigurationColumnDTO> getLogColumns() {
         return logColumns;
     }

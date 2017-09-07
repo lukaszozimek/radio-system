@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -21,15 +20,9 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmission extends AbstractAuditingEntity implements Serializable {
+public class SchEmission extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
-
 
     @PodamExclude
     @ManyToOne
@@ -42,9 +35,6 @@ public class SchEmission extends AbstractAuditingEntity implements Serializable 
     @PodamExclude
     @ManyToOne
     private LibMediaItem mediaItem;
-
-    @Column(name = "sequence")
-    private Long sequence;
 
     @Embedded
     private SchTimeParams timeParams;

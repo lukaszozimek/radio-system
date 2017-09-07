@@ -49,7 +49,7 @@ public class SchScheduleMapperTest {
         schedule.setClocks(null);
         schedules.add(schedule);
         scheduleDTO = factory.manufacturePojo(SchScheduleDTO.class);
-        scheduleDTO.setSchGrid(null);
+        scheduleDTO.setSchClockDTOS(null);
         scheduleDTOs.add(scheduleDTO);
     }
 
@@ -58,7 +58,7 @@ public class SchScheduleMapperTest {
         SchScheduleDTO dto = scheduleMapper.DB2DTO(schedule);
 
         assertNotNull(dto.getDate());
-        //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+        //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SchScheduleMapperTest {
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getDate());
-            //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+            //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
         });
     }
 
@@ -78,7 +78,7 @@ public class SchScheduleMapperTest {
         SchSchedule entity = scheduleMapper.DTO2DB(scheduleDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
-        //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+        //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
     }
 
     @Test
@@ -92,7 +92,7 @@ public class SchScheduleMapperTest {
 
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
-            //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+            //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
         });
     }
 

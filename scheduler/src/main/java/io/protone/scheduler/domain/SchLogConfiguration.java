@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
@@ -20,14 +19,10 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_log_configuration")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchLogConfiguration extends AbstractAuditingEntity implements Serializable {
+public class SchLogConfiguration extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -69,6 +64,10 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchLogConfiguration network(CorNetwork network) {
         this.network = network;
         return this;
@@ -87,7 +86,6 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
         return this;
     }
 
-
     public String getPattern() {
         return pattern;
     }
@@ -101,12 +99,12 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchLogConfiguration channel(CorChannel channel) {
@@ -114,21 +112,17 @@ public class SchLogConfiguration extends AbstractAuditingEntity implements Seria
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
-
     public Set<SchLogColumn> getLogColumns() {
         return logColumns;
+    }
+
+    public void setLogColumns(Set<SchLogColumn> logColumns) {
+        this.logColumns = logColumns;
     }
 
     public SchLogConfiguration columns(Set<SchLogColumn> logColumns) {
         this.logColumns = logColumns;
         return this;
-    }
-
-    public void setLogColumns(Set<SchLogColumn> logColumns) {
-        this.logColumns = logColumns;
     }
 
     @Override

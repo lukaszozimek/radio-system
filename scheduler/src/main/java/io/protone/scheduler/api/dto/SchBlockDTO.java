@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchBlockDTO {
+public class SchBlockDTO extends SchTimeParamsDTO {
 
     @PodamExclude
     private List<SchBlockDTO> blocks = new ArrayList<SchBlockDTO>();
@@ -24,19 +24,9 @@ public class SchBlockDTO {
     @PodamExclude
     private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
 
-    private Long id = null;
-
-
-    private Long length = null;
-
 
     private String name = null;
 
-
-    private SchTimeParamsDTO timeParams = null;
-
-
-    private Long sequence;
 
     @JsonProperty("schEventType")
     private EventTypeEnum eventType = null;
@@ -109,23 +99,10 @@ public class SchBlockDTO {
     }
 
     public SchBlockDTO length(Long length) {
-        this.length = length;
+        super.setLength(length);
         return this;
     }
 
-    /**
-     * Get length
-     *
-     * @return length
-     **/
-    @ApiModelProperty(value = "")
-    public Long getLength() {
-        return length;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
-    }
 
     public SchBlockDTO name(String name) {
         this.name = name;
@@ -148,31 +125,6 @@ public class SchBlockDTO {
         this.name = name;
     }
 
-    public SchBlockDTO timeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
-
-    public Long getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
 
     public SchBlockDTO eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
@@ -205,16 +157,13 @@ public class SchBlockDTO {
         return Objects.equals(this.blocks, schBlockDTO.blocks) &&
                 Objects.equals(this.emissions, schBlockDTO.emissions) &&
                 Objects.equals(this.id, schBlockDTO.id) &&
-                Objects.equals(this.length, schBlockDTO.length) &&
                 Objects.equals(this.name, schBlockDTO.name) &&
-                Objects.equals(this.timeParams, schBlockDTO.timeParams) &&
-                Objects.equals(this.sequence, schBlockDTO.sequence) &&
                 Objects.equals(this.eventType, schBlockDTO.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blocks, emissions, id, length, name, timeParams, sequence, eventType);
+        return Objects.hash(blocks, emissions, id, name, eventType);
     }
 
     @Override
@@ -225,10 +174,7 @@ public class SchBlockDTO {
         sb.append("    blocks: ").append(toIndentedString(blocks)).append("\n");
         sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    length: ").append(toIndentedString(length)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
         sb.append("}");
         return sb.toString();

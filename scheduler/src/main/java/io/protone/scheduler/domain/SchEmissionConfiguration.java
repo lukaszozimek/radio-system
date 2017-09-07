@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -21,14 +20,10 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_emission_configuration")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmissionConfiguration extends AbstractAuditingEntity implements Serializable {
+public class SchEmissionConfiguration extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @PodamExclude
     @ManyToOne
@@ -37,9 +32,6 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
     @PodamExclude
     @ManyToOne
     private LibMediaItem mediaItem;
-
-    @Column(name = "sequence")
-    private Long sequence;
 
     @Embedded
     private SchConfigurationTimeParams timeParams;
@@ -71,16 +63,9 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
         this.id = id;
     }
 
-    public Long getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
-    }
 
     public SchEmissionConfiguration seq(Long seq) {
-        this.sequence = seq;
+        super.setSequence(seq);
         return this;
     }
 
@@ -153,17 +138,21 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
         return schEventConfiguration;
     }
 
+    public void setSchEventConfiguration(SchEventConfiguration schEventConfiguration) {
+        this.schEventConfiguration = schEventConfiguration;
+    }
+
     public SchEmissionConfiguration schEventConfiguration(SchEventConfiguration schEventConfiguration) {
         this.schEventConfiguration = schEventConfiguration;
         return this;
     }
 
-    public void setSchEventConfiguration(SchEventConfiguration schEventConfiguration) {
-        this.schEventConfiguration = schEventConfiguration;
-    }
-
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
     }
 
     public SchEmissionConfiguration network(CorNetwork network) {
@@ -171,21 +160,17 @@ public class SchEmissionConfiguration extends AbstractAuditingEntity implements 
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchEmissionConfiguration channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override

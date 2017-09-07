@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -22,14 +21,10 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_event_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEventConfiguration extends AbstractAuditingEntity implements Serializable {
+public class SchEventConfiguration extends SchConfigurationTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -57,9 +52,6 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
 
     @Column(name = "sequence")
     private Long sequence;
-
-    @Embedded
-    private SchConfigurationTimeParams timeParams;
 
     @ManyToOne
     @PodamExclude
@@ -136,19 +128,6 @@ public class SchEventConfiguration extends AbstractAuditingEntity implements Ser
 
     public SchEventConfiguration eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
-        return this;
-    }
-
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEventConfiguration timeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
         return this;
     }
 

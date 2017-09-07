@@ -8,7 +8,7 @@ import java.io.Serializable;
  * A TimeParams.
  */
 @Embeddable
-public class SchConfigurationTimeParams implements Serializable {
+public class SchConfigurationTimeParams extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,17 +18,20 @@ public class SchConfigurationTimeParams implements Serializable {
     @Column(name = "relative_delay")
     private Long relativeDelay;
 
+    @Column(name = "sequence")
+    protected Long sequence;
+
     public Long getLength() {
         return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     public SchConfigurationTimeParams length(Long length) {
         this.length = length;
         return this;
-    }
-
-    public void setLength(Long length) {
-        this.length = length;
     }
 
     public Long getRelativeDelay() {
@@ -42,6 +45,14 @@ public class SchConfigurationTimeParams implements Serializable {
     public SchConfigurationTimeParams relativeDelay(Long relativeDelay) {
         this.relativeDelay = relativeDelay;
         return this;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
 

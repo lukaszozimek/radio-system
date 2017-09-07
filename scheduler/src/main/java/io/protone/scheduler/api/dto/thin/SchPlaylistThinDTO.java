@@ -1,6 +1,7 @@
 package io.protone.scheduler.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.scheduler.api.dto.SchBaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
@@ -14,17 +15,11 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchPlaylistThinDTO {
+public class SchPlaylistThinDTO extends SchBaseDTO {
 
 
     @JsonProperty("date")
     private LocalDate date = null;
-
-    @JsonProperty("id")
-    private Long id = null;
-
-
-
 
 
     /**
@@ -73,12 +68,12 @@ public class SchPlaylistThinDTO {
         SchPlaylistThinDTO schPlaylistDTO = (SchPlaylistThinDTO) o;
         return
                 Objects.equals(this.date, schPlaylistDTO.date) &&
-                Objects.equals(this.id, schPlaylistDTO.id);
+                        Objects.equals(this.id, schPlaylistDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( date, id);
+        return Objects.hash(date, id);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class SchClockBuilder {
         if (clocks != null) {
             return clocks.stream().map(clock -> new SchClock()
                     .sequence(clock.getSequence())
-                    .length(clock.getTimeParams().getLength())
+                    .length(clock.getLength())
                     .network(clock.getNetwork())
                     .channel(clock.getChannel())
                     .emissions(schEmissionConfigurationSchEmissionMapper.mapEmissionConfigurationToEmission(clock.getEmissions()))

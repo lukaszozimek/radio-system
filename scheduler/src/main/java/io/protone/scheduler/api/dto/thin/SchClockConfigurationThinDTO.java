@@ -2,7 +2,7 @@ package io.protone.scheduler.api.dto.thin;
 
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
-import io.protone.scheduler.api.dto.SchTimeParamsDTO;
+import io.protone.scheduler.api.dto.SchConfigurationTimeParamsDTO;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -11,18 +11,15 @@ import java.util.Objects;
 /**
  * A Clock.
  */
-public class SchClockConfigurationThinDTO implements Serializable {
+public class SchClockConfigurationThinDTO extends SchConfigurationTimeParamsDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Long id;
 
     private String name;
 
     private String shortName;
 
     private CorDictionaryDTO clockCategory;
-
-    private SchTimeParamsDTO timeParams;
 
     private CoreUserThinDTO createdBy;
 
@@ -66,19 +63,6 @@ public class SchClockConfigurationThinDTO implements Serializable {
         return this;
     }
 
-
-    public SchTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchClockConfigurationThinDTO timeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
 
     public CorDictionaryDTO getClockCategory() {
         return clockCategory;
@@ -150,7 +134,7 @@ public class SchClockConfigurationThinDTO implements Serializable {
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
                 ", clockCategory=" + clockCategory +
-                ", timeParams=" + timeParams +
+
                 '}';
     }
 }
