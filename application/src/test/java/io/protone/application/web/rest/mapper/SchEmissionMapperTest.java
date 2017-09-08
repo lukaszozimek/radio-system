@@ -69,7 +69,6 @@ public class SchEmissionMapperTest {
 
         assertNotNull(dto.getId());
         assertNotNull(dto.getSequence());
-        assertNotNull(dto.getLength());
         assertNotNull(dto.getStartTime());
         assertNotNull(dto.getEndTime());
         assertNotNull(dto.getRelativeDelay());
@@ -86,7 +85,6 @@ public class SchEmissionMapperTest {
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
             assertNotNull(dto.getSequence());
-            assertNotNull(dto.getLength());
             assertNotNull(dto.getStartTime());
             assertNotNull(dto.getEndTime());
             assertNotNull(dto.getRelativeDelay());
@@ -124,7 +122,6 @@ public class SchEmissionMapperTest {
             assertNotNull(entity.getEndTime());
             assertNotNull(entity.getRelativeDelay());
             assertNotNull(entity.getSequence());
-
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getAttachments());

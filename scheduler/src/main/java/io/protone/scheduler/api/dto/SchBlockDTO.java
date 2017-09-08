@@ -7,6 +7,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,23 @@ public class SchBlockDTO extends SchTimeParamsDTO {
 
     @JsonProperty("schEventType")
     private EventTypeEnum eventType = null;
+
+
+    public SchBlockDTO sequence(Long sequence) {
+        super.setSequence(sequence);
+        return this;
+    }
+
+
+    public SchBlockDTO endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
+        return this;
+    }
+
+    public SchBlockDTO startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
+    }
 
     public SchBlockDTO blocks(List<SchBlockDTO> blocks) {
         this.blocks = blocks;

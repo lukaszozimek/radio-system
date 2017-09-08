@@ -16,16 +16,12 @@ import java.util.*;
 public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
 
     private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
-    
-    private Long id = null;
 
     private String name = null;
 
     private String shortName = null;
 
     private EventTypeEnum eventType = null;
-
-    private SchConfigurationTimeParamsDTO timeParams = null;
 
     private Set<SchEventDTO> events = new HashSet<>();
 
@@ -114,25 +110,6 @@ public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
         this.eventType = eventType;
     }
 
-    public SchEventDTO timeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
-
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchConfigurationTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
     public String getShortName() {
         return shortName;
     }
@@ -177,26 +154,23 @@ public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
                 Objects.equals(this.id, schEventDTO.id) &&
                 Objects.equals(this.name, schEventDTO.name) &&
                 Objects.equals(this.sequence, schEventDTO.sequence) &&
-                Objects.equals(this.eventType, schEventDTO.eventType) &&
-                Objects.equals(this.timeParams, schEventDTO.timeParams);
+                Objects.equals(this.eventType, schEventDTO.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(emissions, id, name, sequence, eventType, timeParams);
+        return Objects.hash(emissions, id, name, sequence, eventType);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SchEventDTO {\n");
-
         sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -211,7 +185,5 @@ public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
         }
         return o.toString().replace("\n", "\n    ");
     }
-
-
 }
 

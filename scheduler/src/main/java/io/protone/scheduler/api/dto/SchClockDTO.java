@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +31,15 @@ public class SchClockDTO extends SchTimeParamsDTO {
 
     private String shortName = null;
 
+    public SchClockDTO endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
+        return this;
+    }
+
+    public SchClockDTO startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
+    }
 
     public SchClockDTO blocks(List<SchBlockDTO> blocks) {
         this.blocks = blocks;

@@ -45,6 +45,10 @@ public class SchAttachmentDTO extends SchTimeParamsDTO {
         return this;
     }
 
+    public SchAttachmentDTO sequence(Long sequence) {
+        super.setSequence(sequence);
+        return this;
+    }
 
     /**
      * Get attachmentType

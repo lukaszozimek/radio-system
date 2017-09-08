@@ -21,11 +21,11 @@ public class SchScheduleDTOTimeCalculatorService {
         for (int i = 0; i < schScheduleDTO.getSchClockDTOS().size(); i++) {
             if (i == 0) {
                 schScheduleDTO.getSchClockDTOS().get(i).setStartTime(LocalDateTime.of(schScheduleDTO.getDate(), LocalTime.of(0, 0, 0)));
-                schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schScheduleDTO.getSchClockDTOS().get(i));
+                schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schScheduleDTO.getSchClockDTOS().get(i), schScheduleDTO.getSchClockDTOS().get(i).getStartTime(), null);
 
             } else {
                 schScheduleDTO.getSchClockDTOS().get(i).setStartTime(schScheduleDTO.getSchClockDTOS().get(i - 1).getEndTime());
-                schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schScheduleDTO.getSchClockDTOS().get(i));
+                schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schScheduleDTO.getSchClockDTOS().get(i), schScheduleDTO.getSchClockDTOS().get(i).getStartTime(), null);
             }
         }
         return schScheduleDTO;

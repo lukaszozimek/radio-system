@@ -74,7 +74,6 @@ public class SchEventMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getSequence());
         assertNotNull(dto.getEventType());
-        assertNotNull(dto.getTimeParams());
     }
 
     @Test
@@ -88,7 +87,6 @@ public class SchEventMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getSequence());
             assertNotNull(dto.getEventType());
-            assertNotNull(dto.getTimeParams());
             assertNotNull(dto.getEventCategory());
             assertNotNull(dto.getEvents());
         });

@@ -3,11 +3,16 @@ package io.protone.application.service.scheduler.base;
 import com.google.common.collect.Sets;
 import io.protone.application.service.library.util.LibraryGenerator;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.mapper.LibMediaItemThinMapper;
+import io.protone.scheduler.api.dto.SchAttachmentDTO;
+import io.protone.scheduler.api.dto.SchBlockDTO;
+import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.*;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
 import io.protone.scheduler.repository.*;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -30,7 +35,8 @@ public class SchedulerBaseTest extends LibraryGenerator {
     private SchEventEmissionAttachmentRepository schEventEmissionAttachmentRepository;
     @Autowired
     private SchEventRepository schEventRepository;
-
+    @Autowired
+    private LibMediaItemThinMapper libMediaItemThinMapper;
 
     public void setUp() throws Exception {
         initializeLibarary();
@@ -201,8 +207,8 @@ public class SchedulerBaseTest extends LibraryGenerator {
     }
 
     protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutesWithMusicImport(SchClockConfiguration schClockConfiguration) {
-        return Sets.newHashSet(buildEventWithsLenght20minoutesMusicImport(schClockConfiguration,1),
-                buildEventWithsEmissionsAndOprImport20minoutes(schClockConfiguration,2),
+        return Sets.newHashSet(buildEventWithsLenght20minoutesMusicImport(schClockConfiguration, 1),
+                buildEventWithsEmissionsAndOprImport20minoutes(schClockConfiguration, 2),
                 buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 3));
 
     }
@@ -211,7 +217,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchEvent schEvent = new SchEvent()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .sequence(sequence)
-                .length(12000000L )
+                .length(12000000L)
                 .clockConfiguration(schClockConfiguration)
                 .channel(corChannel)
                 .network(corNetwork);
@@ -312,6 +318,65 @@ public class SchedulerBaseTest extends LibraryGenerator {
                 .mediaItem(libMediaItemList.get(0))
                 .channel(corChannel)
                 .network(corNetwork));
+    }
+
+    protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsAndNestedBlock(long sequence) {
+        SchBlockDTO schBlockDTO = new SchBlockDTO()
+                .sequence(sequence)
+                .eventType(EventTypeEnum.ET_MUSIC)
+                .length(600000L);
+
+
+        schBlockDTO.blocks(Lists.newArrayList(
+                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(1),
+                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(2),
+                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(3)
+        ))
+                .emissions(Lists.newArrayList(
+                        buildEmissionDTO(4),
+                        buildEmissionDTO(5),
+                        buildEmissionDTO(6))
+                );
+        return schBlockDTO;
+    }
+
+    protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(long sequence) {
+        SchBlockDTO schBlock = new SchBlockDTO()
+                .eventType(EventTypeEnum.ET_MUSIC).sequence(sequence);
+
+        schBlock.emissions(Lists.newArrayList(
+                buildEmissionDTO(1),
+                buildEmissionDTO(2),
+                buildEmissionDTO(3))
+        );
+        return schBlock;
+    }
+
+    protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenght() {
+        SchBlockDTO schBlock = new SchBlockDTO()
+                .eventType(EventTypeEnum.ET_MUSIC);
+
+        schBlock.emissions(Lists.newArrayList(
+                buildEmissionDTO(1),
+                buildEmissionDTO(2),
+                buildEmissionDTO(3))
+        );
+        return schBlock;
+    }
+
+    protected SchEmissionDTO buildEmissionDTO(long sequence) {
+        SchEmissionDTO schEmissionDTO = new SchEmissionDTO().mediaItem(libMediaItemThinMapper.DB2DTO(libMediaItemList.get(0)))
+                .sequence(sequence);
+        schEmissionDTO.attachment(Lists.newArrayList(buildAttachmenDTOWithSequence(1),
+                buildAttachmenDTOWithSequence(2),
+                buildAttachmenDTOWithSequence(3)));
+        return schEmissionDTO;
+    }
+
+    protected SchAttachmentDTO buildAttachmenDTOWithSequence(long sequence) {
+        return new SchAttachmentDTO().attachmentType(AttachmentTypeEnum.AT_OTHER)
+                .sequence(sequence)
+                .mediaItem(libMediaItemThinMapper.DB2DTO(libMediaItemList.get(0)));
     }
 
     protected SchLogConfiguration buildRekLogConfiguration() {

@@ -1,7 +1,9 @@
 package io.protone.scheduler.service;
 
+import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.repository.SchPlaylistRepository;
+import io.protone.scheduler.service.time.SchPlaylistDTOTimeCalculatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +16,13 @@ import java.time.LocalDate;
 
 
 @Service
-public class SchPlaylistService{
+public class SchPlaylistService {
     private final Logger log = LoggerFactory.getLogger(SchPlaylistService.class);
     @Inject
     private SchPlaylistRepository schPlaylistRepository;
+
+    @Inject
+    private SchPlaylistDTOTimeCalculatorService schPlaylistDTOTimeCalculatorService;
 
     @Transactional
     public SchPlaylist saveSchedule(SchPlaylist schSchedule) {
@@ -30,8 +35,9 @@ public class SchPlaylistService{
     }
 
     @Transactional(readOnly = true)
-    public SchPlaylist findSchGridForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
-        return schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+    public SchPlaylistDTO findSchGridForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
+        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+        return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
     }
 
     @Transactional

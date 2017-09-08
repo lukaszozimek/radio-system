@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +46,11 @@ public class SchEmissionDTO extends SchTimeParamsDTO {
         return this;
     }
 
+    public SchEmissionDTO sequence(Long sequence) {
+        super.setSequence(sequence);
+        return this;
+    }
+
     /**
      * Get id
      *
@@ -78,6 +84,15 @@ public class SchEmissionDTO extends SchTimeParamsDTO {
         this.mediaItem = mediaItem;
     }
 
+    public SchEmissionDTO endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
+        return this;
+    }
+
+    public SchEmissionDTO startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
+    }
 
     public SchEmissionDTO attachment(List<SchAttachmentDTO> attachment) {
         this.attachment = attachment;

@@ -54,10 +54,6 @@ public class SchTimeParamsDTO extends SchBaseDTO {
         this.relativeDelay = relativeDelay;
     }
 
-    public SchTimeParamsDTO endTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
 
     /**
      * Get endTime
@@ -73,10 +69,7 @@ public class SchTimeParamsDTO extends SchBaseDTO {
         this.endTime = endTime;
     }
 
-    public SchTimeParamsDTO startTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
+
 
     /**
      * Get startTime
