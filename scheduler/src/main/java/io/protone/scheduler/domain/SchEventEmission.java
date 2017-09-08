@@ -8,7 +8,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -32,9 +35,6 @@ public class SchEventEmission extends SchConfigurationTimeParams implements Seri
     @PodamExclude
     @ManyToOne
     private LibMediaItem mediaItem;
-
-    @Embedded
-    private SchConfigurationTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "emission")
@@ -103,18 +103,11 @@ public class SchEventEmission extends SchConfigurationTimeParams implements Seri
         return this;
     }
 
-    public SchConfigurationTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEventEmission timeParams(SchConfigurationTimeParams timeParams) {
-        this.timeParams = timeParams;
+    public SchEventEmission length(Long length) {
+        this.length = length;
         return this;
     }
+
 
     public Set<SchEventEmissionAttachment> getAttachments() {
         return attachments;

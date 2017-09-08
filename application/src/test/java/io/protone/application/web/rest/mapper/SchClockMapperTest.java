@@ -8,11 +8,9 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchClockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
-import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchEmission;
-import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.mapper.SchClockMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,8 +62,6 @@ public class SchClockMapperTest {
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ clock
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 2 @ clock
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 3 @ clock
-
-        clock.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
         clock.setClockCategory(factory.manufacturePojo(CorDictionary.class));
         clocks.add(clock);
 
@@ -80,7 +76,6 @@ public class SchClockMapperTest {
         clockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 2 @ clock
         clockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 3 @ clock
 
-        clockDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
         clockDTO.setClockCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         clockDTOs.add(clockDTO);
     }
@@ -117,7 +112,11 @@ public class SchClockMapperTest {
         assertNotNull(dto.getName());
         assertNotNull(dto.getName());
         assertNotNull(dto.getSequence());
-        assertNotNull(dto.getTimeParams());
+        assertNotNull(dto.getLength());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getClockCategory());
 
     }
@@ -134,7 +133,11 @@ public class SchClockMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getName());
             assertNotNull(dto.getSequence());
-            assertNotNull(dto.getTimeParams());
+            assertNotNull(dto.getLength());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
             assertNotNull(dto.getClockCategory());
         });
     }
@@ -148,7 +151,11 @@ public class SchClockMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getName());
         assertNotNull(entity.getSequence());
-        assertNotNull(entity.getTimeParams());
+        assertNotNull(entity.getLength());
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
 
         assertNotNull(entity.getClockCategory());
         assertNotNull(entity.getNetwork());
@@ -167,7 +174,12 @@ public class SchClockMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getName());
             assertNotNull(entity.getSequence());
-            assertNotNull(entity.getTimeParams());
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getLength());
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getClockCategory());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());

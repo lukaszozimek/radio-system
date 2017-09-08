@@ -5,10 +5,8 @@ import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
-import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchEmission;
-import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.mapper.SchBlockMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,13 +64,11 @@ public class SchBlockMapperTest {
 
         //Fill DTO instance
         blockDTO = factory.manufacturePojo(SchBlockDTO.class);
-        block.setTimeParams(factory.manufacturePojo(SchTimeParams.class));
 
 
         SchBlockDTO childBlockDTO = factory.manufacturePojo(SchBlockDTO.class);
         childBlockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 1 @ childBlock
         blockDTO.addBlocksItem(childBlockDTO);
-        blockDTO.setTimeParams(factory.manufacturePojo(SchTimeParamsDTO.class));
         blockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 1 @ rootBlock
         blockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 2 @ rootBlock
         blockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 3 @ rootBlock
@@ -89,7 +85,10 @@ public class SchBlockMapperTest {
         assertNotNull(dto.getLength());
         assertNotNull(dto.getName());
         assertNotNull(dto.getEventType());
-        assertNotNull(dto.getTimeParams());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
     }
 
     @Test
@@ -104,7 +103,10 @@ public class SchBlockMapperTest {
             assertNotNull(dto.getLength());
             assertNotNull(dto.getName());
             assertNotNull(dto.getEventType());
-            assertNotNull(dto.getTimeParams());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
         });
     }
 
@@ -117,9 +119,11 @@ public class SchBlockMapperTest {
         assertNotNull(entity.getLength());
         assertNotNull(entity.getName());
         assertNotNull(entity.getEventType());
-        assertNotNull(entity.getTimeParams());
-        assertNotNull(entity.getNetwork());
-        assertNotNull(entity.getChannel());
+
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
 
     }
 
@@ -135,7 +139,10 @@ public class SchBlockMapperTest {
             assertNotNull(entity.getLength());
             assertNotNull(entity.getName());
             assertNotNull(entity.getEventType());
-            assertNotNull(entity.getTimeParams());
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

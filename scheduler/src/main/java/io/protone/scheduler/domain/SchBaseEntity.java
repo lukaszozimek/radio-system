@@ -8,8 +8,8 @@ import javax.persistence.*;
  * Created by lukaszozimek on 07.09.2017.
  */
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
+@MappedSuperclass
 public class SchBaseEntity extends AbstractAuditingEntity {
 
     @Id

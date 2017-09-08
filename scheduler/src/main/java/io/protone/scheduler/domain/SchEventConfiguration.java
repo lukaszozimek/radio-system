@@ -50,9 +50,6 @@ public class SchEventConfiguration extends SchConfigurationTimeParams implements
     @ManyToOne
     private SchLogConfiguration schLogConfiguration;
 
-    @Column(name = "sequence")
-    private Long sequence;
-
     @ManyToOne
     @PodamExclude
     private CorNetwork network;

@@ -102,7 +102,9 @@ public class SchEventMapperTest {
         assertNotNull(entity.getName());
         assertNotNull(entity.getSequence());
         assertNotNull(entity.getEventType());
-        assertNotNull(entity.getTimeParams());
+        assertNotNull(entity.getLength());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getEventCategory());
         assertNotNull(entity.getBlocks());
         assertNotNull(entity.getNetwork());
@@ -120,7 +122,9 @@ public class SchEventMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getEventType());
-            assertNotNull(entity.getTimeParams());
+            assertNotNull(entity.getLength());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getEventCategory());
             assertNotNull(entity.getBlocks());
             assertNotNull(entity.getNetwork());

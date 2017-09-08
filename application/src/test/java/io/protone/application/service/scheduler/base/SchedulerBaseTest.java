@@ -211,7 +211,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchEvent schEvent = new SchEvent()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .sequence(sequence)
-                .timeParams(new SchConfigurationTimeParams().length(12000000L ))
+                .length(12000000L )
                 .clockConfiguration(schClockConfiguration)
                 .channel(corChannel)
                 .network(corNetwork);
@@ -231,7 +231,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
                 .sequence(i)
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
                 .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
-                .timeParams(new SchConfigurationTimeParams().length(l))
+                .length(l)
                 .event(schEventParent)
                 .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
                 .channel(corChannel)
@@ -245,7 +245,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchEvent schEvent = new SchEvent()
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
                 .sequence(sequence)
-                .timeParams(new SchConfigurationTimeParams().length(1200000L))
+                .length(1200000L)
                 .clockConfiguration(schClockConfiguration)
                 .schLogConfiguration(buildMusLogConfigurationWithSeparator())
                 .channel(corChannel)
@@ -258,7 +258,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchEvent schEvent = new SchEvent()
                 .sequence(sequence)
                 .eventType(EventTypeEnum.ET_MUSIC)
-                .timeParams(new SchConfigurationTimeParams().length(600000L))
+                .length(600000L)
                 .clockConfiguration(schClockConfiguration)
                 .channel(corChannel)
                 .network(corNetwork);
@@ -278,7 +278,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
     protected SchEvent buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEvent schEvent) {
         SchEvent schEvent1 = new SchEvent()
                 .eventType(EventTypeEnum.ET_MUSIC)
-                .timeParams(new SchConfigurationTimeParams().length(lenght))
+                .length(lenght)
                 .event(schEvent).channel(corChannel)
                 .network(corNetwork);
         schEventRepository.save(schEvent1);
@@ -294,7 +294,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         SchEventEmission schEventEmission = new SchEventEmission().mediaItem(libMediaItemList.get(0))
                 .seq(sequence)
                 .event(schEvent)
-                .timeParams(new SchConfigurationTimeParams().length(lenght))
+                .length(lenght)
                 .channel(corChannel)
                 .network(corNetwork);
 

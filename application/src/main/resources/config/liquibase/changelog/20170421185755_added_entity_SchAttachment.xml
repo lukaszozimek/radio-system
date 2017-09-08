@@ -25,6 +25,9 @@
             <column name="fade_start" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="length" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="fade_in_length" type="bigint">
                 <constraints nullable="true"/>
             </column>

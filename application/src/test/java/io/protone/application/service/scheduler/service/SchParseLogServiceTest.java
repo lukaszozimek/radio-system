@@ -143,8 +143,8 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions);
         assertEquals(1, schEmissions.size());
         assertNotNull(schEmissions.get(0).getMediaItem());
-        assertNotNull(schEmissions.get(0).getTimeParams());
-        assertEquals(LocalDateTime.of(2017, 8, 26, 8, 40, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertNotNull(schEmissions.get(0));
+        assertEquals(LocalDateTime.of(2017, 8, 26, 8, 40, 0), schEmissions.get(0).getStartTime());
         assertEquals("com", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("REKLAMA1", schEmissions.get(0).getMediaItem().getIdx());
 
@@ -162,8 +162,8 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions);
         assertEquals(1, schEmissions.size());
         assertNotNull(schEmissions.get(0).getMediaItem());
-        assertNotNull(schEmissions.get(0).getTimeParams());
-        assertEquals(LocalDateTime.of(2017, 8, 26, 8, 40, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertNotNull(schEmissions.get(0));
+        assertEquals(LocalDateTime.of(2017, 8, 26, 8, 40, 0), schEmissions.get(0).getStartTime());
         assertEquals("com", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("REKLAMA1", schEmissions.get(0).getMediaItem().getIdx());
     }
@@ -180,8 +180,8 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions);
         assertEquals(1, schEmissions.size());
         assertNotNull(schEmissions.get(0).getMediaItem());
-        assertNotNull(schEmissions.get(0).getTimeParams());
-        assertEquals(LocalDateTime.of(2016, 7, 3, 0, 0, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertNotNull(schEmissions.get(0));
+        assertEquals(LocalDateTime.of(2016, 7, 3, 0, 0, 0), schEmissions.get(0).getStartTime());
         assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("MPI_003", schEmissions.get(0).getMediaItem().getIdx());
     }
@@ -198,8 +198,8 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions);
         assertEquals(1, schEmissions.size());
         assertNotNull(schEmissions.get(0).getMediaItem());
-        assertNotNull(schEmissions.get(0).getTimeParams());
-        assertEquals(LocalDateTime.of(2016, 7, 3, 0, 0, 0), schEmissions.get(0).getTimeParams().getStartTime());
+        assertNotNull(schEmissions.get(0));
+        assertEquals(LocalDateTime.of(2016, 7, 3, 0, 0, 0), schEmissions.get(0).getStartTime());
         assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("MPI_003", schEmissions.get(0).getMediaItem().getIdx());
 
@@ -217,8 +217,8 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions);
         assertEquals(1, schEmissions.size());
         assertNotNull(schEmissions.get(0).getMediaItem());
-        assertNotNull(schEmissions.get(0).getTimeParams());
-        assertEquals(LocalDateTime.of(2017, 8, 28, 07, 33, 54), schEmissions.get(0).getTimeParams().getStartTime());
+        assertNotNull(schEmissions.get(0));
+        assertEquals(LocalDateTime.of(2017, 8, 28, 07, 33, 54), schEmissions.get(0).getStartTime());
         assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("DROGI", schEmissions.get(0).getMediaItem().getIdx());
 
@@ -237,8 +237,8 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertEquals(1, schEmissions.size());
 
         assertNotNull(schEmissions.get(0).getMediaItem());
-        assertNotNull(schEmissions.get(0).getTimeParams());
-        assertEquals(LocalDateTime.of(2017, 8, 28, 7, 33, 54), schEmissions.get(0).getTimeParams().getStartTime());
+        assertNotNull(schEmissions.get(0));
+        assertEquals(LocalDateTime.of(2017, 8, 28, 7, 33, 54), schEmissions.get(0).getStartTime());
         assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("DROGI", schEmissions.get(0).getMediaItem().getIdx());
 

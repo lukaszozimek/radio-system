@@ -2,7 +2,6 @@ package io.protone.scheduler.service.log.parser.separator.impl;
 
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
-import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.service.log.parser.separator.SchColumnSeparatorParser;
 
 import java.time.LocalDate;
@@ -24,7 +23,7 @@ public class SchColumnTimeSeparatorParser implements SchColumnSeparatorParser {
         }
         String[] separatedStrings = logLine.split(separator);
         String[] splitedTime = separatedStrings[schLogColumn.getColumnSequence()].split(":");
-        schEmission.setTimeParams(new SchTimeParams().startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2]))));
+        schEmission.startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2])));
 
         return schEmission;
     }

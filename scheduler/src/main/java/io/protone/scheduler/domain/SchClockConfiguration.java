@@ -35,9 +35,6 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
     @ManyToOne
     private SchGrid grid;
 
-    @Column(name = "sequence")
-    private Long sequence;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
     private CorDictionary clockCategory;
@@ -235,4 +232,8 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
     }
 
 
+    public SchClockConfiguration length(Long length) {
+        this.length = length;
+        return this;
+    }
 }

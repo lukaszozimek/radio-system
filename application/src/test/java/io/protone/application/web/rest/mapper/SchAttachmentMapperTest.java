@@ -67,6 +67,10 @@ public class SchAttachmentMapperTest {
         assertNotNull(dto.getMediaItem());
         assertNotNull(dto.getSequence());
         assertNotNull(dto.getVolumeLevel());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
     }
 
     @Test
@@ -84,6 +88,10 @@ public class SchAttachmentMapperTest {
             assertNotNull(dto.getSequence());
             assertNotNull(dto.getMediaItem());
             assertNotNull(dto.getVolumeLevel());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
         });
     }
 
@@ -101,6 +109,10 @@ public class SchAttachmentMapperTest {
         assertNotNull(entity.getSequence());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
     }
 
     @Test
@@ -117,6 +129,10 @@ public class SchAttachmentMapperTest {
             assertNotNull(entity.getFadeType());
             assertNotNull(entity.getMediaItem());
             assertNotNull(entity.getVolumeLevel());
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());

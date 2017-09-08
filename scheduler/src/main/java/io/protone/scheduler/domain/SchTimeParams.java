@@ -1,17 +1,14 @@
 package io.protone.scheduler.domain;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * A TimeParams.
  */
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public class SchTimeParams extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,6 +24,9 @@ public class SchTimeParams extends SchBaseEntity implements Serializable {
 
     @Column(name = "relative_delay")
     private Long relativeDelay;
+
+    @Column(name = "length")
+    protected Long length;
 
     public LocalDateTime getStartTime() {
         return startTime;

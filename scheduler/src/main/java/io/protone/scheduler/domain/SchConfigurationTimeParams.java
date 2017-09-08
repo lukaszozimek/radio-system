@@ -1,19 +1,20 @@
 package io.protone.scheduler.domain;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
  * A TimeParams.
  */
-@Embeddable
+
+@MappedSuperclass
 public class SchConfigurationTimeParams extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Column(name = "length")
-    private Long length;
+    protected Long length;
 
     @Column(name = "relative_delay")
     private Long relativeDelay;
@@ -29,10 +30,6 @@ public class SchConfigurationTimeParams extends SchBaseEntity implements Seriali
         this.length = length;
     }
 
-    public SchConfigurationTimeParams length(Long length) {
-        this.length = length;
-        return this;
-    }
 
     public Long getRelativeDelay() {
         return relativeDelay;

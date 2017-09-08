@@ -67,6 +67,10 @@ public class SchAttachmentConfigurationMapperTest {
         assertNotNull(dto.getSequence());
         assertNotNull(dto.getMediaItem());
         assertNotNull(dto.getVolumeLevel());
+
+        assertNotNull(dto.getLength());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
     }
 
     @Test
@@ -101,6 +105,10 @@ public class SchAttachmentConfigurationMapperTest {
         assertNotNull(entity.getSequence());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
+
+        assertNotNull(entity.getLength());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
     }
 
     @Test
@@ -120,6 +128,9 @@ public class SchAttachmentConfigurationMapperTest {
             assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
+            assertNotNull(entity.getLength());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
         });
     }
 

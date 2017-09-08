@@ -2,7 +2,6 @@ package io.protone.scheduler.service.log.parser.lenght.impl;
 
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchLogColumn;
-import io.protone.scheduler.domain.SchTimeParams;
 import io.protone.scheduler.service.log.parser.lenght.SchColumnLenghtParser;
 
 import java.time.LocalDate;
@@ -29,7 +28,7 @@ public class SchColumnTimeLenghtParser implements SchColumnLenghtParser {
                 return schEmission;
             }
             String[] splitedTime = startTime.split(":");
-            schEmission.setTimeParams(new SchTimeParams().startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2]))));
+            schEmission.startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2])));
         } else {
             int columnIndex = schLogColumnList.indexOf(schLogColumn);
             int elementStartPostion = 0;
@@ -41,7 +40,7 @@ public class SchColumnTimeLenghtParser implements SchColumnLenghtParser {
                 return schEmission;
             }
             String[] splitedTime = startTime.split(":");
-            schEmission.setTimeParams(new SchTimeParams().startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2]))));
+            schEmission.startTime(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), Integer.parseInt(splitedTime[0]), Integer.parseInt(splitedTime[1]), Integer.parseInt(splitedTime[2])));
         }
         return schEmission;
     }

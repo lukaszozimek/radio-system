@@ -2,7 +2,6 @@ package io.protone.application.service.scheduler.base;
 
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.scheduler.domain.SchClockConfiguration;
-import io.protone.scheduler.domain.SchConfigurationTimeParams;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.repository.SchClockConfigurationRepository;
@@ -83,7 +82,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
     protected SchClockConfiguration buildClockConfiguration() {
         SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
         schClockConfiguration.setSequence(1L);
-        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(3600000L));
+        schClockConfiguration.length(3600000L);
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
@@ -94,7 +93,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
 
     protected SchClockConfiguration buildClockWithNestedEventsConfiguration() {
         SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
-        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(3600000L));
+        schClockConfiguration.length(3600000L);
         schClockConfiguration.setSequence(1L);
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
@@ -108,7 +107,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
     protected SchClockConfiguration buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration() {
         SchClockConfiguration schClockConfiguration = new SchClockConfiguration();
         schClockConfiguration.setSequence(1L);
-        schClockConfiguration.setTimeParams(new SchConfigurationTimeParams().length(7200000L));
+        schClockConfiguration.length(7200000L);
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
@@ -124,7 +123,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         Set<SchEmissionConfiguration> emissionConfigurations = new HashSet<>();
         for (int i = 0; i < quaterNumber; i++) {
             SchEmissionConfiguration schEmissionConfiguration = new SchEmissionConfiguration();
-            schEmissionConfiguration.setTimeParams(new SchConfigurationTimeParams().length(900000L));
+            schEmissionConfiguration.length(900000L);
             schEmissionConfiguration.mediaItem(libMediaItemList.get(0));
             schEmissionConfiguration.setClock(schClockConfiguration);
             schEmissionConfiguration.channel(corChannel);

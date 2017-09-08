@@ -22,7 +22,9 @@
             <column name="sequence" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
+            <column name="length" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="playlist_id" type="bigint">
                 <constraints nullable="true"/>
             </column>

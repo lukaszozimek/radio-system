@@ -27,8 +27,7 @@ public class SchBlock extends SchTimeParams implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "length")
-    private Long length;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")

@@ -36,9 +36,6 @@ public class SchEmission extends SchTimeParams implements Serializable {
     @ManyToOne
     private LibMediaItem mediaItem;
 
-    @Embedded
-    private SchTimeParams timeParams;
-
     @PodamExclude
     @OneToMany(mappedBy = "emission")
     @JsonIgnore
@@ -121,17 +118,8 @@ public class SchEmission extends SchTimeParams implements Serializable {
         return this;
     }
 
-
-    public SchTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEmission timeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
+    public SchEmission length(Long length) {
+        this.length = length;
         return this;
     }
 

@@ -5,11 +5,9 @@ import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.api.dto.SchConfigurationTimeParamsDTO;
 import io.protone.scheduler.api.dto.SchEmissionConfigurationDTO;
 import io.protone.scheduler.api.dto.SchEventConfigurationDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
-import io.protone.scheduler.domain.SchConfigurationTimeParams;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.domain.SchLogConfiguration;
@@ -61,7 +59,6 @@ public class SchEventConfigurationMapperTest {
         schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 2 @ rootEvent
         schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 3 @ rootEvent
 
-        schEventConfiguration.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParams.class));
         schEventConfiguration.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         schEventConfiguration.setSchLogConfiguration(factory.manufacturePojo(SchLogConfiguration.class));
 
@@ -73,7 +70,6 @@ public class SchEventConfigurationMapperTest {
         schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 2 @ rootEvent
         schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 3 @ rootEvent
 
-        schEventConfigurationDTO.setTimeParams(factory.manufacturePojo(SchConfigurationTimeParamsDTO.class));
         schEventConfigurationDTO.setEventCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         schEventConfigurationDTO.setSchLogConfiguration(factory.manufacturePojo(SchLogConfigurationDTO.class));
         schEventConfigurationDTOS.add(schEventConfigurationDTO);
@@ -88,6 +84,9 @@ public class SchEventConfigurationMapperTest {
         assertNotNull(dto.getSchLogConfiguration());
         assertNotNull(dto.getEventCategory());
         assertNotNull(dto.getEmissions());
+        assertNotNull(dto.getLength());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
 
     }
 
@@ -104,6 +103,9 @@ public class SchEventConfigurationMapperTest {
             assertNotNull(dto.getEventCategory());
             assertNotNull(dto.getSchLogConfiguration());
             assertNotNull(dto.getEmissions());
+            assertNotNull(dto.getLength());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
         });
     }
 
@@ -119,6 +121,9 @@ public class SchEventConfigurationMapperTest {
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
+        assertNotNull(entity.getLength());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
     }
 
     @Test
@@ -136,6 +141,9 @@ public class SchEventConfigurationMapperTest {
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
+            assertNotNull(entity.getLength());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
         });
     }
 

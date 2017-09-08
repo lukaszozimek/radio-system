@@ -35,9 +35,6 @@ public class SchEvent extends SchConfigurationTimeParams implements Serializable
     @PodamExclude
     private CorDictionary eventCategory;
 
-    @Column(name = "sequence")
-    private Long sequence;
-
     @PodamExclude
     @ManyToOne
     private SchClockConfiguration clockConfiguration;
@@ -147,7 +144,10 @@ public class SchEvent extends SchConfigurationTimeParams implements Serializable
         this.eventType = eventType;
         return this;
     }
-
+    public SchEvent length(Long length) {
+        this.length = length;
+        return this;
+    }
     public Set<SchEvent> getBlocks() {
         return events;
     }
