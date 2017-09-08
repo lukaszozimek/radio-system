@@ -8,11 +8,6 @@
     -->
     <changeSet id="20170720190703-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="grid_id"
-                                 baseTableName="sch_clock_configuration"
-                                 constraintName="fk_sch_clock_configuration_grid_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_grid"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_clock_configuration"

@@ -173,4 +173,9 @@ public class SchLogConfiguration extends SchBaseEntity implements Serializable {
     public void setSpearator(String spearator) {
         this.spearator = spearator;
     }
+
+    public SchLogConfiguration extension(String extension) {
+        this.extension = extension;
+        return this;
+    }
 }

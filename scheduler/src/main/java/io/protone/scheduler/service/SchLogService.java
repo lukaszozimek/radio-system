@@ -32,7 +32,6 @@ public class SchLogService {
     @Inject
     private SchLogRepository schLogRepository;
 
-
     @Inject
     private SchLogConfigurationService schLogConfigurationService;
 
@@ -41,6 +40,7 @@ public class SchLogService {
 
     @Inject
     private CorNetworkService corNetworkService;
+
     @Inject
     private CorChannelService corChannelService;
 

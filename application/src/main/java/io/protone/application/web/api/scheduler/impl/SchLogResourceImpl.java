@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.websocket.server.PathParam;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
@@ -79,7 +81,7 @@ public class SchLogResourceImpl implements SchLogResource {
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
         List<SchLog> entity = schLogService.saveSchLog(files, corNetwork, corChannel);
         List<SchLogDTO> response = schLogMapper.DBs2DTOs(entity);
-        return ResponseEntity.ok()
+        return ResponseEntity.created(URI.create(""))
                 .body(response);
 
     }
@@ -88,7 +90,7 @@ public class SchLogResourceImpl implements SchLogResource {
     public ResponseEntity<Void> deleteLogForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                @ApiParam(value = "extension", required = true) @PathVariable("extension") String extension,
-                                                               @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
+                                                               @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to delete SchLog : {}, for Network: {}", date, networkShortcut);
         schLogService.deleteSchLogByNetworkAndChannelAndDateAndExtension(networkShortcut, channelShortcut, date, extension);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();

@@ -147,4 +147,5 @@ public class SchLog extends SchBaseEntity implements Serializable {
         this.schLogConfiguration = schLogConfiguration;
         return this;
     }
+
 }

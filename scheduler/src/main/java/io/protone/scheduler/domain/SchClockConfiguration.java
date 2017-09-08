@@ -24,16 +24,11 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
 
     private static final long serialVersionUID = 1L;
 
-
     @Column(name = "name")
     private String name;
 
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
-
-    @PodamExclude
-    @ManyToOne
-    private SchGrid grid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
@@ -94,18 +89,6 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
         return this;
     }
 
-    public SchGrid getGrid() {
-        return grid;
-    }
-
-    public void setGrid(SchGrid grid) {
-        this.grid = grid;
-    }
-
-    public SchClockConfiguration grid(SchGrid grid) {
-        this.grid = grid;
-        return this;
-    }
 
     public Set<SchEvent> getEvents() {
         return events;
@@ -222,7 +205,6 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
-                ", grid=" + grid +
                 ", clockCategory=" + clockCategory +
                 ", events=" + events +
                 ", emissions=" + emissions +
@@ -236,4 +218,5 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
         this.length = length;
         return this;
     }
+
 }

@@ -25,10 +25,6 @@
             <column name="short_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-
-            <column name="grid_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="sequence" type="bigint">
                 <constraints nullable="true"/>
             </column>

@@ -4,6 +4,7 @@ import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchGrid;
+import io.protone.scheduler.domain.SchGridClockConfiguration;
 import io.protone.scheduler.repository.SchClockConfigurationRepository;
 import io.protone.scheduler.repository.SchEmissionConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(buildClockConfiguration());
+        schGrid.addClock(new SchGridClockConfiguration().schClockConfiguration(buildClockConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -62,7 +63,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(buildClockWithNestedEventsConfiguration());
+        schGrid.addClock(new SchGridClockConfiguration().schClockConfiguration(buildClockWithNestedEventsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -73,7 +74,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration());
+        schGrid.addClock(new SchGridClockConfiguration().schClockConfiguration(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;

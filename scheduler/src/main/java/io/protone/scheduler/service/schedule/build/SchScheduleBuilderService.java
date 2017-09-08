@@ -79,6 +79,7 @@ public class SchScheduleBuilderService {
     private SchSchedule build(SchGrid schGrid, LocalDate localDate) {
         if (schGrid != null) {
             if (schGrid.getClocks() != null || !schGrid.getClocks().isEmpty()) {
+                schGrid.setInternalClockcs(schGrid.getClocks().stream().map(SchGridClockConfiguration::getSchClockConfiguration).collect(toSet()));
                 SchPlaylist schPlaylist = schPlaylistService.saveSchedule(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
                 return buildScheduleFromGrid(schGrid, schPlaylist);
             }
@@ -88,7 +89,7 @@ public class SchScheduleBuilderService {
     }
 
     private SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
-        List<SchEvent> importEvents = getImportLogEventFlatList(schGrid.getClocks());
+        List<SchEvent> importEvents = getImportLogEventFlatList(schGrid.getInternalClockcs());
         if (importEvents != null) {
             Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEvent::getSchLogConfiguration).distinct().collect(Collectors.toSet());
             Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
@@ -103,11 +104,11 @@ public class SchScheduleBuilderService {
                 if (schEmissionSet != null && !schEmissionSet.isEmpty()) {
                     List<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toList());
                     List<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);
-                    schGrid.clocks(fillClockWithEvents(schGrid.getClocks(), filledEvnts));
+                    schGrid.internalClockcs(fillClockWithEvents(schGrid.getInternalClockcs(), filledEvnts));
                 }
             });
         }
-        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getClocks())).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getInternalClockcs())).network(schGrid.getNetwork()).channel(schGrid.getChannel());
     }
 
 

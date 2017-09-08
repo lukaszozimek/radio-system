@@ -47,6 +47,8 @@ public class SchLogConfigurationResourceImplTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+    private static final String DEFAULT_EXTENSION = "AAAAAAAAAA";
+    private static final String UPDATED_EXTENSION = "BBBBBBBBBB";
 
 
     @Autowired
@@ -93,7 +95,7 @@ public class SchLogConfigurationResourceImplTest {
      */
     public static SchLogConfiguration createEntity(EntityManager em) {
         SchLogConfiguration traPlaylist = new SchLogConfiguration()
-                .name(DEFAULT_NAME);
+                .name(DEFAULT_NAME).extension(DEFAULT_EXTENSION);
         return traPlaylist;
     }
 
@@ -238,7 +240,7 @@ public class SchLogConfigurationResourceImplTest {
         SchLogConfigurationDTO traPlaylistDTO = schLogConfigurationMapper.DB2DTO(schLogConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restSchLogConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event", corNetwork.getShortcut(), corChannel.getShortcut())
+        restSchLogConfigurationMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(traPlaylistDTO)))
                 .andExpect(status().isCreated());
@@ -256,7 +258,7 @@ public class SchLogConfigurationResourceImplTest {
         int databaseSizeBeforeDelete = schLogConfigurationRepository.findAll().size();
 
         // Get the schLogConfiguration
-        restSchLogConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), schLogConfiguration.getId())
+        restSchLogConfigurationMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/log/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), schLogConfiguration.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 

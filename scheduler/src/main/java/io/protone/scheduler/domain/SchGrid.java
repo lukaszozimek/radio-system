@@ -1,6 +1,5 @@
 package io.protone.scheduler.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -46,10 +45,8 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     private CorDictionary gridCategory;
 
     @PodamExclude
-    @OneToMany(mappedBy = "grid")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchClockConfiguration> clocks = new HashSet<>();
+    @OneToMany(mappedBy = "schGrid")
+    private Set<SchGridClockConfiguration> clocks = new HashSet<>();
 
     @ManyToOne
     @PodamExclude
@@ -58,6 +55,9 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     @ManyToOne
     @PodamExclude
     private CorChannel channel;
+
+    @Transient
+    private Set<SchClockConfiguration> internalClockcs;
 
     public Long getId() {
         return id;
@@ -123,25 +123,27 @@ public class SchGrid extends SchBaseEntity implements Serializable {
         this.gridCategory = gridCategory;
     }
 
-    public Set<SchClockConfiguration> getClocks() {
+    public Set<SchGridClockConfiguration> getClocks() {
         return clocks;
     }
 
-    public void setClocks(Set<SchClockConfiguration> clocks) {
+    public void setClocks(Set<SchGridClockConfiguration> clocks) {
         this.clocks = clocks;
     }
 
-    public SchGrid clocks(Set<SchClockConfiguration> clocks) {
+    public SchGrid clocks(Set<SchGridClockConfiguration> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGrid addClock(SchClockConfiguration clock) {
+    public SchGrid addClock(SchGridClockConfiguration clock) {
+        clock.grid(this);
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGrid removeClock(SchClock clock) {
+    public SchGrid removeClock(SchGridClockConfiguration clock) {
+        clock.grid(null);
         this.clocks.remove(clock);
         return this;
     }
@@ -150,26 +152,26 @@ public class SchGrid extends SchBaseEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchGrid network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchGrid channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
@@ -203,4 +205,16 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     }
 
 
+    public Set<SchClockConfiguration> getInternalClockcs() {
+        return internalClockcs;
+    }
+
+    public void setInternalClockcs(Set<SchClockConfiguration> internalClockcs) {
+        this.internalClockcs = internalClockcs;
+    }
+
+    public SchGrid internalClockcs(Set<SchClockConfiguration> internalClockcs) {
+        this.internalClockcs = internalClockcs;
+        return this;
+    }
 }

@@ -26,8 +26,10 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
+
     @Autowired
     private SchClockConfigurationService schClockConfigurationService;
+
     @Autowired
     private SchClockConfigurationRepository schClockConfigurationRepository;
 

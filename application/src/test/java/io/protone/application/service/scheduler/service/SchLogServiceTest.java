@@ -35,6 +35,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 /**
@@ -61,11 +62,27 @@ public class SchLogServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchLogRepository schLogRepository;
 
+
+    private SchLogConfiguration schLogConfiguration;
+
+    private LibFileItem libFileItem;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(schLogService, "libFileItemService", libFileItemService);
         super.setUp();
+        schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
+        schLogConfiguration.network(corNetwork);
+        schLogConfiguration.channel(corChannel);
+        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
+        libFileItem = factory.manufacturePojo(LibFileItem.class);
+        libFileItem.setId(null);
+        libFileItem.setLibrary(libFileLibrary);
+        libFileItem.setCloudObject(null);
+        libFileItem.network(corNetwork);
+        libFileItem.channel(corChannel);
+        libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
     }
 
 
@@ -75,6 +92,8 @@ public class SchLogServiceTest extends SchedulerBaseTest {
         SchLog schLog = factory.manufacturePojo(SchLog.class);
         schLog.setNetwork(corNetwork);
         schLog.setChannel(corChannel);
+        schLog.schLogConfiguration(schLogConfiguration);
+        schLog.fileItem(libFileItem);
         schLog = schLogRepository.save(schLog);
 
         //then
@@ -123,9 +142,12 @@ public class SchLogServiceTest extends SchedulerBaseTest {
     @Test
     public void shouldDeleteLog() throws Exception {
         //when
+        doNothing().when(libFileItemService).deleteFile(any(LibFileItem.class));
         SchLog schLog = factory.manufacturePojo(SchLog.class);
         schLog.setNetwork(corNetwork);
         schLog.setChannel(corChannel);
+        schLog.fileItem(libFileItem);
+        schLog.schLogConfiguration(schLogConfiguration);
         schLog = schLogRepository.saveAndFlush(schLog);
         //then
         schLogService.deleteSchLogByNetworkAndChannelAndDateAndExtension(corNetwork.getShortcut(), corChannel.getShortcut(), LocalDate.now(), schLog.getSchLogConfiguration().getExtension());
@@ -141,6 +163,8 @@ public class SchLogServiceTest extends SchedulerBaseTest {
         SchLog schLog = factory.manufacturePojo(SchLog.class);
         schLog.setNetwork(corNetwork);
         schLog.setChannel(corChannel);
+        schLog.fileItem(libFileItem);
+        schLog.schLogConfiguration(schLogConfiguration);
         schLog = schLogRepository.save(schLog);
 
         //then
