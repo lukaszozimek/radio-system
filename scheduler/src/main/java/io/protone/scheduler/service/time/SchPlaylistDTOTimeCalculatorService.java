@@ -30,22 +30,27 @@ public class SchPlaylistDTOTimeCalculatorService {
 
     public SchPlaylistDTO calculateTimeInSchPlaylistDTO(SchPlaylist schPlaylist) {
         SchPlaylistDTO schPlaylistDTO = new SchPlaylistDTO().date(schPlaylist.getDate());
-        List<SchClock> schClocks = schPlaylist.getEmissions().stream().filter(schEmission -> schEmission.getClock() != null)
-                .map(schEmission -> schEmission.getClock())
-                .sorted(Comparator.comparing(SchClock::getSequence))
-                .collect(toList());
-        List<SchClockDTO> schClockDTOS = schClockMapper.DBs2DTOs(schClocks);
-        for (int i = 0; i < schClockDTOS.size(); i++) {
-            if (i == 0) {
-                schClockDTOS.get(i).setStartTime(LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)));
-                schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schClockDTOS.get(i), schClockDTOS.get(i).getStartTime(), schPlaylistDTO);
+        schPlaylistDTO.setId(schPlaylist.getId());
+        if (schPlaylist.getEmissions() != null) {
+            List<SchClock> schClocks = schPlaylist.getEmissions().stream().filter(schEmission -> schEmission.getClock() != null)
+                    .map(schEmission -> schEmission.getClock())
+                    .sorted(Comparator.comparing(SchClock::getSequence))
+                    .collect(toList());
+            List<SchClockDTO> schClockDTOS = schClockMapper.DBs2DTOs(schClocks);
+            for (int i = 0; i < schClockDTOS.size(); i++) {
+                if (i == 0) {
+                    schClockDTOS.get(i).setStartTime(LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)));
+                    schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schClockDTOS.get(i), schClockDTOS.get(i).getStartTime(), schPlaylistDTO);
 
-            } else {
-                schClockDTOS.get(i).setStartTime(schClockDTOS.get(i - 1).getEndTime());
-                schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schClockDTOS.get(i), schClockDTOS.get(i).getStartTime(), schPlaylistDTO);
+                } else {
+                    schClockDTOS.get(i).setStartTime(schClockDTOS.get(i - 1).getEndTime());
+                    schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schClockDTOS.get(i), schClockDTOS.get(i).getStartTime(), schPlaylistDTO);
+                }
             }
+            schPlaylistDTO.emissions(schPlaylistDTO.getEmissions().stream().sorted(Comparator.comparing(SchEmissionDTO::getStartTime)).collect(toList()));
+
         }
-        return schPlaylistDTO.emissions(schPlaylistDTO.getEmissions().stream().sorted(Comparator.comparing(SchEmissionDTO::getStartTime)).collect(toList()));
+        return schPlaylistDTO;
     }
 
 

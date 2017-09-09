@@ -6,6 +6,7 @@ import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.api.dto.thin.SchPlaylistThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,7 +66,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                      @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);
+                                                                      @ApiParam(value = "date", required = true) @PathVariable("date")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
     @ApiOperation(value = "deleteSchedulerPlaylistElementForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -79,7 +80,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistElementForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
                                                                              @ApiParam(value = "seqNumber", required = true) @PathVariable("seqNumber") Long seqNumber);
 
 
@@ -94,7 +95,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.GET)
     ResponseEntity<SchPlaylistDTO> getSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);
+                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date);
 
     @ApiOperation(value = "getSchedulerPlaylistElementForChannel", notes = "", response = SchEmissionDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -107,7 +108,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.GET)
     ResponseEntity<SchEmissionDTO> getSchedulerPlaylistElementForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
                                                                                  @ApiParam(value = "seqNumber", required = true) @PathVariable("seqNumber") Long seqNumber);
 
 
@@ -124,7 +125,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.PUT)
     ResponseEntity<SchPlaylistDTO> updateSchedulerPlaylistForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "schPlaylistDTO", required = true) @Valid @RequestBody SchPlaylistDTO schPlaylistDTO);
+                                                                             @ApiParam(value = "schPlaylistDTO", required = true) @Valid @RequestBody SchPlaylistDTO schPlaylistDTO) throws URISyntaxException;
 
     @ApiOperation(value = "moveSchedulerChannelPlaylistElement", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -138,7 +139,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> moveElementInPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
                                                                   @ApiParam(value = "from", required = true) @PathVariable("from") Long from,
                                                                   @ApiParam(value = "to", required = true) @PathVariable("to") Long to);
 
@@ -153,7 +154,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> addElementInPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
                                                                  @ApiParam(value = "seqNumber", required = true) @PathVariable("seqNumber") Long seqNumber, @RequestBody SchEmissionDTO emissionDTO);
 
 
