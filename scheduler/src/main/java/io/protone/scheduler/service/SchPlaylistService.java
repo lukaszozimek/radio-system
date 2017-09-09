@@ -25,23 +25,23 @@ public class SchPlaylistService {
     private SchPlaylistDTOTimeCalculatorService schPlaylistDTOTimeCalculatorService;
 
     @Transactional
-    public SchPlaylist saveSchedule(SchPlaylist schSchedule) {
+    public SchPlaylist saveSchPlaylist(SchPlaylist schSchedule) {
         return schPlaylistRepository.saveAndFlush(schSchedule);
     }
 
     @Transactional(readOnly = true)
-    public Slice<SchPlaylist> findSchGridsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
+    public Slice<SchPlaylist> findSchPlaylistForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
         return schPlaylistRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
     }
 
     @Transactional(readOnly = true)
-    public SchPlaylistDTO findSchGridForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
+    public SchPlaylistDTO findSchPlaylistForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
         SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
         return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
     }
 
     @Transactional
-    public void deleteSchScheduleByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, LocalDate date) {
+    public void deleteSchPlaylistByNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
         schPlaylistRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
     }
 }

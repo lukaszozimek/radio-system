@@ -1,6 +1,7 @@
 package io.protone.application.web.api.scheduler;
 
 
+import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchScheduleResourceImpl;
@@ -14,14 +15,16 @@ import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
 import io.protone.scheduler.repository.SchScheduleRepository;
 import io.protone.scheduler.service.SchScheduleService;
-import io.swagger.annotations.Api;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -42,7 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by lukaszozimek on 14.05.2017.
  */
 
-@Api(value = "protone", description = "Protone backend API documentation")
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ProtoneApp.class)
+@Transactional
 public class SchScheduleResourceImplTest {
 
     private static final LocalDate DEFAULT_PLAYLIST_DATE = LocalDate.ofEpochDay(0L);
@@ -99,14 +104,14 @@ public class SchScheduleResourceImplTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        SchScheduleResourceImpl traPlaylistResource = new SchScheduleResourceImpl();
-        ReflectionTestUtils.setField(traPlaylistResource, "schScheduleService", schScheduleService);
-        ReflectionTestUtils.setField(traPlaylistResource, "schScheduleMapper", schScheduleMapper);
-        ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
-        ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
+        SchScheduleResourceImpl schScheduleResource = new SchScheduleResourceImpl();
+        ReflectionTestUtils.setField(schScheduleResource, "schScheduleService", schScheduleService);
+        ReflectionTestUtils.setField(schScheduleResource, "schScheduleMapper", schScheduleMapper);
+        ReflectionTestUtils.setField(schScheduleResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(schScheduleResource, "corChannelService", corChannelService);
 
 
-        this.restSchScheduleMockMvc = MockMvcBuilders.standaloneSetup(traPlaylistResource)
+        this.restSchScheduleMockMvc = MockMvcBuilders.standaloneSetup(schScheduleResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
                 .setMessageConverters(jacksonMessageConverter).build();

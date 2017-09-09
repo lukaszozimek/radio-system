@@ -80,7 +80,7 @@ public class SchScheduleBuilderService {
         if (schGrid != null) {
             if (schGrid.getClocks() != null || !schGrid.getClocks().isEmpty()) {
                 schGrid.setInternalClockcs(schGrid.getClocks().stream().map(SchGridClockConfiguration::getSchClockConfiguration).collect(toSet()));
-                SchPlaylist schPlaylist = schPlaylistService.saveSchedule(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
+                SchPlaylist schPlaylist = schPlaylistService.saveSchPlaylist(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
                 return buildScheduleFromGrid(schGrid, schPlaylist);
             }
             return new SchSchedule().date(localDate).network(schGrid.getNetwork()).channel(schGrid.getChannel());

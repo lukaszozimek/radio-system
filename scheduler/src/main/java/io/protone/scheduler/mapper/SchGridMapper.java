@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {SchGridClockConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchGridMapper {
      SchGrid DTO2DB(SchGridDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

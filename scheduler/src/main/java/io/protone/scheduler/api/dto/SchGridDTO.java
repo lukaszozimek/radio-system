@@ -6,8 +6,6 @@ import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class SchGridDTO  extends SchBaseDTO{
 
     @PodamExclude
     @JsonProperty("clocks")
-    private List<SchClockConfigurationDTO> clocks = new ArrayList<SchClockConfigurationDTO>();
+    private List<SchGridClockConfigurationDTO> clocks = new ArrayList<SchGridClockConfigurationDTO>();
 
     @JsonProperty("dayOfWeek")
     private CorDayOfWeekEnum dayOfWeek = null;
@@ -45,17 +43,17 @@ public class SchGridDTO  extends SchBaseDTO{
 
     private ZonedDateTime lastModifiedDate;
 
-    public SchGridDTO clocks(List<SchClockConfigurationDTO> clocks) {
+    public SchGridDTO clocks(List<SchGridClockConfigurationDTO> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGridDTO addClock(SchClockConfigurationDTO clock) {
+    public SchGridDTO addClock(SchGridClockConfigurationDTO clock) {
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGridDTO removeClock(SchClockConfigurationDTO clock) {
+    public SchGridDTO removeClock(SchGridClockConfigurationDTO clock) {
         this.clocks.remove(clock);
         return this;
     }
@@ -74,11 +72,11 @@ public class SchGridDTO  extends SchBaseDTO{
      * @return clocks
      **/
     @ApiModelProperty(value = "")
-    public List<SchClockConfigurationDTO> getClocks() {
+    public List<SchGridClockConfigurationDTO> getClocks() {
         return clocks;
     }
 
-    public void setClocks(List<SchClockConfigurationDTO> clocks) {
+    public void setClocks(List<SchGridClockConfigurationDTO> clocks) {
         this.clocks = clocks;
     }
 
@@ -131,8 +129,6 @@ public class SchGridDTO  extends SchBaseDTO{
      * @return name
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 0, max = 100)
     public String getName() {
         return name;
     }
@@ -152,8 +148,6 @@ public class SchGridDTO  extends SchBaseDTO{
      * @return shortName
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 0, max = 3)
     public String getShortName() {
         return shortName;
     }

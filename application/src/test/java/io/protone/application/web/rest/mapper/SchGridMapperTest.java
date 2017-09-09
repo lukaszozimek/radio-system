@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
+import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.domain.SchGridClockConfiguration;
@@ -55,7 +55,7 @@ public class SchGridMapperTest {
         grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockConfiguration.class)));
         grids.add(grid);
         gridDTO = factory.manufacturePojo(SchGridDTO.class);
-        gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchClockConfigurationDTO.class)));
+        gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchGridClockConfigurationDTO.class)));
         gridDTOs.add(gridDTO);
     }
 
