@@ -37,7 +37,10 @@ public class SchPlaylistService {
     @Transactional(readOnly = true)
     public SchPlaylistDTO findSchPlaylistForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
         SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
-        return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
+        if (schPlaylist != null) {
+            return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
+        }
+        return null;
     }
 
     @Transactional

@@ -153,7 +153,7 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
         SchClockConfiguration saveClock = schClockConfigurationService.saveClockConfiguration(schClock);
 
         //then
-        SchClockConfiguration fetchedEntity = schClockConfigurationService.findSchClockConfigurationForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
+        SchClockConfiguration fetchedEntity = schClockConfigurationService.findSchClockConfigurationForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), saveClock.getShortName());
 
         //assert
         assertNotNull(fetchedEntity);

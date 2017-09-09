@@ -17,7 +17,8 @@ import java.util.Set;
  * A LibMediaLibrary.
  */
 @Entity
-@Table(name = "lib_file_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
+@Table(name = "lib_file_library",
+uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LibFileLibrary extends CorLibrary implements Serializable {
 

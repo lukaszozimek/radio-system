@@ -343,7 +343,6 @@ public class SchedulerBaseTest extends LibraryGenerator {
     protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(long sequence) {
         SchBlockDTO schBlock = new SchBlockDTO()
                 .eventType(EventTypeEnum.ET_MUSIC).sequence(sequence);
-
         schBlock.emissions(Lists.newArrayList(
                 buildEmissionDTO(1),
                 buildEmissionDTO(2),

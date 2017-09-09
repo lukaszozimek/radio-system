@@ -37,7 +37,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -180,7 +179,7 @@ public class SchPlaylistResourceImplTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schPlaylist.getId().intValue())))
-                .andExpect(jsonPath("$.[*].playlistDate").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
+                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
     }
 
     @Test
@@ -194,7 +193,7 @@ public class SchPlaylistResourceImplTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(schPlaylist.getId().intValue()))
-                .andExpect(jsonPath("$.playlistDate").value(DEFAULT_PLAYLIST_DATE.toString()));
+                .andExpect(jsonPath("$.date").value(DEFAULT_PLAYLIST_DATE.toString()));
     }
 
     @Test
@@ -203,9 +202,8 @@ public class SchPlaylistResourceImplTest {
         // Get the schPlaylist
         LocalDate localDate = LocalDate.now();
         restSchPlaylistMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), localDate))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(notNullValue()))
-                .andExpect(jsonPath("$.playlistDate").value(localDate.toString()));
+                .andExpect(status().isNotFound());
+
     }
 
     @Test
