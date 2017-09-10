@@ -46,7 +46,7 @@ public class SchEmissionConfigurationService {
             });
         }
     }
-
+    @Transactional
     public Set<SchEmissionConfiguration> saveEmissionClock(Set<SchEmissionConfiguration> emissionSet, SchClockConfiguration schClockConfiguration) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {

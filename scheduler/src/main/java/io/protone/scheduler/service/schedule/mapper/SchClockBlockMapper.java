@@ -2,6 +2,7 @@ package io.protone.scheduler.service.schedule.mapper;
 
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClockConfiguration;
+import io.protone.scheduler.domain.SchPlaylist;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -15,8 +16,8 @@ public class SchClockBlockMapper {
     @Inject
     private SchEventSchBlockMapper schEventSchBlockMapper;
 
-    public Set<SchBlock> buildClockBlocks(SchClockConfiguration clock) {
-        return schEventSchBlockMapper.mapEventsToBlock(clock.getEvents());
+    public Set<SchBlock> buildClockBlocks(SchClockConfiguration clock, SchPlaylist schPlaylist) {
+        return schEventSchBlockMapper.mapEventsToBlock(clock.getEvents(), schPlaylist);
     }
 
 

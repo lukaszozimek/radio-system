@@ -2,6 +2,7 @@ package io.protone.scheduler.service.schedule.mapper;
 
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchEvent;
+import io.protone.scheduler.domain.SchPlaylist;
 import io.protone.scheduler.service.schedule.factory.SchBlockFactory;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,13 @@ public class SchEventSchBlockMapper {
     @Inject
     private SchBlockFactory schBlockFactory;
 
-    public Set<SchBlock> mapEventsToBlock(Set<SchEvent> events) {
+    public Set<SchBlock> mapEventsToBlock(Set<SchEvent> events, SchPlaylist schPlaylist) {
         Set<SchBlock> schBlocks = new HashSet<>();
         return events.stream().map(event -> {
             if (!event.getBlocks().isEmpty()) {
-                schBlocks.addAll(this.mapEventsToBlock(event.getBlocks()));
+                schBlocks.addAll(this.mapEventsToBlock(event.getBlocks(), schPlaylist));
             }
-            return schBlockFactory.blockFactoryMethod(event).blocks(schBlocks);
+            return schBlockFactory.blockFactoryMethod(event,schPlaylist).blocks(schBlocks);
         }).collect(toSet());
     }
 }

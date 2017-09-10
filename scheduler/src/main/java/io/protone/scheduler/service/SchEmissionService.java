@@ -29,7 +29,7 @@ public class SchEmissionService {
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissionSet) {
-
+        log.debug("Save Emission Set ");
         return emissionSet.stream().map(schEmission -> {
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
             return schEmissionRepository.saveAndFlush(schEmission);
@@ -38,6 +38,8 @@ public class SchEmissionService {
 
     @Transactional
     public void deleteEmissions(Set<SchEmission> emissionSet) {
+        log.debug("Delete Emission Set ");
+
         emissionSet.stream().forEach(schEmission -> {
             schAttachmentService.deleteAttachments(schEmission.getAttachments());
             schEmissionRepository.saveAndFlush(schEmission.clock(null).block(null));
@@ -47,6 +49,8 @@ public class SchEmissionService {
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchClock entity) {
+        log.debug("Save Emission Set in clock level ");
+
         return emissions.stream().map(schEmission -> {
             SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.clock(entity));
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
@@ -56,6 +60,7 @@ public class SchEmissionService {
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchBlock entity) {
+        log.debug("Save Emission Set in block level ");
         return emissions.stream().map(schEmission -> {
             if (schEmission.getMediaItem().getId() != null) {
                 SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity));
@@ -69,7 +74,6 @@ public class SchEmissionService {
                     LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).contentAvailable(false));
                     SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
                     schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
-
                 }
             }
             return schEmissionRepository.saveAndFlush(schEmission);

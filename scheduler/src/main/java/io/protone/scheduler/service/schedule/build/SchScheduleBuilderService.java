@@ -103,29 +103,31 @@ public class SchScheduleBuilderService {
                 }
                 if (schEmissionSet != null && !schEmissionSet.isEmpty()) {
                     List<SchEvent> schEvents = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toList());
-                    List<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet);
+                    List<SchEvent> filledEvnts = fillEventWithEmissions(schEvents, schEmissionSet, schPlaylist);
                     schGrid.internalClockcs(fillClockWithEvents(schGrid.getInternalClockcs(), filledEvnts));
                 }
             });
         }
-        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getInternalClockcs())).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getInternalClockcs(), schPlaylist)).network(schGrid.getNetwork()).channel(schGrid.getChannel());
     }
 
 
-    private List<SchEvent> fillEventWithEmissions(List<SchEvent> schEvents, List<SchEmission> schEmissions) {
+    private List<SchEvent> fillEventWithEmissions(List<SchEvent> schEvents, List<SchEmission> schEmissions, SchPlaylist schPlaylist) {
         int i = 0;
         for (SchEmission schEmission : schEmissions) {
             if (schEvents.size() > i) {
                 Long logEmissionsLenght = schEvents.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
                 if (logEmissionsLenght < schEvents.get(i).getLength()) {
                     if (schEvents.get(i).getEmissionsLog().isEmpty()) {
-                        schEvents.get(i).addEmission(schEmission.seq(1L));
+                        schEvents.get(i).addEmission(schEmission.seq(1L).playlist(schPlaylist));
                     } else {
-                        schEvents.get(i).addEmission(schEmission.seq(schEvents.get(i)
-                                .getEmissionsLog()
-                                .stream()
-                                .max(comparing(SchEmission::getSequence))
-                                .get().getSequence() + 1));
+                        schEvents.get(i).
+                                addEmission(schEmission.seq(schEvents.get(i)
+                                        .getEmissionsLog()
+                                        .stream()
+                                        .max(comparing(SchEmission::getSequence))
+                                        .get().getSequence() + 1)
+                                        .playlist(schPlaylist));
                     }
                     log.debug("put emission in to Block {}", schEmission);
                 } else {
