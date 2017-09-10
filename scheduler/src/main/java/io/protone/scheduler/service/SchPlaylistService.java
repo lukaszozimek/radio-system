@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.domain.SchPlaylist;
+import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchPlaylistRepository;
 import io.protone.scheduler.service.time.SchPlaylistDTOTimeCalculatorService;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ public class SchPlaylistService {
 
     @Inject
     private SchPlaylistDTOTimeCalculatorService schPlaylistDTOTimeCalculatorService;
+    @Inject
+    private SchScheduleService schScheduleService;
 
     @Transactional
     public SchPlaylist saveSchPlaylist(SchPlaylist schSchedule) {
@@ -36,9 +39,9 @@ public class SchPlaylistService {
 
     @Transactional(readOnly = true)
     public SchPlaylistDTO findSchPlaylistForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
-        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
-        if (schPlaylist != null) {
-            return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
+        SchSchedule schSchedule = schScheduleService.findSchScheduleEntityForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        if (schSchedule != null) {
+            return schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schSchedule);
         }
         return null;
     }

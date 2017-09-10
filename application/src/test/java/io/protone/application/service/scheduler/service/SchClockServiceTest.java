@@ -77,7 +77,7 @@ public class SchClockServiceTest extends SchedulerBaseTest {
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         //then
-        SchClock fetchedEntity = schClockService.saveClock(schClock);
+        SchClock fetchedEntity = schClockService.saveClock(schClock, null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -94,7 +94,7 @@ public class SchClockServiceTest extends SchedulerBaseTest {
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         //then
-        SchClock fetchedEntity = schClockService.saveClock(schClock);
+        SchClock fetchedEntity = schClockService.saveClock(schClock, null);
 
         //assert
         assertNotNull(fetchedEntity);
@@ -121,14 +121,17 @@ public class SchClockServiceTest extends SchedulerBaseTest {
     public void shouldDeleteClockWithBlock() throws Exception {
         SchClock schClock = factory.manufacturePojo(SchClock.class);
         schClock.setBlocks(buildNestedSetBlocks());
+        schClock.shortName("tesSSSSSSSSSCCCCXXX");
         schClock.setEmissions(Sets.newHashSet(buildEmissionForWithAttachment(), buildEmissionForWithAttachment(), buildEmissionForWithAttachment()));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
-        schClock = schClockService.saveClock(schClock);
+        schClock = schClockService.saveClock(schClock, null);
         long clockNumberAfterSave = schClockRepository.count();
         long blockNumberAfterSave = schBlockRepository.count();
         long emissionNumberAfterSave = schEmissionRepository.count();
         long attachmentNumberAfterSave = schAttachmentRepository.count();
+        schClockRepository.flush();
+
         //then
         schClockService.deleteSchClockByNetworkAndChannelAndShortName(schClock.getNetwork().getShortcut(), schClock.getChannel().getShortcut(), schClock.getShortName());
 
@@ -148,7 +151,7 @@ public class SchClockServiceTest extends SchedulerBaseTest {
         schClock.setId(null);
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
-        SchClock saveClock = schClockService.saveClock(schClock);
+        SchClock saveClock = schClockService.saveClock(schClock, null);
 
         //then
         SchClock fetchedEntity = schClockService.findSchClockForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());

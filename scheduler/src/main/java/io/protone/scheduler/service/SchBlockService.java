@@ -74,7 +74,7 @@ public class SchBlockService {
                     this.saveBlocks(schBlock.getBlocks(), entityBlock);
                 }
                 entityBlock.block(entity);
-                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions()));
+                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock));
                 return schBlockRepository.saveAndFlush(entityBlock);
             }).collect(toSet());
         }

@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Mapper for the entity Schedule and its DTO ScheduleDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {SchClockMapper.class})
 public interface SchScheduleMapper {
-     SchSchedule DTO2DB(SchScheduleDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    SchSchedule DTO2DB(SchScheduleDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-     SchScheduleDTO DB2DTO(SchSchedule entity);
+    SchScheduleDTO DB2DTO(SchSchedule entity);
 
-     List<SchScheduleDTO> DBs2DTOs(List<SchSchedule> entityList);
+    List<SchScheduleDTO> DBs2DTOs(List<SchSchedule> entityList);
 
     default List<SchSchedule> DTOs2DBs(List<SchScheduleDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<SchSchedule> eList = new ArrayList<>();

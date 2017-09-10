@@ -25,19 +25,12 @@ public class SchClockService {
     private SchEmissionService schEmissionService;
 
     @Transactional
-    public SchClock saveClock(SchClock schClock) {
-        schClock.emissions(schEmissionService.saveEmission(schClock.getEmissions()));
-        schClock.blocks(schBlockService.saveBlocks(schClock.getBlocks()));
-        return schClockRepository.saveAndFlush(schClock);
-    }
-
-    @Transactional
     public SchClock saveClock(SchClock schClock, SchSchedule schSchedule) {
         SchClock entity = schClockRepository.saveAndFlush(schClock);
         entity.setSchSchedule(schSchedule);
         entity.emissions(schEmissionService.saveEmission(schClock.getEmissions(), entity));
         entity.blocks(schBlockService.saveBlocks(schClock.getBlocks(), entity));
-        return schClockRepository.saveAndFlush(schClock);
+        return schClockRepository.saveAndFlush(entity);
     }
 
     @Transactional(readOnly = true)

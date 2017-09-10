@@ -3,9 +3,14 @@ package io.protone.scheduler.service.time;
 import io.protone.scheduler.api.dto.SchClockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
+import io.protone.scheduler.api.dto.SchScheduleDTO;
+import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchPlaylist;
+import io.protone.scheduler.domain.SchSchedule;
+import io.protone.scheduler.mapper.SchBlockMapper;
 import io.protone.scheduler.mapper.SchClockMapper;
+import io.protone.scheduler.mapper.SchScheduleMapper;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -13,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -23,34 +29,27 @@ import static java.util.stream.Collectors.toList;
 public class SchPlaylistDTOTimeCalculatorService {
 
     @Inject
-    private SchClockMapper schClockMapper;
+    private SchScheduleMapper schScheduleMapper;
 
     @Inject
     private SchClockDTOTimeCalculatorService schClockDTOTimeCalculatorService;
 
-    public SchPlaylistDTO calculateTimeInSchPlaylistDTO(SchPlaylist schPlaylist) {
-        SchPlaylistDTO schPlaylistDTO = new SchPlaylistDTO().date(schPlaylist.getDate());
-        schPlaylistDTO.setId(schPlaylist.getId());
-        if (schPlaylist.getEmissions() != null) {
-            List<SchClock> schClocks = schPlaylist.getEmissions().stream().filter(schEmission -> schEmission.getClock() != null)
-                    .map(schEmission -> schEmission.getClock())
-                    .sorted(Comparator.comparing(SchClock::getSequence))
-                    .collect(toList());
-            List<SchClockDTO> schClockDTOS = schClockMapper.DBs2DTOs(schClocks);
-            for (int i = 0; i < schClockDTOS.size(); i++) {
+    public SchPlaylistDTO calculateTimeInSchPlaylistDTO(SchSchedule schSchedule) {
+        SchPlaylistDTO schPlaylistDTO = new SchPlaylistDTO().date(schSchedule.getDate());
+        SchScheduleDTO schScheduleDTO = schScheduleMapper.DB2DTO(schSchedule);
+        if (schScheduleDTO.getSchClockDTOS() != null && !schScheduleDTO.getSchClockDTOS().isEmpty()) {
+            for (int i = 0; i < schScheduleDTO.getSchClockDTOS().size(); i++) {
                 if (i == 0) {
-                    schClockDTOS.get(i).setStartTime(LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)));
-                    schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schClockDTOS.get(i), schClockDTOS.get(i).getStartTime(), schPlaylistDTO);
+                    schScheduleDTO.getSchClockDTOS().get(i).setStartTime(LocalDateTime.of(schScheduleDTO.getDate(), LocalTime.of(0, 0, 0)));
+                    schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schScheduleDTO.getSchClockDTOS().get(i), schScheduleDTO.getSchClockDTOS().get(i).getStartTime(), schPlaylistDTO);
 
                 } else {
-                    schClockDTOS.get(i).setStartTime(schClockDTOS.get(i - 1).getEndTime());
-                    schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schClockDTOS.get(i), schClockDTOS.get(i).getStartTime(), schPlaylistDTO);
+                    schScheduleDTO.getSchClockDTOS().get(i).setStartTime(schScheduleDTO.getSchClockDTOS().get(i - 1).getEndTime());
+                    schClockDTOTimeCalculatorService.calculateTimeInClockDTO(schScheduleDTO.getSchClockDTOS().get(i), schScheduleDTO.getSchClockDTOS().get(i).getStartTime(), schPlaylistDTO);
                 }
             }
-            schPlaylistDTO.emissions(schPlaylistDTO.getEmissions().stream().sorted(Comparator.comparing(SchEmissionDTO::getStartTime)).collect(toList()));
-
         }
-        return schPlaylistDTO;
+        return schPlaylistDTO.emissions(schPlaylistDTO.getEmissions().stream().sorted(Comparator.comparing(SchEmissionDTO::getStartTime)).collect(toList()));
     }
 
 

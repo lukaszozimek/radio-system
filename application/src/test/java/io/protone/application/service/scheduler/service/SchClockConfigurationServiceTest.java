@@ -148,6 +148,7 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
     public void shouldGetClock() throws Exception {
         SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);
         schClock.setEvents(buildNestedSetEvents());
+        schClock.shortName("EEEEEWWWSSS");
         schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment()));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);

@@ -1,7 +1,10 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.service.LibLibraryMediaService;
 import io.protone.library.service.LibMediaItemService;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
@@ -27,6 +30,10 @@ public class SchEmissionService {
     private SchAttachmentService schAttachmentService;
     @Inject
     private LibMediaItemService libMediaItemService;
+    @Inject
+    private SchPlaylistService schPlaylistService;
+    @Inject
+    private LibLibraryMediaService libLibraryMediaService;
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissionSet) {
@@ -55,6 +62,9 @@ public class SchEmissionService {
         return emissions.stream().map(schEmission -> {
             SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.clock(entity));
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+            if (schEmission.getPlaylist() != null) {
+                schPlaylistService.saveSchPlaylist(schEmission.getPlaylist().addEmission(schEmission));
+            }
             return schEmissionRepository.saveAndFlush(schEmission);
         }).collect(toSet());
     }
@@ -72,10 +82,27 @@ public class SchEmissionService {
                     SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(libMediaItem));
                     schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
                 } else {
-                    LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).contentAvailable(false));
-                    SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
-                    schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+                    LibMediaLibrary libMediaLibrary = libLibraryMediaService.findLibrary(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut());
+                    if (libMediaLibrary != null) {
+                        LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).library(libMediaLibrary).contentAvailable(false));
+                        SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
+                        schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+                    } else {
+                        LibMediaLibrary libMediaLibrary1 = null;
+                        try {
+                            libMediaLibrary1 = libLibraryMediaService.createOrUpdateLibrary(new LibMediaLibrary().network(schEmission.getNetwork()).addChannel(schEmission.getChannel()).name(schEmission.getLibraryElementShortCut()).prefix(schEmission.getLibraryElementShortCut()).name(schEmission.getLibraryElementShortCut()));
+                        } catch (CreateBucketException e) {
+                            log.debug("There was a problem with building library which should contain media item");
+                        }
+                        LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).library(libMediaLibrary1).contentAvailable(false));
+                        SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
+                        schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+
+                    }
                 }
+            }
+            if (schEmission.getPlaylist() != null) {
+                schPlaylistService.saveSchPlaylist(schEmission.getPlaylist().addEmission(schEmission));
             }
             return schEmissionRepository.saveAndFlush(schEmission);
         }).collect(toSet());

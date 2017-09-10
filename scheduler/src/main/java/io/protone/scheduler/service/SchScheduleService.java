@@ -62,6 +62,12 @@ public class SchScheduleService {
         return null;
     }
 
+    @Transactional(readOnly = true)
+    public SchSchedule findSchScheduleEntityForNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
+        return schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+
+    }
+
     @Transactional
     public void deleteSchScheduleByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, LocalDate date) {
         schScheduleRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);

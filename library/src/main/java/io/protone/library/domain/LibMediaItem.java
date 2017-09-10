@@ -28,7 +28,6 @@ public class LibMediaItem extends CorItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type", nullable = false)
     private LibItemTypeEnum itemType;
@@ -37,7 +36,6 @@ public class LibMediaItem extends CorItem implements Serializable {
     @Column(name = "length", nullable = false)
     private Double length;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private LibItemStateEnum state;
