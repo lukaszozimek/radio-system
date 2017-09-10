@@ -1,5 +1,6 @@
 package io.protone.scheduler.service;
 
+import com.google.common.collect.Sets;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.service.LibMediaItemService;
 import io.protone.scheduler.domain.SchBlock;
@@ -42,7 +43,7 @@ public class SchEmissionService {
 
         emissionSet.stream().forEach(schEmission -> {
             schAttachmentService.deleteAttachments(schEmission.getAttachments());
-            schEmissionRepository.saveAndFlush(schEmission.clock(null).block(null));
+            schEmissionRepository.saveAndFlush(schEmission.clock(null).block(null).attachments(Sets.newHashSet()));
             schEmissionRepository.delete(schEmission);
         });
     }

@@ -47,6 +47,7 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchAttachmentConfigurationRepository schAttachmentConfigurationRepository;
+
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -150,10 +151,11 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
         schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment()));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
-        SchClockConfiguration saveClock = schClockConfigurationService.saveClockConfiguration(schClock);
+        schClock.setId(null);
+        schClock = schClockConfigurationService.saveClockConfiguration(schClock);
 
         //then
-        SchClockConfiguration fetchedEntity = schClockConfigurationService.findSchClockConfigurationForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), saveClock.getShortName());
+        SchClockConfiguration fetchedEntity = schClockConfigurationService.findSchClockConfigurationForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
 
         //assert
         assertNotNull(fetchedEntity);

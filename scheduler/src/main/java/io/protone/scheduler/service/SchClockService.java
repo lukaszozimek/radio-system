@@ -57,6 +57,7 @@ public class SchClockService {
         schBlockService.deleteBlock(schClock.getBlocks());
         schClock.setEmissions(Sets.newHashSet());
         schClock.setBlocks(Sets.newHashSet());
+        schClockRepository.save(schClock);
         schClockRepository.delete(schClock);
     }
 

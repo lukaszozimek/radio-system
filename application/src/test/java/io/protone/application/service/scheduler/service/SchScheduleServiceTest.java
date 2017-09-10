@@ -2,6 +2,7 @@ package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchScheduleRepository;
 import io.protone.scheduler.service.SchScheduleService;
@@ -93,12 +94,11 @@ public class SchScheduleServiceTest extends SchedulerBaseTest {
         schSchedule = schScheduleRepository.save(schSchedule);
 
         //then
-        SchSchedule fetchedEntity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchScheduleDTO fetchedEntity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
 
         //assert
         assertNotNull(fetchedEntity);
         assertEquals(schSchedule.getId(), fetchedEntity.getId());
-        assertEquals(schSchedule.getNetwork(), fetchedEntity.getNetwork());
 
     }
 

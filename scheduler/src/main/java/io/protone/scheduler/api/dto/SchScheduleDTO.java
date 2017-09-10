@@ -1,10 +1,10 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -14,8 +14,9 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchScheduleDTO extends SchBaseDTO {
-    @JsonProperty("date")
+public class SchScheduleDTO extends SchBaseDTO implements Serializable {
+
+    @NotNull
     private LocalDate date = null;
 
 
@@ -104,7 +105,6 @@ public class SchScheduleDTO extends SchBaseDTO {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SchScheduleDTO {\n");
-
         sb.append("    date: ").append(toIndentedString(date)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    schClockDTOS: ").append(toIndentedString(schClockDTOS)).append("\n");

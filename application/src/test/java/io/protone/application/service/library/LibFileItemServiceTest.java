@@ -9,8 +9,10 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorUserService;
+import io.protone.library.domain.LibCloudObject;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.domain.LibFileLibrary;
+import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.repository.LibFileLibraryRepository;
 import io.protone.library.service.LibFileItemService;
@@ -25,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -55,7 +58,8 @@ public class LibFileItemServiceTest {
 
     @Autowired
     private LibFileItemRepository libFileItemRepository;
-
+    @Autowired
+    private LibCloudObjectRepository libCloudObjectRepository;
     @Autowired
     private LibFileLibraryRepository libFileLibraryRepository;
 
@@ -71,6 +75,8 @@ public class LibFileItemServiceTest {
     private PodamFactory factory;
 
     private LibFileLibrary fileLibrary;
+
+    private LibCloudObject libCloudObject;
 
     private CorUser corUser;
 
@@ -90,11 +96,12 @@ public class LibFileItemServiceTest {
         corUser.setChannels(null);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser = corUserRepository.saveAndFlush(corUser);
-        doNothing().when(s3Client).delete(anyString(), anyString(), anyObject());
+        doNothing().when(s3Client).delete(anyString(), anyString(), anyString());
         doNothing().when(s3Client).upload(anyString(), anyObject(), anyString());
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
+        ReflectionTestUtils.setField(libFileItemService, "s3Client", s3Client);
 
-
+        libCloudObject = libCloudObjectRepository.save(new LibCloudObject().network(corNetwork).originalName("test").size(3223L).uuid("UUID").hash("hash").contentType("tesst"));
     }
 
     @Test
@@ -104,6 +111,7 @@ public class LibFileItemServiceTest {
         LibFileItem libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.setLibrary(fileLibrary);
         libFileItem.setNetwork(corNetwork);
+        libFileItem.setCloudObject(libCloudObject);
         libFileItem = libFileItemRepository.save(libFileItem);
 
         //then
@@ -124,6 +132,8 @@ public class LibFileItemServiceTest {
         LibFileItem libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.setLibrary(fileLibrary);
         libFileItem.setNetwork(corNetwork);
+
+        libFileItem.setCloudObject(libCloudObject);
         libFileItem = libFileItemRepository.save(libFileItem);
 
         //then
@@ -143,6 +153,7 @@ public class LibFileItemServiceTest {
         LibFileItem libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.setLibrary(fileLibrary);
         libFileItem.setNetwork(corNetwork);
+        libFileItem.setCloudObject(libCloudObject);
         libFileItem = libFileItemRepository.save(libFileItem);
 
         //then

@@ -34,7 +34,8 @@ public class SchAttachmentService {
     @Transactional
     public void deleteAttachments(Set<SchAttachment> schAttachmentSet) {
         if (schAttachmentSet != null && !schAttachmentSet.isEmpty()) {
-            schAttachmentSet.stream().forEach(schAttachment -> schAttachmentRepository.delete(schAttachment));
+            schAttachmentSet.stream().forEach(schAttachment ->
+                    schAttachmentRepository.delete(schAttachment.emission(null)));
         }
     }
 

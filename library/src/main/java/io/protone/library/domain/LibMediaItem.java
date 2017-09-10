@@ -390,15 +390,15 @@ public class LibMediaItem extends CorItem implements Serializable {
         return this;
     }
 
-    public boolean isContentAvailable() {
+    public Boolean isContentAvailable() {
         return contentAvailable;
     }
 
-    public void setContentAvailable(boolean contentAvailable) {
+    public void setContentAvailable(Boolean contentAvailable) {
         this.contentAvailable = contentAvailable;
     }
 
-    public LibMediaItem contentAvailable(boolean isContentAvailable) {
+    public LibMediaItem contentAvailable(Boolean isContentAvailable) {
         this.contentAvailable = isContentAvailable;
         return this;
     }

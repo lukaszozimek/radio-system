@@ -124,7 +124,7 @@ public class SchClockServiceTest extends SchedulerBaseTest {
         schClock.setEmissions(Sets.newHashSet(buildEmissionForWithAttachment(), buildEmissionForWithAttachment(), buildEmissionForWithAttachment()));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
-        SchClock fetchedEntity = schClockService.saveClock(schClock);
+        schClock = schClockService.saveClock(schClock);
         long clockNumberAfterSave = schClockRepository.count();
         long blockNumberAfterSave = schBlockRepository.count();
         long emissionNumberAfterSave = schEmissionRepository.count();
@@ -135,8 +135,8 @@ public class SchClockServiceTest extends SchedulerBaseTest {
 
         assertEquals(clockNumberAfterSave - 1, schClockRepository.count());
         assertEquals(blockNumberAfterSave - 9, schBlockRepository.count());
-        assertEquals(emissionNumberAfterSave - 9, schEmissionRepository.count());
-        assertEquals(attachmentNumberAfterSave - 9, schAttachmentRepository.count());
+        assertEquals(emissionNumberAfterSave - 12, schEmissionRepository.count());
+        assertEquals(attachmentNumberAfterSave - 12, schAttachmentRepository.count());
 
     }
 

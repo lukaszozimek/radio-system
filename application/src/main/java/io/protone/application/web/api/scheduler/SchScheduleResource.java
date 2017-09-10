@@ -5,6 +5,7 @@ import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.api.dto.thin.SchScheduleThinDTO;
 import io.swagger.annotations.*;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,7 +65,7 @@ public interface SchScheduleResource {
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                      @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);
+                                                                      @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
 
     @ApiOperation(value = "getSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
@@ -78,7 +79,7 @@ public interface SchScheduleResource {
             method = RequestMethod.GET)
     ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date);
+                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
     @ApiOperation(value = "updateSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -104,11 +105,10 @@ public interface SchScheduleResource {
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
     @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}/{gridShortName}",
             produces = {"application/json"},
-            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                            @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date,
+                                                                            @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                             @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception;
 
     @ApiOperation(value = "buildDefaultSchedulerScheduleForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
@@ -124,6 +124,6 @@ public interface SchScheduleResource {
             method = RequestMethod.GET)
     ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) throws URISyntaxException;
+                                                                                   @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws URISyntaxException;
 
 }

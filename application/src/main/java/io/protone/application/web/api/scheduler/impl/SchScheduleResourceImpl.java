@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -93,7 +94,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     @Override
     public ResponseEntity<Void> deleteSchedulerScheduleForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
+                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to delete SchSchedule : {}, for Network: {}", date, networkShortcut);
         schScheduleService.deleteSchScheduleByNetworkAndChannelAndShortNAme(networkShortcut, channelShortcut, date);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();
@@ -102,9 +103,8 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     @Override
     public ResponseEntity<SchScheduleDTO> getSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") LocalDate date) {
-        SchSchedule entity = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
-        SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
+                                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        SchScheduleDTO response = schScheduleService.findSchScheduleForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,

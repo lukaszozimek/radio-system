@@ -254,7 +254,7 @@ public class LibMediaItemService {
         String libItemType = contentTypeLibItemTypeMap.get(resolveType(metadata));
         if (!Strings.isNullOrEmpty(libItemType)) {
             log.debug("Saving file with CONTENT_TYPE: {}", metadata.get(HttpHeaders.CONTENT_TYPE));
-            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).updateContent(inputStreamSupplier.get(), metadata, mediaItem, file.getSize(), libraryDB);
+            LibMediaItem libMediaItem = libItemTypeFileServiceMap.get(libItemType).updateContent(inputStreamSupplier.get(), metadata, mediaItem.contentAvailable(true), file.getSize(), libraryDB);
             return libMediaItem;
         } else {
             log.warn("File with name :{} cann't be added into Library because it contect type is not supported yet. CONTENT_TYPE :{}", mediaItem.getName(), metadata.get(HttpHeaders.CONTENT_TYPE));
