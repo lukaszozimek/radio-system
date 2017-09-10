@@ -89,7 +89,7 @@ public class LibVideoFileService implements LibFileService {
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibVideoObject libVideoObject = new LibVideoObject();
-            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libVideoObject, originalFileName);
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem.contentAvailable(true), libVideoObject, originalFileName);
             libVideoObject.setCloudObject(cloudObject);
             libVideoObject.setMediaItem(libMediaItem);
             log.debug("Persisting LibAudioObject: {}", libVideoObject);

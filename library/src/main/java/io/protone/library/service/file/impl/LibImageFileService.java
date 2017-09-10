@@ -90,7 +90,7 @@ public class LibImageFileService implements LibFileService {
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibImageObject libImageObject = new LibImageObject();
-            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libImageObject, originalFileName);
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem.contentAvailable(true), libImageObject, originalFileName);
             libImageObject.setCloudObject(cloudObject);
             libImageObject.mediaItem(libMediaItem);
             libImageObject.setImageSize(LibImageSizeEnum.IS_NORMAL);

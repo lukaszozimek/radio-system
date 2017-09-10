@@ -46,6 +46,9 @@ public class LibMediaItem extends CorItem implements Serializable {
     private String command;
 
 
+    @Column(name = "is_conctent_available")
+    private Boolean contentAvailable;
+
     @ManyToOne
     @PodamExclude
     private LibMediaLibrary library;
@@ -87,9 +90,9 @@ public class LibMediaItem extends CorItem implements Serializable {
     @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_media_item_cor_image_item",
-        joinColumns = @JoinColumn(name = "lib_media_item_id"),
-        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
+            name = "lib_media_item_cor_image_item",
+            joinColumns = @JoinColumn(name = "lib_media_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
     private Set<CorImageItem> imageItems = new HashSet<>();
 
@@ -387,6 +390,19 @@ public class LibMediaItem extends CorItem implements Serializable {
         return this;
     }
 
+    public boolean isContentAvailable() {
+        return contentAvailable;
+    }
+
+    public void setContentAvailable(boolean contentAvailable) {
+        this.contentAvailable = contentAvailable;
+    }
+
+    public LibMediaItem contentAvailable(boolean isContentAvailable) {
+        this.contentAvailable = isContentAvailable;
+        return this;
+    }
+
     public Set<CorImageItem> getImageItems() {
         return imageItems;
     }
@@ -402,6 +418,7 @@ public class LibMediaItem extends CorItem implements Serializable {
     public void setChannel(CorChannel channel) {
         this.channel = channel;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -425,27 +442,27 @@ public class LibMediaItem extends CorItem implements Serializable {
     @Override
     public String toString() {
         return "LibMediaItem{" +
-            "id=" + id +
-            ", idx='" + idx + '\'' +
-            ", name='" + name + '\'' +
-            ", itemType=" + itemType +
-            ", length=" + length +
-            ", state=" + state +
-            ", command='" + command + '\'' +
-            ", description='" + description + '\'' +
-            ", library=" + library +
-            ", label=" + label +
-            ", artist=" + artist +
-            ", album=" + album +
-            ", track=" + track +
-            ", network=" + network +
-            ", authors=" + authors +
-            ", composers=" + composers +
-            ", markers=" + markers +
-            ", tags=" + tags +
-            ", properites=" + properites +
-            ", imageItems=" + imageItems +
-            '}';
+                "id=" + id +
+                ", idx='" + idx + '\'' +
+                ", name='" + name + '\'' +
+                ", itemType=" + itemType +
+                ", length=" + length +
+                ", state=" + state +
+                ", command='" + command + '\'' +
+                ", description='" + description + '\'' +
+                ", library=" + library +
+                ", label=" + label +
+                ", artist=" + artist +
+                ", album=" + album +
+                ", track=" + track +
+                ", network=" + network +
+                ", authors=" + authors +
+                ", composers=" + composers +
+                ", markers=" + markers +
+                ", tags=" + tags +
+                ", properites=" + properites +
+                ", imageItems=" + imageItems +
+                '}';
     }
 
 }

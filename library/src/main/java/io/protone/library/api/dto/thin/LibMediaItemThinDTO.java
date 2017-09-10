@@ -53,6 +53,9 @@ public class LibMediaItemThinDTO implements Serializable {
     @JsonProperty("name")
     private String name = null;
 
+    @JsonProperty("contentAvailable")
+    private Boolean contentAvailable = null;
+
     @JsonProperty("stream")
     private String stream = null;
 
@@ -258,6 +261,7 @@ public class LibMediaItemThinDTO implements Serializable {
     public void setState(LibItemStateEnum state) {
         this.state = state;
     }
+
     public LibItemTypeEnum getItemType() {
         return itemType;
     }
@@ -265,6 +269,15 @@ public class LibMediaItemThinDTO implements Serializable {
     public void setItemType(LibItemTypeEnum itemType) {
         this.itemType = itemType;
     }
+
+    public Boolean getContentAvailable() {
+        return contentAvailable;
+    }
+
+    public void setContentAvailable(Boolean contentAvailable) {
+        this.contentAvailable = contentAvailable;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -303,7 +316,6 @@ public class LibMediaItemThinDTO implements Serializable {
     }
 
 
-
     @Override
     public String toString() {
         return "LibMediaItemThinDTO{" +
@@ -321,4 +333,6 @@ public class LibMediaItemThinDTO implements Serializable {
                 ", stream='" + stream + '\'' +
                 '}';
     }
+
+
 }

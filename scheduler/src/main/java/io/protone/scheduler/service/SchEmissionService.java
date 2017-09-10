@@ -1,5 +1,7 @@
 package io.protone.scheduler.service;
 
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchEmission;
@@ -22,6 +24,8 @@ public class SchEmissionService {
     private SchEmissionRepository schEmissionRepository;
     @Inject
     private SchAttachmentService schAttachmentService;
+    @Inject
+    private LibMediaItemService libMediaItemService;
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissionSet) {
@@ -53,8 +57,21 @@ public class SchEmissionService {
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchBlock entity) {
         return emissions.stream().map(schEmission -> {
-            SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity));
-            schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+            if (schEmission.getMediaItem().getId() != null) {
+                SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity));
+                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+            } else {
+                LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
+                if (libMediaItem != null) {
+                    SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(libMediaItem));
+                    schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+                } else {
+                    LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).contentAvailable(false));
+                    SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
+                    schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+
+                }
+            }
             return schEmissionRepository.saveAndFlush(schEmission);
         }).collect(toSet());
     }

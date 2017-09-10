@@ -278,11 +278,11 @@ public class SchPlaylistResourceImplTest {
         schPlaylist.date(null);
 
         // Create the TraOrder, which fails.
-        SchPlaylistDTO traOrderDTO = schPlaylistMapper.DB2DTO(schPlaylist);
+        SchPlaylistDTO schPlaylistDTO = schPlaylistMapper.DB2DTO(schPlaylist);
 
         restSchPlaylistMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(traOrderDTO)))
+                .content(TestUtil.convertObjectToJsonBytes(schPlaylistDTO)))
                 .andExpect(status().isBadRequest());
 
         List<SchPlaylist> traOrderList = schPlaylistRepository.findAll();

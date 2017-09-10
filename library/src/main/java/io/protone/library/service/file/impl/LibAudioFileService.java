@@ -89,7 +89,7 @@ public class LibAudioFileService implements LibFileService {
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibAudioObject audioObject = new LibAudioObject();
-            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, audioObject, originalFileName);
+            libMediaItem = libMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem.contentAvailable(true), audioObject, originalFileName);
             audioObject.setCloudObject(cloudObject);
             audioObject.setMediaItem(libMediaItem);
             log.debug("Persisting LibAudioObject: {}", audioObject);
