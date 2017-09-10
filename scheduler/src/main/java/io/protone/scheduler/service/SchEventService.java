@@ -40,20 +40,7 @@ public class SchEventService {
         return Sets.newHashSet();
     }
 
-    @Transactional
-    private Set<SchEvent> saveEvent(Set<SchEvent> blocks, SchEvent event) {
-        if (blocks != null && !blocks.isEmpty()) {
-            return blocks.stream().map(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    this.saveEvent(schBlock.getBlocks(), event);
-                }
-                SchEvent schEvent = schEventRepository.saveAndFlush(schBlock.event(event));
-                schBlock.emissions(schEventEmissionService.saveEmission(schBlock.getEmissions(), schEvent));
-                return schEventRepository.saveAndFlush(schEvent);
-            }).collect(toSet());
-        }
-        return Sets.newHashSet();
-    }
+
 
     @Transactional
     public void deleteEvent(Set<SchEvent> blocks) {

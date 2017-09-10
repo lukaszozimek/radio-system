@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClockConfiguration extends SchConfigurationTimeParams implements Serializable {
+public class SchClockConfiguration extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -49,7 +49,6 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
     @ManyToOne
     @PodamExclude
     private CorNetwork network;
-
 
     @ManyToOne
     @PodamExclude
@@ -219,4 +218,8 @@ public class SchClockConfiguration extends SchConfigurationTimeParams implements
         return this;
     }
 
+    public SchClockConfiguration sequence(Long sequence) {
+        super.setSequence(sequence);
+        return this;
+    }
 }

@@ -23,7 +23,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_emission_configuration")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmissionConfiguration extends SchConfigurationTimeParams implements Serializable {
+public class SchEmissionConfiguration extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -10,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -213,6 +214,11 @@ public class SchClock extends SchTimeParams implements Serializable {
 
     public SchClock length(Long length) {
         this.length = length;
+        return this;
+    }
+
+    public SchClock startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
         return this;
     }
 

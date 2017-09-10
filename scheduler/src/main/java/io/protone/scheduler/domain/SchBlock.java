@@ -10,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -28,7 +29,6 @@ public class SchBlock extends SchTimeParams implements Serializable {
     private String name;
 
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
     private EventTypeEnum eventType;
@@ -36,7 +36,6 @@ public class SchBlock extends SchTimeParams implements Serializable {
     @PodamExclude
     @ManyToOne
     private SchClock clock;
-
 
 
     @PodamExclude
@@ -250,4 +249,10 @@ public class SchBlock extends SchTimeParams implements Serializable {
         this.sequence = sequence;
         return this;
     }
+
+    public SchBlock startTime(LocalDateTime startTime) {
+        super.startTime(startTime);
+        return this;
+    }
+
 }

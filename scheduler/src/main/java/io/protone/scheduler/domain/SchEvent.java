@@ -11,6 +11,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_event", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEvent extends SchConfigurationTimeParams implements Serializable {
+public class SchEvent extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -144,10 +145,12 @@ public class SchEvent extends SchConfigurationTimeParams implements Serializable
         this.eventType = eventType;
         return this;
     }
+
     public SchEvent length(Long length) {
         this.length = length;
         return this;
     }
+
     public Set<SchEvent> getBlocks() {
         return events;
     }
@@ -270,6 +273,11 @@ public class SchEvent extends SchConfigurationTimeParams implements Serializable
 
     public SchEvent schLogConfiguration(SchLogConfiguration schLogConfiguration) {
         this.schLogConfiguration = schLogConfiguration;
+        return this;
+    }
+
+    public SchEvent startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
         return this;
     }
 

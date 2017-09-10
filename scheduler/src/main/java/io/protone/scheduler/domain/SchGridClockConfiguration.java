@@ -61,4 +61,9 @@ public class SchGridClockConfiguration extends SchBaseEntity {
     public void setSchClockConfiguration(SchClockConfiguration schClockConfiguration) {
         this.schClockConfiguration = schClockConfiguration;
     }
+
+    public SchGridClockConfiguration sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 }

@@ -1,7 +1,6 @@
 package io.protone.application.service.scheduler.service.time;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.application.service.scheduler.base.SchedulerBuildSchedulerBaseTest;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.repository.LibFileItemRepository;
@@ -29,13 +28,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
@@ -49,23 +48,30 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
 
     @Autowired
     private SchPlaylistDTOTimeCalculatorService schPlaylistDTOTimeCalculatorService;
+
     @Autowired
     private SchParseLogService parseLogService;
+
     @Mock
     private LibFileItemService libFileItemService;
+
     @Autowired
     private LibFileItemRepository libFileItemRepository;
+
     @Autowired
     private SchLogRepository schLogRepository;
+
     @Autowired
     private SchGridRepository schGridRepository;
+
     @Autowired
     private SchScheduleBuilderService schScheduleBuilderService;
-    @Autowired
-    private SchScheduleService schScheduleService;
+
     @Autowired
     private SchPlaylistRepository schPlaylistRepository;
 
+    @Autowired
+    private SchScheduleService schScheduleService;
 
     @Before
     public void setUp() throws Exception {
@@ -90,10 +96,11 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
 
         //then
         SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
-
-        schSchedule = schScheduleService.saveSchedule(schSchedule);
-        SchPlaylistDTO resultDTO = schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schSchedule);
+        schScheduleService.saveSchedule(schSchedule);
+        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        SchPlaylistDTO resultDTO = schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
         assertNotNull(resultDTO);
+        assertEquals(21, resultDTO.getEmissions().size());
     }
 
 }

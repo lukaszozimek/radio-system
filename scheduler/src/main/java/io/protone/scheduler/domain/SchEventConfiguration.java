@@ -21,7 +21,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_event_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEventConfiguration extends SchConfigurationTimeParams implements Serializable {
+public class SchEventConfiguration extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

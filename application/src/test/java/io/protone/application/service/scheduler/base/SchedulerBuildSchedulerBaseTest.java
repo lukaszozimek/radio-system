@@ -53,7 +53,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(new SchGridClockConfiguration().schClockConfiguration(buildClockConfiguration()));
+        schGrid.addClock(new SchGridClockConfiguration().sequence(1L).schClockConfiguration(buildClockConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -63,7 +63,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(new SchGridClockConfiguration().schClockConfiguration(buildClockWithNestedEventsConfiguration()));
+        schGrid.addClock(new SchGridClockConfiguration().sequence(1L).schClockConfiguration(buildClockWithNestedEventsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -74,7 +74,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(new SchGridClockConfiguration().schClockConfiguration(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
+        schGrid.addClock(new SchGridClockConfiguration().sequence(1L).schClockConfiguration(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -87,7 +87,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
-        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 4));
+        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 4,1));
         schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
         return schClockConfiguration;
     }
@@ -99,7 +99,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
-        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 2));
+        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 2, 4));
         schClockConfiguration.events(buildNestedSetEventsWithLenght30minoutes(schClockConfiguration));
         return schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
     }
@@ -112,7 +112,7 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
         schClockConfiguration.channel(corChannel);
         schClockConfiguration.network(corNetwork);
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
-        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 2));
+        schClockConfiguration.emissions(buildQuatreEmissionConfiguration(schClockConfiguration, 2,4));
         schClockConfiguration.events(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockConfiguration));
         schClockConfiguration = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
 
@@ -120,12 +120,13 @@ public class SchedulerBuildSchedulerBaseTest extends SchedulerBaseTest {
     }
 
 
-    private Set<SchEmissionConfiguration> buildQuatreEmissionConfiguration(SchClockConfiguration schClockConfiguration, int quaterNumber) {
+    private Set<SchEmissionConfiguration> buildQuatreEmissionConfiguration(SchClockConfiguration schClockConfiguration, int quaterNumber, long startSequence) {
         Set<SchEmissionConfiguration> emissionConfigurations = new HashSet<>();
         for (int i = 0; i < quaterNumber; i++) {
             SchEmissionConfiguration schEmissionConfiguration = new SchEmissionConfiguration();
             schEmissionConfiguration.length(900000L);
             schEmissionConfiguration.mediaItem(libMediaItemList.get(0));
+            schEmissionConfiguration.seq(startSequence + i);
             schEmissionConfiguration.setClock(schClockConfiguration);
             schEmissionConfiguration.channel(corChannel);
             schEmissionConfiguration.network(corNetwork);

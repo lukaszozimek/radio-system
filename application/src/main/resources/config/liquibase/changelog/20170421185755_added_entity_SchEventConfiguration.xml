@@ -34,6 +34,14 @@
             <column name="sch_log_configuration_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
             <column name="previous_id" type="bigint">
                 <constraints nullable="true" />
             </column>

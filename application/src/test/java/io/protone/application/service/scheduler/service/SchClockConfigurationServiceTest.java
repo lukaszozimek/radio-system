@@ -4,7 +4,10 @@ import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.scheduler.domain.SchClockConfiguration;
-import io.protone.scheduler.repository.*;
+import io.protone.scheduler.repository.SchAttachmentConfigurationRepository;
+import io.protone.scheduler.repository.SchClockConfigurationRepository;
+import io.protone.scheduler.repository.SchEmissionConfigurationRepository;
+import io.protone.scheduler.repository.SchEventRepository;
 import io.protone.scheduler.service.SchClockConfigurationService;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +38,6 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchEventRepository schEventRepository;
-
-    @Autowired
-    private SchEventEmissionRepository schEventEmissionRepository;
-
-    @Autowired
-    private SchEventEmissionAttachmentRepository schEventEmissionAttachmentRepository;
 
     @Autowired
     private SchEmissionConfigurationRepository schEmissionConfigurationRepository;

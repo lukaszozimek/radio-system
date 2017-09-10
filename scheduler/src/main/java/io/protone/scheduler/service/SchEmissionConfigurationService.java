@@ -36,16 +36,17 @@ public class SchEmissionConfigurationService {
         return Sets.newHashSet();
     }
 
-    @Transactional
+
     public void deleteEmissions(Set<SchEmissionConfiguration> emissionSet) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             emissionSet.stream().forEach(schEmission -> {
                 schAttachmentService.deleteAttachments(schEmission.getAttachments());
-                schEmissionConfigurationRepository.saveAndFlush(schEmission);
+                schEmissionConfigurationRepository.saveAndFlush(schEmission.attachments(Sets.newHashSet()));
                 schEmissionConfigurationRepository.delete(schEmission);
             });
         }
     }
+
     @Transactional
     public Set<SchEmissionConfiguration> saveEmissionClock(Set<SchEmissionConfiguration> emissionSet, SchClockConfiguration schClockConfiguration) {
         if (emissionSet != null && !emissionSet.isEmpty()) {

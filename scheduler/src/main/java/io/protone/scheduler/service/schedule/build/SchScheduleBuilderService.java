@@ -17,6 +17,8 @@ import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,7 +81,7 @@ public class SchScheduleBuilderService {
     private SchSchedule build(SchGrid schGrid, LocalDate localDate) {
         if (schGrid != null) {
             if (schGrid.getClocks() != null || !schGrid.getClocks().isEmpty()) {
-                schGrid.setInternalClockcs(schGrid.getClocks().stream().map(SchGridClockConfiguration::getSchClockConfiguration).collect(toSet()));
+                schGrid.setInternalClockcs(schGrid.getClocks().stream().map(schGridClockConfiguration -> schGridClockConfiguration.getSchClockConfiguration().sequence(schGridClockConfiguration.getSequence())).collect(toSet()));
                 SchPlaylist schPlaylist = schPlaylistService.saveSchPlaylist(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
                 return buildScheduleFromGrid(schGrid, schPlaylist);
             }
@@ -108,7 +110,7 @@ public class SchScheduleBuilderService {
                 }
             });
         }
-        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getInternalClockcs(), schPlaylist)).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)), schPlaylist)).network(schGrid.getNetwork()).channel(schGrid.getChannel());
     }
 
 

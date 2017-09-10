@@ -272,19 +272,20 @@ public class SchedulerBaseTest extends LibraryGenerator {
 
         schEventRepository.save(schEvent);
         schEvent.blocks(Sets.newHashSet(
-                buildEventWithEmissionAndAttachmentsLenght(300000L, schEvent)))
+                buildEventWithEmissionAndAttachmentsLenght(300000L, schEvent, 1)))
                 .emissions(Sets.newHashSet(
-                        buildEmissionWithAttachment(1, 100000L, schEvent),
                         buildEmissionWithAttachment(2, 100000L, schEvent),
-                        buildEmissionWithAttachment(3, 100000L, schEvent))
+                        buildEmissionWithAttachment(3, 100000L, schEvent),
+                        buildEmissionWithAttachment(4, 100000L, schEvent))
                 );
         return schEvent;
     }
 
-    protected SchEvent buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEvent schEvent) {
+    protected SchEvent buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEvent schEvent, long sequence) {
         SchEvent schEvent1 = new SchEvent()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .length(lenght)
+                .sequence(sequence)
                 .event(schEvent).channel(corChannel)
                 .network(corNetwork);
         schEventRepository.save(schEvent1);

@@ -25,6 +25,7 @@ public class SchTimeParams extends SchBaseEntity implements Serializable {
     @Column(name = "relative_delay")
     private Long relativeDelay;
 
+
     @Column(name = "length")
     protected Long length;
 
@@ -75,6 +76,14 @@ public class SchTimeParams extends SchBaseEntity implements Serializable {
         this.sequence = sequence;
     }
 
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
 
     @Override
     public String toString() {

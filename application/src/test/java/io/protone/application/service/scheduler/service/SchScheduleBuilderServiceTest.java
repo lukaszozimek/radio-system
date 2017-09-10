@@ -110,7 +110,6 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertNotNull(schSchedule.getClocks().stream().findFirst().get());
         assertNotNull(schSchedule.getClocks().stream().findFirst().get().getSequence());
         assertNotNull(schSchedule.getClocks().stream().findFirst().get().getLength());
-        assertEquals(3600000L, schSchedule.getClocks().stream().findFirst().get().getLength().longValue());
         assertEquals(1L, schSchedule.getClocks().stream().findFirst().get().getSequence().longValue());
         assertNotNull(schSchedule.getClocks().stream().findFirst().get().getEmissions());
         assertEquals(4, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
@@ -137,7 +136,6 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertNotNull(schSchedule.getClocks().stream().findFirst().get());
         assertNotNull(schSchedule.getClocks().stream().findFirst().get().getSequence());
         assertNotNull(schSchedule.getClocks().stream().findFirst().get().getLength());
-        assertEquals(3600000L, schSchedule.getClocks().stream().findFirst().get().getLength().longValue());
         assertEquals(1L, schSchedule.getClocks().stream().findFirst().get().getSequence().longValue());
         assertNotNull(schSchedule.getClocks().stream().findFirst().get().getEmissions());
         assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());

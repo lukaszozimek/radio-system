@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_attachment_configuration")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachmentConfiguration extends SchConfigurationTimeParams implements Serializable {
+public class SchAttachmentConfiguration extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

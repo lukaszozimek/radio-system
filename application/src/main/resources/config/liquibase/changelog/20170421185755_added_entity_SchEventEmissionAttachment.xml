@@ -40,6 +40,13 @@
             <column name="fade_out_length" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="start_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="end_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
 
             <column name="fade_type" type="varchar(255)">
                 <constraints nullable="true"/>

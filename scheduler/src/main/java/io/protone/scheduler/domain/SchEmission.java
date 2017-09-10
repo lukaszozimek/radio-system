@@ -10,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -184,6 +185,16 @@ public class SchEmission extends SchTimeParams implements Serializable {
 
     public SchEmission channel(CorChannel channel) {
         this.channel = channel;
+        return this;
+    }
+
+    public SchEmission startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
+    }
+
+    public SchEmission endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
         return this;
     }
 
