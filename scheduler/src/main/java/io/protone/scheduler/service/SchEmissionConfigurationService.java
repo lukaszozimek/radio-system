@@ -40,8 +40,10 @@ public class SchEmissionConfigurationService {
     public void deleteEmissions(Set<SchEmissionConfiguration> emissionSet) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             emissionSet.stream().forEach(schEmission -> {
-                schAttachmentService.deleteAttachments(schEmission.getAttachments());
-                schEmissionConfigurationRepository.saveAndFlush(schEmission.attachments(Sets.newHashSet()));
+                if (schEmission.getId() != null) {
+                    schAttachmentService.deleteAttachments(schEmission.getAttachments());
+                    schEmissionConfigurationRepository.saveAndFlush(schEmission.attachments(Sets.newHashSet()));
+                }
                 schEmissionConfigurationRepository.delete(schEmission);
             });
         }

@@ -141,7 +141,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
         assertEquals(3, schSchedule.getClocks().stream().findFirst().get().getBlocks().size());
         schSchedule.getClocks().stream().findFirst().get().getBlocks().stream().forEach(block -> {
-            assertEquals(3, block.getBlocks().size());
+            assertEquals(1, block.getBlocks().size());
             assertNotNull(block.getChannel());
             assertNotNull(block.getNetwork());
             block.getBlocks().stream().forEach(nestedBlock -> {

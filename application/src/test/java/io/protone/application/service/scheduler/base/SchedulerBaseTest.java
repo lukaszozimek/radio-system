@@ -260,7 +260,7 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return schEvent;
     }
 
-    protected SchEvent buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
+    protected SchEvent  buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
         SchEvent schEvent = new SchEvent()
                 .sequence(sequence)
                 .eventType(EventTypeEnum.ET_MUSIC)

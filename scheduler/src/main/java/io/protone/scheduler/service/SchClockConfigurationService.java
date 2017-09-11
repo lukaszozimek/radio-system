@@ -38,7 +38,9 @@ public class SchClockConfigurationService {
     public SchClockConfiguration saveClockConfiguration(SchClockConfiguration schClockConfiguration) {
         SchClockConfiguration beforeSave;
         beforeSave = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
-        schClockConfiguration.emissions(schEmissionConfigurationService.saveEmissionClock(schClockConfiguration.getEmissions(), beforeSave));
+        beforeSave.setEvents(Sets.newHashSet());
+        beforeSave.setEmissions(Sets.newHashSet());
+        beforeSave.emissions(schEmissionConfigurationService.saveEmissionClock(schClockConfiguration.getEmissions(), beforeSave));
         beforeSave.events(schEventService.saveEvent(schClockConfiguration.getEvents(), beforeSave));
         schClockConfigurationRepository.saveAndFlush(beforeSave);
         return findSchClockConfigurationForNetworkAndChannelAndShortName(schClockConfiguration.getNetwork().getShortcut(), schClockConfiguration.getChannel().getShortcut(), schClockConfiguration.getShortName());

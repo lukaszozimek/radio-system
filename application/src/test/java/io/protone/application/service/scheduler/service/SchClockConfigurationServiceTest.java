@@ -131,13 +131,13 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
         long emissionNumberAfterSave = schEmissionConfigurationRepository.count();
         long attachmentNumberAfterSave = schAttachmentConfigurationRepository.count();
         //then
-        schClockConfigurationService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(schClock.getNetwork().getShortcut(), schClock.getChannel().getShortcut(), schClock.getShortName());
+        schClockConfigurationService.deleteSchClockConfigurationByNetworkAndChannelAndShortName(schClock.getNetwork().getShortcut(), schClock.getChannel().getShortcut(), fetchedEntity.getShortName());
 
 
         assertEquals(clockNumberAfterSave - 1, schClockConfigurationRepository.count());
         assertEquals(blockNumberAfterSave - 9, schEventRepository.count());
         assertEquals(emissionNumberAfterSave - 3, schEmissionConfigurationRepository.count());
-        assertEquals(attachmentNumberAfterSave - 9, schAttachmentConfigurationRepository.count());
+        assertEquals(attachmentNumberAfterSave - 3, schAttachmentConfigurationRepository.count());
 
     }
 

@@ -29,7 +29,7 @@ public class SchEventEmissionService {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
                 SchEventEmission schEventEmission = schEmissionConfigurationRepository.saveAndFlush(schEmission.event(schEvent));
-                schEventEmission.attachments(schEventEmissionAttachmentService.saveAttachmenst(schEmission.getAttachments(),schEventEmission));
+                schEventEmission.attachments(schEventEmissionAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEventEmission));
                 return schEmissionConfigurationRepository.saveAndFlush(schEventEmission);
             }).collect(toSet());
         }
@@ -40,8 +40,10 @@ public class SchEventEmissionService {
     public void deleteEmissions(Set<SchEventEmission> emissionSet) {
         if (emissionSet != null) {
             emissionSet.stream().forEach(schEmission -> {
-                schEventEmissionAttachmentService.deleteAttachments(schEmission.getAttachments());
-                schEmissionConfigurationRepository.saveAndFlush(schEmission);
+                if (schEmission.getId() != null) {
+                    schEventEmissionAttachmentService.deleteAttachments(schEmission.getAttachments());
+                    schEmissionConfigurationRepository.saveAndFlush(schEmission);
+                }
                 schEmissionConfigurationRepository.delete(schEmission);
 
             });
