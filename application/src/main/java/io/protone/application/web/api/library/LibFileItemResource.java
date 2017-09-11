@@ -60,7 +60,6 @@ public interface LibFileItemResource {
             @ApiResponse(code = 403, message = "Forbidden", response = LibFileItemThinDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibFileItemThinDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/file/{libraryPrefix}/item",
-            consumes = {"*/*"},
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<LibFileItemThinDTO>> getAllFilesByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -116,6 +115,7 @@ public interface LibFileItemResource {
             @ApiResponse(code = 403, message = "Forbidden", response = ByteArrayInputStream.class),
             @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/file/{libraryPrefix}/item/{idx}/stream",
+            produces = {"*/*"},
             method = RequestMethod.GET)
     ResponseEntity<byte[]> downloadFileByNetworShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                          @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
@@ -144,28 +144,12 @@ public interface LibFileItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibFileItemThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibFileItemThinDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}/item",
-            produces = {"*/*"},
-            consumes = {"application/json"},
-            method = RequestMethod.DELETE)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<List<LibFileItemThinDTO>> getAllFilesByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                  @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                  @ApiParam(value = "pagable", required = true) Pageable pagable);
-
-
-    @ApiOperation(value = "getFileByNetworShortcutAndChannelShortcutAndLibrar", notes = "", response = LibFileItemDTO.class, tags = {"LIBRARY",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = LibFileItemDTO.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = LibFileItemDTO.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = LibFileItemDTO.class),
-            @ApiResponse(code = 404, message = "Not Found", response = LibFileItemDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}/item",
-            produces = {"*/*"},
-            consumes = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<LibFileItemDTO> getFileByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
-                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                              @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix);
 
 
     @ApiOperation(value = "deleteFileByNetworShortcutAndChannelShortcutAndLibrary", notes = "", response = Void.class, tags = {"LIBRARY",})
@@ -175,8 +159,7 @@ public interface LibFileItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}/item/{idx}",
-            produces = {"*/*"},
-            consumes = {"application/json"},
+            produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteFileByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -191,8 +174,7 @@ public interface LibFileItemResource {
             @ApiResponse(code = 403, message = "Forbidden", response = LibFileItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibFileItemDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}/item/{idx}",
-            produces = {"*/*"},
-            consumes = {"application/json"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<LibFileItemDTO> getFileByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -208,7 +190,6 @@ public interface LibFileItemResource {
             @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/file/{libraryPrefix}/item/{idx}/stream",
             produces = {"*/*"},
-            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<byte[]> getFileStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,

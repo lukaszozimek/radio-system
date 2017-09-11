@@ -174,9 +174,8 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = LibMediaItemThinDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemThinDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item",
-            produces = {"*/*"},
-            consumes = {"application/json"},
-            method = RequestMethod.DELETE)
+            produces = {"application/json"},
+            method = RequestMethod.GET)
     ResponseEntity<List<LibMediaItemThinDTO>> getAllItemsByNetworShortcutAndLibraryPrefixUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                   @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
@@ -205,8 +204,7 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}",
-            produces = {"*/*"},
-            consumes = {"application/json"},
+            produces = {"application/json"},
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteItemByNetworShortcutAndChannelShortcutAndLibraryUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                            @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -221,8 +219,7 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 403, message = "Forbidden", response = LibMediaItemDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = LibMediaItemDTO.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}",
-            produces = {"*/*"},
-            consumes = {"application/json"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<LibMediaItemDTO> getItemByNetworShortcutAndChannelShortcutAndLibrarUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
@@ -237,8 +234,7 @@ public interface LibMediaItemResource {
             @ApiResponse(code = 403, message = "Forbidden", response = ByteArrayInputStream.class),
             @ApiResponse(code = 404, message = "Not Found", response = ByteArrayInputStream.class)})
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/library/media/{libraryPrefix}/item/{idx}/stream",
-            produces = {"*/*"},
-            consumes = {"application/json"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<byte[]> getItemStreamByNetworShortcutAndChannelShortcutAndLibraryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
