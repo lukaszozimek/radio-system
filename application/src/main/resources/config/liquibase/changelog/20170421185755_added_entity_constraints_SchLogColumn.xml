@@ -12,7 +12,7 @@
                                  baseTableName="sch_log_column"
                                  constraintName="fk_configuration_sch_log_column_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="sch_schedule"/>
+                                 referencedTableName="sch_log_configuration"/>
         
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_log_column"

@@ -5,6 +5,7 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.domain.SchLogConfiguration;
+import io.protone.scheduler.repository.SchLogColumnRepostiory;
 import io.protone.scheduler.repository.SchLogConfigurationRepository;
 import io.protone.scheduler.service.SchLogConfigurationService;
 import org.junit.Before;
@@ -34,6 +35,8 @@ public class SchLogConfigurationServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchLogConfigurationRepository schLogConfigurationRepository;
+    @Autowired
+    private SchLogColumnRepostiory schLogColumnRepostiory;
 
 
     @Before
@@ -45,7 +48,8 @@ public class SchLogConfigurationServiceTest extends SchedulerBaseTest {
     @Test
     public void shouldGetAllLogConfigurations() throws Exception {
         //when
-
+        schLogColumnRepostiory.deleteAllInBatch();
+        schLogConfigurationRepository.deleteAllInBatch();
         SchLogColumn schLogColumn = factory.manufacturePojo(SchLogColumn.class);
         schLogColumn.setId(null);
         schLogColumn.setChannel(corChannel);
@@ -59,7 +63,7 @@ public class SchLogConfigurationServiceTest extends SchedulerBaseTest {
         schLogConfiguration = schLogConfigurationRepository.save(schLogConfiguration);
 
         //then
-        Slice<SchLogConfiguration> fetchedEntity = schLogConfigurationService.findSchLogConfigurationForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+        Slice<SchLogConfiguration> fetchedEntity = schLogConfigurationService.findSchLogConfigurationForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 1));
 
         //assert
         assertNotNull(fetchedEntity.getContent());
