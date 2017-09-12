@@ -28,6 +28,7 @@ public class SchEmissionConfigurationService {
     public Set<SchEmissionConfiguration> saveEmissionEvent(Set<SchEmissionConfiguration> emissionSet, SchEventConfiguration schEventConfiguration) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
+                schEmission.setId(null);
                 SchEmissionConfiguration schEmissionConfiguration = schEmissionConfigurationRepository.saveAndFlush(schEmission.schEventConfiguration(schEventConfiguration));
                 schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEmissionConfiguration));
                 return schEmissionConfiguration;
@@ -59,5 +60,17 @@ public class SchEmissionConfigurationService {
             }).collect(toSet());
         }
         return Sets.newHashSet();
+    }
+
+    @Transactional
+    public void deleteByEventId(Long eventId) {
+        if (eventId != null) {
+            Set<SchEmissionConfiguration> eventEmissions = schEmissionConfigurationRepository.findAllBySchEventConfiguration_Id(eventId);
+            if (eventEmissions != null && !eventEmissions.isEmpty()) {
+                eventEmissions.stream().forEach(schEmissionConfiguration -> schAttachmentService.deleteByEmissionId(schEmissionConfiguration.getId()));
+            }
+            schEmissionConfigurationRepository.deleteAllBySchEventConfiguration_Id(eventId);
+        }
+
     }
 }

@@ -34,6 +34,7 @@ public class SchEventConfigurationService {
     public SchEventConfiguration saveEventConfiguration(SchEventConfiguration schEventConfiguration) {
         SchEventConfiguration beforeSave;
         beforeSave = eventRepository.saveAndFlush(schEventConfiguration);
+        this.schEmissionConfigurationService.deleteByEventId(schEventConfiguration.getId());
         beforeSave.emissions(schEmissionConfigurationService.saveEmissionEvent(schEventConfiguration.getEmissions(), beforeSave));
         eventRepository.saveAndFlush(beforeSave);
         eventRepository.flush();
@@ -42,7 +43,11 @@ public class SchEventConfigurationService {
 
     @Transactional
     public void deleteSchEventConfigurationByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        eventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        SchEventConfiguration schEventConfiguration = findSchEventConfigurationsForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+        if (schEventConfiguration != null) {
+            this.schEmissionConfigurationService.deleteByEventId(schEventConfiguration.getId());
+            eventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        }
     }
 
     @Transactional(readOnly = true)

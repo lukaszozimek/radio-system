@@ -31,7 +31,7 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="default" type="boolean">
+            <column name="default_grid" type="boolean">
                 <constraints nullable="true"/>
             </column>
            <column name="grid_category_id" type="bigint">

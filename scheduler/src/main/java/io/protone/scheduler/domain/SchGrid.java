@@ -37,7 +37,7 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     @Column(name = "short_name")
     private String shortName;
 
-    @Column(name = "default")
+    @Column(name = "default_grid")
     private Boolean defaultGrid = null;
 
     @ManyToOne

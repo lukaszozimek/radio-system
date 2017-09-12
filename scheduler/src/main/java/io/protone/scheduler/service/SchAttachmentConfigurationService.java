@@ -37,4 +37,9 @@ public class SchAttachmentConfigurationService {
             schAttachmentSet.stream().forEach(schAttachment -> schAttachmentConfigurationRepository.delete(schAttachment));
         }
     }
+
+    @Transactional
+    public void deleteByEmissionId(Long emissionId) {
+        schAttachmentConfigurationRepository.deleteAllByEmission_Id(emissionId);
+    }
 }

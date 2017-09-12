@@ -90,7 +90,7 @@ public class SchEventConfigurationResourceImpl implements SchEventConfigurationR
                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete SchEventConfiguration : {}, for Network: {}", shortName, networkShortcut);
         schEventConfigurationService.deleteSchEventConfigurationByNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", shortName.toString())).build();
+        return ResponseEntity.ok()     .build();
     }
 
     @Override
