@@ -1,7 +1,9 @@
 package io.protone.scheduler.service;
 
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
+import io.protone.scheduler.mapper.SchGridMapper;
 import io.protone.scheduler.repository.SchGridRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,9 @@ public class SchGridService {
     @Inject
     private SchGridRepository schGridRepository;
 
+    @Inject
+    private SchGridMapper schGridMapper;
+
     @Transactional
     public SchGrid saveGrid(SchGrid schGrid) {
         return schGridRepository.saveAndFlush(schGrid);
@@ -27,6 +32,11 @@ public class SchGridService {
     @Transactional(readOnly = true)
     public Slice<SchGrid> findSchGridsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
         return schGridRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public SchGridDTO findSchGridForNetworkAndChannelAndShortNameDTO(String networkShortcut, String channelShortcut, String shortName) {
+        return schGridMapper.DB2DTO(schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName));
     }
 
     @Transactional(readOnly = true)

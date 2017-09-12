@@ -390,18 +390,36 @@
             relativeToChangelogFile="false"/>
 
     <changeSet id="" author="lozimek">
+
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/lib_media_library.csv"
                   separator=";"
                   tableName="lib_media_library"/>
         <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/cor_channel_lib_media_library.csv"
+                  separator=";"
+                  tableName="lib_media_library_channel"/>
+
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/lib_file_library.csv"
+                  separator=";"
+                  tableName="lib_file_library"/>
+
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/cor_channel_lib_file_library.csv"
+                  separator=";"
+                  tableName="lib_file_library_channel"/>
+
+        <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/lib_marker_configuration.csv"
                   separator=";"
                   tableName="lib_marker_configuration"/>
+
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/cor_module.csv"
                   separator=";"
                   tableName="cor_module"/>
+
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/cor_dictionary_type.csv"
                   separator=";"
@@ -410,10 +428,6 @@
                   file="/config/liquibase/demo/cor_dictionary.csv"
                   separator=";"
                   tableName="cor_dictionary"/>
-        <loadData encoding="UTF-8"
-                  file="/config/liquibase/demo/cor_channel_lib_media_library.csv"
-                  separator=";"
-                  tableName="lib_media_library_channel"/>
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/tra_price.csv"
                   separator=";"

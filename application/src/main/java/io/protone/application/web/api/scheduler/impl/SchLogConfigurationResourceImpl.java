@@ -6,6 +6,7 @@ import io.protone.application.web.rest.util.HeaderUtil;
 import io.protone.application.web.rest.util.PaginationUtil;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
@@ -73,7 +74,7 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
     @Override
     public ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                             @ApiParam(value = "schLogConfigurationDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schLogConfigurationDTO) throws URISyntaxException {
+                                                                                             @ApiParam(value = "schLogConfigurationDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schLogConfigurationDTO) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to saveSchLogConfigurationDTO SchLogConfigurationDTO : {}, for Channel {} Network: {}", schLogConfigurationDTO, channelShortcut, networkShortcut);
         if (schLogConfigurationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("SchLogConfiguration", "idexists", "A new SchLogConfiguration cannot already have an ID")).body(null);
@@ -81,8 +82,8 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
-        SchLogConfiguration traOrder = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corNetwork, corChannel);
-        SchLogConfiguration entity = schLogConfigurationService.saveSchLogConfiguration(traOrder);
+        SchLogConfiguration schLogConfiguration = schLogConfigurationMapper.DTO2DB(schLogConfigurationDTO, corNetwork, corChannel);
+        SchLogConfiguration entity = schLogConfigurationService.saveSchLogConfiguration(schLogConfiguration);
         SchLogConfigurationDTO response = schLogConfigurationMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/event/" + response.getId()))
                 .body(response);
@@ -118,7 +119,7 @@ public class SchLogConfigurationResourceImpl implements SchLogConfigurationResou
     @Override
     public ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                             @ApiParam(value = "schLogConfigurationDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schLogConfigurationDTO) throws URISyntaxException {
+                                                                                             @ApiParam(value = "schLogConfigurationDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schLogConfigurationDTO) throws URISyntaxException, CreateBucketException {
         log.debug("REST request to saveSchLogConfigurationDTO SchLogConfigurationDTO : {}, for Channel {} Network: {}", schLogConfigurationDTO, channelShortcut, networkShortcut);
         if (schLogConfigurationDTO.getId() == null) {
             return creatLogsConfigurationsForChannelUsingPOST(networkShortcut, channelShortcut, schLogConfigurationDTO);

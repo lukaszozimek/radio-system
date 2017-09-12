@@ -12,6 +12,7 @@ import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibFileItemRepository;
+import io.protone.library.util.MediaUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -52,6 +53,9 @@ public class LibFileItemService {
     private S3Client s3Client;
     @Inject
     private LibCloudObjectRepository cloudObjectRepository;
+    @Inject
+    private MediaUtils mediaUtils;
+
 
     public Slice<LibFileItem> findAllLibFileItems(String networkShortcut, String libraryShortcut, Pageable pageable) {
         return libFileItemRepository.findSliceByNetwork_ShortcutAndLibrary_Shortcut(networkShortcut, libraryShortcut, pageable);
@@ -63,7 +67,7 @@ public class LibFileItemService {
 
     public LibFileItem uploadFileItem(String networkShortcut, String libraryShortcut, MultipartFile file) throws IOException {
         LibFileItem libFileItem = new LibFileItem();
-        LibFileLibrary libFileLibrary = libraryService.findLibrary(libraryShortcut, networkShortcut);
+        LibFileLibrary libFileLibrary = libraryService.findLibrary(networkShortcut, libraryShortcut);
         ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
         byte[] inputStream = new byte[bais.available()];
         Supplier<ByteArrayInputStream> inputStreamSupplier = () -> new ByteArrayInputStream(inputStream);
@@ -90,7 +94,10 @@ public class LibFileItemService {
             libFileItem.setCloudObject(cloudObject);
             libFileItem.setLibrary(libFileLibrary);
             log.debug("Persisting LibDocumentObject: {}", libFileItem);
-            libFileItemRepository.saveAndFlush(libFileItem);
+            libFileItem.setIdx(mediaUtils.generateIdx(libFileLibrary));
+            libFileItem.network(libFileLibrary.getNetwork());
+            libFileItem.name(file.getOriginalFilename().split("\\.")[0]);
+            libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
         } catch (UploadException e) {
             log.error("There is a problem with uploading file to S3 Storage :{}", file.getOriginalFilename());
 

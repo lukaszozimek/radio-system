@@ -1,7 +1,9 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
-import io.protone.library.service.LibFileItemService;
+import io.protone.core.s3.exceptions.CreateBucketException;
+import io.protone.library.domain.LibFileLibrary;
+import io.protone.library.service.LibFileLibraryService;
 import io.protone.scheduler.domain.SchLogConfiguration;
 import io.protone.scheduler.repository.SchLogConfigurationRepository;
 import org.slf4j.Logger;
@@ -24,12 +26,20 @@ public class SchLogConfigurationService {
     private SchLogColumnService schLogColumnService;
 
     @Inject
-    private LibFileItemService libFileItemService;
+    private LibFileLibraryService libFileLibraryService;
 
 
     @Transactional
-    public SchLogConfiguration saveSchLogConfiguration(SchLogConfiguration schLogConfiguration) {
+    public SchLogConfiguration saveSchLogConfiguration(SchLogConfiguration schLogConfiguration) throws CreateBucketException {
         if (schLogConfiguration != null) {
+            if (schLogConfiguration.getId() == null) {
+                this.libFileLibraryService.createOrUpdateLibrary(new LibFileLibrary()
+                        .addChannel(schLogConfiguration.getChannel())
+                        .network(schLogConfiguration.getNetwork())
+                        .shortcut(schLogConfiguration.getExtension().toLowerCase())
+                        .name(schLogConfiguration.getExtension()).prefix(schLogConfiguration.getExtension().substring(1)));
+            }
+            schLogConfiguration.setExtension(schLogConfiguration.getExtension().toLowerCase());
             return schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         }
         return null;

@@ -7,8 +7,12 @@ import io.protone.application.web.api.scheduler.impl.SchLogConfigurationResource
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
+import io.protone.library.domain.LibFileLibrary;
+import io.protone.library.repository.LibFileLibraryRepository;
+import io.protone.library.service.LibFileLibraryService;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.domain.SchLogConfiguration;
 import io.protone.scheduler.mapper.SchLogConfigurationMapper;
@@ -17,6 +21,7 @@ import io.protone.scheduler.service.SchLogConfigurationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,12 +33,16 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -66,6 +75,11 @@ public class SchLogConfigurationResourceImplTest {
 
     @Autowired
     private CorNetworkService corNetworkService;
+
+    @Mock
+    private LibFileLibraryService libFileLibraryService;
+    @Autowired
+    private LibFileLibraryRepository libFileLibraryRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -100,16 +114,20 @@ public class SchLogConfigurationResourceImplTest {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws CreateBucketException {
         MockitoAnnotations.initMocks(this);
-        SchLogConfigurationResourceImpl traPlaylistResource = new SchLogConfigurationResourceImpl();
-        ReflectionTestUtils.setField(traPlaylistResource, "schLogConfigurationService", schLogConfigurationService);
-        ReflectionTestUtils.setField(traPlaylistResource, "schLogConfigurationMapper", schLogConfigurationMapper);
-        ReflectionTestUtils.setField(traPlaylistResource, "corNetworkService", corNetworkService);
-        ReflectionTestUtils.setField(traPlaylistResource, "corChannelService", corChannelService);
+        SchLogConfigurationResourceImpl schLogConfigurationResource = new SchLogConfigurationResourceImpl();
+        LibFileLibrary libFileLibrary = new LibFileLibrary();
+        libFileLibrary.setId(1L);
+        when(libFileLibraryService.createOrUpdateLibrary(any())).thenReturn(libFileLibrary);
+        ReflectionTestUtils.setField(schLogConfigurationService, "libFileLibraryService", libFileLibraryService);
+        ReflectionTestUtils.setField(schLogConfigurationResource, "schLogConfigurationService", schLogConfigurationService);
+        ReflectionTestUtils.setField(schLogConfigurationResource, "schLogConfigurationMapper", schLogConfigurationMapper);
+        ReflectionTestUtils.setField(schLogConfigurationResource, "corNetworkService", corNetworkService);
+        ReflectionTestUtils.setField(schLogConfigurationResource, "corChannelService", corChannelService);
 
 
-        this.restSchLogConfigurationMockMvc = MockMvcBuilders.standaloneSetup(traPlaylistResource)
+        this.restSchLogConfigurationMockMvc = MockMvcBuilders.standaloneSetup(schLogConfigurationResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
                 .setMessageConverters(jacksonMessageConverter).build();

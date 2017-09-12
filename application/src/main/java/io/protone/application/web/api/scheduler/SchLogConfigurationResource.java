@@ -1,6 +1,7 @@
 package io.protone.application.web.api.scheduler;
 
 
+import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.api.dto.thin.SchLogConfigurationThinDTO;
 import io.swagger.annotations.*;
@@ -49,7 +50,7 @@ public interface SchLogConfigurationResource {
             method = RequestMethod.POST)
     ResponseEntity<SchLogConfigurationDTO> creatLogsConfigurationsForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException;
+                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException, CreateBucketException;
 
     @ApiOperation(value = "deleteSchedulerPlaylistForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -92,7 +93,7 @@ public interface SchLogConfigurationResource {
             method = RequestMethod.PUT)
     ResponseEntity<SchLogConfigurationDTO> updateLogsConfigurationsForChannelUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException;
+                                                                              @ApiParam(value = "schScheduleDTO", required = true) @Valid @RequestBody SchLogConfigurationDTO schScheduleDTO) throws URISyntaxException, CreateBucketException;
 
 
 }

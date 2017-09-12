@@ -56,8 +56,8 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
                                                                          @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                          @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to get SchGrid : {}, for Network: {}", shortName, networkShortcut);
-        SchGrid entity = schGridService.findSchGridForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
-        SchGridDTO response = schGridMapper.DB2DTO(entity);
+
+        SchGridDTO response = schGridService.findSchGridForNetworkAndChannelAndShortNameDTO(networkShortcut, channelShortcut, shortName);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,

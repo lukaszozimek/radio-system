@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -50,8 +51,8 @@ public class SchLogService {
 
         if (multipartFile != null) {
             return Arrays.asList(multipartFile).stream().map(multipartFile1 -> {
-
-                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1.getOriginalFilename().split("\\.")[1]);
+                String extension = multipartFile1.getOriginalFilename().split("\\.")[1].toLowerCase();
+                SchLogConfiguration schLogConfiguration = schLogConfigurationService.findOneSchlogConfigurationByNetworkAndChannelAndExtension(networkShortcut.getShortcut(), channelShortcut.getShortcut(), extension);
                 if (schLogConfiguration != null) {
                     SchLog logtoSave = new SchLog();
                     logtoSave.network(networkShortcut);
@@ -59,14 +60,14 @@ public class SchLogService {
                     logtoSave.setSchLogConfiguration(schLogConfiguration);
                     logtoSave.setDate(LocalDate.parse(multipartFile1.getOriginalFilename().split("\\.")[0], DateTimeFormatter.ofPattern(schLogConfiguration.getPattern())));
                     try {
-                        logtoSave.setLibFileItem(libFileItemService.uploadFileItem(networkShortcut.getShortcut(), channelShortcut.getShortcut(), multipartFile1));
+                        logtoSave.setLibFileItem(libFileItemService.uploadFileItem(networkShortcut.getShortcut(), extension.toLowerCase(), multipartFile1));
                     } catch (IOException e) {
                         log.error("There was a problem with storing Item in Storage");
                     }
                     return schLogRepository.saveAndFlush(logtoSave);
 
                 }
-                return null;
+                throw new BadRequestException("There is no configuration for this Log");
             }).collect(toList());
         }
         return null;
