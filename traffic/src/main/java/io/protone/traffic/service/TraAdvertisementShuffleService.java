@@ -1,7 +1,7 @@
 package io.protone.traffic.service;
 
 
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraShuffleAdvertisementDTO;
 import io.protone.traffic.domain.TraPlaylist;
 import io.protone.traffic.service.shuffle.TraAdvertismentShuffle;
@@ -27,7 +27,7 @@ public class TraAdvertisementShuffleService {
     private TraPlaylistService traPlaylistService;
 
     @Inject
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
     @Autowired
     @Qualifier("traAdvertismentShuffleDefault")
     private TraAdvertismentShuffle traAdvertismentShuffleDefault;

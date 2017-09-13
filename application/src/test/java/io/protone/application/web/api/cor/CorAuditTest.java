@@ -7,7 +7,7 @@ import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.impl.CorChannelResourceImpl;
 import io.protone.application.web.api.cor.impl.CorNetworkResourceImpl;
 import io.protone.application.web.api.cor.impl.CorUserJWTController;
-import io.protone.application.web.api.library.impl.LibraryResourceImpl;
+import io.protone.application.web.api.library.impl.LibraryMediaResourceImpl;
 import io.protone.application.web.rest.JWTToken;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.application.web.rest.vm.LoginVM;
@@ -19,8 +19,8 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorImageItemService;
 import io.protone.core.service.CorNetworkService;
-import io.protone.library.mapper.LibLibraryMapper;
-import io.protone.library.service.LibLibraryService;
+import io.protone.library.mapper.LibLibraryMediaMapper;
+import io.protone.library.service.LibLibraryMediaService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -81,10 +81,10 @@ public class CorAuditTest {
     private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
-    private LibLibraryService libLibraryService;
+    private LibLibraryMediaService libLibraryMediaService;
 
     @Autowired
-    private LibLibraryMapper libLibraryMapper;
+    private LibLibraryMediaMapper libLibraryMediaMapper;
 
     @Autowired
     private CorNetworkService corNetworkService;
@@ -107,9 +107,9 @@ public class CorAuditTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        LibraryResourceImpl libLibraryResource = new LibraryResourceImpl();
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryService", libLibraryService);
-        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMapper", libLibraryMapper);
+        LibraryMediaResourceImpl libLibraryResource = new LibraryMediaResourceImpl();
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaService", libLibraryMediaService);
+        ReflectionTestUtils.setField(libLibraryResource, "libLibraryMediaMapper", libLibraryMediaMapper);
         ReflectionTestUtils.setField(libLibraryResource, "corNetworkService", corNetworkService);
 
         CorUserJWTController corUserJWTController = new CorUserJWTController(tokenProvider, authenticationManager);

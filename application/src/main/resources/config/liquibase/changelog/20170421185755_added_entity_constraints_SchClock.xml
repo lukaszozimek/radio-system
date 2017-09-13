@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Clock.
+    -->
+    <changeSet id="20170720190703-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="sch_schedule_id"
+                                 baseTableName="sch_clock"
+                                 constraintName="fk_clock_sch_schedule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_schedule"/>
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="sch_clock"
+                                 constraintName="fk_sch_clock_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="clock_category_id"
+                                 baseTableName="sch_clock"
+                                 constraintName="fk_sch_clock_clock_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="sch_clock"
+                                 constraintName="fk_sch_clock_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="sch_clock"
+                                 constraintName="fk_sch_clock_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="sch_clock"
+                                 constraintName="fk_sch_clock_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+    </changeSet>
+</databaseChangeLog>

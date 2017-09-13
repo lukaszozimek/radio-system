@@ -9,8 +9,8 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.traffic.domain.TraAdvertisement;
@@ -31,7 +31,6 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -73,7 +72,7 @@ public class TraOrderServiceTest {
 
     private PodamFactory factory;
     private CorChannel corChannel;
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
     private TraAdvertisement traAdvertisement;
 
     @Before
@@ -96,14 +95,14 @@ public class TraOrderServiceTest {
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
 
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
-        libLibrary.setShortcut("ppp");
-        libLibrary.network(corNetwork);
-        libLibrary.addChannel(corChannel);
-        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
+        libMediaLibrary.setShortcut("ppp");
+        libMediaLibrary.network(corNetwork);
+        libMediaLibrary.addChannel(corChannel);
+        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
         LibMediaItem libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
         libMediaItemToShuffle.setNetwork(corNetwork);
-        libMediaItemToShuffle.setLibrary(libLibrary);
+        libMediaItemToShuffle.setLibrary(libMediaLibrary);
         libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle);
 
         traAdvertisement = factory.manufacturePojo(TraAdvertisement.class);

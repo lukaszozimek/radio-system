@@ -1,10 +1,11 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,27 +15,31 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchClockDTO {
+public class SchClockDTO extends SchTimeParamsDTO {
 
     @PodamExclude
-    @JsonProperty("blocks")
     private List<SchBlockDTO> blocks = new ArrayList<SchBlockDTO>();
 
     @PodamExclude
-    @JsonProperty("emissions")
     private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
 
-    @JsonProperty("id")
-    private Long id = null;
-
-    @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("timeParams")
-    private SchTimeParamsDTO timeParams = null;
 
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
+    private CorDictionaryDTO clockCategory;
+
+
+    private String shortName = null;
+
+    public SchClockDTO endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
+        return this;
+    }
+
+    public SchClockDTO startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
+    }
 
     public SchClockDTO blocks(List<SchBlockDTO> blocks) {
         this.blocks = blocks;
@@ -123,44 +128,22 @@ public class SchClockDTO {
         this.name = name;
     }
 
-    public SchClockDTO timeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
+    public CorDictionaryDTO getClockCategory() {
+        return clockCategory;
     }
 
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
-        return timeParams;
+    public void setClockCategory(CorDictionaryDTO clockCategory) {
+        this.clockCategory = clockCategory;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
+
+    public String getShortName() {
+        return shortName;
     }
 
-    public SchClockDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
-
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -174,14 +157,12 @@ public class SchClockDTO {
         return Objects.equals(this.blocks, schClockDTO.blocks) &&
                 Objects.equals(this.emissions, schClockDTO.emissions) &&
                 Objects.equals(this.id, schClockDTO.id) &&
-                Objects.equals(this.name, schClockDTO.name) &&
-                Objects.equals(this.timeParams, schClockDTO.timeParams) &&
-                Objects.equals(this.queueParams, schClockDTO.queueParams);
+                Objects.equals(this.name, schClockDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blocks, emissions, id, name, timeParams, queueParams);
+        return Objects.hash(blocks, emissions, id, name);
     }
 
     @Override
@@ -193,8 +174,7 @@ public class SchClockDTO {
         sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+        sb.append("    clockCategory: ").append(toIndentedString(clockCategory)).append("\n");
         sb.append("}");
         return sb.toString();
     }

@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
@@ -19,18 +18,14 @@ import java.util.Set;
  * A Playlist.
  */
 @Entity
-@Table(name = "sch_playlist")
+@Table(name = "sch_playlist", uniqueConstraints = @UniqueConstraint(columnNames = {"date", "channel_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchPlaylist  extends AbstractAuditingEntity implements Serializable {
+public class SchPlaylist extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
-    @Column(name = "jhi_date")
+    @Column(name = "date")
     private LocalDate date;
 
     @PodamExclude
@@ -40,6 +35,7 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
     private Set<SchEmission> emissions = new HashSet<>();
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
@@ -92,8 +88,13 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
         emission.setPlaylist(null);
         return this;
     }
+
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
     }
 
     public SchPlaylist network(CorNetwork network) {
@@ -101,12 +102,12 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchPlaylist channel(CorChannel channel) {
@@ -114,9 +115,6 @@ public class SchPlaylist  extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

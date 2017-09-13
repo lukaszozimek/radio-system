@@ -65,10 +65,10 @@ public class SchBlockMapperTest {
         //Fill DTO instance
         blockDTO = factory.manufacturePojo(SchBlockDTO.class);
 
+
         SchBlockDTO childBlockDTO = factory.manufacturePojo(SchBlockDTO.class);
         childBlockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 1 @ childBlock
         blockDTO.addBlocksItem(childBlockDTO);
-
         blockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 1 @ rootBlock
         blockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 2 @ rootBlock
         blockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 3 @ rootBlock
@@ -78,20 +78,22 @@ public class SchBlockMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchBlockDTO dto = blockMapper.toDto(block);
+        SchBlockDTO dto = blockMapper.DB2DTO(block);
 
         assertNotNull(dto.getBlocks());
         assertNotNull(dto.getEmissions());
         assertNotNull(dto.getLength());
         assertNotNull(dto.getName());
-        //assertNotNull(dto.getQueueParams());
         assertNotNull(dto.getEventType());
-        //assertNotNull(dto.getTimeParams());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchBlockDTO> dtos = blockMapper.toDto(blocks);
+        List<SchBlockDTO> dtos = blockMapper.DBs2DTOs(blocks);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -100,31 +102,34 @@ public class SchBlockMapperTest {
             assertNotNull(dto.getEmissions());
             assertNotNull(dto.getLength());
             assertNotNull(dto.getName());
-            //assertNotNull(dto.getQueueParams());
             assertNotNull(dto.getEventType());
-            //assertNotNull(dto.getTimeParams());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchBlock entity = blockMapper.toEntity(blockDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchBlock entity = blockMapper.DTO2DB(blockDTO, network, corChannel);
 
         assertNotNull(entity.getBlocks());
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getLength());
         assertNotNull(entity.getName());
-        assertNotNull(entity.getQueueParams());
         assertNotNull(entity.getEventType());
-        assertNotNull(entity.getTimeParams());
-        assertNotNull(entity.getNetwork());
-        assertNotNull(entity.getChannel());
+
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
 
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchBlock> entities = blockMapper.toEntity(blockDTOs, network, corChannel);
+        List<SchBlock> entities = blockMapper.DTOs2DBs(blockDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -133,10 +138,11 @@ public class SchBlockMapperTest {
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getLength());
             assertNotNull(entity.getName());
-            assertNotNull(entity.getQueueParams());
             assertNotNull(entity.getEventType());
-            assertNotNull(entity.getTimeParams());
-
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

@@ -14,8 +14,8 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.traffic.api.dto.TraOrderDTO;
@@ -115,7 +115,7 @@ public class TrafficOrderResourceImplTest {
 
     private LibMediaItem libMediaItem;
 
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
 
     private CrmAccount crmAccount;
     private PodamFactoryImpl factory;
@@ -156,13 +156,13 @@ public class TrafficOrderResourceImplTest {
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
 
-        libLibrary = new LibLibrary();
-        libLibrary.setId(1L);
-        libLibrary.setShortcut("tes");
+        libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(1L);
+        libMediaLibrary.setShortcut("tes");
 
         libMediaItem = LibMediaItemResourceTest.createEntity(em);
         libMediaItem.setNetwork(corNetwork);
-        libMediaItem.setLibrary(libLibrary);
+        libMediaItem.setLibrary(libMediaLibrary);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
         crmAccount = crmAccountRepository.saveAndFlush(CrmCustomerResourceImplTest.createEntity(em).network(corNetwork));

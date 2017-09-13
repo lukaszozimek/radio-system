@@ -1,12 +1,15 @@
 package io.protone.application.web.rest.mapper;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.to.delete.factory.SchGridFactory;
+import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
+import io.protone.scheduler.domain.SchGridClockConfiguration;
 import io.protone.scheduler.mapper.SchGridMapper;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +29,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class SchGridMapperTest {
-    
+
     private static final PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
@@ -39,6 +42,7 @@ public class SchGridMapperTest {
     private List<SchGrid> grids = new ArrayList<>();
 
     private List<SchGridDTO> gridDTOs = new ArrayList<>();
+
     private CorNetwork network;
     private CorChannel corChannel;
 
@@ -47,60 +51,65 @@ public class SchGridMapperTest {
         corChannel = factory.manufacturePojo(CorChannel.class);
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
-        grid = SchGridFactory.produceEntity();
+        grid = factory.manufacturePojo(SchGrid.class);
+        grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockConfiguration.class)));
         grids.add(grid);
-        gridDTO = SchGridFactory.produceDTO();
+        gridDTO = factory.manufacturePojo(SchGridDTO.class);
+        gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchGridClockConfigurationDTO.class)));
         gridDTOs.add(gridDTO);
     }
 
     @Test
     public void toDTO() throws Exception {
-        SchGridDTO dto = gridMapper.toDto(grid);
-        assertEquals(dto.getClocks().size(), 3);
+        SchGridDTO dto = gridMapper.DB2DTO(grid);
         assertNotNull(dto.getName());
         assertNotNull(dto.getDayOfWeek());
+        assertNotNull(dto.getShortName());
+        assertNotNull(dto.getDefaultGrid());
+        assertNotNull(dto.getClocks());
         assertNotNull(dto.getShortName());
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchGridDTO> dtos = gridMapper.toDto(grids);
+        List<SchGridDTO> dtos = gridMapper.DBs2DTOs(grids);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
-            assertEquals(dto.getClocks().size(), 3);
             assertNotNull(dto.getName());
+            assertNotNull(dto.getDefaultGrid());
+            assertNotNull(dto.getShortName());
             assertNotNull(dto.getDayOfWeek());
             assertNotNull(dto.getShortName());
+            assertNotNull(dto.getClocks());
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchGrid entity = gridMapper.toEntity(gridDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchGrid entity = gridMapper.DTO2DB(gridDTO, network, corChannel);
 
-        assertEquals(entity.getClocks().size(), 3);
+        assertNotNull(entity.getClocks());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDayOfWeek());
         assertNotNull(entity.getShortName());
-
+        assertNotNull(entity.getClocks());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchGrid> entities = gridMapper.toEntity(gridDTOs, network, corChannel);
+        List<SchGrid> entities = gridMapper.DTOs2DBs(gridDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
-            assertEquals(entity.getClocks().size(), 3);
             assertNotNull(entity.getName());
             assertNotNull(entity.getDayOfWeek());
             assertNotNull(entity.getShortName());
-
+            assertNotNull(entity.getClocks());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

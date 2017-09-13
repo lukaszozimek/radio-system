@@ -1,8 +1,8 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -10,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,16 +19,11 @@ import java.util.Set;
  * A Clock.
  */
 @Entity
-@Table(name = "sch_clock")
+@Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock  extends AbstractAuditingEntity implements Serializable {
+public class SchClock extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -35,19 +31,14 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
+
     @PodamExclude
     @ManyToOne
-    private SchGrid grid;
+    private SchSchedule schSchedule;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
-    private SchQueueParams queueParams;
-
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
-    private SchTimeParams timeParams;
+    private CorDictionary clockCategory;
 
     @PodamExclude
     @OneToMany(mappedBy = "clock")
@@ -61,7 +52,9 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
 
+
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
 
@@ -89,6 +82,7 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
         this.shortName = shortName;
         return this;
     }
+
     public String getName() {
         return name;
     }
@@ -102,44 +96,19 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public SchGrid getGrid() {
-        return grid;
+    public SchSchedule getSchSchedule() {
+        return schSchedule;
     }
 
-    public void setGrid(SchGrid grid) {
-        this.grid = grid;
+    public void setSchSchedule(SchSchedule schSchedule) {
+        this.schSchedule = schSchedule;
     }
 
-    public SchClock grid(SchGrid grid) {
-        this.grid = grid;
+    public SchClock grid(SchSchedule schSchedule) {
+        this.schSchedule = schSchedule;
         return this;
     }
 
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchClock queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    public SchTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchClock timeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
 
     public Set<SchBlock> getBlocks() {
         return blocks;
@@ -191,17 +160,21 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchClock network(CorNetwork network) {
         this.network = network;
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchClock channel(CorChannel channel) {
@@ -209,8 +182,44 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
+    public CorDictionary getClockCategory() {
+        return clockCategory;
+    }
+
+    public void setClockCategory(CorDictionary clockCategory) {
+        this.clockCategory = clockCategory;
+    }
+
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public SchClock sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
+    public SchClock length(Long length) {
+        this.length = length;
+        return this;
+    }
+
+    public SchClock startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
     }
 
     @Override
@@ -235,11 +244,18 @@ public class SchClock  extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Clock{" +
-                "id=" + getId() +
-                ", name='" + getName() + "'" +
-                "}";
+        return "SchClock{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", schSchedule=" + schSchedule +
+                ", sequence=" + sequence +
+                ", length=" + length +
+                ", clockCategory=" + clockCategory +
+                ", blocks=" + blocks +
+                ", emissions=" + emissions +
+                ", network=" + network +
+                ", channel=" + channel +
+                '}';
     }
-
-
 }

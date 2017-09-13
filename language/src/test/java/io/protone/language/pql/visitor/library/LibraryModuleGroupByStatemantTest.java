@@ -60,7 +60,7 @@ public class LibraryModuleGroupByStatemantTest {
     public void simpleLibraryQuery() throws IOException {
 
         String simpleQuery = "Library  Library GROUP BY network";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary l GROUP BY l.network";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibMediaLibrary l GROUP BY l.network";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

@@ -1,7 +1,6 @@
 package io.protone.language.service.pql;
 
 import io.protone.core.domain.enumeration.CorEntityTypeEnum;
-import io.protone.library.service.LibItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

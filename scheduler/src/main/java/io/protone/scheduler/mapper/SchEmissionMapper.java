@@ -10,14 +10,32 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Mapper for the entity Emission and its DTO EmissionDTO.
  */
-/*
-FIXME: LibItem mapper refers to class in inner module which will become separate microservice in near future
- */
-@Mapper(componentModel = "spring", uses = {SchPlaylistMapper.class, SchClockMapper.class, LibMediaItemThinMapper.class, SchQueueParamsMapper.class, SchTimeParamsMapper.class, SchBlockMapper.class,})
-public interface SchEmissionMapper extends SchEntityMapper<SchEmissionDTO, SchEmission> {
+
+@Mapper(componentModel = "spring", uses = {SchPlaylistMapper.class, SchClockMapper.class, LibMediaItemThinMapper.class,  SchBlockMapper.class,})
+public interface SchEmissionMapper {
+     SchEmission DTO2DB(SchEmissionDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+
+     SchEmissionDTO DB2DTO(SchEmission entity);
+
+     List<SchEmissionDTO> DBs2DTOs(List<SchEmission> entityList);
+
+    default List<SchEmission> DTOs2DBs(List<SchEmissionDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
+        List<SchEmission> eList = new ArrayList<>();
+        if (dList.isEmpty() || dList == null) {
+            return null;
+        }
+        for (SchEmissionDTO dto : dList) {
+            eList.add(DTO2DB(dto, network, corChannel));
+        }
+        return eList;
+    }
+
     @AfterMapping
     default void schSchEmissionToSchEmissionAfterMapping(SchEmissionDTO dto, @MappingTarget SchEmission entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);

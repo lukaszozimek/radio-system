@@ -1,7 +1,9 @@
 package io.protone.application.web.rest.mapper;
 
 import io.protone.application.ProtoneApp;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchClockDTO;
@@ -60,7 +62,7 @@ public class SchClockMapperTest {
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ clock
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 2 @ clock
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 3 @ clock
-
+        clock.setClockCategory(factory.manufacturePojo(CorDictionary.class));
         clocks.add(clock);
 
         // Fill DTO
@@ -74,6 +76,7 @@ public class SchClockMapperTest {
         clockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 2 @ clock
         clockDTO.addEmissionsItem(factory.manufacturePojo(SchEmissionDTO.class)); //Emission 3 @ clock
 
+        clockDTO.setClockCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         clockDTOs.add(clockDTO);
     }
 
@@ -102,19 +105,25 @@ public class SchClockMapperTest {
 
     @Test
     public void toDTO() throws Exception {
-        SchClockDTO dto = clockMapper.toDto(clock);
+        SchClockDTO dto = clockMapper.DB2DTO(clock);
 
         assertEquals(dto.getBlocks().size(), 3);
         assertEquals(dto.getEmissions().size(), 3);
         assertNotNull(dto.getName());
         assertNotNull(dto.getName());
-        //assertNotNull(dto.getQueueParams());
-        //assertNotNull(dto.getTimeParams());
+        assertNotNull(dto.getSequence());
+        assertNotNull(dto.getLength());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
+        assertNotNull(dto.getClockCategory());
+
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchClockDTO> dtos = clockMapper.toDto(clocks);
+        List<SchClockDTO> dtos = clockMapper.DBs2DTOs(clocks);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -123,29 +132,39 @@ public class SchClockMapperTest {
             assertEquals(dto.getEmissions().size(), 3);
             assertNotNull(dto.getName());
             assertNotNull(dto.getName());
-            //assertNotNull(dto.getQueueParams());
-            //assertNotNull(dto.getTimeParams());
+            assertNotNull(dto.getSequence());
+            assertNotNull(dto.getLength());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
+            assertNotNull(dto.getClockCategory());
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchClock entity = clockMapper.toEntity(clockDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchClock entity = clockMapper.DTO2DB(clockDTO, network, corChannel);
 
         assertEquals(entity.getBlocks().size(), 3);
         assertEquals(entity.getEmissions().size(), 3);
         assertNotNull(entity.getName());
         assertNotNull(entity.getName());
-        assertNotNull(entity.getQueueParams());
-        assertNotNull(entity.getTimeParams());
+        assertNotNull(entity.getSequence());
+        assertNotNull(entity.getLength());
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
 
+        assertNotNull(entity.getClockCategory());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchClock> entities = clockMapper.toEntity(clockDTOs, network, corChannel);
+        List<SchClock> entities = clockMapper.DTOs2DBs(clockDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -154,9 +173,14 @@ public class SchClockMapperTest {
             assertEquals(entity.getEmissions().size(), 3);
             assertNotNull(entity.getName());
             assertNotNull(entity.getName());
-            assertNotNull(entity.getQueueParams());
-            assertNotNull(entity.getTimeParams());
-
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getLength());
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getClockCategory());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

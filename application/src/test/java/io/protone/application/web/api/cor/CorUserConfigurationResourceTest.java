@@ -277,7 +277,7 @@ public class CorUserConfigurationResourceTest {
         // set the field null
         corUser.setLogin(null);
 
-        // Create the LibLibrary, which fails.
+        // Create the LibMediaLibrary, which fails.
         CorUserDTO corDictionaryDTO = corUserMapper.DB2DTO(corUser.networks(Sets.newLinkedHashSet(corNetwork)));
         MockMultipartFile emptyFile = new MockMultipartFile("avatar", new byte[0]);
         MockMultipartFile jsonFile = new MockMultipartFile("corUserDTO", "",

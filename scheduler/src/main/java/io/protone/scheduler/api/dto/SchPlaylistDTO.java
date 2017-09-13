@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchPlaylistDTO {
+public class SchPlaylistDTO extends SchBaseDTO {
 
     @PodamExclude
     @JsonProperty("emissions")
@@ -26,8 +26,6 @@ public class SchPlaylistDTO {
     @JsonProperty("date")
     private LocalDate date = null;
 
-    @JsonProperty("id")
-    private Long id = null;
 
     public SchPlaylistDTO emissions(List<SchEmissionDTO> emissions) {
         this.emissions = emissions;

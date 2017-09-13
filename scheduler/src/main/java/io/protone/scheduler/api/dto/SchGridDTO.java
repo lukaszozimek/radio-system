@@ -1,12 +1,12 @@
 package io.protone.scheduler.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
+import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,17 +16,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchGridDTO {
+public class SchGridDTO  extends SchBaseDTO{
 
     @PodamExclude
     @JsonProperty("clocks")
-    private List<SchClockThinDTO> clocks = new ArrayList<SchClockThinDTO>();
+    private List<SchGridClockConfigurationDTO> clocks = new ArrayList<SchGridClockConfigurationDTO>();
 
     @JsonProperty("dayOfWeek")
-    private DayOfWeekEnum dayOfWeek = null;
-
-    @JsonProperty("id")
-    private Long id = null;
+    private CorDayOfWeekEnum dayOfWeek = null;
 
     @JsonProperty("name")
     private String name = null;
@@ -34,19 +31,39 @@ public class SchGridDTO {
     @JsonProperty("shortName")
     private String shortName = null;
 
-    public SchGridDTO clocks(List<SchClockThinDTO> clocks) {
+
+    @JsonProperty("default")
+    private Boolean defaultGrid = null;
+
+    private CoreUserThinDTO createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private CoreUserThinDTO lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
+
+    public SchGridDTO clocks(List<SchGridClockConfigurationDTO> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGridDTO addClock(SchClockThinDTO clock) {
+    public SchGridDTO addClock(SchGridClockConfigurationDTO clock) {
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGridDTO removeClock(SchClockThinDTO clock) {
+    public SchGridDTO removeClock(SchGridClockConfigurationDTO clock) {
         this.clocks.remove(clock);
         return this;
+    }
+
+    public Boolean getDefaultGrid() {
+        return defaultGrid;
+    }
+
+    public void setDefaultGrid(Boolean defaultGrid) {
+        this.defaultGrid = defaultGrid;
     }
 
     /**
@@ -55,15 +72,15 @@ public class SchGridDTO {
      * @return clocks
      **/
     @ApiModelProperty(value = "")
-    public List<SchClockThinDTO> getClocks() {
+    public List<SchGridClockConfigurationDTO> getClocks() {
         return clocks;
     }
 
-    public void setClocks(List<SchClockThinDTO> clocks) {
+    public void setClocks(List<SchGridClockConfigurationDTO> clocks) {
         this.clocks = clocks;
     }
 
-    public SchGridDTO dayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public SchGridDTO dayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         return this;
     }
@@ -74,11 +91,11 @@ public class SchGridDTO {
      * @return dayOfWeek
      **/
     @ApiModelProperty(value = "")
-    public DayOfWeekEnum getDayOfWeek() {
+    public CorDayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public void setDayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
@@ -112,8 +129,6 @@ public class SchGridDTO {
      * @return name
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 0, max = 100)
     public String getName() {
         return name;
     }
@@ -133,14 +148,44 @@ public class SchGridDTO {
      * @return shortName
      **/
     @ApiModelProperty(required = true, value = "")
-    @NotNull
-    @Size(min = 0, max = 3)
     public String getShortName() {
         return shortName;
     }
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    public CoreUserThinDTO getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(CoreUserThinDTO createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public CoreUserThinDTO getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(CoreUserThinDTO lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override
@@ -164,20 +209,6 @@ public class SchGridDTO {
         return Objects.hash(clocks, dayOfWeek, id, name, shortName);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SchGridDTO {\n");
-
-        sb.append("    clocks: ").append(toIndentedString(clocks)).append("\n");
-        sb.append("    dayOfWeek: ").append(toIndentedString(dayOfWeek)).append("\n");
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    shortName: ").append(toIndentedString(shortName)).append("\n");
-        sb.append("}");
-        return sb.toString();
-    }
-
     /**
      * Convert the given object to string with each line indented by 4 spaces
      * (except the first line).
@@ -189,5 +220,16 @@ public class SchGridDTO {
         return o.toString().replace("\n", "\n    ");
     }
 
+    @Override
+    public String toString() {
+        return "SchGridDTO{" +
+                "clocks=" + clocks +
+                ", dayOfWeek=" + dayOfWeek +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", deafualtValue=" + defaultGrid +
+                '}';
+    }
 }
 

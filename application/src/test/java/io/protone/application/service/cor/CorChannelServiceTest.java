@@ -30,7 +30,6 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
@@ -69,8 +68,8 @@ public class CorChannelServiceTest {
     @Before
     public void initPojos() throws Exception {
         MockitoAnnotations.initMocks(this);
-        doNothing().when(s3Client).upload(anyString(), anyString(), anyObject(), anyString());
-        when(s3Client.getCover(anyString(), anyString())).thenReturn("test");
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyString(), anyObject(), anyString());
+        when(s3Client.getCover(anyString(), anyString(), anyString())).thenReturn("test");
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("admin", "admin"));
         SecurityContextHolder.setContext(securityContext);

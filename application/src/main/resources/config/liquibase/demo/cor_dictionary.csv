@@ -55,3 +55,17 @@ id;name;description;seq_number;dictionary_type_name;module_name;network_id;creat
 40;Przyjęte; ;0;traOrderStatus;traffic;1;1;1
 41;Zaprogramowane; ;0;traOrderStatus;traffic;1;1;1
 
+42;Importy logów; ;0;eventCategory;scheduler;1;1;1
+43;News; ;0;eventCategory;scheduler;1;1;1
+44;Impreza FM; ;0;eventCategory;scheduler;1;1;1
+
+45;Poniedziałkowe; ;0;clockCategory;scheduler;1;1;1
+46;Wtorkowe; ;0;clockCategory;scheduler;1;1;1
+47;Środowe; ;0;clockCategory;scheduler;1;1;1
+
+48;Czwartkowe; ;0;clockCategory;scheduler;1;1;1
+49;Piątkowe; ;0;clockCategory;scheduler;1;1;1
+50;Sobotnie; ;0;clockCategory;scheduler;1;1;1
+
+51;Zapasowe; ;0;gridCategory;scheduler;1;1;1
+

@@ -1,10 +1,9 @@
 package io.protone.scheduler.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.domain.enumeration.DayOfWeekEnum;
+import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -19,20 +18,18 @@ import java.util.Set;
  * A Grid.
  */
 @Entity
-@Table(name = "sch_grid")
+@Table(name = "sch_grid", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"})
+})
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchGrid  extends AbstractAuditingEntity implements Serializable {
+public class SchGrid extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "day_of_week")
-    private DayOfWeekEnum dayOfWeek;
+    private CorDayOfWeekEnum dayOfWeek;
 
     @Column(name = "name")
     private String name;
@@ -40,22 +37,27 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
     @Column(name = "short_name")
     private String shortName;
 
-    @PodamExclude
-    @ManyToOne
-    private SchSchedule schedule;
-
-    @PodamExclude
-    @OneToMany(mappedBy = "grid")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchClock> clocks = new HashSet<>();
+    @Column(name = "default_grid")
+    private Boolean defaultGrid = null;
 
     @ManyToOne
+    @PodamExclude
+    private CorDictionary gridCategory;
+
+    @PodamExclude
+    @OneToMany(mappedBy = "schGrid")
+    private Set<SchGridClockConfiguration> clocks = new HashSet<>();
+
+    @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
     private CorChannel channel;
+
+    @Transient
+    private Set<SchClockConfiguration> internalClockcs;
 
     public Long getId() {
         return id;
@@ -66,15 +68,15 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
     }
 
 
-    public DayOfWeekEnum getDayOfWeek() {
+    public CorDayOfWeekEnum getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public void setDayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public SchGrid dayOfWeek(DayOfWeekEnum dayOfWeek) {
+    public SchGrid dayOfWeek(CorDayOfWeekEnum dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
         return this;
     }
@@ -105,43 +107,53 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public SchSchedule getSchedule() {
-        return schedule;
+    public Boolean getDefaultGrid() {
+        return defaultGrid;
     }
 
-    public void setSchedule(SchSchedule schedule) {
-        this.schedule = schedule;
+    public void setDefaultGrid(Boolean defaultGrid) {
+        this.defaultGrid = defaultGrid;
     }
 
-    public SchGrid schedule(SchSchedule schedule) {
-        this.schedule = schedule;
-        return this;
+    public CorDictionary getGridCategory() {
+        return gridCategory;
     }
 
-    public Set<SchClock> getClocks() {
+    public void setGridCategory(CorDictionary gridCategory) {
+        this.gridCategory = gridCategory;
+    }
+
+    public Set<SchGridClockConfiguration> getClocks() {
         return clocks;
     }
 
-    public void setClocks(Set<SchClock> clocks) {
+    public void setClocks(Set<SchGridClockConfiguration> clocks) {
         this.clocks = clocks;
     }
 
-    public SchGrid clocks(Set<SchClock> clocks) {
+    public SchGrid clocks(Set<SchGridClockConfiguration> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGrid addClock(SchClock clock) {
+    public SchGrid addClock(SchGridClockConfiguration clock) {
+        clock.grid(this);
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGrid removeClock(SchClock clock) {
+    public SchGrid removeClock(SchGridClockConfiguration clock) {
+        clock.grid(null);
         this.clocks.remove(clock);
         return this;
     }
+
     public CorNetwork getNetwork() {
         return network;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
     }
 
     public SchGrid network(CorNetwork network) {
@@ -149,12 +161,12 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchGrid channel(CorChannel channel) {
@@ -162,9 +174,6 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -193,5 +202,19 @@ public class SchGrid  extends AbstractAuditingEntity implements Serializable {
                 ", name='" + getName() + "'" +
                 ", shortName='" + getShortName() + "'" +
                 "}";
+    }
+
+
+    public Set<SchClockConfiguration> getInternalClockcs() {
+        return internalClockcs;
+    }
+
+    public void setInternalClockcs(Set<SchClockConfiguration> internalClockcs) {
+        this.internalClockcs = internalClockcs;
+    }
+
+    public SchGrid internalClockcs(Set<SchClockConfiguration> internalClockcs) {
+        this.internalClockcs = internalClockcs;
+        return this;
     }
 }

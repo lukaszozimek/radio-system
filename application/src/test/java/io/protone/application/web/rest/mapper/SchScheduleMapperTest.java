@@ -46,44 +46,44 @@ public class SchScheduleMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schedule = factory.manufacturePojo(SchSchedule.class);
-        schedule.setGrids(null);
+        schedule.setClocks(null);
         schedules.add(schedule);
         scheduleDTO = factory.manufacturePojo(SchScheduleDTO.class);
-        scheduleDTO.setSchGrid(null);
+        scheduleDTO.setSchClockDTOS(null);
         scheduleDTOs.add(scheduleDTO);
     }
 
     @Test
     public void toDTO() throws Exception {
-        SchScheduleDTO dto = scheduleMapper.toDto(schedule);
+        SchScheduleDTO dto = scheduleMapper.DB2DTO(schedule);
 
         assertNotNull(dto.getDate());
-        //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+        //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchScheduleDTO> dtos = scheduleMapper.toDto(schedules);
+        List<SchScheduleDTO> dtos = scheduleMapper.DBs2DTOs(schedules);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getDate());
-            //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+            //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchSchedule entity = scheduleMapper.toEntity(scheduleDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchSchedule entity = scheduleMapper.DTO2DB(scheduleDTO, network, corChannel);
 
         assertNotNull(entity.getDate());
-        //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+        //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchSchedule> entities = scheduleMapper.toEntity(scheduleDTOs, network, corChannel);
+        List<SchSchedule> entities = scheduleMapper.DTOs2DBs(scheduleDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -92,7 +92,7 @@ public class SchScheduleMapperTest {
 
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
-            //assertNotNull(dto.getSchGrid()); //TODO: test media item instance mapping
+            //assertNotNull(dto.getSchClockDTOS()); //TODO: test media item instance mapping
         });
     }
 

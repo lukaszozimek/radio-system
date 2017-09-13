@@ -12,8 +12,8 @@ import io.protone.core.security.SecurityUtils;
 import io.protone.core.service.CorUserService;
 import io.protone.library.domain.LibCloudObject;
 import io.protone.library.domain.LibDocumentObject;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibObjectTypeEnum;
 import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibDocumentObjectRepository;
@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
+
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 
 /**
  * Created by lukaszozimek on 08/06/2017.
@@ -68,7 +70,7 @@ public class LibDocumentFileService implements LibFileService {
 
     @Override
     @Transactional
-    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibLibrary libraryDB) throws IOException, SAXException {
+    public LibMediaItem saveFile(ByteArrayInputStream bais, Metadata metadata, String originalFileName, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
         CorUser currentUser = corUserService.getUserWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).get();
         CorNetwork corNetwork = currentUser.getNetworks().stream().findAny().orElse(null);
         LibMediaItem libMediaItem = new LibMediaItem();
@@ -76,7 +78,7 @@ public class LibDocumentFileService implements LibFileService {
         String fileUUID = UUID.randomUUID().toString();
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(libraryDB.getNetwork().getShortcut(), MEDIA_ITEM + libraryDB.getShortcut(),fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             LibCloudObject cloudObject = new LibCloudObject()
                 .uuid(fileUUID).contentType(metadata.get(HttpHeaders.CONTENT_TYPE))
                 .originalName(originalFileName)
@@ -88,7 +90,7 @@ public class LibDocumentFileService implements LibFileService {
             log.debug("Persisting LibCloudObject: {}", cloudObject);
             cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
             LibDocumentObject libDocumentObject = new LibDocumentObject();
-            libMediaItem = libDocumentMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem, libDocumentObject, originalFileName);
+            libMediaItem = libDocumentMetadataService.resolveMetadata(metadata, libraryDB, corNetwork, libMediaItem.contentAvailable(true), libDocumentObject, originalFileName);
             libDocumentObject.setCloudObject(cloudObject);
             libDocumentObject.setMediaItem(libMediaItem);
             log.debug("Persisting LibDocumentObject: {}", libDocumentObject);
@@ -127,7 +129,7 @@ public class LibDocumentFileService implements LibFileService {
 
         InputStream stream = null;
         try {
-            stream = s3Client.download(itemDB.getLibrary().getShortcut(),cloudObject.getUuid());
+            stream = s3Client.download(itemDB.getNetwork().getShortcut(), MEDIA_ITEM + itemDB.getLibrary().getShortcut(),cloudObject.getUuid());
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add("content-disposition", "filename=" + cloudObject.getOriginalName());
@@ -156,7 +158,7 @@ public class LibDocumentFileService implements LibFileService {
                 for (LibDocumentObject audioObject : objects) {
                     LibCloudObject cloudObject = audioObject.getCloudObject();
                     try {
-                        s3Client.delete(libMediaItem.getLibrary().getShortcut(),cloudObject.getUuid());
+                        s3Client.delete(libMediaItem.getNetwork().getShortcut(), MEDIA_ITEM + libMediaItem.getLibrary().getShortcut(),cloudObject.getUuid());
                         libDocumentObjectRepository.delete(audioObject);
                         libDocumentObjectRepository.flush();
                         cloudObjectRepository.delete(cloudObject);
@@ -169,5 +171,10 @@ public class LibDocumentFileService implements LibFileService {
                 }
             }
         }
+    }
+
+    @Override
+    public LibMediaItem updateContent(ByteArrayInputStream bais, Metadata metadata, LibMediaItem libMediaItem, Long size, LibMediaLibrary libraryDB) throws IOException, SAXException {
+        return null;
     }
 }

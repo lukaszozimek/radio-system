@@ -46,11 +46,11 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorMediaItem author;
+    private CorItem author;
 
     @ManyToOne
     @PodamExclude
-    private CorMediaItem composer;
+    private CorItem composer;
 
     @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     @JsonIgnore
@@ -117,28 +117,28 @@ public class CorPerson extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public CorMediaItem getAuthor() {
+    public CorItem getAuthor() {
         return author;
     }
 
-    public void setAuthor(CorMediaItem libMediaItem) {
+    public void setAuthor(CorItem libMediaItem) {
         this.author = libMediaItem;
     }
 
-    public CorPerson author(CorMediaItem libMediaItem) {
+    public CorPerson author(CorItem libMediaItem) {
         this.author = libMediaItem;
         return this;
     }
 
-    public CorMediaItem getComposer() {
+    public CorItem getComposer() {
         return composer;
     }
 
-    public void setComposer(CorMediaItem libMediaItem) {
+    public void setComposer(CorItem libMediaItem) {
         this.composer = libMediaItem;
     }
 
-    public CorPerson composer(CorMediaItem libMediaItem) {
+    public CorPerson composer(CorItem libMediaItem) {
         this.composer = libMediaItem;
         return this;
     }

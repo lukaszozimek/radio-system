@@ -1,8 +1,8 @@
 package io.protone.library.repository;
 
 
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 public interface LibMediaItemRepository extends JpaRepository<LibMediaItem, Long> {
-    List<LibMediaItem> findByLibrary(LibLibrary library);
+    List<LibMediaItem> findByLibrary(LibMediaLibrary library);
 
     Slice<LibMediaItem> findSliceByNetwork_ShortcutAndLibrary_Shortcut(String networkShortcut, String libraryDB, Pageable pageable);
 

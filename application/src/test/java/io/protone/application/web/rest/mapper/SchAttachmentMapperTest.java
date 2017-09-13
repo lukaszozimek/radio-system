@@ -3,6 +3,8 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
+import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.mapper.SchAttachmentMapper;
@@ -46,28 +48,34 @@ public class SchAttachmentMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         attachment = factory.manufacturePojo(SchAttachment.class);
+        attachment.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
         attachments.add(attachment);
         attachmentDTO = factory.manufacturePojo(SchAttachmentDTO.class);
-        attachmentDTO.setMediaItem(null); //TODO: extend test scenarios to media item
+        attachmentDTO.setMediaItem(factory.manufacturePojo(LibMediaItemThinDTO.class));
         attachmentDTOs.add(attachmentDTO);
     }
 
     @Test
     public void toDTO() throws Exception {
-        SchAttachmentDTO dto = attachmentMapper.toDto(attachment);
+        SchAttachmentDTO dto = attachmentMapper.DB2DTO(attachment);
 
         assertNotNull(dto.getAttachmentType());
         assertNotNull(dto.getFadeInLength());
         assertNotNull(dto.getFadeOutLength());
         assertNotNull(dto.getFadeStart());
         assertNotNull(dto.getFadeType());
-        //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+        assertNotNull(dto.getMediaItem());
+        assertNotNull(dto.getSequence());
         assertNotNull(dto.getVolumeLevel());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchAttachmentDTO> dtos = attachmentMapper.toDto(attachments);
+        List<SchAttachmentDTO> dtos = attachmentMapper.DBs2DTOs(attachments);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
@@ -77,30 +85,39 @@ public class SchAttachmentMapperTest {
             assertNotNull(dto.getFadeOutLength());
             assertNotNull(dto.getFadeStart());
             assertNotNull(dto.getFadeType());
-            //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+            assertNotNull(dto.getSequence());
+            assertNotNull(dto.getMediaItem());
             assertNotNull(dto.getVolumeLevel());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchAttachment entity = attachmentMapper.toEntity(attachmentDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchAttachment entity = attachmentMapper.DTO2DB(attachmentDTO, network, corChannel);
 
         assertNotNull(entity.getAttachmentType());
         assertNotNull(entity.getFadeInLength());
         assertNotNull(entity.getFadeOutLength());
         assertNotNull(entity.getFadeStart());
         assertNotNull(entity.getFadeType());
-        //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+        assertNotNull(entity.getMediaItem());
         assertNotNull(entity.getVolumeLevel());
-
+        assertNotNull(entity.getSequence());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchAttachment> entities = attachmentMapper.toEntity(attachmentDTOs, network, corChannel);
+        List<SchAttachment> entities = attachmentMapper.DTOs2DBs(attachmentDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
@@ -110,9 +127,13 @@ public class SchAttachmentMapperTest {
             assertNotNull(entity.getFadeOutLength());
             assertNotNull(entity.getFadeStart());
             assertNotNull(entity.getFadeType());
-            //assertNotNull(dto.getMediaItem()); TODO: test media item instance mapping
+            assertNotNull(entity.getMediaItem());
             assertNotNull(entity.getVolumeLevel());
-
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

@@ -8,8 +8,8 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
@@ -76,7 +76,7 @@ public class TraMediaPlanPlaylistDateServiceTest {
 
     private PodamFactory factory;
 
-    private LibLibrary libLibrary;
+    private LibMediaLibrary libMediaLibrary;
 
 
     private CrmAccount crmAccount;
@@ -99,11 +99,11 @@ public class TraMediaPlanPlaylistDateServiceTest {
         corChannel.setShortcut("HHH");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
-        libLibrary.setShortcut("ppp");
-        libLibrary.network(corNetwork);
-        libLibrary.addChannel(corChannel);
-        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
+        libMediaLibrary.setShortcut("ppp");
+        libMediaLibrary.network(corNetwork);
+        libMediaLibrary.addChannel(corChannel);
+        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
 
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
@@ -111,7 +111,7 @@ public class TraMediaPlanPlaylistDateServiceTest {
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
         libMediaItem = factory.manufacturePojo(LibMediaItem.class);
         libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
-        libMediaItem.library(libLibrary);
+        libMediaItem.library(libMediaLibrary);
         libMediaItem.network(corNetwork);
         libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 

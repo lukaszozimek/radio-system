@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
@@ -11,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -21,20 +21,13 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchBlock  extends AbstractAuditingEntity implements Serializable {
+public class SchBlock extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "length")
-    private Long length;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
@@ -44,15 +37,6 @@ public class SchBlock  extends AbstractAuditingEntity implements Serializable {
     @ManyToOne
     private SchClock clock;
 
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
-    private SchQueueParams queueParams;
-
-    @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
-    private SchTimeParams timeParams;
 
     @PodamExclude
     @ManyToOne
@@ -71,12 +55,12 @@ public class SchBlock  extends AbstractAuditingEntity implements Serializable {
     private Set<SchEmission> emissions = new HashSet<>();
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
     private CorChannel channel;
-
 
     public Long getId() {
         return id;
@@ -135,32 +119,6 @@ public class SchBlock  extends AbstractAuditingEntity implements Serializable {
 
     public SchBlock clock(SchClock clock) {
         this.clock = clock;
-        return this;
-    }
-
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchBlock queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    public SchTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchBlock timeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
         return this;
     }
 
@@ -227,26 +185,26 @@ public class SchBlock  extends AbstractAuditingEntity implements Serializable {
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchBlock network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchBlock channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
@@ -278,4 +236,23 @@ public class SchBlock  extends AbstractAuditingEntity implements Serializable {
                 ", eventType='" + getEventType() + "'" +
                 "}";
     }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public SchBlock sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public SchBlock startTime(LocalDateTime startTime) {
+        super.startTime(startTime);
+        return this;
+    }
+
 }

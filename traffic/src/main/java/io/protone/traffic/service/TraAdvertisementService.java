@@ -2,7 +2,7 @@ package io.protone.traffic.service;
 
 
 import io.protone.crm.domain.CrmAccount;
-import io.protone.library.service.LibItemService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.repository.TraAdvertisementRepository;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class TraAdvertisementService {
     private TraAdvertisementRepository traAdvertisementRepository;
 
     @Inject
-    private LibItemService libItemService;
+    private LibMediaItemService libMediaItemService;
 
 
     public Slice<TraAdvertisement> getAllAdvertisement(String corNetwork, Pageable pageable) {
@@ -48,7 +48,7 @@ public class TraAdvertisementService {
         if (traAdvertisement.getMediaItem() != null) {
             traAdvertisement.getMediaItem().stream().forEach(libMediaItem -> {
 
-                libItemService.deleteItem(libMediaItem);
+                libMediaItemService.deleteItem(libMediaItem);
             });
         }
     }
@@ -61,7 +61,7 @@ public class TraAdvertisementService {
                 if (traAdvertisement.getMediaItem() != null) {
                     traAdvertisement.getMediaItem().stream().forEach(libMediaItem -> {
 
-                        libItemService.deleteItem(libMediaItem);
+                        libMediaItemService.deleteItem(libMediaItem);
                     });
                 }
             });

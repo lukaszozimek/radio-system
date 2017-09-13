@@ -242,7 +242,7 @@ public class CorDictionaryResourceTest {
         // set the field null
         corDictionary.setName(null);
 
-        // Create the LibLibrary, which fails.
+        // Create the LibMediaLibrary, which fails.
         CorDictionaryDTO corDictionaryDTO = corDictionaryMapper.DB2DTO(corDictionary);
 
         restCorDictionaryMockMvc.perform(post("/api/v1/network/{networkShortcut}/configuration/network/dictionary/{module}/{type}", corNetwork.getShortcut(), TEST_MODULE, TEST_TYPE)

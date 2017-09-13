@@ -1,13 +1,14 @@
 package io.protone.library.domain;
 
 
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorItem;
+import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.enumeration.LibFileTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,34 +18,22 @@ import java.util.Objects;
 @Entity
 @Table(name = "lib_file_item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibFileItem implements Serializable {
+public class LibFileItem extends CorItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
-
-    @NotNull
-    @Size(max = 15)
-    @Column(name = "idx", length = 15, nullable = false)
-    private String idx;
-
-    @NotNull
-    @Size(max = 100)
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private LibFileTypeEnum type;
 
     @ManyToOne
-    private LibLibrary library;
+    private LibFileLibrary library;
 
-    @ManyToOne
-    private LibFileItem parentFile;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private LibCloudObject cloudObject;
+
 
     public Long getId() {
         return id;
@@ -93,30 +82,25 @@ public class LibFileItem implements Serializable {
         return this;
     }
 
-    public LibLibrary getLibrary() {
+    public LibFileLibrary getLibrary() {
         return library;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
+    public void setLibrary(LibFileLibrary libLibrary) {
         this.library = libLibrary;
     }
 
-    public LibFileItem library(LibLibrary libLibrary) {
+    public LibFileItem library(LibFileLibrary libLibrary) {
         this.library = libLibrary;
         return this;
     }
 
-    public LibFileItem getParentFile() {
-        return parentFile;
+    public LibCloudObject getCloudObject() {
+        return cloudObject;
     }
 
-    public void setParentFile(LibFileItem libFileItem) {
-        this.parentFile = libFileItem;
-    }
-
-    public LibFileItem parentFile(LibFileItem libFileItem) {
-        this.parentFile = libFileItem;
-        return this;
+    public void setCloudObject(LibCloudObject cloudObject) {
+        this.cloudObject = cloudObject;
     }
 
     @Override
@@ -142,10 +126,37 @@ public class LibFileItem implements Serializable {
     @Override
     public String toString() {
         return "LibFileItem{" +
-            "id=" + id +
-            ", idx='" + idx + "'" +
-            ", name='" + name + "'" +
-            ", type='" + type + "'" +
-            '}';
+                "id=" + id +
+                ", idx='" + idx + "'" +
+                ", name='" + name + "'" +
+                ", type='" + type + "'" +
+                '}';
     }
+
+    public CorNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
+    public LibFileItem network(CorNetwork corNetwork) {
+        this.network = corNetwork;
+        return this;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
+    public LibFileItem channel(CorChannel channel) {
+        this.channel = channel;
+        return this;
+    }
+
 }

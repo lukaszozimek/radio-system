@@ -9,7 +9,7 @@ import io.protone.library.domain.*;
  */
 public class ProtoneQueryLanguageLibraryEntityVisitorImpl extends ProtoneQueryLangageBaseVisitorImpl {
     public ProtoneQueryLanguageLibraryEntityVisitorImpl() {
-        pqlEntityMap.put("Library", LibLibrary.class);
+        pqlEntityMap.put("Library", LibMediaLibrary.class);
         pqlEntityMap.put("MediaItem", LibMediaItem.class);
         pqlEntityMap.put("Album", LibAlbum.class);
         pqlEntityMap.put("Artist", LibArtist.class);

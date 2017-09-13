@@ -8,8 +8,6 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CrmTaskComment.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CfgExternalSystemLog.xml"
-             relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CorAddress.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_CorAuthority.xml"
@@ -76,7 +74,9 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibLabel.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibLibrary.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibMediaLibrary.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibFileLibrary.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_LibMarker.xml"
              relativeToChangelogFile="false"/>
@@ -123,9 +123,6 @@
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CrmTaskComment.xml"
              relativeToChangelogFile="false"/>
-    <include
-            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CfgExternalSystemLog.xml"
-            relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CorAddress.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_CorChannel.xml"
@@ -191,7 +188,10 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibLabel.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibLibrary.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibMediaLibrary.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibFileLibrary.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_LibMarker.xml"
              relativeToChangelogFile="false"/>
@@ -249,7 +249,11 @@
             relativeToChangelogFile="false"/>
 
     <include
-            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibLibrary.xml"
+            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibMediaLibrary.xml"
+            relativeToChangelogFile="false"/>
+
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibFileLibrary.xml"
             relativeToChangelogFile="false"/>
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_LibMediaItem.xml"
@@ -281,10 +285,14 @@
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_LibImageItem.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibLibrary_LibImageItem.xml"
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Lib_Media_Library_LibImageItem.xml"
+            relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Lib_Media_Library_Channel.xml"
              relativeToChangelogFile="false"/>
 
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Lib_Library_Channel.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Lib_File_Library_Channel.xml"
              relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibAlbum_LibImageItem.xml"
@@ -296,56 +304,116 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibArtist_LibImageItem.xml"
              relativeToChangelogFile="false"/>
 
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchAttachment.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchAttachment.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchBlock.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchClock.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchEmission.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchEvent.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchGrid.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchPlaylist.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchQueueParams.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchSchedule.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000001_added_entity_SchTimeParams.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchAttachment.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchBlock.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchClock.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchEmission.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchEvent.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170722000002_added_entity_constraints_SchGrid.xml"
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchAttachmentConfiguration.xml"
              relativeToChangelogFile="false"/>
 
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEventEmissionAttachment.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchBlock.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchClock.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchClockConfiguration.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEventEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEmissionConfiguration.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEvent.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEventConfiguration.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchGrid.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchPlaylist.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchLogConfiguration.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchLogColumn.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchLog.xml"
+             relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchSchedule.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchAttachment.xml"
+             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchAttachmentConfiguration.xml"
+            relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchBlock.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchClock.xml"
+             relativeToChangelogFile="false"/>
+
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchClockConfiguration.xml"
+            relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEventEmission.xml"
+             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmissionConfiguration.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEventEmissionAttachment.xml"
+            relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEvent.xml"
+             relativeToChangelogFile="false"/>
+
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEventConfiguration.xml"
+            relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchGrid.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchLog.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchLogConfiguration.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchLogColumn.xml"
+             relativeToChangelogFile="false"/>
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_TraAdvertisment.xml"
             relativeToChangelogFile="false"/>
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_TraPrice_Lenght_Multiplier.xml"
             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Grid_Sch_Clock_configuration.xml"
+            relativeToChangelogFile="false"/>
 
-    <changeSet id="" author="">
+    <changeSet id="" author="lozimek">
+
         <loadData encoding="UTF-8"
-                  file="/config/liquibase/demo/lib_library.csv"
+                  file="/config/liquibase/demo/lib_media_library.csv"
                   separator=";"
-                  tableName="lib_library"/>
+                  tableName="lib_media_library"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/cor_channel_lib_media_library.csv"
+                  separator=";"
+                  tableName="lib_media_library_channel"/>
+
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/lib_file_library.csv"
+                  separator=";"
+                  tableName="lib_file_library"/>
+
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/cor_channel_lib_file_library.csv"
+                  separator=";"
+                  tableName="lib_file_library_channel"/>
+
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/lib_marker_configuration.csv"
                   separator=";"
                   tableName="lib_marker_configuration"/>
-
 
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/cor_module.csv"
@@ -356,16 +424,10 @@
                   file="/config/liquibase/demo/cor_dictionary_type.csv"
                   separator=";"
                   tableName="cor_dictionary_type"/>
-
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/cor_dictionary.csv"
                   separator=";"
                   tableName="cor_dictionary"/>
-
-        <loadData encoding="UTF-8"
-                  file="/config/liquibase/demo/cor_channel_lib_library.csv"
-                  separator=";"
-                  tableName="lib_library_channel"/>
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/tra_price.csv"
                   separator=";"
@@ -378,7 +440,6 @@
                   file="/config/liquibase/demo/tra_block_configuration.csv"
                   separator=";"
                   tableName="tra_block_configuration"/>
-
         <loadData encoding="UTF-8"
                   file="/config/liquibase/demo/tra_media_plan_template.csv"
                   separator=";"
@@ -391,6 +452,14 @@
                   file="/config/liquibase/demo/crm_discount.csv"
                   separator=";"
                   tableName="crm_discount"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/sch_log_configuration.csv"
+                  separator=","
+                  tableName="sch_log_configuration"/>
+        <loadData encoding="UTF-8"
+                  file="/config/liquibase/demo/sch_log_column_configuration.csv"
+                  separator=";"
+                  tableName="sch_log_column"/>
         <!---=====================================CUSTOM CHANGES================================================= -->
     </changeSet>
 

@@ -52,7 +52,7 @@ public class LibVideoFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libVideoFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libVideoFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         List<LibVideoObject> libVideoObjects = libVideoObjectRepository.findByMediaItem(libMediaItem);
 
         //assert
@@ -61,7 +61,7 @@ public class LibVideoFileServiceTest extends LibFileServiceBaseTest {
         Assert.notNull(libMediaItem.getIdx());
         Assert.notNull(libMediaItem.getProperites());
         Assert.notNull(libMediaItem.getNetwork());
-        Assert.isTrue(libMediaItem.getLibrary().getName().equals(libLibrary.getName()));
+        Assert.isTrue(libMediaItem.getLibrary().getName().equals(libMediaLibrary.getName()));
         Assert.isTrue(libMediaItem.getNetwork().getName().equals(corNetwork.getName()));
         Assert.isTrue(libMediaItem.getItemType().equals(LibItemTypeEnum.IT_VIDEO));
         Assert.isTrue(libMediaItem.getProperites().size() > 1);
@@ -72,14 +72,14 @@ public class LibVideoFileServiceTest extends LibFileServiceBaseTest {
     @Test
     public void shouldDownloadVideoFile() throws Exception {
         //when
-        when(s3Client.download(anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
+        when(s3Client.download(anyString(),anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
         ReflectionTestUtils.setField(libVideoFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libVideoFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libVideoFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libVideoFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         byte[] bytes = libVideoFileService.download(libMediaItem);
 
 
@@ -98,7 +98,7 @@ public class LibVideoFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libVideoFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libVideoFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         libVideoFileService.deleteFile(libMediaItem);
         List<LibVideoObject> libVideoObjects = libVideoObjectRepository.findByMediaItem(libMediaItem);
 

@@ -1,43 +1,38 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * SchEventDTO
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchEventDTO {
-    @JsonProperty("emissions")
-    private List<SchEmissionDTO> emissions = new ArrayList<SchEmissionDTO>();
+public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
 
-    @JsonProperty("id")
-    private Long id = null;
+    private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
 
-    @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
-    @JsonProperty("eventType")
-    private EventTypeEnum eventType = null;
-    @JsonProperty("timeParams")
-    private SchTimeParamsDTO timeParams = null;
+    private String shortName = null;
 
-    public SchEventDTO emissions(List<SchEmissionDTO> emissions) {
+    private EventTypeEnum eventType = null;
+
+    private Set<SchEventDTO> events = new HashSet<>();
+
+    private CorDictionaryDTO eventCategory;
+
+    public SchEventDTO emissions(List<SchEventEmissionDTO> emissions) {
         this.emissions = emissions;
         return this;
     }
 
-    public SchEventDTO addEmissionsItem(SchEmissionDTO emissionsItem) {
+    public SchEventDTO addEmissionsItem(SchEventEmissionDTO emissionsItem) {
         this.emissions.add(emissionsItem);
         return this;
     }
@@ -48,11 +43,11 @@ public class SchEventDTO {
      * @return emissions
      **/
     @ApiModelProperty(value = "")
-    public List<SchEmissionDTO> getEmissions() {
+    public List<SchEventEmissionDTO> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(List<SchEmissionDTO> emissions) {
+    public void setEmissions(List<SchEventEmissionDTO> emissions) {
         this.emissions = emissions;
     }
 
@@ -96,25 +91,6 @@ public class SchEventDTO {
         this.name = name;
     }
 
-    public SchEventDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
     public SchEventDTO eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
         return this;
@@ -134,23 +110,35 @@ public class SchEventDTO {
         this.eventType = eventType;
     }
 
-    public SchEventDTO timeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
+    public String getShortName() {
+        return shortName;
     }
 
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
-        return timeParams;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
+    public Set<SchEventDTO> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<SchEventDTO> events) {
+        this.events = events;
+    }
+
+    public void setEventCategory(CorDictionaryDTO eventCategory) {
+        this.eventCategory = eventCategory;
+
+    }
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+    public CorDictionaryDTO getEventCategory() {
+        return eventCategory;
     }
 
     @Override
@@ -165,27 +153,24 @@ public class SchEventDTO {
         return Objects.equals(this.emissions, schEventDTO.emissions) &&
                 Objects.equals(this.id, schEventDTO.id) &&
                 Objects.equals(this.name, schEventDTO.name) &&
-                Objects.equals(this.queueParams, schEventDTO.queueParams) &&
-                Objects.equals(this.eventType, schEventDTO.eventType) &&
-                Objects.equals(this.timeParams, schEventDTO.timeParams);
+                Objects.equals(this.sequence, schEventDTO.sequence) &&
+                Objects.equals(this.eventType, schEventDTO.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(emissions, id, name, queueParams, eventType, timeParams);
+        return Objects.hash(emissions, id, name, sequence, eventType);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SchEventDTO {\n");
-
         sb.append("    emissions: ").append(toIndentedString(emissions)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+        sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    eventType: ").append(toIndentedString(eventType)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -200,6 +185,5 @@ public class SchEventDTO {
         }
         return o.toString().replace("\n", "\n    ");
     }
-
 }
 

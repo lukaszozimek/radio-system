@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Emission.
+    -->
+    <changeSet id="20170720190706-2" author="jhipster">
+
+
+        <addForeignKeyConstraint baseColumnNames="clock_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_emission_configuration_clock_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_clock_configuration"/>
+
+        <addForeignKeyConstraint baseColumnNames="media_item_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_emission_configuration_media_item_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_media_item"/>
+
+        <addForeignKeyConstraint baseColumnNames="sch_event_configuration_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_emission_configuration_event_configuration_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_event_configuration"/>
+
+
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_sch_emission_configuration_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_sch_emission_configuration_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_sch_emission_configuration_created_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="sch_emission_configuration"
+                                 constraintName="fk_sch_emission_configuration_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
+
+    </changeSet>
+</databaseChangeLog>

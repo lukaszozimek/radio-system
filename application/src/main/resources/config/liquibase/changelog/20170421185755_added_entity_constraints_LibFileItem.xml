@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
         Added the constraints for entity LibFileItem.
     -->
     <changeSet id="20170421185755-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="network_id"
+                                 baseTableName="lib_file_item"
+                                 constraintName="fk_lib_file_item_network_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="lib_file_item"
+                                 constraintName="fk_lib_file_item_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
+
+        <addForeignKeyConstraint baseColumnNames="cloud_object_id"
+                                 baseTableName="lib_file_item"
+                                 constraintName="fk_lib_file_item_object_cloud_object_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="lib_cloud_object"/>
+
         <addForeignKeyConstraint baseColumnNames="library_id"
                                  baseTableName="lib_file_item"
                                  constraintName="fk_lib_file_item_library_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="lib_library"/>
+                                 referencedTableName="lib_file_library"/>
 
-        <addForeignKeyConstraint baseColumnNames="parent_file_id"
-                                 baseTableName="lib_file_item"
-                                 constraintName="fk_lib_file_item_parent_file_id"
+        <addForeignKeyConstraint baseColumnNames="created_by_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_file_item_created_by_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="lib_file_item"/>
+                                 referencedTableName="cor_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="last_modified_by_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_file_item_last_modified_by_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_user"/>
 
     </changeSet>
 </databaseChangeLog>

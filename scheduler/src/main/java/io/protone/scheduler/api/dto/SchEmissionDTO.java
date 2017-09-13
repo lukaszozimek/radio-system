@@ -1,10 +1,9 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,27 +13,14 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchEmissionDTO {
-    @JsonProperty("blockId")
+public class SchEmissionDTO extends SchTimeParamsDTO {
+
     private Long blockId = null;
 
-    @JsonProperty("id")
-    private Long id = null;
-
-    @JsonProperty("mediaItem")
     private LibMediaItemThinDTO mediaItem = null;
 
-    @JsonProperty("seq")
-    private Integer seq = null;
-
-    @JsonProperty("attachment")
     private List<SchAttachmentDTO> attachment = new ArrayList<SchAttachmentDTO>();
 
-    @JsonProperty("timeParams")
-    private SchTimeParamsDTO timeParams = null;
-
-    @JsonProperty("queueParams")
-    private SchQueueParamsDTO queueParams = null;
 
     public SchEmissionDTO blockId(Long blockId) {
         this.blockId = blockId;
@@ -57,6 +43,11 @@ public class SchEmissionDTO {
 
     public SchEmissionDTO id(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public SchEmissionDTO sequence(Long sequence) {
+        super.setSequence(sequence);
         return this;
     }
 
@@ -93,24 +84,14 @@ public class SchEmissionDTO {
         this.mediaItem = mediaItem;
     }
 
-    public SchEmissionDTO seq(Integer seq) {
-        this.seq = seq;
+    public SchEmissionDTO endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
         return this;
     }
 
-    /**
-     * Get seq
-     *
-     * @return seq
-     **/
-    @ApiModelProperty(required = true, value = "")
-    @NotNull
-    public Integer getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Integer seq) {
-        this.seq = seq;
+    public SchEmissionDTO startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
     }
 
     public SchEmissionDTO attachment(List<SchAttachmentDTO> attachment) {
@@ -137,44 +118,6 @@ public class SchEmissionDTO {
         this.attachment = attachment;
     }
 
-    public SchEmissionDTO timeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-        return this;
-    }
-
-    /**
-     * Get timeParams
-     *
-     * @return timeParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchTimeParamsDTO getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParamsDTO timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEmissionDTO queueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    /**
-     * Get queueParams
-     *
-     * @return queueParams
-     **/
-    @ApiModelProperty(value = "")
-    public SchQueueParamsDTO getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParamsDTO queueParams) {
-        this.queueParams = queueParams;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -188,15 +131,12 @@ public class SchEmissionDTO {
         return Objects.equals(this.blockId, schEmissionDTO.blockId) &&
                 Objects.equals(this.id, schEmissionDTO.id) &&
                 Objects.equals(this.mediaItem, schEmissionDTO.mediaItem) &&
-                Objects.equals(this.seq, schEmissionDTO.seq) &&
-                Objects.equals(this.attachment, schEmissionDTO.attachment) &&
-                Objects.equals(this.timeParams, schEmissionDTO.timeParams) &&
-                Objects.equals(this.queueParams, schEmissionDTO.queueParams);
+                Objects.equals(this.attachment, schEmissionDTO.attachment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(blockId, id, mediaItem, seq, attachment, timeParams, queueParams);
+        return Objects.hash(blockId, id, mediaItem, attachment);
     }
 
     @Override
@@ -207,10 +147,8 @@ public class SchEmissionDTO {
         sb.append("    blockId: ").append(toIndentedString(blockId)).append("\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    mediaItem: ").append(toIndentedString(mediaItem)).append("\n");
-        sb.append("    seq: ").append(toIndentedString(seq)).append("\n");
         sb.append("    attachment: ").append(toIndentedString(attachment)).append("\n");
-        sb.append("    timeParams: ").append(toIndentedString(timeParams)).append("\n");
-        sb.append("    queueParams: ").append(toIndentedString(queueParams)).append("\n");
+
         sb.append("}");
         return sb.toString();
     }

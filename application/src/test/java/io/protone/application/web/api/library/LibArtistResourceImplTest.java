@@ -4,7 +4,6 @@ import io.protone.application.ProtoneApp;
 import io.protone.application.util.TestUtil;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.library.impl.LibArtistResourceImpl;
-import io.protone.application.web.api.library.impl.LibraryResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorImageItem;
 import io.protone.core.domain.CorNetwork;
@@ -38,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static io.protone.core.constans.MinioFoldersConstants.MEDIA_ITEM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.any;
@@ -126,7 +126,7 @@ public class LibArtistResourceImplTest {
 
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
         corNetwork.setId(1L);
-        when(s3Client.makeBucket(anyString())).thenReturn("testBucket");
+        when(s3Client.makeBucket(anyString(), anyString())).thenReturn(corNetwork.getShortcut() + MEDIA_ITEM + "testBucket");
         this.restLibArtistMockMvc = MockMvcBuilders.standaloneSetup(libLibraryResource)
                 .setCustomArgumentResolvers(pageableArgumentResolver)
                 .setControllerAdvice(exceptionTranslator)
@@ -266,7 +266,7 @@ public class LibArtistResourceImplTest {
         libArtistRepository.saveAndFlush(libArtist.network(corNetwork).mainImage(corImageItem));
 
         // Get the libArtist
-        restLibArtistMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/artist/{id}", corNetwork.getShortcut(), libArtist.getId() ))
+        restLibArtistMockMvc.perform(get("/api/v1/network/{networkShortcut}/library/artist/{id}", corNetwork.getShortcut(), libArtist.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.id").value(libArtist.getId().intValue()))

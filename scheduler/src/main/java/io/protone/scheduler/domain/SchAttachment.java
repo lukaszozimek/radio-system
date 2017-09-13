@@ -1,6 +1,5 @@
 package io.protone.scheduler.domain;
 
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -21,14 +20,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "sch_attachment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachment extends AbstractAuditingEntity implements Serializable {
+public class SchAttachment extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attachment_type")
@@ -52,15 +47,16 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     private FadeTypeEnum fadeType;
 
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private LibMediaItem mediaItem;
 
     @PodamExclude
     @ManyToOne
     private SchEmission emission;
 
+
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
@@ -87,6 +83,14 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
     public SchAttachment attachmentType(AttachmentTypeEnum attachementType) {
         this.attachmentType = attachementType;
         return this;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
     public Long getFadeStart() {
@@ -184,26 +188,26 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchAttachment network(CorNetwork network) {
         this.network = network;
         return this;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
     }
 
     public CorChannel getChannel() {
         return channel;
     }
 
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
+    }
+
     public SchAttachment channel(CorChannel channel) {
         this.channel = channel;
         return this;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
     }
 
     @Override
@@ -237,5 +241,11 @@ public class SchAttachment extends AbstractAuditingEntity implements Serializabl
                 ", fadeOutLength='" + getFadeOutLength() + "'" +
                 ", fadeType='" + getFadeType() + "'" +
                 "}";
+    }
+
+
+    public SchAttachment sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
     }
 }

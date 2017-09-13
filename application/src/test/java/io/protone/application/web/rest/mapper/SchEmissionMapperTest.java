@@ -1,9 +1,13 @@
 package io.protone.application.web.rest.mapper;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
+import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchEmissionMapper;
 import org.junit.Before;
@@ -47,68 +51,80 @@ public class SchEmissionMapperTest {
         // Fill entity instance
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmission.class);
+        emission.setAttachments(Sets.newHashSet(factory.manufacturePojo(SchAttachment.class)));
+
         emissions.add(emission);
 
         //Fill DTO instance
         emissionDTO = factory.manufacturePojo(SchEmissionDTO.class);
+        emissionDTO.setAttachment(Lists.newArrayList(factory.manufacturePojo(SchAttachmentDTO.class)));
+
+
         emissionDTOs.add(emissionDTO);
     }
 
     @Test
     public void toDTO() throws Exception {
-        SchEmissionDTO dto = emissionMapper.toDto(emission);
+        SchEmissionDTO dto = emissionMapper.DB2DTO(emission);
 
         assertNotNull(dto.getId());
-        assertNotNull(dto.getSeq());
-        assertNotNull(dto.getTimeParams());
-        assertNotNull(dto.getQueueParams());
-        //TODO: Consider assertions for attachments
+        assertNotNull(dto.getSequence());
+        assertNotNull(dto.getStartTime());
+        assertNotNull(dto.getEndTime());
+        assertNotNull(dto.getRelativeDelay());
+        assertNotNull(dto.getSequence());
+        assertNotNull(dto.getAttachment());
     }
 
     @Test
     public void toDTOs() throws Exception {
-        List<SchEmissionDTO> dtos = emissionMapper.toDto(emissions);
+        List<SchEmissionDTO> dtos = emissionMapper.DBs2DTOs(emissions);
 
         assertNotNull(dtos);
         assertEquals(dtos.size(), 1);
         dtos.stream().forEach(dto -> {
             assertNotNull(dto.getId());
-            assertNotNull(dto.getSeq());
-            assertNotNull(dto.getTimeParams());
-            assertNotNull(dto.getQueueParams());
-            //TODO: Consider assertions for attachments
+            assertNotNull(dto.getSequence());
+            assertNotNull(dto.getStartTime());
+            assertNotNull(dto.getEndTime());
+            assertNotNull(dto.getRelativeDelay());
+            assertNotNull(dto.getSequence());
+            assertNotNull(dto.getAttachment());
         });
     }
 
     @Test
-    public void toEntity() throws Exception {
-        SchEmission entity = emissionMapper.toEntity(emissionDTO, network, corChannel);
+    public void DTO2DB() throws Exception {
+        SchEmission entity = emissionMapper.DTO2DB(emissionDTO, network, corChannel);
 
         assertNotNull(entity.getId());
-        assertNotNull(entity.getSeq());
-        assertNotNull(entity.getTimeParams());
-        assertNotNull(entity.getQueueParams());
+        assertNotNull(entity.getSequence());
+        assertNotNull(entity.getStartTime());
+        assertNotNull(entity.getEndTime());
+        assertNotNull(entity.getRelativeDelay());
+        assertNotNull(entity.getSequence());
 
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
-        //TODO: Consider assertions for attachments
+        assertNotNull(entity.getAttachments());
     }
 
     @Test
     public void toEntities() throws Exception {
-        List<SchEmission> entities = emissionMapper.toEntity(emissionDTOs, network, corChannel);
+        List<SchEmission> entities = emissionMapper.DTOs2DBs(emissionDTOs, network, corChannel);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getId());
-            assertNotNull(entity.getSeq());
-            assertNotNull(entity.getTimeParams());
-            assertNotNull(entity.getQueueParams());
-
+            assertNotNull(entity.getSequence());
+            assertNotNull(entity.getStartTime());
+            assertNotNull(entity.getEndTime());
+            assertNotNull(entity.getRelativeDelay());
+            assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
-            //TODO: Consider assertions for attachments
+            assertNotNull(entity.getAttachments());
         });
     }
 }

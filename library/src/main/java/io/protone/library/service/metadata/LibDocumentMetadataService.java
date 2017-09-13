@@ -4,8 +4,8 @@ import com.google.api.client.repackaged.com.google.common.base.Strings;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorPropertyService;
 import io.protone.library.domain.LibDocumentObject;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.domain.enumeration.LibItemStateEnum;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
 import io.protone.library.repository.LibMediaItemRepository;
@@ -50,7 +50,7 @@ public class LibDocumentMetadataService {
     private LibMediaItemRepository mediaItemRepository;
 
 
-    public LibMediaItem resolveMetadata(Metadata metadata, LibLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibDocumentObject libImageObject,String orginalFileName) throws TikaException, SAXException, IOException {
+    public LibMediaItem resolveMetadata(Metadata metadata, LibMediaLibrary libraryDB, CorNetwork corNetwork, LibMediaItem mediaItem, LibDocumentObject libImageObject, String orginalFileName) throws TikaException, SAXException, IOException {
         log.debug("Start processing Image :" + metadata.get(ProtoneMetadataProperty.TITLE.getName()));
 
 
@@ -63,7 +63,9 @@ public class LibDocumentMetadataService {
 
         metadata.remove(ProtoneMetadataProperty.TITLE.getName());
         mediaItem.setDescription(metadata.get(ProtoneMetadataProperty.COMMENTS));
-        mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
+        if (mediaItem.getIdx() == null) {
+            mediaItem.setIdx(mediaUtils.generateIdx(libraryDB));
+        }
         if (metadata.get(XMPDM.DURATION) != null) {
             mediaItem.setLength(Double.valueOf(metadata.get(XMPDM.DURATION)));
 

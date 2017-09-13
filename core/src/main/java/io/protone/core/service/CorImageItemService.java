@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static io.protone.core.constans.MinioFoldersConstants.FILE;
+
 /**
  * Created by lukaszozimek on 20.06.2017.
  */
@@ -87,7 +89,7 @@ public class CorImageItemService {
 
         try {
             log.debug("Uploading File to Storage: {} ", fileUUID);
-            s3Client.upload(corNetwork.getShortcut() + "-" + PUBLIC_CONTENT, fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
+            s3Client.upload(corNetwork.getShortcut(), FILE + PUBLIC_CONTENT, fileUUID, bais, metadata.get(HttpHeaders.CONTENT_TYPE));
             corImageItem = new CorImageItem();
             corImageItem.name(fileUUID).network(corNetwork);
             corImageItem = getObjectUrl(corImageItem);
@@ -110,7 +112,7 @@ public class CorImageItemService {
         }
         String publicUrl = null;
         try {
-            publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
+            publicUrl = s3Client.getCover(corImageItem.getNetwork().getShortcut(), FILE + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
             log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {
@@ -125,7 +127,7 @@ public class CorImageItemService {
         }
         String publicUrl = null;
         try {
-            publicUrl = s3Client.getObjectUrl(corImageItem.getNetwork().getShortcut() + "-" + PUBLIC_CONTENT, corImageItem.getName());
+            publicUrl = s3Client.getObjectUrl(corImageItem.getNetwork().getShortcut(), FILE + PUBLIC_CONTENT, corImageItem.getName());
         } catch (S3Exception e) {
             log.error(e.getLocalizedMessage());
         } catch (UrlGenerationResourceException e) {

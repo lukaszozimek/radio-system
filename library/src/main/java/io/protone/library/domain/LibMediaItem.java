@@ -24,20 +24,10 @@ import static javax.persistence.FetchType.EAGER;
 @Table(name = "lib_media_item", uniqueConstraints =
 @UniqueConstraint(columnNames = {"idx", "library_id", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class LibMediaItem extends CorMediaItem implements Serializable {
+public class LibMediaItem extends CorItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
-    @NotNull
-    @Column(name = "idx", nullable = false)
-    private String idx;
-
-    @NotNull
-    @Column(name = "name")
-    private String name;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type", nullable = false)
     private LibItemTypeEnum itemType;
@@ -46,7 +36,6 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @Column(name = "length", nullable = false)
     private Double length;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private LibItemStateEnum state;
@@ -54,12 +43,13 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @Column(name = "command")
     private String command;
 
-    @Column(name = "description")
-    private String description;
+
+    @Column(name = "is_conctent_available")
+    private Boolean contentAvailable;
 
     @ManyToOne
     @PodamExclude
-    private LibLibrary library;
+    private LibMediaLibrary library;
 
     @ManyToOne
     @PodamExclude
@@ -76,10 +66,6 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @ManyToOne
     @PodamExclude
     private LibTrack track;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
     @PodamExclude
     @OneToMany(mappedBy = "author", fetch = EAGER)
@@ -100,26 +86,13 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     private Set<LibMarker> markers = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "tags", fetch = EAGER)
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CorTag> tags = new HashSet<>();
-
-    @PodamExclude
-    @OneToMany(mappedBy = "libItemPropertyValue", fetch = EAGER)
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CorPropertyValue> properites = new HashSet<>();
-
-    @PodamExclude
     @OneToMany
     @JoinTable(
-        name = "lib_media_item_cor_image_item",
-        joinColumns = @JoinColumn(name = "lib_media_item_id"),
-        inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
+            name = "lib_media_item_cor_image_item",
+            joinColumns = @JoinColumn(name = "lib_media_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "cor_image_item_id")
     )
     private Set<CorImageItem> imageItems = new HashSet<>();
-
 
     public String getIdx() {
         return idx;
@@ -212,16 +185,16 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
         return this;
     }
 
-    public LibLibrary getLibrary() {
+    public LibMediaLibrary getLibrary() {
         return library;
     }
 
-    public void setLibrary(LibLibrary libLibrary) {
-        this.library = libLibrary;
+    public void setLibrary(LibMediaLibrary libMediaLibrary) {
+        this.library = libMediaLibrary;
     }
 
-    public LibMediaItem library(LibLibrary libLibrary) {
-        this.library = libLibrary;
+    public LibMediaItem library(LibMediaLibrary libMediaLibrary) {
+        this.library = libMediaLibrary;
         return this;
     }
 
@@ -415,12 +388,33 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
         return this;
     }
 
+    public Boolean isContentAvailable() {
+        return contentAvailable;
+    }
+
+    public void setContentAvailable(Boolean contentAvailable) {
+        this.contentAvailable = contentAvailable;
+    }
+
+    public LibMediaItem contentAvailable(Boolean isContentAvailable) {
+        this.contentAvailable = isContentAvailable;
+        return this;
+    }
+
     public Set<CorImageItem> getImageItems() {
         return imageItems;
     }
 
     public void setImageItems(Set<CorImageItem> imageItems) {
         this.imageItems = imageItems;
+    }
+
+    public CorChannel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     @Override
@@ -446,27 +440,27 @@ public class LibMediaItem extends CorMediaItem implements Serializable {
     @Override
     public String toString() {
         return "LibMediaItem{" +
-            "id=" + id +
-            ", idx='" + idx + '\'' +
-            ", name='" + name + '\'' +
-            ", itemType=" + itemType +
-            ", length=" + length +
-            ", state=" + state +
-            ", command='" + command + '\'' +
-            ", description='" + description + '\'' +
-            ", library=" + library +
-            ", label=" + label +
-            ", artist=" + artist +
-            ", album=" + album +
-            ", track=" + track +
-            ", network=" + network +
-            ", authors=" + authors +
-            ", composers=" + composers +
-            ", markers=" + markers +
-            ", tags=" + tags +
-            ", properites=" + properites +
-            ", imageItems=" + imageItems +
-            '}';
+                "id=" + id +
+                ", idx='" + idx + '\'' +
+                ", name='" + name + '\'' +
+                ", itemType=" + itemType +
+                ", length=" + length +
+                ", state=" + state +
+                ", command='" + command + '\'' +
+                ", description='" + description + '\'' +
+                ", library=" + library +
+                ", label=" + label +
+                ", artist=" + artist +
+                ", album=" + album +
+                ", track=" + track +
+                ", network=" + network +
+                ", authors=" + authors +
+                ", composers=" + composers +
+                ", markers=" + markers +
+                ", tags=" + tags +
+                ", properites=" + properites +
+                ", imageItems=" + imageItems +
+                '}';
     }
 
 }

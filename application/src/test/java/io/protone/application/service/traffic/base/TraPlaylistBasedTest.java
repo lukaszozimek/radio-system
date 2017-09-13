@@ -9,9 +9,9 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
-import io.protone.library.domain.LibLibrary;
 import io.protone.library.domain.LibMediaItem;
-import io.protone.library.mapper.LibItemMapper;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.mapper.LibMediaItemMapper;
 import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.library.repository.LibLibraryRepository;
 import io.protone.library.repository.LibMediaItemRepository;
@@ -43,7 +43,7 @@ public class TraPlaylistBasedTest {
     protected PodamFactory factory = new PodamFactoryImpl();
     protected CorNetwork corNetwork;
     protected CorChannel corChannel;
-    protected LibLibrary libLibrary;
+    protected LibMediaLibrary libMediaLibrary;
     protected TraOrderThinDTO traOrderThinDTO;
     protected TraAdvertisement advertisementToShuffle;
     protected LibMediaItem libMediaItemToShuffle;
@@ -54,7 +54,7 @@ public class TraPlaylistBasedTest {
     protected List<TraPlaylist> traPlaylists;
     protected TraOrder traOrder;
     @Inject
-    private LibItemMapper libItemMapper;
+    private LibMediaItemMapper libMediaItemMapper;
     @Inject
     private LibMediaItemThinMapper thinMapper;
     @Inject
@@ -92,7 +92,7 @@ public class TraPlaylistBasedTest {
             libMediaItem.setIdx(String.valueOf(java.util.concurrent.ThreadLocalRandom.current().nextInt()));
             libMediaItem.length(java.util.concurrent.ThreadLocalRandom.current().nextDouble(30000.0));
             libMediaItem.network(corNetwork);
-            libMediaItem.setLibrary(libLibrary);
+            libMediaItem.setLibrary(libMediaLibrary);
             libMediaItems.add(libMediaItemRepository.saveAndFlush(libMediaItem));
         }
         return libMediaItems;
@@ -224,7 +224,7 @@ public class TraPlaylistBasedTest {
     protected void buildMustHavePojos() {
         corChannel = factory.manufacturePojo(CorChannel.class);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
+        this.libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         libMediaItemToShuffle = factory.manufacturePojo(LibMediaItem.class);
         advertisementToShuffle = factory.manufacturePojo(TraAdvertisement.class);
@@ -235,18 +235,18 @@ public class TraPlaylistBasedTest {
         corChannel.setId(12L);
         corChannel.setNetwork(corNetwork);
         corChannel = corChannelRepository.saveAndFlush(corChannel);
-        libLibrary.setId(12L);
-        libLibrary.network(corNetwork);
-        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        this.libMediaLibrary.setId(12L);
+        this.libMediaLibrary.network(corNetwork);
+        this.libMediaLibrary = libLibraryRepository.saveAndFlush(this.libMediaLibrary);
 
         crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
 
         libMediaItemToShuffle.setNetwork(corNetwork);
-        libMediaItemToShuffle.setLibrary(libLibrary);
-        LibLibrary libLibrary = new LibLibrary();
-        libLibrary.setId(2L);
-        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.length(30000.0).library(libLibrary));
+        libMediaItemToShuffle.setLibrary(this.libMediaLibrary);
+        LibMediaLibrary libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(2L);
+        libMediaItemToShuffle = libMediaItemRepository.saveAndFlush(libMediaItemToShuffle.length(30000.0).library(libMediaLibrary));
         libMediaItemToShuffleThinDTO = thinMapper.DB2DTO(libMediaItemToShuffle);
         advertisementToShuffle.setCustomer(crmAccount);
         advertisementToShuffle.setNetwork(corNetwork);

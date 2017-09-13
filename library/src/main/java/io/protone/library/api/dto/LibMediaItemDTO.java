@@ -38,7 +38,7 @@ public class LibMediaItemDTO implements Serializable {
 
     private Double length = null;
 
-    private LibLibraryDTO library = null;
+    private LibMediaLibraryDTO library = null;
 
     private List<LibMarkerDTO> markers = new ArrayList<LibMarkerDTO>();
 
@@ -237,7 +237,7 @@ public class LibMediaItemDTO implements Serializable {
         this.length = length;
     }
 
-    public LibMediaItemDTO library(LibLibraryDTO library) {
+    public LibMediaItemDTO library(LibMediaLibraryDTO library) {
         this.library = library;
         return this;
     }
@@ -248,11 +248,11 @@ public class LibMediaItemDTO implements Serializable {
      * @return library
      **/
     @ApiModelProperty(value = "")
-    public LibLibraryDTO getLibrary() {
+    public LibMediaLibraryDTO getLibrary() {
         return library;
     }
 
-    public void setLibrary(LibLibraryDTO library) {
+    public void setLibrary(LibMediaLibraryDTO library) {
         this.library = library;
     }
 

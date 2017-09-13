@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * A Block repository.
  */
 public interface SchBlockRepository extends JpaRepository<SchBlock, Long> {
+
 }

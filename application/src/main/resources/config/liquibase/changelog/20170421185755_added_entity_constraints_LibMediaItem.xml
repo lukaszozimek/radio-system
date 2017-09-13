@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <!--
         Added the constraints for entity LibMediaItem.
     -->
@@ -12,7 +12,7 @@
                                  baseTableName="lib_media_item"
                                  constraintName="fk_lib_media_item_library_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="lib_library"/>
+                                 referencedTableName="lib_media_library"/>
 
         <addForeignKeyConstraint baseColumnNames="label_id"
                                  baseTableName="lib_media_item"
@@ -43,6 +43,12 @@
                                  constraintName="fk_lib_media_item_network_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
+
+        <addForeignKeyConstraint baseColumnNames="channel_id"
+                                 baseTableName="lib_media_item"
+                                 constraintName="fk_lib_media_item_channel_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_channel"/>
 
         <addForeignKeyConstraint baseColumnNames="created_by_id"
                                  baseTableName="lib_media_item"

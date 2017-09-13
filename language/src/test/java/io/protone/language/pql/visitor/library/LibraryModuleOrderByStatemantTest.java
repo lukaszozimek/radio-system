@@ -60,7 +60,7 @@ public class LibraryModuleOrderByStatemantTest {
     public void simpleLibraryQuery() throws IOException {
 
         String simpleQuery = "Library  Library ORDER BY id ASC";
-        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibLibrary l ORDER BY l.id ASC";
+        final String EXPECTED_JPA_QUERY = "SELECT l FROM LibMediaLibrary l ORDER BY l.id ASC";
 
         CharStream inputCharStream = CharStreams.fromReader(new StringReader(simpleQuery));
         TokenSource tokenSource = new io.protone.language.pql.ProtoneQueryLanguageLexer(inputCharStream);

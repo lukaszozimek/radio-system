@@ -8,7 +8,7 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.core.repository.CorUserRepository;
 import io.protone.core.s3.S3Client;
 import io.protone.core.service.CorUserService;
-import io.protone.library.domain.LibLibrary;
+import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibLibraryRepository;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -49,7 +49,7 @@ public class LibFileServiceBaseTest {
     @Mock
     protected CorUserService corUserService;
     protected CorNetwork corNetwork;
-    protected LibLibrary libLibrary;
+    protected LibMediaLibrary libMediaLibrary;
     protected PodamFactory factory;
     protected Metadata metadata;
     protected ParseContext pcontext;
@@ -66,16 +66,16 @@ public class LibFileServiceBaseTest {
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corNetwork.setId(null);
         corNetwork = corNetworkRepository.saveAndFlush(corNetwork);
-        libLibrary = factory.manufacturePojo(LibLibrary.class);
-        libLibrary.setNetwork(corNetwork);
-        libLibrary = libLibraryRepository.saveAndFlush(libLibrary);
+        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
+        libMediaLibrary.setNetwork(corNetwork);
+        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
         corUser = factory.manufacturePojo(CorUser.class);
         corUser.setNetworks(Sets.newHashSet(corNetwork));
         corUser.setChannels(null);
         corUser.setAuthorities(Sets.newHashSet(new CorAuthority().name(ADMIN)));
         corUser = corUserRepository.saveAndFlush(corUser);
-        doNothing().when(s3Client).delete(anyString(),anyObject());
-        doNothing().when(s3Client).upload(anyString(),anyString(), anyObject(), anyString());
+        doNothing().when(s3Client).delete(anyString(), anyString(), anyObject());
+        doNothing().when(s3Client).upload(anyString(), anyString(), anyString(), anyObject(), anyString());
 
         when(corUserService.getUserWithAuthoritiesByLogin(anyString())).thenReturn(Optional.of(corUser));
 

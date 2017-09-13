@@ -1,7 +1,6 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
@@ -11,6 +10,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -21,17 +21,9 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_emission")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchEmission  extends AbstractAuditingEntity implements Serializable {
+public class SchEmission extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
-
-    @Column(name = "seq")
-    private Long seq;
 
     @PodamExclude
     @ManyToOne
@@ -42,17 +34,8 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
     private SchClock clock;
 
     @PodamExclude
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private LibMediaItem mediaItem;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private SchQueueParams queueParams;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private SchTimeParams timeParams;
 
     @PodamExclude
     @OneToMany(mappedBy = "emission")
@@ -65,12 +48,16 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
     private SchBlock block = null;
 
     @ManyToOne
+    @PodamExclude
     private CorNetwork network;
 
     @ManyToOne
     @PodamExclude
     private CorChannel channel;
 
+    @Transient
+    @JsonIgnore
+    private String libraryElementShortCut;
 
     public Long getId() {
         return id;
@@ -80,16 +67,16 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
         this.id = id;
     }
 
-    public Long getSeq() {
-        return seq;
+    public Long getSequence() {
+        return sequence;
     }
 
-    public void setSeq(Long seq) {
-        this.seq = seq;
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
     }
 
     public SchEmission seq(Long seq) {
-        this.seq = seq;
+        this.sequence = seq;
         return this;
     }
 
@@ -132,29 +119,8 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public SchQueueParams getQueueParams() {
-        return queueParams;
-    }
-
-    public void setQueueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-    }
-
-    public SchEmission queueParams(SchQueueParams queueParams) {
-        this.queueParams = queueParams;
-        return this;
-    }
-
-    public SchTimeParams getTimeParams() {
-        return timeParams;
-    }
-
-    public void setTimeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
-    }
-
-    public SchEmission timeParams(SchTimeParams timeParams) {
-        this.timeParams = timeParams;
+    public SchEmission length(Long length) {
+        this.length = length;
         return this;
     }
 
@@ -184,11 +150,11 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
     }
 
     public SchBlock getBlock() {
-        return null; //block;
+        return block;
     }
 
     public void setBlock(SchBlock block) {
-        //this.block = block;
+        this.block = block;
     }
 
     public SchEmission block(SchBlock block) {
@@ -200,17 +166,21 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
         return network;
     }
 
+    public void setNetwork(CorNetwork network) {
+        this.network = network;
+    }
+
     public SchEmission network(CorNetwork network) {
         this.network = network;
         return this;
     }
 
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
-
     public CorChannel getChannel() {
         return channel;
+    }
+
+    public void setChannel(CorChannel channel) {
+        this.channel = channel;
     }
 
     public SchEmission channel(CorChannel channel) {
@@ -218,8 +188,22 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
         return this;
     }
 
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
+    public SchEmission startTime(LocalDateTime startTime) {
+        super.setStartTime(startTime);
+        return this;
+    }
+
+    public SchEmission endTime(LocalDateTime endTime) {
+        super.setEndTime(endTime);
+        return this;
+    }
+
+    public String getLibraryElementShortCut() {
+        return libraryElementShortCut;
+    }
+
+    public void setLibraryElementShortCut(String libraryElementShortCut) {
+        this.libraryElementShortCut = libraryElementShortCut;
     }
 
     @Override
@@ -246,7 +230,8 @@ public class SchEmission  extends AbstractAuditingEntity implements Serializable
     public String toString() {
         return "Emission{" +
                 "id=" + getId() +
-                ", seq='" + getSeq() + "'" +
+                ", sequence='" + getSequence() + "'" +
                 "}";
     }
+
 }

@@ -51,7 +51,7 @@ public class LibDocumentFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libDocumentFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libDocumentFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         List<LibDocumentObject> libImageObjects = libDocumentObjectRepository.findByMediaItem(libMediaItem);
         //assert
         Assert.notNull(libMediaItem);
@@ -59,7 +59,7 @@ public class LibDocumentFileServiceTest extends LibFileServiceBaseTest {
         Assert.notNull(libMediaItem.getIdx());
         Assert.notNull(libMediaItem.getProperites());
         Assert.notNull(libMediaItem.getNetwork());
-        Assert.isTrue(libMediaItem.getLibrary().getName().equals(libLibrary.getName()));
+        Assert.isTrue(libMediaItem.getLibrary().getName().equals(libMediaLibrary.getName()));
         Assert.isTrue(libMediaItem.getNetwork().getName().equals(corNetwork.getName()));
         Assert.isTrue(libMediaItem.getItemType().equals(LibItemTypeEnum.IT_DOCUMENT));
         Assert.isTrue(libMediaItem.getProperites().size() > 1);
@@ -71,14 +71,14 @@ public class LibDocumentFileServiceTest extends LibFileServiceBaseTest {
     public void shoulDownloadDocumentFile() throws Exception {
         //when
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls");
-        when(s3Client.download(anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
+        when(s3Client.download(anyString(),anyString(),anyString())).thenReturn(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
         ReflectionTestUtils.setField(libDocumentFileService, "s3Client", s3Client);
         ReflectionTestUtils.setField(libDocumentFileService, "corUserService", corUserService);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(TestUtil.parseInputStream(inputStream).toByteArray());
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libDocumentFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libDocumentFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         byte[] bytes = libDocumentFileService.download(libMediaItem);
 
         //assert
@@ -95,7 +95,7 @@ public class LibDocumentFileServiceTest extends LibFileServiceBaseTest {
         parser.parse(byteArrayInputStream, handler, metadata, pcontext);
 
         //then
-        LibMediaItem libMediaItem = libDocumentFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libLibrary);
+        LibMediaItem libMediaItem = libDocumentFileService.saveFile(byteArrayInputStream, metadata, SAMPLE_FILE_NAME, SAMPLE_FILE_SIZE, libMediaLibrary);
         libDocumentFileService.deleteFile(libMediaItem);
         List<LibDocumentObject> audioObjectList = libDocumentObjectRepository.findByMediaItem(libMediaItem);
 
