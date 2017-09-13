@@ -44,9 +44,9 @@ public class S3Client {
 
     public String makeBucket(String prefix, String bucketName) throws CreateBucketException {
         try {
-            boolean isExist = getClient().bucketExists(prefix +bucketName);
+            boolean isExist = getClient().bucketExists(prefix + bucketName);
             if (!isExist) {
-                getClient().makeBucket(prefix +bucketName);
+                getClient().makeBucket(prefix + bucketName);
             }
             return bucketName;
         } catch (InvalidBucketNameException e) {
@@ -76,11 +76,11 @@ public class S3Client {
 
     public String makeBucketPublicBucket(String prefix, String bucketName) throws CreateBucketException {
         try {
-            boolean isExist = getClient().bucketExists(prefix +bucketName);
+            boolean isExist = getClient().bucketExists(prefix + bucketName);
             if (!isExist) {
 
                 getClient().makeBucket(bucketName);
-                getClient().setBucketPolicy(prefix +bucketName, "", PolicyType.READ_ONLY);
+                getClient().setBucketPolicy(prefix + bucketName, "", PolicyType.READ_ONLY);
             }
             return bucketName;
         } catch (InvalidBucketNameException e) {
@@ -112,7 +112,7 @@ public class S3Client {
 
     public String removeBucket(String prefix, String bucketName) throws DeleteBucketException {
         try {
-            getClient().removeBucket(prefix +bucketName);
+            getClient().removeBucket(prefix + bucketName);
             return bucketName;
         } catch (InvalidBucketNameException e) {
             throw new DeleteBucketException(e.getMessage());
@@ -167,7 +167,7 @@ public class S3Client {
     public void upload(String prefix, String bucketName, String uuid, ByteArrayInputStream bais, String contentType) throws UploadException, S3Exception {
 
         try {
-            getClient().putObject(prefix +bucketName, uuid, bais, bais.available(), contentType);
+            getClient().putObject(prefix + bucketName, uuid, bais, bais.available(), contentType);
         } catch (InvalidBucketNameException e) {
             throw new UploadException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -194,8 +194,8 @@ public class S3Client {
 
     public InputStream download(String prefix, String minioBucket, String uuid) throws DownloadException, S3Exception {
         try {
-            ObjectStat so = getClient().statObject(prefix +minioBucket, uuid);
-            return getClient().getObject(minioBucket, uuid);
+            ObjectStat so = getClient().statObject(prefix + minioBucket, uuid);
+            return getClient().getObject(prefix + minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new DownloadException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -246,7 +246,7 @@ public class S3Client {
 
     public String getCover(String prefix, String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
         try {
-            return getClient().presignedGetObject(prefix +minioBucket, uuid);
+            return getClient().presignedGetObject(prefix + minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new UrlGenerationResourceException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
@@ -273,7 +273,7 @@ public class S3Client {
     public String getObjectUrl(String prefix, String minioBucket, String uuid) throws S3Exception, UrlGenerationResourceException {
         try {
 
-            return getClient().getObjectUrl(prefix +minioBucket, uuid);
+            return getClient().getObjectUrl(prefix + minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new UrlGenerationResourceException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {
