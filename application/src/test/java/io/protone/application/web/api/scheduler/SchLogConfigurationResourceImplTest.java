@@ -11,7 +11,6 @@ import io.protone.core.s3.exceptions.CreateBucketException;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.library.domain.LibFileLibrary;
-import io.protone.library.repository.LibFileLibraryRepository;
 import io.protone.library.service.LibFileLibraryService;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.domain.SchLogConfiguration;
@@ -33,8 +32,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -78,8 +75,6 @@ public class SchLogConfigurationResourceImplTest {
 
     @Mock
     private LibFileLibraryService libFileLibraryService;
-    @Autowired
-    private LibFileLibraryRepository libFileLibraryRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
