@@ -36,7 +36,7 @@ public class SchClock extends SchTimeParams implements Serializable {
     @ManyToOne
     private SchSchedule schSchedule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
     private CorDictionary clockCategory;
 

@@ -30,7 +30,7 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
     @Column(name = "short_name", unique = true, nullable = false)
     private String shortName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
     private CorDictionary clockCategory;
 
