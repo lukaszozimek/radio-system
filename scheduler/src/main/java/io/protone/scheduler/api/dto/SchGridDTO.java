@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchGridDTO  extends SchBaseDTO{
+public class SchGridDTO extends SchBaseDTO {
 
     @PodamExclude
     @JsonProperty("clocks")
@@ -27,6 +27,9 @@ public class SchGridDTO  extends SchBaseDTO{
 
     @JsonProperty("name")
     private String name = null;
+
+    @JsonProperty("length")
+    private Long length;
 
     @JsonProperty("shortName")
     private String shortName = null;
@@ -186,6 +189,14 @@ public class SchGridDTO  extends SchBaseDTO{
 
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 
     @Override

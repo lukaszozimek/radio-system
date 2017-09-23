@@ -34,11 +34,11 @@
             <column name="default_grid" type="boolean">
                 <constraints nullable="true"/>
             </column>
-           <column name="grid_category_id" type="bigint">
-               <constraints nullable="true"/>
-           </column>
+            <column name="grid_category_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="sequence" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
@@ -46,6 +46,9 @@
 
             <column name="channel_id" type="bigint">
                 <constraints nullable="false"/>
+            </column>
+            <column name="length" type="bigint">
+                <constraints nullable="true"/>
             </column>
             <column name="created_by_id" type="bigint">
                 <constraints nullable="false"/>

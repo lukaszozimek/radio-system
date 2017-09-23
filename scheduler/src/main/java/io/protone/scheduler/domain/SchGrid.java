@@ -40,6 +40,9 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     @Column(name = "default_grid")
     private Boolean defaultGrid = null;
 
+    @Column(name = "length")
+    protected Long length;
+
     @ManyToOne
     @PodamExclude
     private CorDictionary gridCategory;
@@ -216,5 +219,13 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     public SchGrid internalClockcs(Set<SchClockConfiguration> internalClockcs) {
         this.internalClockcs = internalClockcs;
         return this;
+    }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
     }
 }
