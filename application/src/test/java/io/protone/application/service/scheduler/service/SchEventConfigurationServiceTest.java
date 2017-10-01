@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEventConfigurationServiceTest  extends SchedulerBaseTest {
+public class SchEventConfigurationServiceTest extends SchedulerBaseTest {
 
 
     @Autowired
@@ -41,7 +41,6 @@ public class SchEventConfigurationServiceTest  extends SchedulerBaseTest {
     }
 
 
-
     @Test
     public void shouldGetEventConfigurations() throws Exception {
         //when
@@ -52,6 +51,26 @@ public class SchEventConfigurationServiceTest  extends SchedulerBaseTest {
 
         //then
         Slice<SchEventConfiguration> fetchedEntity = schEventConfigurationService.findSchEventConfigurationsForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(schEventConfiguration.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(schEventConfiguration.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+
+    }
+
+
+    @Test
+    public void shouldGetEventConfigurationsGroupedByType() throws Exception {
+        //when
+        SchEventConfiguration schEventConfiguration = factory.manufacturePojo(SchEventConfiguration.class);
+        schEventConfiguration.setNetwork(corNetwork);
+        schEventConfiguration.setChannel(corChannel);
+        schEventConfiguration = schEventConfigurationRepository.save(schEventConfiguration);
+
+        //then
+        Slice<SchEventConfiguration> fetchedEntity = schEventConfigurationService.findAllEventsByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), "test", new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());

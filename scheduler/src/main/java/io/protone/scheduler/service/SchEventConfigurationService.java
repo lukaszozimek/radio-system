@@ -30,6 +30,11 @@ public class SchEventConfigurationService {
         return eventRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pagable);
     }
 
+    @Transactional(readOnly = true)
+    public Slice<SchEventConfiguration> findAllEventsByCategoryName(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
+        return eventRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndEventCategory_Name(networkShortcut, channelShortcut, categoryName, pageable);
+    }
+
     @Transactional
     public SchEventConfiguration saveEventConfiguration(SchEventConfiguration schEventConfiguration) {
         SchEventConfiguration beforeSave;

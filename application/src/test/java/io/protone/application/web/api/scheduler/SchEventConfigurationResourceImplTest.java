@@ -185,6 +185,22 @@ public class SchEventConfigurationResourceImplTest {
 
     @Test
     @Transactional
+    public void getAllSchEventsGroupedByCategory() throws Exception {
+        // Initialize the database
+        schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
+
+        // Get all the traPlaylistList
+        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(schEventConfiguration.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORTNAME.toString())));
+
+    }
+
+    @Test
+    @Transactional
     public void getSchEvent() throws Exception {
         // Initialize the database
         schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
@@ -267,7 +283,6 @@ public class SchEventConfigurationResourceImplTest {
         List<SchEventConfiguration> traPlaylistList = schEventRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
 
 
 }

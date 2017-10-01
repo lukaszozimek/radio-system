@@ -50,7 +50,10 @@ public class SchClockConfigurationService {
     public Slice<SchClockConfiguration> findSchClockConfigurationsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pagable) {
         return schClockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pagable);
     }
-
+    @Transactional(readOnly = true)
+    public Slice<SchClockConfiguration> findAllClocksByCategoryName(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
+        return schClockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndClockCategory_Name(networkShortcut, channelShortcut, categoryName, pageable);
+    }
     @Transactional(readOnly = true)
     public SchClockConfiguration findSchClockConfigurationForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
         return schClockConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);

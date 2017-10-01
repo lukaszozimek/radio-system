@@ -82,7 +82,7 @@ public class SchGridResourceImplTest {
 
     private MockMvc restSchGridMockMvc;
 
-    private SchGrid traPlaylist;
+    private SchGrid schGrid;
 
     private CorNetwork corNetwork;
 
@@ -123,7 +123,7 @@ public class SchGridResourceImplTest {
         corNetwork.setId(1L);
         corChannel = new CorChannel().shortcut("tes");
         corChannel.setId(1L);
-        traPlaylist = createEntity(em).network(corNetwork).channel(corChannel);
+        schGrid = createEntity(em).network(corNetwork).channel(corChannel);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class SchGridResourceImplTest {
         int databaseSizeBeforeCreate = schGridRepository.findAll().size();
 
         // Create the SchGrid
-        SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(traPlaylist);
+        SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(schGrid);
 
         restSchGridMockMvc.perform(post("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -173,13 +173,47 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getAllSchGrids() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
         restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(traPlaylist.getId().intValue())))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORTNAME.toString())));
+
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSchGridsDefaults() throws Exception {
+        // Initialize the database
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+
+        // Get all the traPlaylistList
+        restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/default?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORTNAME.toString())));
+
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSchGridsGroupedByCategory() throws Exception {
+        // Initialize the database
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+
+        // Get all the traPlaylistList
+        restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))
                 .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
                 .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORTNAME.toString())));
 
@@ -189,9 +223,9 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getSchGrid() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
 
-        // Get the traPlaylist
+        // Get the schGrid
         restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -202,7 +236,7 @@ public class SchGridResourceImplTest {
     @Test
     @Transactional
     public void getNonExistingSchGrid() throws Exception {
-        // Get the traPlaylist
+        // Get the schGrid
         restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
@@ -211,11 +245,11 @@ public class SchGridResourceImplTest {
     @Transactional
     public void updateSchGrid() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
         int databaseSizeBeforeUpdate = schGridRepository.findAll().size();
 
-        // Update the traPlaylist
-        SchGrid updatedSchGrid = schGridRepository.findOne(traPlaylist.getId());
+        // Update the schGrid
+        SchGrid updatedSchGrid = schGridRepository.findOne(schGrid.getId());
         updatedSchGrid
                 .name(UPDATED_NAME).shortName(UPDATED_SHORTNAME);
         SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(updatedSchGrid);
@@ -239,7 +273,7 @@ public class SchGridResourceImplTest {
         int databaseSizeBeforeUpdate = schGridRepository.findAll().size();
 
         // Create the SchGrid
-        SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(traPlaylist);
+        SchGridDTO traPlaylistDTO = schGridMapper.DB2DTO(schGrid);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSchGridMockMvc.perform(put("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration", corNetwork.getShortcut(), corChannel.getShortcut())
@@ -256,10 +290,10 @@ public class SchGridResourceImplTest {
     @Transactional
     public void deleteSchGrid() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(traPlaylist.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
         int databaseSizeBeforeDelete = schGridRepository.findAll().size();
 
-        // Get the traPlaylist
+        // Get the schGrid
         restSchGridMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME)
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
@@ -268,7 +302,6 @@ public class SchGridResourceImplTest {
         List<SchGrid> traPlaylistList = schGridRepository.findAll();
         assertThat(traPlaylistList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
 
 
     @Test

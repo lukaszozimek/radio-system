@@ -17,4 +17,6 @@ public interface SchClockConfigurationRepository extends JpaRepository<SchClockC
     SchClockConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("shortName") String shortName);
 
     void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+
+    Slice<SchClockConfiguration> findAllByNetwork_ShortcutAndChannel_ShortcutAndClockCategory_Name(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable);
 }

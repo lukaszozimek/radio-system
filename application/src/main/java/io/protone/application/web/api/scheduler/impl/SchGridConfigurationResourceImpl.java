@@ -66,6 +66,39 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
     }
 
     @Override
+    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerDefaultGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                             @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                             @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        Slice<SchGrid> entity = schGridService.findAllDefaultGrids(networkShortcut, channelShortcut, pagable);
+        List<SchGridThinDTO> response = schGridMapper.DBs2ThinDTOs(entity.getContent());
+        return Optional.ofNullable(response)
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
+    }
+
+    @Override
+    public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                       @ApiParam(value = "name", required = true) @PathVariable("name") String name,
+                                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all SchGrid, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        Slice<SchGrid> entity = schGridService.findAllGridsByCategoryNaem(networkShortcut, channelShortcut, name, pagable);
+        List<SchGridThinDTO> response = schGridMapper.DBs2ThinDTOs(entity.getContent());
+        return Optional.ofNullable(response)
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<List<SchGridThinDTO>> getAllSchedulerGridForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                       @ApiParam(value = "pagable", required = true) Pageable pagable) {

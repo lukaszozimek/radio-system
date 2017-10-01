@@ -72,6 +72,25 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
     }
 
     @Test
+    public void shouldGetClocksGroupedByCategory() throws Exception {
+        //when
+        SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);
+        schClock.setNetwork(corNetwork);
+        schClock.setChannel(corChannel);
+        schClock = schClockConfigurationRepository.save(schClock);
+
+        //then
+        Slice<SchClockConfiguration> fetchedEntity = schClockConfigurationService.findAllClocksByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), "test", new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(schClock.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(schClock.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+
+    }
+
+    @Test
     public void shouldSaveClock() throws Exception {
         //when
         SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);

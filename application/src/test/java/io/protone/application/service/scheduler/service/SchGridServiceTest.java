@@ -39,7 +39,6 @@ public class SchGridServiceTest extends SchedulerBaseTest {
     }
 
 
-
     @Test
     public void shouldGetGrids() throws Exception {
         //when
@@ -50,6 +49,44 @@ public class SchGridServiceTest extends SchedulerBaseTest {
 
         //then
         Slice<SchGrid> fetchedEntity = schGridService.findSchGridsForNetworkAndChannel(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(schGrid.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(schGrid.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+
+    }
+
+    @Test
+    public void shouldGetDefaultGrids() throws Exception {
+        //when
+        SchGrid schGrid = factory.manufacturePojo(SchGrid.class);
+        schGrid.setNetwork(corNetwork);
+        schGrid.setChannel(corChannel);
+        schGrid = schGridRepository.save(schGrid);
+
+        //then
+        Slice<SchGrid> fetchedEntity = schGridService.findAllDefaultGrids(corNetwork.getShortcut(), corChannel.getShortcut(), new PageRequest(0, 10));
+
+        //assert
+        assertNotNull(fetchedEntity.getContent());
+        assertEquals(1, fetchedEntity.getContent().size());
+        assertEquals(schGrid.getId(), fetchedEntity.getContent().get(0).getId());
+        assertEquals(schGrid.getNetwork(), fetchedEntity.getContent().get(0).getNetwork());
+
+    }
+
+    @Test
+    public void shouldGetGridGroupedByType() throws Exception {
+        //when
+        SchGrid schGrid = factory.manufacturePojo(SchGrid.class);
+        schGrid.setNetwork(corNetwork);
+        schGrid.setChannel(corChannel);
+        schGrid = schGridRepository.save(schGrid);
+
+        //then
+        Slice<SchGrid> fetchedEntity = schGridService.findAllGridsByCategoryNaem(corNetwork.getShortcut(), corChannel.getShortcut(), "test", new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());

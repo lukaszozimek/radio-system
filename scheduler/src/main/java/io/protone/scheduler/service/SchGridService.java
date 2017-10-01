@@ -43,6 +43,16 @@ public class SchGridService {
     }
 
     @Transactional(readOnly = true)
+    public Slice<SchGrid> findAllDefaultGrids(String networkShortcut, String channelShortcut, Pageable pageable) {
+        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGrid(networkShortcut, channelShortcut, true, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Slice<SchGrid> findAllGridsByCategoryNaem(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
+        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_Name(networkShortcut, channelShortcut, categoryName, pageable);
+    }
+
+    @Transactional(readOnly = true)
     public SchGridDTO findSchGridForNetworkAndChannelAndShortNameDTO(String networkShortcut, String channelShortcut, String shortName) {
         return schGridMapper.DB2DTO(schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName));
     }

@@ -67,6 +67,24 @@ public class SchEventConfigurationResourceImpl implements SchEventConfigurationR
     }
 
     @Override
+    public ResponseEntity<List<SchEventConfigurationThinDTO>> getAllSchedulerEventGroupedByCategoryForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                                      @ApiParam(value = "name", required = true) @PathVariable("name") String name,
+                                                                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all SchEventConfiguration, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+
+        Slice<SchEventConfiguration> entity = schEventConfigurationService.findAllEventsByCategoryName(networkShortcut, channelShortcut, name, pagable);
+        List<SchEventConfigurationThinDTO> response = schEventConfigurationMapper.DBs2ThinDTOs(entity.getContent());
+        return Optional.ofNullable(response)
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<SchEventConfigurationDTO> creatSchedulerTemplatesForChannelUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                                @ApiParam(value = "schEventDTO", required = true) @Valid @RequestBody SchEventConfigurationDTO schEventDTO) throws URISyntaxException {
@@ -90,7 +108,7 @@ public class SchEventConfigurationResourceImpl implements SchEventConfigurationR
                                                                           @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {
         log.debug("REST request to delete SchEventConfiguration : {}, for Network: {}", shortName, networkShortcut);
         schEventConfigurationService.deleteSchEventConfigurationByNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
-        return ResponseEntity.ok()     .build();
+        return ResponseEntity.ok().build();
     }
 
     @Override

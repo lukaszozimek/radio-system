@@ -37,6 +37,19 @@ public interface SchScheduleResource {
                                                                                        @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                        @ApiParam(value = "pagable", required = true) Pageable pagable);
 
+    @ApiOperation(value = "getAllSchedulerScheduleFromToDateForChannel", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SchScheduleDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<SchScheduleThinDTO>> getAllSchedulerScheduleFromToDateForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                 @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                 @ApiParam(value = "from", required = true) @PathVariable("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                                                                 @ApiParam(value = "to", required = true) @PathVariable("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to);
 
     @ApiOperation(value = "createSchedulerForChannelSchedule", notes = "", response = SchScheduleDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -103,7 +116,7 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}/{gridShortName}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}/{gridShortName}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<SchScheduleDTO> buildSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -118,7 +131,7 @@ public interface SchScheduleResource {
             @ApiResponse(code = 401, message = "Unauthorized", response = SchScheduleDTO.class),
             @ApiResponse(code = 403, message = "Forbidden", response = SchScheduleDTO.class),
             @ApiResponse(code = 404, message = "Not Found", response = SchScheduleDTO.class)})
-    @RequestMapping(value = "/api/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.GET)
