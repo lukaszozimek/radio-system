@@ -5,6 +5,7 @@ import io.protone.core.mapper.CorUserMapper;
 import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
 import io.protone.scheduler.domain.SchGridClockConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchGridClockConfigurationMapper {
+    @Mapping(source = "schClockConfigurationDTO", target = "schClockConfiguration")
     SchGridClockConfiguration DTO2DB(SchGridClockConfigurationDTO dto);
 
     SchGridClockConfigurationDTO DB2DTO(SchGridClockConfiguration entity);

@@ -13,6 +13,10 @@ public interface SchGridRepository extends JpaRepository<SchGrid, Long> {
 
     Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
 
+    Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_Name(String networkShortCut, String channelShortcut, String categoryName, Pageable pageable);
+
+    Slice<SchGrid> findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGrid(String networkShortcut, String channelShortcut, Boolean defaultGrid, Pageable pageable);
+
     SchGrid findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
 
 

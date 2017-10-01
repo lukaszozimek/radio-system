@@ -184,6 +184,23 @@ public class SchClockConfigurationResourceImplTest {
 
     }
 
+
+    @Test
+    @Transactional
+    public void getAllSchClockConfigurationGroupedByCategory() throws Exception {
+        // Initialize the database
+        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
+
+        // Get all the traPlaylistList
+        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(clockConfiguration.getId().intValue())))
+                .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                .andExpect(jsonPath("$.[*].shortName").value(hasItem(DEFAULT_SHORTNAME.toString())));
+
+    }
+
     @Test
     @Transactional
     public void getSchClockConfiguration() throws Exception {

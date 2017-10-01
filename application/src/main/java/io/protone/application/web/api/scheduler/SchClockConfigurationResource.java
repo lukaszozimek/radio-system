@@ -51,6 +51,19 @@ public interface SchClockConfigurationResource {
                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
+    @ApiOperation(value = "getAllSchedulerClockGroupedByCategoryForChannel", notes = "", response = SchEventConfigurationThinDTO.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SchClockConfigurationThinDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchClockConfigurationThinDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchClockConfigurationThinDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchClockConfigurationThinDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<List<SchClockConfigurationThinDTO>> getAllSchedulerClockForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                               @ApiParam(value = "name", required = true) @PathVariable("name") String name,
+                                                                                                               @ApiParam(value = "pagable", required = true) Pageable pagable);
 
     @ApiOperation(value = "getSchedulerClockForChannel", notes = "", response = SchClockConfigurationDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {

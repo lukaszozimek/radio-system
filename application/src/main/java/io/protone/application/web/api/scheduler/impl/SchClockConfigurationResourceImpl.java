@@ -86,6 +86,23 @@ public class SchClockConfigurationResourceImpl implements SchClockConfigurationR
     }
 
     @Override
+    public ResponseEntity<List<SchClockConfigurationThinDTO>> getAllSchedulerClockForChannelGroupedByCategoryUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                                                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                                                                                      @ApiParam(value = "name", required = true) @PathVariable("name") String name,
+                                                                                                                      @ApiParam(value = "pagable", required = true) Pageable pagable) {
+        log.debug("REST request to get all SchClockConfiguration, for Channel {}, Network: {}", channelShortcut, networkShortcut);
+        Slice<SchClockConfiguration> entity = schClockConfigurationService.findAllClocksByCategoryName(networkShortcut, channelShortcut, name, pagable);
+        List<SchClockConfigurationThinDTO> response = schClockConfigurationMapper.DBs2ThinDTOs(entity.getContent());
+        return Optional.ofNullable(response)
+                .map(result -> new ResponseEntity<>(
+                        result,
+                        PaginationUtil.generateSliceHttpHeaders(entity),
+                        HttpStatus.OK))
+                .orElse(new ResponseEntity<>(
+                        PaginationUtil.generateSliceHttpHeaders(entity), HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public ResponseEntity<SchClockConfigurationDTO> getSchedulerClockForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                         @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                         @ApiParam(value = "shortName", required = true) @PathVariable("shortName") String shortName) {

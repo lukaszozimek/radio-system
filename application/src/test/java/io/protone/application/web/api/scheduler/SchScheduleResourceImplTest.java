@@ -53,7 +53,7 @@ public class SchScheduleResourceImplTest {
     private static final LocalDate UPDATED_PLAYLIST_DATE = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
-    private SchScheduleRepository traPlaylistRepository;
+    private SchScheduleRepository schScheduleRepository;
 
 
     @Autowired
@@ -128,7 +128,7 @@ public class SchScheduleResourceImplTest {
     @Test
     @Transactional
     public void createSchSchedule() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schScheduleRepository.findAll().size();
 
         // Create the SchSchedule
         SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(schSchedule);
@@ -139,7 +139,7 @@ public class SchScheduleResourceImplTest {
                 .andExpect(status().isCreated());
 
         // Validate the SchSchedule in the database
-        List<SchSchedule> schSchedules = traPlaylistRepository.findAll();
+        List<SchSchedule> schSchedules = schScheduleRepository.findAll();
         assertThat(schSchedules).hasSize(databaseSizeBeforeCreate + 1);
         SchSchedule testSchSchedule = schSchedules.get(schSchedules.size() - 1);
     }
@@ -148,7 +148,7 @@ public class SchScheduleResourceImplTest {
     @Test
     @Transactional
     public void createSchScheduleWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeCreate = schScheduleRepository.findAll().size();
 
         // Create the SchSchedule with an existing ID
         SchSchedule existingSchSchedule = new SchSchedule();
@@ -162,7 +162,7 @@ public class SchScheduleResourceImplTest {
                 .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
-        List<SchSchedule> schSchedules = traPlaylistRepository.findAll();
+        List<SchSchedule> schSchedules = schScheduleRepository.findAll();
         assertThat(schSchedules).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -170,7 +170,7 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void getAllSchSchedules() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
 
         // Get all the schSchedules
         restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -182,9 +182,23 @@ public class SchScheduleResourceImplTest {
 
     @Test
     @Transactional
+    public void getAllSchSchedulesForDate() throws Exception {
+        // Initialize the database
+        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+
+        // Get all the schSchedules
+        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corNetwork.getShortcut(), corChannel.getShortcut()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.[*].id").value(hasItem(schSchedule.getId().intValue())))
+                .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_PLAYLIST_DATE.toString())));
+    }
+
+    @Test
+    @Transactional
     public void getSchSchedule() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
 
         // Get the schSchedule
         restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE))
@@ -207,11 +221,11 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void updateSchSchedule() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
+        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeUpdate = schScheduleRepository.findAll().size();
 
         // Update the schSchedule
-        SchSchedule updatedSchSchedule = traPlaylistRepository.findOne(schSchedule.getId());
+        SchSchedule updatedSchSchedule = schScheduleRepository.findOne(schSchedule.getId());
         updatedSchSchedule
                 .date(UPDATED_PLAYLIST_DATE);
         SchScheduleDTO traPlaylistDTO = schScheduleMapper.DB2DTO(updatedSchSchedule);
@@ -222,7 +236,7 @@ public class SchScheduleResourceImplTest {
                 .andExpect(status().isOk());
 
         // Validate the SchSchedule in the database
-        List<SchSchedule> schSchedules = traPlaylistRepository.findAll();
+        List<SchSchedule> schSchedules = schScheduleRepository.findAll();
         assertThat(schSchedules).hasSize(databaseSizeBeforeUpdate);
         SchSchedule testSchSchedule = schSchedules.get(schSchedules.size() - 1);
     }
@@ -230,7 +244,7 @@ public class SchScheduleResourceImplTest {
     @Test
     @Transactional
     public void updateNonExistingSchSchedule() throws Exception {
-        int databaseSizeBeforeUpdate = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeUpdate = schScheduleRepository.findAll().size();
 
         // Create the SchSchedule
         SchScheduleDTO schScheduleDTO = schScheduleMapper.DB2DTO(schSchedule);
@@ -242,7 +256,7 @@ public class SchScheduleResourceImplTest {
                 .andExpect(status().isCreated());
 
         // Validate the SchSchedule in the database
-        List<SchSchedule> schSchedules = traPlaylistRepository.findAll();
+        List<SchSchedule> schSchedules = schScheduleRepository.findAll();
         assertThat(schSchedules).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -250,8 +264,8 @@ public class SchScheduleResourceImplTest {
     @Transactional
     public void deleteSchSchedule() throws Exception {
         // Initialize the database
-        traPlaylistRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
-        int databaseSizeBeforeDelete = traPlaylistRepository.findAll().size();
+        schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
+        int databaseSizeBeforeDelete = schScheduleRepository.findAll().size();
 
         // Get the schSchedule
         restSchScheduleMockMvc.perform(delete("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/{date}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_PLAYLIST_DATE)
@@ -259,7 +273,7 @@ public class SchScheduleResourceImplTest {
                 .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<SchSchedule> schSchedules = traPlaylistRepository.findAll();
+        List<SchSchedule> schSchedules = schScheduleRepository.findAll();
         assertThat(schSchedules).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -269,7 +283,7 @@ public class SchScheduleResourceImplTest {
     public void checkDateIsRequired() throws Exception {
         schSchedule = createEntity(em).network(corNetwork).channel(corChannel);
 
-        int databaseSizeBeforeTest = traPlaylistRepository.findAll().size();
+        int databaseSizeBeforeTest = schScheduleRepository.findAll().size();
         // set the field null
         schSchedule.date(null);
         // Create the TraOrder, which fails.
@@ -280,7 +294,7 @@ public class SchScheduleResourceImplTest {
                 .content(TestUtil.convertObjectToJsonBytes(schScheduleDTO)))
                 .andExpect(status().isBadRequest());
 
-        List<SchSchedule> traOrderList = traPlaylistRepository.findAll();
+        List<SchSchedule> traOrderList = schScheduleRepository.findAll();
         assertThat(traOrderList).hasSize(databaseSizeBeforeTest);
     }
 

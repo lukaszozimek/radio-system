@@ -31,4 +31,6 @@ public interface SchEventConfigurationRepository extends JpaRepository<SchEventC
             "left join fetch logConf.logColumns as logColumns " +
             "where n.shortcut = :network and event.shortName =:shortName and ch.shortcut= :channelShortcut")
     SchEventConfiguration findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("shortName") String shortName);
+
+    Slice<SchEventConfiguration> findAllByNetwork_ShortcutAndChannel_ShortcutAndEventCategory_Name(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable);
 }

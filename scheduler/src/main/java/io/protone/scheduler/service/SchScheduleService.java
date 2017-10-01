@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.List;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -71,5 +72,9 @@ public class SchScheduleService {
     @Transactional
     public void deleteSchScheduleByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, LocalDate date) {
         schScheduleRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+    }
+
+    public List<SchSchedule> findSchSchedulesForNetworkAndChannelBetweenDates(String networkShortcut, String channelShortcut, LocalDate from, LocalDate to) {
+        return schScheduleRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndDateBetween(networkShortcut, channelShortcut, from, to);
     }
 }
