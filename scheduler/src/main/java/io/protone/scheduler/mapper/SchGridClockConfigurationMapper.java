@@ -17,6 +17,7 @@ public interface SchGridClockConfigurationMapper {
     @Mapping(source = "schClockConfigurationDTO", target = "schClockConfiguration")
     SchGridClockConfiguration DTO2DB(SchGridClockConfigurationDTO dto);
 
+    @Mapping(source = "schClockConfiguration", target = "schClockConfigurationDTO")
     SchGridClockConfigurationDTO DB2DTO(SchGridClockConfiguration entity);
 
     List<SchGridClockConfigurationDTO> DBs2DTOs(List<SchGridClockConfiguration> entityList);

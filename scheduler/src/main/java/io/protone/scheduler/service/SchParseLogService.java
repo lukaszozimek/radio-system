@@ -13,7 +13,6 @@ import io.protone.scheduler.service.log.parser.separator.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -58,7 +57,6 @@ public class SchParseLogService {
 
     }
 
-    @Transactional
     public List<SchEmission> parseLog(SchLog schLog) throws IOException {
         InputStreamReader reader;
         List<SchEmission> schEmissions = Lists.newArrayList();

@@ -72,8 +72,13 @@ public class SchClockBuilder {
                 if (schTimeParams.get(i) instanceof SchEvent) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
                     SchBlock schBlock = schClockBlockMapper.buildBlocks((SchEvent) schTimeParams.get(i), schPlaylist);
-                    schTimeParams.get(i).endTime(schBlock.getEndTime());
-                    clock.endTime(schBlock.getEndTime());
+                    if (schBlock.getEndTime() != null) {
+                        schTimeParams.get(i).endTime(schBlock.getEndTime());
+                        clock.endTime(schBlock.getEndTime());
+                    } else {
+                        schTimeParams.get(i).endTime(schTimeParams.get(i).getStartTime());
+                        clock.endTime(schTimeParams.get(i).getStartTime());
+                    }
                     clock.addBlock(schBlock);
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionConfiguration) {
@@ -85,6 +90,10 @@ public class SchClockBuilder {
                 }
             }
         }
-        return clock.length((long) Duration.between(clock.getStartTime(), clock.getEndTime()).getNano()).network(schClockConfiguration.getNetwork()).channel(schClockConfiguration.getChannel());
+        if (clock.getEndTime() != null) {
+            return clock.length((long) Duration.between(clock.getStartTime(), clock.getEndTime()).getNano()).network(schClockConfiguration.getNetwork()).channel(schClockConfiguration.getChannel());
+        } else {
+            return clock.length((long) Duration.between(clock.getStartTime(), clock.getStartTime()).getNano()).network(schClockConfiguration.getNetwork()).channel(schClockConfiguration.getChannel());
+        }
     }
 }

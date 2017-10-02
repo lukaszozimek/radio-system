@@ -7,10 +7,7 @@ import io.protone.core.mapper.CorUserMapper;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
 import io.protone.scheduler.domain.SchGrid;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +17,13 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {SchGridClockConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchGridMapper {
-     SchGrid DTO2DB(SchGridDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
+    @Mapping(source = "defaultGrid", target = "defaultGrid")
+    SchGrid DTO2DB(SchGridDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-     SchGridDTO DB2DTO(SchGrid entity);
+    @Mapping(source = "defaultGrid", target = "defaultGrid")
+    SchGridDTO DB2DTO(SchGrid entity);
 
-     List<SchGridDTO> DBs2DTOs(List<SchGrid> entityList);
+    List<SchGridDTO> DBs2DTOs(List<SchGrid> entityList);
 
     default List<SchGrid> DTOs2DBs(List<SchGridDTO> dList, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<SchGrid> eList = new ArrayList<>();
@@ -36,7 +35,11 @@ public interface SchGridMapper {
         }
         return eList;
     }
+
     List<SchGridThinDTO> DBs2ThinDTOs(List<SchGrid> schClockList);
+
+    @Mapping(source = "defaultGrid", target = "defaultGrid")
+    SchGridThinDTO DB2ThinDTO(SchGrid schClockList);
 
 
     @AfterMapping

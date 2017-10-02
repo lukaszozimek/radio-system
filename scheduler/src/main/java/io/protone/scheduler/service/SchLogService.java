@@ -78,7 +78,6 @@ public class SchLogService {
         return schLogRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, extension, pageable);
     }
 
-    @Transactional(readOnly = true)
     public SchLog findSchLogForNetworkAndChannelAndDateAndExtension(String networkShortcut, String channelShortcut, LocalDate date, String extension) {
         return schLogRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDateAndSchLogConfiguration_Extension(networkShortcut, channelShortcut, date, extension);
     }

@@ -13,7 +13,7 @@ import java.util.*;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
+public class SchEventDTO extends SchConfigurationTimeParamsDTO {
 
     private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
 
@@ -26,6 +26,10 @@ public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
     private Set<SchEventDTO> events = new HashSet<>();
 
     private CorDictionaryDTO eventCategory;
+
+
+    private SchLogConfigurationDTO schLogConfiguration;
+
 
     public SchEventDTO emissions(List<SchEventEmissionDTO> emissions) {
         this.emissions = emissions;
@@ -130,6 +134,7 @@ public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
         this.eventCategory = eventCategory;
 
     }
+
     public Long getSequence() {
         return sequence;
     }
@@ -137,8 +142,17 @@ public class SchEventDTO  extends SchConfigurationTimeParamsDTO{
     public void setSequence(Long sequence) {
         this.sequence = sequence;
     }
+
     public CorDictionaryDTO getEventCategory() {
         return eventCategory;
+    }
+
+    public SchLogConfigurationDTO getSchLogConfiguration() {
+        return schLogConfiguration;
+    }
+
+    public void setSchLogConfiguration(SchLogConfigurationDTO schLogConfiguration) {
+        this.schLogConfiguration = schLogConfiguration;
     }
 
     @Override

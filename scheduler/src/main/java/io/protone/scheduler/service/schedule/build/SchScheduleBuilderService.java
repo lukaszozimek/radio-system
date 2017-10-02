@@ -10,6 +10,7 @@ import io.protone.scheduler.service.schedule.factory.SchClockBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -71,7 +72,6 @@ public class SchScheduleBuilderService {
         return build(schGrid, localDate);
     }
 
-    @Transactional
     public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
         CorDayOfWeekEnum corDayOfWeekEnum = corDayOfWeekEnumMap.get(localDate.getDayOfWeek());
         SchGrid schGrid = this.schGridService.findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, true, corDayOfWeekEnum);
@@ -90,6 +90,7 @@ public class SchScheduleBuilderService {
         throw new BadRequestException("There is no grid for this");
     }
 
+    @Transactional(noRollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     private SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
         List<SchEvent> importEvents = getImportLogEventFlatList(schGrid.getInternalClockcs());
         if (importEvents != null) {
