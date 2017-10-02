@@ -9,10 +9,7 @@ import io.protone.library.domain.LibMediaLibrary;
 import io.protone.scheduler.api.dto.SchEventDTO;
 import io.protone.scheduler.api.dto.thin.SchEventThinDTO;
 import io.protone.scheduler.domain.SchEvent;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +17,12 @@ import java.util.List;
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class, SchLogColumnConfigurationMapper.class})
 public interface SchEventMapper {
+    @Mapping(source = "schLogConfiguration", target = "schLogConfiguration")
     SchEvent DTO2DB(SchEventDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
+    @Mapping(source = "schLogConfiguration", target = "schLogConfiguration")
     SchEventDTO DB2DTO(SchEvent entity);
 
     List<SchEventDTO> DBs2DTOs(List<SchEvent> entityList);

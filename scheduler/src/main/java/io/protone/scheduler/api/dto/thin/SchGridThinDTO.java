@@ -26,6 +26,7 @@ public class SchGridThinDTO  extends SchBaseDTO implements Serializable {
     private String shortName = null;
 
 
+
     private Boolean defaultGrid = null;
 
 
@@ -156,6 +157,14 @@ public class SchGridThinDTO  extends SchBaseDTO implements Serializable {
 
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Boolean getDefaultGrid() {
+        return defaultGrid;
+    }
+
+    public void setDefaultGrid(Boolean defaultGrid) {
+        this.defaultGrid = defaultGrid;
     }
     @Override
     public boolean equals(Object o) {
