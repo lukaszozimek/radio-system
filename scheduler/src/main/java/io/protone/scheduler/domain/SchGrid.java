@@ -228,4 +228,14 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     public void setLength(Long length) {
         this.length = length;
     }
+
+    public SchGrid defaultGrid(boolean isDefault) {
+        this.defaultGrid = isDefault;
+        return this;
+    }
+
+    public SchGrid gridCategory(CorDictionary corDictionary) {
+        this.gridCategory = corDictionary;
+        return this;
+    }
 }

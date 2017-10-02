@@ -7,6 +7,7 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchClockConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class SchClockConfigurationResourceImplTest {
+    private static final String CLOCK_TEST_CATEGORY = "Czwartkowe";
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -189,10 +191,13 @@ public class SchClockConfigurationResourceImplTest {
     @Transactional
     public void getAllSchClockConfigurationGroupedByCategory() throws Exception {
         // Initialize the database
-        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel));
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(48L);
+
+        schClockConfigurationRepository.saveAndFlush(clockConfiguration.network(corNetwork).channel(corChannel).clockCategory(corDictionary));
 
         // Get all the traPlaylistList
-        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchClockMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/clock/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), CLOCK_TEST_CATEGORY))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(clockConfiguration.getId().intValue())))

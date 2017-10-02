@@ -2,6 +2,7 @@ package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.core.domain.CorDictionary;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.repository.SchGridRepository;
 import io.protone.scheduler.service.SchGridService;
@@ -25,6 +26,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class SchGridServiceTest extends SchedulerBaseTest {
+    private static final String GRID_TEST_CATEGORY = "Zapasowe";
     @Autowired
     private SchGridService schGridService;
 
@@ -64,6 +66,8 @@ public class SchGridServiceTest extends SchedulerBaseTest {
         SchGrid schGrid = factory.manufacturePojo(SchGrid.class);
         schGrid.setNetwork(corNetwork);
         schGrid.setChannel(corChannel);
+
+
         schGrid = schGridRepository.save(schGrid);
 
         //then
@@ -83,10 +87,13 @@ public class SchGridServiceTest extends SchedulerBaseTest {
         SchGrid schGrid = factory.manufacturePojo(SchGrid.class);
         schGrid.setNetwork(corNetwork);
         schGrid.setChannel(corChannel);
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(51L);
+        schGrid.setGridCategory(corDictionary);
         schGrid = schGridRepository.save(schGrid);
 
         //then
-        Slice<SchGrid> fetchedEntity = schGridService.findAllGridsByCategoryNaem(corNetwork.getShortcut(), corChannel.getShortcut(), "test", new PageRequest(0, 10));
+        Slice<SchGrid> fetchedEntity = schGridService.findAllGridsByCategoryNaem(corNetwork.getShortcut(), corChannel.getShortcut(), GRID_TEST_CATEGORY, new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());

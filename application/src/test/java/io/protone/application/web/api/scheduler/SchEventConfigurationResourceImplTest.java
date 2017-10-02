@@ -6,6 +6,7 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchEventConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
@@ -44,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class SchEventConfigurationResourceImplTest {
+    private static final String TEST_EVENT_CATEGORY = "News";
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -187,10 +189,12 @@ public class SchEventConfigurationResourceImplTest {
     @Transactional
     public void getAllSchEventsGroupedByCategory() throws Exception {
         // Initialize the database
-        schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(43L);
+        schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel).eventCategory(corDictionary));
 
         // Get all the traPlaylistList
-        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(), TEST_EVENT_CATEGORY))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schEventConfiguration.getId().intValue())))

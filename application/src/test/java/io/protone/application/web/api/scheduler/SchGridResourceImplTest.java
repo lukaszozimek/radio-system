@@ -7,6 +7,7 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.application.web.api.scheduler.impl.SchGridConfigurationResourceImpl;
 import io.protone.application.web.rest.errors.ExceptionTranslator;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
@@ -45,6 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 public class SchGridResourceImplTest {
+    private static final String GRID_TEST_CATEGORY = "Zapasowe";
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -190,7 +192,7 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getAllSchGridsDefaults() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel).defaultGrid(true));
 
         // Get all the traPlaylistList
         restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/default?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -207,10 +209,12 @@ public class SchGridResourceImplTest {
     @Transactional
     public void getAllSchGridsGroupedByCategory() throws Exception {
         // Initialize the database
-        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel));
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(51L);
+        schGridRepository.saveAndFlush(schGrid.network(corNetwork).channel(corChannel).gridCategory(corDictionary));
 
         // Get all the traPlaylistList
-        restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchGridMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/grid/configuration/category/{name}?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut(),GRID_TEST_CATEGORY))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schGrid.getId().intValue())))

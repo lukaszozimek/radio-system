@@ -2,6 +2,7 @@ package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.core.domain.CorDictionary;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.repository.SchEventConfigurationRepository;
 import io.protone.scheduler.service.SchEventConfigurationService;
@@ -25,7 +26,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class SchEventConfigurationServiceTest extends SchedulerBaseTest {
-
+    private static final String TEST_EVENT_CATEGORY = "News";
 
     @Autowired
     private SchEventConfigurationService schEventConfigurationService;
@@ -67,10 +68,13 @@ public class SchEventConfigurationServiceTest extends SchedulerBaseTest {
         SchEventConfiguration schEventConfiguration = factory.manufacturePojo(SchEventConfiguration.class);
         schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(43L);
+        schEventConfiguration.setEventCategory(corDictionary);
         schEventConfiguration = schEventConfigurationRepository.save(schEventConfiguration);
 
         //then
-        Slice<SchEventConfiguration> fetchedEntity = schEventConfigurationService.findAllEventsByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), "test", new PageRequest(0, 10));
+        Slice<SchEventConfiguration> fetchedEntity = schEventConfigurationService.findAllEventsByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), TEST_EVENT_CATEGORY, new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());

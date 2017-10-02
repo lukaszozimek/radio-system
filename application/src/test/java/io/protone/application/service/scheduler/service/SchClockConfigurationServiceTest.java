@@ -3,6 +3,7 @@ package io.protone.application.service.scheduler.service;
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.core.domain.CorDictionary;
 import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.repository.SchAttachmentConfigurationRepository;
 import io.protone.scheduler.repository.SchClockConfigurationRepository;
@@ -29,6 +30,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
 public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
+    private static final String CLOCK_TEST_CATEGORY ="Czwartkowe";
 
     @Autowired
     private SchClockConfigurationService schClockConfigurationService;
@@ -77,10 +79,13 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
         SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
+        CorDictionary corDictionary = new CorDictionary();
+        corDictionary.setId(48L);
+        schClock.setClockCategory(corDictionary);
         schClock = schClockConfigurationRepository.save(schClock);
 
         //then
-        Slice<SchClockConfiguration> fetchedEntity = schClockConfigurationService.findAllClocksByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), "test", new PageRequest(0, 10));
+        Slice<SchClockConfiguration> fetchedEntity = schClockConfigurationService.findAllClocksByCategoryName(corNetwork.getShortcut(), corChannel.getShortcut(), CLOCK_TEST_CATEGORY, new PageRequest(0, 10));
 
         //assert
         assertNotNull(fetchedEntity.getContent());

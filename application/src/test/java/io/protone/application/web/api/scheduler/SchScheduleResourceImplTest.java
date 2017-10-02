@@ -187,7 +187,7 @@ public class SchScheduleResourceImplTest {
         schScheduleRepository.saveAndFlush(schSchedule.network(corNetwork).channel(corChannel));
 
         // Get all the schSchedules
-        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corNetwork.getShortcut(), corChannel.getShortcut()))
+        restSchScheduleMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/schedule/from/{from}/to/{to}", corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate(), LocalDate.now().plusYears(1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(schSchedule.getId().intValue())))

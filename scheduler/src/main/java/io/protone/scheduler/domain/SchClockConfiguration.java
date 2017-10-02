@@ -222,4 +222,9 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
         super.setSequence(sequence);
         return this;
     }
+
+    public SchClockConfiguration clockCategory(CorDictionary corDictionary) {
+        this.clockCategory = corDictionary;
+        return this;
+    }
 }
