@@ -37,6 +37,21 @@ public class SchEmission extends SchTimeParams implements Serializable {
     @ManyToOne
     private LibMediaItem mediaItem;
 
+    @Column(name = "finished")
+    private boolean finished;
+
+    @Column(name = "wasPlayed")
+    private boolean wasPlayed;
+
+    @Column(name = "isPlaying")
+    private boolean isPlaying;
+
+    @Column(name = "isRemoved")
+    private boolean isRemoved;
+
+    @Column(name = "wasSkiped")
+    private boolean wasSkiped;
+
     @PodamExclude
     @OneToMany(mappedBy = "emission")
     @JsonIgnore
@@ -234,4 +249,43 @@ public class SchEmission extends SchTimeParams implements Serializable {
                 "}";
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public boolean isWasPlayed() {
+        return wasPlayed;
+    }
+
+    public void setWasPlayed(boolean wasPlayed) {
+        this.wasPlayed = wasPlayed;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
+    }
+
+    public boolean isWasSkiped() {
+        return wasSkiped;
+    }
+
+    public void setWasSkiped(boolean wasSkiped) {
+        this.wasSkiped = wasSkiped;
+    }
 }

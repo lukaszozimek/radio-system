@@ -28,21 +28,35 @@
             <column name="playlist_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
-
+            <column name="finished" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="was_played" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_playing" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_removed" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="was_skiped" type="boolean">
+                <constraints nullable="true"/>
+            </column>
             <column name="clock_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="media_item_id" type="bigint">
-                <constraints  nullable="true"/>
+                <constraints nullable="true"/>
             </column>
             <column name="previous_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="start_time" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="end_time" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="relative_delay" type="bigint">
