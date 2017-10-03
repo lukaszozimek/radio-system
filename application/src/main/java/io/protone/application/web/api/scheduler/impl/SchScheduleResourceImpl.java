@@ -99,8 +99,8 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
-        SchSchedule traOrder = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
-        SchSchedule entity = schScheduleService.saveSchedule(traOrder);
+        SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
+        SchSchedule entity = schScheduleService.saveSchedule(schSchedule);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
@@ -111,8 +111,8 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                              @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.debug("REST request to delete SchSchedule : {}, for Network: {}", date, networkShortcut);
-        schScheduleService.deleteSchScheduleByNetworkAndChannelAndShortNAme(networkShortcut, channelShortcut, date);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("traOrder", date.toString())).build();
+        schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("schSchedule", date.toString())).build();
     }
 
     @Override
@@ -140,8 +140,8 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
         CorNetwork corNetwork = corNetworkService.findNetwork(networkShortcut);
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
-        SchSchedule traOrder = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
-        SchSchedule entity = schScheduleService.saveSchedule(traOrder);
+        SchSchedule schSchedule = schScheduleMapper.DTO2DB(schScheduleDTO, corNetwork, corChannel);
+        SchSchedule entity = schScheduleService.saveSchedule(schSchedule);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return ResponseEntity.ok().body(response);
     }
@@ -151,6 +151,10 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
                                                                                    @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                    @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                                    @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception {
+        SchSchedule currentSchedule = schScheduleService.findSchScheduleEntityForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        if (currentSchedule != null) {
+            schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut,channelShortcut,date);
+        }
         SchSchedule schSchedule = schScheduleBuilderService.buildScheduleForDate(date, gridShortName, networkShortcut, channelShortcut);
         SchSchedule entity = this.schScheduleService.saveSchedule(schSchedule);
 

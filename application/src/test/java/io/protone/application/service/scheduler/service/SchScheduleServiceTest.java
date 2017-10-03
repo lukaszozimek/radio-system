@@ -78,7 +78,7 @@ public class SchScheduleServiceTest extends SchedulerBaseTest {
         schSchedule.setChannel(corChannel);
         schSchedule = schScheduleRepository.saveAndFlush(schSchedule);
         //then
-        schScheduleService.deleteSchScheduleByNetworkAndChannelAndShortNAme(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
+        schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
         SchSchedule fetchedEntity = schScheduleRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
 
         //assert

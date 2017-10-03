@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Set;
 
 
 @Service
@@ -54,4 +55,14 @@ public class SchClockService {
         schClockRepository.delete(schClock);
     }
 
+    public void deleteByScheduleId(Long scheduleId) {
+        Set<SchClock> schClocks = schClockRepository.findAllBySchSchedule_Id(scheduleId);
+        if (schClocks != null && !schClocks.isEmpty()) {
+            schClocks.stream().forEach(schClock -> {
+                this.schEmissionService.deleteEmissions(schClock.getEmissions());
+                this.schBlockService.deleteBlock(schClock.getBlocks());
+            });
+        }
+        schClockRepository.deleteAllBySchSchedule_Id(scheduleId);
+    }
 }

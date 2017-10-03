@@ -22,6 +22,10 @@ public class SchPlaylistService {
     private SchPlaylistRepository schPlaylistRepository;
 
     @Inject
+    private SchEmissionService schEmissionService;
+    @Inject
+    private SchScheduleService schScheduleService;
+    @Inject
     private SchPlaylistDTOTimeCalculatorService schPlaylistDTOTimeCalculatorService;
 
     @Transactional
@@ -45,6 +49,13 @@ public class SchPlaylistService {
 
     @Transactional
     public void deleteSchPlaylistByNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
-        schPlaylistRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+        SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+        if (schPlaylist != null) {
+            if (schPlaylist.getEmissions() != null && !schPlaylist.getEmissions().isEmpty()) {
+                this.schEmissionService.deleteEmissions(schPlaylist.getEmissions());
+            }
+            schPlaylistRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+            schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+        }
     }
 }
