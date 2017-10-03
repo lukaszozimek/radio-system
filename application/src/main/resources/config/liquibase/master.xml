@@ -379,6 +379,15 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchLogColumn.xml"
              relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchSchedule.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchPlaylist.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_SchSchedule.xml"
+             relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_SchPlaylist.xml"
+             relativeToChangelogFile="false"/>
+
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_TraAdvertisment.xml"
             relativeToChangelogFile="false"/>

@@ -5,10 +5,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.api.dto.thin.SchScheduleThinDTO;
 import io.protone.scheduler.domain.SchSchedule;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +15,10 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {SchClockMapper.class})
 public interface SchScheduleMapper {
+    @Mapping(source = "schClockDTOS", target = "clocks")
     SchSchedule DTO2DB(SchScheduleDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
+    @Mapping(source = "clocks", target = "schClockDTOS")
     SchScheduleDTO DB2DTO(SchSchedule entity);
 
     List<SchScheduleDTO> DBs2DTOs(List<SchSchedule> entityList);
