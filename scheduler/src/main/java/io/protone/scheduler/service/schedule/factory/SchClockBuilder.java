@@ -27,7 +27,7 @@ public class SchClockBuilder {
     @Inject
     private SchClockBlockMapper schClockBlockMapper;
 
-    public Set<SchClock> buildClocks(Set<SchClockConfiguration> clocks, LocalDateTime endTime, SchPlaylist schPlaylist) {
+    public Set<SchClock> buildClocks(List<SchClockConfiguration> clocks, LocalDateTime endTime, SchPlaylist schPlaylist) {
         if (clocks != null) {
             List<SchClockConfiguration> clockConfigurations = clocks.stream().sorted(Comparator.comparing(SchClockConfiguration::getSequence)).collect(toList());
             Set<SchClock> clockSets = Sets.newHashSet();
@@ -37,7 +37,7 @@ public class SchClockBuilder {
                     clockSets.add(mapClock(clockConfigurations.get(i), schPlaylist));
 
                 } else {
-                    clockConfigurations.get(i).setStartTime(clockConfigurations.get(i - 1).getEndTime());
+                    clockConfigurations.get(i).setStartTime(clockSets.stream().max(Comparator.comparing(SchClock::getSequence)).get().getEndTime());
                     clockSets.add(mapClock(clockConfigurations.get(i), schPlaylist));
                 }
             }

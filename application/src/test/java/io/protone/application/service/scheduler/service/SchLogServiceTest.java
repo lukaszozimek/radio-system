@@ -117,7 +117,7 @@ public class SchLogServiceTest extends SchedulerBaseTest {
         libFileItem.setLibrary(libFileLibrary);
         libFileItem.setId(null);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
-        when(libFileItemService.uploadFileItem(anyString(), anyString(), any())).thenReturn(libFileItem);
+        when(libFileItemService.uploadFileItemWithPredefinedContentType(anyString(), anyString(), any(),anyString())).thenReturn(libFileItem);
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("MUS");
         schLogConfiguration.setPattern("yyyyMMdd");

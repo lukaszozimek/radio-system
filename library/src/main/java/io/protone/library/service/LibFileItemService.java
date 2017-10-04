@@ -14,7 +14,6 @@ import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.util.MediaUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
@@ -28,7 +27,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
@@ -103,10 +101,43 @@ public class LibFileItemService {
 
         } catch (S3Exception e) {
             log.error("There is a problem with uploading file to S3 Storage :{}", file.getOriginalFilename());
-        } catch (TikaException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            log.error("There is a problem with processing the file  :{}", file.getOriginalFilename());
+        } finally {
+            bais.close();
+            return libFileItem;
+        }
+    }
+
+    public LibFileItem uploadFileItemWithPredefinedContentType(String networkShortcut, String libraryShortcut, MultipartFile file, String contentType) throws IOException {
+        LibFileItem libFileItem = new LibFileItem();
+        LibFileLibrary libFileLibrary = libraryService.findLibrary(networkShortcut, libraryShortcut);
+        ByteArrayInputStream bais = new ByteArrayInputStream(file.getBytes());
+        String fileUUID = UUID.randomUUID().toString();
+        try {
+            log.debug("Uploading File to Storage: {} ", fileUUID);
+            s3Client.upload(libFileLibrary.getNetwork().getShortcut(), FILE + libFileLibrary.getShortcut(), fileUUID, bais, contentType);
+            LibCloudObject cloudObject = new LibCloudObject()
+                    .uuid(fileUUID).contentType(contentType)
+                    .originalName(file.getOriginalFilename())
+                    .original(Boolean.TRUE)
+                    .size(file.getSize())
+                    .network(libFileLibrary.getNetwork())
+                    .hash(ServiceConstants.NO_HASH)
+                    .objectType(LibObjectTypeEnum.OT_AUDIO);
+            log.debug("Persisting LibCloudObject: {}", cloudObject);
+            cloudObject = cloudObjectRepository.saveAndFlush(cloudObject);
+
+            libFileItem.setCloudObject(cloudObject);
+            libFileItem.setLibrary(libFileLibrary);
+            log.debug("Persisting LibDocumentObject: {}", libFileItem);
+            libFileItem.setIdx(mediaUtils.generateIdx(libFileLibrary));
+            libFileItem.network(libFileLibrary.getNetwork());
+            libFileItem.name(file.getOriginalFilename().split("\\.")[0]);
+            libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
+        } catch (UploadException e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", file.getOriginalFilename());
+
+        } catch (S3Exception e) {
+            log.error("There is a problem with uploading file to S3 Storage :{}", file.getOriginalFilename());
         } finally {
             bais.close();
             return libFileItem;

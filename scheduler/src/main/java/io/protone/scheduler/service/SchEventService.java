@@ -29,17 +29,32 @@ public class SchEventService {
     public Set<SchEvent> saveEvent(Set<SchEvent> blocks, SchClockConfiguration schClockConfiguration) {
         if (blocks != null && !blocks.isEmpty()) {
             return blocks.stream().map(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    this.saveEvent(schBlock.getBlocks(), schClockConfiguration);
-                }
                 SchEvent schEvent = schEventRepository.saveAndFlush(schBlock.clockConfiguration(schClockConfiguration));
                 schBlock.emissions(schEventEmissionService.saveEmission(schBlock.getEmissions(), schEvent));
+                if (!schBlock.getBlocks().isEmpty()) {
+                    schBlock.blocks(this.saveEvent(schBlock.getBlocks(), schEvent));
+                }
+
                 return schEventRepository.saveAndFlush(schEvent);
             }).collect(toSet());
         }
         return Sets.newHashSet();
     }
 
+    @Transactional
+    private Set<SchEvent> saveEvent(Set<SchEvent> blocks, SchEvent event) {
+        if (blocks != null && !blocks.isEmpty()) {
+            return blocks.stream().map(schBlock -> {
+                if (!schBlock.getBlocks().isEmpty()) {
+                    this.saveEvent(schBlock.getBlocks(), event);
+                }
+                SchEvent schEvent = schEventRepository.saveAndFlush(schBlock.event(event));
+                schBlock.emissions(schEventEmissionService.saveEmission(schBlock.getEmissions(), schEvent));
+                return schEventRepository.saveAndFlush(schEvent);
+            }).collect(toSet());
+        }
+        return Sets.newHashSet();
+    }
 
 
     @Transactional

@@ -53,7 +53,7 @@ public class SchEvent extends SchTimeParams implements Serializable {
     @OneToMany(mappedBy = "event")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEvent> events = new HashSet<>();
+    private Set<SchEvent> blocks = new HashSet<>();
 
     @PodamExclude
     @ManyToOne
@@ -152,25 +152,25 @@ public class SchEvent extends SchTimeParams implements Serializable {
     }
 
     public Set<SchEvent> getBlocks() {
-        return events;
+        return blocks;
     }
 
     public void setBlocks(Set<SchEvent> blocks) {
-        this.events = blocks;
+        this.blocks = blocks;
     }
 
     public SchEvent blocks(Set<SchEvent> blocks) {
-        this.events = blocks;
+        this.blocks = blocks;
         return this;
     }
 
     public SchEvent addBlock(SchEvent block) {
-        this.events.add(block);
+        this.blocks.add(block);
         return this;
     }
 
     public SchEvent removeBlock(SchEvent block) {
-        this.events.remove(block);
+        this.blocks.remove(block);
         return this;
     }
 

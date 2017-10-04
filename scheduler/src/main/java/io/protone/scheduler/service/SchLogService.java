@@ -60,7 +60,7 @@ public class SchLogService {
                     logtoSave.setSchLogConfiguration(schLogConfiguration);
                     logtoSave.setDate(LocalDate.parse(multipartFile1.getOriginalFilename().split("\\.")[0], DateTimeFormatter.ofPattern(schLogConfiguration.getPattern())));
                     try {
-                        logtoSave.setLibFileItem(libFileItemService.uploadFileItem(networkShortcut.getShortcut(), extension.toLowerCase(), multipartFile1));
+                        logtoSave.setLibFileItem(libFileItemService.uploadFileItemWithPredefinedContentType(networkShortcut.getShortcut(), extension.toLowerCase(), multipartFile1,"text/*"));
                     } catch (IOException e) {
                         log.error("There was a problem with storing Item in Storage");
                     }
