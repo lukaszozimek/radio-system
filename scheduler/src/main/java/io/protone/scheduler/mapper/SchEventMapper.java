@@ -20,9 +20,11 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class, SchLogColumnConfigurationMapper.class})
 public interface SchEventMapper {
     @Mapping(source = "schLogConfiguration", target = "schLogConfiguration")
+    @Mapping(source = "events" ,target = "blocks")
     SchEvent DTO2DB(SchEventDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
     @Mapping(source = "schLogConfiguration", target = "schLogConfiguration")
+    @Mapping(source = "blocks" ,target = "events")
     SchEventDTO DB2DTO(SchEvent entity);
 
     List<SchEventDTO> DBs2DTOs(List<SchEvent> entityList);

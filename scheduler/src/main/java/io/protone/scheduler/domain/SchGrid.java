@@ -11,6 +11,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -60,7 +61,7 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     private CorChannel channel;
 
     @Transient
-    private Set<SchClockConfiguration> internalClockcs;
+    private List<SchClockConfiguration> internalClockcs;
 
     public Long getId() {
         return id;
@@ -208,15 +209,15 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     }
 
 
-    public Set<SchClockConfiguration> getInternalClockcs() {
+    public List<SchClockConfiguration> getInternalClockcs() {
         return internalClockcs;
     }
 
-    public void setInternalClockcs(Set<SchClockConfiguration> internalClockcs) {
+    public void setInternalClockcs(List<SchClockConfiguration> internalClockcs) {
         this.internalClockcs = internalClockcs;
     }
 
-    public SchGrid internalClockcs(Set<SchClockConfiguration> internalClockcs) {
+    public SchGrid internalClockcs(List<SchClockConfiguration> internalClockcs) {
         this.internalClockcs = internalClockcs;
         return this;
     }

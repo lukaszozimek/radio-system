@@ -81,7 +81,7 @@ public class SchScheduleBuilderService {
     private SchSchedule build(SchGrid schGrid, LocalDate localDate) {
         if (schGrid != null) {
             if (schGrid.getClocks() != null || !schGrid.getClocks().isEmpty()) {
-                schGrid.setInternalClockcs(schGrid.getClocks().stream().map(schGridClockConfiguration -> schGridClockConfiguration.getSchClockConfiguration().sequence(schGridClockConfiguration.getSequence())).collect(toSet()));
+                schGrid.setInternalClockcs(schGrid.getClocks().stream().map(schGridClockConfiguration -> schGridClockConfiguration.getSchClockConfiguration().sequence(schGridClockConfiguration.getSequence())).collect(toList()));
                 SchPlaylist schPlaylist = schPlaylistService.saveSchPlaylist(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
                 return buildScheduleFromGrid(schGrid, schPlaylist);
             }
@@ -148,7 +148,7 @@ public class SchScheduleBuilderService {
     }
 
 
-    private List<SchEvent> getImportLogEventFlatList(Set<SchClockConfiguration> schClockConfigurationSet) {
+    private List<SchEvent> getImportLogEventFlatList(List<SchClockConfiguration> schClockConfigurationSet) {
         List<SchEvent> schEvents = Lists.newArrayList();
         schClockConfigurationSet.stream().sorted(comparing(SchClockConfiguration::getSequence)).forEach(schClockConfiguration -> {
             schEvents.addAll(getImportEvents(schClockConfiguration.getEvents()));
@@ -171,7 +171,7 @@ public class SchScheduleBuilderService {
         return Lists.newArrayList();
     }
 
-    private Set<SchClockConfiguration> fillClockWithEvents(Set<SchClockConfiguration> clockConfigurationSet, List<SchEvent> schEvents) {
+    private List<SchClockConfiguration> fillClockWithEvents(List<SchClockConfiguration> clockConfigurationSet, List<SchEvent> schEvents) {
         schEvents.stream().forEach(schEvent -> {
             clockConfigurationSet.stream().forEach(schClockConfiguration -> {
                 updateEventsRecusiveOnClockLevel(schClockConfiguration, schEvent);

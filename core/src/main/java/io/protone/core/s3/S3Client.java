@@ -219,10 +219,35 @@ public class S3Client {
         }
     }
 
+    public ObjectStat downloadObject(String prefix, String minioBucket, String uuid) throws DownloadException, S3Exception {
+        try {
+            ObjectStat so = getClient().statObject(prefix + minioBucket, uuid);
+            return so;
+        } catch (InvalidBucketNameException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (InsufficientDataException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (IOException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (InvalidKeyException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (NoResponseException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (ErrorResponseException e) {
+            throw new DownloadException(e.getMessage());
+        } catch (InternalException e) {
+            throw new DownloadException(e.getMessage());
+        }
+    }
+
     public void delete(String prefix, String minioBucket, String uuid) throws DeleteException, S3Exception {
         try {
             ObjectStat so = getClient().statObject(prefix + minioBucket, uuid);
-            getClient().removeObject(minioBucket, uuid);
+            getClient().removeObject(prefix +minioBucket, uuid);
         } catch (InvalidBucketNameException e) {
             throw new DeleteException(e.getMessage());
         } catch (NoSuchAlgorithmException e) {

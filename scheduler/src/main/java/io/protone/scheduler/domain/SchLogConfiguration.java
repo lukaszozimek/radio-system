@@ -45,7 +45,7 @@ public class SchLogConfiguration extends SchBaseEntity implements Serializable {
     private CorChannel channel;
 
 
-    @OneToMany(mappedBy = "schLogConfiguration")
+    @OneToMany(mappedBy = "schLogConfiguration", fetch = FetchType.EAGER)
     @JsonIgnore
     @PodamExclude
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

@@ -66,7 +66,7 @@ public class SchParseLogService {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
             if (schLog.getSchLogConfiguration().getSpearator() != null && !schLog.getSchLogConfiguration().getSpearator().isEmpty()) {
-                schEmissions.add(parseLogLineSeparator(schLogColumns, line, schLog.getDate(), schLog.getSchLogConfiguration().getSpearator()));
+                schEmissions.add(parseLogLineSeparator(schLogColumns, line.replaceAll("\\s+", ""), schLog.getDate(), schLog.getSchLogConfiguration().getSpearator()));
             } else {
                 schEmissions.add(parseLogLine(schLogColumns, line, schLog.getDate()));
             }
@@ -76,21 +76,21 @@ public class SchParseLogService {
     }
 
     private SchEmission parseLogLine(List<SchLogColumn> schLogColumns, String line, LocalDate localDate) {
-        SchEmission schEmission = new SchEmission();
+        final SchEmission[] schEmission = {new SchEmission()};
         String lineLine = line + "                                                      "; //Add some empty space to avoid indexUnBound exception buffered reader trim lines;
         schLogColumns.stream().forEach(schLogColumn -> {
-            this.logColumnTypEnumSchColumnLenghtParserMap.get(schLogColumn.getName()).parseColumnLog(schEmission, schLogColumns, schLogColumn, localDate, lineLine);
+            schEmission[0] = this.logColumnTypEnumSchColumnLenghtParserMap.get(schLogColumn.getName()).parseColumnLog(schEmission[0], schLogColumns, schLogColumn, localDate, lineLine);
         });
-        return schEmission;
+        return schEmission[0];
     }
 
     private SchEmission parseLogLineSeparator(List<SchLogColumn> schLogColumns, String line, LocalDate localDate, String separator) {
-        SchEmission schEmission = new SchEmission();
+        final SchEmission[] schEmission = {new SchEmission()};
         String lineLine = line + "                                                      "; //Add some empty space to avoid indexUnBound exception buffered reader trim lines;
         schLogColumns.stream().forEach(schLogColumn -> {
-            this.logColumnTypEnumSchColumnSeparatorParserMap.get(schLogColumn.getName()).parseColumnLog(schEmission, schLogColumns, schLogColumn, localDate, lineLine, separator);
+            schEmission[0] = this.logColumnTypEnumSchColumnSeparatorParserMap.get(schLogColumn.getName()).parseColumnLog(schEmission[0], schLogColumns, schLogColumn, localDate, lineLine, separator);
         });
-        return schEmission;
+        return schEmission[0];
     }
 
 }

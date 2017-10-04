@@ -126,7 +126,7 @@ public class SchLogResourceImplTest {
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
         SchLogResourceImpl schLogResource = new SchLogResourceImpl();
-        when(libFileItemService.uploadFileItem(anyString(), anyString(), anyObject())).thenReturn(libFileItem);
+        when(libFileItemService.uploadFileItemWithPredefinedContentType(anyString(), anyString(), anyObject(), anyString())).thenReturn(libFileItem);
         doNothing().when(libFileItemService).deleteFile(any(LibFileItem.class));
         ReflectionTestUtils.setField(schLogService, "libFileItemService", libFileItemService);
         ReflectionTestUtils.setField(schLogResource, "schLogService", schLogService);
