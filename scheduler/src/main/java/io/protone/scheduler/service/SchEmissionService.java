@@ -24,6 +24,7 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class SchEmissionService {
     private final Logger log = LoggerFactory.getLogger(SchEmissionService.class);
+
     @Inject
     private SchEmissionRepository schEmissionRepository;
     @Inject
@@ -37,6 +38,7 @@ public class SchEmissionService {
 
     @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissionSet) {
+
         log.debug("Save Emission Set ");
         return emissionSet.stream().map(schEmission -> {
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
@@ -55,7 +57,7 @@ public class SchEmissionService {
         });
     }
 
-    @Transactional
+
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchClock entity) {
         log.debug("Save Emission Set in clock level ");
 
@@ -69,24 +71,27 @@ public class SchEmissionService {
         }).collect(toSet());
     }
 
-    @Transactional
+
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchBlock entity) {
         log.debug("Save Emission Set in block level ");
         return emissions.stream().map(schEmission -> {
+            schEmission.setId(null);
+            SchEmission entitiyEmissions;
             if (schEmission.getMediaItem().getId() != null) {
-                SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity));
-                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+
+                entitiyEmissions = schEmissionRepository.saveAndFlush(schEmission.block(entity));
+                entitiyEmissions.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiyEmissions));
             } else {
                 LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
                 if (libMediaItem != null) {
-                    SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(libMediaItem));
-                    schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+                    entitiyEmissions = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(libMediaItem));
+                    entitiyEmissions.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiyEmissions));
                 } else {
                     LibMediaLibrary libMediaLibrary = libLibraryMediaService.findLibrary(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut());
                     if (libMediaLibrary != null) {
                         LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).library(libMediaLibrary).contentAvailable(false));
-                        SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
-                        schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+                        entitiyEmissions = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
+                        entitiyEmissions.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiyEmissions));
                     } else {
                         LibMediaLibrary libMediaLibrary1 = null;
                         try {
@@ -95,8 +100,8 @@ public class SchEmissionService {
                             log.debug("There was a problem with building library which should contain media item");
                         }
                         LibMediaItem savedMediaIem = libMediaItemService.saveMediaItem(schEmission.getMediaItem().network(schEmission.getNetwork()).library(libMediaLibrary1).contentAvailable(false));
-                        SchEmission entitiy = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
-                        schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiy));
+                        entitiyEmissions = schEmissionRepository.saveAndFlush(schEmission.block(entity).mediaItem(savedMediaIem));
+                        entitiyEmissions.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiyEmissions));
 
                     }
                 }
@@ -104,7 +109,7 @@ public class SchEmissionService {
             if (schEmission.getPlaylist() != null) {
                 schPlaylistService.saveSchPlaylist(schEmission.getPlaylist().addEmission(schEmission));
             }
-            return schEmissionRepository.saveAndFlush(schEmission);
+            return schEmissionRepository.saveAndFlush(entitiyEmissions);
         }).collect(toSet());
     }
 }

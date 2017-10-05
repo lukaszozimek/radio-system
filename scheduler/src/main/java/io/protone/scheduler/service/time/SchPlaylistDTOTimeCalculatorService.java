@@ -33,10 +33,10 @@ public class SchPlaylistDTOTimeCalculatorService {
         for (int i = 0; i < schEmissionList.size(); i++) {
             if (i == 0) {
                 schEmissionList.get(0).startTime(LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)));
-                schPlaylistDTO.addEmissionsItem(schEmissionMapper.DB2DTO(schEmissionList.get(0).endTime(schEmissionList.get(0).getStartTime().plusNanos(schEmissionList.get(0).getMediaItem().getLength().longValue()))));
+                schPlaylistDTO.addEmissionsItem(schEmissionMapper.DB2DTO(schEmissionList.get(0).endTime(schEmissionList.get(0).getStartTime().plusSeconds(schEmissionList.get(0).getMediaItem().getLength().longValue() / 1000))));
             } else {
                 schEmissionList.get(i).startTime(schEmissionList.get(i - 1).getEndTime());
-                schPlaylistDTO.addEmissionsItem(schEmissionMapper.DB2DTO(schEmissionList.get(i).startTime(schEmissionList.get(i).getStartTime().plusNanos(schEmissionList.get(i).getMediaItem().getLength().longValue()))));
+                schPlaylistDTO.addEmissionsItem(schEmissionMapper.DB2DTO(schEmissionList.get(i).endTime(schEmissionList.get(i).getStartTime().plusSeconds(schEmissionList.get(0).getMediaItem().getLength().longValue() / 1000))));
             }
         }
         return schPlaylistDTO;
