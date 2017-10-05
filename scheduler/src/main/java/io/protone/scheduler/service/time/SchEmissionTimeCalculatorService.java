@@ -21,7 +21,7 @@ public class SchEmissionTimeCalculatorService {
 
     public SchEmissionDTO calculateTimeInSchEmissionDTO(SchEmissionDTO schEmission, LocalDateTime endTime, SchPlaylistDTO schPlaylistDTO) {
         SchEmissionDTO schEmissionDTO =
-                schEmission.startTime(endTime).endTime(endTime.plusNanos(schEmission.getMediaItem().getLength())).attachment(schEmission.getAttachment().stream().sorted(Comparator.comparing(SchAttachmentDTO::getSequence)).collect(Collectors.toList()));
+                schEmission.startTime(endTime).endTime(endTime.plusSeconds(schEmission.getMediaItem().getLength() / 1000)).attachment(schEmission.getAttachment().stream().sorted(Comparator.comparing(SchAttachmentDTO::getSequence)).collect(Collectors.toList()));
         if (schPlaylistDTO != null) {
             schPlaylistDTO.addEmissionsItem(schEmissionDTO);
         }

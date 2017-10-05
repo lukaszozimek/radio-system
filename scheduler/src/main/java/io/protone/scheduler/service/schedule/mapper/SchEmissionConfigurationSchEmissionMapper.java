@@ -21,7 +21,7 @@ public class SchEmissionConfigurationSchEmissionMapper {
                 .startTime(schEmissionConfiguration.getStartTime())
                 .playlist(schPlaylist)
                 .seq(schEmissionConfiguration.getSequence())
-                .endTime(schEmissionConfiguration.getStartTime().plusNanos(schEmissionConfiguration.getMediaItem().getLength().longValue()))
+                .endTime(schEmissionConfiguration.getStartTime().plusSeconds(schEmissionConfiguration.getMediaItem().getLength().longValue() / 1000))
                 .attachments(schEmissionConfigurationAttachmentSchEmissionAttachmentMapper.mapAttachmentConfiguration(schEmissionConfiguration.getAttachments()))
                 .network(schEmissionConfiguration.getNetwork())
                 .channel(schEmissionConfiguration.getChannel())

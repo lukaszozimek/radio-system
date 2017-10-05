@@ -32,7 +32,7 @@ public class SchEventService {
                 SchEvent schEvent = schEventRepository.saveAndFlush(schBlock.clockConfiguration(schClockConfiguration));
                 schBlock.emissions(schEventEmissionService.saveEmission(schBlock.getEmissions(), schEvent));
                 if (!schBlock.getBlocks().isEmpty()) {
-                    schBlock.blocks(this.saveEvent(schBlock.getBlocks(), schEvent));
+                    this.saveEvent(schBlock.getBlocks(), schEvent);
                 }
 
                 return schEventRepository.saveAndFlush(schEvent);

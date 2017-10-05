@@ -21,7 +21,7 @@ public class SchEventEmissionEmissionMapper {
                 .startTime(emission.getStartTime())
                 .seq(emission.getSequence())
                 .playlist(schPlaylist)
-                .endTime(emission.getStartTime().plusNanos(emission.getMediaItem().getLength().longValue()))
+                .endTime(emission.getStartTime().plusSeconds(emission.getMediaItem().getLength().longValue() / 1000))
                 .attachments(schEventEmissionAttachmentAttachmentMapper.mapEventEmissionAttachmentConfiguration(emission.getAttachments()))
                 .network(emission.getNetwork())
                 .channel(emission.getChannel())

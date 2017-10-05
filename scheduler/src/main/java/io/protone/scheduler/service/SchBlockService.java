@@ -51,6 +51,7 @@ public class SchBlockService {
 
     }
 
+    @Transactional
     public Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchClock entity) {
         if (blocks != null && !blocks.isEmpty()) {
             return blocks.stream().map(schBlock -> {
@@ -66,6 +67,7 @@ public class SchBlockService {
         return Sets.newHashSet();
     }
 
+    @Transactional
     private Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchBlock entity) {
         if (blocks != null && !blocks.isEmpty()) {
             return blocks.stream().map(schBlock -> {
