@@ -13,7 +13,7 @@ import io.protone.scheduler.api.dto.thin.SchScheduleThinDTO;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
 import io.protone.scheduler.service.SchScheduleService;
-import io.protone.scheduler.service.schedule.build.SchScheduleBuilderService;
+import io.protone.scheduler.service.SchScheduleServiceWrapper;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +45,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     private SchScheduleService schScheduleService;
 
     @Inject
-    private SchScheduleBuilderService schScheduleBuilderService;
+    private SchScheduleServiceWrapper schScheduleServiceWrapper;
 
     @Inject
     private SchScheduleMapper schScheduleMapper;
@@ -153,11 +153,9 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
                                                                                    @ApiParam(value = "gridShortName", required = true) @PathVariable("gridShortName") String gridShortName) throws Exception {
         SchSchedule currentSchedule = schScheduleService.findSchScheduleEntityForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
         if (currentSchedule != null) {
-            schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut,channelShortcut,date);
+            schScheduleService.deleteSchScheduleByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
         }
-        SchSchedule schSchedule = schScheduleBuilderService.buildScheduleForDate(date, gridShortName, networkShortcut, channelShortcut);
-        SchSchedule entity = this.schScheduleService.saveSchedule(schSchedule);
-
+        SchSchedule entity = schScheduleServiceWrapper.buildSchedule(date, gridShortName, networkShortcut, channelShortcut);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);
@@ -167,8 +165,7 @@ public class SchScheduleResourceImpl implements SchScheduleResource {
     public ResponseEntity<SchScheduleDTO> buildDefaultSchedulerScheduleForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
                                                                                           @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws URISyntaxException {
-        SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(date, networkShortcut, channelShortcut);
-        SchSchedule entity = this.schScheduleService.saveSchedule(schSchedule);
+        SchSchedule entity = schScheduleServiceWrapper.buildDefaultSchedule(date, networkShortcut, channelShortcut);
         SchScheduleDTO response = schScheduleMapper.DB2DTO(entity);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/schedule/" + response.getDate()))
                 .body(response);

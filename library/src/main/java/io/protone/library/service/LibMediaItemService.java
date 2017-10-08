@@ -111,7 +111,7 @@ public class LibMediaItemService {
         contentTypeLibItemTypeMap.put(DOCUMENT, LibItemTypeEnum.IT_DOCUMENT.name());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LibMediaItem getMediaItem(String networkShortcut, String libraryShortcut, String idx) {
         Optional<LibMediaItem> optionalItemDB = itemRepository.findByNetwork_ShortcutAndLibrary_ShortcutAndIdx(networkShortcut, libraryShortcut, idx);
         return optionalItemDB.orElse(null);
