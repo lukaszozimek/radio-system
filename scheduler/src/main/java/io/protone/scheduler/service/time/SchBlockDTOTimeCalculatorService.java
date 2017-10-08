@@ -8,6 +8,7 @@ import io.protone.scheduler.api.dto.SchTimeParamsDTO;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -61,7 +62,11 @@ public class SchBlockDTOTimeCalculatorService {
                 }
             }
         }
-        return schBlockDTO;
+        if (schBlockDTO.getEndTime() != null) {
+            return schBlockDTO;
+        } else {
+            return schBlockDTO.length((long) Duration.between(schBlockDTO.getStartTime(), schBlockDTO.getStartTime()).getNano()).endTime(schBlockDTO.getStartTime());
+        }
     }
 
 }

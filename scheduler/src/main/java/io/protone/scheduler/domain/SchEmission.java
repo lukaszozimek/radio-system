@@ -82,6 +82,11 @@ public class SchEmission extends SchTimeParams implements Serializable {
         this.id = id;
     }
 
+    public SchEmission id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Long getSequence() {
         return sequence;
     }

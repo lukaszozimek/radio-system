@@ -58,6 +58,7 @@ public class SchEmissionService {
     }
 
 
+    @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchClock entity) {
         log.debug("Save Emission Set in clock level ");
 
@@ -71,12 +72,11 @@ public class SchEmissionService {
         }).collect(toSet());
     }
 
-
+    @Transactional
     public Set<SchEmission> saveEmission(Set<SchEmission> emissions, SchBlock entity) {
         log.debug("Save Emission Set in block level ");
         return emissions.stream().map(schEmission -> {
-            schEmission.setId(null);
-            SchEmission entitiyEmissions;
+            SchEmission entitiyEmissions = null;
             if (schEmission.getMediaItem().getId() != null) {
 
                 entitiyEmissions = schEmissionRepository.saveAndFlush(schEmission.block(entity));

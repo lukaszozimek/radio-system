@@ -165,7 +165,7 @@ public class LibMediaItemResourceTest {
 
         corNetwork = new CorNetwork().shortcut(TEST_NETWORK);
         corNetwork.setId(1L);
-        libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
+        libMediaLibrary = new LibMediaLibrary().shortcut("mus").network(corNetwork);
         libMediaLibrary.setId(1L);
         factory = new PodamFactoryImpl();
         corUser = factory.manufacturePojo(CorUser.class);
