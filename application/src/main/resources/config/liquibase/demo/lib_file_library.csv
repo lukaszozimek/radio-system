@@ -1,4 +1,4 @@
 id;prefix;shortcut;name;counter;description;network_id;created_by_id;last_modified_by_id
-1;o;opr;OPR;1;Biliotek Logów Oprawy;1;1;1
-2;m;mus;rek;1;Biblioteka Logów Reklam;1;1;1
-3;r;rek;MUS;1;Biblioteka Logów Muzycznych;1;1;1
+5;o;opr;OPR;1;Biliotek Logów Oprawy;1;1;1
+6;m;mus;rek;1;Biblioteka Logów Reklam;1;1;1
+7;r;rek;MUS;1;Biblioteka Logów Muzycznych;1;1;1

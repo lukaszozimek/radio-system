@@ -255,4 +255,8 @@ public class SchBlock extends SchTimeParams implements Serializable {
         return this;
     }
 
+    public SchBlock id(Long id) {
+        this.id = id;
+        return this;
+    }
 }

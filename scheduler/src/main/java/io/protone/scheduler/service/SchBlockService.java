@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.repository.SchBlockRepository;
-import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,6 +50,7 @@ public class SchBlockService {
         }
 
     }
+
     @Transactional
     public Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchClock entity) {
         if (blocks != null && !blocks.isEmpty()) {
@@ -60,12 +60,14 @@ public class SchBlockService {
                     entityBlock.blocks(this.saveBlocks(schBlock.getBlocks(), entityBlock));
                 }
                 entityBlock.clock(entity);
-                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions().stream().map(d -> SerializationUtils.clone(d).id(null)).collect(toSet()), entityBlock));
+                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock));
                 return schBlockRepository.saveAndFlush(entityBlock);
             }).collect(toSet());
         }
         return Sets.newHashSet();
     }
+
+
     @Transactional
     private Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchBlock entity) {
         if (blocks != null && !blocks.isEmpty()) {
@@ -75,7 +77,7 @@ public class SchBlockService {
                     entityBlock.blocks(this.saveBlocks(schBlock.getBlocks(), entityBlock));
                 }
                 entityBlock.block(entity);
-                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions().stream().map(d -> SerializationUtils.clone(d).id(null)).collect(toSet()), entityBlock));
+                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock));
                 return schBlockRepository.saveAndFlush(entityBlock);
             }).collect(toSet());
         }
