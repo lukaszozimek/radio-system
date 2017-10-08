@@ -58,12 +58,14 @@ public class SchParseLogService {
     }
 
     public List<SchEmission> parseLog(SchLog schLog) throws IOException {
+        log.debug("Start Parsing Log {}", schLog.getSchLogConfiguration().getExtension());
         InputStreamReader reader;
         List<SchEmission> schEmissions = Lists.newArrayList();
         List<SchLogColumn> schLogColumns = schLog.getSchLogConfiguration().getLogColumns().stream().sorted(Comparator.comparing(SchLogColumn::getColumnSequence)).collect(Collectors.toList());
         reader = new InputStreamReader(new ByteArrayInputStream(libFileItemService.download(schLog.getLibFileItem())));
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line;
+        log.debug("Parse Log {}", schLog.getSchLogConfiguration().getExtension());
         while ((line = bufferedReader.readLine()) != null) {
             if (schLog.getSchLogConfiguration().getSpearator() != null && !schLog.getSchLogConfiguration().getSpearator().isEmpty()) {
                 schEmissions.add(parseLogLineSeparator(schLogColumns, line.replaceAll("\\s+", ""), schLog.getDate(), schLog.getSchLogConfiguration().getSpearator()));

@@ -79,7 +79,11 @@ public class SchClockBlockMapper {
                 }
             }
         }
-        return schBlock.network(schEvent.getNetwork()).channel(schEvent.getChannel()).name(schEvent.getName());
+        if (schBlock.getEndTime() != null) {
+            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano()).network(schEvent.getNetwork()).channel(schEvent.getChannel());
+        } else {
+            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getStartTime()).getNano()).network(schEvent.getNetwork()).channel(schEvent.getChannel());
+        }
     }
 
 

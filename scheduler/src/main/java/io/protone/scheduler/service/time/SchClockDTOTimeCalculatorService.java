@@ -59,8 +59,11 @@ public class SchClockDTOTimeCalculatorService {
                 }
             }
         }
-
-        return schClockDTO;
+        if (schClockDTO.getEndTime() != null) {
+            return schClockDTO;
+        } else {
+            return schClockDTO.endTime(schClockDTO.getStartTime());
+        }
     }
 
 }

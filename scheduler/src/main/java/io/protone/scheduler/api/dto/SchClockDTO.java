@@ -189,5 +189,10 @@ public class SchClockDTO extends SchTimeParamsDTO {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+    public SchClockDTO length(long nano) {
+        super.setLength(nano);
+        return this;
+    }
 }
 
