@@ -17,10 +17,10 @@ public class SchTimeParams extends SchBaseEntity implements Serializable {
     protected Long sequence;
 
     @Column(name = "start_time")
-    private LocalDateTime startTime;
+    protected LocalDateTime startTime;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    protected LocalDateTime endTime;
 
     @Column(name = "relative_delay")
     private Long relativeDelay;

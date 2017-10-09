@@ -2,16 +2,17 @@ package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchClock;
-import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.repository.SchClockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.util.Set;
 
 
@@ -25,13 +26,13 @@ public class SchClockService {
     @Inject
     private SchEmissionService schEmissionService;
 
-    @Transactional
-    public SchClock saveClock(SchClock schClock, SchSchedule schSchedule) {
-        SchClock entity = schClockRepository.saveAndFlush(schClock);
-        entity.setSchSchedule(schSchedule);
-        entity.emissions(schEmissionService.saveEmission(schClock.getEmissions(), entity));
-        entity.blocks(schBlockService.saveBlocks(schClock.getBlocks(), entity));
-        return schClockRepository.saveAndFlush(entity);
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public SchClock saveClock(SchClock schClock, LocalDate date) {
+        log.debug("Save Clock");
+        SchClock entity = schClockRepository.save(schClock);
+        entity.emissions(schEmissionService.saveEmission(schClock.getEmissions(), entity,date));
+        entity.blocks(schBlockService.saveBlocks(schClock.getBlocks(), entity,date));
+        return entity;
     }
 
     @Transactional(readOnly = true)

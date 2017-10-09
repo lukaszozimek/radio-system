@@ -66,13 +66,13 @@ public class SchScheduleBuilderService {
         corDayOfWeekEnumMap.put(DayOfWeek.SUNDAY, CorDayOfWeekEnum.DW_SUNDAY);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public SchSchedule buildScheduleForDate(LocalDate localDate, String gridShortName, String networkShortcut, String channelShortcut) throws Exception {
         SchGrid schGrid = this.schGridService.findSchGridForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, gridShortName);
         return build(schGrid, localDate);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
         CorDayOfWeekEnum corDayOfWeekEnum = corDayOfWeekEnumMap.get(localDate.getDayOfWeek());
         SchGrid schGrid = this.schGridService.findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, true, corDayOfWeekEnum);
@@ -123,7 +123,7 @@ public class SchScheduleBuilderService {
                 Long logEmissionsLenght = schEvents.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
                 if (logEmissionsLenght < schEvents.get(i).getLength()) {
                     if (schEvents.get(i).getEmissionsLog().isEmpty()) {
-                        schEvents.get(i).addEmission(schEmission.seq(1L).playlist(schPlaylist).network(schEvents.get(i).getNetwork()).channel(schEvents.get(i).getChannel()));
+                        schEvents.get(i).addEmission(schEmission.seq(1L).playlist(null).network(schEvents.get(i).getNetwork()).channel(schEvents.get(i).getChannel()));
                     } else {
                         schEvents.get(i).
                                 addEmission(schEmission.seq(schEvents.get(i)
@@ -131,7 +131,7 @@ public class SchScheduleBuilderService {
                                         .stream()
                                         .max(comparing(SchEmission::getSequence))
                                         .get().getSequence() + 1)
-                                        .playlist(schPlaylist)
+                                        .playlist(null)
                                         .network(schEvents.get(i).getNetwork())
                                         .channel(schEvents.get(i).getChannel()));
                     }

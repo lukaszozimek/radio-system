@@ -42,10 +42,9 @@ public class SchScheduleService {
         SchSchedule entity = schScheduleRepository.saveAndFlush(schSchedule);
         SchSchedule finalEntity = entity;
         if (schSchedule.getClocks() != null && !schSchedule.getClocks().isEmpty()) {
-            entity.clocks(schSchedule.getClocks().stream().sorted(Comparator.comparing(SchClock::getSequence)).map(schClock -> this.schClockService.saveClock(schClock, finalEntity)).collect(toSet()));
+            entity.clocks(schSchedule.getClocks().stream().sorted(Comparator.comparing(SchClock::getSequence)).map(schClock -> this.schClockService.saveClock(schClock, finalEntity.getDate()).schedule(finalEntity)).collect(toSet()));
         }
-        entity = schScheduleRepository.saveAndFlush(entity);
-        return entity;
+        return schScheduleRepository.saveAndFlush(entity);
     }
 
     @Transactional(readOnly = true)

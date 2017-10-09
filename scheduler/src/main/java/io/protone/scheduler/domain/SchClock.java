@@ -258,4 +258,9 @@ public class SchClock extends SchTimeParams implements Serializable {
                 ", channel=" + channel +
                 '}';
     }
+
+    public SchClock schedule(SchSchedule finalEntity) {
+        this.schSchedule = finalEntity;
+        return this;
+    }
 }

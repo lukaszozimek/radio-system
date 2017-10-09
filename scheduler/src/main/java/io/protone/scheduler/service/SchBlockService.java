@@ -4,12 +4,14 @@ import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.repository.SchBlockRepository;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -31,7 +33,7 @@ public class SchBlockService {
                     this.saveBlocks(schBlock.getBlocks());
                 }
                 schBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions()));
-                return schBlockRepository.saveAndFlush(schBlock);
+                return schBlockRepository.save(schBlock);
             }).collect(toSet());
         }
         return Sets.newHashSet();
@@ -52,16 +54,16 @@ public class SchBlockService {
     }
 
     @Transactional
-    public Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchClock entity) {
+    public Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchClock entity, LocalDate date) {
         if (blocks != null && !blocks.isEmpty()) {
             return blocks.stream().map(schBlock -> {
-                SchBlock entityBlock = schBlockRepository.saveAndFlush(schBlock);
+                SchBlock entityBlock = schBlockRepository.save(schBlock);
                 if (!schBlock.getBlocks().isEmpty()) {
-                    entityBlock.blocks(this.saveBlocks(schBlock.getBlocks(), entityBlock));
+                    entityBlock.blocks(this.saveBlocks(schBlock.getBlocks(), entityBlock, date));
                 }
                 entityBlock.clock(entity);
-                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock));
-                return schBlockRepository.saveAndFlush(entityBlock);
+                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock, date));
+                return schBlockRepository.save(entityBlock);
             }).collect(toSet());
         }
         return Sets.newHashSet();
@@ -69,16 +71,17 @@ public class SchBlockService {
 
 
     @Transactional
-    private Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchBlock entity) {
+    private Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchBlock entity, LocalDate date) {
         if (blocks != null && !blocks.isEmpty()) {
             return blocks.stream().map(schBlock -> {
-                SchBlock entityBlock = schBlockRepository.saveAndFlush(schBlock);
+                SchBlock block = SerializationUtils.clone(schBlock);
+                SchBlock entityBlock = schBlockRepository.save(schBlock);
                 if (!schBlock.getBlocks().isEmpty()) {
-                    entityBlock.blocks(this.saveBlocks(schBlock.getBlocks(), entityBlock));
+                    entityBlock.blocks(this.saveBlocks(schBlock.getBlocks(), entityBlock, date));
                 }
                 entityBlock.block(entity);
-                entityBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), entityBlock));
-                return schBlockRepository.saveAndFlush(entityBlock);
+                schEmissionService.saveEmission(block.getEmissions(), entity, date);
+                return schBlockRepository.save(entityBlock);
             }).collect(toSet());
         }
         return Sets.newHashSet();

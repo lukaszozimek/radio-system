@@ -219,7 +219,7 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions.get(0).getMediaItem());
         assertNotNull(schEmissions.get(0));
         assertEquals(LocalDateTime.of(2017, 8, 28, 07, 33, 54), schEmissions.get(0).getStartTime());
-        assertEquals("mus", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("DROGI", schEmissions.get(0).getMediaItem().getIdx());
 
     }
@@ -239,7 +239,7 @@ public class SchParseLogServiceTest extends SchedulerBaseTest {
         assertNotNull(schEmissions.get(0).getMediaItem());
         assertNotNull(schEmissions.get(0));
         assertEquals(LocalDateTime.of(2017, 8, 28, 7, 33, 54), schEmissions.get(0).getStartTime());
-        assertEquals("mus", schEmissions.get(0).getLibraryElementShortCut());
+        assertEquals("tes", schEmissions.get(0).getLibraryElementShortCut());
         assertEquals("DROGI", schEmissions.get(0).getMediaItem().getIdx());
 
     }

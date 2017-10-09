@@ -24,5 +24,11 @@ public interface SchPlaylistRepository extends JpaRepository<SchPlaylist, Long> 
             "where n.shortcut = :network  and ch.shortcut= :channelShortcut and play.date=:datePlaylist")
     SchPlaylist findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("datePlaylist") LocalDate date);
 
+    @Query("select play from SchPlaylist as play " +
+            "left join fetch play.network as n " +
+            "left join fetch play.channel as ch " +
+            "where n.shortcut = :network  and ch.shortcut= :channelShortcut and play.date=:datePlaylist")
+    SchPlaylist findOne(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("datePlaylist") LocalDate date);
+
     void deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(String networkShortcut, String channelShortcut, LocalDate date);
 }

@@ -19,7 +19,7 @@ public class SchEmissionConfigurationSchEmissionMapper {
     public SchEmission mapSchEmission(SchEmissionConfiguration schEmissionConfiguration, SchPlaylist schPlaylist) {
         return new SchEmission().seq(schEmissionConfiguration.getSequence())
                 .startTime(schEmissionConfiguration.getStartTime())
-                .playlist(schPlaylist)
+                .playlist(null)
                 .seq(schEmissionConfiguration.getSequence())
                 .endTime(schEmissionConfiguration.getStartTime().plusSeconds(schEmissionConfiguration.getMediaItem().getLength().longValue() / 1000))
                 .attachments(schEmissionConfigurationAttachmentSchEmissionAttachmentMapper.mapAttachmentConfiguration(schEmissionConfiguration.getAttachments()))
