@@ -104,7 +104,7 @@ public class LaPQLServiceTest {
         List<CorChannel> listChannel = (List<CorChannel>) list;
         Assert.notEmpty(list);
     }
-
+    //TODO: Implement Test
     @Test
     public void shouldReturnListWithLimitationAndGroupedByObjectRequestedInQuery() {
 

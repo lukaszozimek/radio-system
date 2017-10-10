@@ -63,7 +63,6 @@ public class SchEmissionServiceTest extends SchedulerBaseTest {
         Set<SchEmission> savedEmissions = schEmissionService.saveEmission(schEmissions);
 
         //assert
-        //assert
         assertNotNull(savedEmissions);
         assertNotNull(savedEmissions.stream().findFirst().get().getId());
         assertEquals(schEmissions.stream().findFirst().get().getNetwork(), savedEmissions.stream().findFirst().get().getNetwork());

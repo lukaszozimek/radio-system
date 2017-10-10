@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 /**
  * Created by lukaszozimek on 28/08/2017.
  */
+//TODO: Implement Test
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional

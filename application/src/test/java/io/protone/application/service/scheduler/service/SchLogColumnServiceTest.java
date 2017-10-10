@@ -58,6 +58,7 @@ public class SchLogColumnServiceTest extends SchedulerBaseTest {
         assertEquals(schColumnConfiguration.getNetwork(), fetchedEntity.stream().findFirst().get().getNetwork());
     }
 
+    //TODO: Implement Test
     @Test
     public void shouldDeleteColumnConfiguration() throws Exception {
         //when
