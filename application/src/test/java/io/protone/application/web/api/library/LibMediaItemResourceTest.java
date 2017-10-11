@@ -436,7 +436,7 @@ public class LibMediaItemResourceTest {
         MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/video/sample-video.mp4"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
-                .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_VIDEO.toString()));
+                .andExpect(jsonPath("$.itemType").value(LibItemTypeEnum.IT_VIDEO.toString()));
     }
 
 
@@ -446,7 +446,7 @@ public class LibMediaItemResourceTest {
         MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/audio/sample_mp3.mp3"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
-                .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_AUDIO.toString()));
+                .andExpect(jsonPath("$.itemType").value(LibItemTypeEnum.IT_AUDIO.toString()));
     }
 
     @Test
@@ -455,7 +455,7 @@ public class LibMediaItemResourceTest {
         MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/image/sample_image.png"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
-                .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_IMAGE.toString()));
+                .andExpect(jsonPath("$.itemType").value(LibItemTypeEnum.IT_IMAGE.toString()));
     }
 
     @Test
@@ -464,7 +464,7 @@ public class LibMediaItemResourceTest {
         MockMultipartFile firstFile = new MockMultipartFile("files", Thread.currentThread().getContextClassLoader().getResourceAsStream("sample/document/sample_document.xls"));
         restLibMediaItemMockMvc.perform(MockMvcRequestBuilders.fileUpload("/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item", corNetwork.getShortcut(), libMediaLibrary.getShortcut())
                 .file(firstFile)).andExpect(status().is(200))
-                .andExpect(jsonPath("$[*].itemType").value(LibItemTypeEnum.IT_DOCUMENT.toString()));
+                .andExpect(jsonPath("$.itemType").value(LibItemTypeEnum.IT_DOCUMENT.toString()));
     }
 
 
