@@ -106,9 +106,9 @@ public interface LibMediaItemResource {
     @RequestMapping(value = "/api/v1/network/{networkShortcut}/library/media/{libraryPrefix}/item",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<List<LibMediaItemThinDTO>> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    ResponseEntity<LibMediaItemThinDTO> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                           @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                          @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws Exception;
+                                                                                          @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile files) throws Exception;
 
 
     @ApiOperation(value = "getItemByNetworShortcutAndLibrar", notes = "", response = LibMediaItemDTO.class, tags = {"LIBRARY",})

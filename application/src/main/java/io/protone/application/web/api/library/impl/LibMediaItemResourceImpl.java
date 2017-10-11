@@ -127,11 +127,11 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     }
 
     @Override
-    public ResponseEntity<List<LibMediaItemThinDTO>> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+    public ResponseEntity<LibMediaItemThinDTO> uploadItemsByNetworShortcutAndLibraryPrefix(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                  @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                 @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile[] files) throws IOException, TikaException, SAXException {
-        List<LibMediaItem> entities = libMediaItemService.upload(networkShortcut, libraryPrefix, files);
-        List<LibMediaItemThinDTO> response = libMediaItemThinMapper.DBs2DTOs(entities);
+                                                                                                 @ApiParam(value = "files", required = true) @PathParam("files") MultipartFile files) throws IOException, TikaException, SAXException {
+        LibMediaItem entities = libMediaItemService.upload(networkShortcut, libraryPrefix, files);
+        LibMediaItemThinDTO response = libMediaItemThinMapper.DB2DTO(entities);
         return Optional.ofNullable(response)
                 .map(result -> new ResponseEntity<>(
                         result,
