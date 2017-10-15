@@ -31,7 +31,7 @@ public class SchClockConfiguration extends SchClockBase implements Serializable 
     private Set<SchEmissionConfiguration> emissions = new HashSet<>();
 
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "sch_clock_configuration_sch_event",
             joinColumns = @JoinColumn(name = "sch_clock_configuration_id", referencedColumnName = "id"),
@@ -39,7 +39,7 @@ public class SchClockConfiguration extends SchClockBase implements Serializable 
     @PodamExclude
     private Set<SchEvent> schEvents = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "sch_clock_configuration_sch_event_configuration",
             joinColumns = @JoinColumn(name = "sch_clock_configuration_id", referencedColumnName = "id"),
