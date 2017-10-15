@@ -51,12 +51,6 @@
             <column name="relative_delay" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="event_id" type="bigint">
-                <constraints nullable="true"/>
-            </column>
-            <column name="clock_configuration_id" type="bigint">
-                <constraints nullable="true"/>
-            </column>
             <column name="event_category_id" type="bigint">
                 <constraints nullable="true"/>
             </column>

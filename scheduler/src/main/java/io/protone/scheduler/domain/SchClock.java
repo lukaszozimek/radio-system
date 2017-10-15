@@ -2,7 +2,6 @@ package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
-import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -21,24 +20,15 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock extends SchTimeParams implements Serializable {
+public class SchClock extends SchClockBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "short_name", unique = true, nullable = false)
-    private String shortName;
 
 
     @PodamExclude
     @ManyToOne
     private SchSchedule schSchedule;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @PodamExclude
-    private CorDictionary clockCategory;
 
     @PodamExclude
     @OneToMany(mappedBy = "clock")
@@ -53,15 +43,6 @@ public class SchClock extends SchTimeParams implements Serializable {
     private Set<SchEmission> emissions = new HashSet<>();
 
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-
-    @ManyToOne
-    @PodamExclude
-    private CorChannel channel;
-
     public Long getId() {
         return id;
     }
@@ -70,29 +51,13 @@ public class SchClock extends SchTimeParams implements Serializable {
         this.id = id;
     }
 
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public SchClock shortName(String shortName) {
-        this.shortName = shortName;
+        super.setShortName(shortName);
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public SchClock name(String name) {
-        this.name = name;
+        super.setName(name);
         return this;
     }
 
@@ -156,38 +121,16 @@ public class SchClock extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
 
     public SchClock network(CorNetwork network) {
-        this.network = network;
+        super.setNetwork(network);
         return this;
     }
 
-    public CorChannel getChannel() {
-        return channel;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
 
     public SchClock channel(CorChannel channel) {
-        this.channel = channel;
+        super.setChannel(channel);
         return this;
-    }
-
-    public CorDictionary getClockCategory() {
-        return clockCategory;
-    }
-
-    public void setClockCategory(CorDictionary clockCategory) {
-        this.clockCategory = clockCategory;
     }
 
 
@@ -246,16 +189,12 @@ public class SchClock extends SchTimeParams implements Serializable {
     public String toString() {
         return "SchClock{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", shortName='" + shortName + '\'' +
                 ", schSchedule=" + schSchedule +
                 ", sequence=" + sequence +
                 ", length=" + length +
-                ", clockCategory=" + clockCategory +
                 ", blocks=" + blocks +
                 ", emissions=" + emissions +
-                ", network=" + network +
-                ", channel=" + channel +
+
                 '}';
     }
 

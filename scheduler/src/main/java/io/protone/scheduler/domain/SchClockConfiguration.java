@@ -20,25 +20,9 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock_configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClockConfiguration extends SchTimeParams implements Serializable {
+public class SchClockConfiguration extends SchClockBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "short_name", unique = true, nullable = false)
-    private String shortName;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @PodamExclude
-    private CorDictionary clockCategory;
-
-    @PodamExclude
-    @OneToMany(mappedBy = "clockConfiguration")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEvent> events = new HashSet<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "clock")
@@ -46,13 +30,22 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmissionConfiguration> emissions = new HashSet<>();
 
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
 
-    @ManyToOne
+    @OneToMany(fetch = FetchType.LAZY)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "sch_clock_configuration_sch_event",
+            joinColumns = @JoinColumn(name = "sch_clock_configuration_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "sch_event_id", referencedColumnName = "id"))
     @PodamExclude
-    private CorChannel channel;
+    private Set<SchEvent> schEvents = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "sch_clock_configuration_sch_event_configuration",
+            joinColumns = @JoinColumn(name = "sch_clock_configuration_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "sch_event_configuration_id", referencedColumnName = "id"))
+    @PodamExclude
+    private Set<SchEventConfiguration> schEventConfigurations = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -62,53 +55,15 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
         this.id = id;
     }
 
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
 
     public SchClockConfiguration shortName(String shortName) {
-        this.shortName = shortName;
+        super.shortName(shortName);
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public SchClockConfiguration name(String name) {
-        this.name = name;
-        return this;
-    }
-
-
-    public Set<SchEvent> getEvents() {
-        return events;
-    }
-
-    public void setEvents(Set<SchEvent> schEvents) {
-        this.events = schEvents;
-    }
-
-    public SchClockConfiguration events(Set<SchEvent> schEvents) {
-        this.events = schEvents;
-        return this;
-    }
-
-    public SchClockConfiguration addBlock(SchEvent schEvent) {
-        this.events.add(schEvent);
-        return this;
-    }
-
-    public SchClockConfiguration removeBlock(SchEvent schEvent) {
-        this.events.remove(schEvent);
+        super.name(name);
         return this;
     }
 
@@ -135,29 +90,14 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
         return this;
     }
 
-    public CorNetwork getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(CorNetwork network) {
-        this.network = network;
-    }
 
     public SchClockConfiguration network(CorNetwork network) {
-        this.network = network;
+        super.network(network);
         return this;
     }
 
-    public CorChannel getChannel() {
-        return channel;
-    }
-
-    public void setChannel(CorChannel channel) {
-        this.channel = channel;
-    }
-
     public SchClockConfiguration channel(CorChannel channel) {
-        this.channel = channel;
+        super.channel(channel);
         return this;
     }
 
@@ -169,13 +109,6 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
         this.sequence = sequence;
     }
 
-    public CorDictionary getClockCategory() {
-        return clockCategory;
-    }
-
-    public void setClockCategory(CorDictionary clockCategory) {
-        this.clockCategory = clockCategory;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -202,13 +135,7 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
     public String toString() {
         return "SchClock{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", shortName='" + shortName + '\'' +
-                ", clockCategory=" + clockCategory +
-                ", events=" + events +
                 ", emissions=" + emissions +
-                ", network=" + network +
-                ", channel=" + channel +
                 '}';
     }
 
@@ -224,7 +151,29 @@ public class SchClockConfiguration extends SchTimeParams implements Serializable
     }
 
     public SchClockConfiguration clockCategory(CorDictionary corDictionary) {
-        this.clockCategory = corDictionary;
+        super.setClockCategory(corDictionary);
         return this;
     }
+
+    public Set<SchEventConfiguration> getSchEventConfigurations() {
+        return schEventConfigurations;
+    }
+
+    public void setSchEventConfigurations(Set<SchEventConfiguration> schEventConfigurations) {
+        this.schEventConfigurations = schEventConfigurations;
+    }
+
+    public Set<SchEvent> getSchEvents() {
+        return schEvents;
+    }
+
+    public void setSchEvents(Set<SchEvent> schEvents) {
+        this.schEvents = schEvents;
+    }
+
+    public SchClockConfiguration schEvents(Set<SchEvent> schEvents) {
+        this.schEvents = schEvents;
+        return this;
+    }
+
 }
