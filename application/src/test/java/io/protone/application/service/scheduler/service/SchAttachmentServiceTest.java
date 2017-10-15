@@ -1,7 +1,9 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.repository.SchAttachmentRepository;
 import io.protone.scheduler.service.SchAttachmentService;
@@ -12,6 +14,8 @@ import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -24,7 +28,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchAttachmentServiceTest extends SchedulerBaseTest {
+public class SchAttachmentServiceTest {
+    protected PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
     private SchAttachmentService attachmentService;
@@ -32,11 +37,17 @@ public class SchAttachmentServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchAttachmentRepository schAttachmentRepository;
 
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
+
 
     @Before
     public void setUp() throws Exception {
-       super.setUp();
-
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
     }
 
 

@@ -7,8 +7,10 @@ import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchEmissionConfigurationDTO;
 import io.protone.scheduler.api.dto.SchEventConfigurationDTO;
+import io.protone.scheduler.api.dto.SchEventDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
+import io.protone.scheduler.domain.SchEvent;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.domain.SchLogConfiguration;
 import io.protone.scheduler.mapper.SchEventConfigurationMapper;
@@ -24,8 +26,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -55,9 +57,15 @@ public class SchEventConfigurationMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schEventConfiguration = factory.manufacturePojo(SchEventConfiguration.class);
-        schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 1 @ rootEvent
-        schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 2 @ rootEvent
-        schEventConfiguration.addEmission(factory.manufacturePojo(SchEmissionConfiguration.class)); //Emission 3 @ rootEvent
+        schEventConfiguration.addEventEmissions(factory.manufacturePojo(SchEmissionConfiguration.class));
+        schEventConfiguration.addEventEmissions(factory.manufacturePojo(SchEmissionConfiguration.class)); 
+        schEventConfiguration.addEventEmissions(factory.manufacturePojo(SchEmissionConfiguration.class)); 
+        schEventConfiguration.addEvent(factory.manufacturePojo(SchEvent.class)); 
+        schEventConfiguration.addEvent(factory.manufacturePojo(SchEvent.class));
+        schEventConfiguration.addEvent(factory.manufacturePojo(SchEvent.class)); 
+        schEventConfiguration.addEventConfiguration(factory.manufacturePojo(SchEventConfiguration.class)); 
+        schEventConfiguration.addEventConfiguration(factory.manufacturePojo(SchEventConfiguration.class)); 
+        schEventConfiguration.addEventConfiguration(factory.manufacturePojo(SchEventConfiguration.class)); 
 
         schEventConfiguration.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         schEventConfiguration.setSchLogConfiguration(factory.manufacturePojo(SchLogConfiguration.class));
@@ -66,9 +74,15 @@ public class SchEventConfigurationMapperTest {
 
         //Fill DTO instance
         schEventConfigurationDTO = factory.manufacturePojo(SchEventConfigurationDTO.class);
-        schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 1 @ rootEvent
-        schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 2 @ rootEvent
-        schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); //Emission 3 @ rootEvent
+        schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class));
+        schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class));
+        schEventConfigurationDTO.addEmission(factory.manufacturePojo(SchEmissionConfigurationDTO.class)); 
+        schEventConfigurationDTO.addEventsConfiguration(factory.manufacturePojo(SchEventConfigurationDTO.class));
+        schEventConfigurationDTO.addEventsConfiguration(factory.manufacturePojo(SchEventConfigurationDTO.class));
+        schEventConfigurationDTO.addEventsConfiguration(factory.manufacturePojo(SchEventConfigurationDTO.class)); 
+        schEventConfigurationDTO.addEvents(factory.manufacturePojo(SchEventDTO.class));
+        schEventConfigurationDTO.addEvents(factory.manufacturePojo(SchEventDTO.class));
+        schEventConfigurationDTO.addEvents(factory.manufacturePojo(SchEventDTO.class)); 
 
         schEventConfigurationDTO.setEventCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         schEventConfigurationDTO.setSchLogConfiguration(factory.manufacturePojo(SchLogConfigurationDTO.class));
@@ -83,6 +97,8 @@ public class SchEventConfigurationMapperTest {
         assertNotNull(dto.getEventType());
         assertNotNull(dto.getSchLogConfiguration());
         assertNotNull(dto.getEventCategory());
+        assertNotNull(dto.getSchEventConfigurations());
+        assertNotNull(dto.getEvents());
         assertNotNull(dto.getEmissions());
         assertNotNull(dto.getLength());
         assertNotNull(dto.getRelativeDelay());
@@ -102,6 +118,8 @@ public class SchEventConfigurationMapperTest {
             assertNotNull(dto.getEventType());
             assertNotNull(dto.getEventCategory());
             assertNotNull(dto.getSchLogConfiguration());
+            assertNotNull(dto.getSchEventConfigurations());
+            assertNotNull(dto.getEvents());
             assertNotNull(dto.getEmissions());
             assertNotNull(dto.getLength());
             assertNotNull(dto.getRelativeDelay());
@@ -119,6 +137,8 @@ public class SchEventConfigurationMapperTest {
         assertNotNull(entity.getEventCategory());
         assertNotNull(entity.getSchLogConfiguration());
         assertNotNull(entity.getEmissions());
+        assertNotNull(entity.getSchEventConfigurations());
+        assertNotNull(entity.getSchEvents());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getLength());
@@ -137,6 +157,8 @@ public class SchEventConfigurationMapperTest {
             assertNotNull(entity.getShortName());
             assertNotNull(entity.getEventType());
             assertNotNull(entity.getEventCategory());
+            assertNotNull(entity.getSchEventConfigurations());
+            assertNotNull(entity.getSchEvents());
             assertNotNull(entity.getSchLogConfiguration());
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getNetwork());

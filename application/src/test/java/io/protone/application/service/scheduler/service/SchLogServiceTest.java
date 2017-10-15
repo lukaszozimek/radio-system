@@ -1,9 +1,14 @@
 package io.protone.application.service.scheduler.service;
 
+import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibFileItem;
+import io.protone.library.domain.LibFileLibrary;
 import io.protone.library.repository.LibFileItemRepository;
+import io.protone.library.repository.LibFileLibraryRepository;
 import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.domain.SchLog;
 import io.protone.scheduler.domain.SchLogConfiguration;
@@ -24,15 +29,18 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -44,16 +52,17 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchLogServiceTest extends SchedulerBaseTest {
+public class SchLogServiceTest {
 
+    protected PodamFactory factory = new PodamFactoryImpl();
 
     @Mock
     private LibFileItemService libFileItemService;
 
-    @Inject
+    @Autowired
     private LibFileItemRepository libFileItemRepository;
 
-    @Inject
+    @Autowired
     private SchLogConfigurationRepository schLogConfigurationRepository;
 
     @Autowired
@@ -62,16 +71,40 @@ public class SchLogServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchLogRepository schLogRepository;
 
+    @Autowired
+    private LibFileLibraryRepository libFileLibraryRepository;
+
 
     private SchLogConfiguration schLogConfiguration;
 
     private LibFileItem libFileItem;
 
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
+
+    private LibFileLibrary libFileLibrary;
+
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(schLogService, "libFileItemService", libFileItemService);
-        super.setUp();
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
+        if (libFileLibrary == null) {
+            libFileLibrary = new LibFileLibrary();
+            libFileLibrary.setId(null);
+            libFileLibrary.setCounter(0L);
+            libFileLibrary.setPrefix("v");
+            libFileLibrary.shortcut("100");
+            libFileLibrary.setName("Testowa Bliblioteka Schedulera");
+            libFileLibrary.setNetwork(corNetwork);
+            libFileLibrary.setChannels(Sets.newHashSet(corChannel));
+            this.libFileLibrary = this.libFileLibraryRepository.saveAndFlush(libFileLibrary);
+        }
         schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.network(corNetwork);
         schLogConfiguration.channel(corChannel);
@@ -117,7 +150,7 @@ public class SchLogServiceTest extends SchedulerBaseTest {
         libFileItem.setLibrary(libFileLibrary);
         libFileItem.setId(null);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
-        when(libFileItemService.uploadFileItemWithPredefinedContentType(anyString(), anyString(), any(),anyString())).thenReturn(libFileItem);
+        when(libFileItemService.uploadFileItemWithPredefinedContentType(anyString(), anyString(), any(), anyString())).thenReturn(libFileItem);
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("MUS");
         schLogConfiguration.setPattern("yyyyMMdd");

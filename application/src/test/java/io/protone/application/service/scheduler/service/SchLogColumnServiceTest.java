@@ -1,7 +1,9 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.SchLogColumn;
 import io.protone.scheduler.repository.SchLogColumnRepostiory;
 import io.protone.scheduler.service.SchLogColumnService;
@@ -12,6 +14,8 @@ import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -25,7 +29,8 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchLogColumnServiceTest extends SchedulerBaseTest {
+public class SchLogColumnServiceTest {
+    protected PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
     private SchLogColumnService schColumnConfigurationService;
@@ -33,13 +38,17 @@ public class SchLogColumnServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchLogColumnRepostiory schLogColumnRepostiory;
 
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
     }
-
 
 
     @Test
@@ -58,10 +67,11 @@ public class SchLogColumnServiceTest extends SchedulerBaseTest {
         assertEquals(schColumnConfiguration.getNetwork(), fetchedEntity.stream().findFirst().get().getNetwork());
     }
 
-    //TODO: Implement Test
     @Test
     public void shouldDeleteColumnConfiguration() throws Exception {
         //when
+        long numberOfColumns = schLogColumnRepostiory.count();
+
         SchLogColumn schColumnConfiguration = factory.manufacturePojo(SchLogColumn.class);
         schColumnConfiguration.setNetwork(corNetwork);
         schColumnConfiguration.setChannel(corChannel);
@@ -69,10 +79,10 @@ public class SchLogColumnServiceTest extends SchedulerBaseTest {
         Set<SchLogColumn> schLogColumnSet = Sets.newSet(schColumnConfiguration);
         //then
         schColumnConfigurationService.deleteColumns(schLogColumnSet);
-//        SchLogColumn fetchedEntity = schLogColumnRepostiory.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schColumnConfiguration.getShortName());
+        long numberColumnsAfterDelete = schLogColumnRepostiory.count();
 
-        //assert
-        //assertNull(fetchedEntity);
+
+        assertEquals(numberOfColumns, numberColumnsAfterDelete);
     }
 
 }
