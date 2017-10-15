@@ -1,7 +1,9 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.SchAttachmentConfiguration;
 import io.protone.scheduler.repository.SchAttachmentConfigurationRepository;
 import io.protone.scheduler.service.SchAttachmentConfigurationService;
@@ -12,11 +14,15 @@ import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -24,18 +30,23 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchAttachmentConfigurationServiceTest extends SchedulerBaseTest {
+public class SchAttachmentConfigurationServiceTest {
+    protected PodamFactory factory = new PodamFactoryImpl();
     @Autowired
     private SchAttachmentConfigurationService schAttachmentConfigurationService;
 
     @Autowired
     private SchAttachmentConfigurationRepository schAttachmentConfigurationRepository;
+    private CorNetwork corNetwork;
+    private CorChannel corChannel;
 
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
     }
 
 

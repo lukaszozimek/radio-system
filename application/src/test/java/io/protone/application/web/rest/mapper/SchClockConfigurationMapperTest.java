@@ -8,10 +8,12 @@ import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchEmissionConfigurationDTO;
+import io.protone.scheduler.api.dto.SchEventConfigurationDTO;
 import io.protone.scheduler.api.dto.SchEventDTO;
 import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchEvent;
+import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.mapper.SchClockConfigurationMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +49,9 @@ public class SchClockConfigurationMapperTest {
     private List<SchClockConfiguration> schClockConfigurations = new ArrayList<>();
 
     private List<SchClockConfigurationDTO> schClockConfigurationDTOS = new ArrayList<>();
+
     private CorNetwork network;
+
     private CorChannel corChannel;
 
     @Before
@@ -56,14 +60,16 @@ public class SchClockConfigurationMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         clockConfiguration = factory.manufacturePojo(SchClockConfiguration.class);
         clockConfiguration.setEmissions(Sets.newHashSet(factory.manufacturePojo(SchEmissionConfiguration.class)));
-        clockConfiguration.setEvents(Sets.newHashSet(factory.manufacturePojo(SchEvent.class)));
+        clockConfiguration.setSchEvents(Sets.newHashSet(factory.manufacturePojo(SchEvent.class)));
+        clockConfiguration.setSchEventConfigurations(Sets.newHashSet(factory.manufacturePojo(SchEventConfiguration.class)));
+
 
         clockConfiguration.setClockCategory(factory.manufacturePojo(CorDictionary.class));
         schClockConfigurations.add(clockConfiguration);
         schClockConfigurationDTO = factory.manufacturePojo(SchClockConfigurationDTO.class);
         schClockConfigurationDTO.setEmissions(Sets.newHashSet(factory.manufacturePojo(SchEmissionConfigurationDTO.class)));
         schClockConfigurationDTO.setEvents(Sets.newHashSet(factory.manufacturePojo(SchEventDTO.class)));
-
+        schClockConfigurationDTO.setSchEventConfigurationDTOS(Sets.newHashSet(factory.manufacturePojo(SchEventConfigurationDTO.class)));
         schClockConfigurationDTO.setClockCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         schClockConfigurationDTOS.add(schClockConfigurationDTO);
     }
@@ -73,6 +79,7 @@ public class SchClockConfigurationMapperTest {
         SchClockConfigurationDTO dto = schClockConfigurationMapper.DB2DTO(clockConfiguration);
         assertNotNull(dto.getName());
         assertNotNull(dto.getShortName());
+        assertNotNull(dto.getSchEventConfigurationDTOS());
         assertNotNull(dto.getEvents());
         assertNotNull(dto.getEmissions());
         assertNotNull(dto.getClockCategory());
@@ -93,6 +100,7 @@ public class SchClockConfigurationMapperTest {
             assertNotNull(dto.getName());
             assertNotNull(dto.getShortName());
             assertNotNull(dto.getEvents());
+            assertNotNull(dto.getSchEventConfigurationDTOS());
             assertNotNull(dto.getEmissions());
             assertNotNull(dto.getClockCategory());
             assertNotNull(dto.getLength());
@@ -107,7 +115,7 @@ public class SchClockConfigurationMapperTest {
 
         assertNotNull(entity.getName());
         assertNotNull(entity.getShortName());
-        assertNotNull(entity.getEvents());
+        assertNotNull(entity.getSchEvents());
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
@@ -126,7 +134,7 @@ public class SchClockConfigurationMapperTest {
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getName());
             assertNotNull(entity.getShortName());
-            assertNotNull(entity.getEvents());
+            assertNotNull(entity.getSchEvents());
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getLength());
             assertNotNull(entity.getRelativeDelay());
