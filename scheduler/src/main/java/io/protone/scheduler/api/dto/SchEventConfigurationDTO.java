@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
 
     private static final long serialVersionUID = 1L;
 
-  
+
     private String name;
 
     private String shortName;
@@ -30,6 +31,10 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
     private EventTypeEnum eventType;
 
     private SchLogConfigurationDTO schLogConfiguration;
+
+    private Set<SchEventDTO> events = new HashSet<>();
+
+    private Set<SchEventConfiguration> schEventConfigurations = new HashSet<>();
 
 
     private CoreUserThinDTO createdBy;
@@ -164,6 +169,22 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public Set<SchEventDTO> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<SchEventDTO> events) {
+        this.events = events;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -200,11 +221,12 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
                 '}';
     }
 
-    public Long getSequence() {
-        return sequence;
+
+    public Set<SchEventConfiguration> getSchEventConfigurations() {
+        return schEventConfigurations;
     }
 
-    public void setSequence(Long sequence) {
-        this.sequence = sequence;
+    public void setSchEventConfigurations(Set<SchEventConfiguration> schEventConfigurations) {
+        this.schEventConfigurations = schEventConfigurations;
     }
 }

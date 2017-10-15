@@ -19,11 +19,11 @@ public class SchClockConfigurationDTO extends SchConfigurationTimeParamsDTO {
 
     private String shortName;
 
-
     private CorDictionaryDTO clockCategory;
 
-
     private Set<SchEventDTO> events = new HashSet<>();
+
+    private Set<SchEventConfigurationDTO> schEventConfigurationDTOS = new HashSet<>();
 
     private Set<SchEmissionConfigurationDTO> emissions = new HashSet<>();
 
@@ -196,5 +196,13 @@ public class SchClockConfigurationDTO extends SchConfigurationTimeParamsDTO {
 
     public void setSequence(Long sequence) {
         this.sequence = sequence;
+    }
+
+    public Set<SchEventConfigurationDTO> getSchEventConfigurationDTOS() {
+        return schEventConfigurationDTOS;
+    }
+
+    public void setSchEventConfigurationDTOS(Set<SchEventConfigurationDTO> schEventConfigurationDTOS) {
+        this.schEventConfigurationDTOS = schEventConfigurationDTOS;
     }
 }

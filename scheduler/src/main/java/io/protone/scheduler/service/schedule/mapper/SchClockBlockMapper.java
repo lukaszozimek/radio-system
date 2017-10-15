@@ -23,7 +23,7 @@ public class SchClockBlockMapper {
     public SchBlock buildBlocks(SchEvent schEvent, SchPlaylist schPlaylist) {
         SchBlock schBlock = new SchBlock().startTime(schEvent.getStartTime()).sequence(schEvent.getSequence());
         List<SchTimeParams> schTimeParams = new ArrayList<>();
-        schTimeParams.addAll(schEvent.getBlocks());
+        schTimeParams.addAll(schEvent.getSchEvents());
         schTimeParams.addAll(schEvent.getEmissions());
         schTimeParams.addAll(schEvent.getEmissionsLog());
         schTimeParams = schTimeParams.stream().sorted(Comparator.comparing(SchTimeParams::getSequence)).collect(toList());

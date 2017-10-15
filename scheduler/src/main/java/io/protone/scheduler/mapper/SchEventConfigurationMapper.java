@@ -7,10 +7,7 @@ import io.protone.core.mapper.CorUserMapper;
 import io.protone.scheduler.api.dto.SchEventConfigurationDTO;
 import io.protone.scheduler.api.dto.thin.SchEventConfigurationThinDTO;
 import io.protone.scheduler.domain.SchEventConfiguration;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +15,16 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 30/08/2017.
  */
-@Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchAttachmentConfigurationMapper.class,  CorDictionaryMapper.class, CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchAttachmentConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class, SchEventMapper.class})
 public interface SchEventConfigurationMapper {
     List<SchEventConfigurationThinDTO> DBs2ThinDTOs(List<SchEventConfiguration> schClockList);
 
+    @Mapping(source = "schEventConfigurations", target = "schEventConfigurations")
+    @Mapping(source = "events", target = "schEvents")
     SchEventConfiguration DTO2DB(SchEventConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
+    @Mapping(source = "schEventConfigurations", target = "schEventConfigurations")
+    @Mapping(source = "schEvents", target = "events")
     SchEventConfigurationDTO DB2DTO(SchEventConfiguration entity);
 
     List<SchEventConfigurationDTO> DBs2DTOs(List<SchEventConfiguration> entityList);
