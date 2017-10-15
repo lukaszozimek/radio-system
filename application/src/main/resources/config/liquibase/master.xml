@@ -397,6 +397,26 @@
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Grid_Sch_Clock_configuration.xml"
             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Event_Configuration_Sch_Event.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Event_Configuration_Sch_Event_Configuration.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Event_Sch_Event.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Event_Sch_Event_Configuration.xml"
+            relativeToChangelogFile="false"/>
+
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Clock_Configuration_Sch_Event.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Clock_Configuration_Sch_Event_Configuration.xml"
+            relativeToChangelogFile="false"/>
+
 
     <changeSet id="" author="lozimek">
 
