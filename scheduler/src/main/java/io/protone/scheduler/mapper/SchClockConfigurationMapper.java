@@ -8,10 +8,7 @@ import io.protone.library.domain.LibMediaLibrary;
 import io.protone.scheduler.api.dto.SchClockConfigurationDTO;
 import io.protone.scheduler.api.dto.thin.SchClockConfigurationThinDTO;
 import io.protone.scheduler.domain.SchClockConfiguration;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +18,12 @@ import java.util.List;
  */
 @Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchEventMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchClockConfigurationMapper {
+    @Mapping(source = "events", target = "schEvents")
+    @Mapping(source = "schEventConfigurationDTOS", target = "schEventConfigurations")
     SchClockConfiguration DTO2DB(SchClockConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
+    @Mapping(source = "schEvents", target = "events")
+    @Mapping(source = "schEventConfigurations", target = "schEventConfigurationDTOS")
     SchClockConfigurationDTO DB2DTO(SchClockConfiguration entity);
 
     List<SchClockConfigurationDTO> DBs2DTOs(List<SchClockConfiguration> entityList);

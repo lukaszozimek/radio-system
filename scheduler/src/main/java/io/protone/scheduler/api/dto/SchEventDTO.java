@@ -25,6 +25,9 @@ public class SchEventDTO extends SchConfigurationTimeParamsDTO {
 
     private Set<SchEventDTO> events = new HashSet<>();
 
+
+    private Set<SchEventConfigurationDTO> eventConfigurationDTOS = new HashSet<>();
+
     private CorDictionaryDTO eventCategory;
 
 
@@ -153,6 +156,14 @@ public class SchEventDTO extends SchConfigurationTimeParamsDTO {
 
     public void setSchLogConfiguration(SchLogConfigurationDTO schLogConfiguration) {
         this.schLogConfiguration = schLogConfiguration;
+    }
+
+    public Set<SchEventConfigurationDTO> getEventConfigurationDTOS() {
+        return eventConfigurationDTOS;
+    }
+
+    public void setEventConfigurationDTOS(Set<SchEventConfigurationDTO> eventConfigurationDTOS) {
+        this.eventConfigurationDTOS = eventConfigurationDTOS;
     }
 
     @Override

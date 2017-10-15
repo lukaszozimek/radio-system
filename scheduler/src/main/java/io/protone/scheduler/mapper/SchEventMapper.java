@@ -17,14 +17,16 @@ import java.util.List;
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class, SchLogColumnConfigurationMapper.class})
+@Mapper(componentModel = "spring", uses = {SchEventEmissionMapper.class, CorDictionaryMapper.class, SchLogColumnConfigurationMapper.class, SchEventConfigurationMapper.class})
 public interface SchEventMapper {
     @Mapping(source = "schLogConfiguration", target = "schLogConfiguration")
-    @Mapping(source = "events" ,target = "blocks")
+    @Mapping(source = "events", target = "schEvents")
+    @Mapping(source = "eventConfigurationDTOS", target = "schEventConfigurations")
     SchEvent DTO2DB(SchEventDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
     @Mapping(source = "schLogConfiguration", target = "schLogConfiguration")
-    @Mapping(source = "blocks" ,target = "events")
+    @Mapping(source = "schEvents", target = "events")
+    @Mapping(source = "schEventConfigurations", target = "eventConfigurationDTOS")
     SchEventDTO DB2DTO(SchEvent entity);
 
     List<SchEventDTO> DBs2DTOs(List<SchEvent> entityList);
