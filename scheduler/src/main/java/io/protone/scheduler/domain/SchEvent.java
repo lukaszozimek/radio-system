@@ -21,7 +21,7 @@ public class SchEvent extends SchEventBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "sch_event_sch_event_configuration",
             joinColumns = @JoinColumn(name = "sch_event_id", referencedColumnName = "id"),
@@ -29,7 +29,7 @@ public class SchEvent extends SchEventBase implements Serializable {
     @PodamExclude
     private Set<SchEventConfiguration> schEventConfigurations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "sch_event_sch_event",
             joinColumns = @JoinColumn(name = "parent_id", referencedColumnName = "id"),
