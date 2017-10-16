@@ -10,7 +10,6 @@ import java.io.Serializable;
 /**
  * A LibLibrary.
  */
-//TODO: ad commercial Libary Entity where id is fk
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class CorLibrary extends AbstractAuditingEntity implements Serializable {

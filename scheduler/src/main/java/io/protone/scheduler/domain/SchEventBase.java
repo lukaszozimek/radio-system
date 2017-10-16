@@ -86,15 +86,7 @@ public class SchEventBase extends SchTimeParams implements Serializable {
         this.eventType = eventType;
     }
 
-    public SchEventBase eventType(EventTypeEnum eventType) {
-        this.eventType = eventType;
-        return this;
-    }
 
-    public SchEventBase length(Long length) {
-        this.length = length;
-        return this;
-    }
 
 
     public CorNetwork getNetwork() {
@@ -151,15 +143,8 @@ public class SchEventBase extends SchTimeParams implements Serializable {
         this.sequence = sequence;
     }
 
-    public SchEventBase sequence(Long sequence) {
-        this.sequence = sequence;
-        return this;
-    }
 
-    public SchEventBase schLogConfiguration(SchLogConfiguration schLogConfiguration) {
-        this.schLogConfiguration = schLogConfiguration;
-        return this;
-    }
+
 
     public SchEventBase startTime(LocalDateTime startTime) {
         super.setStartTime(startTime);

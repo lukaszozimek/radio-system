@@ -1,7 +1,9 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.repository.SchEmissionConfigurationRepository;
 import io.protone.scheduler.service.SchEmissionConfigurationService;
@@ -12,6 +14,8 @@ import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -24,7 +28,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEmissionConfigurationServiceTest extends SchedulerBaseTest {
+public class SchEmissionConfigurationServiceTest {
+    private PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
     private SchEmissionConfigurationService schEmissionConfigurationService;
@@ -32,11 +37,16 @@ public class SchEmissionConfigurationServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchEmissionConfigurationRepository schEmissionConfigurationRepository;
 
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
     }
 
 
@@ -75,7 +85,7 @@ public class SchEmissionConfigurationServiceTest extends SchedulerBaseTest {
         assertNull(fetchedEntity);
     }
 
-    //TODO: Implement Test
+
     @Test
     public void shouldDeleteSchEmissionConfigurationWithAttachment() throws Exception {
 
