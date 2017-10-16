@@ -1,4 +1,4 @@
-package io.protone.scheduler.service.schedule.mapper;
+package io.protone.application.scheduler.service.schedule.mapper;
 
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchEventEmission;

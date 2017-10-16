@@ -17,7 +17,6 @@ import java.util.Set;
 /**
  * A LibMediaLibrary.
  */
-//TODO: ad commercial Libary Entity where id is fk
 @Entity
 @Table(name = "lib_media_library", uniqueConstraints = @UniqueConstraint(columnNames = {"prefix", "shortcut", "network_id"}))
 

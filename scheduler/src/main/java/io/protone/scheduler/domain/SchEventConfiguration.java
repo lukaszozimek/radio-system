@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -97,6 +98,25 @@ public class SchEventConfiguration extends SchEventBase implements Serializable 
         return this;
     }
 
+    public SchEventConfiguration length(Long length) {
+        this.length = length;
+        return this;
+    }
+
+    public SchEventConfiguration eventType(EventTypeEnum eventType) {
+        super.setEventType(eventType);
+        return this;
+    }
+
+    public SchEventConfiguration sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public SchEventConfiguration schLogConfiguration(SchLogConfiguration schLogConfiguration) {
+        super.setSchLogConfiguration(schLogConfiguration);
+        return this;
+    }
 
     public SchEventConfiguration channel(CorChannel channel) {
         super.setChannel(channel);

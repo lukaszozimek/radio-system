@@ -1,8 +1,10 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.repository.SchEventConfigurationRepository;
 import io.protone.scheduler.service.SchEventConfigurationService;
@@ -14,10 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -25,8 +31,10 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEventConfigurationServiceTest extends SchedulerBaseTest {
+public class SchEventConfigurationServiceTest {
     private static final String TEST_EVENT_CATEGORY = "News";
+
+    private PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
     private SchEventConfigurationService schEventConfigurationService;
@@ -34,11 +42,16 @@ public class SchEventConfigurationServiceTest extends SchedulerBaseTest {
     @Autowired
     private SchEventConfigurationRepository schEventConfigurationRepository;
 
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
     }
 
 
@@ -130,7 +143,6 @@ public class SchEventConfigurationServiceTest extends SchedulerBaseTest {
 
         //then
         SchEventConfiguration fetchedEntity = schEventConfigurationService.findSchEventConfigurationsForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
-
         //assert
         assertNotNull(fetchedEntity);
         assertEquals(schEventConfiguration.getId(), fetchedEntity.getId());

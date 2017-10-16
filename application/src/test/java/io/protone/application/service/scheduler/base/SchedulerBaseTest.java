@@ -169,49 +169,45 @@ public class SchedulerBaseTest {
     }
 
 
-    /*
-
-
-
-    protected Set<SchBlock> buildNestedSetBlocks() {
+    public static Set<SchBlock> buildNestedSetBlocks(PodamFactory factory, LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
         //ROOT Chil Child
         SchBlock schBlockRootChildChild = factory.manufacturePojo(SchBlock.class);
-        schBlockRootChildChild.addEmission(buildEmissionForWithAttachment());
+        schBlockRootChildChild.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChildChild.setId(null);
         schBlockRootChildChild.setNetwork(corNetwork);
         schBlockRootChildChild.setChannel(corChannel);
 
         SchBlock schBlockRootChildChild1 = factory.manufacturePojo(SchBlock.class);
 
-        schBlockRootChildChild1.addEmission(buildEmissionForWithAttachment());
+        schBlockRootChildChild1.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChildChild1.setId(null);
         schBlockRootChildChild1.setNetwork(corNetwork);
         schBlockRootChildChild1.setChannel(corChannel);
 
         SchBlock schBlockRootChildChild2 = factory.manufacturePojo(SchBlock.class);
 
-        schBlockRootChildChild2.addEmission(buildEmissionForWithAttachment());
+        schBlockRootChildChild2.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChildChild2.setId(null);
         schBlockRootChildChild2.setNetwork(corNetwork);
         schBlockRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchBlock schBlockRootChild = factory.manufacturePojo(SchBlock.class);
-        schBlockRootChild.addEmission(buildEmissionForWithAttachment());
+        schBlockRootChild.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChild.setId(null);
         schBlockRootChild.setNetwork(corNetwork);
         schBlockRootChild.setChannel(corChannel);
         schBlockRootChild.addBlock(schBlockRootChildChild);
 
         SchBlock schBlockRootChild1 = factory.manufacturePojo(SchBlock.class);
-        schBlockRootChild1.addEmission(buildEmissionForWithAttachment());
+        schBlockRootChild1.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChild1.setId(null);
         schBlockRootChild1.setNetwork(corNetwork);
         schBlockRootChild1.setChannel(corChannel);
         schBlockRootChild1.addBlock(schBlockRootChildChild1);
 
         SchBlock schBlockRootChild2 = factory.manufacturePojo(SchBlock.class);
-        schBlockRootChild2.addEmission(buildEmissionForWithAttachment());
+        schBlockRootChild2.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRootChild2.setId(null);
         schBlockRootChild2.setNetwork(corNetwork);
         schBlockRootChild2.setChannel(corChannel);
@@ -219,21 +215,21 @@ public class SchedulerBaseTest {
 
         ///ROOTS
         SchBlock schBlockRoot = factory.manufacturePojo(SchBlock.class);
-        schBlockRoot.addEmission(buildEmissionForWithAttachment());
+        schBlockRoot.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRoot.setId(null);
         schBlockRoot.setNetwork(corNetwork);
         schBlockRoot.setChannel(corChannel);
         schBlockRoot.addBlock(schBlockRootChild);
 
         SchBlock schBlockRoot1 = factory.manufacturePojo(SchBlock.class);
-        schBlockRoot1.addEmission(buildEmissionForWithAttachment());
+        schBlockRoot1.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRoot1.setId(null);
         schBlockRoot1.setNetwork(corNetwork);
         schBlockRoot1.setChannel(corChannel);
         schBlockRoot1.addBlock(schBlockRootChild1);
 
         SchBlock schBlockRoot2 = factory.manufacturePojo(SchBlock.class);
-        schBlockRoot2.addEmission(buildEmissionForWithAttachment());
+        schBlockRoot2.addEmission(buildEmissionForWithAttachment(libMediaItem, corChannel, corNetwork));
         schBlockRoot2.setId(null);
         schBlockRoot2.setNetwork(corNetwork);
         schBlockRoot2.setChannel(corChannel);
@@ -242,14 +238,4 @@ public class SchedulerBaseTest {
     }
 
 
-
-
-
-
-
-
-
-
-}
-*/
 }

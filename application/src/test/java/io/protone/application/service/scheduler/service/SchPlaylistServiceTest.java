@@ -28,7 +28,6 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by lukaszozimek on 28/08/2017.
  */
-//TODO: Implement Test
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
