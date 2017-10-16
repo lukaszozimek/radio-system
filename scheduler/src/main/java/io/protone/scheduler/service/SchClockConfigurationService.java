@@ -38,10 +38,10 @@ public class SchClockConfigurationService {
     public SchClockConfiguration saveClockConfiguration(SchClockConfiguration schClockConfiguration) {
         SchClockConfiguration beforeSave;
         beforeSave = schClockConfigurationRepository.saveAndFlush(schClockConfiguration);
-        beforeSave.setEvents(Sets.newHashSet());
+        beforeSave.setSchEvents(Sets.newHashSet());
         beforeSave.setEmissions(Sets.newHashSet());
-        beforeSave.emissions(schEmissionConfigurationService.saveEmissionClock(schClockConfiguration.getEmissions(), beforeSave));
-        beforeSave.events(schEventService.saveEvent(schClockConfiguration.getEvents(), beforeSave));
+        schEmissionConfigurationService.saveEmissionClock(schClockConfiguration.getEmissions()).stream().forEach(schEmissionConfiguration -> beforeSave.addEmission(schEmissionConfiguration));
+        beforeSave.schEvents(schEventService.saveEvent(schClockConfiguration.getSchEvents()));
         schClockConfigurationRepository.saveAndFlush(beforeSave);
         return findSchClockConfigurationForNetworkAndChannelAndShortName(schClockConfiguration.getNetwork().getShortcut(), schClockConfiguration.getChannel().getShortcut(), schClockConfiguration.getShortName());
     }
@@ -50,10 +50,12 @@ public class SchClockConfigurationService {
     public Slice<SchClockConfiguration> findSchClockConfigurationsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pagable) {
         return schClockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pagable);
     }
+
     @Transactional(readOnly = true)
     public Slice<SchClockConfiguration> findAllClocksByCategoryName(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
         return schClockConfigurationRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndClockCategory_Name(networkShortcut, channelShortcut, categoryName, pageable);
     }
+
     @Transactional(readOnly = true)
     public SchClockConfiguration findSchClockConfigurationForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
         return schClockConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
@@ -68,9 +70,9 @@ public class SchClockConfigurationService {
     public void deleteSchClockConfigurationByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
         SchClockConfiguration schClock = schClockConfigurationRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
         schEmissionConfigurationService.deleteEmissions(schClock.getEmissions());
-        schEventService.deleteEvent(schClock.getEvents());
+        schEventService.deleteEvent(schClock.getSchEvents());
         schClock.setEmissions(Sets.newHashSet());
-        schClock.setEvents(Sets.newHashSet());
+        schClock.setSchEvents(Sets.newHashSet());
         schClockConfigurationRepository.delete(schClock);
     }
 }

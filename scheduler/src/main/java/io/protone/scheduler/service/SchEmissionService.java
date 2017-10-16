@@ -90,7 +90,6 @@ public class SchEmissionService {
             schEmission.id(null);
             SchEmission entitiyEmissions = null;
             if (schEmission.getMediaItem().getId() != null) {
-
                 entitiyEmissions = schEmissionRepository.save(schEmission.block(entity).playlist(schPlaylist));
                 entitiyEmissions.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), entitiyEmissions));
             } else {

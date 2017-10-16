@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,7 +15,7 @@ import java.util.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchEventDTO extends SchConfigurationTimeParamsDTO {
-
+    @PodamExclude
     private List<SchEventEmissionDTO> emissions = new ArrayList<SchEventEmissionDTO>();
 
     private String name = null;
@@ -23,9 +24,10 @@ public class SchEventDTO extends SchConfigurationTimeParamsDTO {
 
     private EventTypeEnum eventType = null;
 
+    @PodamExclude
     private Set<SchEventDTO> events = new HashSet<>();
 
-
+    @PodamExclude
     private Set<SchEventConfigurationDTO> eventConfigurationDTOS = new HashSet<>();
 
     private CorDictionaryDTO eventCategory;

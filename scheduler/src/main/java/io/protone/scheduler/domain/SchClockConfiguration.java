@@ -176,4 +176,9 @@ public class SchClockConfiguration extends SchClockBase implements Serializable 
         return this;
     }
 
+    public SchClockConfiguration addSchEvent(SchEvent schEvents) {
+        this.schEvents.add(schEvents);
+        return this;
+    }
+
 }

@@ -8,10 +8,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -37,7 +34,7 @@ public class SchEventEmission extends SchTimeParams implements Serializable {
     private LibMediaItem mediaItem;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission")
+    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEventEmissionAttachment> attachments = new HashSet<>();

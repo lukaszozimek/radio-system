@@ -31,10 +31,9 @@ public class SchEventBase extends SchTimeParams implements Serializable {
     @PodamExclude
     private CorDictionary eventCategory;
 
-
     @Transient
+    @PodamExclude
     private List<SchEmission> emissionsLog = new ArrayList<>();
-
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
@@ -69,10 +68,6 @@ public class SchEventBase extends SchTimeParams implements Serializable {
         this.shortName = shortName;
     }
 
-    public SchEventBase shortName(String shortName) {
-        this.shortName = shortName;
-        return this;
-    }
 
     public String getName() {
         return name;
@@ -80,11 +75,6 @@ public class SchEventBase extends SchTimeParams implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public SchEventBase name(String name) {
-        this.name = name;
-        return this;
     }
 
 
@@ -115,10 +105,6 @@ public class SchEventBase extends SchTimeParams implements Serializable {
         this.network = network;
     }
 
-    public SchEventBase network(CorNetwork network) {
-        this.network = network;
-        return this;
-    }
 
     public CorChannel getChannel() {
         return channel;
@@ -128,10 +114,6 @@ public class SchEventBase extends SchTimeParams implements Serializable {
         this.channel = channel;
     }
 
-    public SchEventBase channel(CorChannel channel) {
-        this.channel = channel;
-        return this;
-    }
 
     public CorDictionary getEventCategory() {
         return eventCategory;
@@ -141,10 +123,6 @@ public class SchEventBase extends SchTimeParams implements Serializable {
         this.eventCategory = eventCategory;
     }
 
-    public SchEventBase eventCategory(CorDictionary eventCategory) {
-        this.eventCategory = eventCategory;
-        return this;
-    }
 
     public SchLogConfiguration getSchLogConfiguration() {
         return schLogConfiguration;

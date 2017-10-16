@@ -152,7 +152,7 @@ public class SchScheduleBuilderService {
     private List<SchEvent> getImportLogEventFlatList(List<SchClockConfiguration> schClockConfigurationSet) {
         List<SchEvent> schEvents = Lists.newArrayList();
         schClockConfigurationSet.stream().sorted(comparing(SchClockConfiguration::getSequence)).forEach(schClockConfiguration -> {
-            schEvents.addAll(getImportEvents(schClockConfiguration.getEvents()));
+            schEvents.addAll(getImportEvents(schClockConfiguration.getSchEvents()));
         });
         return schEvents;
     }
@@ -162,8 +162,8 @@ public class SchScheduleBuilderService {
         List<SchEvent> events = Lists.newArrayList();
         if (blocks != null) {
             events.addAll(blocks.stream().sorted(comparing(SchEvent::getSequence)).filter(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    events.addAll(this.getImportEvents(schBlock.getBlocks()));
+                if (!schBlock.getSchEvents().isEmpty()) {
+                    events.addAll(this.getImportEvents(schBlock.getSchEvents()));
                 }
                 return schBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG);
             }).collect(toList()));
@@ -182,24 +182,24 @@ public class SchScheduleBuilderService {
     }
 
     public void updateEventsRecusiveOnClockLevel(SchClockConfiguration schClockConfiguration, SchEvent schEvent) {
-        Optional<SchEvent> eventOnClockLevel = schClockConfiguration.getEvents().stream().filter(schEvent1 -> schEvent1.getId().equals(schEvent.getId())).findFirst();
+        Optional<SchEvent> eventOnClockLevel = schClockConfiguration.getSchEvents().stream().filter(schEvent1 -> schEvent1.getId().equals(schEvent.getId())).findFirst();
         if (eventOnClockLevel.isPresent()) {
             log.debug("Found import event on clock level");
-            schClockConfiguration.getEvents().remove(eventOnClockLevel);
-            schClockConfiguration.getEvents().add(schEvent);
+            schClockConfiguration.getSchEvents().remove(eventOnClockLevel);
+            schClockConfiguration.getSchEvents().add(schEvent);
         } else {
             log.debug("Start Searching event Recursive in each event");
-            schClockConfiguration.getEvents().stream().map(schEvent1 -> updateNestedEvenRecusive(schEvent1, schEvent)).collect(toSet());
+            schClockConfiguration.getSchEvents().stream().map(schEvent1 -> updateNestedEvenRecusive(schEvent1, schEvent)).collect(toSet());
         }
     }
 
     public SchEvent updateNestedEvenRecusive(SchEvent eventClock, SchEvent schEventFilled) {
-        Optional<SchEvent> eventOnClockLevel = eventClock.getBlocks().stream().filter(schEvent1 -> schEvent1.getId().equals(schEventFilled.getId())).findFirst();
+        Optional<SchEvent> eventOnClockLevel = eventClock.getSchEvents().stream().filter(schEvent1 -> schEvent1.getId().equals(schEventFilled.getId())).findFirst();
         if (eventOnClockLevel.isPresent()) {
-            eventClock.getBlocks().remove(eventOnClockLevel);
-            eventClock.getBlocks().add(schEventFilled);
+            eventClock.getSchEvents().remove(eventOnClockLevel);
+            eventClock.getSchEvents().add(schEventFilled);
         } else {
-            return eventClock.blocks(eventClock.getBlocks().stream().map(localevent -> updateNestedEvenRecusive(localevent, schEventFilled)).collect(toSet()));
+            return eventClock.schEvents(eventClock.getSchEvents().stream().map(localevent -> updateNestedEvenRecusive(localevent, schEventFilled)).collect(toSet()));
         }
         return eventClock;
 
