@@ -19,11 +19,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {SchEmissionConfigurationMapper.class, SchEventMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchClockConfigurationMapper {
     @Mapping(source = "events", target = "schEvents")
-    @Mapping(source = "schEventConfigurationDTOS", target = "schEventConfigurations")
     SchClockConfiguration DTO2DB(SchClockConfigurationDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
     @Mapping(source = "schEvents", target = "events")
-    @Mapping(source = "schEventConfigurations", target = "schEventConfigurationDTOS")
     SchClockConfigurationDTO DB2DTO(SchClockConfiguration entity);
 
     List<SchClockConfigurationDTO> DBs2DTOs(List<SchClockConfiguration> entityList);

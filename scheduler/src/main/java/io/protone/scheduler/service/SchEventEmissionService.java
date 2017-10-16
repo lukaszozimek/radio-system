@@ -1,7 +1,6 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
-import io.protone.scheduler.domain.SchEvent;
 import io.protone.scheduler.domain.SchEventEmission;
 import io.protone.scheduler.repository.SchEventEmissionRepository;
 import org.slf4j.Logger;
@@ -25,12 +24,11 @@ public class SchEventEmissionService {
     private SchEventEmissionAttachmentService schEventEmissionAttachmentService;
 
     @Transactional
-    public Set<SchEventEmission> saveEmission(Set<SchEventEmission> emissionSet, SchEvent schEvent) {
+    public Set<SchEventEmission> saveEmission(Set<SchEventEmission> emissionSet) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
-                SchEventEmission schEventEmission = schEmissionConfigurationRepository.saveAndFlush(schEmission.event(schEvent));
-                schEventEmission.attachments(schEventEmissionAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEventEmission));
-                return schEmissionConfigurationRepository.saveAndFlush(schEventEmission);
+                schEventEmissionAttachmentService.saveAttachmenst(schEmission.getAttachments()).stream().forEach(schEventEmissionAttachment -> schEmission.addAttachment(schEventEmissionAttachment));
+                return schEmissionConfigurationRepository.save(schEmission);
             }).collect(toSet());
         }
         return Sets.newHashSet();
@@ -42,7 +40,6 @@ public class SchEventEmissionService {
             emissionSet.stream().forEach(schEmission -> {
                 if (schEmission.getId() != null) {
                     schEventEmissionAttachmentService.deleteAttachments(schEmission.getAttachments());
-                    schEmissionConfigurationRepository.saveAndFlush(schEmission);
                 }
                 schEmissionConfigurationRepository.delete(schEmission);
 

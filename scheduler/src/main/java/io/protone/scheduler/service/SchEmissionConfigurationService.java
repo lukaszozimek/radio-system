@@ -1,7 +1,6 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
-import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.domain.SchEmissionConfiguration;
 import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.repository.SchEmissionConfigurationRepository;
@@ -51,10 +50,10 @@ public class SchEmissionConfigurationService {
     }
 
     @Transactional
-    public Set<SchEmissionConfiguration> saveEmissionClock(Set<SchEmissionConfiguration> emissionSet, SchClockConfiguration schClockConfiguration) {
+    public Set<SchEmissionConfiguration> saveEmissionClock(Set<SchEmissionConfiguration> emissionSet) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
-                SchEmissionConfiguration schEmissionConfiguration = schEmissionConfigurationRepository.saveAndFlush(schEmission.clock(schClockConfiguration));
+                SchEmissionConfiguration schEmissionConfiguration = schEmissionConfigurationRepository.saveAndFlush(schEmission);
                 schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEmissionConfiguration));
                 return schEmissionConfiguration;
             }).collect(toSet());

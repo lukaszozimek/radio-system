@@ -3,8 +3,8 @@ package io.protone.scheduler.api.dto;
 
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
-import io.protone.scheduler.domain.SchEventConfiguration;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
+import uk.co.jemos.podam.common.PodamExclude;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -24,17 +24,22 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
 
     private String shortName;
 
+    @PodamExclude
     private CorDictionaryDTO eventCategory;
 
+    @PodamExclude
     private Set<SchEmissionConfigurationDTO> emissions = new HashSet<>();
 
     private EventTypeEnum eventType;
 
+    @PodamExclude
     private SchLogConfigurationDTO schLogConfiguration;
 
+    @PodamExclude
     private Set<SchEventDTO> events = new HashSet<>();
 
-    private Set<SchEventConfiguration> schEventConfigurations = new HashSet<>();
+    @PodamExclude
+    private Set<SchEventConfigurationDTO> schEventConfigurations = new HashSet<>();
 
 
     private CoreUserThinDTO createdBy;
@@ -181,6 +186,11 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
         return events;
     }
 
+    public SchEventConfigurationDTO addEvents(SchEventDTO emission) {
+        this.events.add(emission);
+        return this;
+    }
+
     public void setEvents(Set<SchEventDTO> events) {
         this.events = events;
     }
@@ -222,11 +232,17 @@ public class SchEventConfigurationDTO extends SchConfigurationTimeParamsDTO impl
     }
 
 
-    public Set<SchEventConfiguration> getSchEventConfigurations() {
+    public Set<SchEventConfigurationDTO> getSchEventConfigurations() {
         return schEventConfigurations;
     }
 
-    public void setSchEventConfigurations(Set<SchEventConfiguration> schEventConfigurations) {
+    public void setSchEventConfigurations(Set<SchEventConfigurationDTO> schEventConfigurations) {
         this.schEventConfigurations = schEventConfigurations;
     }
+
+    public SchEventConfigurationDTO addEventsConfiguration(SchEventConfigurationDTO schEventConfigurationDTO) {
+        this.schEventConfigurations.add(schEventConfigurationDTO);
+        return this;
+    }
+
 }

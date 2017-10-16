@@ -1,7 +1,6 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Sets;
-import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.domain.SchEvent;
 import io.protone.scheduler.repository.SchEventRepository;
 import org.slf4j.Logger;
@@ -18,6 +17,7 @@ import static java.util.stream.Collectors.toSet;
 @Service
 public class SchEventService {
     private final Logger log = LoggerFactory.getLogger(SchEventService.class);
+
     @Inject
     private SchEventRepository schEventRepository;
 
@@ -26,43 +26,26 @@ public class SchEventService {
 
 
     @Transactional
-    public Set<SchEvent> saveEvent(Set<SchEvent> blocks, SchClockConfiguration schClockConfiguration) {
+    public Set<SchEvent> saveEvent(Set<SchEvent> blocks) {
+        log.debug("Start Saving ");
         if (blocks != null && !blocks.isEmpty()) {
             return blocks.stream().map(schBlock -> {
-                SchEvent schEvent = schEventRepository.saveAndFlush(schBlock.clockConfiguration(schClockConfiguration));
-                schBlock.emissions(schEventEmissionService.saveEmission(schBlock.getEmissions(), schEvent));
-                if (!schBlock.getBlocks().isEmpty()) {
-                    this.saveEvent(schBlock.getBlocks(), schEvent);
+                schEventEmissionService.saveEmission(schBlock.getEmissions()).stream().forEach(schEventEmission -> schBlock.addEventEmissions(schEventEmission));
+                if (!schBlock.getSchEvents().isEmpty()) {
+                    this.saveEvent(schBlock.getSchEvents()).stream().forEach(schEvent1 -> schBlock.addSchEvents(schEvent1));
                 }
-
-                return schEventRepository.saveAndFlush(schEvent);
+                return schEventRepository.save(schBlock);
             }).collect(toSet());
         }
         return Sets.newHashSet();
     }
-
-    @Transactional
-    private Set<SchEvent> saveEvent(Set<SchEvent> blocks, SchEvent event) {
-        if (blocks != null && !blocks.isEmpty()) {
-            return blocks.stream().map(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    this.saveEvent(schBlock.getBlocks(), event);
-                }
-                SchEvent schEvent = schEventRepository.saveAndFlush(schBlock.event(event));
-                schBlock.emissions(schEventEmissionService.saveEmission(schBlock.getEmissions(), schEvent));
-                return schEventRepository.saveAndFlush(schEvent);
-            }).collect(toSet());
-        }
-        return Sets.newHashSet();
-    }
-
 
     @Transactional
     public void deleteEvent(Set<SchEvent> blocks) {
         if (blocks != null && !blocks.isEmpty()) {
             blocks.stream().forEach(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    this.deleteEvent(schBlock.getBlocks());
+                if (!schBlock.getSchEvents().isEmpty()) {
+                    this.deleteEvent(schBlock.getSchEvents());
                 }
                 schEventEmissionService.deleteEmissions(schBlock.getEmissions());
                 schEventRepository.delete(schBlock);

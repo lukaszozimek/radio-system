@@ -29,8 +29,8 @@ public class SchPlaylistService {
     private SchPlaylistDTOTimeCalculatorService schPlaylistDTOTimeCalculatorService;
 
     @Transactional
-    public SchPlaylist saveSchPlaylist(SchPlaylist schSchedule) {
-        return schPlaylistRepository.saveAndFlush(schSchedule);
+    public SchPlaylist saveSchPlaylist(SchPlaylist schPaylist) {
+        return schPlaylistRepository.saveAndFlush(schPaylist);
     }
 
     @Transactional(readOnly = true)
