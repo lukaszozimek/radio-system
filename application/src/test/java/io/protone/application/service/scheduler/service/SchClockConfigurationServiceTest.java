@@ -2,8 +2,13 @@ package io.protone.application.service.scheduler.service;
 
 import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.scheduler.domain.SchClockConfiguration;
 import io.protone.scheduler.repository.SchAttachmentConfigurationRepository;
 import io.protone.scheduler.repository.SchClockConfigurationRepository;
@@ -18,9 +23,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
+import java.util.Random;
 
+import static io.protone.application.service.scheduler.base.SchedulerBaseTest.*;
 import static org.junit.Assert.*;
 
 /**
@@ -29,8 +38,10 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
-    private static final String CLOCK_TEST_CATEGORY ="Czwartkowe";
+public class SchClockConfigurationServiceTest {
+    private static final String CLOCK_TEST_CATEGORY = "Czwartkowe";
+
+    private PodamFactory factory = new PodamFactoryImpl();
 
     @Autowired
     private SchClockConfigurationService schClockConfigurationService;
@@ -46,10 +57,27 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchAttachmentConfigurationRepository schAttachmentConfigurationRepository;
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
+
+    private LibMediaItem libMediaItem;
+
+    private LibMediaLibrary libMediaLibrary;
+
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
+        libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(LIBRARY_ID);
+        libMediaItem = new LibMediaItem().name(String.valueOf(new Random().nextLong())).library(libMediaLibrary).idx(String.valueOf(new Random().nextLong())).length(40.0).network(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
 
     }
 
@@ -114,8 +142,8 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
     public void shouldSaveClockWithRecursiveStrategy() throws Exception {
         //when
         SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);
-        schClock.events(buildNestedSetEvents());
-        schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment()));
+        schClock.schEvents(buildNestedSetEvents(factory, libMediaItem, corNetwork, corChannel));
+        schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         //then
@@ -145,8 +173,8 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
     @Test
     public void shouldDeleteClockWithBlock() throws Exception {
         SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);
-        schClock.setEvents(buildNestedSetEvents());
-        schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment()));
+        schClock.schEvents(buildNestedSetEvents(factory, libMediaItem, corNetwork, corChannel));
+        schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         SchClockConfiguration fetchedEntity = schClockConfigurationService.saveClockConfiguration(schClock);
@@ -168,9 +196,9 @@ public class SchClockConfigurationServiceTest extends SchedulerBaseTest {
     @Test
     public void shouldGetClock() throws Exception {
         SchClockConfiguration schClock = factory.manufacturePojo(SchClockConfiguration.class);
-        schClock.setEvents(buildNestedSetEvents());
+        schClock.schEvents(buildNestedSetEvents(factory, libMediaItem, corNetwork, corChannel));
         schClock.shortName("EEEEEWWWSSS");
-        schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment(), buildEmissionConfigurationForWithAttachment()));
+        schClock.setEmissions(Sets.newHashSet(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         schClock.setId(null);

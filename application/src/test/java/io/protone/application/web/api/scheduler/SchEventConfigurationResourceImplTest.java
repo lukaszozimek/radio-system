@@ -33,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -95,10 +95,10 @@ public class SchEventConfigurationResourceImplTest {
      * if they test an entity which requires the current entity.
      */
     public static SchEventConfiguration createEntity(EntityManager em) {
-        SchEventConfiguration traPlaylist = new SchEventConfiguration()
+        SchEventConfiguration schEventConfiguration = new SchEventConfiguration()
                 .name(DEFAULT_NAME)
                 .shortName(DEFAULT_SHORTNAME);
-        return traPlaylist;
+        return schEventConfiguration;
     }
 
     @Before
@@ -173,7 +173,7 @@ public class SchEventConfigurationResourceImplTest {
     @Transactional
     public void getAllSchEvents() throws Exception {
         // Initialize the database
-        schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
+         schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
 
         // Get all the traPlaylistList
         restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration?sort=id,desc", corNetwork.getShortcut(), corChannel.getShortcut()))
@@ -207,7 +207,7 @@ public class SchEventConfigurationResourceImplTest {
     @Transactional
     public void getSchEvent() throws Exception {
         // Initialize the database
-        schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
+          schEventRepository.saveAndFlush(schEventConfiguration.network(corNetwork).channel(corChannel));
 
         // Get the schEventConfiguration
         restSchEventMockMvc.perform(get("/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/event/configuration/{shortName}", corNetwork.getShortcut(), corChannel.getShortcut(), DEFAULT_SHORTNAME))
