@@ -1,67 +1,177 @@
 package io.protone.application.service.scheduler.base;
 
 import com.google.common.collect.Sets;
-import io.protone.application.service.library.util.LibraryGenerator;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
-import io.protone.library.mapper.LibMediaItemThinMapper;
 import io.protone.scheduler.api.dto.SchAttachmentDTO;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.*;
 import io.protone.scheduler.domain.enumeration.AttachmentTypeEnum;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
-import io.protone.scheduler.domain.enumeration.LogColumnTypEnum;
-import io.protone.scheduler.repository.*;
 import org.assertj.core.util.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
+import uk.co.jemos.podam.api.PodamFactory;
 
-import java.util.List;
 import java.util.Set;
-
-import static io.protone.scheduler.domain.enumeration.LogColumnTypEnum.*;
 
 /**
  * Created by lukaszozimek on 14/08/2017.
  */
-public class SchedulerBaseTest extends LibraryGenerator {
-    protected List<LibMediaItem> libMediaItemList;
-    @Autowired
-    private SchLogColumnRepostiory schLogColumnRepostiory;
-    @Autowired
-    private SchLogConfigurationRepository schLogConfigurationRepository;
-    @Autowired
-    private SchEventEmissionRepository schEmissionRepository;
-    @Autowired
-    private SchEventEmissionAttachmentRepository schEventEmissionAttachmentRepository;
-    @Autowired
-    private SchEventRepository schEventRepository;
-    @Autowired
-    private LibMediaItemThinMapper libMediaItemThinMapper;
+public class SchedulerBaseTest {
+    public static final Long LIBRARY_ID = 1L;
 
-    public void setUp() throws Exception {
-        initializeLibarary();
-        libMediaItemList = generateFullItemListWithLenghtInRange(30000, 500000, 10L);
+    public static SchEmission buildEmissionForBlock(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork);
     }
 
-    protected SchEmission buildEmissionForBlock() {
-        return new SchEmission().mediaItem(libMediaItemList.get(0)).channel(corChannel).network(corNetwork);
+    public static SchEmission buildEmissionForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachment().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
     }
 
-    protected SchEmission buildEmissionForWithAttachment() {
-        return new SchEmission().mediaItem(libMediaItemList.get(0)).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachment().channel(corChannel).network(corNetwork).mediaItem(libMediaItemList.get(2))));
+    public static SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsAndNestedBlock(long sequence, LibMediaItemThinDTO libMediaItemThinDTO) {
+        SchBlockDTO schBlockDTO = new SchBlockDTO()
+                .sequence(sequence)
+                .eventType(EventTypeEnum.ET_MUSIC)
+                .length(600000L);
+
+
+        schBlockDTO.blocks(Lists.newArrayList(
+                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(1, libMediaItemThinDTO),
+                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(2, libMediaItemThinDTO),
+                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(3, libMediaItemThinDTO)
+        ))
+                .emissions(Lists.newArrayList(
+                        buildEmissionDTO(4, libMediaItemThinDTO),
+                        buildEmissionDTO(5, libMediaItemThinDTO),
+                        buildEmissionDTO(6, libMediaItemThinDTO))
+                );
+        return schBlockDTO;
     }
 
-    protected SchEmissionConfiguration buildEmissionConfigurationForWithAttachment() {
-        return new SchEmissionConfiguration().mediaItem(libMediaItemList.get(0)).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentConfiguration().channel(corChannel).network(corNetwork).mediaItem(libMediaItemList.get(2))));
+    public static SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(long sequence, LibMediaItemThinDTO libMediaItemThinDTO) {
+        SchBlockDTO schBlock = new SchBlockDTO()
+                .eventType(EventTypeEnum.ET_MUSIC).sequence(sequence);
+        schBlock.emissions(Lists.newArrayList(
+                buildEmissionDTO(1, libMediaItemThinDTO),
+                buildEmissionDTO(2, libMediaItemThinDTO),
+                buildEmissionDTO(3, libMediaItemThinDTO))
+        );
+        return schBlock;
     }
 
-    protected SchEventEmission buildSchEventEmissionForSchEvent() {
-        return new SchEventEmission().mediaItem(libMediaItemList.get(0)).channel(corChannel).network(corNetwork);
+    public static SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenght(LibMediaItemThinDTO libMediaItemThinDTO) {
+        SchBlockDTO schBlock = new SchBlockDTO()
+                .eventType(EventTypeEnum.ET_MUSIC);
+
+        schBlock.emissions(Lists.newArrayList(
+                buildEmissionDTO(1, libMediaItemThinDTO),
+                buildEmissionDTO(2, libMediaItemThinDTO),
+                buildEmissionDTO(3, libMediaItemThinDTO))
+        );
+        return schBlock;
     }
 
-    protected SchEventEmission buildSchEventEmissionForSchEventWithAttachment() {
-        return new SchEventEmission().mediaItem(libMediaItemList.get(0)).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchEventEmissionAttachment().channel(corChannel).network(corNetwork).mediaItem(libMediaItemList.get(2))));
+    public static SchEmissionDTO buildEmissionDTO(long sequence, LibMediaItemThinDTO libMediaItem) {
+        SchEmissionDTO schEmissionDTO = new SchEmissionDTO().mediaItem(libMediaItem)
+                .sequence(sequence);
+        schEmissionDTO.attachment(Lists.newArrayList(buildAttachmenDTOWithSequence(1, libMediaItem),
+                buildAttachmenDTOWithSequence(2, libMediaItem),
+                buildAttachmenDTOWithSequence(3, libMediaItem)));
+        return schEmissionDTO;
     }
+
+    public static SchAttachmentDTO buildAttachmenDTOWithSequence(long sequence, LibMediaItemThinDTO libMediaItem) {
+        return new SchAttachmentDTO().attachmentType(AttachmentTypeEnum.AT_OTHER)
+                .sequence(sequence)
+                .mediaItem(libMediaItem);
+    }
+
+    public static SchEmissionConfiguration buildEmissionConfigurationForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEmissionConfiguration().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentConfiguration().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+    }
+
+    public static Set<SchEvent> buildNestedSetEvents(PodamFactory factory, LibMediaItem libMediaItem, CorNetwork corNetwork, CorChannel corChannel) {
+        //ROOT Chil Child
+        SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
+        schEventRootChildChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRootChildChild.setId(null);
+        schEventRootChildChild.setNetwork(corNetwork);
+        schEventRootChildChild.setChannel(corChannel);
+
+        SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
+
+        schEventRootChildChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRootChildChild1.setId(null);
+        schEventRootChildChild1.setNetwork(corNetwork);
+        schEventRootChildChild1.setChannel(corChannel);
+
+        SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
+
+        schEventRootChildChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRootChildChild2.setId(null);
+        schEventRootChildChild2.setNetwork(corNetwork);
+        schEventRootChildChild2.setChannel(corChannel);
+
+        //ROOTS Childs
+        SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
+        schEventRootChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRootChild.setId(null);
+        schEventRootChild.setNetwork(corNetwork);
+        schEventRootChild.setChannel(corChannel);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
+
+        SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
+        schEventRootChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRootChild1.setId(null);
+        schEventRootChild1.setNetwork(corNetwork);
+        schEventRootChild1.setChannel(corChannel);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
+
+        SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
+        schEventRootChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRootChild2.setId(null);
+        schEventRootChild2.setNetwork(corNetwork);
+        schEventRootChild2.setChannel(corChannel);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
+
+        ///ROOTS
+        SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
+        schEventRoot.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRoot.setId(null);
+        schEventRoot.setNetwork(corNetwork);
+        schEventRoot.setChannel(corChannel);
+        schEventRoot.addSchEvents(schEventRootChild);
+
+        SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
+        schEventRoot1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRoot1.setId(null);
+        schEventRoot1.setNetwork(corNetwork);
+        schEventRoot1.setChannel(corChannel);
+        schEventRoot1.addSchEvents(schEventRootChild1);
+
+        SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
+        schEventRoot2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventRoot2.setId(null);
+        schEventRoot2.setNetwork(corNetwork);
+        schEventRoot2.setChannel(corChannel);
+        schEventRoot2.addSchEvents(schEventRootChild2);
+        return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
+    }
+
+    public static SchEventEmission buildSchEventEmissionForSchEventWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEventEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchEventEmissionAttachment().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+    }
+
+    public static SchEventEmission buildSchEventEmissionForSchEvent(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEventEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork);
+    }
+
+
+    /*
+
+
 
     protected Set<SchBlock> buildNestedSetBlocks() {
         //ROOT Chil Child
@@ -131,388 +241,15 @@ public class SchedulerBaseTest extends LibraryGenerator {
         return Sets.newHashSet(Sets.newHashSet(schBlockRoot, schBlockRoot1, schBlockRoot2));
     }
 
-    protected Set<SchEvent> buildNestedSetEvents() {
-        //ROOT Chil Child
-        SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChildChild.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRootChildChild.setId(null);
-        schEventRootChildChild.setNetwork(corNetwork);
-        schEventRootChildChild.setChannel(corChannel);
-
-        SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
-
-        schEventRootChildChild1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRootChildChild1.setId(null);
-        schEventRootChildChild1.setNetwork(corNetwork);
-        schEventRootChildChild1.setChannel(corChannel);
-
-        SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
-
-        schEventRootChildChild2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRootChildChild2.setId(null);
-        schEventRootChildChild2.setNetwork(corNetwork);
-        schEventRootChildChild2.setChannel(corChannel);
-
-        //ROOTS Childs
-        SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRootChild.setId(null);
-        schEventRootChild.setNetwork(corNetwork);
-        schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
-
-        SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRootChild1.setId(null);
-        schEventRootChild1.setNetwork(corNetwork);
-        schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
-
-        SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRootChild2.setId(null);
-        schEventRootChild2.setNetwork(corNetwork);
-        schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
-
-        ///ROOTS
-        SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
-        schEventRoot.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRoot.setId(null);
-        schEventRoot.setNetwork(corNetwork);
-        schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
-
-        SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRoot1.setId(null);
-        schEventRoot1.setNetwork(corNetwork);
-        schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
-
-        SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
-        schEventRoot2.setId(null);
-        schEventRoot2.setNetwork(corNetwork);
-        schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
-        return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
-    }
-
-    protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutes(SchClockConfiguration schClockConfiguration) {
-        return Sets.newHashSet(buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 1),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 2),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 3));
-
-    }
-
-    protected Set<SchEvent> buildNestedSetEventsWithLenght30minoutesWithMusicImport(SchClockConfiguration schClockConfiguration) {
-        return Sets.newHashSet(buildEventWithsLenght20minoutesMusicImport(schClockConfiguration, 1),
-                buildEventWithsEmissionsAndOprImport20minoutes(schClockConfiguration, 2),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockConfiguration, 3));
-
-    }
-
-    protected SchEvent buildEventWithsEmissionsAndOprImport20minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
-        SchEvent schEvent = new SchEvent()
-                .eventType(EventTypeEnum.ET_MUSIC)
-                .sequence(sequence)
-                .length(12000000L)
-                .clockConfiguration(schClockConfiguration)
-                .channel(corChannel)
-                .network(corNetwork);
 
 
-        schEventRepository.save(schEvent);
-        schEvent.blocks(Sets.newHashSet(buildOprImportEvent(1, 1000000L, schEvent)))
-                .emissions(Sets.newHashSet(
-                        buildEmissionWithAttachment(2, 100000L, schEvent),
-                        buildEmissionWithAttachment(3, 100000L, schEvent))
-                );
-        return schEvent;
-    }
-
-    private SchEvent buildOprImportEvent(long i, long l, SchEvent schEventParent) {
-        SchEvent schEvent = new SchEvent()
-                .sequence(i)
-                .eventType(EventTypeEnum.ET_IMPORT_LOG)
-                .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
-                .length(l)
-                .event(schEventParent)
-                .schLogConfiguration(buildOPRLogConfigurationWithSeparator())
-                .channel(corChannel)
-                .network(corNetwork);
-        schEventRepository.save(schEvent);
-        return schEvent;
-    }
 
 
-    protected SchEvent buildEventWithsLenght20minoutesMusicImport(SchClockConfiguration schClockConfiguration, long sequence) {
-        SchEvent schEvent = new SchEvent()
-                .eventType(EventTypeEnum.ET_IMPORT_LOG)
-                .sequence(sequence)
-                .length(1200000L)
-                .clockConfiguration(schClockConfiguration)
-                .schLogConfiguration(buildMusLogConfigurationWithSeparator())
-                .channel(corChannel)
-                .network(corNetwork);
-        schEventRepository.save(schEvent);
-        return schEvent;
-    }
-
-    protected SchEvent  buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockConfiguration schClockConfiguration, long sequence) {
-        SchEvent schEvent = new SchEvent()
-                .sequence(sequence)
-                .eventType(EventTypeEnum.ET_MUSIC)
-                .length(600000L)
-                .clockConfiguration(schClockConfiguration)
-                .channel(corChannel)
-                .network(corNetwork);
 
 
-        schEventRepository.save(schEvent);
-        schEvent.blocks(Sets.newHashSet(
-                buildEventWithEmissionAndAttachmentsLenght(300000L, schEvent, 1)))
-                .emissions(Sets.newHashSet(
-                        buildEmissionWithAttachment(2, 100000L, schEvent),
-                        buildEmissionWithAttachment(3, 100000L, schEvent),
-                        buildEmissionWithAttachment(4, 100000L, schEvent))
-                );
-        return schEvent;
-    }
-
-    protected SchEvent buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEvent schEvent, long sequence) {
-        SchEvent schEvent1 = new SchEvent()
-                .eventType(EventTypeEnum.ET_MUSIC)
-                .length(lenght)
-                .sequence(sequence)
-                .event(schEvent).channel(corChannel)
-                .network(corNetwork);
-        schEventRepository.save(schEvent1);
-        schEvent1.emissions(Sets.newHashSet(
-                buildEmissionWithAttachment(1, lenght / 3, schEvent1),
-                buildEmissionWithAttachment(2, lenght / 3, schEvent1),
-                buildEmissionWithAttachment(3, lenght / 3, schEvent1))
-        );
-        return schEvent1;
-    }
-
-    protected SchEventEmission buildEmissionWithAttachment(long sequence, long lenght, SchEvent schEvent) {
-        SchEventEmission schEventEmission = new SchEventEmission().mediaItem(libMediaItemList.get(0))
-                .seq(sequence)
-                .event(schEvent)
-                .length(lenght)
-                .channel(corChannel)
-                .network(corNetwork);
-
-        schEventEmission = schEmissionRepository.saveAndFlush(schEventEmission);
-        schEventEmission.attachments(Sets.newHashSet(buildAttachmentWithSequence(1, schEventEmission),
-                buildAttachmentWithSequence(2, schEventEmission),
-                buildAttachmentWithSequence(3, schEventEmission)));
-        return schEventEmission;
-    }
-
-    protected SchEventEmissionAttachment buildAttachmentWithSequence(long sequence, SchEventEmission schEventEmission) {
-        return schEventEmissionAttachmentRepository.saveAndFlush(new SchEventEmissionAttachment().attachmentType(AttachmentTypeEnum.AT_OTHER)
-                .emission(schEventEmission)
-                .sequence(sequence)
-                .mediaItem(libMediaItemList.get(0))
-                .channel(corChannel)
-                .network(corNetwork));
-    }
-
-    protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsAndNestedBlock(long sequence) {
-        SchBlockDTO schBlockDTO = new SchBlockDTO()
-                .sequence(sequence)
-                .eventType(EventTypeEnum.ET_MUSIC)
-                .length(600000L);
 
 
-        schBlockDTO.blocks(Lists.newArrayList(
-                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(1),
-                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(2),
-                buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(3)
-        ))
-                .emissions(Lists.newArrayList(
-                        buildEmissionDTO(4),
-                        buildEmissionDTO(5),
-                        buildEmissionDTO(6))
-                );
-        return schBlockDTO;
-    }
 
-    protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenghtSequence(long sequence) {
-        SchBlockDTO schBlock = new SchBlockDTO()
-                .eventType(EventTypeEnum.ET_MUSIC).sequence(sequence);
-        schBlock.emissions(Lists.newArrayList(
-                buildEmissionDTO(1),
-                buildEmissionDTO(2),
-                buildEmissionDTO(3))
-        );
-        return schBlock;
-    }
-
-    protected SchBlockDTO buildBlockDTOWithEmissionAndAttachmentsLenght() {
-        SchBlockDTO schBlock = new SchBlockDTO()
-                .eventType(EventTypeEnum.ET_MUSIC);
-
-        schBlock.emissions(Lists.newArrayList(
-                buildEmissionDTO(1),
-                buildEmissionDTO(2),
-                buildEmissionDTO(3))
-        );
-        return schBlock;
-    }
-
-    protected SchEmissionDTO buildEmissionDTO(long sequence) {
-        SchEmissionDTO schEmissionDTO = new SchEmissionDTO().mediaItem(libMediaItemThinMapper.DB2DTO(libMediaItemList.get(0)))
-                .sequence(sequence);
-        schEmissionDTO.attachment(Lists.newArrayList(buildAttachmenDTOWithSequence(1),
-                buildAttachmenDTOWithSequence(2),
-                buildAttachmenDTOWithSequence(3)));
-        return schEmissionDTO;
-    }
-
-    protected SchAttachmentDTO buildAttachmenDTOWithSequence(long sequence) {
-        return new SchAttachmentDTO().attachmentType(AttachmentTypeEnum.AT_OTHER)
-                .sequence(sequence)
-                .mediaItem(libMediaItemThinMapper.DB2DTO(libMediaItemList.get(0)));
-    }
-
-    protected SchLogConfiguration buildRekLogConfiguration() {
-        //configuration
-        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
-        schLogConfiguration.setExtension("rek");
-        schLogConfiguration.setSpearator(null);
-        schLogConfiguration.setPattern("yyyyMMdd");
-        schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
-        //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 3, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 4, schLogConfiguration);
-        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
-        return schLogConfiguration;
-    }
-
-    protected SchLogConfiguration buildMusLogConfiguration() {
-        //configuration
-        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
-        schLogConfiguration.setExtension("MUS");
-        schLogConfiguration.setSpearator(null);
-        schLogConfiguration.setPattern("yyyyMMdd");
-        schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
-        //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 16, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 21, 3, schLogConfiguration);
-        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
-        return schLogConfiguration;
-    }
-
-    protected SchLogConfiguration buildOPRLogConfiguration() {
-        //configuration
-        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
-        schLogConfiguration.setExtension("opr");
-        schLogConfiguration.setSpearator(null);
-        schLogConfiguration.setPattern("yyyyMMdd");
-        schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
-        //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 9, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 10, 3, schLogConfiguration);
-        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
-        return schLogConfiguration;
-    }
-
-    protected SchLogConfiguration buildRekLogConfigurationWithSeparator() {
-        //configuration
-        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
-        schLogConfiguration.setExtension("rek");
-        schLogConfiguration.setPattern("yyyyMMdd");
-        schLogConfiguration.setSpearator(";");
-        schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
-        //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 3, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
-        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
-        return schLogConfiguration;
-    }
-
-    protected SchLogConfiguration buildMusLogConfigurationWithSeparator() {
-        //configuration
-        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
-        schLogConfiguration.setExtension("MUS");
-        schLogConfiguration.setPattern("yyyyMMdd");
-        schLogConfiguration.setSpearator(";");
-        schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
-        //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
-        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
-        return schLogConfiguration;
-    }
-
-    protected SchLogConfiguration buildOPRLogConfigurationWithSeparator() {
-        //configuration
-        SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
-        schLogConfiguration.setExtension("opr");
-        schLogConfiguration.setPattern("yyyyMMdd");
-        schLogConfiguration.setSpearator(";");
-        schLogConfiguration.setChannel(corChannel);
-        schLogConfiguration.setNetwork(corNetwork);
-        schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
-        //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
-        schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
-        return schLogConfiguration;
-    }
-
-    protected SchLogColumn buildLogColumn(LogColumnTypEnum logColumnTypEnum, Integer lenght, Integer sequence, SchLogConfiguration schLogConfiguration) {
-        SchLogColumn schLogColumn = new SchLogColumn();
-        schLogColumn.setColumnSequence(sequence);
-        schLogColumn.setName(logColumnTypEnum);
-        schLogColumn.setLength(lenght);
-        schLogColumn.setSchLogConfiguration(schLogConfiguration);
-        schLogColumn.channel(corChannel);
-        schLogColumn.network(corNetwork);
-        return schLogColumn;
-    }
-
-    protected SchLogColumn buildLogColumnWithoutLenght(LogColumnTypEnum logColumnTypEnum, Integer sequence, SchLogConfiguration schLogConfiguration) {
-        SchLogColumn schLogColumn = new SchLogColumn();
-        schLogColumn.setColumnSequence(sequence);
-        schLogColumn.setName(logColumnTypEnum);
-        schLogColumn.setSchLogConfiguration(schLogConfiguration);
-        schLogColumn.channel(corChannel);
-        schLogColumn.network(corNetwork);
-        return schLogColumn;
-    }
-
-
+}
+*/
 }

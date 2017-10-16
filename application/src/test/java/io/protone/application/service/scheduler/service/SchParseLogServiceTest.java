@@ -80,7 +80,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withoutseparator/commercialLog/20170826.rek");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfiguration(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -93,7 +93,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withseparator/commercialLog/20170826.rek");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -106,7 +106,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withoutseparator/musicLog/20160703.MUS");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -119,7 +119,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withseparator/musicLog/20160703.MUS");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -132,7 +132,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withoutseparator/newsCollect/20170828.OPR");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfiguration(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -145,7 +145,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/shortlogs/withseparator/newsCollect/20170828.OPR");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -158,7 +158,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withoutseparator/commercialLog/20170826.rek");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfiguration(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -177,7 +177,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withseparator/commercialLog/20170826.rek");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildRekLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170826", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -195,7 +195,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withoutseparator/musicLog/20160703.MUS");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfiguration(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -213,7 +213,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withseparator/musicLog/20160703.MUS");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20160703", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -232,7 +232,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withoutseparator/newsCollect/20170828.OPR");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfiguration()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfiguration(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -251,7 +251,7 @@ public class SchParseLogServiceTest {
         //when
         InputStream file = Thread.currentThread().getContextClassLoader().getResourceAsStream("scheduler/oneline/withseparator/newsCollect/20170828.OPR");
         when(libFileItemService.download(any())).thenReturn(IOUtils.toByteArray(file));
-        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfigurationWithSeparator()).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
+        SchLog schLog = new SchLog().fileItem(new LibFileItem()).schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel)).network(corNetwork).channel(corChannel).date(LocalDate.parse("20170828", DateTimeFormatter.ofPattern("yyyyMMdd")));
         //then
         List<SchEmission> schEmissions = parseLogService.parseLog(schLog);
 
@@ -266,7 +266,7 @@ public class SchParseLogServiceTest {
 
     }
 
-    private SchLogConfiguration buildRekLogConfiguration() {
+    public static SchLogConfiguration buildRekLogConfiguration(PodamFactory factory, SchLogConfigurationRepository schLogConfigurationRepository, CorNetwork corNetwork, CorChannel corChannel) {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("rek");
@@ -276,16 +276,16 @@ public class SchParseLogServiceTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 3, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 4, schLogConfiguration);
+        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 14, 2, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 3, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 14, 4, schLogConfiguration, corNetwork, corChannel);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
 
-    private SchLogConfiguration buildMusLogConfiguration() {
+    public static SchLogConfiguration buildMusLogConfiguration(PodamFactory factory, SchLogConfigurationRepository schLogConfigurationRepository, CorNetwork corNetwork, CorChannel corChannel) {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("MUS");
@@ -295,16 +295,16 @@ public class SchParseLogServiceTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 16, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 21, 3, schLogConfiguration);
+        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 16, 2, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 21, 3, schLogConfiguration, corNetwork, corChannel);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
 
-    private SchLogConfiguration buildOPRLogConfiguration() {
+    public static SchLogConfiguration buildOPRLogConfiguration(PodamFactory factory, SchLogConfigurationRepository schLogConfigurationRepository, CorNetwork corNetwork, CorChannel corChannel) {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("opr");
@@ -314,16 +314,16 @@ public class SchParseLogServiceTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 9, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 10, 3, schLogConfiguration);
+        SchLogColumn schLogColumnTime = buildLogColumn(LCT_START_TIME, 8, 0, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnIdx = buildLogColumn(LCT_IDX, 9, 2, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLibrary = buildLogColumn(LCT_LIBRARY, 3, 1, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLenght = buildLogColumn(LCT_LENGHT, 5, 4, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnName = buildLogColumn(LCT_NAME, 10, 3, schLogConfiguration, corNetwork, corChannel);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
 
-    private SchLogConfiguration buildRekLogConfigurationWithSeparator() {
+    public static SchLogConfiguration buildRekLogConfigurationWithSeparator(PodamFactory factory, SchLogConfigurationRepository schLogConfigurationRepository, CorNetwork corNetwork, CorChannel corChannel) {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("rek");
@@ -333,16 +333,16 @@ public class SchParseLogServiceTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 3, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
+        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 3, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration, corNetwork, corChannel);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
 
-    private SchLogConfiguration buildMusLogConfigurationWithSeparator() {
+    public static SchLogConfiguration buildMusLogConfigurationWithSeparator(PodamFactory factory, SchLogConfigurationRepository schLogConfigurationRepository, CorNetwork corNetwork, CorChannel corChannel) {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("MUS");
@@ -352,16 +352,16 @@ public class SchParseLogServiceTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
+        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration, corNetwork, corChannel);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
 
-    private SchLogConfiguration buildOPRLogConfigurationWithSeparator() {
+    public static SchLogConfiguration buildOPRLogConfigurationWithSeparator(PodamFactory factory, SchLogConfigurationRepository schLogConfigurationRepository, CorNetwork corNetwork, CorChannel corChannel) {
         //configuration
         SchLogConfiguration schLogConfiguration = factory.manufacturePojo(SchLogConfiguration.class);
         schLogConfiguration.setExtension("opr");
@@ -371,16 +371,16 @@ public class SchParseLogServiceTest {
         schLogConfiguration.setNetwork(corNetwork);
         schLogConfiguration = schLogConfigurationRepository.saveAndFlush(schLogConfiguration);
         //columnConfiguration
-        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration);
-        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration);
-        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration);
-        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration);
-        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration);
+        SchLogColumn schLogColumnTime = buildLogColumnWithoutLenght(LCT_START_TIME, 0, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnIdx = buildLogColumnWithoutLenght(LCT_IDX, 2, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLibrary = buildLogColumnWithoutLenght(LCT_LIBRARY, 1, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnLenght = buildLogColumnWithoutLenght(LCT_LENGHT, 6, schLogConfiguration, corNetwork, corChannel);
+        SchLogColumn schLogColumnName = buildLogColumnWithoutLenght(LCT_NAME, 4, schLogConfiguration, corNetwork, corChannel);
         schLogConfiguration.setLogColumns(Sets.newHashSet(schLogColumnTime, schLogColumnIdx, schLogColumnLenght, schLogColumnName, schLogColumnLibrary));
         return schLogConfiguration;
     }
 
-    private SchLogColumn buildLogColumn(LogColumnTypEnum logColumnTypEnum, Integer lenght, Integer sequence, SchLogConfiguration schLogConfiguration) {
+    public static SchLogColumn buildLogColumn(LogColumnTypEnum logColumnTypEnum, Integer lenght, Integer sequence, SchLogConfiguration schLogConfiguration, CorNetwork corNetwork, CorChannel corChannel) {
         SchLogColumn schLogColumn = new SchLogColumn();
         schLogColumn.setColumnSequence(sequence);
         schLogColumn.setName(logColumnTypEnum);
@@ -391,7 +391,7 @@ public class SchParseLogServiceTest {
         return schLogColumn;
     }
 
-    private SchLogColumn buildLogColumnWithoutLenght(LogColumnTypEnum logColumnTypEnum, Integer sequence, SchLogConfiguration schLogConfiguration) {
+    public static SchLogColumn buildLogColumnWithoutLenght(LogColumnTypEnum logColumnTypEnum, Integer sequence, SchLogConfiguration schLogConfiguration, CorNetwork corNetwork, CorChannel corChannel) {
         SchLogColumn schLogColumn = new SchLogColumn();
         schLogColumn.setColumnSequence(sequence);
         schLogColumn.setName(logColumnTypEnum);

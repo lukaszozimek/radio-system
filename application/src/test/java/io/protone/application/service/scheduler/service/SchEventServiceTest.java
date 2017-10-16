@@ -1,7 +1,12 @@
 package io.protone.application.service.scheduler.service;
 
 import io.protone.application.ProtoneApp;
-import io.protone.application.service.scheduler.base.SchedulerBaseTest;
+import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
+import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorNetwork;
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.scheduler.domain.SchEvent;
 import io.protone.scheduler.repository.SchEventEmissionAttachmentRepository;
 import io.protone.scheduler.repository.SchEventEmissionRepository;
@@ -14,11 +19,16 @@ import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static io.protone.application.service.scheduler.base.SchedulerBaseTest.*;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by lukaszozimek on 28/08/2017.
@@ -26,8 +36,9 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
 @Transactional
-public class SchEventServiceTest extends SchedulerBaseTest {
-    
+public class SchEventServiceTest {
+    private PodamFactory factory = new PodamFactoryImpl();
+
     @Autowired
     private SchEventService schEventService;
 
@@ -39,11 +50,27 @@ public class SchEventServiceTest extends SchedulerBaseTest {
 
     @Autowired
     private SchEventEmissionAttachmentRepository schEventEmissionAttachmentRepository;
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
+
+    private LibMediaItem libMediaItem;
+
+    private LibMediaLibrary libMediaLibrary;
+
+    private CorNetwork corNetwork;
+
+    private CorChannel corChannel;
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-
+        corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
+        corNetwork.setId(1L);
+        corChannel = new CorChannel().shortcut("tes");
+        corChannel.setId(1L);
+        libMediaLibrary = new LibMediaLibrary();
+        libMediaLibrary.setId(LIBRARY_ID);
+        libMediaItem = new LibMediaItem().name("test").library(libMediaLibrary).idx("test").length(40.0).network(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
     }
 
 
@@ -54,7 +81,7 @@ public class SchEventServiceTest extends SchedulerBaseTest {
         schEvent.setNetwork(corNetwork);
         schEvent.setChannel(corChannel);
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEvent), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEvent));
 
         //assert
         assertNotNull(fetchedEntity);
@@ -85,54 +112,54 @@ public class SchEventServiceTest extends SchedulerBaseTest {
         schEventRootChild.setId(null);
         schEventRootChild.setNetwork(corNetwork);
         schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
 
         SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
         schEventRootChild1.setId(null);
         schEventRootChild1.setNetwork(corNetwork);
         schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
 
         SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
         schEventRootChild2.setId(null);
         schEventRootChild2.setNetwork(corNetwork);
         schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
 
         ///ROOTS
         SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
         schEventRoot.setId(null);
         schEventRoot.setNetwork(corNetwork);
         schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
+        schEventRoot.addSchEvents(schEventRootChild);
 
         SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
         schEventRoot1.setId(null);
         schEventRoot1.setNetwork(corNetwork);
         schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
+        schEventRoot1.addSchEvents(schEventRootChild1);
 
         SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
         schEventRoot2.setId(null);
         schEventRoot2.setNetwork(corNetwork);
         schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
+        schEventRoot2.addSchEvents(schEventRootChild2);
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
 
         //assert
         assertNotNull(fetchedEntity);
         assertEquals(fetchedEntity.size(), 3);
         fetchedEntity.stream().forEach(entity -> {
             assertNotNull(entity.getId());
-            assertNotNull(entity.getBlocks());
-            assertEquals(entity.getBlocks().size(), 1);
-            entity.getBlocks().stream().forEach(entityBlock -> {
+            assertNotNull(entity.getSchEvents());
+            assertEquals(entity.getSchEvents().size(), 1);
+            entity.getSchEvents().stream().forEach(entityBlock -> {
                 assertNotNull(entityBlock.getId());
-                assertNotNull(entityBlock.getBlocks());
-                assertEquals(entityBlock.getBlocks().size(), 1);
+                assertNotNull(entityBlock.getSchEvents());
+                assertEquals(entityBlock.getSchEvents().size(), 1);
             });
         });
 
@@ -142,72 +169,72 @@ public class SchEventServiceTest extends SchedulerBaseTest {
     public void shouldSaveSchEventContainigEmissionsWithRecusiveStrategy() throws Exception {
         //ROOT Chil Child
         SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChildChild.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChildChild.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild.setId(null);
         schEventRootChildChild.setNetwork(corNetwork);
         schEventRootChildChild.setChannel(corChannel);
 
         SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild1.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChildChild1.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild1.setId(null);
         schEventRootChildChild1.setNetwork(corNetwork);
         schEventRootChildChild1.setChannel(corChannel);
 
         SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild2.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChildChild2.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild2.setId(null);
         schEventRootChildChild2.setNetwork(corNetwork);
         schEventRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChild.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChild.setId(null);
         schEventRootChild.setNetwork(corNetwork);
         schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
 
         SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild1.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChild1.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChild1.setId(null);
         schEventRootChild1.setNetwork(corNetwork);
         schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
 
         SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild2.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChild2.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChild2.setId(null);
         schEventRootChild2.setNetwork(corNetwork);
         schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
 
         ///ROOTS
         SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
-        schEventRoot.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRoot.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRoot.setId(null);
         schEventRoot.setNetwork(corNetwork);
         schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
+        schEventRoot.addSchEvents(schEventRootChild);
 
         SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot1.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRoot1.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRoot1.setId(null);
         schEventRoot1.setNetwork(corNetwork);
         schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
+        schEventRoot1.addSchEvents(schEventRootChild1);
 
         SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot2.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRoot2.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRoot2.setId(null);
         schEventRoot2.setNetwork(corNetwork);
         schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
+        schEventRoot2.addSchEvents(schEventRootChild2);
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
 
         //assert
         assertNotNull(fetchedEntity);
@@ -217,14 +244,14 @@ public class SchEventServiceTest extends SchedulerBaseTest {
             assertNotNull(entity.getEmissions().stream().findFirst().get().getId());
             assertNotNull(entity.getId());
             assertNotNull(entity.getEmissions());
-            assertNotNull(entity.getBlocks());
-            assertEquals(entity.getBlocks().size(), 1);
-            entity.getBlocks().stream().forEach(entityBlock -> {
+            assertNotNull(entity.getSchEvents());
+            assertEquals(entity.getSchEvents().size(), 1);
+            entity.getSchEvents().stream().forEach(entityBlock -> {
                 assertEquals(1, entityBlock.getEmissions().size());
                 assertNotNull(entityBlock.getEmissions().stream().findFirst().get().getId());
                 assertNotNull(entityBlock.getId());
-                assertNotNull(entityBlock.getBlocks());
-                assertEquals(entityBlock.getBlocks().size(), 1);
+                assertNotNull(entityBlock.getSchEvents());
+                assertEquals(entityBlock.getSchEvents().size(), 1);
             });
         });
     }
@@ -233,72 +260,72 @@ public class SchEventServiceTest extends SchedulerBaseTest {
     public void shouldSaveSchEventContainigEmissionsAttachmentWithRecusiveStrategy() throws Exception {
         //ROOT Chil Child
         SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChildChild.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChildChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild.setId(null);
         schEventRootChildChild.setNetwork(corNetwork);
         schEventRootChildChild.setChannel(corChannel);
 
         SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChildChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild1.setId(null);
         schEventRootChildChild1.setNetwork(corNetwork);
         schEventRootChildChild1.setChannel(corChannel);
 
         SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChildChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild2.setId(null);
         schEventRootChildChild2.setNetwork(corNetwork);
         schEventRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChild.setId(null);
         schEventRootChild.setNetwork(corNetwork);
         schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
 
         SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChild1.setId(null);
         schEventRootChild1.setNetwork(corNetwork);
         schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
 
         SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChild2.setId(null);
         schEventRootChild2.setNetwork(corNetwork);
         schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
 
         ///ROOTS
         SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
-        schEventRoot.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRoot.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRoot.setId(null);
         schEventRoot.setNetwork(corNetwork);
         schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
+        schEventRoot.addSchEvents(schEventRootChild);
 
         SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRoot1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRoot1.setId(null);
         schEventRoot1.setNetwork(corNetwork);
         schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
+        schEventRoot1.addSchEvents(schEventRootChild1);
 
         SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRoot2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRoot2.setId(null);
         schEventRoot2.setNetwork(corNetwork);
         schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
+        schEventRoot2.addSchEvents(schEventRootChild2);
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
 
         //assert
         assertNotNull(fetchedEntity);
@@ -310,16 +337,16 @@ public class SchEventServiceTest extends SchedulerBaseTest {
             assertNotNull(entity.getEmissions().stream().findFirst().get().getAttachments().stream().findFirst().get().getId());
             assertNotNull(entity.getId());
             assertNotNull(entity.getEmissions());
-            assertNotNull(entity.getBlocks());
-            assertEquals(entity.getBlocks().size(), 1);
-            entity.getBlocks().stream().forEach(entityBlock -> {
+            assertNotNull(entity.getSchEvents());
+            assertEquals(entity.getSchEvents().size(), 1);
+            entity.getSchEvents().stream().forEach(entityBlock -> {
                 assertNotNull(entityBlock.getEmissions().stream().findFirst().get().getId());
                 assertEquals(1, entityBlock.getEmissions().size());
                 assertEquals(1, entityBlock.getEmissions().stream().findFirst().get().getAttachments().size());
                 assertNotNull(entityBlock.getEmissions().stream().findFirst().get().getAttachments().stream().findFirst().get().getId());
                 assertNotNull(entityBlock.getId());
-                assertNotNull(entityBlock.getBlocks());
-                assertEquals(entityBlock.getBlocks().size(), 1);
+                assertNotNull(entityBlock.getSchEvents());
+                assertEquals(entityBlock.getSchEvents().size(), 1);
             });
         });
     }
@@ -364,42 +391,42 @@ public class SchEventServiceTest extends SchedulerBaseTest {
         schEventRootChild.setId(null);
         schEventRootChild.setNetwork(corNetwork);
         schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
 
         SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
         schEventRootChild1.setId(null);
         schEventRootChild1.setNetwork(corNetwork);
         schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
 
         SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
         schEventRootChild2.setId(null);
         schEventRootChild2.setNetwork(corNetwork);
         schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
 
         ///ROOTS
         SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
         schEventRoot.setId(null);
         schEventRoot.setNetwork(corNetwork);
         schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
+        schEventRoot.addSchEvents(schEventRootChild);
 
         SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
         schEventRoot1.setId(null);
         schEventRoot1.setNetwork(corNetwork);
         schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
+        schEventRoot1.addSchEvents(schEventRootChild1);
 
         SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
         schEventRoot2.setId(null);
         schEventRoot2.setNetwork(corNetwork);
         schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
+        schEventRoot2.addSchEvents(schEventRootChild2);
 
 
         //then
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
 
         //assert
         long dbSize = schEventRepository.count();
@@ -412,71 +439,71 @@ public class SchEventServiceTest extends SchedulerBaseTest {
     public void shouldDeleteSchEventContainigEmissionsWithRecusiveStrategy() throws Exception {
         //ROOT Chil Child
         SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChildChild.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChildChild.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild.setId(null);
         schEventRootChildChild.setNetwork(corNetwork);
         schEventRootChildChild.setChannel(corChannel);
 
         SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild1.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChildChild1.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild1.setId(null);
         schEventRootChildChild1.setNetwork(corNetwork);
         schEventRootChildChild1.setChannel(corChannel);
 
         SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild2.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChildChild2.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild2.setId(null);
         schEventRootChildChild2.setNetwork(corNetwork);
         schEventRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChild.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChild.setId(null);
         schEventRootChild.setNetwork(corNetwork);
         schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
 
         SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild1.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChild1.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChild1.setId(null);
         schEventRootChild1.setNetwork(corNetwork);
         schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
 
         SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild2.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRootChild2.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRootChild2.setId(null);
         schEventRootChild2.setNetwork(corNetwork);
         schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
 
         ///ROOTS
         SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
-        schEventRoot.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRoot.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRoot.setId(null);
         schEventRoot.setNetwork(corNetwork);
         schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
+        schEventRoot.addSchEvents(schEventRootChild);
 
         SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot1.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRoot1.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRoot1.setId(null);
         schEventRoot1.setNetwork(corNetwork);
         schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
+        schEventRoot1.addSchEvents(schEventRootChild1);
 
         SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot2.addEmission(buildSchEventEmissionForSchEvent());
+        schEventRoot2.addEventEmissions(buildSchEventEmissionForSchEvent(libMediaItem, corChannel, corNetwork));
         schEventRoot2.setId(null);
         schEventRoot2.setNetwork(corNetwork);
         schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
+        schEventRoot2.addSchEvents(schEventRootChild2);
 
 
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
         long dbSizeBlocks = schEventRepository.count();
         long emissionDbSize = schEventEmissionRepository.count();
         //then
@@ -493,71 +520,71 @@ public class SchEventServiceTest extends SchedulerBaseTest {
     public void shouldDeleteSchEventContainigEmissionsAttachmentWithRecusiveStrategy() throws Exception {
         //ROOT Chil Child
         SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChildChild.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChildChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild.setId(null);
         schEventRootChildChild.setNetwork(corNetwork);
         schEventRootChildChild.setChannel(corChannel);
 
         SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChildChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild1.setId(null);
         schEventRootChildChild1.setNetwork(corNetwork);
         schEventRootChildChild1.setChannel(corChannel);
 
         SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
 
-        schEventRootChildChild2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChildChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChildChild2.setId(null);
         schEventRootChildChild2.setNetwork(corNetwork);
         schEventRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
         SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChild.setId(null);
         schEventRootChild.setNetwork(corNetwork);
         schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addBlock(schEventRootChildChild);
+        schEventRootChild.addSchEvents(schEventRootChildChild);
 
         SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChild1.setId(null);
         schEventRootChild1.setNetwork(corNetwork);
         schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addBlock(schEventRootChildChild1);
+        schEventRootChild1.addSchEvents(schEventRootChildChild1);
 
         SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRootChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRootChild2.setId(null);
         schEventRootChild2.setNetwork(corNetwork);
         schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addBlock(schEventRootChildChild2);
+        schEventRootChild2.addSchEvents(schEventRootChildChild2);
 
         ///ROOTS
         SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
-        schEventRoot.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRoot.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRoot.setId(null);
         schEventRoot.setNetwork(corNetwork);
         schEventRoot.setChannel(corChannel);
-        schEventRoot.addBlock(schEventRootChild);
+        schEventRoot.addSchEvents(schEventRootChild);
 
         SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot1.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRoot1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRoot1.setId(null);
         schEventRoot1.setNetwork(corNetwork);
         schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addBlock(schEventRootChild1);
+        schEventRoot1.addSchEvents(schEventRootChild1);
 
         SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot2.addEmission(buildSchEventEmissionForSchEventWithAttachment());
+        schEventRoot2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventRoot2.setId(null);
         schEventRoot2.setNetwork(corNetwork);
         schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addBlock(schEventRootChild2);
+        schEventRoot2.addSchEvents(schEventRootChild2);
 
 
-        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2), null);
+        Set<SchEvent> fetchedEntity = schEventService.saveEvent(Sets.newSet(schEventRoot, schEventRoot1, schEventRoot2));
         long dbSizeBlocks = schEventRepository.count();
         long emissionDbSize = schEventEmissionRepository.count();
         long attachmentDbSize = schEventEmissionAttachmentRepository.count();
