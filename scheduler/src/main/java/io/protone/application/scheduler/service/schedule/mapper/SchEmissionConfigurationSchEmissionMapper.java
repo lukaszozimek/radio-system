@@ -1,7 +1,7 @@
 package io.protone.application.scheduler.service.schedule.mapper;
 
 import io.protone.scheduler.domain.SchEmission;
-import io.protone.scheduler.domain.SchEmissionConfiguration;
+import io.protone.scheduler.domain.SchEmissionTemplate;
 import io.protone.scheduler.domain.SchPlaylist;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +16,16 @@ public class SchEmissionConfigurationSchEmissionMapper {
     private SchEmissionConfigurationAttachmentSchEmissionAttachmentMapper schEmissionConfigurationAttachmentSchEmissionAttachmentMapper;
 
 
-    public SchEmission mapSchEmission(SchEmissionConfiguration schEmissionConfiguration, SchPlaylist schPlaylist) {
-        return new SchEmission().seq(schEmissionConfiguration.getSequence())
-                .startTime(schEmissionConfiguration.getStartTime())
+    public SchEmission mapSchEmission(SchEmissionTemplate schEmissionTemplate, SchPlaylist schPlaylist) {
+        return new SchEmission().seq(schEmissionTemplate.getSequence())
+                .startTime(schEmissionTemplate.getStartTime())
                 .playlist(null)
-                .seq(schEmissionConfiguration.getSequence())
-                .endTime(schEmissionConfiguration.getStartTime().plusSeconds(schEmissionConfiguration.getMediaItem().getLength().longValue() / 1000))
-                .attachments(schEmissionConfigurationAttachmentSchEmissionAttachmentMapper.mapAttachmentConfiguration(schEmissionConfiguration.getAttachments()))
-                .network(schEmissionConfiguration.getNetwork())
-                .channel(schEmissionConfiguration.getChannel())
-                .mediaItem(schEmissionConfiguration.getMediaItem());
+                .seq(schEmissionTemplate.getSequence())
+                .endTime(schEmissionTemplate.getStartTime().plusSeconds(schEmissionTemplate.getMediaItem().getLength().longValue() / 1000))
+                .attachments(schEmissionConfigurationAttachmentSchEmissionAttachmentMapper.mapAttachmentConfiguration(schEmissionTemplate.getAttachments()))
+                .network(schEmissionTemplate.getNetwork())
+                .channel(schEmissionTemplate.getChannel())
+                .mediaItem(schEmissionTemplate.getMediaItem());
 
 
     }

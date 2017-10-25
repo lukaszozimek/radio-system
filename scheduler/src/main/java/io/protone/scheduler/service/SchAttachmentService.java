@@ -41,9 +41,6 @@ public class SchAttachmentService {
 
     @Transactional
     public Set<SchAttachment> saveAttachmenst(Set<SchAttachment> attachments, SchEmission entitiy) {
-        if (attachments != null && !attachments.isEmpty()) {
-            return attachments.stream().map(schAttachment -> schAttachmentRepository.save(schAttachment.emission(entitiy))).collect(toSet());
-        }
-        return Sets.newHashSet();
+        return attachments;
     }
 }

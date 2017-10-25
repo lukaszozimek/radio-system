@@ -34,16 +34,16 @@ public class SchBlock extends SchTimeParams implements Serializable {
     private EventTypeEnum eventType;
 
     @PodamExclude
-    @ManyToOne
+    @ManyToOne( cascade = CascadeType.ALL)
     private SchClock clock;
 
 
     @PodamExclude
-    @ManyToOne
+    @ManyToOne( cascade = CascadeType.ALL)
     private SchBlock block;
 
     @PodamExclude
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();

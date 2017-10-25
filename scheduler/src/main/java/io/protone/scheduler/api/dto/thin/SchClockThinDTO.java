@@ -1,7 +1,7 @@
 package io.protone.scheduler.api.dto.thin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.protone.scheduler.api.dto.SchBaseDTO;
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;

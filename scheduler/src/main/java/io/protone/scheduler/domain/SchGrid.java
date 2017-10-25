@@ -49,8 +49,8 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     private CorDictionary gridCategory;
 
     @PodamExclude
-    @OneToMany(mappedBy = "schGrid")
-    private Set<SchGridClockConfiguration> clocks = new HashSet<>();
+    @OneToMany(mappedBy = "schGrid",cascade = CascadeType.ALL)
+    private Set<SchGridClockTemplate> clocks = new HashSet<>();
 
     @ManyToOne
     @PodamExclude
@@ -61,7 +61,7 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     private CorChannel channel;
 
     @Transient
-    private List<SchClockConfiguration> internalClockcs;
+    private List<SchClockTemplate> internalClockcs;
 
     public Long getId() {
         return id;
@@ -127,26 +127,26 @@ public class SchGrid extends SchBaseEntity implements Serializable {
         this.gridCategory = gridCategory;
     }
 
-    public Set<SchGridClockConfiguration> getClocks() {
+    public Set<SchGridClockTemplate> getClocks() {
         return clocks;
     }
 
-    public void setClocks(Set<SchGridClockConfiguration> clocks) {
+    public void setClocks(Set<SchGridClockTemplate> clocks) {
         this.clocks = clocks;
     }
 
-    public SchGrid clocks(Set<SchGridClockConfiguration> clocks) {
+    public SchGrid clocks(Set<SchGridClockTemplate> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGrid addClock(SchGridClockConfiguration clock) {
+    public SchGrid addClock(SchGridClockTemplate clock) {
         clock.grid(this);
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGrid removeClock(SchGridClockConfiguration clock) {
+    public SchGrid removeClock(SchGridClockTemplate clock) {
         clock.grid(null);
         this.clocks.remove(clock);
         return this;
@@ -209,15 +209,15 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     }
 
 
-    public List<SchClockConfiguration> getInternalClockcs() {
+    public List<SchClockTemplate> getInternalClockcs() {
         return internalClockcs;
     }
 
-    public void setInternalClockcs(List<SchClockConfiguration> internalClockcs) {
+    public void setInternalClockcs(List<SchClockTemplate> internalClockcs) {
         this.internalClockcs = internalClockcs;
     }
 
-    public SchGrid internalClockcs(List<SchClockConfiguration> internalClockcs) {
+    public SchGrid internalClockcs(List<SchClockTemplate> internalClockcs) {
         this.internalClockcs = internalClockcs;
         return this;
     }

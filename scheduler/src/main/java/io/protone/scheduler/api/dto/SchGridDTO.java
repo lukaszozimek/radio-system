@@ -3,6 +3,7 @@ package io.protone.scheduler.api.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 

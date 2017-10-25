@@ -1,5 +1,6 @@
 package io.protone.scheduler.api.dto;
 
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
 

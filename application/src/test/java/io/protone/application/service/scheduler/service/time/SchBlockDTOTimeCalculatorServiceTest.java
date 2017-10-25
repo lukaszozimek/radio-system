@@ -43,6 +43,7 @@ public class SchBlockDTOTimeCalculatorServiceTest {
     private LibMediaItemRepository libMediaItemRepository;
 
     private LibMediaItem libMediaItem;
+
     private LibMediaItemThinDTO libMediaItemThinDTO;
 
     private LibMediaLibrary libMediaLibrary;

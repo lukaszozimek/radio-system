@@ -23,7 +23,7 @@ public class SchGridService {
     private SchGridRepository schGridRepository;
 
     @Inject
-    private SchGridClockConfigurationService schGridClockConfigurationService;
+    private SchGridClockTemplateService schGridClockTemplateService;
 
     @Inject
     private SchGridMapper schGridMapper;
@@ -33,7 +33,7 @@ public class SchGridService {
         SchGrid beforeSave;
         beforeSave = schGridRepository.saveAndFlush(schGrid);
         beforeSave.setClocks(Sets.newHashSet());
-        beforeSave.clocks(schGridClockConfigurationService.saveGridClockConfiguration(schGrid.getClocks(), beforeSave));
+        beforeSave.clocks(schGridClockTemplateService.saveGridClockConfiguration(schGrid.getClocks(), beforeSave));
         return schGridRepository.saveAndFlush(beforeSave);
     }
 

@@ -1,6 +1,7 @@
 package io.protone.scheduler.api.dto;
 
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 
 import java.time.ZonedDateTime;
 import java.util.List;

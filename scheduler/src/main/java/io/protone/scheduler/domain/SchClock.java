@@ -24,14 +24,12 @@ public class SchClock extends SchClockBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     @PodamExclude
     @ManyToOne
     private SchSchedule schSchedule;
 
-
     @PodamExclude
-    @OneToMany(mappedBy = "clock")
+    @OneToMany(mappedBy = "clock", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();

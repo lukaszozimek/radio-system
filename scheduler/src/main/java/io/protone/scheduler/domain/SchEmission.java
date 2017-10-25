@@ -30,11 +30,11 @@ public class SchEmission extends SchTimeParams implements Serializable {
     private SchPlaylist playlist;
 
     @PodamExclude
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private SchClock clock;
 
     @PodamExclude
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private LibMediaItem mediaItem;
 
     @Column(name = "finished")
@@ -53,13 +53,13 @@ public class SchEmission extends SchTimeParams implements Serializable {
     private boolean wasSkiped;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission")
+    @OneToMany(mappedBy = "emission", cascade = CascadeType.MERGE)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchAttachment> attachments = new HashSet<>();
 
     @PodamExclude
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private SchBlock block = null;
 
     @ManyToOne
