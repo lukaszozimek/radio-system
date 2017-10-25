@@ -7,7 +7,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
-import io.protone.scheduler.domain.SchGridClockConfiguration;
+import io.protone.scheduler.domain.SchGridClockTemplate;
 import io.protone.scheduler.mapper.SchGridMapper;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class SchGridMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         grid = factory.manufacturePojo(SchGrid.class);
-        grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockConfiguration.class)));
+        grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockTemplate.class)));
         grids.add(grid);
         gridDTO = factory.manufacturePojo(SchGridDTO.class);
         gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchGridClockConfigurationDTO.class)));

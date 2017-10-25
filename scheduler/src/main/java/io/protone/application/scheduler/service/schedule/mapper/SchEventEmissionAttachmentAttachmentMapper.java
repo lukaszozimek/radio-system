@@ -2,7 +2,7 @@ package io.protone.application.scheduler.service.schedule.mapper;
 
 import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchAttachment;
-import io.protone.scheduler.domain.SchEventEmissionAttachment;
+import io.protone.scheduler.domain.SchAttachmentTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toSet;
  */
 @Service
 public class SchEventEmissionAttachmentAttachmentMapper {
-    public Set<SchAttachment> mapEventEmissionAttachmentConfiguration(Set<SchEventEmissionAttachment> attachments) {
+    public Set<SchAttachment> mapEventEmissionAttachmentConfiguration(Set<SchAttachmentTemplate> attachments) {
         if (attachments != null) {
             return attachments.stream().map(attachment -> new SchAttachment()
                     .attachmentType(attachment.getAttachmentType())

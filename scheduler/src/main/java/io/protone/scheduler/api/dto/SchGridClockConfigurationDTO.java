@@ -6,7 +6,7 @@ package io.protone.scheduler.api.dto;
 public class SchGridClockConfigurationDTO {
     private Long id;
     private Long sequence;
-    private SchClockConfigurationDTO schClockConfigurationDTO;
+    private SchClockTemplateDTO schClockTemplateDTO;
 
     public Long getId() {
         return id;
@@ -24,12 +24,12 @@ public class SchGridClockConfigurationDTO {
         this.sequence = sequence;
     }
 
-    public SchClockConfigurationDTO getSchClockConfigurationDTO() {
-        return schClockConfigurationDTO;
+    public SchClockTemplateDTO getSchClockTemplateDTO() {
+        return schClockTemplateDTO;
     }
 
-    public void setSchClockConfigurationDTO(SchClockConfigurationDTO schClockConfigurationDTO) {
-        this.schClockConfigurationDTO = schClockConfigurationDTO;
+    public void setSchClockTemplateDTO(SchClockTemplateDTO schClockTemplateDTO) {
+        this.schClockTemplateDTO = schClockTemplateDTO;
     }
 
     @Override
@@ -41,14 +41,14 @@ public class SchGridClockConfigurationDTO {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (sequence != null ? !sequence.equals(that.sequence) : that.sequence != null) return false;
-        return schClockConfigurationDTO != null ? schClockConfigurationDTO.equals(that.schClockConfigurationDTO) : that.schClockConfigurationDTO == null;
+        return schClockTemplateDTO != null ? schClockTemplateDTO.equals(that.schClockTemplateDTO) : that.schClockTemplateDTO == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (sequence != null ? sequence.hashCode() : 0);
-        result = 31 * result + (schClockConfigurationDTO != null ? schClockConfigurationDTO.hashCode() : 0);
+        result = 31 * result + (schClockTemplateDTO != null ? schClockTemplateDTO.hashCode() : 0);
         return result;
     }
 
@@ -57,7 +57,7 @@ public class SchGridClockConfigurationDTO {
         return "SchGridClockConfigurationDTO{" +
                 "id=" + id +
                 ", sequence=" + sequence +
-                ", schClockConfigurationDTO=" + schClockConfigurationDTO +
+                ", schClockTemplateDTO=" + schClockTemplateDTO +
                 '}';
     }
 }

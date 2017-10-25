@@ -1,5 +1,9 @@
 package io.protone.application.scheduler.service.schedule.mapper;
 
+import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.service.LibLibraryMediaService;
+import io.protone.library.service.LibMediaItemService;
 import io.protone.scheduler.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -19,26 +23,31 @@ public class SchClockBlockMapper {
     @Inject
     private SchEventEmissionEmissionMapper schEventEmissionEmissionMapper;
 
+    @Inject
+    private LibLibraryMediaService libraryMediaService;
+    @Inject
+    private LibMediaItemService libMediaItemService;
 
-    public SchBlock buildBlocks(SchEvent schEvent, SchPlaylist schPlaylist) {
-        SchBlock schBlock = new SchBlock().startTime(schEvent.getStartTime()).sequence(schEvent.getSequence());
+
+    public SchBlock buildBlocks(SchEventTemplate schEventTemplate, SchPlaylist schPlaylist) {
+        SchBlock schBlock = new SchBlock().startTime(schEventTemplate.getStartTime()).sequence(schEventTemplate.getSequence());
         List<SchTimeParams> schTimeParams = new ArrayList<>();
-        schTimeParams.addAll(schEvent.getSchEvents());
-        schTimeParams.addAll(schEvent.getEmissions());
-        schTimeParams.addAll(schEvent.getEmissionsLog());
+        schTimeParams.addAll(schEventTemplate.getSchEventTemplates());
+        schTimeParams.addAll(schEventTemplate.getEmissions());
+        schTimeParams.addAll(schEventTemplate.getEmissionsLog());
         schTimeParams = schTimeParams.stream().sorted(Comparator.comparing(SchTimeParams::getSequence)).collect(toList());
         for (int i = 0; i < schTimeParams.size(); i++) {
             if (i == 0) {
-                if (schTimeParams.get(i) instanceof SchEvent) {
+                if (schTimeParams.get(i) instanceof SchEventTemplate) {
                     schTimeParams.get(i).setStartTime(schBlock.getStartTime());
-                    SchBlock block = this.buildBlocks((SchEvent) schTimeParams.get(i), schPlaylist);
+                    SchBlock block = this.buildBlocks((SchEventTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).setEndTime(block.getEndTime());
                     schBlock.endTime(block.getEndTime());
                     schBlock.addBlock(block);
                 }
-                if (schTimeParams.get(i) instanceof SchEventEmission) {
+                if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schBlock.getStartTime());
-                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEventEmission) schTimeParams.get(i), schPlaylist);
+                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
@@ -51,19 +60,28 @@ public class SchClockBlockMapper {
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
-                    schBlock.addEmission(schEmission);
+                    LibMediaLibrary libMediaLibrary = libraryMediaService.findLibrary(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut());
+                    if (libMediaLibrary != null) {
+                        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
+                        if (libMediaItem != null) {
+                            schEmission.mediaItem(libMediaItem);
+                        } else {
+                            schEmission.network(schEmission.getNetwork()).getMediaItem().library(libMediaLibrary).network(schEmission.getNetwork());
+                        }
+                        schBlock.addEmission(schEmission);
+                    }
                 }
             } else {
-                if (schTimeParams.get(i) instanceof SchEvent) {
+                if (schTimeParams.get(i) instanceof SchEventTemplate) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchBlock block = this.buildBlocks((SchEvent) schTimeParams.get(i), schPlaylist);
+                    SchBlock block = this.buildBlocks((SchEventTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).setEndTime(block.getEndTime());
                     schBlock.endTime(block.getEndTime());
                     schBlock.addBlock(block);
                 }
-                if (schTimeParams.get(i) instanceof SchEventEmission) {
+                if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEventEmission) schTimeParams.get(i), schPlaylist);
+                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist);
                     schBlock.endTime(schEmission.getEndTime());
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
@@ -75,14 +93,24 @@ public class SchClockBlockMapper {
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
-                    schBlock.addEmission(schEmission);
+
+                    LibMediaLibrary libMediaLibrary = libraryMediaService.findLibrary(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut());
+                    if (libMediaLibrary != null) {
+                        LibMediaItem libMediaItem = libMediaItemService.getMediaItem(schEmission.getNetwork().getShortcut(), schEmission.getLibraryElementShortCut(), schEmission.getMediaItem().getIdx());
+                        if (libMediaItem != null) {
+                            schEmission.mediaItem(libMediaItem);
+                        } else {
+                            schEmission.network(schEmission.getNetwork()).getMediaItem().library(libMediaLibrary).network(schEmission.getNetwork());
+                        }
+                        schBlock.addEmission(schEmission);
+                    }
                 }
             }
         }
         if (schBlock.getEndTime() != null) {
-            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano()).network(schEvent.getNetwork()).channel(schEvent.getChannel());
+            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano()).network(schEventTemplate.getNetwork()).channel(schEventTemplate.getChannel());
         } else {
-            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getStartTime()).getNano()).network(schEvent.getNetwork()).channel(schEvent.getChannel());
+            return schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getStartTime()).getNano()).network(schEventTemplate.getNetwork()).channel(schEventTemplate.getChannel());
         }
     }
 

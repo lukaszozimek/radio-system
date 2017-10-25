@@ -1,7 +1,7 @@
 package io.protone.application.scheduler.service.schedule.mapper;
 
 import io.protone.scheduler.domain.SchEmission;
-import io.protone.scheduler.domain.SchEventEmission;
+import io.protone.scheduler.domain.SchEmissionTemplate;
 import io.protone.scheduler.domain.SchPlaylist;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class SchEventEmissionEmissionMapper {
     private SchEventEmissionAttachmentAttachmentMapper schEventEmissionAttachmentAttachmentMapper;
 
 
-    public SchEmission mapEventEmission(SchEventEmission emission, SchPlaylist schPlaylist) {
+    public SchEmission mapEventEmission(SchEmissionTemplate emission, SchPlaylist schPlaylist) {
         return new SchEmission().seq(emission.getSequence())
                 .startTime(emission.getStartTime())
                 .seq(emission.getSequence())

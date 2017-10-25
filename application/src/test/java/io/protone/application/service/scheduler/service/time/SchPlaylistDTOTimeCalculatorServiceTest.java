@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -49,6 +50,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
+@Transactional
 public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSchedulerBaseTest {
     private PodamFactory factory = new PodamFactoryImpl();
     @Autowired
@@ -71,17 +73,18 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
 
     @Autowired
     private SchPlaylistRepository schPlaylistRepository;
+
     @Autowired
     private SchLogConfigurationRepository schLogConfigurationRepository;
 
     @Autowired
     private SchScheduleServiceWrapper schScheduleService;
-    private CorNetwork corNetwork;
-    private CorChannel corChannel;
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        super.setUp();
         corNetwork = new CorNetwork().shortcut(CorNetworkResourceIntTest.TEST_NETWORK);
         corNetwork.setId(1L);
         corChannel = new CorChannel().shortcut("tes");
@@ -101,7 +104,9 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
         when(libFileItemService.download(schLogMusFile)).thenReturn(IOUtils.toByteArray(musLogStream));
         when(libFileItemService.download(schLogOprFile)).thenReturn(IOUtils.toByteArray(oprLogStream));
         LocalDate localDate = LocalDate.of(2017, 8, 26);
-        SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
+        schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
+        SchGrid schGrid = this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeek(corNetwork.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
+
         //then
         SchSchedule schSchedule = schScheduleService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
         SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());

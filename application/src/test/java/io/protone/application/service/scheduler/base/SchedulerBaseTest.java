@@ -14,6 +14,7 @@ import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.assertj.core.util.Lists;
 import uk.co.jemos.podam.api.PodamFactory;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -88,84 +89,84 @@ public class SchedulerBaseTest {
                 .mediaItem(libMediaItem);
     }
 
-    public static SchEmissionConfiguration buildEmissionConfigurationForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmissionConfiguration().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentConfiguration().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+    public static SchEmissionTemplate buildEmissionConfigurationForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
     }
 
-    public static Set<SchEvent> buildNestedSetEvents(PodamFactory factory, LibMediaItem libMediaItem, CorNetwork corNetwork, CorChannel corChannel) {
+    public static List<SchEventTemplate> buildNestedSetEvents(PodamFactory factory, LibMediaItem libMediaItem, CorNetwork corNetwork, CorChannel corChannel) {
         //ROOT Chil Child
-        SchEvent schEventRootChildChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChildChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRootChildChild.setId(null);
-        schEventRootChildChild.setNetwork(corNetwork);
-        schEventRootChildChild.setChannel(corChannel);
+        SchEventTemplate schEventTemplateRootChildChild = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRootChildChild.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRootChildChild.setId(null);
+        schEventTemplateRootChildChild.setNetwork(corNetwork);
+        schEventTemplateRootChildChild.setChannel(corChannel);
 
-        SchEvent schEventRootChildChild1 = factory.manufacturePojo(SchEvent.class);
+        SchEventTemplate schEventTemplateRootChildChild1 = factory.manufacturePojo(SchEventTemplate.class);
 
-        schEventRootChildChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRootChildChild1.setId(null);
-        schEventRootChildChild1.setNetwork(corNetwork);
-        schEventRootChildChild1.setChannel(corChannel);
+        schEventTemplateRootChildChild1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRootChildChild1.setId(null);
+        schEventTemplateRootChildChild1.setNetwork(corNetwork);
+        schEventTemplateRootChildChild1.setChannel(corChannel);
 
-        SchEvent schEventRootChildChild2 = factory.manufacturePojo(SchEvent.class);
+        SchEventTemplate schEventTemplateRootChildChild2 = factory.manufacturePojo(SchEventTemplate.class);
 
-        schEventRootChildChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRootChildChild2.setId(null);
-        schEventRootChildChild2.setNetwork(corNetwork);
-        schEventRootChildChild2.setChannel(corChannel);
+        schEventTemplateRootChildChild2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRootChildChild2.setId(null);
+        schEventTemplateRootChildChild2.setNetwork(corNetwork);
+        schEventTemplateRootChildChild2.setChannel(corChannel);
 
         //ROOTS Childs
-        SchEvent schEventRootChild = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRootChild.setId(null);
-        schEventRootChild.setNetwork(corNetwork);
-        schEventRootChild.setChannel(corChannel);
-        schEventRootChild.addSchEvents(schEventRootChildChild);
+        SchEventTemplate schEventTemplateRootChild = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRootChild.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRootChild.setId(null);
+        schEventTemplateRootChild.setNetwork(corNetwork);
+        schEventTemplateRootChild.setChannel(corChannel);
+        schEventTemplateRootChild.addEventTemplate(schEventTemplateRootChildChild);
 
-        SchEvent schEventRootChild1 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRootChild1.setId(null);
-        schEventRootChild1.setNetwork(corNetwork);
-        schEventRootChild1.setChannel(corChannel);
-        schEventRootChild1.addSchEvents(schEventRootChildChild1);
+        SchEventTemplate schEventTemplateRootChild1 = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRootChild1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRootChild1.setId(null);
+        schEventTemplateRootChild1.setNetwork(corNetwork);
+        schEventTemplateRootChild1.setChannel(corChannel);
+        schEventTemplateRootChild1.addEventTemplate(schEventTemplateRootChildChild1);
 
-        SchEvent schEventRootChild2 = factory.manufacturePojo(SchEvent.class);
-        schEventRootChild2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRootChild2.setId(null);
-        schEventRootChild2.setNetwork(corNetwork);
-        schEventRootChild2.setChannel(corChannel);
-        schEventRootChild2.addSchEvents(schEventRootChildChild2);
+        SchEventTemplate schEventTemplateRootChild2 = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRootChild2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRootChild2.setId(null);
+        schEventTemplateRootChild2.setNetwork(corNetwork);
+        schEventTemplateRootChild2.setChannel(corChannel);
+        schEventTemplateRootChild2.addEventTemplate(schEventTemplateRootChildChild2);
 
         ///ROOTS
-        SchEvent schEventRoot = factory.manufacturePojo(SchEvent.class);
-        schEventRoot.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRoot.setId(null);
-        schEventRoot.setNetwork(corNetwork);
-        schEventRoot.setChannel(corChannel);
-        schEventRoot.addSchEvents(schEventRootChild);
+        SchEventTemplate schEventTemplateRoot = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRoot.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRoot.setId(null);
+        schEventTemplateRoot.setNetwork(corNetwork);
+        schEventTemplateRoot.setChannel(corChannel);
+        schEventTemplateRoot.addEventTemplate(schEventTemplateRootChild);
 
-        SchEvent schEventRoot1 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot1.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRoot1.setId(null);
-        schEventRoot1.setNetwork(corNetwork);
-        schEventRoot1.setChannel(corChannel);
-        schEventRoot1.addSchEvents(schEventRootChild1);
+        SchEventTemplate schEventTemplateRoot1 = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRoot1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRoot1.setId(null);
+        schEventTemplateRoot1.setNetwork(corNetwork);
+        schEventTemplateRoot1.setChannel(corChannel);
+        schEventTemplateRoot1.addEventTemplate(schEventTemplateRootChild1);
 
-        SchEvent schEventRoot2 = factory.manufacturePojo(SchEvent.class);
-        schEventRoot2.addEventEmissions(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
-        schEventRoot2.setId(null);
-        schEventRoot2.setNetwork(corNetwork);
-        schEventRoot2.setChannel(corChannel);
-        schEventRoot2.addSchEvents(schEventRootChild2);
-        return Sets.newHashSet(Sets.newHashSet(schEventRoot, schEventRoot1, schEventRoot2));
+        SchEventTemplate schEventTemplateRoot2 = factory.manufacturePojo(SchEventTemplate.class);
+        schEventTemplateRoot2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
+        schEventTemplateRoot2.setId(null);
+        schEventTemplateRoot2.setNetwork(corNetwork);
+        schEventTemplateRoot2.setChannel(corChannel);
+        schEventTemplateRoot2.addEventTemplate(schEventTemplateRootChild2);
+        return Lists.newArrayList(Lists.newArrayList(schEventTemplateRoot, schEventTemplateRoot1, schEventTemplateRoot2));
     }
 
-    public static SchEventEmission buildSchEventEmissionForSchEventWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEventEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchEventEmissionAttachment().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+    public static SchEmissionTemplate buildSchEventEmissionForSchEventWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
     }
 
-    public static SchEventEmission buildSchEventEmissionForSchEvent(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEventEmission().mediaItem(libMediaItem).channel(corChannel).network(corNetwork);
+    public static SchEmissionTemplate buildSchEventEmissionForSchEvent(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork);
     }
 
 

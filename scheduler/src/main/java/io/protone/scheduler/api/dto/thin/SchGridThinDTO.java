@@ -3,7 +3,7 @@ package io.protone.scheduler.api.dto.thin;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.api.dto.thin.CoreUserThinDTO;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
-import io.protone.scheduler.api.dto.SchBaseDTO;
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;

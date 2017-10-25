@@ -3,7 +3,7 @@ package io.protone.scheduler.mapper;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorUserMapper;
 import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
-import io.protone.scheduler.domain.SchGridClockConfiguration;
+import io.protone.scheduler.domain.SchGridClockTemplate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,15 +12,15 @@ import java.util.List;
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchClockConfigurationMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {SchClockTemplateMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchGridClockConfigurationMapper {
-    @Mapping(source = "schClockConfigurationDTO", target = "schClockConfiguration")
-    SchGridClockConfiguration DTO2DB(SchGridClockConfigurationDTO dto);
+    @Mapping(source = "schClockTemplateDTO", target = "schClockTemplate")
+    SchGridClockTemplate DTO2DB(SchGridClockConfigurationDTO dto);
 
-    @Mapping(source = "schClockConfiguration", target = "schClockConfigurationDTO")
-    SchGridClockConfigurationDTO DB2DTO(SchGridClockConfiguration entity);
+    @Mapping(source = "schClockTemplate", target = "schClockTemplateDTO")
+    SchGridClockConfigurationDTO DB2DTO(SchGridClockTemplate entity);
 
-    List<SchGridClockConfigurationDTO> DBs2DTOs(List<SchGridClockConfiguration> entityList);
+    List<SchGridClockConfigurationDTO> DBs2DTOs(List<SchGridClockTemplate> entityList);
 
-    List<SchGridClockConfiguration> DTOs2DBs(List<SchGridClockConfigurationDTO> dList);
+    List<SchGridClockTemplate> DTOs2DBs(List<SchGridClockConfigurationDTO> dList);
 }

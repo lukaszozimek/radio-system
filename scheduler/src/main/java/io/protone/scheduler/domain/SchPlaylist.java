@@ -29,7 +29,7 @@ public class SchPlaylist extends SchBaseEntity implements Serializable {
     private LocalDate date;
 
     @PodamExclude
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();

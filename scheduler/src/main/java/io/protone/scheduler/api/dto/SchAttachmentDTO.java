@@ -15,6 +15,7 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
 public class SchAttachmentDTO extends SchTimeParamsDTO {
+
     private AttachmentTypeEnum attachmentType = null;
 
     @PodamExclude

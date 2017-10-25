@@ -1,8 +1,8 @@
 package io.protone.scheduler.api.dto.thin;
 
 
-import io.protone.scheduler.api.dto.SchBaseDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 
 import java.time.LocalDate;
 

@@ -37,7 +37,7 @@ import java.util.Optional;
  */
 @RestController
 public class SchLogConfigurationResourceImpl implements SchLogConfigurationResource {
-    private final Logger log = LoggerFactory.getLogger(SchClockConfigurationResourceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(SchClockTemplateResourceImpl.class);
 
 
     @Inject

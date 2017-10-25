@@ -1,6 +1,7 @@
 package io.protone.scheduler.api.dto;
 
 import io.protone.library.api.dto.thin.LibFileItemThinDTO;
+import io.protone.scheduler.api.dto.base.SchBaseDTO;
 import io.protone.scheduler.domain.SchLog;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ import java.util.Objects;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2017-05-14T18:17:14.326Z")
 
-public class SchLogDTO extends SchBaseDTO{
+public class SchLogDTO extends SchBaseDTO {
 
     private static final long serialVersionUID = 1L;
 
