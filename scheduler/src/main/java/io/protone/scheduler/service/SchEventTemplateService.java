@@ -47,7 +47,6 @@ public class SchEventTemplateService {
         this.schEmissionTemplateService.deleteByEventId(schEventConfiguration.getId());
         beforeSave.emissions(schEmissionTemplateService.saveEmissionEvent(schEventConfiguration.getEmissions(), beforeSave));
         eventRepository.saveAndFlush(beforeSave);
-        eventRepository.flush();
         return findSchEventTemplatesForNetworkAndChannelAndShortName(schEventConfiguration.getNetwork().getShortcut(), schEventConfiguration.getChannel().getShortcut(), schEventConfiguration.getShortName());
     }
 

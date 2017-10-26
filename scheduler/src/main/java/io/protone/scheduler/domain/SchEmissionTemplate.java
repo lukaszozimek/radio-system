@@ -40,7 +40,7 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     private Boolean isInstance = false;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission")
+    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchAttachmentTemplate> attachments = new HashSet<>();

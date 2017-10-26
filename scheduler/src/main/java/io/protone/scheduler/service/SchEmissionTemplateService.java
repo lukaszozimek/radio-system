@@ -1,7 +1,6 @@
 package io.protone.scheduler.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import io.protone.scheduler.domain.SchEmissionTemplate;
 import io.protone.scheduler.domain.SchEventTemplate;
 import io.protone.scheduler.repository.SchEmissionTemplateRepository;
@@ -43,10 +42,8 @@ public class SchEmissionTemplateService {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             emissionSet.stream().forEach(schEmission -> {
                 if (schEmission.getId() != null) {
-                    schAttachmentService.deleteAttachments(schEmission.getAttachments());
-                    schEmissionTemplateRepository.saveAndFlush(schEmission.attachments(Sets.newHashSet()));
                 }
-                schEmissionTemplateRepository.delete(schEmission);
+
             });
         }
     }
@@ -55,7 +52,7 @@ public class SchEmissionTemplateService {
     public List<SchEmissionTemplate> saveEmissionClock(List<SchEmissionTemplate> emissionSet) {
         if (emissionSet != null && !emissionSet.isEmpty()) {
             return emissionSet.stream().map(schEmission -> {
-                 schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEmission));
+                schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments(), schEmission));
                 return schEmission;
             }).collect(toList());
         }

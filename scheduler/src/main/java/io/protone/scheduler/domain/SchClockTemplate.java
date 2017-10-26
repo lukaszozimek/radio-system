@@ -18,24 +18,21 @@ import java.util.Objects;
  * A Clock.
  */
 @Entity
-@Table(name = "sch_clock_template", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
+@Table(name = "sch_clock_template")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchClockTemplate extends SchClockBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @PodamExclude
-    @OneToMany(mappedBy = "clock")
+    @OneToMany(mappedBy = "clock", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchEmissionTemplate> emissions = new ArrayList<>();
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clockTemplate")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "sch_clock_template_sch_event_template",
-            joinColumns = @JoinColumn(name = "sch_clock_template_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "sch_event_template_id", referencedColumnName = "id"))
     @PodamExclude
     private List<SchEventTemplate> schEventTemplates = new ArrayList<>();
 

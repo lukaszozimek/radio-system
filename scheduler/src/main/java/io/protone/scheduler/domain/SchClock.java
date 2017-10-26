@@ -29,7 +29,7 @@ public class SchClock extends SchClockBase implements Serializable {
     private SchSchedule schSchedule;
 
     @PodamExclude
-    @OneToMany(mappedBy = "clock", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "clock")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();

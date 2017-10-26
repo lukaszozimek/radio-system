@@ -38,8 +38,13 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     private CorDictionary eventCategory;
 
     @PodamExclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private SchEventTemplate schEventTemplate;
+
+
+    @PodamExclude
+    @ManyToOne
+    private SchClockTemplate clockTemplate;
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "schEventTemplate")
@@ -312,6 +317,19 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     public SchEventTemplate length(long l) {
         this.length = l;
+        return this;
+    }
+
+    public SchClockTemplate getClockTemplate() {
+        return clockTemplate;
+    }
+
+    public void setClockTemplate(SchClockTemplate clockTemplate) {
+        this.clockTemplate = clockTemplate;
+    }
+
+    public SchEventTemplate instance(boolean instance) {
+        this.instance = instance;
         return this;
     }
 }
