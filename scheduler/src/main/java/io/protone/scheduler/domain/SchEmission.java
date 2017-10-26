@@ -30,7 +30,7 @@ public class SchEmission extends SchTimeParams implements Serializable {
     private SchPlaylist playlist;
 
     @PodamExclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private SchClock clock;
 
     @PodamExclude

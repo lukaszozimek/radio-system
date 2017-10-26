@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
+import java.util.stream.Collectors;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -26,7 +25,7 @@ public class SchAttachmentTemplateService {
     @Transactional
     public Set<SchAttachmentTemplate> saveAttachmenst(Set<SchAttachmentTemplate> schAttachmentSet, SchEmissionTemplate schEmissionTemplate) {
         if (schAttachmentSet != null && !schAttachmentSet.isEmpty()) {
-            return schAttachmentSet.stream().map(schAttachment -> schAttachmentTemplateRepository.saveAndFlush(schAttachment.emission(schEmissionTemplate))).collect(toSet());
+            return schAttachmentSet.stream().map(schAttachmentTemplate -> schAttachmentTemplate.network(schEmissionTemplate.getNetwork()).channel(schAttachmentTemplate.getChannel())).collect(Collectors.toSet());
         }
         return Sets.newHashSet();
     }

@@ -36,12 +36,11 @@ public class SchClockTemplateService {
 
     @Transactional
     public SchClockTemplate saveClockConfiguration(SchClockTemplate schClockTemplate) {
-        SchClockTemplate beforeSave;
-        beforeSave = schClockTemplateRepository.saveAndFlush(schClockTemplate);
-        beforeSave.setSchEventTemplates(Lists.newArrayList());
-        beforeSave.setEmissions(Lists.newArrayList());
-        schEmissionTemplateService.saveEmissionClock(schClockTemplate.getEmissions()).stream().forEach(schEmissionConfiguration -> beforeSave.addEmission(schEmissionConfiguration));
-        schClockTemplateRepository.saveAndFlush(beforeSave);
+        schClockTemplateRepository.saveAndFlush(schClockTemplate);
+//        beforeSave.setSchEventTemplates(Lists.newArrayList());
+//        beforeSave.setEmissions(Lists.newArrayList());
+//        schEmissionTemplateService.saveEmissionClock(schClockTemplate.getEmissions()).stream().forEach(schEmissionConfiguration -> beforeSave.addEmission(schEmissionConfiguration));
+//        schClockTemplateRepository.saveAndFlush(beforeSave);
         return findSchClockConfigurationForNetworkAndChannelAndShortName(schClockTemplate.getNetwork().getShortcut(), schClockTemplate.getChannel().getShortcut(), schClockTemplate.getShortName());
     }
 

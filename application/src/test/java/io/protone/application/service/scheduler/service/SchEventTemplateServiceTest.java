@@ -19,8 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import javax.transaction.Transactional;
-
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -30,7 +28,7 @@ import static org.junit.Assert.assertNull;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProtoneApp.class)
-@Transactional
+@org.springframework.transaction.annotation.Transactional
 public class SchEventTemplateServiceTest {
     private static final String TEST_EVENT_CATEGORY = "News";
 
@@ -58,7 +56,7 @@ public class SchEventTemplateServiceTest {
     @Test
     public void shouldGetEventConfigurations() throws Exception {
         //when
-        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class);
+        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
         schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         schEventConfiguration = schEventTemplateRepository.save(schEventConfiguration);
@@ -78,7 +76,7 @@ public class SchEventTemplateServiceTest {
     @Test
     public void shouldGetEventConfigurationsGroupedByType() throws Exception {
         //when
-        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class);
+        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
         schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         CorDictionary corDictionary = new CorDictionary();
@@ -100,7 +98,7 @@ public class SchEventTemplateServiceTest {
     @Test
     public void shouldSaveEventConfiguration() throws Exception {
         //when
-        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class);
+        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
         schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         //then
@@ -115,13 +113,13 @@ public class SchEventTemplateServiceTest {
     @Test
     public void shouldDeleteEventConfiguration() throws Exception {
         //when
-        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class);
+        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
         schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         schEventConfiguration = schEventTemplateRepository.saveAndFlush(schEventConfiguration);
         //then
         schEventTemplateService.deleteSchEventTemplateByNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
-        SchEventTemplate fetchedEntity = schEventTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstance(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName(),false);
+        SchEventTemplate fetchedEntity = schEventTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstance(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName(), false);
 
         //assert
         assertNull(fetchedEntity);
@@ -136,7 +134,7 @@ public class SchEventTemplateServiceTest {
     @Test
     public void shouldGetEventConfiguration() throws Exception {
         //when
-        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class);
+        SchEventTemplate schEventConfiguration = factory.manufacturePojo(SchEventTemplate.class).instance(false);
         schEventConfiguration.setNetwork(corNetwork);
         schEventConfiguration.setChannel(corChannel);
         schEventConfiguration = schEventTemplateRepository.save(schEventConfiguration);

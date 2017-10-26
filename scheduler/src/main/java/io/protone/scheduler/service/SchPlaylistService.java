@@ -47,7 +47,7 @@ public class SchPlaylistService {
         return null;
     }
 
-    @Transactional(readOnly = true)
+
     public SchPlaylist findSchPlaylistForNetworkAndChannelAndDateEntity(String networkShortcut, String channelShortcut, LocalDate date) {
         return schPlaylistRepository.findOne(networkShortcut, channelShortcut, date);
 
