@@ -63,8 +63,7 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
         SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corNetwork, corChannel);
-        SchClockTemplate entity = schClockTemplateService.saveClockConfiguration(schClock);
-        SchClockTemplateDTO response = schClockTemplateMapper.DB2DTO(entity);
+        SchClockTemplateDTO response = schClockTemplateService.saveClockConfiguration(schClock);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/clock/" + response.getShortName()))
                 .body(response);
     }
@@ -129,8 +128,7 @@ public class SchClockTemplateResourceImpl implements SchClockTemplateResource {
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
         SchClockTemplate schClock = schClockTemplateMapper.DTO2DB(clockDTO, corNetwork, corChannel);
-        SchClockTemplate entity = schClockTemplateService.saveClockConfiguration(schClock);
-        SchClockTemplateDTO response = schClockTemplateMapper.DB2DTO(entity);
+        SchClockTemplateDTO response = schClockTemplateService.saveClockConfiguration(schClock);
         return ResponseEntity.ok().body(response);
     }
 

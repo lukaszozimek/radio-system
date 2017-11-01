@@ -25,8 +25,6 @@ public interface SchEventTemplateRepository extends JpaRepository<SchEventTempla
     @Query("select event from SchEventTemplate as event " +
             "left join fetch event.network as n " +
             "left join fetch event.channel as ch " +
-            "left join fetch event.emissions as eventE " +
-            "left join fetch eventE.attachments as emissionAttachments " +
             "left join fetch event.schLogConfiguration as logConf " +
             "left join fetch logConf.logColumns as logColumns " +
             "where n.shortcut = :network and event.shortName =:shortName and ch.shortcut= :channelShortcut and event.instance =:instance")

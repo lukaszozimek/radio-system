@@ -386,6 +386,20 @@
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_Sch_Grid_Sch_Clock_Template.xml"
             relativeToChangelogFile="false"/>
 
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchClock_SchEventTemplate.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchEventTemplate_SchEventTemplate.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchClock_SchEmissionTemplate.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchEvent_SchEmissionTemplate.xml"
+            relativeToChangelogFile="false"/>
+
+
 
 
 

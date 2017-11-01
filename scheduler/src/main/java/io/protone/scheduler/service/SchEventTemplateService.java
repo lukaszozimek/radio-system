@@ -42,21 +42,13 @@ public class SchEventTemplateService {
 
     @Transactional
     public SchEventTemplate saveEventConfiguration(SchEventTemplate schEventConfiguration) {
-        SchEventTemplate beforeSave;
-        beforeSave = eventRepository.saveAndFlush(schEventConfiguration);
-        this.schEmissionTemplateService.deleteByEventId(schEventConfiguration.getId());
-        beforeSave.emissions(schEmissionTemplateService.saveEmissionEvent(schEventConfiguration.getEmissions(), beforeSave));
-        eventRepository.saveAndFlush(beforeSave);
+        eventRepository.saveAndFlush(schEventConfiguration);
         return findSchEventTemplatesForNetworkAndChannelAndShortName(schEventConfiguration.getNetwork().getShortcut(), schEventConfiguration.getChannel().getShortcut(), schEventConfiguration.getShortName());
     }
 
     @Transactional
     public void deleteSchEventTemplateByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        SchEventTemplate schEventConfiguration = findSchEventTemplatesForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
-        if (schEventConfiguration != null) {
-            this.schEmissionTemplateService.deleteByEventId(schEventConfiguration.getId());
-            eventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
-        }
+        eventRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
     }
 
     @Transactional(readOnly = true)

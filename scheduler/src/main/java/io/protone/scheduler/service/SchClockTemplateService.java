@@ -35,13 +35,13 @@ public class SchClockTemplateService {
     private SchClockTemplateMapper schClockTemplateMapper;
 
     @Transactional
-    public SchClockTemplate saveClockConfiguration(SchClockTemplate schClockTemplate) {
+    public SchClockTemplateDTO saveClockConfiguration(SchClockTemplate schClockTemplate) {
         schClockTemplateRepository.saveAndFlush(schClockTemplate);
-//        beforeSave.setSchEventTemplates(Lists.newArrayList());
+//        beforeSave.setSchClockTemplateEventTemplates(Lists.newArrayList());
 //        beforeSave.setEmissions(Lists.newArrayList());
 //        schEmissionTemplateService.saveEmissionClock(schClockTemplate.getEmissions()).stream().forEach(schEmissionConfiguration -> beforeSave.addEmission(schEmissionConfiguration));
 //        schClockTemplateRepository.saveAndFlush(beforeSave);
-        return findSchClockConfigurationForNetworkAndChannelAndShortName(schClockTemplate.getNetwork().getShortcut(), schClockTemplate.getChannel().getShortcut(), schClockTemplate.getShortName());
+        return findDTOSchClockConfigurationForNetworkAndChannelAndShortName(schClockTemplate.getNetwork().getShortcut(), schClockTemplate.getChannel().getShortcut(), schClockTemplate.getShortName());
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +69,7 @@ public class SchClockTemplateService {
         SchClockTemplate schClock = schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
         schEmissionTemplateService.deleteEmissions(schClock.getEmissions());
         schClock.setEmissions(Lists.newArrayList());
-        schClock.setSchEventTemplates(Lists.newArrayList());
+        schClock.setSchClockTemplateEventTemplates(Lists.newArrayList());
         schClockTemplateRepository.delete(schClock);
     }
 }

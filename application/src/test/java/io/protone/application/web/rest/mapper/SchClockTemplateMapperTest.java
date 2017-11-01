@@ -1,6 +1,5 @@
 package io.protone.application.web.rest.mapper;
 
-import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.api.dto.CorDictionaryDTO;
 import io.protone.core.domain.CorChannel;
@@ -59,14 +58,14 @@ public class SchClockTemplateMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         clockConfiguration = factory.manufacturePojo(SchClockTemplate.class);
         clockConfiguration.setEmissions(Lists.newArrayList(factory.manufacturePojo(SchEmissionTemplate.class)));
-        clockConfiguration.setSchEventTemplates(Lists.newArrayList(factory.manufacturePojo(SchEventTemplate.class)));
+        clockConfiguration.setSchClockTemplateEventTemplates(Lists.newArrayList(factory.manufacturePojo(SchEventTemplate.class)));
 
 
         clockConfiguration.setClockCategory(factory.manufacturePojo(CorDictionary.class));
         schClockTemplates.add(clockConfiguration);
         schClockTemplateDTO = factory.manufacturePojo(SchClockTemplateDTO.class);
-        schClockTemplateDTO.setEmissions(Sets.newHashSet(factory.manufacturePojo(SchEmissionTemplateDTO.class)));
-        schClockTemplateDTO.setSchEventTemplateDTOS(Sets.newHashSet(factory.manufacturePojo(SchEventTemplateDTO.class)));
+        schClockTemplateDTO.setEmissions(Lists.newArrayList(factory.manufacturePojo(SchEmissionTemplateDTO.class)));
+        schClockTemplateDTO.setSchEventTemplateDTOS(Lists.newArrayList(factory.manufacturePojo(SchEventTemplateDTO.class)));
         schClockTemplateDTO.setClockCategory(factory.manufacturePojo(CorDictionaryDTO.class));
         schClockTemplateDTOS.add(schClockTemplateDTO);
     }
@@ -111,7 +110,7 @@ public class SchClockTemplateMapperTest {
 
         assertNotNull(entity.getName());
         assertNotNull(entity.getShortName());
-        assertNotNull(entity.getSchEventTemplates());
+        assertNotNull(entity.getSchClockTemplateEventTemplates());
         assertNotNull(entity.getEmissions());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
@@ -130,7 +129,7 @@ public class SchClockTemplateMapperTest {
         entities.stream().forEach(entity -> {
             assertNotNull(entity.getName());
             assertNotNull(entity.getShortName());
-            assertNotNull(entity.getSchEventTemplates());
+            assertNotNull(entity.getSchClockTemplateEventTemplates());
             assertNotNull(entity.getEmissions());
             assertNotNull(entity.getLength());
             assertNotNull(entity.getRelativeDelay());

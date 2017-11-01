@@ -10,9 +10,9 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A SchEmissionTemplate.
@@ -26,24 +26,17 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
 
     @PodamExclude
     @ManyToOne
-    private SchClockTemplate clock;
-
-    @PodamExclude
-    @ManyToOne
-    private SchEventTemplate eventTemplate;
-
-    @PodamExclude
-    @ManyToOne
     private LibMediaItem mediaItem;
 
     @Column(name = "instance")
     private Boolean isInstance = false;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "emission",cascade = CascadeType.ALL)
+    @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchAttachmentTemplate> attachments = new HashSet<>();
+    private List<SchAttachmentTemplate> attachments = new ArrayList<>();
 
     @ManyToOne
     @PodamExclude
@@ -77,18 +70,6 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
         isInstance = instance;
     }
 
-    public SchClockTemplate getClock() {
-        return clock;
-    }
-
-    public void setClock(SchClockTemplate clock) {
-        this.clock = clock;
-    }
-
-    public SchEmissionTemplate clock(SchClockTemplate clock) {
-        this.clock = clock;
-        return this;
-    }
 
     public LibMediaItem getMediaItem() {
         return mediaItem;
@@ -104,15 +85,15 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     }
 
 
-    public Set<SchAttachmentTemplate> getAttachments() {
+    public List<SchAttachmentTemplate> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<SchAttachmentTemplate> attachments) {
+    public void setAttachments(List<SchAttachmentTemplate> attachments) {
         this.attachments = attachments;
     }
 
-    public SchEmissionTemplate attachments(Set<SchAttachmentTemplate> attachments) {
+    public SchEmissionTemplate attachments(List<SchAttachmentTemplate> attachments) {
         this.attachments = attachments;
         return this;
     }
@@ -190,16 +171,4 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     }
 
 
-    public SchEventTemplate getEventTemplate() {
-        return eventTemplate;
-    }
-
-    public void setEventTemplate(SchEventTemplate eventTemplate) {
-        this.eventTemplate = eventTemplate;
-    }
-
-    public SchEmissionTemplate schEventTemplate(SchEventTemplate schEventConfiguration) {
-        this.eventTemplate = schEventConfiguration;
-        return this;
-    }
 }

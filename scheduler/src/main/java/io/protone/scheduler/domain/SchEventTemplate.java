@@ -1,6 +1,7 @@
 package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Objects;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
@@ -37,18 +38,12 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     @PodamExclude
     private CorDictionary eventCategory;
 
-    @PodamExclude
-    @ManyToOne
-    private SchEventTemplate schEventTemplate;
-
-
-    @PodamExclude
-    @ManyToOne
-    private SchClockTemplate clockTemplate;
-
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "schEventTemplate")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "sch_event_sch_event",
+            joinColumns = {@JoinColumn(name = "child_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "parent_id", referencedColumnName = "id")})
+    @ElementCollection
     @PodamExclude
     private List<SchEventTemplate> schEventTemplates = new ArrayList<>();
 
@@ -57,7 +52,12 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     private List<SchEmission> emissionsLog = new ArrayList<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "eventTemplate")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "sch_event_sch_emission",
+            joinColumns = {@JoinColumn(name = "emission_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")})
+    @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchEmissionTemplate> emissions = new ArrayList<>();
@@ -120,13 +120,6 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         this.eventCategory = eventCategory;
     }
 
-    public SchEventTemplate getSchEventTemplate() {
-        return schEventTemplate;
-    }
-
-    public void setSchEventTemplate(SchEventTemplate schEventTemplate) {
-        this.schEventTemplate = schEventTemplate;
-    }
 
     public List<SchEventTemplate> getSchEventTemplates() {
         return schEventTemplates;
@@ -184,70 +177,6 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         this.channel = channel;
     }
 
-    @Override
-    public String toString() {
-        return "SchEventTemplate{" +
-                "sequence=" + sequence +
-                ", id=" + id +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", length=" + length +
-                ", name='" + name + '\'' +
-                ", instance=" + instance +
-                ", shortName='" + shortName + '\'' +
-                ", eventCategory=" + eventCategory +
-                ", schEventTemplate=" + schEventTemplate +
-                ", schEventTemplates=" + schEventTemplates +
-                ", emissionsLog=" + emissionsLog +
-                ", emissions=" + emissions +
-                ", eventType=" + eventType +
-                ", schLogConfiguration=" + schLogConfiguration +
-                ", network=" + network +
-                ", channel=" + channel +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SchEventTemplate)) return false;
-
-        SchEventTemplate that = (SchEventTemplate) o;
-
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (instance != null ? !instance.equals(that.instance) : that.instance != null) return false;
-        if (shortName != null ? !shortName.equals(that.shortName) : that.shortName != null) return false;
-        if (eventCategory != null ? !eventCategory.equals(that.eventCategory) : that.eventCategory != null)
-            return false;
-        if (schEventTemplate != null ? !schEventTemplate.equals(that.schEventTemplate) : that.schEventTemplate != null)
-            return false;
-        if (schEventTemplates != null ? !schEventTemplates.equals(that.schEventTemplates) : that.schEventTemplates != null)
-            return false;
-        if (emissionsLog != null ? !emissionsLog.equals(that.emissionsLog) : that.emissionsLog != null) return false;
-        if (emissions != null ? !emissions.equals(that.emissions) : that.emissions != null) return false;
-        if (eventType != that.eventType) return false;
-        if (schLogConfiguration != null ? !schLogConfiguration.equals(that.schLogConfiguration) : that.schLogConfiguration != null)
-            return false;
-        if (network != null ? !network.equals(that.network) : that.network != null) return false;
-        return channel != null ? channel.equals(that.channel) : that.channel == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (instance != null ? instance.hashCode() : 0);
-        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
-        result = 31 * result + (eventCategory != null ? eventCategory.hashCode() : 0);
-        result = 31 * result + (schEventTemplate != null ? schEventTemplate.hashCode() : 0);
-        result = 31 * result + (schEventTemplates != null ? schEventTemplates.hashCode() : 0);
-        result = 31 * result + (emissionsLog != null ? emissionsLog.hashCode() : 0);
-        result = 31 * result + (emissions != null ? emissions.hashCode() : 0);
-        result = 31 * result + (eventType != null ? eventType.hashCode() : 0);
-        result = 31 * result + (schLogConfiguration != null ? schLogConfiguration.hashCode() : 0);
-        result = 31 * result + (network != null ? network.hashCode() : 0);
-        result = 31 * result + (channel != null ? channel.hashCode() : 0);
-        return result;
-    }
 
     public SchEventTemplate emissions(List<SchEmissionTemplate> schEmissionTemplates) {
         this.emissions = schEmissionTemplates;
@@ -320,16 +249,35 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchClockTemplate getClockTemplate() {
-        return clockTemplate;
-    }
-
-    public void setClockTemplate(SchClockTemplate clockTemplate) {
-        this.clockTemplate = clockTemplate;
-    }
-
     public SchEventTemplate instance(boolean instance) {
         this.instance = instance;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SchEventTemplate)) return false;
+        SchEventTemplate that = (SchEventTemplate) o;
+        return Objects.equal(getName(), that.getName()) &&
+                Objects.equal(getInstance(), that.getInstance()) &&
+                Objects.equal(getShortName(), that.getShortName()) &&
+                Objects.equal(getEventCategory(), that.getEventCategory()) &&
+                Objects.equal(getSchEventTemplates(), that.getSchEventTemplates()) &&
+                Objects.equal(getEmissionsLog(), that.getEmissionsLog()) &&
+                Objects.equal(getEmissions(), that.getEmissions()) &&
+                getEventType() == that.getEventType() &&
+                Objects.equal(getSchLogConfiguration(), that.getSchLogConfiguration()) &&
+                Objects.equal(getNetwork(), that.getNetwork()) &&
+                Objects.equal(getChannel(), that.getChannel()) &&
+                Objects.equal(getSequence(), that.getSequence());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getNetwork(), getChannel());
+    }
+
+
 }

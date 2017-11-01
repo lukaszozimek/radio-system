@@ -5,6 +5,7 @@ import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.domain.SchAttachmentTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.toSet;
  */
 @Service
 public class SchEmissionConfigurationAttachmentSchEmissionAttachmentMapper {
-    public Set<SchAttachment> mapAttachmentConfiguration(Set<SchAttachmentTemplate> attachments) {
+    public Set<SchAttachment> mapAttachmentConfiguration(List<SchAttachmentTemplate> attachments) {
         if (attachments != null) {
             return attachments.stream().map(attachment -> new SchAttachment()
                     .attachmentType(attachment.getAttachmentType())

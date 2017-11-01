@@ -90,7 +90,7 @@ public class SchedulerBaseTest {
     }
 
     public static SchEmissionTemplate buildEmissionConfigurationForWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Lists.newArrayList(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
     }
 
     public static List<SchEventTemplate> buildNestedSetEvents(PodamFactory factory, LibMediaItem libMediaItem, CorNetwork corNetwork, CorChannel corChannel) {
@@ -162,7 +162,7 @@ public class SchedulerBaseTest {
     }
 
     public static SchEmissionTemplate buildSchEventEmissionForSchEventWithAttachment(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
-        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Sets.newHashSet(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
+        return new SchEmissionTemplate().mediaItem(libMediaItem).channel(corChannel).network(corNetwork).attachments(Lists.newArrayList(new SchAttachmentTemplate().channel(corChannel).network(corNetwork).mediaItem(libMediaItem)));
     }
 
     public static SchEmissionTemplate buildSchEventEmissionForSchEvent(LibMediaItem libMediaItem, CorChannel corChannel, CorNetwork corNetwork) {
