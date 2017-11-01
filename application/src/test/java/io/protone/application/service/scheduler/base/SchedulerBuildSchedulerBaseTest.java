@@ -1,6 +1,5 @@
 package io.protone.application.service.scheduler.base;
 
-import com.google.common.collect.Sets;
 import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -170,7 +169,6 @@ public class SchedulerBuildSchedulerBaseTest {
             schEmissionTemplate.length(900000L);
             schEmissionTemplate.mediaItem(libMediaItem);
             schEmissionTemplate.seq(startSequence + i);
-            schEmissionTemplate.setClock(schClockTemplate);
             schEmissionTemplate.channel(corChannel);
             schEmissionTemplate.network(corNetwork);
             emissionConfigurations.add(schEmissionTemplateRepository.saveAndFlush(schEmissionTemplate));
@@ -275,13 +273,12 @@ public class SchedulerBuildSchedulerBaseTest {
     protected SchEmissionTemplate buildEmissionWithAttachment(long sequence, long lenght, SchEventTemplate schEventTemplate) {
         SchEmissionTemplate schEventEmission = new SchEmissionTemplate().mediaItem(libMediaItem)
                 .seq(sequence)
-                .schEventTemplate(schEventTemplate)
                 .length(lenght)
                 .channel(corChannel)
                 .network(corNetwork);
 
         schEventEmission = schEmissionRepository.saveAndFlush(schEventEmission);
-        schEventEmission.attachments(Sets.newHashSet(buildAttachmentWithSequence(1, schEventEmission),
+        schEventEmission.attachments(Lists.newArrayList(buildAttachmentWithSequence(1, schEventEmission),
                 buildAttachmentWithSequence(2, schEventEmission),
                 buildAttachmentWithSequence(3, schEventEmission)));
         return schEventEmission;

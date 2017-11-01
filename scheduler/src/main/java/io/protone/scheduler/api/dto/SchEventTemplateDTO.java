@@ -9,9 +9,9 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A Block.
@@ -34,7 +34,7 @@ public class SchEventTemplateDTO extends SchTemplateTimeParamsDTO implements Ser
 
 
     @PodamExclude
-    private Set<SchEventTemplateDTO> schEventTemplateDTOS = new HashSet<>();
+    private List<SchEventTemplateDTO> schEventTemplateDTOS = new ArrayList<>();
 
 
     private CoreUserThinDTO createdBy;
@@ -46,7 +46,7 @@ public class SchEventTemplateDTO extends SchTemplateTimeParamsDTO implements Ser
     private ZonedDateTime lastModifiedDate;
 
     @PodamExclude
-    private Set<SchEmissionTemplateDTO> emissions = new HashSet<>();
+    private List<SchEmissionTemplateDTO> emissions = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -82,15 +82,15 @@ public class SchEventTemplateDTO extends SchTemplateTimeParamsDTO implements Ser
         return this;
     }
 
-    public Set<SchEmissionTemplateDTO> getEmissions() {
+    public List<SchEmissionTemplateDTO> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(Set<SchEmissionTemplateDTO> emissions) {
+    public void setEmissions(List<SchEmissionTemplateDTO> emissions) {
         this.emissions = emissions;
     }
 
-    public SchEventTemplateDTO emissions(Set<SchEmissionTemplateDTO> emissions) {
+    public SchEventTemplateDTO emissions(List<SchEmissionTemplateDTO> emissions) {
         this.emissions = emissions;
         return this;
     }
@@ -218,11 +218,11 @@ public class SchEventTemplateDTO extends SchTemplateTimeParamsDTO implements Ser
     }
 
 
-    public Set<SchEventTemplateDTO> getSchEventTemplateDTOS() {
+    public List<SchEventTemplateDTO> getSchEventTemplateDTOS() {
         return schEventTemplateDTOS;
     }
 
-    public void setSchEventTemplateDTOS(Set<SchEventTemplateDTO> schEventTemplateDTOS) {
+    public void setSchEventTemplateDTOS(List<SchEventTemplateDTO> schEventTemplateDTOS) {
         this.schEventTemplateDTOS = schEventTemplateDTOS;
     }
 

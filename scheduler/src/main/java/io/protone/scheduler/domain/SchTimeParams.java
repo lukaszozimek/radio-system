@@ -1,5 +1,7 @@
 package io.protone.scheduler.domain;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -92,5 +94,22 @@ public class SchTimeParams extends SchBaseEntity implements Serializable {
                 ", endTime='" + getEndTime() + "'" +
                 ", relativeDelay='" + getRelativeDelay() + "'" +
                 "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SchTimeParams)) return false;
+        SchTimeParams that = (SchTimeParams) o;
+        return Objects.equal(getSequence(), that.getSequence()) &&
+                Objects.equal(getStartTime(), that.getStartTime()) &&
+                Objects.equal(getEndTime(), that.getEndTime()) &&
+                Objects.equal(getRelativeDelay(), that.getRelativeDelay()) &&
+                Objects.equal(getLength(), that.getLength());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getSequence(), getStartTime(), getEndTime(), getRelativeDelay(), getLength());
     }
 }

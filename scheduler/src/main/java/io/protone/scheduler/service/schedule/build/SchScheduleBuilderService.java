@@ -155,7 +155,7 @@ public class SchScheduleBuilderService {
     private List<SchEventTemplate> getImportLogEventFlatList(List<SchClockTemplate> schClockTemplateSet) {
         List<SchEventTemplate> schEventTemplates = Lists.newArrayList();
         schClockTemplateSet.stream().sorted(comparing(SchClockTemplate::getSequence)).forEach(schClockConfiguration -> {
-            schEventTemplates.addAll(getImportEvents(schClockConfiguration.getSchEventTemplates()));
+            schEventTemplates.addAll(getImportEvents(schClockConfiguration.getSchClockTemplateEventTemplates()));
         });
         return schEventTemplates;
     }
@@ -185,14 +185,14 @@ public class SchScheduleBuilderService {
     }
 
     public void updateEventsRecusiveOnClockLevel(SchClockTemplate schClockTemplate, SchEventTemplate schEventTemplate) {
-        Optional<SchEventTemplate> eventOnClockLevel = schClockTemplate.getSchEventTemplates().stream().filter(schEvent1 -> schEvent1.getId().equals(schEventTemplate.getId())).findFirst();
+        Optional<SchEventTemplate> eventOnClockLevel = schClockTemplate.getSchClockTemplateEventTemplates().stream().filter(schEvent1 -> schEvent1.getId().equals(schEventTemplate.getId())).findFirst();
         if (eventOnClockLevel.isPresent()) {
             log.debug("Found import event on clock level");
-            schClockTemplate.getSchEventTemplates().remove(eventOnClockLevel);
-            schClockTemplate.getSchEventTemplates().add(schEventTemplate);
+            schClockTemplate.getSchClockTemplateEventTemplates().remove(eventOnClockLevel);
+            schClockTemplate.getSchClockTemplateEventTemplates().add(schEventTemplate);
         } else {
             log.debug("Start Searching event Recursive in each event");
-            schClockTemplate.getSchEventTemplates().stream().map(schEvent1 -> updateNestedEvenRecusive(schEvent1, schEventTemplate)).collect(toSet());
+            schClockTemplate.getSchClockTemplateEventTemplates().stream().map(schEvent1 -> updateNestedEvenRecusive(schEvent1, schEventTemplate)).collect(toSet());
         }
     }
 

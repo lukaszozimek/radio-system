@@ -9,6 +9,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.repository.LibMediaItemRepository;
+import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
 import io.protone.scheduler.repository.SchAttachmentTemplateRepository;
 import io.protone.scheduler.repository.SchClockTemplateRepository;
@@ -130,12 +131,11 @@ public class SchClockTemplateServiceTest {
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         //then
-        SchClockTemplate fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
+        SchClockTemplateDTO fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertEquals(schClock.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
@@ -147,12 +147,11 @@ public class SchClockTemplateServiceTest {
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         //then
-        SchClockTemplate fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
+        SchClockTemplateDTO fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertEquals(schClock.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
@@ -177,7 +176,7 @@ public class SchClockTemplateServiceTest {
         schClock.setEmissions(Lists.newArrayList(buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork), buildEmissionConfigurationForWithAttachment(libMediaItem, corChannel, corNetwork)));
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
-        SchClockTemplate fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
+        SchClockTemplateDTO fetchedEntity = schClockTemplateService.saveClockConfiguration(schClock);
         long clockNumberAfterSave = schClockTemplateRepository.count();
         long blockNumberAfterSave = schEventRepository.count();
         long emissionNumberAfterSave = schEmissionTemplateRepository.count();
@@ -202,15 +201,14 @@ public class SchClockTemplateServiceTest {
         schClock.setNetwork(corNetwork);
         schClock.setChannel(corChannel);
         schClock.setId(null);
-        schClock = schClockTemplateService.saveClockConfiguration(schClock);
+        SchClockTemplateDTO   templateDTO = schClockTemplateService.saveClockConfiguration(schClock);
 
         //then
         SchClockTemplate fetchedEntity = schClockTemplateService.findSchClockConfigurationForNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schClock.getShortName());
 
         //assert
         assertNotNull(fetchedEntity);
-        assertEquals(schClock.getId(), fetchedEntity.getId());
-        assertEquals(schClock.getNetwork(), fetchedEntity.getNetwork());
+        assertEquals(templateDTO.getId(), fetchedEntity.getId());
 
     }
 }

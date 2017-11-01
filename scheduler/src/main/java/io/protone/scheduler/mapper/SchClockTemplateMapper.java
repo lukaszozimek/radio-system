@@ -19,10 +19,10 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {SchEmissionTemplateMapper.class, SchEventTemplateMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchClockTemplateMapper {
 
-    @Mapping(source = "schEventTemplateDTOS", target = "schEventTemplates")
+    @Mapping(source = "schEventTemplateDTOS", target = "schClockTemplateEventTemplates")
     SchClockTemplate DTO2DB(SchClockTemplateDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-    @Mapping(source = "schEventTemplates", target = "schEventTemplateDTOS")
+    @Mapping(source = "schClockTemplateEventTemplates", target = "schEventTemplateDTOS")
     SchClockTemplateDTO DB2DTO(SchClockTemplate entity);
 
     List<SchClockTemplateDTO> DBs2DTOs(List<SchClockTemplate> entityList);

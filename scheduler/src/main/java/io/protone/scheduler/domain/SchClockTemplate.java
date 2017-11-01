@@ -1,9 +1,9 @@
 package io.protone.scheduler.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -25,16 +25,26 @@ public class SchClockTemplate extends SchClockBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PodamExclude
-    @OneToMany(mappedBy = "clock", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    @ElementCollection
+    @JoinTable(
+            name = "sch_clock_sch_emission",
+            joinColumns = {@JoinColumn(name = "emission_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "clock_id", referencedColumnName = "id")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchEmissionTemplate> emissions = new ArrayList<>();
 
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "clockTemplate")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "sch_clock_sch_event",
+            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "clock_id", referencedColumnName = "id")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
+    @ElementCollection
     @PodamExclude
-    private List<SchEventTemplate> schEventTemplates = new ArrayList<>();
+    private List<SchEventTemplate> schClockTemplateEventTemplates = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -145,21 +155,21 @@ public class SchClockTemplate extends SchClockBase implements Serializable {
     }
 
 
-    public List<SchEventTemplate> getSchEventTemplates() {
-        return schEventTemplates;
+    public List<SchEventTemplate> getSchClockTemplateEventTemplates() {
+        return schClockTemplateEventTemplates;
     }
 
-    public void setSchEventTemplates(List<SchEventTemplate> schEventTemplates) {
-        this.schEventTemplates = schEventTemplates;
+    public void setSchClockTemplateEventTemplates(List<SchEventTemplate> schClockTemplateEventTemplates) {
+        this.schClockTemplateEventTemplates = schClockTemplateEventTemplates;
     }
 
     public SchClockTemplate schEvents(List<SchEventTemplate> schEventTemplates) {
-        this.schEventTemplates = schEventTemplates;
+        this.schClockTemplateEventTemplates = schEventTemplates;
         return this;
     }
 
     public SchClockTemplate addSchEvent(SchEventTemplate schEventsTemplate) {
-        this.schEventTemplates.add(schEventsTemplate);
+        this.schClockTemplateEventTemplates.add(schEventsTemplate);
         return this;
     }
 
