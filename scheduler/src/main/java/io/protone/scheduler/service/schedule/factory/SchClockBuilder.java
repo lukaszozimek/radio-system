@@ -50,7 +50,7 @@ public class SchClockBuilder {
         SchClock clock = new SchClock().sequence(schClockTemplate.getSequence()).startTime(schClockTemplate.getStartTime());
         List<SchTimeParams> schTimeParams = new ArrayList<>();
         schTimeParams.addAll(schClockTemplate.getEmissions());
-        schTimeParams.addAll(schClockTemplate.getSchClockTemplateEventTemplates());
+        schTimeParams.addAll(schClockTemplate.getChilds());
         schTimeParams = schTimeParams.stream().sorted(Comparator.comparing(SchTimeParams::getSequence)).collect(toList());
         for (int i = 0; i < schTimeParams.size(); i++) {
             if (i == 0) {

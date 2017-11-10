@@ -18,6 +18,11 @@
                                  constraintName="fk_sch_event_template_event_category_id"
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
+        <addForeignKeyConstraint baseColumnNames="grid_category_id"
+                                 baseTableName="sch_event_template"
+                                 constraintName="fk_grid_grid_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_event_template"

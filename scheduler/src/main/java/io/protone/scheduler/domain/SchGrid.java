@@ -10,20 +10,19 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
+import static io.protone.scheduler.domain.SchDiscriminators.GRID_TEMPLATE;
 
 /**
  * A Grid.
  */
 @Entity
-@Table(name = "sch_grid", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"})
-})
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchGrid extends SchBaseEntity implements Serializable {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue(GRID_TEMPLATE)
+public class SchGrid extends SchEventTemplate implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,33 +31,12 @@ public class SchGrid extends SchBaseEntity implements Serializable {
     @Column(name = "day_of_week")
     private CorDayOfWeekEnum dayOfWeek;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "short_name")
-    private String shortName;
-
     @Column(name = "default_grid")
     private Boolean defaultGrid = null;
-
-    @Column(name = "length")
-    protected Long length;
 
     @ManyToOne
     @PodamExclude
     private CorDictionary gridCategory;
-
-    @PodamExclude
-    @OneToMany(mappedBy = "schGrid",cascade = CascadeType.ALL)
-    private Set<SchGridClockTemplate> clocks = new HashSet<>();
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
-    private CorChannel channel;
 
     @Transient
     private List<SchClockTemplate> internalClockcs;
@@ -125,31 +103,6 @@ public class SchGrid extends SchBaseEntity implements Serializable {
 
     public void setGridCategory(CorDictionary gridCategory) {
         this.gridCategory = gridCategory;
-    }
-
-    public Set<SchGridClockTemplate> getClocks() {
-        return clocks;
-    }
-
-    public void setClocks(Set<SchGridClockTemplate> clocks) {
-        this.clocks = clocks;
-    }
-
-    public SchGrid clocks(Set<SchGridClockTemplate> clocks) {
-        this.clocks = clocks;
-        return this;
-    }
-
-    public SchGrid addClock(SchGridClockTemplate clock) {
-        clock.grid(this);
-        this.clocks.add(clock);
-        return this;
-    }
-
-    public SchGrid removeClock(SchGridClockTemplate clock) {
-        clock.grid(null);
-        this.clocks.remove(clock);
-        return this;
     }
 
     public CorNetwork getNetwork() {

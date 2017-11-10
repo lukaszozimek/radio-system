@@ -60,7 +60,7 @@ public class SchBlockService {
                 if (!schBlock.getBlocks().isEmpty()) {
                     schBlock.blocks(this.saveBlocks(schBlock.getBlocks(), schBlock, date));
                 }
-                schBlock.clock(entity);
+                schBlock.block(entity);
                 return schBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), schBlock, date));
             }).collect(toSet());
         }
@@ -75,7 +75,7 @@ public class SchBlockService {
                 if (!schBlock.getBlocks().isEmpty()) {
                     schBlock.blocks(this.saveBlocks(schBlock.getBlocks(), schBlock, date));
                 }
-                schBlock.clock(null);
+                schBlock.block(null);
                 schBlock.block(parentBlock);
                 schEmissionService.saveEmission(schBlock.getEmissions(), schBlock, date);
                 return schBlock;

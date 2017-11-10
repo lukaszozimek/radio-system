@@ -13,18 +13,23 @@
                                  referencedColumnNames="id"
                                  referencedTableName="sch_log_configuration"/>
 
-        <addForeignKeyConstraint baseColumnNames="clock_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_block_clock_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_clock"/>
-
-
         <addForeignKeyConstraint baseColumnNames="block_id"
                                  baseTableName="sch_block"
                                  constraintName="fk_block_block_id"
                                  referencedColumnNames="id"
                                  referencedTableName="sch_block"/>
+
+        <addForeignKeyConstraint baseColumnNames="clock_category_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_sch_clock_clock_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="cor_dictionary"/>
+
+        <addForeignKeyConstraint baseColumnNames="sch_schedule_id"
+                                 baseTableName="sch_block"
+                                 constraintName="fk_clock_sch_schedule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sch_schedule"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_block"

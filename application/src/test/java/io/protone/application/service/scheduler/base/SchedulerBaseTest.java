@@ -121,21 +121,21 @@ public class SchedulerBaseTest {
         schEventTemplateRootChild.setId(null);
         schEventTemplateRootChild.setNetwork(corNetwork);
         schEventTemplateRootChild.setChannel(corChannel);
-        schEventTemplateRootChild.addEventTemplate(schEventTemplateRootChildChild);
+      //  schEventTemplateRootChild.addEventTemplate(schEventTemplateRootChildChild);
 
         SchEventTemplate schEventTemplateRootChild1 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRootChild1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChild1.setId(null);
         schEventTemplateRootChild1.setNetwork(corNetwork);
         schEventTemplateRootChild1.setChannel(corChannel);
-        schEventTemplateRootChild1.addEventTemplate(schEventTemplateRootChildChild1);
+       // schEventTemplateRootChild1.addEventTemplate(schEventTemplateRootChildChild1);
 
         SchEventTemplate schEventTemplateRootChild2 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRootChild2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRootChild2.setId(null);
         schEventTemplateRootChild2.setNetwork(corNetwork);
         schEventTemplateRootChild2.setChannel(corChannel);
-        schEventTemplateRootChild2.addEventTemplate(schEventTemplateRootChildChild2);
+    //    schEventTemplateRootChild2.addEventTemplate(schEventTemplateRootChildChild2);
 
         ///ROOTS
         SchEventTemplate schEventTemplateRoot = factory.manufacturePojo(SchEventTemplate.class);
@@ -143,21 +143,21 @@ public class SchedulerBaseTest {
         schEventTemplateRoot.setId(null);
         schEventTemplateRoot.setNetwork(corNetwork);
         schEventTemplateRoot.setChannel(corChannel);
-        schEventTemplateRoot.addEventTemplate(schEventTemplateRootChild);
+      //  schEventTemplateRoot.addEventTemplate(schEventTemplateRootChild);
 
         SchEventTemplate schEventTemplateRoot1 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRoot1.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRoot1.setId(null);
         schEventTemplateRoot1.setNetwork(corNetwork);
         schEventTemplateRoot1.setChannel(corChannel);
-        schEventTemplateRoot1.addEventTemplate(schEventTemplateRootChild1);
+   //     schEventTemplateRoot1.addEventTemplate(schEventTemplateRootChild1);
 
         SchEventTemplate schEventTemplateRoot2 = factory.manufacturePojo(SchEventTemplate.class);
         schEventTemplateRoot2.addEmissionTemplate(buildSchEventEmissionForSchEventWithAttachment(libMediaItem, corChannel, corNetwork));
         schEventTemplateRoot2.setId(null);
         schEventTemplateRoot2.setNetwork(corNetwork);
         schEventTemplateRoot2.setChannel(corChannel);
-        schEventTemplateRoot2.addEventTemplate(schEventTemplateRootChild2);
+    //    schEventTemplateRoot2.addEventTemplate(schEventTemplateRootChild2);
         return Lists.newArrayList(Lists.newArrayList(schEventTemplateRoot, schEventTemplateRoot1, schEventTemplateRoot2));
     }
 

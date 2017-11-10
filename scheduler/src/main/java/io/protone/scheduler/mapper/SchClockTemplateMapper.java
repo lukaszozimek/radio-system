@@ -8,7 +8,10 @@ import io.protone.library.domain.LibMediaLibrary;
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.api.dto.thin.SchClockTemplateThinDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
-import org.mapstruct.*;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Context;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +22,10 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {SchEmissionTemplateMapper.class, SchEventTemplateMapper.class, CorDictionaryMapper.class, CorUserMapper.class})
 public interface SchClockTemplateMapper {
 
-    @Mapping(source = "schEventTemplateDTOS", target = "schClockTemplateEventTemplates")
+  //  @Mapping(source = "schEventTemplateDTOS", target = "schClockTemplateEventTemplates")
     SchClockTemplate DTO2DB(SchClockTemplateDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
-    @Mapping(source = "schClockTemplateEventTemplates", target = "schEventTemplateDTOS")
+    //@Mapping(source = "schClockTemplateEventTemplates", target = "schEventTemplateDTOS")
     SchClockTemplateDTO DB2DTO(SchClockTemplate entity);
 
     List<SchClockTemplateDTO> DBs2DTOs(List<SchClockTemplate> entityList);

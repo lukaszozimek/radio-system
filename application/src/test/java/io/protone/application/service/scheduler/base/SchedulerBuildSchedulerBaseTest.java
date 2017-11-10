@@ -95,7 +95,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockConfiguration()));
+     //   schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -105,7 +105,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockWithNestedEventsConfiguration()));
+    //    schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockWithNestedEventsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -116,7 +116,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-        schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
+     //   schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -142,7 +142,7 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.network(corNetwork);
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 4));
-        schClockTemplate.schEvents(buildNestedSetEventsWithLenght30minoutes(schClockTemplate));
+     //   schClockTemplate.schEvents(buildNestedSetEventsWithLenght30minoutes(schClockTemplate));
         return schClockTemplateRepository.saveAndFlush(schClockTemplate);
     }
 
@@ -155,7 +155,7 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.network(corNetwork);
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 4));
-        schClockTemplate.schEvents(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockTemplate));
+     //   schClockTemplate.schEvents(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockTemplate));
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
 
         return schClockTemplate;
@@ -200,11 +200,11 @@ public class SchedulerBuildSchedulerBaseTest {
 
 
         schEventRepository.save(schEventTemplate);
-        schEventTemplate.schEventTemplates(Lists.newArrayList(buildOprImportEvent(1, 1000000L)))
-                .emissions(Lists.newArrayList(
-                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
-                        buildEmissionWithAttachment(3, 100000L, schEventTemplate))
-                );
+//        schEventTemplate.schEventTemplates(Lists.newArrayList(buildOprImportEvent(1, 1000000L)))
+//                .emissions(Lists.newArrayList(
+//                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
+//                        buildEmissionWithAttachment(3, 100000L, schEventTemplate))
+//                );
         return schEventTemplate;
     }
 
@@ -244,13 +244,13 @@ public class SchedulerBuildSchedulerBaseTest {
 
 
         schEventRepository.save(schEventTemplate);
-        schEventTemplate.schEventTemplates(Lists.newArrayList(
-                buildEventWithEmissionAndAttachmentsLenght(300000L, schEventTemplate, 1)))
-                .emissions(Lists.newArrayList(
-                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
-                        buildEmissionWithAttachment(3, 100000L, schEventTemplate),
-                        buildEmissionWithAttachment(4, 100000L, schEventTemplate))
-                );
+//        schEventTemplate.schEventTemplates(Lists.newArrayList(
+//                buildEventWithEmissionAndAttachmentsLenght(300000L, schEventTemplate, 1)))
+//                .emissions(Lists.newArrayList(
+//                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
+//                        buildEmissionWithAttachment(3, 100000L, schEventTemplate),
+//                        buildEmissionWithAttachment(4, 100000L, schEventTemplate))
+//                );
         return schEventTemplate;
     }
 

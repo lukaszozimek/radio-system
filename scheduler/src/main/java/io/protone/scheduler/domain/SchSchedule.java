@@ -29,7 +29,7 @@ public class SchSchedule extends SchBaseEntity implements Serializable {
     private LocalDate date;
 
     @PodamExclude
-    @OneToMany(mappedBy = "schSchedule")
+    @OneToMany(mappedBy = "schSchedule", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchClock> clocks = new HashSet<>();

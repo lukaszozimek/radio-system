@@ -8,11 +8,6 @@
     -->
     <changeSet id="20170720190703-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="sch_schedule_id"
-                                 baseTableName="sch_clock"
-                                 constraintName="fk_clock_sch_schedule_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_schedule"/>
 
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_clock"
@@ -20,11 +15,7 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_network"/>
 
-        <addForeignKeyConstraint baseColumnNames="clock_category_id"
-                                 baseTableName="sch_clock"
-                                 constraintName="fk_sch_clock_clock_category_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="cor_dictionary"/>
+
 
         <addForeignKeyConstraint baseColumnNames="channel_id"
                                  baseTableName="sch_clock"

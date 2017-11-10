@@ -15,26 +15,28 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static io.protone.scheduler.domain.SchDiscriminators.BLOCK;
+
 /**
  * A Block.
  */
 @Entity
 @Table(name = "sch_block")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue(BLOCK)
 public class SchBlock extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Column(name = "name")
-    private String name;
+    protected String name;
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
     private EventTypeEnum eventType;
-
-    @PodamExclude
-    @ManyToOne
-    private SchClock clock;
 
 
     @PodamExclude
@@ -42,13 +44,13 @@ public class SchBlock extends SchTimeParams implements Serializable {
     private SchBlock block;
 
     @PodamExclude
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchBlock> blocks = new HashSet<>();
 
     @PodamExclude
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SchEmission> emissions = new HashSet<>();
@@ -105,19 +107,6 @@ public class SchBlock extends SchTimeParams implements Serializable {
 
     public SchBlock eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
-        return this;
-    }
-
-    public SchClock getClock() {
-        return clock;
-    }
-
-    public void setClock(SchClock clock) {
-        this.clock = clock;
-    }
-
-    public SchBlock clock(SchClock clock) {
-        this.clock = clock;
         return this;
     }
 
@@ -258,4 +247,6 @@ public class SchBlock extends SchTimeParams implements Serializable {
         this.id = id;
         return this;
     }
+
+
 }

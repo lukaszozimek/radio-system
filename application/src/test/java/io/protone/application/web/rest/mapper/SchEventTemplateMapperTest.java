@@ -59,9 +59,9 @@ public class SchEventTemplateMapperTest {
         schEventConfiguration.addEmissionTemplate(factory.manufacturePojo(SchEmissionTemplate.class));
         schEventConfiguration.addEmissionTemplate(factory.manufacturePojo(SchEmissionTemplate.class));
 
-        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
-        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
-        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
+//        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
+//        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
+//        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
 
         schEventConfiguration.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         schEventConfiguration.setSchLogConfiguration(factory.manufacturePojo(SchLogConfiguration.class));
