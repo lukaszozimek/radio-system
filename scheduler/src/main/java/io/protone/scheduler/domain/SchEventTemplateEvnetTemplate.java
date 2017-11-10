@@ -21,6 +21,14 @@ public class SchEventTemplateEvnetTemplate implements Serializable {
     @Column(name = "sequence")
     protected Long sequence;
 
+    public SchEventTemplateEvnetTemplateId getPk() {
+        return pk;
+    }
+
+    public void setPk(SchEventTemplateEvnetTemplateId pk) {
+        this.pk = pk;
+    }
+
     public SchEventTemplate getParent() {
         return pk.getParentTemplate();
     }
