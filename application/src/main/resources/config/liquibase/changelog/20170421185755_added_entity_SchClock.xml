@@ -22,13 +22,6 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="short_name" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="sch_schedule_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
 
             <column name="length" type="bigint">
                 <constraints nullable="true"/>
@@ -51,9 +44,7 @@
             <column name="relative_delay" type="bigint">
                 <constraints nullable="true"/>
             </column>
-            <column name="clock_category_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
+
             <column name="network_id" type="bigint">
                 <constraints nullable="false" />
             </column>

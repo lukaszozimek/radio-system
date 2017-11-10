@@ -3,48 +3,31 @@ package io.protone.scheduler.domain;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static io.protone.scheduler.domain.SchDiscriminators.CLOCK_TEMPLATE;
 
 /**
  * A Clock.
  */
 @Entity
-@Table(name = "sch_clock_template")
+@DiscriminatorValue(CLOCK_TEMPLATE)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClockTemplate extends SchClockBase implements Serializable {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class SchClockTemplate extends SchEventTemplate implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
-    @OneToMany(cascade = CascadeType.ALL)
-    @ElementCollection
-    @JoinTable(
-            name = "sch_clock_sch_emission",
-            joinColumns = {@JoinColumn(name = "emission_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "clock_id", referencedColumnName = "id")})
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<SchEmissionTemplate> emissions = new ArrayList<>();
-
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "sch_clock_sch_event",
-            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "clock_id", referencedColumnName = "id")})
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @BatchSize(size = 20)
-    @ElementCollection
-    @PodamExclude
-    private List<SchEventTemplate> schClockTemplateEventTemplates = new ArrayList<>();
+    private CorDictionary clockCategory;
 
     public Long getId() {
         return id;
@@ -67,7 +50,7 @@ public class SchClockTemplate extends SchClockBase implements Serializable {
     }
 
     public List<SchEmissionTemplate> getEmissions() {
-        return emissions;
+        return super.getEmissions();
     }
 
     public void setEmissions(List<SchEmissionTemplate> emissions) {
@@ -150,27 +133,16 @@ public class SchClockTemplate extends SchClockBase implements Serializable {
     }
 
     public SchClockTemplate clockCategory(CorDictionary corDictionary) {
-        super.setClockCategory(corDictionary);
+        this.clockCategory = corDictionary;
         return this;
     }
 
 
-    public List<SchEventTemplate> getSchClockTemplateEventTemplates() {
-        return schClockTemplateEventTemplates;
+    public CorDictionary getClockCategory() {
+        return clockCategory;
     }
 
-    public void setSchClockTemplateEventTemplates(List<SchEventTemplate> schClockTemplateEventTemplates) {
-        this.schClockTemplateEventTemplates = schClockTemplateEventTemplates;
+    public void setClockCategory(CorDictionary clockCategory) {
+        this.clockCategory = clockCategory;
     }
-
-    public SchClockTemplate schEvents(List<SchEventTemplate> schEventTemplates) {
-        this.schClockTemplateEventTemplates = schEventTemplates;
-        return this;
-    }
-
-    public SchClockTemplate addSchEvent(SchEventTemplate schEventsTemplate) {
-        this.schClockTemplateEventTemplates.add(schEventsTemplate);
-        return this;
-    }
-
 }

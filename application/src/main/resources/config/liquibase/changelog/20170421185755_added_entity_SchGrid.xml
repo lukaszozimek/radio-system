@@ -19,9 +19,6 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="day_of_week" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
 
             <column name="name" type="varchar(255)">
                 <constraints nullable="true"/>
@@ -31,12 +28,6 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="default_grid" type="boolean">
-                <constraints nullable="true"/>
-            </column>
-            <column name="grid_category_id" type="bigint">
-                <constraints nullable="true"/>
-            </column>
             <column name="sequence" type="bigint">
                 <constraints nullable="true"/>
             </column>

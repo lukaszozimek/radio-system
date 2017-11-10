@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,7 +16,7 @@ public class SchTimeParams extends SchBaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "sequence")
+    @Transient
     protected Long sequence;
 
     @Column(name = "start_time")

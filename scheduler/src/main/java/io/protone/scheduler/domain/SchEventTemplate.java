@@ -14,38 +14,39 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static io.protone.scheduler.domain.SchDiscriminators.EVENT_TEMPLATE;
 
 /**
  * A SchEventTemplate.
  */
 @Entity
 @Table(name = "sch_event_template")
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(EVENT_TEMPLATE)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Column(name = "name")
-    private String name;
+    protected String name;
 
     @Column(name = "instance")
-    private Boolean instance = false;
+    protected Boolean instance = false;
 
     @Column(name = "short_name", unique = false, nullable = false)
-    private String shortName;
+    protected String shortName;
 
     @ManyToOne
     @PodamExclude
-    private CorDictionary eventCategory;
+    protected CorDictionary eventCategory;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "sch_event_sch_event",
-            joinColumns = {@JoinColumn(name = "child_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "parent_id", referencedColumnName = "id")})
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pk.parentTemplate")
     @ElementCollection
     @PodamExclude
-    private List<SchEventTemplate> schEventTemplates = new ArrayList<>();
+    protected List<SchEventTemplateEvnetTemplate> schEventTemplates = new ArrayList<>();
 
     @Transient
     @PodamExclude
@@ -60,25 +61,25 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<SchEmissionTemplate> emissions = new ArrayList<>();
+    protected List<SchEmissionTemplate> emissions = new ArrayList<>();
 
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")
-    private EventTypeEnum eventType;
+    protected EventTypeEnum eventType;
 
     @PodamExclude
     @ManyToOne
-    private SchLogConfiguration schLogConfiguration;
+    protected SchLogConfiguration schLogConfiguration;
 
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    protected CorNetwork network;
 
     @ManyToOne
     @PodamExclude
-    private CorChannel channel;
+    protected CorChannel channel;
 
     public Long getId() {
         return id;
@@ -121,11 +122,11 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     }
 
 
-    public List<SchEventTemplate> getSchEventTemplates() {
+    public List<SchEventTemplateEvnetTemplate> getSchEventTemplates() {
         return schEventTemplates;
     }
 
-    public void setSchEventTemplates(List<SchEventTemplate> schEventTemplates) {
+    public void setSchEventTemplates(List<SchEventTemplateEvnetTemplate> schEventTemplates) {
         this.schEventTemplates = schEventTemplates;
     }
 
@@ -188,7 +189,11 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchEventTemplate schEventTemplates(List<SchEventTemplate> collect) {
+    public List<SchEventTemplate> getChilds() {
+        return this.schEventTemplates.stream().map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild()).collect(Collectors.toList());
+    }
+
+    public SchEventTemplate schEventTemplates(List<SchEventTemplateEvnetTemplate> collect) {
         this.schEventTemplates = collect;
         return this;
     }
@@ -198,7 +203,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchEventTemplate addEventTemplate(SchEventTemplate schEventTemplate) {
+    public SchEventTemplate addEventTemplate(SchEventTemplateEvnetTemplate schEventTemplate) {
         this.schEventTemplates.add(schEventTemplate);
         return this;
     }

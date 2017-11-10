@@ -1,7 +1,7 @@
 package io.protone.scheduler.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.protone.core.domain.CorChannel;
+import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -10,9 +10,10 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import static io.protone.scheduler.domain.SchDiscriminators.CLOCK;
 
 /**
  * A Clock.
@@ -20,7 +21,9 @@ import java.util.Set;
 @Entity
 @Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchClock extends SchClockBase implements Serializable {
+@DiscriminatorValue(CLOCK)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class SchClock extends SchBlock implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,17 +31,13 @@ public class SchClock extends SchClockBase implements Serializable {
     @ManyToOne
     private SchSchedule schSchedule;
 
-    @PodamExclude
-    @OneToMany(mappedBy = "clock")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchBlock> blocks = new HashSet<>();
 
+    @Column(name = "short_name", unique = false, nullable = false)
+    protected String shortName;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @PodamExclude
-    @OneToMany(mappedBy = "clock")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private CorDictionary clockCategory;
 
 
     public Long getId() {
@@ -50,8 +49,16 @@ public class SchClock extends SchClockBase implements Serializable {
     }
 
     public SchClock shortName(String shortName) {
-        super.setShortName(shortName);
+        this.shortName = shortName;
         return this;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public SchClock name(String name) {
@@ -74,48 +81,48 @@ public class SchClock extends SchClockBase implements Serializable {
 
 
     public Set<SchBlock> getBlocks() {
-        return blocks;
+        return super.getBlocks();
     }
 
     public void setBlocks(Set<SchBlock> blocks) {
-        this.blocks = blocks;
+        super.setBlocks(blocks);
     }
 
     public SchClock blocks(Set<SchBlock> blocks) {
-        this.blocks = blocks;
+        super.setBlocks(blocks);
         return this;
     }
 
     public SchClock addBlock(SchBlock block) {
-        this.blocks.add(block);
+        super.getBlocks().add(block);
         return this;
     }
 
     public SchClock removeBlock(SchBlock block) {
-        this.blocks.remove(block);
+        super.getBlocks().remove(block);
         return this;
     }
 
     public Set<SchEmission> getEmissions() {
-        return emissions;
+        return super.getEmissions();
     }
 
     public void setEmissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
+        super.setEmissions(emissions);
     }
 
     public SchClock emissions(Set<SchEmission> emissions) {
-        this.emissions = emissions;
+        super.setEmissions(emissions);
         return this;
     }
 
     public SchClock addEmission(SchEmission emission) {
-        this.emissions.add(emission);
+        super.getEmissions().add(emission);
         return this;
     }
 
     public SchClock removeEmission(SchEmission emission) {
-        this.emissions.remove(emission);
+        super.getEmissions().remove(emission);
         return this;
     }
 
@@ -190,14 +197,19 @@ public class SchClock extends SchClockBase implements Serializable {
                 ", schSchedule=" + schSchedule +
                 ", sequence=" + sequence +
                 ", length=" + length +
-                ", blocks=" + blocks +
-                ", emissions=" + emissions +
-
                 '}';
     }
 
     public SchClock schedule(SchSchedule finalEntity) {
         this.schSchedule = finalEntity;
         return this;
+    }
+
+    public CorDictionary getClockCategory() {
+        return clockCategory;
+    }
+
+    public void setClockCategory(CorDictionary clockCategory) {
+        this.clockCategory = clockCategory;
     }
 }

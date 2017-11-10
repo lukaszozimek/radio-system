@@ -1,0 +1,15 @@
+package io.protone.scheduler.domain;
+
+/**
+ * Created by lukaszozimek on 09/11/2017.
+ */
+public final class SchDiscriminators {
+    public static final String DYSCRYMINATOR_COLUMN = "type";
+    public static final String CLOCK_TEMPLATE = "C";
+    public static final String EVENT_TEMPLATE = "E";
+    public static final String GRID_TEMPLATE = "G";
+    public static final String CLOCK = "CB";
+    public static final String BLOCK = "B";
+
+
+}

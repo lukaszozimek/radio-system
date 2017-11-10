@@ -1,6 +1,5 @@
 package io.protone.scheduler.service;
 
-import com.google.common.collect.Sets;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
@@ -22,8 +21,6 @@ public class SchGridService {
     @Inject
     private SchGridRepository schGridRepository;
 
-    @Inject
-    private SchGridClockTemplateService schGridClockTemplateService;
 
     @Inject
     private SchGridMapper schGridMapper;
@@ -32,8 +29,6 @@ public class SchGridService {
     public SchGrid saveGrid(SchGrid schGrid) {
         SchGrid beforeSave;
         beforeSave = schGridRepository.saveAndFlush(schGrid);
-        beforeSave.setClocks(Sets.newHashSet());
-        beforeSave.clocks(schGridClockTemplateService.saveGridClockConfiguration(schGrid.getClocks(), beforeSave));
         return schGridRepository.saveAndFlush(beforeSave);
     }
 

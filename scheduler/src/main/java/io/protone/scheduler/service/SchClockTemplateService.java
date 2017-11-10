@@ -1,6 +1,5 @@
 package io.protone.scheduler.service;
 
-import com.google.common.collect.Lists;
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
 import io.protone.scheduler.mapper.SchClockTemplateMapper;
@@ -66,10 +65,6 @@ public class SchClockTemplateService {
 
     @Transactional
     public void deleteSchClockConfigurationByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        SchClockTemplate schClock = schClockTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
-        schEmissionTemplateService.deleteEmissions(schClock.getEmissions());
-        schClock.setEmissions(Lists.newArrayList());
-        schClock.setSchClockTemplateEventTemplates(Lists.newArrayList());
-        schClockTemplateRepository.delete(schClock);
+
     }
 }
