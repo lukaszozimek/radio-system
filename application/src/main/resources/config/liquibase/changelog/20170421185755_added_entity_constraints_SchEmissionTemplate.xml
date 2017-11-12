@@ -21,7 +21,7 @@
                                  referencedColumnNames="id"
                                  referencedTableName="lib_media_item"/>
 
-        <addForeignKeyConstraint baseColumnNames="event_template_id"
+        <addForeignKeyConstraint baseColumnNames="sch_event_template_id"
                                  baseTableName="sch_emission_template"
                                  constraintName="fk_emission_template_event_template_id"
                                  referencedColumnNames="id"

@@ -4,6 +4,7 @@ import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
+import io.protone.scheduler.repository.SchEventTemplateEvnetTemplateRepostiory;
 import io.protone.scheduler.repository.SchGridRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+import static java.util.stream.Collectors.toList;
+
 
 @Service
 public class SchGridService {
@@ -21,15 +24,19 @@ public class SchGridService {
     @Inject
     private SchGridRepository schGridRepository;
 
-
     @Inject
     private SchGridMapper schGridMapper;
 
+    @Inject
+    private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
+
     @Transactional
     public SchGrid saveGrid(SchGrid schGrid) {
-        SchGrid beforeSave;
-        beforeSave = schGridRepository.saveAndFlush(schGrid);
-        return schGridRepository.saveAndFlush(beforeSave);
+        schGrid.setSchEventTemplates(schGrid.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
+            schEventTemplateEvnetTemplate.parent(schGrid).child(schEventTemplateEvnetTemplate.getChild());
+            return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
+        }).collect(toList()));
+        return schGridRepository.saveAndFlush(schGrid);
     }
 
     @Transactional(readOnly = true)
@@ -61,6 +68,7 @@ public class SchGridService {
     public void deleteSchGridByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, String shortName) {
         schGridRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
     }
+
     @Transactional(readOnly = true)
     public SchGrid findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(String networkShortcut, String channelShortcut, Boolean defaultGrid, CorDayOfWeekEnum corDayOfWeekEnum) {
         return this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, defaultGrid, corDayOfWeekEnum);

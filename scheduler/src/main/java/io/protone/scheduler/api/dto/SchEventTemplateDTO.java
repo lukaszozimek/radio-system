@@ -238,4 +238,9 @@ public class SchEventTemplateDTO extends SchTemplateTimeParamsDTO implements Ser
     public void setInstance(Boolean instance) {
         isInstance = instance;
     }
+
+    public SchEventTemplateDTO sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 }

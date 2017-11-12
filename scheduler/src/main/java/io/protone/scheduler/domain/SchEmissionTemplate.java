@@ -14,11 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
+import static io.protone.scheduler.domain.SchDiscriminators.EMISSION_TEMPLATE;
+
 /**
  * A SchEmissionTemplate.
  */
 @Entity
 @Table(name = "sch_emission_template")
+@DiscriminatorColumn(name = DYSCRYMINATOR_COLUMN, discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(EMISSION_TEMPLATE)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchEmissionTemplate extends SchTimeParams implements Serializable {
 
@@ -26,13 +31,17 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
 
     @PodamExclude
     @ManyToOne
-    private LibMediaItem mediaItem;
-
-    @Column(name = "instance")
-    private Boolean isInstance = false;
+    private SchEventTemplate schEventTemplate;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission",cascade = CascadeType.ALL)
+    @ManyToOne
+    protected LibMediaItem mediaItem;
+
+    @Column(name = "instance")
+    protected Boolean isInstance = false;
+
+    @PodamExclude
+    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL)
     @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -40,11 +49,11 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    protected CorNetwork network;
 
     @ManyToOne
     @PodamExclude
-    private CorChannel channel;
+    protected CorChannel channel;
 
 
     public Long getId() {
@@ -84,6 +93,13 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
+    public SchEventTemplate getSchEventTemplate() {
+        return schEventTemplate;
+    }
+
+    public void setSchEventTemplate(SchEventTemplate schEventTemplate) {
+        this.schEventTemplate = schEventTemplate;
+    }
 
     public List<SchAttachmentTemplate> getAttachments() {
         return attachments;

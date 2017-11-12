@@ -19,7 +19,6 @@ import static io.protone.scheduler.domain.SchDiscriminators.CLOCK;
  * A Clock.
  */
 @Entity
-@Table(name = "sch_clock", uniqueConstraints = @UniqueConstraint(columnNames = {"channel_id", "short_name", "network_id"}))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @DiscriminatorValue(CLOCK)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

@@ -19,14 +19,44 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="attachement_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="fade_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="attachment_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="varchar(31)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="fade_start" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="clock_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="fade_in_length" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="volume_level" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="fade_out_length" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="emission_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
             <column name="sequence" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="instance" type="boolean">
                 <constraints nullable="false"/>
-            </column>
-            <column name="clock_id" type="bigint">
-                <constraints nullable="true"/>
             </column>
             <column name="media_item_id" type="bigint">
                 <constraints  nullable="true"/>
@@ -51,7 +81,7 @@
             <column name="network_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="event_template_id" type="bigint">
+            <column name="sch_event_template_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="channel_id" type="bigint">

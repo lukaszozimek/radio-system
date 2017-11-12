@@ -304,16 +304,8 @@
     <include file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibArtist_LibImageItem.xml"
              relativeToChangelogFile="false"/>
 
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchAttachment.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchAttachmentTemplate.xml"
-             relativeToChangelogFile="false"/>
-
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchBlock.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchClock.xml"
-             relativeToChangelogFile="false"/>
-
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEmission.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchEmissionTemplate.xml"
@@ -334,25 +326,16 @@
 
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_SchSchedule.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchAttachment.xml"
-             relativeToChangelogFile="false"/>
-    <include
-            file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchAttachmentTemplate.xml"
-            relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchBlock.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchClock.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmission.xml"
              relativeToChangelogFile="false"/>
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEmissionTemplate.xml"
             relativeToChangelogFile="false"/>
-
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchEventTemplate.xml"
             relativeToChangelogFile="false"/>
-
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchLog.xml"
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchLogConfiguration.xml"
@@ -363,10 +346,12 @@
              relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170421185755_added_entity_constraints_SchPlaylist.xml"
              relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_SchSchedule.xml"
-             relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_SchPlaylist.xml"
-             relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_SchSchedule.xml"
+            relativeToChangelogFile="false"/>
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_compsite_key_entity_constraints_SchPlaylist.xml"
+            relativeToChangelogFile="false"/>
 
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_LibMediaItem_TraAdvertisment.xml"
@@ -378,12 +363,6 @@
     <include
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchEventTemplate_SchEventTemplate.xml"
             relativeToChangelogFile="false"/>
-    <include
-            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchEvent_SchEmissionTemplate.xml"
-            relativeToChangelogFile="false"/>
-
-
-
 
 
     <changeSet id="" author="lozimek">

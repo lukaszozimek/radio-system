@@ -18,7 +18,7 @@
         <createTable tableName="sch_event_sch_event">
 
             <column name="sequence" type="bigint">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="parent_id" type="bigint">
                 <constraints nullable="false"/>
@@ -28,7 +28,7 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <addPrimaryKey columnNames="parent_id, child_id" tableName="sch_event_sch_event"/>
+        <addPrimaryKey columnNames="sequence,parent_id, child_id" tableName="sch_event_sch_event"/>
 
     </changeSet>
 </databaseChangeLog>

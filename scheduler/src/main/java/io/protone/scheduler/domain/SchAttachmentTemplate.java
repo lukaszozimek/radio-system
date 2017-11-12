@@ -14,18 +14,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static io.protone.scheduler.domain.SchDiscriminators.ATTACHMENT_TEMPLATE;
+
 /**
  * A SchAttachmentTemplate.
  */
 @Entity
-@Table(name = "sch_attachment_template")
+@DiscriminatorValue(ATTACHMENT_TEMPLATE)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachmentTemplate extends SchTimeParams implements Serializable {
+public class SchAttachmentTemplate extends SchEmissionTemplate implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Column(name = "instance")
-    private Boolean isInstance = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attachment_type")
@@ -49,21 +48,10 @@ public class SchAttachmentTemplate extends SchTimeParams implements Serializable
     @Column(name = "fade_type")
     private FadeTypeEnum fadeType;
 
-    @PodamExclude
-    @ManyToOne
-    private LibMediaItem mediaItem;
 
     @PodamExclude
     @ManyToOne
     private SchEmissionTemplate emission;
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
-    private CorChannel channel;
 
 
     public Long getId() {

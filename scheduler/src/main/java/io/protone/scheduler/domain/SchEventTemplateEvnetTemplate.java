@@ -18,8 +18,6 @@ public class SchEventTemplateEvnetTemplate implements Serializable {
     @EmbeddedId
     private SchEventTemplateEvnetTemplateId pk = new SchEventTemplateEvnetTemplateId();
 
-    @Column(name = "sequence")
-    protected Long sequence;
 
     public SchEventTemplateEvnetTemplateId getPk() {
         return pk;
@@ -45,16 +43,27 @@ public class SchEventTemplateEvnetTemplate implements Serializable {
         this.pk.setChildTemplate(parent);
     }
 
+    public SchEventTemplateEvnetTemplate child(SchEventTemplate parent) {
+        this.pk.setChildTemplate(parent);
+        return this;
+    }
+
+    public SchEventTemplateEvnetTemplate parent(SchEventTemplate parent) {
+        this.pk.setParentTemplate(parent);
+        return this;
+    }
+
+
     public Long getSequence() {
-        return sequence;
+        return pk.getSequence();
     }
 
     public void setSequence(Long sequence) {
-        this.sequence = sequence;
+        pk.setSequence(sequence);
     }
 
     public SchEventTemplateEvnetTemplate sequence(Long sequence) {
-        this.sequence = sequence;
+        pk.setSequence(sequence);
         return this;
     }
 }
