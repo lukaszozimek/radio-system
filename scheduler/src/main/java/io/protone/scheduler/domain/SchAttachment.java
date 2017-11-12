@@ -14,13 +14,18 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static io.protone.scheduler.domain.SchDiscriminators.ATTACHMENT;
+import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
+
 /**
  * A Attachment.
  */
 @Entity
-@Table(name = "sch_attachment")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = DYSCRYMINATOR_COLUMN, discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(ATTACHMENT)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class SchAttachment extends SchTimeParams implements Serializable {
+public class SchAttachment extends SchEmission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,16 +58,6 @@ public class SchAttachment extends SchTimeParams implements Serializable {
     @PodamExclude
     @ManyToOne
     private SchEmission emission;
-
-
-    @ManyToOne
-    @PodamExclude
-    private CorNetwork network;
-
-    @ManyToOne
-    @PodamExclude
-    private CorChannel channel;
-
 
     public Long getId() {
         return id;

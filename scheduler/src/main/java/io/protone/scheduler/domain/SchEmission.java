@@ -15,11 +15,16 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
+import static io.protone.scheduler.domain.SchDiscriminators.EMISSION;
+
 /**
  * A Emission.
  */
 @Entity
 @Table(name = "sch_emission")
+@DiscriminatorColumn(name = DYSCRYMINATOR_COLUMN, discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(EMISSION)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchEmission extends SchTimeParams implements Serializable {
 
@@ -31,26 +36,26 @@ public class SchEmission extends SchTimeParams implements Serializable {
 
     @PodamExclude
     @ManyToOne
-    private SchClock clock;
+    private SchBlock clock;
 
     @PodamExclude
     @ManyToOne(cascade = CascadeType.PERSIST)
     private LibMediaItem mediaItem;
 
     @Column(name = "finished")
-    private boolean finished;
+    protected boolean finished;
 
     @Column(name = "wasPlayed")
-    private boolean wasPlayed;
+    protected boolean wasPlayed;
 
     @Column(name = "isPlaying")
-    private boolean isPlaying;
+    protected boolean isPlaying;
 
     @Column(name = "isRemoved")
-    private boolean isRemoved;
+    protected boolean isRemoved;
 
     @Column(name = "wasSkiped")
-    private boolean wasSkiped;
+    protected boolean wasSkiped;
 
     @PodamExclude
     @OneToMany(mappedBy = "emission", cascade = CascadeType.MERGE)
@@ -64,11 +69,11 @@ public class SchEmission extends SchTimeParams implements Serializable {
 
     @ManyToOne
     @PodamExclude
-    private CorNetwork network;
+    protected CorNetwork network;
 
     @ManyToOne
     @PodamExclude
-    private CorChannel channel;
+    protected CorChannel channel;
 
     @Transient
     @JsonIgnore
@@ -113,11 +118,11 @@ public class SchEmission extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchClock getClock() {
+    public SchBlock getClock() {
         return clock;
     }
 
-    public void setClock(SchClock clock) {
+    public void setClock(SchBlock clock) {
         this.clock = clock;
     }
 

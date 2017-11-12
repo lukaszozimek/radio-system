@@ -7,10 +7,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 import static io.protone.scheduler.domain.SchDiscriminators.CLOCK_TEMPLATE;
 
@@ -20,7 +22,6 @@ import static io.protone.scheduler.domain.SchDiscriminators.CLOCK_TEMPLATE;
 @Entity
 @DiscriminatorValue(CLOCK_TEMPLATE)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class SchClockTemplate extends SchEventTemplate implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -92,34 +93,33 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
     }
 
 
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SchClockTemplate clock = (SchClockTemplate) o;
-        if (clock.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), clock.getId());
+        if (this == o) return true;
+        if (!(o instanceof SchEventTemplate)) return false;
+        SchClockTemplate that = (SchClockTemplate) o;
+        return com.google.common.base.Objects.equal(getName(), that.getName()) &&
+                com.google.common.base.Objects.equal(getId(), that.getId()) &&
+                com.google.common.base.Objects.equal(getInstance(), that.getInstance()) &&
+                com.google.common.base.Objects.equal(getShortName(), that.getShortName()) &&
+                com.google.common.base.Objects.equal(getEventCategory(), that.getEventCategory()) &&
+                com.google.common.base.Objects.equal(getSchEventTemplates(), that.getSchEventTemplates()) &&
+                com.google.common.base.Objects.equal(getEmissionsLog(), that.getEmissionsLog()) &&
+                com.google.common.base.Objects.equal(getEmissions(), that.getEmissions()) &&
+                getEventType() == that.getEventType() &&
+                com.google.common.base.Objects.equal(getSchLogConfiguration(), that.getSchLogConfiguration()) &&
+                com.google.common.base.Objects.equal(getNetwork(), that.getNetwork()) &&
+                com.google.common.base.Objects.equal(getChannel(), that.getChannel()) &&
+                com.google.common.base.Objects.equal(getSequence(), that.getSequence());
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return com.google.common.base.Objects.hashCode(getId(), getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getNetwork(), getChannel());
     }
 
-
-    @Override
-    public String toString() {
-        return "SchClock{" +
-                "id=" + id +
-                ", emissions=" + emissions +
-                '}';
-    }
 
 
     public SchClockTemplate length(Long length) {

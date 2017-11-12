@@ -4,6 +4,7 @@ import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
 import io.protone.scheduler.mapper.SchClockTemplateMapper;
 import io.protone.scheduler.repository.SchClockTemplateRepository;
+import io.protone.scheduler.repository.SchEventTemplateEvnetTemplateRepostiory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -24,22 +27,25 @@ public class SchClockTemplateService {
     @Inject
     private SchClockTemplateRepository schClockTemplateRepository;
 
+
     @Inject
     private SchEventTemplateService schEventService;
 
     @Inject
     private SchEmissionTemplateService schEmissionTemplateService;
-
+    @Inject
+    private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
     @Inject
     private SchClockTemplateMapper schClockTemplateMapper;
 
     @Transactional
     public SchClockTemplateDTO saveClockConfiguration(SchClockTemplate schClockTemplate) {
-        schClockTemplateRepository.saveAndFlush(schClockTemplate);
-//        beforeSave.setSchClockTemplateEventTemplates(Lists.newArrayList());
-//        beforeSave.setEmissions(Lists.newArrayList());
-//        schEmissionTemplateService.saveEmissionClock(schClockTemplate.getEmissions()).stream().forEach(schEmissionConfiguration -> beforeSave.addEmission(schEmissionConfiguration));
-//        schClockTemplateRepository.saveAndFlush(beforeSave);
+
+        schClockTemplate.setSchEventTemplates(schClockTemplate.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
+            schEventTemplateEvnetTemplate.parent(schClockTemplate).child(schEventService.saveEventConfiguration(schEventTemplateEvnetTemplate.getChild()));
+            return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
+        }).collect(toList()));
+        schClockTemplateRepository.save(schClockTemplate);
         return findDTOSchClockConfigurationForNetworkAndChannelAndShortName(schClockTemplate.getNetwork().getShortcut(), schClockTemplate.getChannel().getShortcut(), schClockTemplate.getShortName());
     }
 

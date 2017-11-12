@@ -5,6 +5,7 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.domain.SchEventTemplate;
 import io.protone.scheduler.repository.SchEventTemplateRepository;
 import io.protone.scheduler.service.SchEventTemplateService;
@@ -119,7 +120,7 @@ public class SchEventTemplateServiceTest {
         schEventConfiguration = schEventTemplateRepository.saveAndFlush(schEventConfiguration);
         //then
         schEventTemplateService.deleteSchEventTemplateByNetworkAndChannelAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName());
-        SchEventTemplate fetchedEntity = schEventTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstance(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName(), false);
+        SchEventTemplate fetchedEntity = schEventTemplateRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndInstanceAndType(corNetwork.getShortcut(), corChannel.getShortcut(), schEventConfiguration.getShortName(), false, SchDiscriminators.EVENT_TEMPLATE);
 
         //assert
         assertNull(fetchedEntity);

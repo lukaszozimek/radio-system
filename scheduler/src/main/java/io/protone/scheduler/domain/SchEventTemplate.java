@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
 import static io.protone.scheduler.domain.SchDiscriminators.EVENT_TEMPLATE;
 
 /**
@@ -23,7 +24,7 @@ import static io.protone.scheduler.domain.SchDiscriminators.EVENT_TEMPLATE;
  */
 @Entity
 @Table(name = "sch_event_template")
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = DYSCRYMINATOR_COLUMN, discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(EVENT_TEMPLATE)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchEventTemplate extends SchTimeParams implements Serializable {
@@ -32,6 +33,10 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     @Column(name = "name")
     protected String name;
+
+
+    @Column(name = "type", insertable = false, updatable = false, nullable = false)
+    protected String type;
 
     @Column(name = "instance")
     protected Boolean instance = false;
@@ -43,8 +48,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     @PodamExclude
     protected CorDictionary eventCategory;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pk.parentTemplate")
-    @ElementCollection
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate")
     @PodamExclude
     protected List<SchEventTemplateEvnetTemplate> schEventTemplates = new ArrayList<>();
 
@@ -53,11 +57,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     private List<SchEmission> emissionsLog = new ArrayList<>();
 
     @PodamExclude
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "sch_event_sch_emission",
-            joinColumns = {@JoinColumn(name = "emission_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")})
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schEventTemplate")
     @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -259,12 +259,21 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SchEventTemplate)) return false;
         SchEventTemplate that = (SchEventTemplate) o;
         return Objects.equal(getName(), that.getName()) &&
+                Objects.equal(getId(), that.getId()) &&
                 Objects.equal(getInstance(), that.getInstance()) &&
                 Objects.equal(getShortName(), that.getShortName()) &&
                 Objects.equal(getEventCategory(), that.getEventCategory()) &&
@@ -281,7 +290,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getNetwork(), getChannel());
+        return Objects.hashCode(getId(), getName(), getSequence(), getInstance(), getShortName(), getEventCategory(), getSchEventTemplates(), getEmissionsLog(), getEmissions(), getEventType(), getSchLogConfiguration(), getNetwork(), getChannel());
     }
 
 

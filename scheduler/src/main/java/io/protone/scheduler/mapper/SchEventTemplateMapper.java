@@ -1,5 +1,6 @@
 package io.protone.scheduler.mapper;
 
+import com.google.common.collect.Lists;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
@@ -7,10 +8,13 @@ import io.protone.core.mapper.CorUserMapper;
 import io.protone.scheduler.api.dto.SchEventTemplateDTO;
 import io.protone.scheduler.api.dto.thin.SchEventTemplateThinDTO;
 import io.protone.scheduler.domain.SchEventTemplate;
+import io.protone.scheduler.domain.SchEventTemplateEvnetTemplate;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by lukaszozimek on 30/08/2017.
@@ -19,7 +23,6 @@ import java.util.List;
 public interface SchEventTemplateMapper {
     List<SchEventTemplateThinDTO> DBs2ThinDTOs(List<SchEventTemplate> schClockList);
 
-    @Mapping(source = "schEventTemplateDTOS", target = "schEventTemplates")
     SchEventTemplate DTO2DB(SchEventTemplateDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 
     @Mapping(source = "schEventTemplates", target = "schEventTemplateDTOS")
@@ -40,6 +43,11 @@ public interface SchEventTemplateMapper {
 
     @AfterMapping
     default void schEventConfigurationDTOToSchEventConfigurationAfterMapping(SchEventTemplateDTO dto, @MappingTarget SchEventTemplate entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+        List<SchEventTemplateEvnetTemplate> schEventTemplateEvnetTemplates = Lists.newArrayList();
+        if (dto.getSchEventTemplateDTOS() != null && !dto.getSchEventTemplateDTOS().isEmpty()) {
+            schEventTemplateEvnetTemplates = dto.getSchEventTemplateDTOS().stream().map(schEventTemplateDTO -> new SchEventTemplateEvnetTemplate().child(this.DTO2DB(schEventTemplateDTO, network, corChannel)).parent(entity).sequence(schEventTemplateDTO.getSequence())).collect(toList());
+        }
+        entity.setSchEventTemplates(schEventTemplateEvnetTemplates);
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }
