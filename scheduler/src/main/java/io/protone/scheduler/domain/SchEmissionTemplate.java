@@ -41,7 +41,7 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     protected Boolean isInstance = false;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL, orphanRemoval = true)
     @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -187,4 +187,8 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     }
 
 
+    public SchEmissionTemplate scheventTemplate(SchEventTemplate entity) {
+        this.schEventTemplate = entity;
+        return this;
+    }
 }

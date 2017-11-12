@@ -7,6 +7,7 @@ import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.scheduler.api.dto.SchAttachmentTemplateDTO;
 import io.protone.scheduler.domain.SchAttachmentTemplate;
+import io.protone.scheduler.domain.SchEmissionTemplate;
 import io.protone.scheduler.mapper.SchAttachmentTemplateMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,7 @@ public class SchAttachmentTemplateMapperTest {
     private List<SchAttachmentTemplateDTO> attachmentDTOs = new ArrayList<>();
     private CorNetwork network;
     private CorChannel corChannel;
+    private SchEmissionTemplate schEmissionTemplate;
 
     @Before
     public void initPojos() {
@@ -51,6 +53,7 @@ public class SchAttachmentTemplateMapperTest {
         attachment.setMediaItem(factory.manufacturePojo(LibMediaItem.class));
         attachments.add(attachment);
         attachmentDTO = factory.manufacturePojo(SchAttachmentTemplateDTO.class);
+        schEmissionTemplate = factory.manufacturePojo(SchEmissionTemplate.class);
         attachmentDTO.setMediaItem(factory.manufacturePojo(LibMediaItemThinDTO.class));
         attachmentDTOs.add(attachmentDTO);
     }
@@ -93,7 +96,7 @@ public class SchAttachmentTemplateMapperTest {
 
     @Test
     public void DTO2DB() throws Exception {
-        SchAttachmentTemplate entity = schAttachmentTemplateMapper.DTO2DB(attachmentDTO, network, corChannel);
+        SchAttachmentTemplate entity = schAttachmentTemplateMapper.DTO2DB(attachmentDTO, network, corChannel, schEmissionTemplate);
 
         assertNotNull(entity.getAttachmentType());
         assertNotNull(entity.getFadeInLength());
@@ -113,7 +116,7 @@ public class SchAttachmentTemplateMapperTest {
 
     @Test
     public void toEntities() throws Exception {
-        List<SchAttachmentTemplate> entities = schAttachmentTemplateMapper.DTOs2DBs(attachmentDTOs, network, corChannel);
+        List<SchAttachmentTemplate> entities = schAttachmentTemplateMapper.DTOs2DBs(attachmentDTOs, network, corChannel, schEmissionTemplate);
 
         assertNotNull(entities);
         assertEquals(entities.size(), 1);

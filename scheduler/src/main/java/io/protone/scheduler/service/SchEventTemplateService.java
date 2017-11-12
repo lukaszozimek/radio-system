@@ -4,6 +4,8 @@ import io.protone.scheduler.api.dto.SchEventTemplateDTO;
 import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.domain.SchEventTemplate;
 import io.protone.scheduler.mapper.SchEventTemplateMapper;
+import io.protone.scheduler.repository.SchAttachmentTemplateRepository;
+import io.protone.scheduler.repository.SchEmissionTemplateRepository;
 import io.protone.scheduler.repository.SchEventTemplateEvnetTemplateRepostiory;
 import io.protone.scheduler.repository.SchEventTemplateRepository;
 import org.slf4j.Logger;
@@ -25,6 +27,12 @@ public class SchEventTemplateService {
     private final Logger log = LoggerFactory.getLogger(SchEventTemplateService.class);
     @Inject
     private SchEventTemplateRepository eventRepository;
+
+    @Inject
+    private SchEmissionTemplateRepository schEmissionTemplateRepository;
+
+    @Inject
+    private SchAttachmentTemplateRepository schAttachmentTemplateRepository;
 
     @Inject
     private SchEmissionTemplateService schEmissionTemplateService;
@@ -49,18 +57,34 @@ public class SchEventTemplateService {
     @Transactional
     public SchEventTemplate saveEventConfiguration(SchEventTemplate schEventConfiguration) {
 
+        if (schEventConfiguration.getId() != null) {
+            deleteEmission(schEventConfiguration.getId());
+        }
         if (schEventConfiguration.getSchEventTemplates() != null && !schEventConfiguration.getSchEventTemplates().isEmpty()) {
             schEventConfiguration.setSchEventTemplates(schEventConfiguration.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
+
                 if (schEventTemplateEvnetTemplate.getChild().getSchEventTemplates() != null && !schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().isEmpty()) {
                     schEventTemplateEvnetTemplate.child(saveEventConfiguration(schEventTemplateEvnetTemplate.getChild()));
+                }
+                if (schEventConfiguration.getId() == null) {
+                    eventRepository.saveAndFlush(schEventConfiguration);
+                } else {
+                    schEventTemplateEvnetTemplateRepostiory.deleteAllByPk_ParentTemplate_Id(schEventTemplateEvnetTemplate.getParent().getId());
                 }
                 schEventTemplateEvnetTemplate.sequence(schEventTemplateEvnetTemplate.getSequence()).parent(schEventConfiguration).child(eventRepository.saveAndFlush(schEventTemplateEvnetTemplate.getChild()));
                 return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
             }).collect(Collectors.toList()));
         }
         eventRepository.saveAndFlush(schEventConfiguration);
-
         return schEventConfiguration;
+    }
+
+    private void deleteEmission(Long id) {
+        SchEventTemplate schEventTemplate = eventRepository.findOne(id);
+        schEventTemplate.getEmissions().stream().forEach(schEmissionTemplate -> {
+            schAttachmentTemplateRepository.delete(schEmissionTemplate.getAttachments());
+        });
+        schEmissionTemplateRepository.delete(schEventTemplate.getEmissions());
     }
 
     @Transactional

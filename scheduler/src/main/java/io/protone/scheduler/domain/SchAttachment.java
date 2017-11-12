@@ -15,14 +15,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import static io.protone.scheduler.domain.SchDiscriminators.ATTACHMENT;
-import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
 
 /**
  * A Attachment.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = DYSCRYMINATOR_COLUMN, discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(ATTACHMENT)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SchAttachment extends SchEmission implements Serializable {
