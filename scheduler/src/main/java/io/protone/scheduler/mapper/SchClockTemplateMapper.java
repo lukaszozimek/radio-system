@@ -62,6 +62,7 @@ public interface SchClockTemplateMapper {
         if (dto.getSchEventTemplateDTOS() != null && !dto.getSchEventTemplateDTOS().isEmpty()) {
             entity.setSchEventTemplates(dto.getSchEventTemplateDTOS().stream().map(schEventTemplateDTO -> new SchEventTemplateEvnetTemplate().child(this.DTO2DB(schEventTemplateDTO, network, corChannel)).parent(entity).sequence(schEventTemplateDTO.getSequence())).collect(toList()));
         }
+        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.scheventTemplate(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }
@@ -72,6 +73,8 @@ public interface SchClockTemplateMapper {
         if (dto.getSchEventTemplateDTOS() != null && !dto.getSchEventTemplateDTOS().isEmpty()) {
             schEventTemplateEvnetTemplates = dto.getSchEventTemplateDTOS().stream().map(schEventTemplateDTO -> new SchEventTemplateEvnetTemplate().child(this.DTO2DB(schEventTemplateDTO, network, corChannel)).parent(entity).sequence(schEventTemplateDTO.getSequence())).collect(toList());
         }
+        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.scheventTemplate(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
+
         entity.setSchEventTemplates(schEventTemplateEvnetTemplates);
         entity.setNetwork(network);
         entity.setChannel(corChannel);

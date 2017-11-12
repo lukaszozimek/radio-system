@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Mapper for the entity Emission and its DTO EmissionDTO.
  */
-@Mapper(componentModel = "spring", uses = {SchClockTemplateMapper.class, LibMediaItemThinMapper.class, SchEventTemplateMapper.class, SchAttachmentTemplateMapper.class})
+@Mapper(componentModel = "spring", uses = {LibMediaItemThinMapper.class, SchAttachmentTemplateMapper.class})
 public interface SchEmissionTemplateMapper {
     SchEmissionTemplate DTO2DB(SchEmissionTemplateDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
 

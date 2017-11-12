@@ -57,7 +57,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     private List<SchEmission> emissionsLog = new ArrayList<>();
 
     @PodamExclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schEventTemplate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schEventTemplate", orphanRemoval = true)
     @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -199,6 +199,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     }
 
     public SchEventTemplate addEmissionTemplate(SchEmissionTemplate schEmissionTemplate) {
+        schEmissionTemplate.setSchEventTemplate(this);
         this.emissions.add(schEmissionTemplate);
         return this;
     }
@@ -234,7 +235,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchEventTemplate sequence(long sequence) {
+    public SchEventTemplate sequence(Long sequence) {
         this.sequence = sequence;
         return this;
     }
