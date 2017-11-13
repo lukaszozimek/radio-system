@@ -55,37 +55,68 @@ public class SchEventTemplateService {
     }
 
     @Transactional
+    public SchEventTemplate saveEventConfigurationInClockContext(SchEventTemplate schEventConfiguration) {
+        if (schEventConfiguration.getInstance().equals(true)) {
+            if (schEventConfiguration.getId() != null) {
+                schEventConfiguration.setId(null);
+                schEventConfiguration.getEmissions().stream().forEach(schEmissionTemplate -> {
+                    schEmissionTemplate.setId(null);
+                    schEmissionTemplate.getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.setId(null));
+                });
+            }
+            eventRepository.saveAndFlush(schEventConfiguration);
+            if (schEventConfiguration.getSchEventTemplates() != null && !schEventConfiguration.getSchEventTemplates().isEmpty()) {
+                schEventConfiguration.setSchEventTemplates(schEventConfiguration.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
+
+                    if (schEventTemplateEvnetTemplate.getChild().getSchEventTemplates() != null && !schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().isEmpty()) {
+                        schEventTemplateEvnetTemplate.child(saveEventConfigurationInClockContext(schEventTemplateEvnetTemplate.getChild()));
+                    }
+                    if (schEventTemplateEvnetTemplate.getChild().getInstance().equals(true) && (schEventTemplateEvnetTemplate.getChild().getSchEventTemplates() == null || schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().isEmpty())) {
+                        if (schEventConfiguration.getId() != null) {
+                            schEventConfiguration.setId(null);
+                            schEventConfiguration.getEmissions().stream().forEach(schEmissionTemplate -> {
+                                schEmissionTemplate.setId(null);
+                                schEmissionTemplate.getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.setId(null));
+                            });
+                        }
+                        schEventTemplateEvnetTemplate.setChild(eventRepository.saveAndFlush(schEventTemplateEvnetTemplate.getChild()));
+                        schEventTemplateEvnetTemplate.sequence(schEventTemplateEvnetTemplate.getSequence()).parent(schEventConfiguration).child(schEventTemplateEvnetTemplate.getChild());
+                    } else {
+                        schEventTemplateEvnetTemplate.sequence(schEventTemplateEvnetTemplate.getSequence()).parent(schEventConfiguration).child(schEventTemplateEvnetTemplate.getChild());
+                    }
+                    return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
+                }).collect(Collectors.toList()));
+            }
+        }
+        return schEventConfiguration;
+    }
+
+    @Transactional
     public SchEventTemplate saveEventConfiguration(SchEventTemplate schEventConfiguration) {
-
-        if (schEventConfiguration.getId() != null) {
-            deleteEmission(schEventConfiguration.getId());
-        }
-        if (schEventConfiguration.getSchEventTemplates() != null && !schEventConfiguration.getSchEventTemplates().isEmpty()) {
-            schEventConfiguration.setSchEventTemplates(schEventConfiguration.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
-
-                if (schEventTemplateEvnetTemplate.getChild().getSchEventTemplates() != null && !schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().isEmpty()) {
-                    schEventTemplateEvnetTemplate.child(saveEventConfiguration(schEventTemplateEvnetTemplate.getChild()));
-                }
-                if (schEventConfiguration.getId() == null) {
-                    eventRepository.saveAndFlush(schEventConfiguration);
-                } else {
-                    schEventTemplateEvnetTemplateRepostiory.deleteAllByPk_ParentTemplate_Id(schEventTemplateEvnetTemplate.getParent().getId());
-                }
-                schEventTemplateEvnetTemplate.sequence(schEventTemplateEvnetTemplate.getSequence()).parent(schEventConfiguration).child(eventRepository.saveAndFlush(schEventTemplateEvnetTemplate.getChild()));
-                return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
-            }).collect(Collectors.toList()));
-        }
         eventRepository.saveAndFlush(schEventConfiguration);
         return schEventConfiguration;
     }
 
-    private void deleteEmission(Long id) {
-        SchEventTemplate schEventTemplate = eventRepository.findOne(id);
-        schEventTemplate.getEmissions().stream().forEach(schEmissionTemplate -> {
-            schAttachmentTemplateRepository.delete(schEmissionTemplate.getAttachments());
-        });
-        schEmissionTemplateRepository.delete(schEventTemplate.getEmissions());
+    @Transactional
+    public void removeEvent(Long id) {
+        if (id != null) {
+            SchEventTemplate schEventTemplate = eventRepository.findOne(id);
+            if (schEventTemplate.getInstance().equals(true)) {
+                if (schEventTemplate.getSchEventTemplates() != null && !schEventTemplate.getSchEventTemplates().isEmpty()) {
+                    schEventTemplate.getSchEventTemplates().stream().forEach(schEventTemplateEvnetTemplate -> {
+                        if (schEventTemplateEvnetTemplate.getChild().getSchEventTemplates() != null && !schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().isEmpty()) {
+                            removeEvent(schEventTemplateEvnetTemplate.getChild().getId());
+                        }
+                        schEventTemplateEvnetTemplateRepostiory.delete(schEventTemplateEvnetTemplate);
+                    });
+                }
+                eventRepository.delete(schEventTemplate);
+            }
+            eventRepository.flush();
+            schEventTemplateEvnetTemplateRepostiory.flush();
+        }
     }
+
 
     @Transactional
     public void deleteSchEventTemplateByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {

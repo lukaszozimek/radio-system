@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
 import static io.protone.scheduler.domain.SchDiscriminators.EVENT_TEMPLATE;
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * A SchEventTemplate.
@@ -57,7 +58,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     private List<SchEmission> emissionsLog = new ArrayList<>();
 
     @PodamExclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "schEventTemplate", orphanRemoval = true)
+    @OneToMany(cascade = ALL, mappedBy = "schEventTemplate", orphanRemoval = true)
     @ElementCollection
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
