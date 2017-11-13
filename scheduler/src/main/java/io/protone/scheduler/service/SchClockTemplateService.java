@@ -40,9 +40,11 @@ public class SchClockTemplateService {
 
     @Transactional
     public SchClockTemplateDTO saveClockConfiguration(SchClockTemplate schClockTemplate) {
-
+        schClockTemplate.getSchEventTemplates().stream().forEach(schEventTemplateEvnetTemplate -> {
+            schEventService.removeEvent(schEventTemplateEvnetTemplate.getChild().getId());
+        });
         schClockTemplate.setSchEventTemplates(schClockTemplate.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
-            schEventTemplateEvnetTemplate.parent(schClockTemplate).child(schEventService.saveEventConfiguration(schEventTemplateEvnetTemplate.getChild()));
+            schEventTemplateEvnetTemplate.parent(schClockTemplate).child(schEventService.saveEventConfigurationInClockContext(schEventTemplateEvnetTemplate.getChild()));
             return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
         }).collect(toList()));
         schClockTemplateRepository.save(schClockTemplate);
