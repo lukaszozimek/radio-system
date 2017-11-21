@@ -6,6 +6,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchBlock;
+import io.protone.scheduler.domain.SchBlockSchBlock;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchBlockMapper;
 import org.junit.Before;
@@ -51,8 +52,8 @@ public class SchBlockMapperTest {
         // Fill entity instance
         block = factory.manufacturePojo(SchBlock.class);
 
-        SchBlock childBlock = factory.manufacturePojo(SchBlock.class);
-        childBlock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ childBlock
+        SchBlockSchBlock childBlock = factory.manufacturePojo(SchBlockSchBlock.class);
+        childBlock.getChild().addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ childBlock
 
         block.addBlock(childBlock);
 

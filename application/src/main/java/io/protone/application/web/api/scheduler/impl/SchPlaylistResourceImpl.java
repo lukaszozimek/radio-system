@@ -8,6 +8,7 @@ import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
+import io.protone.scheduler.api.dto.SchBlockChainDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.api.dto.thin.SchPlaylistThinDTO;
@@ -150,6 +151,15 @@ public class SchPlaylistResourceImpl implements SchPlaylistResource {
                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                          @ApiParam(value = "from", required = true) @PathVariable("from") Long from,
                                                                          @ApiParam(value = "to", required = true) @PathVariable("to") Long to) {
+        return null;
+    }
+
+
+    @Override
+    public   ResponseEntity<SchBlockChainDTO> getPlaylistBlock(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                      @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                                      @PathVariable("id") Long id) {
         return null;
     }
 

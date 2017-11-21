@@ -93,7 +93,6 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,7 +120,6 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
     }
 
 
-
     public SchClockTemplate length(Long length) {
         this.length = length;
         return this;
@@ -144,5 +142,10 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
 
     public void setClockCategory(CorDictionary clockCategory) {
         this.clockCategory = clockCategory;
+    }
+
+    public SchEventTemplate id(Long id) {
+        this.id = id;
+        return this;
     }
 }

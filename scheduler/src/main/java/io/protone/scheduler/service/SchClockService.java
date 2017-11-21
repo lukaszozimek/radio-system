@@ -28,7 +28,6 @@ public class SchClockService {
     public SchClock saveClock(SchClock schClock, LocalDate date) {
         log.debug("Save Clock");
         schClock.emissions(schEmissionService.saveEmission(schClock.getEmissions(), schClock, date));
-        schClock.blocks(schBlockService.saveBlocks(schClock.getBlocks(), schClock, date));
         return schClock;
     }
 
@@ -57,7 +56,7 @@ public class SchClockService {
         if (schClocks != null && !schClocks.isEmpty()) {
             schClocks.stream().forEach(schClock -> {
                 this.schEmissionService.deleteEmissions(schClock.getEmissions());
-                this.schBlockService.deleteBlock(schClock.getBlocks());
+                //      this.schBlockService.deleteBlock(schClock.getBlocks());
             });
         }
         schClockRepository.deleteAllBySchSchedule_Id(scheduleId);

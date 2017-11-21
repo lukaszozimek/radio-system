@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.scheduler.api.dto.SchGridDTO;
+import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
 import io.protone.scheduler.repository.SchEventTemplateEvnetTemplateRepostiory;
@@ -31,46 +32,47 @@ public class SchGridService {
     private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
 
     @Transactional
-    public SchGrid saveGrid(SchGrid schGrid) {
+    public SchGridDTO saveGrid(SchGrid schGrid) {
         schGrid.setSchEventTemplates(schGrid.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> {
             schEventTemplateEvnetTemplate.parent(schGrid).child(schEventTemplateEvnetTemplate.getChild());
             return schEventTemplateEvnetTemplateRepostiory.saveAndFlush(schEventTemplateEvnetTemplate);
         }).collect(toList()));
-        return schGridRepository.saveAndFlush(schGrid);
+        schGridRepository.saveAndFlush(schGrid);
+        return findSchGridForNetworkAndChannelAndShortNameDTO(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schGrid.getShortName());
     }
 
     @Transactional(readOnly = true)
     public Slice<SchGrid> findSchGridsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return schGridRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pageable);
+        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndEventType(networkShortcut, channelShortcut, SchDiscriminators.GRID_TEMPLATE, pageable);
     }
 
     @Transactional(readOnly = true)
     public Slice<SchGrid> findAllDefaultGrids(String networkShortcut, String channelShortcut, Pageable pageable) {
-        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGrid(networkShortcut, channelShortcut, true, pageable);
+        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndEventType(networkShortcut, channelShortcut, true, SchDiscriminators.GRID_TEMPLATE, pageable);
     }
 
     @Transactional(readOnly = true)
     public Slice<SchGrid> findAllGridsByCategoryNaem(String networkShortcut, String channelShortcut, String categoryName, Pageable pageable) {
-        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_Name(networkShortcut, channelShortcut, categoryName, pageable);
+        return schGridRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_NameAndEventType(networkShortcut, channelShortcut, categoryName, SchDiscriminators.GRID_TEMPLATE, pageable);
     }
 
     @Transactional(readOnly = true)
     public SchGridDTO findSchGridForNetworkAndChannelAndShortNameDTO(String networkShortcut, String channelShortcut, String shortName) {
-        return schGridMapper.DB2DTO(schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName));
+        return schGridMapper.DB2DTO(schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(networkShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE));
     }
 
     @Transactional(readOnly = true)
     public SchGrid findSchGridForNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        return schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(networkShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE);
     }
 
     @Transactional
     public void deleteSchGridByNetworkAndChannelAndShortNAme(String networkShortcut, String channelShortcut, String shortName) {
-        schGridRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
+        schGridRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(networkShortcut, channelShortcut, shortName, SchDiscriminators.GRID_TEMPLATE);
     }
 
     @Transactional(readOnly = true)
     public SchGrid findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(String networkShortcut, String channelShortcut, Boolean defaultGrid, CorDayOfWeekEnum corDayOfWeekEnum) {
-        return this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, defaultGrid, corDayOfWeekEnum);
+        return this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndEventType(networkShortcut, channelShortcut, defaultGrid, corDayOfWeekEnum, SchDiscriminators.GRID_TEMPLATE);
     }
 }

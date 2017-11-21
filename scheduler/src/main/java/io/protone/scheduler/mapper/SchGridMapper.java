@@ -1,21 +1,31 @@
 package io.protone.scheduler.mapper;
 
+import com.google.common.collect.Lists;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.core.mapper.CorDictionaryMapper;
 import io.protone.core.mapper.CorUserMapper;
+import io.protone.library.domain.LibMediaLibrary;
+import io.protone.scheduler.api.dto.SchClockTemplateDTO;
+import io.protone.scheduler.api.dto.SchEventTemplateDTO;
+import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
+import io.protone.scheduler.domain.SchClockTemplate;
+import io.protone.scheduler.domain.SchEventTemplate;
+import io.protone.scheduler.domain.SchEventTemplateEvnetTemplate;
 import io.protone.scheduler.domain.SchGrid;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 /**
  * Mapper for the entity Grid and its DTO GridDTO.
  */
-@Mapper(componentModel = "spring", uses = { CorDictionaryMapper.class, CorUserMapper.class})
+@Mapper(componentModel = "spring", uses = {CorDictionaryMapper.class, SchEmissionTemplateMapper.class, CorUserMapper.class})
 public interface SchGridMapper {
     @Mapping(source = "defaultGrid", target = "defaultGrid")
     SchGrid DTO2DB(SchGridDTO dto, @Context CorNetwork network, @Context CorChannel corChannel);
@@ -41,10 +51,47 @@ public interface SchGridMapper {
     @Mapping(source = "defaultGrid", target = "defaultGrid")
     SchGridThinDTO DB2ThinDTO(SchGrid schClockList);
 
+    SchEventTemplateDTO DB2DTO(SchEventTemplate entity);
+
+    SchClockTemplateDTO DB2DTO(SchClockTemplate entity);
+
+    default String map(LibMediaLibrary value) {
+        return null;
+    }
 
     @AfterMapping
     default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity, @Context CorNetwork network, @Context CorChannel corChannel) {
+        if (dto.getClocks() != null && !dto.getClocks().isEmpty()) {
+            entity.schEventTemplates(dto.getClocks().stream().map(schGridClockConfigurationDTO -> new SchEventTemplateEvnetTemplate().parent(entity).sequence(schGridClockConfigurationDTO.getSequence()).child(new SchClockTemplate().id(schGridClockConfigurationDTO.getSchClockTemplateDTO().getId()))).collect(toList()));
+        }
         entity.setNetwork(network);
         entity.setChannel(corChannel);
+    }
+
+    @AfterMapping
+    default void schGridToSchGridDTOAfterMapping(@MappingTarget SchGridDTO dto, SchGrid entity) {
+        dto.clocks(entity.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> new SchGridClockConfigurationDTO().sequence(schEventTemplateEvnetTemplate.getSequence())
+                .schClockTemplateDTO(this.DB2DTO((SchClockTemplate) schEventTemplateEvnetTemplate.getChild()))).collect(toList()));
+    }
+
+    @AfterMapping
+    default SchClockTemplateDTO schClockTemplateToSchClockTemplateDTOAfterMapping(SchClockTemplate entity, @MappingTarget SchClockTemplateDTO dto) {
+        List<SchEventTemplateDTO> schEventTemplateEvnetTemplates = Lists.newArrayList();
+        if (entity.getSchEventTemplates() != null && !entity.getSchEventTemplates().isEmpty()) {
+            schEventTemplateEvnetTemplates = entity.getSchEventTemplates().stream()
+                    .map(eventTemplateEvnetTemplateRFunction -> this.DB2DTO(eventTemplateEvnetTemplateRFunction.getChild()).sequence(eventTemplateEvnetTemplateRFunction.getSequence())).collect(toList());
+        }
+        dto.setSchEventTemplateDTOS(schEventTemplateEvnetTemplates);
+        return dto;
+    }
+
+    @AfterMapping
+    default void schEventTemplateToSchEventConfigurationDTOAfterMapping(SchEventTemplate entity, @MappingTarget SchEventTemplateDTO dto) {
+        List<SchEventTemplateDTO> schEventTemplateEvnetTemplates = Lists.newArrayList();
+        if (entity.getSchEventTemplates() != null && !entity.getSchEventTemplates().isEmpty()) {
+            schEventTemplateEvnetTemplates = entity.getSchEventTemplates().stream()
+                    .map(eventTemplateEvnetTemplateRFunction -> this.DB2DTO(eventTemplateEvnetTemplateRFunction.getChild()).sequence(eventTemplateEvnetTemplateRFunction.getSequence())).collect(toList());
+        }
+        dto.setSchEventTemplateDTOS(schEventTemplateEvnetTemplates);
     }
 }

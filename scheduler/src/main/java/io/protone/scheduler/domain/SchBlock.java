@@ -11,9 +11,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static io.protone.scheduler.domain.SchDiscriminators.BLOCK;
 
@@ -39,15 +37,10 @@ public class SchBlock extends SchTimeParams implements Serializable {
     private EventTypeEnum eventType;
 
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate", cascade = CascadeType.ALL)
     @PodamExclude
-    @ManyToOne
-    private SchBlock block;
+    protected List<SchBlockSchBlock> blocks = new ArrayList<>();
 
-    @PodamExclude
-    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchBlock> blocks = new HashSet<>();
 
     @PodamExclude
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
@@ -110,38 +103,26 @@ public class SchBlock extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchBlock getBlock() {
-        return block;
-    }
 
-    public void setBlock(SchBlock block) {
-        this.block = block;
-    }
-
-    public SchBlock block(SchBlock block) {
-        this.block = block;
-        return this;
-    }
-
-    public Set<SchBlock> getBlocks() {
+    public List<SchBlockSchBlock> getBlocks() {
         return blocks;
     }
 
-    public void setBlocks(Set<SchBlock> blocks) {
+    public void setBlocks(List<SchBlockSchBlock> blocks) {
         this.blocks = blocks;
     }
 
-    public SchBlock blocks(Set<SchBlock> blocks) {
+    public SchBlock blocks(List<SchBlockSchBlock> blocks) {
         this.blocks = blocks;
         return this;
     }
 
-    public SchBlock addBlock(SchBlock block) {
+    public SchBlock addBlock(SchBlockSchBlock block) {
         this.blocks.add(block);
         return this;
     }
 
-    public SchBlock removeBlock(SchBlock block) {
+    public SchBlock removeBlock(SchBlockSchBlock block) {
         this.blocks.remove(block);
         return this;
     }

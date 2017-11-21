@@ -1,6 +1,7 @@
 package io.protone.application.web.api.scheduler;
 
 
+import io.protone.scheduler.api.dto.SchBlockChainDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
 import io.protone.scheduler.api.dto.thin.SchPlaylistThinDTO;
@@ -66,7 +67,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                       @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                      @ApiParam(value = "date", required = true) @PathVariable("date")  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
+                                                                      @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
     @ApiOperation(value = "deleteSchedulerPlaylistElementForChannel", notes = "", response = Void.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -80,7 +81,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteSchedulerPlaylistElementForChannelUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                              @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
+                                                                             @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                              @ApiParam(value = "seqNumber", required = true) @PathVariable("seqNumber") Long seqNumber);
 
 
@@ -95,7 +96,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.GET)
     ResponseEntity<SchPlaylistDTO> getSchedulerPlaylistForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                           @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date);
+                                                                          @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
     @ApiOperation(value = "getSchedulerPlaylistElementForChannel", notes = "", response = SchEmissionDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -108,7 +109,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.GET)
     ResponseEntity<SchEmissionDTO> getSchedulerPlaylistElementForChannelUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
+                                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                                  @ApiParam(value = "seqNumber", required = true) @PathVariable("seqNumber") Long seqNumber);
 
 
@@ -139,9 +140,23 @@ public interface SchPlaylistResource {
             method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> moveElementInPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                   @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
+                                                                  @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                   @ApiParam(value = "from", required = true) @PathVariable("from") Long from,
                                                                   @ApiParam(value = "to", required = true) @PathVariable("to") Long to);
+
+    @ApiOperation(value = "moveSchedulerChannelPlaylistElement", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 201, message = "Created", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 401, message = "Unauthorized", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 403, message = "Forbidden", response = SchPlaylistDTO.class),
+            @ApiResponse(code = 404, message = "Not Found", response = SchPlaylistDTO.class)})
+    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/scheduler/playlist/{date}/block/{id}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<SchBlockChainDTO> getPlaylistBlock(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
+                                                      @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
+                                                      @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @PathVariable("id") Long id);
 
     @ApiOperation(value = "addSchedulerChannelPlaylistElement", notes = "", response = SchPlaylistDTO.class, tags = {"SCHEDULER",})
     @ApiResponses(value = {
@@ -154,7 +169,7 @@ public interface SchPlaylistResource {
             method = RequestMethod.POST)
     ResponseEntity<SchPlaylistDTO> addElementInPlaylistUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                  @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate date,
+                                                                 @ApiParam(value = "date", required = true) @PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                                  @ApiParam(value = "seqNumber", required = true) @PathVariable("seqNumber") Long seqNumber, @RequestBody SchEmissionDTO emissionDTO);
 
 
