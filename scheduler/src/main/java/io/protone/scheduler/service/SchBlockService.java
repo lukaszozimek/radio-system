@@ -13,8 +13,6 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
-
 
 @Service
 public class SchBlockService {
@@ -55,32 +53,33 @@ public class SchBlockService {
 
     @Transactional
     public Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchClock entity, LocalDate date) {
-        if (blocks != null && !blocks.isEmpty()) {
-            return blocks.stream().map(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    schBlock.blocks(this.saveBlocks(schBlock.getBlocks(), schBlock, date));
-                }
-                schBlock.block(entity);
-                return schBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), schBlock, date));
-            }).collect(toSet());
-        }
+//        if (blocks != null && !blocks.isEmpty()) {
+//            return blocks.stream().map(schBlock -> {
+//                if (!schBlock.getBlocks().isEmpty()) {
+//                    schBlock.blocks(this.saveBlocks(schBlock.getBlocks(), schBlock, date));
+//                }
+//                schBlock.block(entity);
+//                return schBlock.emissions(schEmissionService.saveEmission(schBlock.getEmissions(), schBlock, date));
+//            }).collect(toSet());
+//        }
         return Sets.newHashSet();
+
     }
 
 
     @Transactional
     private Set<SchBlock> saveBlocks(Set<SchBlock> blocks, SchBlock parentBlock, LocalDate date) {
-        if (blocks != null && !blocks.isEmpty()) {
-            return blocks.stream().map(schBlock -> {
-                if (!schBlock.getBlocks().isEmpty()) {
-                    schBlock.blocks(this.saveBlocks(schBlock.getBlocks(), schBlock, date));
-                }
-                schBlock.block(null);
-                schBlock.block(parentBlock);
-                schEmissionService.saveEmission(schBlock.getEmissions(), schBlock, date);
-                return schBlock;
-            }).collect(toSet());
-        }
+//        if (blocks != null && !blocks.isEmpty()) {
+//            return blocks.stream().map(schBlock -> {
+//                if (!schBlock.getBlocks().isEmpty()) {
+//                    schBlock.blocks(this.saveBlocks(schBlock.getBlocks(), schBlock, date));
+//                }
+//                schBlock.block(null);
+//                schBlock.block(parentBlock);
+//                schEmissionService.saveEmission(schBlock.getEmissions(), schBlock, date);
+//                return schBlock;
+//            }).collect(toSet());
+//        }
         return Sets.newHashSet();
     }
 }

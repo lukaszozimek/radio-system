@@ -60,4 +60,14 @@ public class SchGridClockConfigurationDTO {
                 ", schClockTemplateDTO=" + schClockTemplateDTO +
                 '}';
     }
+
+    public SchGridClockConfigurationDTO sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
+
+    public SchGridClockConfigurationDTO schClockTemplateDTO(SchClockTemplateDTO child) {
+        this.schClockTemplateDTO = child;
+        return this;
+    }
 }

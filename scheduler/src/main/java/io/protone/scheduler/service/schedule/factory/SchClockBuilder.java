@@ -59,7 +59,7 @@ public class SchClockBuilder {
                     SchBlock schBlockDTO = schClockBlockMapper.buildBlocks((SchEventTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).endTime(schBlockDTO.getEndTime());
                     clock.endTime(schBlockDTO.getEndTime());
-                    clock.addBlock(schBlockDTO);
+                    clock.addBlock(new SchBlockSchBlock().parent(clock).child(schBlockDTO));
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(clock.getStartTime());
@@ -79,7 +79,7 @@ public class SchClockBuilder {
                         schTimeParams.get(i).endTime(schTimeParams.get(i).getStartTime());
                         clock.endTime(schTimeParams.get(i).getStartTime());
                     }
-                    clock.addBlock(schBlock);
+                    clock.addBlock(new SchBlockSchBlock().parent(clock).child(schBlock));
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());

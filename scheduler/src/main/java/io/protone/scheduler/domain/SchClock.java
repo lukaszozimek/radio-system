@@ -79,29 +79,6 @@ public class SchClock extends SchBlock implements Serializable {
     }
 
 
-    public Set<SchBlock> getBlocks() {
-        return super.getBlocks();
-    }
-
-    public void setBlocks(Set<SchBlock> blocks) {
-        super.setBlocks(blocks);
-    }
-
-    public SchClock blocks(Set<SchBlock> blocks) {
-        super.setBlocks(blocks);
-        return this;
-    }
-
-    public SchClock addBlock(SchBlock block) {
-        super.getBlocks().add(block);
-        return this;
-    }
-
-    public SchClock removeBlock(SchBlock block) {
-        super.getBlocks().remove(block);
-        return this;
-    }
-
     public Set<SchEmission> getEmissions() {
         return super.getEmissions();
     }

@@ -9,10 +9,7 @@ import io.protone.library.domain.LibFileItem;
 import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.service.LibFileItemService;
 import io.protone.scheduler.api.dto.SchPlaylistDTO;
-import io.protone.scheduler.domain.SchGrid;
-import io.protone.scheduler.domain.SchLog;
-import io.protone.scheduler.domain.SchPlaylist;
-import io.protone.scheduler.domain.SchSchedule;
+import io.protone.scheduler.domain.*;
 import io.protone.scheduler.repository.SchGridRepository;
 import io.protone.scheduler.repository.SchLogConfigurationRepository;
 import io.protone.scheduler.repository.SchLogRepository;
@@ -105,7 +102,7 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
         when(libFileItemService.download(schLogOprFile)).thenReturn(IOUtils.toByteArray(oprLogStream));
         LocalDate localDate = LocalDate.of(2017, 8, 26);
         schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
-        SchGrid schGrid = this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeek(corNetwork.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()));
+        SchGrid schGrid = this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndEventType(corNetwork.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), SchDiscriminators.GRID_TEMPLATE);
 
         //then
         SchSchedule schSchedule = schScheduleService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());

@@ -9,6 +9,7 @@ import io.protone.scheduler.api.dto.SchBlockDTO;
 import io.protone.scheduler.api.dto.SchClockDTO;
 import io.protone.scheduler.api.dto.SchEmissionDTO;
 import io.protone.scheduler.domain.SchBlock;
+import io.protone.scheduler.domain.SchBlockSchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.mapper.SchClockMapper;
@@ -55,9 +56,9 @@ public class SchClockMapperTest {
         // Fill entity
         clock = factory.manufacturePojo(SchClock.class);
 
-        clock.addBlock(sampleBlock()); //Block 1 @ clock
-        clock.addBlock(sampleBlock()); //Block 2 @ clock
-        clock.addBlock(sampleBlock()); //Block 3 @ clock
+        clock.addBlock(new SchBlockSchBlock().parent(clock).child(sampleBlock())); //Block 1 @ clock
+        clock.addBlock(new SchBlockSchBlock().parent(clock).child(sampleBlock())); //Block 2 @ clock
+        clock.addBlock(new SchBlockSchBlock().parent(clock).child(sampleBlock())); //Block 3 @ clock
 
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ clock
         clock.addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 2 @ clock

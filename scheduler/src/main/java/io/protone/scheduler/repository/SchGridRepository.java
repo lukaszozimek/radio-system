@@ -11,16 +11,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SchGridRepository extends JpaRepository<SchGrid, Long> {
 
-    Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
+    Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_ShortcutAndEventType(String networkShortCut, String channelShortcut, String eventType, Pageable pageable);
 
-    Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_Name(String networkShortCut, String channelShortcut, String categoryName, Pageable pageable);
+    Slice<SchGrid> findAllByNetwork_ShortcutAndChannel_ShortcutAndGridCategory_NameAndEventType(String networkShortCut, String channelShortcut, String categoryName, String eventType, Pageable pageable);
 
-    Slice<SchGrid> findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGrid(String networkShortcut, String channelShortcut, Boolean defaultGrid, Pageable pageable);
+    Slice<SchGrid> findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndEventType(String networkShortcut, String channelShortcut, Boolean defaultGrid, String eventType, Pageable pageable);
 
-    SchGrid findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+    SchGrid findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(String networkShortcut, String channelShortcut, String shortName, String eventType);
 
 
-    SchGrid findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeek(String networkShortcut, String channelShortcut, Boolean defaultGrid, CorDayOfWeekEnum corDayOfWeekEnum);
+    SchGrid findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndEventType(String networkShortcut, String channelShortcut, Boolean defaultGrid, CorDayOfWeekEnum corDayOfWeekEnum, String eventType);
 
-    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortName(String networkShortcut, String channelShortcut, String shortName);
+    void deleteByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(String networkShortcut, String channelShortcut, String shortName, String eventType);
 }

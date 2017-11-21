@@ -364,6 +364,10 @@
             file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchEventTemplate_SchEventTemplate.xml"
             relativeToChangelogFile="false"/>
 
+    <include
+            file="classpath:config/liquibase/changelog/20170421185755_added_join_tabel_SchBlock_SchBlock.xml"
+            relativeToChangelogFile="false"/>
+
 
     <changeSet id="" author="lozimek">
 

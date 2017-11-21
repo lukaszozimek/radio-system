@@ -5,6 +5,8 @@ import io.protone.application.web.api.cor.CorNetworkResourceIntTest;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
+import io.protone.scheduler.api.dto.SchGridDTO;
+import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.repository.SchGridRepository;
 import io.protone.scheduler.service.SchGridService;
@@ -122,12 +124,11 @@ public class SchGridServiceTest {
         schGrid.setNetwork(corNetwork);
         schGrid.setChannel(corChannel);
         //then
-        SchGrid fetchedEntity = schGridService.saveGrid(schGrid);
+        SchGridDTO fetchedEntity = schGridService.saveGrid(schGrid);
 
         //assert
         assertNotNull(fetchedEntity);
         assertNotNull(fetchedEntity.getId());
-        assertEquals(schGrid.getNetwork(), fetchedEntity.getNetwork());
     }
 
     @Test
@@ -139,7 +140,7 @@ public class SchGridServiceTest {
         schGrid = schGridRepository.saveAndFlush(schGrid);
         //then
         schGridService.deleteSchGridByNetworkAndChannelAndShortNAme(corNetwork.getShortcut(), corChannel.getShortcut(), schGrid.getShortName());
-        SchGrid fetchedEntity = schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(corNetwork.getShortcut(), corChannel.getShortcut(), schGrid.getShortName());
+        SchGrid fetchedEntity = schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(corNetwork.getShortcut(), corChannel.getShortcut(), schGrid.getShortName(), SchDiscriminators.GRID_TEMPLATE);
 
         //assert
         assertNull(fetchedEntity);

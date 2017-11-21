@@ -143,13 +143,13 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
         assertEquals(3, schSchedule.getClocks().stream().findFirst().get().getBlocks().size());
         schSchedule.getClocks().stream().findFirst().get().getBlocks().stream().forEach(block -> {
-            assertEquals(1, block.getBlocks().size());
-            assertNotNull(block.getChannel());
-            assertNotNull(block.getNetwork());
-            block.getBlocks().stream().forEach(nestedBlock -> {
-                assertTrue(nestedBlock.getBlocks().isEmpty());
-                assertEquals(3, nestedBlock.getEmissions().size());
-                nestedBlock.getEmissions().stream().forEach(emissionsInNestedBlock -> {
+            assertEquals(1, block.getChild().getBlocks().size());
+            assertNotNull(block.getChild().getChannel());
+            assertNotNull(block.getChild().getNetwork());
+            block.getChild().getBlocks().stream().forEach(nestedBlock -> {
+                assertTrue(nestedBlock.getChild().getBlocks().isEmpty());
+                assertEquals(3, nestedBlock.getChild().getEmissions().size());
+                nestedBlock.getChild().getEmissions().stream().forEach(emissionsInNestedBlock -> {
                     assertNotNull(emissionsInNestedBlock.getSequence());
                     assertNotNull(emissionsInNestedBlock.getMediaItem());
                     assertEquals(3, emissionsInNestedBlock.getAttachments().size());
@@ -164,14 +164,14 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
                     });
                 });
             });
-            assertEquals(3, block.getEmissions().size());
-            block.getEmissions().stream().forEach(blockEmission -> {
-                assertNotNull(blockEmission.getSequence());
-                assertNotNull(blockEmission.getMediaItem());
-                assertNotNull(blockEmission.getNetwork());
-                assertNotNull(blockEmission.getChannel());
-                assertEquals(3, blockEmission.getAttachments().size());
-                blockEmission.getAttachments().stream().forEach(attachment -> {
+            assertEquals(3, block.getChild().getEmissions().size());
+            block.getChild().getEmissions().stream().forEach(emission -> {
+                assertNotNull(emission.getSequence());
+                assertNotNull(emission.getMediaItem());
+                assertNotNull(emission.getNetwork());
+                assertNotNull(emission.getChannel());
+                assertEquals(3, emission.getAttachments().size());
+                emission.getAttachments().stream().forEach(attachment -> {
                     assertNotNull(attachment);
                     assertNotNull(attachment.getSequence());
                     assertNotNull(attachment.getNetwork());
@@ -214,25 +214,25 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
         assertEquals(4, schSchedule.getClocks().stream().findFirst().get().getBlocks().size());
         schSchedule.getClocks().stream().findFirst().get().getBlocks().stream().forEach(block -> {
-            if (block.getEventType() != null && block.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
-                assertEquals(7, block.getEmissions().size());
-                assertEquals(2, block.getBlocks().size());
+            if (block.getChild().getEventType() != null && block.getChild().getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
+                assertEquals(7, block.getChild().getEmissions().size());
+                assertEquals(2, block.getChild().getBlocks().size());
 
-                assertNotNull(block.getChannel());
-                assertNotNull(block.getNetwork());
+                assertNotNull(block.getChild().getChannel());
+                assertNotNull(block.getChild().getNetwork());
             }
-            if (block.getEventType() != null && block.getEventType().equals(EventTypeEnum.ET_MUSIC)) {
-                block.getBlocks().stream().forEach(nestedBlock -> {
-                    if (nestedBlock.getEventType() != null && nestedBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
-                        assertEquals(4, nestedBlock.getEmissions().size());
-                        assertEquals(0, nestedBlock.getBlocks().size());
+            if (block.getChild().getEventType() != null && block.getChild().getEventType().equals(EventTypeEnum.ET_MUSIC)) {
+                block.getChild().getBlocks().stream().forEach(nestedBlock -> {
+                    if (nestedBlock.getChild().getEventType() != null && nestedBlock.getChild().getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
+                        assertEquals(4, nestedBlock.getChild().getEmissions().size());
+                        assertEquals(0, nestedBlock.getChild().getBlocks().size());
 
-                        assertNotNull(nestedBlock.getChannel());
-                        assertNotNull(nestedBlock.getNetwork());
+                        assertNotNull(nestedBlock.getChild().getChannel());
+                        assertNotNull(nestedBlock.getChild().getNetwork());
                     } else {
-                        assertTrue(nestedBlock.getBlocks().isEmpty());
-                        assertEquals(3, nestedBlock.getEmissions().size());
-                        nestedBlock.getEmissions().stream().forEach(emissionsInNestedBlock -> {
+                        assertTrue(nestedBlock.getChild().getBlocks().isEmpty());
+                        assertEquals(3, nestedBlock.getChild().getEmissions().size());
+                        nestedBlock.getChild().getEmissions().stream().forEach(emissionsInNestedBlock -> {
                             assertNotNull(emissionsInNestedBlock.getSequence());
                             assertNotNull(emissionsInNestedBlock.getMediaItem());
                             assertEquals(3, emissionsInNestedBlock.getAttachments().size());

@@ -126,8 +126,7 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
         SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO, corNetwork, corChannel);
-        SchGrid entity = schGridService.saveGrid(traOrder);
-        SchGridDTO response = schGridMapper.DB2DTO(entity);
+        SchGridDTO response = schGridService.saveGrid(traOrder);
         return ResponseEntity.created(new URI("/api/v1/network/" + networkShortcut + "/channel/" + channelShortcut + "/scheduler/grid/" + response.getShortName()))
                 .body(response);
     }
@@ -153,8 +152,7 @@ public class SchGridConfigurationResourceImpl implements SchGridConfigurationRes
 
         CorChannel corChannel = corChannelService.findChannel(networkShortcut, channelShortcut);
         SchGrid traOrder = schGridMapper.DTO2DB(schGridDTO, corNetwork, corChannel);
-        SchGrid entity = schGridService.saveGrid(traOrder);
-        SchGridDTO response = schGridMapper.DB2DTO(entity);
+        SchGridDTO response = schGridService.saveGrid(traOrder);
         return ResponseEntity.ok().body(response);
     }
 }
