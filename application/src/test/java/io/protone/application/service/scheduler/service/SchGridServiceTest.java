@@ -140,7 +140,7 @@ public class SchGridServiceTest {
         schGrid = schGridRepository.saveAndFlush(schGrid);
         //then
         schGridService.deleteSchGridByNetworkAndChannelAndShortNAme(corNetwork.getShortcut(), corChannel.getShortcut(), schGrid.getShortName());
-        SchGrid fetchedEntity = schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndEventType(corNetwork.getShortcut(), corChannel.getShortcut(), schGrid.getShortName(), SchDiscriminators.GRID_TEMPLATE);
+        SchGrid fetchedEntity = schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortNameAndType(corNetwork.getShortcut(), corChannel.getShortcut(), schGrid.getShortName(), SchDiscriminators.GRID_TEMPLATE);
 
         //assert
         assertNull(fetchedEntity);

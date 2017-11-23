@@ -11,9 +11,9 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
 import static io.protone.scheduler.domain.SchDiscriminators.EMISSION;
@@ -36,7 +36,7 @@ public class SchEmission extends SchTimeParams implements Serializable {
 
     @PodamExclude
     @ManyToOne
-    private SchBlock clock;
+    private SchBlock block;
 
     @PodamExclude
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -61,11 +61,8 @@ public class SchEmission extends SchTimeParams implements Serializable {
     @OneToMany(mappedBy = "emission", cascade = CascadeType.MERGE)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchAttachment> attachments = new HashSet<>();
+    private List<SchAttachment> attachments = new ArrayList<>();
 
-    @PodamExclude
-    @ManyToOne(cascade = CascadeType.ALL)
-    private SchBlock block = null;
 
     @ManyToOne
     @PodamExclude
@@ -118,19 +115,6 @@ public class SchEmission extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public SchBlock getClock() {
-        return clock;
-    }
-
-    public void setClock(SchBlock clock) {
-        this.clock = clock;
-    }
-
-    public SchEmission clock(SchClock clock) {
-        this.clock = clock;
-        return this;
-    }
-
     public LibMediaItem getMediaItem() {
         return mediaItem;
     }
@@ -149,15 +133,15 @@ public class SchEmission extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public Set<SchAttachment> getAttachments() {
+    public List<SchAttachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<SchAttachment> attachments) {
+    public void setAttachments(List<SchAttachment> attachments) {
         this.attachments = attachments;
     }
 
-    public SchEmission attachments(Set<SchAttachment> attachments) {
+    public SchEmission attachments(List<SchAttachment> attachments) {
         this.attachments = attachments;
         return this;
     }

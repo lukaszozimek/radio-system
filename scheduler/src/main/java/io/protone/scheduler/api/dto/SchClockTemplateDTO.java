@@ -179,4 +179,9 @@ public class SchClockTemplateDTO extends SchTemplateTimeParamsDTO {
     public void setSchEventTemplateDTOS(List<SchEventTemplateDTO> schEventTemplateDTOS) {
         this.schEventTemplateDTOS = schEventTemplateDTOS;
     }
+
+    public SchClockTemplateDTO sequence(Long sequence) {
+        this.sequence = sequence;
+        return this;
+    }
 }

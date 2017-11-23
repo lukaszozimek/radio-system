@@ -1,6 +1,7 @@
 package io.protone.scheduler.service;
 
 import io.protone.scheduler.domain.SchClock;
+import io.protone.scheduler.repository.SchBlockSchBlockRepository;
 import io.protone.scheduler.repository.SchClockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
-import java.util.Set;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -22,13 +23,24 @@ public class SchClockService {
     @Inject
     private SchBlockService schBlockService;
     @Inject
-    private SchEmissionService schEmissionService;
+    private SchBlockSchBlockRepository schBlockSchBlockRepository;
 
     @Transactional
-    public SchClock saveClock(SchClock schClock, LocalDate date) {
+    public SchClock saveClock(SchClock schClock) {
         log.debug("Save Clock");
-        schClock.emissions(schEmissionService.saveEmission(schClock.getEmissions(), schClock, date));
-        return schClock;
+        schClock.getBlocks().stream().forEach(schBlockSchBlock -> {
+            if (schBlockSchBlock.getChild().getId() != null) {
+                schBlockService.deleteBlock(schBlockSchBlock.getChild().getId());
+            }
+        });
+        schClockRepository.saveAndFlush(schClock);
+        schClock.setBlocks(schClock.getBlocks().stream().map(schBlockSchBlock -> {
+            schBlockSchBlock.parent(schClock).child(schBlockService.saveBlocks(schBlockSchBlock.getChild()));
+            return schBlockSchBlockRepository.saveAndFlush(schBlockSchBlock);
+        }).collect(toList()));
+
+        return  schClock;
+
     }
 
     @Transactional(readOnly = true)
@@ -44,21 +56,11 @@ public class SchClockService {
     @Transactional
     public void deleteSchClockByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
         SchClock schClock = schClockRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(networkShortcut, channelShortcut, shortName);
-//        schEmissionService.deleteEmissions(schClock.getEmissions());
-//        schBlockService.deleteBlock(schClock.getBlocks());
-//        schClock.setEmissions(Sets.newHashSet());
-//        schClock.setBlocks(Sets.newHashSet());
+
         schClockRepository.delete(schClock);
     }
 
     public void deleteByScheduleId(Long scheduleId) {
-        Set<SchClock> schClocks = schClockRepository.findAllBySchSchedule_Id(scheduleId);
-        if (schClocks != null && !schClocks.isEmpty()) {
-            schClocks.stream().forEach(schClock -> {
-                this.schEmissionService.deleteEmissions(schClock.getEmissions());
-                //      this.schBlockService.deleteBlock(schClock.getBlocks());
-            });
-        }
-        schClockRepository.deleteAllBySchSchedule_Id(scheduleId);
+
     }
 }

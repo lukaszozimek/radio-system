@@ -16,6 +16,7 @@ public final class SchDiscriminators {
     public static final String GRID_TEMPLATE = "G";
     public static final String CLOCK = "CB";
     public static final String BLOCK = "B";
+    public static final String SCHEDULE = "SCH";
 
 
 }

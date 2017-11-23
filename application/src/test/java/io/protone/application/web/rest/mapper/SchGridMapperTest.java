@@ -3,7 +3,7 @@ package io.protone.application.web.rest.mapper;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
+import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.domain.SchGrid;
 import io.protone.scheduler.mapper.SchGridMapper;
@@ -53,7 +53,7 @@ public class SchGridMapperTest {
      //   grid.setClocks(Sets.newHashSet(factory.manufacturePojo(SchGridClockTemplate.class)));
         grids.add(grid);
         gridDTO = factory.manufacturePojo(SchGridDTO.class);
-        gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchGridClockConfigurationDTO.class)));
+        gridDTO.setClocks(Lists.newArrayList(factory.manufacturePojo(SchClockTemplateDTO.class)));
         gridDTOs.add(gridDTO);
     }
 
@@ -88,11 +88,9 @@ public class SchGridMapperTest {
     public void DTO2DB() throws Exception {
         SchGrid entity = gridMapper.DTO2DB(gridDTO, network, corChannel);
 
-    //    assertNotNull(entity.getClocks());
         assertNotNull(entity.getName());
         assertNotNull(entity.getDayOfWeek());
         assertNotNull(entity.getShortName());
-    //    assertNotNull(entity.getClocks());
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
     }
@@ -107,7 +105,6 @@ public class SchGridMapperTest {
             assertNotNull(entity.getName());
             assertNotNull(entity.getDayOfWeek());
             assertNotNull(entity.getShortName());
-       //     assertNotNull(entity.getClocks());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

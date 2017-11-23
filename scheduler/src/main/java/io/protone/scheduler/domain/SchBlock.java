@@ -11,7 +11,9 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static io.protone.scheduler.domain.SchDiscriminators.BLOCK;
 
@@ -37,16 +39,16 @@ public class SchBlock extends SchTimeParams implements Serializable {
     private EventTypeEnum eventType;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate")
     @PodamExclude
     protected List<SchBlockSchBlock> blocks = new ArrayList<>();
 
 
     @PodamExclude
-    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private List<SchEmission> emissions = new ArrayList<>();
 
     @ManyToOne
     @PodamExclude
@@ -127,15 +129,15 @@ public class SchBlock extends SchTimeParams implements Serializable {
         return this;
     }
 
-    public Set<SchEmission> getEmissions() {
+    public List<SchEmission> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
+    public void setEmissions(List<SchEmission> emissions) {
         this.emissions = emissions;
     }
 
-    public SchBlock emissions(Set<SchEmission> emissions) {
+    public SchBlock emissions(List<SchEmission> emissions) {
         this.emissions = emissions;
         return this;
     }

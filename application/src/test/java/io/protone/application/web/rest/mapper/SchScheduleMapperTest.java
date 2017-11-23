@@ -46,7 +46,7 @@ public class SchScheduleMapperTest {
         network = factory.manufacturePojo(CorNetwork.class);
         // Fill entity instance
         schedule = factory.manufacturePojo(SchSchedule.class);
-        schedule.setClocks(null);
+        schedule.setBlocks(null);
         schedules.add(schedule);
         scheduleDTO = factory.manufacturePojo(SchScheduleDTO.class);
         scheduleDTO.setSchClockDTOS(null);

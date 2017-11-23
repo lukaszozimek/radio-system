@@ -44,6 +44,7 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL, orphanRemoval = true)
     @ElementCollection
     @JsonIgnore
+    @OrderBy("sequence")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchAttachmentTemplate> attachments = new ArrayList<>();
 
@@ -106,11 +107,17 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     }
 
     public void setAttachments(List<SchAttachmentTemplate> attachments) {
-        this.attachments = attachments;
+        this.attachments.clear();
+        if (attachments != null) {
+            this.attachments.addAll(attachments);
+        }
     }
 
     public SchEmissionTemplate attachments(List<SchAttachmentTemplate> attachments) {
-        this.attachments = attachments;
+        this.attachments.clear();
+        if (attachments != null) {
+            this.attachments.addAll(attachments);
+        }
         return this;
     }
 

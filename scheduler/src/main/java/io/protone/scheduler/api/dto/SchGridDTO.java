@@ -21,7 +21,7 @@ public class SchGridDTO extends SchBaseDTO {
 
     @PodamExclude
     @JsonProperty("clocks")
-    private List<SchGridClockConfigurationDTO> clocks = new ArrayList<SchGridClockConfigurationDTO>();
+    private List<SchClockTemplateDTO> clocks = new ArrayList<SchClockTemplateDTO>();
 
     @JsonProperty("dayOfWeek")
     private CorDayOfWeekEnum dayOfWeek = null;
@@ -47,17 +47,17 @@ public class SchGridDTO extends SchBaseDTO {
 
     private ZonedDateTime lastModifiedDate;
 
-    public SchGridDTO clocks(List<SchGridClockConfigurationDTO> clocks) {
+    public SchGridDTO clocks(List<SchClockTemplateDTO> clocks) {
         this.clocks = clocks;
         return this;
     }
 
-    public SchGridDTO addClock(SchGridClockConfigurationDTO clock) {
+    public SchGridDTO addClock(SchClockTemplateDTO clock) {
         this.clocks.add(clock);
         return this;
     }
 
-    public SchGridDTO removeClock(SchGridClockConfigurationDTO clock) {
+    public SchGridDTO removeClock(SchClockTemplateDTO clock) {
         this.clocks.remove(clock);
         return this;
     }
@@ -76,11 +76,11 @@ public class SchGridDTO extends SchBaseDTO {
      * @return clocks
      **/
     @ApiModelProperty(value = "")
-    public List<SchGridClockConfigurationDTO> getClocks() {
+    public List<SchClockTemplateDTO> getClocks() {
         return clocks;
     }
 
-    public void setClocks(List<SchGridClockConfigurationDTO> clocks) {
+    public void setClocks(List<SchClockTemplateDTO> clocks) {
         this.clocks = clocks;
     }
 

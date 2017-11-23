@@ -1,8 +1,7 @@
 package io.protone.scheduler.service;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import io.protone.scheduler.domain.SchAttachment;
-import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.repository.SchAttachmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -24,11 +24,11 @@ public class SchAttachmentService {
     private SchAttachmentRepository schAttachmentRepository;
 
     @Transactional
-    public Set<SchAttachment> saveAttachmenst(Set<SchAttachment> schAttachmentSet) {
+    public List<SchAttachment> saveAttachmenst(List<SchAttachment> schAttachmentSet) {
         if (schAttachmentSet != null && !schAttachmentSet.isEmpty()) {
-            return schAttachmentSet.stream().map(schAttachment -> schAttachmentRepository.save(schAttachment)).collect(toSet());
+            return schAttachmentSet.stream().map(schAttachment -> schAttachmentRepository.save(schAttachment)).collect(toList());
         }
-        return Sets.newHashSet();
+        return Lists.newArrayList();
     }
 
     @Transactional
@@ -39,8 +39,5 @@ public class SchAttachmentService {
         }
     }
 
-    @Transactional
-    public Set<SchAttachment> saveAttachmenst(Set<SchAttachment> attachments, SchEmission entitiy) {
-        return attachments;
-    }
+
 }

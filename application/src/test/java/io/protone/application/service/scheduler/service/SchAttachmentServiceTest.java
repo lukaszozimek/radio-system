@@ -7,6 +7,7 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.SchAttachment;
 import io.protone.scheduler.repository.SchAttachmentRepository;
 import io.protone.scheduler.service.SchAttachmentService;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import javax.transaction.Transactional;
-import java.util.Set;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -58,7 +59,7 @@ public class SchAttachmentServiceTest {
         schAttachment.setNetwork(corNetwork);
         schAttachment.setChannel(corChannel);
         //then
-        Set<SchAttachment> fetchedEntity = attachmentService.saveAttachmenst(Sets.newSet(schAttachment));
+        List<SchAttachment> fetchedEntity = attachmentService.saveAttachmenst(Lists.newArrayList(schAttachment));
 
         //assert
         assertNotNull(fetchedEntity);

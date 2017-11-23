@@ -55,6 +55,8 @@ public class SchedulerBuildSchedulerBaseTest {
     @Autowired
     private LibMediaItemRepository libMediaItemRepository;
 
+    @Autowired
+    private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
     protected CorNetwork corNetwork;
 
     protected CorChannel corChannel;
@@ -95,7 +97,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-     //   schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockConfiguration()));
+        schGrid.addEventTemplate(new SchEventTemplateEvnetTemplate().parent(schGrid).sequence(1L).child(buildClockConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -105,7 +107,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-    //    schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockWithNestedEventsConfiguration()));
+        schGrid.addEventTemplate(new SchEventTemplateEvnetTemplate().parent(schGrid).sequence(1L).child(buildClockWithNestedEventsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -116,7 +118,7 @@ public class SchedulerBuildSchedulerBaseTest {
         SchGrid schGrid = new SchGrid();
         schGrid.setDayOfWeek(dayOfWeekEnum);
         schGrid.setDefaultGrid(defaultGrid);
-     //   schGrid.addClock(new SchGridClockTemplate().sequence(1L).schClockConfiguration(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
+        schGrid.addEventTemplate(new SchEventTemplateEvnetTemplate().parent(schGrid).sequence(1L).child(buildClockWithNestedMusicAndImportEventsAndEmissionsConfiguration()));
         schGrid.channel(corChannel);
         schGrid.network(corNetwork);
         return schGrid;
@@ -142,7 +144,8 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.network(corNetwork);
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 4));
-     //   schClockTemplate.schEvents(buildNestedSetEventsWithLenght30minoutes(schClockTemplate));
+
+        schClockTemplate.schEventTemplates(buildNestedSetEventsWithLenght30minoutes(schClockTemplate));
         return schClockTemplateRepository.saveAndFlush(schClockTemplate);
     }
 
@@ -155,7 +158,7 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.network(corNetwork);
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 4));
-     //   schClockTemplate.schEvents(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockTemplate));
+        schClockTemplate.schEventTemplates(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockTemplate));
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
 
         return schClockTemplate;
@@ -166,6 +169,7 @@ public class SchedulerBuildSchedulerBaseTest {
         List<SchEmissionTemplate> emissionConfigurations = Lists.newArrayList();
         for (int i = 0; i < quaterNumber; i++) {
             SchEmissionTemplate schEmissionTemplate = new SchEmissionTemplate();
+            schEmissionTemplate.setSchEventTemplate(schClockTemplate);
             schEmissionTemplate.length(900000L);
             schEmissionTemplate.mediaItem(libMediaItem);
             schEmissionTemplate.seq(startSequence + i);
@@ -176,67 +180,61 @@ public class SchedulerBuildSchedulerBaseTest {
         return emissionConfigurations;
     }
 
-    protected List<SchEventTemplate> buildNestedSetEventsWithLenght30minoutes(SchClockTemplate schClockTemplate) {
-        return Lists.newArrayList(buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockTemplate, 1),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockTemplate, 2),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockTemplate, 3));
+
+    protected List<SchEventTemplateEvnetTemplate> buildNestedSetEventsWithLenght30minoutes(SchClockTemplate schClockTemplate) {
+        return schEventTemplateEvnetTemplateRepostiory.save(Lists.newArrayList(new SchEventTemplateEvnetTemplate().parent(schClockTemplate).sequence(1L).child(buildEventWithEmissionAndAttachmentsLenght10minoutes()),
+                new SchEventTemplateEvnetTemplate().parent(schClockTemplate).sequence(2L).child(buildEventWithEmissionAndAttachmentsLenght10minoutes()),
+                new SchEventTemplateEvnetTemplate().parent(schClockTemplate).sequence(3L).child(buildEventWithEmissionAndAttachmentsLenght10minoutes())));
 
     }
 
-    protected List<SchEventTemplate> buildNestedSetEventsWithLenght30minoutesWithMusicImport(SchClockTemplate schClockTemplate) {
-        return Lists.newArrayList(buildEventWithsLenght20minoutesMusicImport(schClockTemplate, 1),
-                buildEventWithsEmissionsAndOprImport20minoutes(schClockTemplate, 2),
-                buildEventWithEmissionAndAttachmentsLenght10minoutes(schClockTemplate, 3));
+    protected List<SchEventTemplateEvnetTemplate> buildNestedSetEventsWithLenght30minoutesWithMusicImport(SchClockTemplate schClockTemplate) {
+        return schEventTemplateEvnetTemplateRepostiory.save(Lists.newArrayList(new SchEventTemplateEvnetTemplate().parent(schClockTemplate).sequence(1L).child(buildEventWithsLenght20minoutesMusicImport()),
+                new SchEventTemplateEvnetTemplate().parent(schClockTemplate).sequence(2L).child(buildEventWithsEmissionsAndOprImport20minoutes()),
+                new SchEventTemplateEvnetTemplate().parent(schClockTemplate).sequence(3L).child(buildEventWithEmissionAndAttachmentsLenght10minoutes())));
 
     }
 
-    protected SchEventTemplate buildEventWithsEmissionsAndOprImport20minoutes(SchClockTemplate schClockTemplate, long sequence) {
+    protected SchEventTemplate buildEventWithsEmissionsAndOprImport20minoutes() {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_MUSIC)
-                .sequence(sequence)
                 .length(12000000L)
                 .channel(corChannel)
                 .network(corNetwork);
-
-
         schEventRepository.save(schEventTemplate);
-//        schEventTemplate.schEventTemplates(Lists.newArrayList(buildOprImportEvent(1, 1000000L)))
-//                .emissions(Lists.newArrayList(
-//                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
-//                        buildEmissionWithAttachment(3, 100000L, schEventTemplate))
-//                );
+        schEventTemplate.schEventTemplates(Lists.newArrayList(buildOprImportEvent(1, 1000000L, schEventTemplate)))
+                .emissions(Lists.newArrayList(
+                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
+                        buildEmissionWithAttachment(3, 100000L, schEventTemplate))
+                );
         return schEventTemplate;
     }
 
-    private SchEventTemplate buildOprImportEvent(long i, long l) {
+    private SchEventTemplateEvnetTemplate buildOprImportEvent(long i, long l, SchEventTemplate parent) {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
-                .sequence(i)
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
                 .schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel))
                 .length(l)
-                .schLogConfiguration(buildOPRLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel))
                 .channel(corChannel)
                 .network(corNetwork);
         schEventRepository.save(schEventTemplate);
-        return schEventTemplate;
+        return schEventTemplateEvnetTemplateRepostiory.save(new SchEventTemplateEvnetTemplate().child(schEventTemplate).parent(parent).sequence(i));
     }
 
 
-    protected SchEventTemplate buildEventWithsLenght20minoutesMusicImport(SchClockTemplate schClockTemplate, long sequence) {
+    protected SchEventTemplate buildEventWithsLenght20minoutesMusicImport() {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_IMPORT_LOG)
-                .sequence(sequence)
                 .length(1200000L)
                 .schLogConfiguration(buildMusLogConfigurationWithSeparator(factory, schLogConfigurationRepository, corNetwork, corChannel))
                 .channel(corChannel)
                 .network(corNetwork);
-        schEventRepository.save(schEventTemplate);
-        return schEventTemplate;
+
+        return schEventRepository.save(schEventTemplate);
     }
 
-    protected SchEventTemplate buildEventWithEmissionAndAttachmentsLenght10minoutes(SchClockTemplate schClockTemplate, long sequence) {
+    protected SchEventTemplate buildEventWithEmissionAndAttachmentsLenght10minoutes() {
         SchEventTemplate schEventTemplate = new SchEventTemplate()
-                .sequence(sequence)
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .length(600000L)
                 .channel(corChannel)
@@ -244,17 +242,17 @@ public class SchedulerBuildSchedulerBaseTest {
 
 
         schEventRepository.save(schEventTemplate);
-//        schEventTemplate.schEventTemplates(Lists.newArrayList(
-//                buildEventWithEmissionAndAttachmentsLenght(300000L, schEventTemplate, 1)))
-//                .emissions(Lists.newArrayList(
-//                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
-//                        buildEmissionWithAttachment(3, 100000L, schEventTemplate),
-//                        buildEmissionWithAttachment(4, 100000L, schEventTemplate))
-//                );
+        schEventTemplate.schEventTemplates(Lists.newArrayList(
+                buildEventWithEmissionAndAttachmentsLenght(300000L, schEventTemplate, 1)))
+                .emissions(Lists.newArrayList(
+                        buildEmissionWithAttachment(2, 100000L, schEventTemplate),
+                        buildEmissionWithAttachment(3, 100000L, schEventTemplate),
+                        buildEmissionWithAttachment(4, 100000L, schEventTemplate))
+                );
         return schEventTemplate;
     }
 
-    protected SchEventTemplate buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEventTemplate schEventTemplate, long sequence) {
+    protected SchEventTemplateEvnetTemplate buildEventWithEmissionAndAttachmentsLenght(long lenght, SchEventTemplate schEventTemplate, long sequence) {
         SchEventTemplate schEventTemplate1 = new SchEventTemplate()
                 .eventType(EventTypeEnum.ET_MUSIC)
                 .length(lenght)
@@ -267,7 +265,7 @@ public class SchedulerBuildSchedulerBaseTest {
                 buildEmissionWithAttachment(2, lenght / 3, schEventTemplate1),
                 buildEmissionWithAttachment(3, lenght / 3, schEventTemplate1))
         );
-        return schEventTemplate1;
+        return schEventTemplateEvnetTemplateRepostiory.save(new SchEventTemplateEvnetTemplate().sequence(sequence).parent(schEventTemplate).child(schEventTemplate1));
     }
 
     protected SchEmissionTemplate buildEmissionWithAttachment(long sequence, long lenght, SchEventTemplate schEventTemplate) {
