@@ -10,8 +10,8 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import static io.protone.scheduler.domain.SchDiscriminators.CLOCK;
 
@@ -25,10 +25,6 @@ import static io.protone.scheduler.domain.SchDiscriminators.CLOCK;
 public class SchClock extends SchBlock implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @PodamExclude
-    @ManyToOne
-    private SchSchedule schSchedule;
 
 
     @Column(name = "short_name", unique = false, nullable = false)
@@ -65,29 +61,15 @@ public class SchClock extends SchBlock implements Serializable {
         return this;
     }
 
-    public SchSchedule getSchSchedule() {
-        return schSchedule;
-    }
-
-    public void setSchSchedule(SchSchedule schSchedule) {
-        this.schSchedule = schSchedule;
-    }
-
-    public SchClock grid(SchSchedule schSchedule) {
-        this.schSchedule = schSchedule;
-        return this;
-    }
-
-
-    public Set<SchEmission> getEmissions() {
+    public List<SchEmission> getEmissions() {
         return super.getEmissions();
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
+    public void setEmissions(List<SchEmission> emissions) {
         super.setEmissions(emissions);
     }
 
-    public SchClock emissions(Set<SchEmission> emissions) {
+    public SchClock emissions(List<SchEmission> emissions) {
         super.setEmissions(emissions);
         return this;
     }
@@ -170,16 +152,12 @@ public class SchClock extends SchBlock implements Serializable {
     public String toString() {
         return "SchClock{" +
                 "id=" + id +
-                ", schSchedule=" + schSchedule +
+
                 ", sequence=" + sequence +
                 ", length=" + length +
                 '}';
     }
 
-    public SchClock schedule(SchSchedule finalEntity) {
-        this.schSchedule = finalEntity;
-        return this;
-    }
 
     public CorDictionary getClockCategory() {
         return clockCategory;

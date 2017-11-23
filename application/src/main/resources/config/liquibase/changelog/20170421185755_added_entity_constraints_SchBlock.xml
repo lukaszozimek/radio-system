@@ -25,12 +25,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="cor_dictionary"/>
 
-        <addForeignKeyConstraint baseColumnNames="sch_schedule_id"
-                                 baseTableName="sch_block"
-                                 constraintName="fk_clock_sch_schedule_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="sch_schedule"/>
-
         <addForeignKeyConstraint baseColumnNames="network_id"
                                  baseTableName="sch_block"
                                  constraintName="fk_sch_block_network_id"

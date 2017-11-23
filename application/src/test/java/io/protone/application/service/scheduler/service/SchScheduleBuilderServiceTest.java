@@ -79,7 +79,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
-        assertTrue(schSchedule.getClocks().isEmpty());
+        assertTrue(schSchedule.getBlocks().isEmpty());
     }
 
 
@@ -107,14 +107,14 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
-        assertTrue(!schSchedule.getClocks().isEmpty());
-        assertEquals(1, schSchedule.getClocks().size());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getSequence());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getLength());
-        assertEquals(1L, schSchedule.getClocks().stream().findFirst().get().getSequence().longValue());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getEmissions());
-        assertEquals(4, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
+        assertTrue(!schSchedule.getBlocks().isEmpty());
+        assertEquals(1, schSchedule.getBlocks().size());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getSequence());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getLength());
+        assertEquals(1L, schSchedule.getBlocks().stream().findFirst().get().getSequence().longValue());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions());
+        assertEquals(4, schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions().size());
 
     }
 
@@ -133,16 +133,16 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
-        assertTrue(!schSchedule.getClocks().isEmpty());
-        assertEquals(1, schSchedule.getClocks().size());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getSequence());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getLength());
-        assertEquals(1L, schSchedule.getClocks().stream().findFirst().get().getSequence().longValue());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getEmissions());
-        assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
-        assertEquals(3, schSchedule.getClocks().stream().findFirst().get().getBlocks().size());
-        schSchedule.getClocks().stream().findFirst().get().getBlocks().stream().forEach(block -> {
+        assertTrue(!schSchedule.getBlocks().isEmpty());
+        assertEquals(1, schSchedule.getBlocks().size());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getSequence());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getLength());
+        assertEquals(1L, schSchedule.getBlocks().stream().findFirst().get().getSequence().longValue());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions());
+        assertEquals(2, schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions().size());
+        assertEquals(3, schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().size());
+        schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().stream().forEach(block -> {
             assertEquals(1, block.getChild().getBlocks().size());
             assertNotNull(block.getChild().getChannel());
             assertNotNull(block.getChild().getNetwork());
@@ -205,15 +205,15 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(schSchedule.getNetwork(), schGrid.getNetwork());
         assertEquals(schSchedule.getChannel(), schGrid.getChannel());
         assertEquals(schSchedule.getDate(), localDate);
-        assertTrue(!schSchedule.getClocks().isEmpty());
-        assertEquals(1, schSchedule.getClocks().size());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getSequence());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getLength());
-        assertNotNull(schSchedule.getClocks().stream().findFirst().get().getEmissions());
-        assertEquals(2, schSchedule.getClocks().stream().findFirst().get().getEmissions().size());
-        assertEquals(4, schSchedule.getClocks().stream().findFirst().get().getBlocks().size());
-        schSchedule.getClocks().stream().findFirst().get().getBlocks().stream().forEach(block -> {
+        assertTrue(!schSchedule.getBlocks().isEmpty());
+        assertEquals(1, schSchedule.getBlocks().size());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getSequence());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getLength());
+        assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions());
+        assertEquals(2, schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions().size());
+        assertEquals(4, schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().size());
+        schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().stream().forEach(block -> {
             if (block.getChild().getEventType() != null && block.getChild().getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
                 assertEquals(7, block.getChild().getEmissions().size());
                 assertEquals(2, block.getChild().getBlocks().size());

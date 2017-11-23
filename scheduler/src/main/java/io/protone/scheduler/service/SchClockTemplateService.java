@@ -2,6 +2,7 @@ package io.protone.scheduler.service;
 
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
+import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.mapper.SchClockTemplateMapper;
 import io.protone.scheduler.repository.SchClockTemplateRepository;
 import io.protone.scheduler.repository.SchEventTemplateEvnetTemplateRepostiory;
@@ -32,9 +33,8 @@ public class SchClockTemplateService {
     private SchEventTemplateService schEventService;
 
     @Inject
-    private SchEmissionTemplateService schEmissionTemplateService;
-    @Inject
     private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
+
     @Inject
     private SchClockTemplateMapper schClockTemplateMapper;
 
@@ -53,7 +53,7 @@ public class SchClockTemplateService {
 
     @Transactional(readOnly = true)
     public Slice<SchClockTemplate> findSchClockConfigurationsForNetworkAndChannel(String networkShortcut, String channelShortcut, Pageable pagable) {
-        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_Shortcut(networkShortcut, channelShortcut, pagable);
+        return schClockTemplateRepository.findAllByNetwork_ShortcutAndChannel_ShortcutAndType(networkShortcut, channelShortcut, SchDiscriminators.CLOCK_TEMPLATE, pagable);
     }
 
     @Transactional(readOnly = true)

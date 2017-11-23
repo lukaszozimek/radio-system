@@ -1,6 +1,6 @@
 package io.protone.scheduler.service.schedule.factory;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 import io.protone.application.scheduler.service.schedule.mapper.SchClockBlockMapper;
 import io.protone.application.scheduler.service.schedule.mapper.SchEmissionConfigurationSchEmissionMapper;
 import io.protone.scheduler.domain.*;
@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,10 +26,10 @@ public class SchClockBuilder {
     @Inject
     private SchClockBlockMapper schClockBlockMapper;
 
-    public Set<SchClock> buildClocks(List<SchClockTemplate> clocks, LocalDateTime endTime, SchPlaylist schPlaylist) {
+    public List<SchClock> buildClocks(List<SchClockTemplate> clocks, LocalDateTime endTime, SchPlaylist schPlaylist) {
         if (clocks != null) {
             List<SchClockTemplate> clockConfigurations = clocks.stream().sorted(Comparator.comparing(SchClockTemplate::getSequence)).collect(toList());
-            Set<SchClock> clockSets = Sets.newHashSet();
+            List<SchClock> clockSets = Lists.newArrayList();
             for (int i = 0; i < clocks.size(); i++) {
                 if (i == 0) {
                     clockConfigurations.get(i).setStartTime(endTime);
@@ -43,7 +42,7 @@ public class SchClockBuilder {
             }
             return clockSets;
         }
-        return Sets.newHashSet();
+        return Lists.newArrayList();
     }
 
     private SchClock mapClock(SchClockTemplate schClockTemplate, SchPlaylist schPlaylist) {
@@ -59,11 +58,11 @@ public class SchClockBuilder {
                     SchBlock schBlockDTO = schClockBlockMapper.buildBlocks((SchEventTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).endTime(schBlockDTO.getEndTime());
                     clock.endTime(schBlockDTO.getEndTime());
-                    clock.addBlock(new SchBlockSchBlock().parent(clock).child(schBlockDTO));
+                    clock.addBlock(new SchBlockSchBlock().sequence((long) i).parent(clock).child(schBlockDTO));
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(clock.getStartTime());
-                    SchEmission emission = schEmissionConfigurationSchEmissionMapper.mapSchEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist);
+                    SchEmission emission = schEmissionConfigurationSchEmissionMapper.mapSchEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).seq((long) i);
                     schTimeParams.get(i).endTime(emission.getEndTime());
                     clock.endTime(emission.getEndTime());
                     clock.addEmission(emission);
@@ -79,11 +78,11 @@ public class SchClockBuilder {
                         schTimeParams.get(i).endTime(schTimeParams.get(i).getStartTime());
                         clock.endTime(schTimeParams.get(i).getStartTime());
                     }
-                    clock.addBlock(new SchBlockSchBlock().parent(clock).child(schBlock));
+                    clock.addBlock(new SchBlockSchBlock().sequence((long) i).parent(clock).child(schBlock));
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchEmission schEmission = schEmissionConfigurationSchEmissionMapper.mapSchEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist);
+                    SchEmission schEmission = schEmissionConfigurationSchEmissionMapper.mapSchEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).seq((long) i);
                     schTimeParams.get(i).endTime(schEmission.getEndTime());
                     clock.endTime(schEmission.getEndTime());
                     clock.addEmission(schEmission);

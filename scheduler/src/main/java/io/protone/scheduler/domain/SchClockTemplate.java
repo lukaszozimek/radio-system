@@ -55,11 +55,18 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
     }
 
     public void setEmissions(List<SchEmissionTemplate> emissions) {
-        this.emissions = emissions;
+        this.emissions.clear();
+        if (emissions != null) {
+            this.emissions.addAll(emissions);
+
+        }
     }
 
     public SchClockTemplate emissions(List<SchEmissionTemplate> emissions) {
-        this.emissions = emissions;
+        this.emissions.clear();
+        if (emissions != null) {
+            this.emissions.addAll(emissions);
+        }
         return this;
     }
 

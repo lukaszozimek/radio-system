@@ -102,7 +102,7 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
         when(libFileItemService.download(schLogOprFile)).thenReturn(IOUtils.toByteArray(oprLogStream));
         LocalDate localDate = LocalDate.of(2017, 8, 26);
         schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
-        SchGrid schGrid = this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndEventType(corNetwork.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), SchDiscriminators.GRID_TEMPLATE);
+        SchGrid schGrid = this.schGridRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDefaultGridAndDayOfWeekAndType(corNetwork.getShortcut(), corChannel.getShortcut(), true, corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), SchDiscriminators.GRID_TEMPLATE);
 
         //then
         SchSchedule schSchedule = schScheduleService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());

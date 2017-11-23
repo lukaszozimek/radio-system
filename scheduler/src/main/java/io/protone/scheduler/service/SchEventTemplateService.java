@@ -4,8 +4,6 @@ import io.protone.scheduler.api.dto.SchEventTemplateDTO;
 import io.protone.scheduler.domain.SchDiscriminators;
 import io.protone.scheduler.domain.SchEventTemplate;
 import io.protone.scheduler.mapper.SchEventTemplateMapper;
-import io.protone.scheduler.repository.SchAttachmentTemplateRepository;
-import io.protone.scheduler.repository.SchEmissionTemplateRepository;
 import io.protone.scheduler.repository.SchEventTemplateEvnetTemplateRepostiory;
 import io.protone.scheduler.repository.SchEventTemplateRepository;
 import org.slf4j.Logger;
@@ -29,17 +27,7 @@ public class SchEventTemplateService {
     private SchEventTemplateRepository eventRepository;
 
     @Inject
-    private SchEmissionTemplateRepository schEmissionTemplateRepository;
-
-    @Inject
-    private SchAttachmentTemplateRepository schAttachmentTemplateRepository;
-
-    @Inject
-    private SchEmissionTemplateService schEmissionTemplateService;
-
-    @Inject
     private SchEventTemplateEvnetTemplateRepostiory schEventTemplateEvnetTemplateRepostiory;
-
 
     @Inject
     private SchEventTemplateMapper schEventTemplateMapper;

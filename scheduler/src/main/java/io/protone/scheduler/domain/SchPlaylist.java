@@ -10,9 +10,9 @@ import uk.co.jemos.podam.common.PodamExclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * A Playlist.
@@ -32,7 +32,7 @@ public class SchPlaylist extends SchBaseEntity implements Serializable {
     @OneToMany(mappedBy = "playlist")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SchEmission> emissions = new HashSet<>();
+    private List<SchEmission> emissions = new ArrayList<>();
 
     @ManyToOne
     @PodamExclude
@@ -64,15 +64,15 @@ public class SchPlaylist extends SchBaseEntity implements Serializable {
         return this;
     }
 
-    public Set<SchEmission> getEmissions() {
+    public List<SchEmission> getEmissions() {
         return emissions;
     }
 
-    public void setEmissions(Set<SchEmission> emissions) {
+    public void setEmissions(List<SchEmission> emissions) {
         this.emissions = emissions;
     }
 
-    public SchPlaylist emissions(Set<SchEmission> emissions) {
+    public SchPlaylist emissions(List<SchEmission> emissions) {
         this.emissions = emissions;
         return this;
     }

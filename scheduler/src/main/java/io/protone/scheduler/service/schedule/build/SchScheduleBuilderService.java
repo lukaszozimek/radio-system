@@ -118,7 +118,12 @@ public class SchScheduleBuilderService {
                 }
             });
         }
-        return new SchSchedule().date(schPlaylist.getDate()).clocks(schClockBuilder.buildClocks(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)), schPlaylist)).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        SchSchedule schSchedule = new SchSchedule().date(schPlaylist.getDate()).network(schGrid.getNetwork()).channel(schGrid.getChannel());
+        List<SchClock> schClocks = schClockBuilder.buildClocks(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)), schPlaylist);
+        for (int i = 0; i < schClocks.size(); i++) {
+            schSchedule.addBlock(new SchBlockSchBlock().child(schClocks.get(i)).parent(schSchedule).sequence((long) i));
+        }
+        return schSchedule;
     }
 
 
@@ -166,12 +171,12 @@ public class SchScheduleBuilderService {
 
     public List<SchEventTemplate> getImportEvents(List<SchEventTemplate> blocks) {
         List<SchEventTemplate> events = Lists.newArrayList();
-        if (blocks != null) {
+        if (blocks != null && !blocks.isEmpty()) {
             events.addAll(blocks.stream().sorted(comparing(SchEventTemplate::getSequence)).filter(schBlock -> {
                 if (!schBlock.getSchEventTemplates().isEmpty()) {
                     events.addAll(this.getImportEvents(schBlock.getChilds()));
                 }
-                return schBlock.getEventType().equals(EventTypeEnum.ET_IMPORT_LOG);
+                return EventTypeEnum.ET_IMPORT_LOG.equals(schBlock.getEventType());
             }).collect(toList()));
             return events;
         }

@@ -4,6 +4,7 @@ import io.protone.scheduler.api.dto.SchScheduleDTO;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.domain.SchSchedule;
 import io.protone.scheduler.mapper.SchScheduleMapper;
+import io.protone.scheduler.repository.SchBlockSchBlockRepository;
 import io.protone.scheduler.repository.SchScheduleRepository;
 import io.protone.scheduler.service.time.SchScheduleDTOTimeCalculatorService;
 import org.slf4j.Logger;
@@ -15,10 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -36,14 +36,21 @@ public class SchScheduleService {
     private SchScheduleDTOTimeCalculatorService schScheduleDTOTimeCalculatorService;
     @Inject
     private SchScheduleMapper schScheduleMapper;
+    @Inject
+    private SchBlockSchBlockRepository schBlockSchBlockRepository;
 
     @Transactional
     public SchSchedule saveSchedule(SchSchedule schSchedule) {
-
-        if (schSchedule.getClocks() != null && !schSchedule.getClocks().isEmpty()) {
-            schSchedule.clocks(schSchedule.getClocks().stream().sorted(Comparator.comparing(SchClock::getSequence)).map(schClock -> this.schClockService.saveClock(schClock, schSchedule.getDate()).schedule(schSchedule)).collect(toSet()));
+        if (schSchedule.getId() != null) {
+            schBlockSchBlockRepository.deleteAllByPk_ParentTemplate_Id(schSchedule.getId());
         }
-        return schScheduleRepository.saveAndFlush(schSchedule);
+        schSchedule.setBlocks(schSchedule.getBlocks().stream().map(schEventTemplateEvnetTemplate -> {
+            schEventTemplateEvnetTemplate.sequence(schEventTemplateEvnetTemplate.getSequence()).parent(schSchedule).child(schClockService.saveClock((SchClock) schEventTemplateEvnetTemplate.getChild()));
+            return schBlockSchBlockRepository.saveAndFlush(schEventTemplateEvnetTemplate);
+        }).collect(toList()));
+        schScheduleRepository.saveAndFlush(schSchedule);
+        return schSchedule;
+
     }
 
     @Transactional(readOnly = true)

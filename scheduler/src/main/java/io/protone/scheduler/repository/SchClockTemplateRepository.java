@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface SchClockTemplateRepository extends JpaRepository<SchClockTemplate, Long> {
 
-    Slice<SchClockTemplate> findAllByNetwork_ShortcutAndChannel_Shortcut(String networkShortCut, String channelShortcut, Pageable pageable);
+    Slice<SchClockTemplate> findAllByNetwork_ShortcutAndChannel_ShortcutAndType(String networkShortCut, String channelShortcut, String type, Pageable pageable);
 
 
     SchClockTemplate findOneByNetwork_ShortcutAndChannel_ShortcutAndShortName(@Param("network") String networkShortCut, @Param("channelShortcut") String channelShortcut, @Param("shortName") String shortName);

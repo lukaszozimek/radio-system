@@ -51,6 +51,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate")
     @PodamExclude
+    @OrderBy("pk.sequence")
     protected List<SchEventTemplateEvnetTemplate> schEventTemplates = new ArrayList<>();
 
     @Transient
@@ -61,6 +62,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     @OneToMany(cascade = ALL, mappedBy = "schEventTemplate", orphanRemoval = true)
     @ElementCollection
     @JsonIgnore
+    @OrderBy("sequence")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     protected List<SchEmissionTemplate> emissions = new ArrayList<>();
 
@@ -181,7 +183,10 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
 
     public SchEventTemplate emissions(List<SchEmissionTemplate> schEmissionTemplates) {
-        this.emissions = schEmissionTemplates;
+        this.emissions.clear();
+        if (emissions != null) {
+            this.emissions.addAll(schEmissionTemplates);
+        }
         return this;
     }
 
@@ -191,7 +196,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     }
 
     public List<SchEventTemplate> getChilds() {
-        return this.schEventTemplates.stream().map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild()).collect(Collectors.toList());
+        return this.schEventTemplates.stream().map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild().sequence(schEventTemplateEvnetTemplate.getSequence())).collect(Collectors.toList());
     }
 
     public SchEventTemplate schEventTemplates(List<SchEventTemplateEvnetTemplate> collect) {

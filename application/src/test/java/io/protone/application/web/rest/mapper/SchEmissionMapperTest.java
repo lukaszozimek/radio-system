@@ -1,7 +1,6 @@
 package io.protone.application.web.rest.mapper;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
@@ -51,7 +50,7 @@ public class SchEmissionMapperTest {
         // Fill entity instance
         // Fill entity instance
         emission = factory.manufacturePojo(SchEmission.class);
-        emission.setAttachments(Sets.newHashSet(factory.manufacturePojo(SchAttachment.class)));
+        emission.setAttachments(Lists.newArrayList(factory.manufacturePojo(SchAttachment.class)));
 
         emissions.add(emission);
 

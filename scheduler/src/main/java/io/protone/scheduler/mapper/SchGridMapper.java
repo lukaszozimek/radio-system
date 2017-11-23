@@ -8,7 +8,6 @@ import io.protone.core.mapper.CorUserMapper;
 import io.protone.library.domain.LibMediaLibrary;
 import io.protone.scheduler.api.dto.SchClockTemplateDTO;
 import io.protone.scheduler.api.dto.SchEventTemplateDTO;
-import io.protone.scheduler.api.dto.SchGridClockConfigurationDTO;
 import io.protone.scheduler.api.dto.SchGridDTO;
 import io.protone.scheduler.api.dto.thin.SchGridThinDTO;
 import io.protone.scheduler.domain.SchClockTemplate;
@@ -62,17 +61,22 @@ public interface SchGridMapper {
     @AfterMapping
     default void schGridDTOToSchGridnAfterMapping(SchGridDTO dto, @MappingTarget SchGrid entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         if (dto.getClocks() != null && !dto.getClocks().isEmpty()) {
-            entity.schEventTemplates(dto.getClocks().stream().map(schGridClockConfigurationDTO -> new SchEventTemplateEvnetTemplate().parent(entity).sequence(schGridClockConfigurationDTO.getSequence()).child(new SchClockTemplate().id(schGridClockConfigurationDTO.getSchClockTemplateDTO().getId()))).collect(toList()));
+            entity.schEventTemplates(dto.getClocks().stream().map(schClockTemplateDTO -> {
+                return new SchEventTemplateEvnetTemplate().parent(entity).sequence(schClockTemplateDTO.getSequence()).child(new SchClockTemplate().id(schClockTemplateDTO.getId()));
+            }).collect(toList()));
         }
         entity.setNetwork(network);
         entity.setChannel(corChannel);
     }
 
     @AfterMapping
-    default void schGridToSchGridDTOAfterMapping(@MappingTarget SchGridDTO dto, SchGrid entity) {
-        dto.clocks(entity.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> new SchGridClockConfigurationDTO().sequence(schEventTemplateEvnetTemplate.getSequence())
-                .schClockTemplateDTO(this.DB2DTO((SchClockTemplate) schEventTemplateEvnetTemplate.getChild()))).collect(toList()));
+    default void schGridToSchGridDTOAfterMapping(SchGrid entity, @MappingTarget SchGridDTO dto) {
+        if (entity.getSchEventTemplates() != null && !entity.getSchEventTemplates().isEmpty()) {
+            dto.setClocks(entity.getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate -> this.DB2DTO((SchClockTemplate) schEventTemplateEvnetTemplate.getChild()).sequence(schEventTemplateEvnetTemplate.getSequence())).collect(toList()));
+        }
+
     }
+
 
     @AfterMapping
     default SchClockTemplateDTO schClockTemplateToSchClockTemplateDTOAfterMapping(SchClockTemplate entity, @MappingTarget SchClockTemplateDTO dto) {
