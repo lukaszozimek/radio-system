@@ -24,13 +24,13 @@ public class SchBlockService {
 
     @Transactional
     public SchBlock saveBlocks(SchBlock block) {
-         schBlockRepository.saveAndFlush(block);
+        schBlockRepository.saveAndFlush(block);
         if (block.getBlocks() != null && !block.getBlocks().isEmpty()) {
             block.setBlocks(block.getBlocks().stream().map(schBlock -> {
                 if (schBlock.getChild().getBlocks() != null && !schBlock.getChild().getBlocks().isEmpty()) {
                     schBlock.child(saveBlocks(schBlock.getChild()));
                 } else {
-                    schBlock.sequence(schBlock.getSequence()).parent(block).child(schBlock.getChild());
+                    schBlock.parent(block).child(schBlockRepository.saveAndFlush(schBlock.getChild()));
                 }
                 return schBlockSchBlockRepository.saveAndFlush(schBlock);
             }).collect(Collectors.toList()));

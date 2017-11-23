@@ -112,6 +112,9 @@ public class SchEmission extends SchTimeParams implements Serializable {
 
     public SchEmission playlist(SchPlaylist playlist) {
         this.playlist = playlist;
+        if (this.playlist != null) {
+            this.playlist.addEmission(this);
+        }
         return this;
     }
 

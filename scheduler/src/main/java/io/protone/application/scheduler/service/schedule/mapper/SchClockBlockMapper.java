@@ -43,11 +43,11 @@ public class SchClockBlockMapper {
                     SchBlock block = this.buildBlocks((SchEventTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).setEndTime(block.getEndTime());
                     schBlock.endTime(block.getEndTime());
-                    schBlock.addBlock(new SchBlockSchBlock().parent(schBlock).child(block));
+                    schBlock.addBlock(new SchBlockSchBlock().parent(schBlock).child(block).sequence((long) i));
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schBlock.getStartTime());
-                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist);
+                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).seq((long) i);
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
@@ -68,7 +68,7 @@ public class SchClockBlockMapper {
                         } else {
                             schEmission.network(schEmission.getNetwork()).getMediaItem().library(libMediaLibrary).network(schEmission.getNetwork());
                         }
-                        schBlock.addEmission(schEmission);
+                        schBlock.addEmission(schEmission.seq((long) i));
                     }
                 }
             } else {
@@ -77,11 +77,11 @@ public class SchClockBlockMapper {
                     SchBlock block = this.buildBlocks((SchEventTemplate) schTimeParams.get(i), schPlaylist);
                     schTimeParams.get(i).setEndTime(block.getEndTime());
                     schBlock.endTime(block.getEndTime());
-                    schBlock.addBlock(new SchBlockSchBlock().parent(schBlock).child(block));
+                    schBlock.addBlock(new SchBlockSchBlock().parent(schBlock).child(block).sequence((long) i));
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist);
+                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).seq((long) i);
                     schBlock.endTime(schEmission.getEndTime());
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
@@ -102,7 +102,7 @@ public class SchClockBlockMapper {
                         } else {
                             schEmission.network(schEmission.getNetwork()).getMediaItem().library(libMediaLibrary).network(schEmission.getNetwork());
                         }
-                        schBlock.addEmission(schEmission);
+                        schBlock.addEmission(schEmission.seq((long) i));
                     }
                 }
             }

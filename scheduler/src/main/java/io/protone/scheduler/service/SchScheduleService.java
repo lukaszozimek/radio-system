@@ -44,11 +44,12 @@ public class SchScheduleService {
         if (schSchedule.getId() != null) {
             schBlockSchBlockRepository.deleteAllByPk_ParentTemplate_Id(schSchedule.getId());
         }
+        schScheduleRepository.saveAndFlush(schSchedule);
         schSchedule.setBlocks(schSchedule.getBlocks().stream().map(schEventTemplateEvnetTemplate -> {
             schEventTemplateEvnetTemplate.sequence(schEventTemplateEvnetTemplate.getSequence()).parent(schSchedule).child(schClockService.saveClock((SchClock) schEventTemplateEvnetTemplate.getChild()));
             return schBlockSchBlockRepository.saveAndFlush(schEventTemplateEvnetTemplate);
         }).collect(toList()));
-        schScheduleRepository.saveAndFlush(schSchedule);
+
         return schSchedule;
 
     }
