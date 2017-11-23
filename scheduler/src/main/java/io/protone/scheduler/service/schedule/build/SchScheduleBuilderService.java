@@ -134,7 +134,7 @@ public class SchScheduleBuilderService {
                 Long logEmissionsLenght = schEventTemplates.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
                 if (logEmissionsLenght < schEventTemplates.get(i).getLength()) {
                     if (schEventTemplates.get(i).getEmissionsLog().isEmpty()) {
-                        schEventTemplates.get(i).addEmission(schEmission.seq(1L).playlist(null).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
+                        schEventTemplates.get(i).addEmission(schEmission.seq(1L).playlist(schPlaylist).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
                     } else {
                         schEventTemplates.get(i).
                                 addEmission(schEmission.seq(schEventTemplates.get(i)
@@ -142,7 +142,7 @@ public class SchScheduleBuilderService {
                                         .stream()
                                         .max(comparing(SchEmission::getSequence))
                                         .get().getSequence() + 1)
-                                        .playlist(null)
+                                        .playlist(schPlaylist)
                                         .network(schEventTemplates.get(i).getNetwork())
                                         .channel(schEventTemplates.get(i).getChannel()));
                     }

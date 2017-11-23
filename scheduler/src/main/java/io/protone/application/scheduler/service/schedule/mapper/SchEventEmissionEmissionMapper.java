@@ -19,7 +19,6 @@ public class SchEventEmissionEmissionMapper {
     public SchEmission mapEventEmission(SchEmissionTemplate emission, SchPlaylist schPlaylist) {
         return new SchEmission().seq(emission.getSequence())
                 .startTime(emission.getStartTime())
-                .seq(emission.getSequence())
                 .playlist(schPlaylist)
                 .endTime(emission.getStartTime().plusSeconds(emission.getMediaItem().getLength().longValue() / 1000))
                 .attachments(schEventEmissionAttachmentAttachmentMapper.mapEventEmissionAttachmentConfiguration(emission.getAttachments()))
