@@ -10,6 +10,7 @@ import io.protone.scheduler.api.dto.SchEventTemplateDTO;
 import io.protone.scheduler.api.dto.SchLogConfigurationDTO;
 import io.protone.scheduler.domain.SchEmissionTemplate;
 import io.protone.scheduler.domain.SchEventTemplate;
+import io.protone.scheduler.domain.SchEventTemplateEvnetTemplate;
 import io.protone.scheduler.domain.SchLogConfiguration;
 import io.protone.scheduler.mapper.SchEventTemplateMapper;
 import org.junit.Before;
@@ -59,9 +60,9 @@ public class SchEventTemplateMapperTest {
         schEventConfiguration.addEmissionTemplate(factory.manufacturePojo(SchEmissionTemplate.class));
         schEventConfiguration.addEmissionTemplate(factory.manufacturePojo(SchEmissionTemplate.class));
 
-//        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
-//        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
-//        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplate.class));
+        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplateEvnetTemplate.class));
+        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplateEvnetTemplate.class));
+        schEventConfiguration.addEventTemplate(factory.manufacturePojo(SchEventTemplateEvnetTemplate.class));
 
         schEventConfiguration.setEventCategory(factory.manufacturePojo(CorDictionary.class));
         schEventConfiguration.setSchLogConfiguration(factory.manufacturePojo(SchLogConfiguration.class));
@@ -95,9 +96,6 @@ public class SchEventTemplateMapperTest {
         assertNotNull(dto.getSchEventTemplateDTOS());
         assertNotNull(dto.getEmissions());
         assertNotNull(dto.getLength());
-        assertNotNull(dto.getRelativeDelay());
-        assertNotNull(dto.getSequence());
-
     }
 
     @Test
@@ -116,8 +114,6 @@ public class SchEventTemplateMapperTest {
             assertNotNull(dto.getSchEventTemplateDTOS());
             assertNotNull(dto.getEmissions());
             assertNotNull(dto.getLength());
-            assertNotNull(dto.getRelativeDelay());
-            assertNotNull(dto.getSequence());
         });
     }
 
@@ -135,8 +131,6 @@ public class SchEventTemplateMapperTest {
         assertNotNull(entity.getNetwork());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getLength());
-        assertNotNull(entity.getRelativeDelay());
-        assertNotNull(entity.getSequence());
     }
 
     @Test
@@ -156,8 +150,6 @@ public class SchEventTemplateMapperTest {
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getLength());
-            assertNotNull(entity.getRelativeDelay());
-            assertNotNull(entity.getSequence());
         });
     }
 

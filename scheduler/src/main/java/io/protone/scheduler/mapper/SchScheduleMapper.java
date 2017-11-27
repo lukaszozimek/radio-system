@@ -63,7 +63,9 @@ public interface SchScheduleMapper {
     default void schScheduleDTOToSchSchedulenAfterMapping(SchScheduleDTO dto, @MappingTarget SchSchedule entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         entity.setNetwork(network);
         entity.setChannel(corChannel);
-        entity.setBlocks(dto.getSchClockDTOS().stream().map(schClockDTO -> new SchBlockSchBlock().parent(entity).child(this.DTO2DB(schClockDTO, network, corChannel)).sequence(schClockDTO.getSequence())).collect(toList()));
+        if (dto.getSchClockDTOS() != null && !dto.getSchClockDTOS().isEmpty()) {
+            entity.setBlocks(dto.getSchClockDTOS().stream().map(schClockDTO -> new SchBlockSchBlock().parent(entity).child(this.DTO2DB(schClockDTO, network, corChannel)).sequence(schClockDTO.getSequence())).collect(toList()));
+        }
     }
 
 
