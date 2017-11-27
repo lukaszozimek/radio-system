@@ -12,7 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.protone.scheduler.domain.SchDiscriminators.CLOCK_TEMPLATE;
 
@@ -54,6 +56,12 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
         return super.getEmissions();
     }
 
+    public Map<Long, SchEmissionTemplate> getEmissionsMap() {
+        Map<Long, SchEmissionTemplate> schEmissionTemplateMap = new HashMap<>();
+        super.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplateMap.put(schEmissionTemplate.getSequence(), schEmissionTemplate));
+        return schEmissionTemplateMap;
+    }
+
     public void setEmissions(List<SchEmissionTemplate> emissions) {
         this.emissions.clear();
         if (emissions != null) {
@@ -92,11 +100,11 @@ public class SchClockTemplate extends SchEventTemplate implements Serializable {
     }
 
     public Long getSequence() {
-        return sequence;
+        return seq;
     }
 
     public void setSequence(Long sequence) {
-        this.sequence = sequence;
+        this.seq = sequence;
     }
 
 

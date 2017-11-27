@@ -1,5 +1,6 @@
 package io.protone.scheduler.service;
 
+import io.protone.scheduler.domain.SchBlockSchBlock;
 import io.protone.scheduler.domain.SchClock;
 import io.protone.scheduler.repository.SchBlockSchBlockRepository;
 import io.protone.scheduler.repository.SchClockRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Comparator;
 
 import static java.util.stream.Collectors.toList;
 
@@ -34,12 +36,12 @@ public class SchClockService {
             }
         });
         schClockRepository.saveAndFlush(schClock);
-        schClock.setBlocks(schClock.getBlocks().stream().map(schBlockSchBlock -> {
+        schClock.setBlocks(schClock.getBlocks().stream().sorted(Comparator.comparing(SchBlockSchBlock::getSequence)).map(schBlockSchBlock -> {
             schBlockSchBlock.parent(schClock).child(schBlockService.saveBlocks(schBlockSchBlock.getChild()));
             return schBlockSchBlockRepository.saveAndFlush(schBlockSchBlock);
         }).collect(toList()));
 
-        return  schClock;
+        return schClock;
 
     }
 
@@ -60,7 +62,14 @@ public class SchClockService {
         schClockRepository.delete(schClock);
     }
 
-    public void deleteByScheduleId(Long scheduleId) {
+    @Transactional
+    public void deleteByScheduleId(Long deleteClock) {
+        SchClock schClock = schClockRepository.findOne(deleteClock);
+        schClock.getBlocks().stream().forEach(schBlockSchBlock -> {
+            schBlockService.deleteBlock(schBlockSchBlock.getChild().getId());
+        });
+        schBlockSchBlockRepository.deleteAllByPk_ParentTemplate_Id(deleteClock);
+
 
     }
 }

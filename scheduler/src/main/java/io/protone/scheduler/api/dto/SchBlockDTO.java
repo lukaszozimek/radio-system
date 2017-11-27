@@ -1,6 +1,5 @@
 package io.protone.scheduler.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -29,7 +28,6 @@ public class SchBlockDTO extends SchTimeParamsDTO {
     private String name = null;
 
 
-    @JsonProperty("schEventType")
     private EventTypeEnum eventType = null;
 
 

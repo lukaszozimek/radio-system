@@ -4,6 +4,7 @@ import io.protone.scheduler.domain.SchEmission;
 import io.protone.scheduler.domain.SchEmissionTemplate;
 import io.protone.scheduler.domain.SchPlaylist;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
@@ -15,9 +16,9 @@ public class SchEventEmissionEmissionMapper {
     @Inject
     private SchEventEmissionAttachmentAttachmentMapper schEventEmissionAttachmentAttachmentMapper;
 
-
+    @Transactional
     public SchEmission mapEventEmission(SchEmissionTemplate emission, SchPlaylist schPlaylist) {
-        return new SchEmission().seq(emission.getSequence())
+        return new SchEmission().sequence(emission.getSequence())
                 .startTime(emission.getStartTime())
                 .playlist(schPlaylist)
                 .endTime(emission.getStartTime().plusSeconds(emission.getMediaItem().getLength().longValue() / 1000))

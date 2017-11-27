@@ -194,5 +194,10 @@ public class SchClockDTO extends SchTimeParamsDTO {
         super.setLength(nano);
         return this;
     }
+
+    public SchClockDTO sequence(Long sequence) {
+        super.setSequence(sequence);
+        return this;
+    }
 }
 

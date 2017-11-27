@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static io.protone.scheduler.domain.SchDiscriminators.BLOCK;
 
@@ -30,6 +31,9 @@ public class SchBlock extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Transient
+    protected long sequence;
+
     @Column(name = "name")
     protected String name;
 
@@ -39,13 +43,13 @@ public class SchBlock extends SchTimeParams implements Serializable {
     private EventTypeEnum eventType;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.parentTemplate")
     @PodamExclude
     protected List<SchBlockSchBlock> blocks = new ArrayList<>();
 
 
     @PodamExclude
-    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "block", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchEmission> emissions = new ArrayList<>();
@@ -138,16 +142,21 @@ public class SchBlock extends SchTimeParams implements Serializable {
     }
 
     public SchBlock emissions(List<SchEmission> emissions) {
-        this.emissions = emissions;
+        if (this.emissions != null) {
+            this.emissions = emissions.stream().map(schEmission -> schEmission.block(this)).collect(Collectors.toList());
+
+        }
         return this;
     }
 
     public SchBlock addEmission(SchEmission emission) {
+        emission.block(this);
         this.emissions.add(emission);
         return this;
     }
 
     public SchBlock removeEmission(SchEmission emission) {
+        emission.block(null);
         this.emissions.remove(emission);
         return this;
     }

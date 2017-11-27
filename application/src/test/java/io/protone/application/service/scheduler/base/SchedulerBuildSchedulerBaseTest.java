@@ -174,7 +174,7 @@ public class SchedulerBuildSchedulerBaseTest {
             SchEmissionTemplate schEmissionTemplate = new SchEmissionTemplate();
             schEmissionTemplate.length(900000L);
             schEmissionTemplate.mediaItem(libMediaItem);
-            schEmissionTemplate.seq(startSequence + i);
+            schEmissionTemplate.sequence(startSequence + i);
             schEmissionTemplate.channel(corChannel);
             schEmissionTemplate.network(corNetwork);
             emissionConfigurations.add(schEmissionTemplate);
@@ -272,7 +272,7 @@ public class SchedulerBuildSchedulerBaseTest {
 
     protected SchEmissionTemplate buildEmissionWithAttachment(long sequence, long lenght, SchEventTemplate schEventTemplate) {
         SchEmissionTemplate schEventEmission = new SchEmissionTemplate().mediaItem(libMediaItem)
-                .seq(sequence)
+                .sequence(sequence)
                 .length(lenght)
                 .channel(corChannel)
                 .network(corNetwork);

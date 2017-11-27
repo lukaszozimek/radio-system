@@ -6,6 +6,8 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
@@ -29,6 +31,10 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+    @Column(name = "sequence")
+    protected Long sequence;
+
     @PodamExclude
     @ManyToOne
     private SchEventTemplate schEventTemplate;
@@ -42,7 +48,7 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
 
     @PodamExclude
     @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     @OrderBy("sequence")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -66,8 +72,8 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
     }
 
 
-    public SchEmissionTemplate seq(Long seq) {
-        super.setSequence(seq);
+    public SchEmissionTemplate sequence(Long seq) {
+        this.sequence = seq;
         return this;
     }
 
@@ -185,6 +191,7 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
         return Objects.hashCode(getId());
     }
 
+
     @Override
     public String toString() {
         return "Emission{" +
@@ -193,6 +200,15 @@ public class SchEmissionTemplate extends SchTimeParams implements Serializable {
                 "}";
     }
 
+    @Override
+    public Long getSequence() {
+        return sequence;
+    }
+
+    @Override
+    public void setSequence(Long sequence) {
+        this.sequence = sequence;
+    }
 
     public SchEmissionTemplate scheventTemplate(SchEventTemplate entity) {
         this.schEventTemplate = entity;

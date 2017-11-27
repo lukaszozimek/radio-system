@@ -27,6 +27,8 @@ public class SchAttachment extends SchEmission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "sequence")
+    protected Long sequence;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "attachment_type")
