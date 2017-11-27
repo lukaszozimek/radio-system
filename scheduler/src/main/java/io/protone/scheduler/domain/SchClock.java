@@ -152,8 +152,6 @@ public class SchClock extends SchBlock implements Serializable {
     public String toString() {
         return "SchClock{" +
                 "id=" + id +
-
-                ", sequence=" + sequence +
                 ", length=" + length +
                 '}';
     }
@@ -165,5 +163,10 @@ public class SchClock extends SchBlock implements Serializable {
 
     public void setClockCategory(CorDictionary clockCategory) {
         this.clockCategory = clockCategory;
+    }
+
+    public SchClock clockCategory(CorDictionary clockCategory) {
+        this.clockCategory = clockCategory;
+        return this;
     }
 }

@@ -78,9 +78,13 @@ public class SchScheduleService {
     @Transactional
     public void deleteSchScheduleByNetworkAndChannelAndDate(String networkShortcut, String channelShortcut, LocalDate date) {
         SchSchedule schSchedule = findSchScheduleEntityForNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
+
         if (schSchedule != null) {
-            this.schClockService.deleteByScheduleId(schSchedule.getId());
-            schScheduleRepository.deleteByNetwork_ShortcutAndChannel_ShortcutAndDate(networkShortcut, channelShortcut, date);
+            schSchedule.getBlocks().stream().forEach(schBlockSchBlock -> {
+                schClockService.deleteByScheduleId(schBlockSchBlock.getChild().getId());
+            });
+
+            schScheduleRepository.delete(schSchedule);
             schPlaylistService.deleteSchPlaylistByNetworkAndChannelAndDate(networkShortcut, channelShortcut, date);
         }
     }

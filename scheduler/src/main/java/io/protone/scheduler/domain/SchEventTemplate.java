@@ -2,19 +2,23 @@ package io.protone.scheduler.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorDictionary;
 import io.protone.core.domain.CorNetwork;
 import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static io.protone.scheduler.domain.SchDiscriminators.DYSCRYMINATOR_COLUMN;
 import static io.protone.scheduler.domain.SchDiscriminators.EVENT_TEMPLATE;
@@ -31,6 +35,7 @@ import static javax.persistence.CascadeType.ALL;
 public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
 
     @Column(name = "name")
     protected String name;
@@ -49,7 +54,9 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     @PodamExclude
     protected CorDictionary eventCategory;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.parentTemplate")
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany( mappedBy = "pk.parentTemplate")
     @PodamExclude
     @OrderBy("pk.sequence")
     protected List<SchEventTemplateEvnetTemplate> schEventTemplates = new ArrayList<>();
@@ -60,8 +67,8 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
 
     @PodamExclude
     @OneToMany(cascade = ALL, mappedBy = "schEventTemplate", orphanRemoval = true)
-    @ElementCollection
     @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OrderBy("sequence")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     protected List<SchEmissionTemplate> emissions = new ArrayList<>();
@@ -195,8 +202,31 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
         return this;
     }
 
+    @Override
+    public Long getSequence() {
+        return seq;
+    }
+
+    @Override
+    public void setSequence(Long sequence) {
+        this.seq = sequence;
+    }
+
+
     public List<SchEventTemplate> getChilds() {
-        return this.schEventTemplates.stream().map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild().sequence(schEventTemplateEvnetTemplate.getSequence())).collect(Collectors.toList());
+        List<SchEventTemplate> schEventTemplatesChild = Lists.newArrayList();
+        for (SchEventTemplateEvnetTemplate template : this.schEventTemplates) {
+            schEventTemplatesChild.add(template.getChild().sequence(template.getSequence()));
+        }
+        return schEventTemplatesChild;
+    }
+
+    public Map<Long, SchTimeParams> getChildsTimeParams() {
+        Map<Long, SchTimeParams> sequenceTimeParams = new HashMap<>();
+        for (SchEventTemplateEvnetTemplate template : this.schEventTemplates) {
+            sequenceTimeParams.put(template.getSequence(), template.getChild());
+        }
+        return sequenceTimeParams;
     }
 
     public SchEventTemplate schEventTemplates(List<SchEventTemplateEvnetTemplate> collect) {
@@ -242,7 +272,7 @@ public class SchEventTemplate extends SchTimeParams implements Serializable {
     }
 
     public SchEventTemplate sequence(Long sequence) {
-        this.sequence = sequence;
+        this.seq = sequence;
         return this;
     }
 

@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
@@ -20,7 +21,7 @@ public class SchEventTemplateEvnetTemplateId implements Serializable {
     @ManyToOne
     private SchEventTemplate parentTemplate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private SchEventTemplate childTemplate;
 
 

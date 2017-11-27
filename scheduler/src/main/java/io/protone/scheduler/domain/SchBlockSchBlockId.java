@@ -2,6 +2,7 @@ package io.protone.scheduler.domain;
 
 import com.google.common.base.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
@@ -20,7 +21,7 @@ public class SchBlockSchBlockId implements Serializable {
     @ManyToOne
     private SchBlock parentTemplate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private SchBlock childTemplate;
 
 

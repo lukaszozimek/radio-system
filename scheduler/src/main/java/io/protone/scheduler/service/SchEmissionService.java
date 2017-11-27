@@ -47,7 +47,8 @@ public class SchEmissionService {
     @Transactional
     public void deleteEmissions(List<SchEmission> emissionSet) {
         log.debug("Delete Emission Set ");
-        //    schEmissionRepository.delete(emissionSet);
+        schEmissionRepository.deleteInBatch(emissionSet);
+
     }
 
 }

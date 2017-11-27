@@ -22,15 +22,21 @@ public class SchBlockService {
     @Inject
     private SchBlockSchBlockRepository schBlockSchBlockRepository;
 
+    @Inject
+    private SchEmissionService schEmissionService;
+
     @Transactional
     public SchBlock saveBlocks(SchBlock block) {
-        schBlockRepository.saveAndFlush(block);
+        block = schBlockRepository.saveAndFlush(block);
+        schEmissionService.saveEmission(block.getEmissions());
         if (block.getBlocks() != null && !block.getBlocks().isEmpty()) {
+            SchBlock finalBlock = block;
             block.setBlocks(block.getBlocks().stream().map(schBlock -> {
                 if (schBlock.getChild().getBlocks() != null && !schBlock.getChild().getBlocks().isEmpty()) {
                     schBlock.child(saveBlocks(schBlock.getChild()));
                 } else {
-                    schBlock.parent(block).child(schBlockRepository.saveAndFlush(schBlock.getChild()));
+
+                    schBlock.parent(finalBlock).child(schBlockRepository.saveAndFlush(schBlock.getChild()));
                 }
                 return schBlockSchBlockRepository.saveAndFlush(schBlock);
             }).collect(Collectors.toList()));
@@ -44,16 +50,16 @@ public class SchBlockService {
         if (id != null) {
             SchBlock schBlock = schBlockRepository.findOne(id);
             if (schBlock.getBlocks() != null && !schBlock.getBlocks().isEmpty()) {
-                schBlock.getBlocks().stream().forEach(schEventTemplateEvnetTemplate -> {
-                    if (schEventTemplateEvnetTemplate.getChild().getBlocks() != null && !schEventTemplateEvnetTemplate.getChild().getBlocks().isEmpty()) {
-                        deleteBlock(schEventTemplateEvnetTemplate.getChild().getId());
+                schBlock.getBlocks().stream().forEach(blockSchBlockConsumer -> {
+                    if (blockSchBlockConsumer.getChild().getBlocks() != null && !blockSchBlockConsumer.getChild().getBlocks().isEmpty()) {
+
+                        deleteBlock(blockSchBlockConsumer.getChild().getId());
+                        schBlockSchBlockRepository.delete(blockSchBlockConsumer);
                     }
-                    schBlockSchBlockRepository.delete(schEventTemplateEvnetTemplate);
                 });
-                schBlockRepository.delete(schBlock);
             }
-            schBlockRepository.flush();
-            schBlockSchBlockRepository.flush();
+            schEmissionService.deleteEmissions(schBlock.getEmissions());
+
         }
     }
 

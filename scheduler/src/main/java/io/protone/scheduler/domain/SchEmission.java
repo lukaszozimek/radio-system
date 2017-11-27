@@ -6,6 +6,8 @@ import io.protone.core.domain.CorNetwork;
 import io.protone.library.domain.LibMediaItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import uk.co.jemos.podam.common.PodamExclude;
 
 import javax.persistence.*;
@@ -30,6 +32,9 @@ public class SchEmission extends SchTimeParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "sequence")
+    protected Long sequence;
+
     @PodamExclude
     @ManyToOne
     private SchPlaylist playlist;
@@ -39,7 +44,7 @@ public class SchEmission extends SchTimeParams implements Serializable {
     private SchBlock block;
 
     @PodamExclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     private LibMediaItem mediaItem;
 
     @Column(name = "finished")
@@ -58,7 +63,8 @@ public class SchEmission extends SchTimeParams implements Serializable {
     protected boolean wasSkiped;
 
     @PodamExclude
-    @OneToMany(mappedBy = "emission", cascade = CascadeType.MERGE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "emission", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<SchAttachment> attachments = new ArrayList<>();
@@ -97,7 +103,7 @@ public class SchEmission extends SchTimeParams implements Serializable {
         this.sequence = sequence;
     }
 
-    public SchEmission seq(Long seq) {
+    public SchEmission sequence(Long seq) {
         this.sequence = seq;
         return this;
     }
