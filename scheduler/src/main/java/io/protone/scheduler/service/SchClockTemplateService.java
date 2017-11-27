@@ -73,6 +73,12 @@ public class SchClockTemplateService {
 
     @Transactional
     public void deleteSchClockConfigurationByNetworkAndChannelAndShortName(String networkShortcut, String channelShortcut, String shortName) {
-
+        SchClockTemplate schClockTemplate = findSchClockConfigurationForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, shortName);
+        if (schClockTemplate != null) {
+            schClockTemplate.getSchEventTemplates().stream().forEach(schBlockSchBlock -> {
+                schEventService.removeEvent(schBlockSchBlock.getChild().getId());
+            });
+            schClockTemplateRepository.delete(schClockTemplate);
+        }
     }
 }

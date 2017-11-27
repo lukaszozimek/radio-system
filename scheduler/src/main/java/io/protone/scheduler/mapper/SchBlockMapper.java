@@ -45,7 +45,10 @@ public interface SchBlockMapper {
         if (dto.getBlocks() != null && !dto.getBlocks().isEmpty()) {
             schBlocks = dto.getBlocks().stream().map(schBlockDTO -> new SchBlockSchBlock().child(this.DTO2DB(schBlockDTO, network, corChannel)).parent(entity).sequence(schBlockDTO.getSequence())).collect(toList());
         }
-        entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
+        if (entity.getEmissions() != null && !entity.getEmissions().isEmpty()) {
+            entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
+
+        }
         entity.setBlocks(schBlocks);
         entity.setNetwork(network);
         entity.setChannel(corChannel);
