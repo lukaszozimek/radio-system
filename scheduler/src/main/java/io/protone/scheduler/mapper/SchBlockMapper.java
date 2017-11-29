@@ -41,7 +41,7 @@ public interface SchBlockMapper {
     @AfterMapping
     default void schBlockDTOToSchBlockAfterMapping(SchBlockDTO dto, @MappingTarget SchBlock entity, @Context CorNetwork network, @Context CorChannel corChannel) {
         List<SchBlockSchBlock> schBlocks = Lists.newArrayList();
-        entity.sequence(null);
+
         if (dto.getBlocks() != null && !dto.getBlocks().isEmpty()) {
             schBlocks = dto.getBlocks().stream().map(schBlockDTO -> new SchBlockSchBlock().child(this.DTO2DB(schBlockDTO, network, corChannel)).parent(entity).sequence(schBlockDTO.getSequence())).collect(toList());
         }
@@ -49,6 +49,7 @@ public interface SchBlockMapper {
             entity.getEmissions().stream().forEach(schEmissionTemplate -> schEmissionTemplate.block(entity).network(network).channel(corChannel).getAttachments().stream().forEach(schAttachmentTemplate -> schAttachmentTemplate.channel(corChannel).network(network).emission(schEmissionTemplate)));
 
         }
+        entity.setSequence(0L);
         entity.setBlocks(schBlocks);
         entity.setNetwork(network);
         entity.setChannel(corChannel);

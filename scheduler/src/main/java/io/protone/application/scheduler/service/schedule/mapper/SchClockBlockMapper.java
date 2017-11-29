@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class SchClockBlockMapper {
     @Inject
-    private SchEventEmissionEmissionMapper schEventEmissionEmissionMapper;
+    private SchEmissionConfigurationSchEmissionMapper schEventEmissionEmissionMapper;
 
     @Inject
     private LibLibraryMediaService libraryMediaService;
@@ -44,7 +44,7 @@ public class SchClockBlockMapper {
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schBlock.getStartTime());
-                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).sequence(schTimeParams.get(i).getSequence());
+                    SchEmission schEmission = schEventEmissionEmissionMapper.mapSchEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).sequence(schTimeParams.get(i).getSequence());
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
@@ -78,7 +78,7 @@ public class SchClockBlockMapper {
                 }
                 if (schTimeParams.get(i) instanceof SchEmissionTemplate) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchEmission schEmission = schEventEmissionEmissionMapper.mapEventEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).sequence(schTimeParams.get(i).getSequence());
+                    SchEmission schEmission = schEventEmissionEmissionMapper.mapSchEmission((SchEmissionTemplate) schTimeParams.get(i), schPlaylist).sequence(schTimeParams.get(i).getSequence());
                     schBlock.endTime(schEmission.getEndTime());
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
@@ -86,7 +86,7 @@ public class SchClockBlockMapper {
                 }
                 if (schTimeParams.get(i) instanceof SchEmission) {
                     schTimeParams.get(i).setStartTime(schTimeParams.get(i - 1).getEndTime());
-                    SchEmission schEmission = (SchEmission) ((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schTimeParams.get(i).getStartTime()).endTime(schTimeParams.get(i).getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
+                    SchEmission schEmission =  ((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schTimeParams.get(i).getStartTime()).endTime(schTimeParams.get(i).getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());

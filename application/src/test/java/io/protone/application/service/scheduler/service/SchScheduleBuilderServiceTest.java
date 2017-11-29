@@ -99,7 +99,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
     public void shouldBuildScheduleWithOneHourGrid() {
         //when
         LocalDate localDate = LocalDate.now();
-        SchGrid schGrid = buildGridForDayWitClock(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true);
+        SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClock(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
 
         //then
         SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
@@ -123,7 +123,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
     public void shouldBuildScheduleWithOneHourContainingEventsGrid() {
         //when
         LocalDate localDate = LocalDate.now();
-        SchGrid schGrid =buildGridForDayWitClockWithNestedEvents(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true);
+        SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClockWithNestedEvents(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
 
         //then
         SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
@@ -197,7 +197,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         when(libFileItemService.download(schLogMusFile)).thenReturn(IOUtils.toByteArray(musLogStream));
         when(libFileItemService.download(schLogOprFile)).thenReturn(IOUtils.toByteArray(oprLogStream));
         LocalDate localDate = LocalDate.of(2017, 8, 26);
-        SchGrid schGrid =buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true);
+        SchGrid schGrid = schGridRepository.saveAndFlush(buildGridForDayWitClockMusicAndImportEventsAndEmissionsConfiguration(corDayOfWeekEnumMap.get(localDate.getDayOfWeek()), true));
 
         //then
         SchSchedule schSchedule = schScheduleBuilderService.buildDefaultSchedule(localDate, corNetwork.getShortcut(), corChannel.getShortcut());
@@ -212,11 +212,10 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getLength());
         assertNotNull(schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions());
         assertEquals(2, schSchedule.getBlocks().stream().findFirst().get().getChild().getEmissions().size());
-        assertEquals(3, schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().size());
+        assertEquals(1, schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().size());
         schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().stream().forEach(block -> {
             if (block.getChild().getEventType() != null && block.getChild().getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
                 assertEquals(7, block.getChild().getEmissions().size());
-                assertEquals(2, block.getChild().getBlocks().size());
 
                 assertNotNull(block.getChild().getChannel());
                 assertNotNull(block.getChild().getNetwork());
