@@ -53,7 +53,6 @@ public class SchBlockMapperTest {
         block = factory.manufacturePojo(SchBlock.class);
 
         SchBlockSchBlock childBlock = factory.manufacturePojo(SchBlockSchBlock.class);
-        childBlock.getChild().addEmission(factory.manufacturePojo(SchEmission.class)); //Emission 1 @ childBlock
 
         block.addBlock(childBlock);
 
@@ -143,7 +142,6 @@ public class SchBlockMapperTest {
             assertNotNull(entity.getStartTime());
             assertNotNull(entity.getEndTime());
             assertNotNull(entity.getRelativeDelay());
-            assertNotNull(entity.getSequence());
             assertNotNull(entity.getNetwork());
             assertNotNull(entity.getChannel());
         });

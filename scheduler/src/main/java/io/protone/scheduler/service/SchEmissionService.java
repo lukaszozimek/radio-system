@@ -40,6 +40,9 @@ public class SchEmissionService {
         }
         return emissionSet.stream().map(schEmission -> {
             schEmission.attachments(schAttachmentService.saveAttachmenst(schEmission.getAttachments()));
+            if (schEmission.getMediaItem().getId() == null) {
+                schEmission.mediaItem(libMediaItemService.saveMediaItem(schEmission.getMediaItem()));
+            }
             return schEmissionRepository.saveAndFlush(schEmission);
         }).collect(toList());
     }

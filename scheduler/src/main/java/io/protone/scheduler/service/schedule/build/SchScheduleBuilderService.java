@@ -1,15 +1,14 @@
 package io.protone.scheduler.service.schedule.build;
 
 import com.google.common.collect.Lists;
+import io.protone.application.scheduler.service.schedule.mapper.SchGridTimeFillerService;
 import io.protone.core.domain.enumeration.CorDayOfWeekEnum;
 import io.protone.library.service.LibFileItemService;
 import io.protone.library.service.LibMediaItemService;
 import io.protone.scheduler.domain.*;
-import io.protone.scheduler.domain.enumeration.EventTypeEnum;
 import io.protone.scheduler.service.*;
 import io.protone.scheduler.service.schedule.factory.SchClockBuilder;
 import org.apache.commons.lang3.SerializationUtils;
-import org.hibernate.internal.util.SerializationHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.Comparator.comparing;
+import static io.protone.scheduler.domain.enumeration.EventTypeEnum.ET_IMPORT_LOG;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -56,6 +55,10 @@ public class SchScheduleBuilderService {
 
     @Inject
     private LibMediaItemService libMediaItemService;
+
+    @Inject
+    private SchGridTimeFillerService schGridTimeFillerService;
+
     private Map<DayOfWeek, CorDayOfWeekEnum> corDayOfWeekEnumMap;
 
     @PostConstruct
@@ -71,12 +74,13 @@ public class SchScheduleBuilderService {
     }
 
 
+    @Transactional
     public SchSchedule buildScheduleForDate(LocalDate localDate, String gridShortName, String networkShortcut, String channelShortcut) throws Exception {
         SchGrid schGrid = this.schGridService.findSchGridForNetworkAndChannelAndShortName(networkShortcut, channelShortcut, gridShortName);
         return build(schGrid, localDate);
     }
 
-
+    @Transactional
     public SchSchedule buildDefaultSchedule(LocalDate localDate, String networkShortcut, String channelShortcut) {
         CorDayOfWeekEnum corDayOfWeekEnum = corDayOfWeekEnumMap.get(localDate.getDayOfWeek());
         SchGrid schGrid = SerializationUtils.clone(this.schGridService.findOneByNetworkShortcutAndChannelShortcutAndDefaultGridAndDayOfWeek(networkShortcut, channelShortcut, true, corDayOfWeekEnum));
@@ -86,11 +90,7 @@ public class SchScheduleBuilderService {
     private SchSchedule build(SchGrid schGrid, LocalDate localDate) {
         if (schGrid != null) {
             if (schGrid.getChilds() != null || !schGrid.getChilds().isEmpty()) {
-                schGrid.setInternalClockcs(schGrid.getSchEventTemplates().stream().map(schClock -> {
-                    schClock.getChild().sequence(schClock.getSequence());
-                    schClock.getChild().getSchEventTemplates().stream().forEach(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.child((SchEventTemplate) SerializationHelper.clone(mapSequenceToEventTemplate(schEventTemplateEvnetTemplate))));
-                    return (SchClockTemplate) SerializationHelper.clone(schClock.getChild());
-                }).collect(toList()));
+                schGrid.setInternalClockcs(schGridTimeFillerService.cloneClockStructureFromHibernate(schGrid));
                 SchPlaylist schPlaylist = schPlaylistService.saveSchPlaylist(new SchPlaylist().channel(schGrid.getChannel()).network(schGrid.getNetwork()).date(localDate));
                 return buildScheduleFromGrid(schGrid, schPlaylist);
             }
@@ -99,18 +99,12 @@ public class SchScheduleBuilderService {
         throw new BadRequestException("There is no grid for this");
     }
 
-    private SchEventTemplate mapSequenceToEventTemplate(SchEventTemplateEvnetTemplate schEventTemplateEvnetTemplate) {
-        if (schEventTemplateEvnetTemplate.getChild().getSchEventTemplates() != null && !schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().isEmpty()) {
-            schEventTemplateEvnetTemplate.getChild().schEventTemplates(schEventTemplateEvnetTemplate.getChild().getSchEventTemplates().stream().map(schEventTemplateEvnetTemplate1 -> schEventTemplateEvnetTemplate.child((SchEventTemplate) SerializationHelper.clone(mapSequenceToEventTemplate(schEventTemplateEvnetTemplate))).sequence(schEventTemplateEvnetTemplate1.getSequence())).collect(toList()));
-        }
-        return schEventTemplateEvnetTemplate.getChild().sequence(schEventTemplateEvnetTemplate.getSequence());
-    }
-
 
     @Transactional(noRollbackFor = Exception.class)
     private SchSchedule buildScheduleFromGrid(SchGrid schGrid, SchPlaylist schPlaylist) {
+        schGrid.setInternalClockcs(schGridTimeFillerService.fillPredictedStartTimes(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0))));
+
         List<SchEventTemplate> importEvents = getImportLogEventFlatList(schGrid.getInternalClockcs());
-        List<SchClockTemplate> schClockTemplates = Lists.newArrayList();
         if (importEvents != null) {
             Set<SchLogConfiguration> uniqLogsConfigurations = importEvents.stream().map(SchEventTemplate::getSchLogConfiguration).distinct().collect(Collectors.toSet());
             Set<SchLog> scheduleLogs = uniqLogsConfigurations.stream().map(logConfiguration -> this.schLogService.findSchLogForNetworkAndChannelAndDateAndExtension(schGrid.getNetwork().getShortcut(), schGrid.getChannel().getShortcut(), schPlaylist.getDate(), logConfiguration.getExtension())).collect(toSet());
@@ -121,55 +115,22 @@ public class SchScheduleBuilderService {
                         schEmissionSet = schParseLogService.parseLog(schLog);
                     } catch (Exception e) {
                         log.error("Wrong log configuration or log doesn't exist");
-
                     }
                     if (schEmissionSet != null && !schEmissionSet.isEmpty()) {
                         List<SchEventTemplate> schEventTemplates = importEvents.stream().filter(schEvent -> schEvent.getSchLogConfiguration().getExtension().equals(schLog.getSchLogConfiguration().getExtension())).collect(toList());
-                        List<SchEventTemplate> filledEvnts = fillEventWithEmissions(schEventTemplates, schEmissionSet, schPlaylist);
-                        schClockTemplates.addAll(fillClockWithEvents(schGrid.getInternalClockcs(), filledEvnts));
+                        List<SchEventTemplate> filledEvnts = schGridTimeFillerService.fillEventWithEmissions(schEventTemplates, schEmissionSet, schPlaylist);
+                        schGrid.internalClockcs(fillClockWithEvents(schGrid.getInternalClockcs(), filledEvnts));
                     }
                 }
             });
         }
         SchSchedule schSchedule = new SchSchedule().date(schPlaylist.getDate()).network(schGrid.getNetwork()).channel(schGrid.getChannel());
-        List<SchClock> schClocks = schClockBuilder.buildClocks(schClockTemplates, LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)), schPlaylist);
+        List<SchClock> schClocks = schClockBuilder.buildClocks(schGrid.getInternalClockcs(), LocalDateTime.of(schPlaylist.getDate(), LocalTime.of(0, 0, 0)), schPlaylist);
+
         for (int i = 0; i < schClocks.size(); i++) {
             schSchedule.addBlock(new SchBlockSchBlock().child(schClocks.get(i)).parent(schSchedule).sequence(schClocks.get(i).getSequence()));
         }
         return schSchedule;
-    }
-
-
-    private List<SchEventTemplate> fillEventWithEmissions(List<SchEventTemplate> schEventTemplates, List<SchEmission> schEmissions, SchPlaylist schPlaylist) {
-        int i = 0;
-        for (int y = 0; y < schEmissions.size(); y++) {
-            if (schEventTemplates.size() > i) {
-                Long logEmissionsLenght = schEventTemplates.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
-                if (logEmissionsLenght < schEventTemplates.get(i).getLength()) {
-                    if (schEventTemplates.get(i).getEmissionsLog().isEmpty()) {
-                        schEventTemplates.get(i).addEmission(schEmissions.get(y).sequence(1L).playlist(schPlaylist).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
-                    } else {
-                        schEventTemplates.get(i).
-                                addEmission(schEmissions.get(y).sequence(schEventTemplates.get(i)
-                                        .getEmissionsLog()
-                                        .stream()
-                                        .max(comparing(SchEmission::getSequence))
-                                        .get().getSequence() + 1)
-                                        .playlist(schPlaylist)
-                                        .network(schEventTemplates.get(i).getNetwork())
-                                        .channel(schEventTemplates.get(i).getChannel()));
-                    }
-                    log.debug("put emission in to Block {}", schEmissions.get(y));
-                } else {
-                    log.debug("Block is full skip to next one");
-                    i++;
-                }
-            } else {
-                log.debug("There is no more import events. Finish parsing");
-                break;
-            }
-        }
-        return schEventTemplates;
     }
 
 
@@ -182,14 +143,14 @@ public class SchScheduleBuilderService {
     }
 
 
-    public List<SchEventTemplate> getImportEvents(List<SchEventTemplate> blocks) {
+    private List<SchEventTemplate> getImportEvents(List<SchEventTemplate> blocks) {
         List<SchEventTemplate> events = Lists.newArrayList();
         if (blocks != null && !blocks.isEmpty()) {
             events.addAll(blocks.stream().filter(schBlock -> {
                 if (!schBlock.getSchEventTemplates().isEmpty()) {
                     events.addAll(this.getImportEvents(schBlock.getChilds()));
                 }
-                return EventTypeEnum.ET_IMPORT_LOG.equals(schBlock.getEventType());
+                return ET_IMPORT_LOG.equals(schBlock.getEventType());
             }).collect(toList()));
             return events;
         }
@@ -205,10 +166,8 @@ public class SchScheduleBuilderService {
         return clockConfigurationSet;
     }
 
-    public void updateEventsRecusiveOnClockLevel(SchClockTemplate schClockTemplate, SchEventTemplate schEventTemplate) {
-        Optional<SchEventTemplate> eventOnClockLevel = schClockTemplate.getSchEventTemplates().stream().filter(schEvent1 -> {
-            return schEvent1.getSequence().equals(schEventTemplate.getSequence());
-        }).map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild()).findFirst();
+    private void updateEventsRecusiveOnClockLevel(SchClockTemplate schClockTemplate, SchEventTemplate schEventTemplate) {
+        Optional<SchEventTemplate> eventOnClockLevel = schClockTemplate.getSchEventTemplates().stream().filter(schEvent1 -> schEvent1.getSequence().equals(schEventTemplate.getSequence())).map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild()).findFirst();
         if (eventOnClockLevel.isPresent()) {
             log.debug("Found import event on clock level");
             schClockTemplate.getChilds().remove(eventOnClockLevel.get());
@@ -219,7 +178,7 @@ public class SchScheduleBuilderService {
         }
     }
 
-    public SchEventTemplate updateNestedEvenRecusive(SchEventTemplate eventClock, SchEventTemplate schEventTemplateFilled) {
+    private SchEventTemplate updateNestedEvenRecusive(SchEventTemplate eventClock, SchEventTemplate schEventTemplateFilled) {
         Optional<SchEventTemplate> eventOnClockLevel = eventClock.getSchEventTemplates().stream().filter(schEvent1 -> {
             if (!schEventTemplateFilled.getSchEventTemplates().isEmpty()) {
                 return schEvent1.getSequence().equals(schEventTemplateFilled.getSequence()) && schEvent1.getParent().getId().equals(schEventTemplateFilled.getSchEventTemplates().get(0).getParent().getId());
