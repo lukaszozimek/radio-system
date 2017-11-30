@@ -28,13 +28,13 @@ public class SchClockBuilder {
     private SchClockBlockMapper schClockBlockMapper;
 
     @Transactional
-    public List<SchClock> buildClocks(List<SchClockTemplate> clocks, LocalDateTime endTime, SchPlaylist schPlaylist) {
+    public List<SchClock> buildClocks(List<SchClockTemplate> clocks, LocalDateTime startTime, SchPlaylist schPlaylist) {
         if (clocks != null) {
             List<SchClockTemplate> clockConfigurations = clocks.stream().sorted(Comparator.comparing(SchClockTemplate::getSequence)).collect(toList());
             List<SchClock> clockSets = Lists.newArrayList();
             for (int i = 0; i < clocks.size(); i++) {
                 if (i == 0) {
-                    clockConfigurations.get(i).setStartTime(endTime);
+                    clockConfigurations.get(i).setStartTime(startTime);
                     clockSets.add(mapClock(clockConfigurations.get(i), schPlaylist));
 
                 } else {

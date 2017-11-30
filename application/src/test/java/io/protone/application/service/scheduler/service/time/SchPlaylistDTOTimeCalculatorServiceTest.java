@@ -109,7 +109,7 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
         SchPlaylist schPlaylist = schPlaylistRepository.findOneByNetwork_ShortcutAndChannel_ShortcutAndDate(corNetwork.getShortcut(), corChannel.getShortcut(), schSchedule.getDate());
         SchPlaylistDTO resultDTO = schPlaylistDTOTimeCalculatorService.calculateTimeInSchPlaylistDTO(schPlaylist);
         assertNotNull(resultDTO);
-        assertEquals(21, resultDTO.getEmissions().size());
+        assertEquals(22, resultDTO.getEmissions().size());
     }
 
 }

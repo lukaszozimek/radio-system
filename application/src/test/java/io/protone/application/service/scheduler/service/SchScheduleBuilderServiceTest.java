@@ -215,7 +215,7 @@ public class SchScheduleBuilderServiceTest extends SchedulerBuildSchedulerBaseTe
         assertEquals(3, schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().size());
         schSchedule.getBlocks().stream().findFirst().get().getChild().getBlocks().stream().forEach(block -> {
             if (block.getChild().getEventType() != null && block.getChild().getEventType().equals(EventTypeEnum.ET_IMPORT_LOG)) {
-                assertEquals(7, block.getChild().getEmissions().size());
+                assertEquals(8, block.getChild().getEmissions().size());
 
                 assertNotNull(block.getChild().getChannel());
                 assertNotNull(block.getChild().getNetwork());

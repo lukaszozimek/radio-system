@@ -53,7 +53,7 @@ public class SchClockBlockMapper {
 
                 if (schTimeParams.get(i) instanceof SchEmission) {
                     schTimeParams.get(i).setStartTime(schBlock.getStartTime());
-                    SchEmission schEmission = (SchEmission) ((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schBlock.getStartTime()).endTime(schTimeParams.get(i).getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
+                    SchEmission schEmission =((SchEmission) schTimeParams.get(i)).sequence(schTimeParams.get(i).getSequence()).startTime(schBlock.getStartTime()).endTime(schBlock.getStartTime().plusSeconds(((SchEmission) schTimeParams.get(i)).getMediaItem().getLength().longValue() / 1000));
                     schTimeParams.get(i).setEndTime(schEmission.getEndTime());
                     schBlock.endTime(schEmission.getEndTime());
                     schBlock.length((long) Duration.between(schBlock.getStartTime(), schBlock.getEndTime()).getNano());
