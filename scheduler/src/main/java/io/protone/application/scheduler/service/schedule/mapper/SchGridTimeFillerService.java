@@ -32,9 +32,11 @@ public class SchGridTimeFillerService {
                 schTimeParamsMap.keySet().stream().sorted().forEach(sequence -> {
                     if (sequence == 0) {
                         if (schTimeParamsMap.get(sequence) instanceof SchEventTemplate) {
+                            internalClockcs.get(finalI).setStartTime(localDateTime);
                             internalClockcs.get(finalI).setEndTime(fillEvent((SchEventTemplate) schTimeParamsMap.get(sequence), localDateTime).getEndTime());
                         }
                         if (schTimeParamsMap.get(sequence) instanceof SchEmissionTemplate) {
+                            internalClockcs.get(finalI).setStartTime(localDateTime);
                             SchEmissionTemplate schEmissionTemplate = (SchEmissionTemplate) schTimeParamsMap.get(sequence).startTime(localDateTime);
                             schEmissionTemplate.endTime(schEmissionTemplate.getStartTime().plusSeconds(schEmissionTemplate.getMediaItem().getLength().longValue() / 1000));
                             internalClockcs.get(finalI).setEndTime(schEmissionTemplate.getEndTime());
@@ -55,12 +57,15 @@ public class SchGridTimeFillerService {
                 int finalI1 = i;
                 schTimeParamsMap.keySet().stream().sorted().forEach(sequence -> {
                     if (sequence == 0) {
+                        internalClockcs.get(finalI1).setStartTime(internalClockcs.get(finalI1 - 1).getEndTime());
+
                         if (schTimeParamsMap.get(sequence) instanceof SchEventTemplate) {
                             SchEventTemplate eventTemplate =
                                     fillEvent((SchEventTemplate) schTimeParamsMap.get(sequence), internalClockcs.get(finalI1 - 1).getEndTime());
                             internalClockcs.get(finalI1).setEndTime(eventTemplate.getEndTime());
                         }
                         if (schTimeParamsMap.get(sequence) instanceof SchEmissionTemplate) {
+                            internalClockcs.get(finalI1).setStartTime(internalClockcs.get(finalI1 - 1).getEndTime());
                             SchEmissionTemplate schEmissionTemplate = (SchEmissionTemplate) schTimeParamsMap.get(sequence).startTime(internalClockcs.get(finalI1 - 1).getEndTime());
                             schEmissionTemplate.endTime(schEmissionTemplate.getStartTime().plusSeconds(schEmissionTemplate.getMediaItem().getLength().longValue() / 1000));
                             internalClockcs.get(finalI1).setEndTime(schEmissionTemplate.getEndTime());
@@ -101,19 +106,25 @@ public class SchGridTimeFillerService {
         for (int y = 0; y < schEmissions.size(); y++) {
             if (schEventTemplates.size() > i) {
                 Long logEmissionsLenght = schEventTemplates.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
-                if (logEmissionsLenght < schEventTemplates.get(i).getLength() ) {//&& schEmissions.get(y).getStartTime().getHour() == schEventTemplates.get(i).getStartTime().getHour() && schEmissions.get(y).getStartTime().getMinute() > schEventTemplates.get(i).getStartTime().getMinute()
+                if (logEmissionsLenght < schEventTemplates.get(i).getLength()) {
                     if (schEventTemplates.get(i).getEmissionsLog().isEmpty()) {
-                        schEventTemplates.get(i).addEmission(schEmissions.get(y).sequence(0L).playlist(schPlaylist).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
+                        if (isMatchingToThisBlock(schEmissions.get(y), schEventTemplates.get(i))) {
+                            schEventTemplates.get(i).addEmission(schEmissions.get(y).sequence(0L).playlist(schPlaylist).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
+                        }
+
                     } else {
-                        schEventTemplates.get(i).
-                                addEmission(schEmissions.get(y).sequence(schEventTemplates.get(i)
-                                        .getEmissionsLog()
-                                        .stream()
-                                        .max(comparing(SchEmission::getSequence))
-                                        .get().getSequence() + 1)
-                                        .playlist(schPlaylist)
-                                        .network(schEventTemplates.get(i).getNetwork())
-                                        .channel(schEventTemplates.get(i).getChannel()));
+                        if (isMatchingToThisBlock(schEmissions.get(y), schEventTemplates.get(i))) {
+                            schEventTemplates.get(i).
+                                    addEmission(schEmissions.get(y)
+                                            .endTime(schEmissions.get(y).getStartTime().plusSeconds(schEmissions.get(y).getMediaItem().getLength().longValue() / 1000)).sequence(schEventTemplates.get(i)
+                                                    .getEmissionsLog()
+                                                    .stream()
+                                                    .max(comparing(SchEmission::getSequence))
+                                                    .get().getSequence() + 1)
+                                            .playlist(schPlaylist)
+                                            .network(schEventTemplates.get(i).getNetwork())
+                                            .channel(schEventTemplates.get(i).getChannel()));
+                        }
                     }
                     log.debug("put emission in to Block {}", schEmissions.get(y));
                 } else {
@@ -126,6 +137,10 @@ public class SchGridTimeFillerService {
             }
         }
         return schEventTemplates;
+    }
+
+    private boolean isMatchingToThisBlock(SchEmission schEmission, SchEventTemplate schEventTemplate) {
+        return schEmission.getStartTime().getHour() == schEventTemplate.getStartTime().getHour() && schEmission.getStartTime().getMinute() > schEventTemplate.getStartTime().getMinute();
     }
 
     private static SchEventTemplate cloneEventStructreFromHibernate(SchEventTemplateEvnetTemplate schEventTemplateEvnetTemplate) {
