@@ -19,7 +19,6 @@ import io.protone.scheduler.service.SchScheduleServiceWrapper;
 import io.protone.scheduler.service.time.SchPlaylistDTOTimeCalculatorService;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -90,7 +89,6 @@ public class SchPlaylistDTOTimeCalculatorServiceTest extends SchedulerBuildSched
     }
 
     @Test
-    @Ignore("test should be anlyzed in connection with problem of recursive filling event templets for blocks")
     public void shouldCalculateTimeForBlockNestedBlocks() throws IOException {
         //when
         ReflectionTestUtils.setField(parseLogService, "libFileItemService", libFileItemService);

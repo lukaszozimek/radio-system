@@ -161,7 +161,7 @@ public class SchedulerBuildSchedulerBaseTest {
         schClockTemplate.length(7200000L);
         schClockTemplate.channel(corChannel);
         schClockTemplate.network(corNetwork);
-        schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 1));
+        schClockTemplate.emissions(buildQuatreEmissionConfiguration(schClockTemplate, 2, 3));
         schClockTemplate = schClockTemplateRepository.saveAndFlush(schClockTemplate);
         schClockTemplate.schEventTemplates(buildNestedSetEventsWithLenght30minoutesWithMusicImport(schClockTemplate));
         return schClockTemplateRepository.saveAndFlush(schClockTemplate);
