@@ -168,7 +168,7 @@ public class SchScheduleBuilderService {
 
     private void updateEventsRecusiveOnClockLevel(SchClockTemplate schClockTemplate, SchEventTemplate schEventTemplate) {
         Optional<SchEventTemplate> eventOnClockLevel = schClockTemplate.getSchEventTemplates().stream().filter(schEvent1 -> schEvent1.getSequence().equals(schEventTemplate.getSequence())).map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild()).findFirst();
-        if (eventOnClockLevel.isPresent()) {
+        if (eventOnClockLevel.isPresent() && eventOnClockLevel.get().getEmissionsLog().isEmpty()) {
             log.debug("Found import event on clock level");
             schClockTemplate.getChilds().remove(eventOnClockLevel.get());
             schClockTemplate.getChilds().add(schEventTemplate);
@@ -178,23 +178,24 @@ public class SchScheduleBuilderService {
         }
     }
 
-    private SchEventTemplate updateNestedEvenRecusive(SchEventTemplate eventClock, SchEventTemplate schEventTemplateFilled) {
-        Optional<SchEventTemplate> eventOnClockLevel = eventClock.getSchEventTemplates().stream().filter(schEvent1 -> {
-            if (!schEventTemplateFilled.getSchEventTemplates().isEmpty()) {
-                return schEvent1.getSequence().equals(schEventTemplateFilled.getSequence()) && schEvent1.getParent().getId().equals(schEventTemplateFilled.getSchEventTemplates().get(0).getParent().getId());
+    private SchEventTemplate updateNestedEvenRecusive(SchEventTemplate unfilledEvent, SchEventTemplate filledEvent) {
+        Optional<SchEventTemplate> eventOnClockLevel = unfilledEvent.getSchEventTemplates().stream().filter(schEvent1 -> {
+            if (!filledEvent.getSchEventTemplates().isEmpty()) {
+                return schEvent1.getSequence().equals(filledEvent.getSequence());
+
             }
             return false;
         }).map(schEventTemplateEvnetTemplate -> schEventTemplateEvnetTemplate.getChild()).findFirst();
-        if (eventOnClockLevel.isPresent()) {
-            eventClock.getChilds().remove(eventOnClockLevel.get());
-            eventClock.getChilds().add(schEventTemplateFilled);
+        if (eventOnClockLevel.isPresent() && eventOnClockLevel.get().getEmissionsLog().isEmpty()) {
+            unfilledEvent.getChilds().remove(eventOnClockLevel.get());
+            unfilledEvent.getChilds().add(filledEvent);
         } else {
-            return eventClock.schEventTemplates(eventClock.getSchEventTemplates().stream().map(localevent -> {
-                updateNestedEvenRecusive(localevent.getChild(), schEventTemplateFilled);
+            return unfilledEvent.schEventTemplates(unfilledEvent.getSchEventTemplates().stream().map(localevent -> {
+                updateNestedEvenRecusive(localevent.getChild(), filledEvent);
                 return localevent;
             }).collect(toList()));
         }
-        return eventClock;
+        return unfilledEvent;
 
     }
 

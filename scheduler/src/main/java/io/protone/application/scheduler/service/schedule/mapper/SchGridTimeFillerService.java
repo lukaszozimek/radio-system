@@ -101,7 +101,7 @@ public class SchGridTimeFillerService {
         for (int y = 0; y < schEmissions.size(); y++) {
             if (schEventTemplates.size() > i) {
                 Long logEmissionsLenght = schEventTemplates.get(i).getEmissionsLog().stream().mapToLong(schEmission1 -> schEmission1.getMediaItem().getLength().longValue()).sum();
-                if (logEmissionsLenght < schEventTemplates.get(i).getLength()) {
+                if (logEmissionsLenght < schEventTemplates.get(i).getLength() ) {//&& schEmissions.get(y).getStartTime().getHour() == schEventTemplates.get(i).getStartTime().getHour() && schEmissions.get(y).getStartTime().getMinute() > schEventTemplates.get(i).getStartTime().getMinute()
                     if (schEventTemplates.get(i).getEmissionsLog().isEmpty()) {
                         schEventTemplates.get(i).addEmission(schEmissions.get(y).sequence(0L).playlist(schPlaylist).network(schEventTemplates.get(i).getNetwork()).channel(schEventTemplates.get(i).getChannel()));
                     } else {

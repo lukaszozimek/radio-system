@@ -55,10 +55,10 @@ public class SchClockBuilder {
             if (sequence == 0) {
                 if (schTimeParamsMap.get(sequence) instanceof SchEventTemplate) {
                     schTimeParamsMap.get(sequence).setStartTime(clock.getStartTime());
-                    SchBlock schBlockDTO = schClockBlockMapper.buildBlocks((SchEventTemplate) schTimeParamsMap.get(sequence), schPlaylist);
-                    schTimeParamsMap.get(sequence).endTime(schBlockDTO.getEndTime());
-                    clock.endTime(schBlockDTO.getEndTime());
-                    clock.addBlock(new SchBlockSchBlock().sequence(sequence).parent(clock).child(schBlockDTO));
+                    SchBlock block = schClockBlockMapper.buildBlocks((SchEventTemplate) schTimeParamsMap.get(sequence), schPlaylist);
+                    schTimeParamsMap.get(sequence).endTime(block.getEndTime());
+                    clock.endTime(block.getEndTime());
+                    clock.addBlock(new SchBlockSchBlock().sequence(sequence).parent(clock).child(block));
                 }
                 if (schTimeParamsMap.get(sequence) instanceof SchEmissionTemplate) {
                     schTimeParamsMap.get(sequence).setStartTime(clock.getStartTime());
@@ -70,15 +70,15 @@ public class SchClockBuilder {
             } else {
                 if (schTimeParamsMap.get(sequence) instanceof SchEventTemplate) {
                     schTimeParamsMap.get(sequence).setStartTime(schTimeParamsMap.get(sequence - 1).getEndTime());
-                    SchBlock schBlock = schClockBlockMapper.buildBlocks((SchEventTemplate) schTimeParamsMap.get(sequence), schPlaylist);
-                    if (schBlock.getEndTime() != null) {
-                        schTimeParamsMap.get(sequence).endTime(schBlock.getEndTime());
-                        clock.endTime(schBlock.getEndTime());
+                    SchBlock block = schClockBlockMapper.buildBlocks((SchEventTemplate) schTimeParamsMap.get(sequence), schPlaylist);
+                    if (block.getEndTime() != null) {
+                        schTimeParamsMap.get(sequence).endTime(block.getEndTime());
+                        clock.endTime(block.getEndTime());
                     } else {
                         schTimeParamsMap.get(sequence).endTime(schTimeParamsMap.get(sequence).getStartTime());
                         clock.endTime(schTimeParamsMap.get(sequence).getStartTime());
                     }
-                    clock.addBlock(new SchBlockSchBlock().sequence(sequence).parent(clock).child(schBlock));
+                    clock.addBlock(new SchBlockSchBlock().sequence(sequence).parent(clock).child(block));
                 }
                 if (schTimeParamsMap.get(sequence) instanceof SchEmissionTemplate) {
                     schTimeParamsMap.get(sequence).setStartTime(schTimeParamsMap.get(sequence - 1).getEndTime());
