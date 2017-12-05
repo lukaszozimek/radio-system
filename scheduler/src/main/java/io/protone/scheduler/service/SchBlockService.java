@@ -35,8 +35,9 @@ public class SchBlockService {
                 if (schBlock.getChild().getBlocks() != null && !schBlock.getChild().getBlocks().isEmpty()) {
                     schBlock.child(saveBlocks(schBlock.getChild()));
                 } else {
-
-                    schBlock.parent(finalBlock).child(schBlockRepository.saveAndFlush(schBlock.getChild()));
+                    SchBlock childBlock = schBlockRepository.saveAndFlush(schBlock.getChild());
+                    schEmissionService.saveEmission(schBlock.getChild().getEmissions());
+                    schBlock.parent(finalBlock).child(childBlock);
                 }
                 return schBlockSchBlockRepository.saveAndFlush(schBlock);
             }).collect(Collectors.toList()));
