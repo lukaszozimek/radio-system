@@ -86,7 +86,7 @@ public class SchGridTimeFillerService {
                 });
 
             }
-            i++;
+
         }
         return internalClockcs;
     }
