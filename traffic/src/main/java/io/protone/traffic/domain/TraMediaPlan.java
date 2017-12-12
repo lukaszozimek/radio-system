@@ -4,7 +4,7 @@ import io.protone.core.domain.AbstractAuditingEntity;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
-import io.protone.library.domain.LibMediaItem;
+import io.protone.library.domain.LibFileItem;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -34,7 +34,7 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
     @OneToOne
     @PodamExclude
     @JoinColumn(unique = true, nullable = false)
-    private LibMediaItem mediaItem;
+    private LibFileItem libFileItem;
 
     @ManyToOne
     @PodamExclude
@@ -69,17 +69,17 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
         this.name = name;
     }
 
-    public LibMediaItem getMediaItem() {
-        return mediaItem;
+    public LibFileItem getLibFileItem() {
+        return libFileItem;
     }
 
-    public TraMediaPlan mediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
+    public TraMediaPlan fileItem(LibFileItem libMediaItem) {
+        this.libFileItem = libMediaItem;
         return this;
     }
 
-    public void setMediaItem(LibMediaItem libMediaItem) {
-        this.mediaItem = libMediaItem;
+    public void setLibFileItem(LibFileItem libMediaItem) {
+        this.libFileItem = libMediaItem;
     }
 
     public CorChannel getChannel() {
@@ -145,8 +145,8 @@ public class TraMediaPlan extends AbstractAuditingEntity implements Serializable
     @Override
     public String toString() {
         return "TraMediaPlan{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            '}';
+                "id=" + id +
+                ", name='" + name + "'" +
+                '}';
     }
 }

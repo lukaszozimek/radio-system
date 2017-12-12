@@ -3,7 +3,7 @@ package io.protone.traffic.mapper;
 
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
-import io.protone.library.mapper.LibMediaItemThinMapper;
+import io.protone.library.mapper.LibFileItemMapper;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
 import io.protone.traffic.domain.TraMediaPlan;
@@ -18,22 +18,22 @@ import java.util.List;
 /**
  * Created by lukaszozimek on 10/06/2017.
  */
-@Mapper(componentModel = "spring", uses = {TraMediaPlanBlockMapper.class, TraMediaPlanEmissionMapper.class, TraMediaPlanPlaylistDateMapper.class, TraCustomerMapper.class, LibMediaItemThinMapper.class})
+@Mapper(componentModel = "spring", uses = {TraMediaPlanBlockMapper.class, TraMediaPlanEmissionMapper.class, TraMediaPlanPlaylistDateMapper.class, TraCustomerMapper.class, LibFileItemMapper.class})
 public interface TraMediaPlanMapper {
 
     @Mapping(source = "traMediaPlan.account", target = "traCustomerThinDTO")
-    @Mapping(source = "traMediaPlan.mediaItem", target = "mediaItemId")
+    @Mapping(source = "traMediaPlan.libFileItem", target = "libFileItemDTO")
     @Mapping(source = "traMediaPlanPlaylistDates", target = "traMediaPlan.traMediaPlanPlaylistDateDTOS")
     @Mapping(source = "traMediaPlanEmissions", target = "traMediaPlan.traMediaPlanEmissionDTOS")
     @Mapping(source = "traMediaPlanBlockList", target = "traMediaPlan.traMediaPlanBlockDTOS")
     TraMediaPlanDTO DB2DTO(TraMediaPlan traMediaPlan, List<TraMediaPlanBlock> traMediaPlanBlockList, List<TraMediaPlanPlaylistDate> traMediaPlanPlaylistDates, List<TraMediaPlanEmission> traMediaPlanEmissions);
 
     @Mapping(source = "account", target = "traCustomerThinDTO")
-    @Mapping(source = "mediaItem", target = "mediaItemId")
+    @Mapping(source = "libFileItem", target = "libFileItemDTO")
     TraMediaPlanDTO DB2DTO(TraMediaPlan traMediaPlan);
 
     @Mapping(source = "account", target = "traCustomerThinDTO")
-    @Mapping(source = "mediaItem", target = "mediaItemId")
+    @Mapping(source = "libFileItem", target = "libFileItemDTO")
     TraMediaPlanThinDTO DBThin2DTOThin(TraMediaPlan traMediaPlan);
 
     List<TraMediaPlanDTO> DBs2DTOs(List<TraMediaPlan> traMediaPlans);
@@ -41,7 +41,7 @@ public interface TraMediaPlanMapper {
     List<TraMediaPlanThinDTO> DBsThin2DTOsThin(List<TraMediaPlan> traMediaPlans);
 
     @Mapping(source = "traCustomerThinDTO", target = "account")
-    @Mapping(source = "mediaItemId", target = "mediaItem")
+    @Mapping(source = "libFileItemDTO", target = "libFileItem")
     TraMediaPlan DTO2DB(TraMediaPlanDTO traMediaPlanDTO, @Context CorNetwork network, @Context CorChannel corChannel);
 
     default List<TraMediaPlan> DTOs2DBs(List<TraMediaPlanDTO> traMediaPlanDTOS, @Context CorNetwork network, @Context CorChannel corChannel) {

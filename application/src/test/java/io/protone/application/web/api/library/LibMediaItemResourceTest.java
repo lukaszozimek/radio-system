@@ -261,7 +261,7 @@ public class LibMediaItemResourceTest {
         // Create the LibMediaItem, which fails.
         LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(libMediaItem);
         MockMultipartFile emptyFile = new MockMultipartFile("covers", new byte[0]);
-        MockMultipartFile jsonFile = new MockMultipartFile("mediaItem", "Test",
+        MockMultipartFile jsonFile = new MockMultipartFile("fileItem", "Test",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaItemDTO));
 
 
@@ -374,7 +374,7 @@ public class LibMediaItemResourceTest {
                 .description(UPDATED_DESCRIPTION);
         LibMediaItemDTO libMediaItemDTO = libMediaItemMapper.DB2DTO(updatedLibMediaItem);
         MockMultipartFile emptyFile = new MockMultipartFile("covers", new byte[0]);
-        MockMultipartFile jsonFile = new MockMultipartFile("mediaItem", "Test",
+        MockMultipartFile jsonFile = new MockMultipartFile("fileItem", "Test",
                 "application/json", TestUtil.convertObjectToJsonBytes(libMediaItemDTO));
 
 

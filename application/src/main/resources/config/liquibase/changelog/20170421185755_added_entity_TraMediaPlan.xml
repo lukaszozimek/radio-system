@@ -22,7 +22,7 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="media_item_id" type="bigint">
+            <column name="lib_file_item_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>
             <column name="channel_id" type="bigint">

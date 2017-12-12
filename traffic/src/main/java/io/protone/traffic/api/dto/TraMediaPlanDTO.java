@@ -1,7 +1,7 @@
 package io.protone.traffic.api.dto;
 
 
-import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
+import io.protone.library.api.dto.LibFileItemDTO;
 import io.protone.traffic.api.dto.thin.TraCustomerThinDTO;
 
 import javax.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ public class TraMediaPlanDTO implements Serializable {
     private String name;
 
     @NotNull
-    private LibMediaItemThinDTO mediaItemId;
+    private LibFileItemDTO libFileItemDTO;
 
     @NotNull
     private TraCustomerThinDTO traCustomerThinDTO;
@@ -46,12 +46,12 @@ public class TraMediaPlanDTO implements Serializable {
         this.name = name;
     }
 
-    public LibMediaItemThinDTO getMediaItemId() {
-        return mediaItemId;
+    public LibFileItemDTO getLibFileItemDTO() {
+        return libFileItemDTO;
     }
 
-    public void setMediaItemId(LibMediaItemThinDTO mediaItemId) {
-        this.mediaItemId = mediaItemId;
+    public void setLibFileItemDTO(LibFileItemDTO libFileItemDTO) {
+        this.libFileItemDTO = libFileItemDTO;
     }
 
     public TraCustomerThinDTO getTraCustomerThinDTO() {
@@ -95,7 +95,7 @@ public class TraMediaPlanDTO implements Serializable {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (mediaItemId != null ? !mediaItemId.equals(that.mediaItemId) : that.mediaItemId != null) return false;
+        if (libFileItemDTO != null ? !libFileItemDTO.equals(that.libFileItemDTO) : that.libFileItemDTO != null) return false;
         if (traCustomerThinDTO != null ? !traCustomerThinDTO.equals(that.traCustomerThinDTO) : that.traCustomerThinDTO != null)
             return false;
         if (traMediaPlanPlaylistDateDTOS != null ? !traMediaPlanPlaylistDateDTOS.equals(that.traMediaPlanPlaylistDateDTOS) : that.traMediaPlanPlaylistDateDTOS != null)
@@ -109,7 +109,7 @@ public class TraMediaPlanDTO implements Serializable {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (mediaItemId != null ? mediaItemId.hashCode() : 0);
+        result = 31 * result + (libFileItemDTO != null ? libFileItemDTO.hashCode() : 0);
         result = 31 * result + (traCustomerThinDTO != null ? traCustomerThinDTO.hashCode() : 0);
         result = 31 * result + (traMediaPlanPlaylistDateDTOS != null ? traMediaPlanPlaylistDateDTOS.hashCode() : 0);
         result = 31 * result + (traMediaPlanBlockDTOS != null ? traMediaPlanBlockDTOS.hashCode() : 0);
@@ -122,7 +122,7 @@ public class TraMediaPlanDTO implements Serializable {
         return "TraMediaPla{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", mediaItemId=" + mediaItemId +
+                ", libFileItemDTO=" + libFileItemDTO +
                 ", traCustomerThinDTO=" + traCustomerThinDTO +
                 ", traMediaPlanPlaylistDateDTOS=" + traMediaPlanPlaylistDateDTOS +
                 ", traMediaPlanBlockDTOS=" + traMediaPlanBlockDTOS +

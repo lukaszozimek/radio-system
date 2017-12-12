@@ -5,8 +5,8 @@ import io.protone.application.ProtoneApp;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
-import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
-import io.protone.library.domain.LibMediaItem;
+import io.protone.library.api.dto.LibFileItemDTO;
+import io.protone.library.domain.LibFileItem;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.thin.TraCustomerThinDTO;
 import io.protone.traffic.api.dto.thin.TraMediaPlanThinDTO;
@@ -24,7 +24,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by lukaszozimek on 11/06/2017.
@@ -54,9 +55,9 @@ public class TraMediaPlanMapperTest {
     private CrmAccount crmAccount;
     private TraCustomerThinDTO traCustomerThinDTO;
 
-    private LibMediaItemThinDTO libMediaItemThinDTO;
+    private LibFileItemDTO libMediaItemThinDTO;
 
-    private LibMediaItem libMediaItem;
+    private LibFileItem libMediaItem;
 
     private CorChannel corChannel;
 
@@ -65,20 +66,20 @@ public class TraMediaPlanMapperTest {
         PodamFactory factory = new PodamFactoryImpl();
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         traCustomerThinDTO = factory.manufacturePojo(TraCustomerThinDTO.class);
-        libMediaItemThinDTO = factory.manufacturePojo(LibMediaItemThinDTO.class);
-        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItemThinDTO = factory.manufacturePojo(LibFileItemDTO.class);
+        libMediaItem = factory.manufacturePojo(LibFileItem.class);
 
         traMediaPlan = factory.manufacturePojo(TraMediaPlan.class);
         traMediaPlan.setAccount(crmAccount);
-        traMediaPlan.setMediaItem(libMediaItem);
+        traMediaPlan.setLibFileItem(libMediaItem);
         traMediaPlans.add(traMediaPlan);
         traMediaPlanDTO = factory.manufacturePojo(TraMediaPlanDTO.class);
         traMediaPlanDTO.setTraCustomerThinDTO(traCustomerThinDTO);
-        traMediaPlanDTO.setMediaItemId(libMediaItemThinDTO);
+        traMediaPlanDTO.setLibFileItemDTO(libMediaItemThinDTO);
         traMediaPlanDTOS.add(traMediaPlanDTO);
         traMediaPlanThinDTO = factory.manufacturePojo(TraMediaPlanThinDTO.class);
         traMediaPlanThinDTO.setTraCustomerThinDTO(traCustomerThinDTO);
-        traMediaPlanThinDTO.setMediaItemId(libMediaItemThinDTO);
+        traMediaPlanThinDTO.setLibFileItemDTO(libMediaItemThinDTO);
         traMediaPlanThinDTOS.add(traMediaPlanThinDTO);
         corNetwork = factory.manufacturePojo(CorNetwork.class);
         corChannel = factory.manufacturePojo(CorChannel.class);
@@ -95,7 +96,7 @@ public class TraMediaPlanMapperTest {
         assertNotNull(dto.getTraMediaPlanPlaylistDateDTOS());
         assertNotNull(dto.getId());
         assertNotNull(dto.getName());
-        assertNotNull(dto.getMediaItemId());
+        assertNotNull(dto.getLibFileItemDTO());
 
 
     }
@@ -113,7 +114,7 @@ public class TraMediaPlanMapperTest {
             assertNotNull(dto.getTraMediaPlanPlaylistDateDTOS());
             assertNotNull(dto.getId());
             assertNotNull(dto.getName());
-            assertNotNull(dto.getMediaItemId());
+            assertNotNull(dto.getLibFileItemDTO());
         });
     }
 
@@ -124,7 +125,7 @@ public class TraMediaPlanMapperTest {
         assertNotNull(entity.getId());
         assertNotNull(entity.getAccount());
         assertNotNull(entity.getName());
-        assertNotNull(entity.getMediaItem());
+        assertNotNull(entity.getLibFileItem());
         assertNotNull(entity.getChannel());
         assertNotNull(entity.getNetwork());
     }
@@ -139,7 +140,7 @@ public class TraMediaPlanMapperTest {
             assertNotNull(entity.getId());
             assertNotNull(entity.getAccount());
             assertNotNull(entity.getName());
-            assertNotNull(entity.getMediaItem());
+            assertNotNull(entity.getLibFileItem());
             assertNotNull(entity.getChannel());
             assertNotNull(entity.getNetwork());
         });
@@ -152,7 +153,7 @@ public class TraMediaPlanMapperTest {
             assertNotNull(traMediaPlanThinDTO.getTraCustomerThinDTO());
             assertNotNull(traMediaPlanThinDTO.getId());
             assertNotNull(traMediaPlanThinDTO.getName());
-            assertNotNull(traMediaPlanThinDTO.getMediaItemId());
+            assertNotNull(traMediaPlanThinDTO.getLibFileItemDTO());
         });
 
     }
@@ -165,7 +166,7 @@ public class TraMediaPlanMapperTest {
         assertNotNull(traMediaPlanThinDTO.getTraCustomerThinDTO());
         assertNotNull(traMediaPlanThinDTO.getId());
         assertNotNull(traMediaPlanThinDTO.getName());
-        assertNotNull(traMediaPlanThinDTO.getMediaItemId());
+        assertNotNull(traMediaPlanThinDTO.getLibFileItemDTO());
     }
 
 

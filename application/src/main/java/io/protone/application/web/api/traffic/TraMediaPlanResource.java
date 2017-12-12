@@ -32,7 +32,7 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
+    @RequestMapping(value = "/api/v1/subject/{shortName}/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
         method = RequestMethod.POST)
     ResponseEntity<TraMediaPlanDTO> uploadChannelTrafficMediaPlanUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -48,7 +48,7 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
         @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
         @ApiResponse(code = 404, message = "Not Found", response = Void.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
+    @RequestMapping(value = "/api/v1/subject/{shortName}/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
         produces = {"*/*"},
         method = RequestMethod.DELETE)
     ResponseEntity<Void> deleteChannelTrafficMediaPlanUsingDELETE(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -62,7 +62,7 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
+    @RequestMapping(value = "/api/v1/subject/{shortName}/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan/{id}",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<TraMediaPlanDTO> getChannelTrafficMediaPlanUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -75,7 +75,7 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
+    @RequestMapping(value = "/api/v1/subject/{shortName}/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
         method = RequestMethod.GET)
     ResponseEntity<List<TraMediaPlanThinDTO>> getAllChannelTrafficMediaPlanUsingGET(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
@@ -90,7 +90,7 @@ public interface TraMediaPlanResource {
         @ApiResponse(code = 401, message = "Unauthorized", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 403, message = "Forbidden", response = TraMediaPlanDTO.class),
         @ApiResponse(code = 404, message = "Not Found", response = TraMediaPlanDTO.class)})
-    @RequestMapping(value = "/api/v1/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
+    @RequestMapping(value = "/api/v1/subject/{shortName}/network/{networkShortcut}/channel/{channelShortcut}/traffic/mediaplan",
         produces = {"application/json"},
         consumes = {"application/json"},
         method = RequestMethod.PUT)

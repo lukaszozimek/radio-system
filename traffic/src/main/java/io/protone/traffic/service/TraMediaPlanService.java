@@ -4,8 +4,8 @@ package io.protone.traffic.service;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.crm.domain.CrmAccount;
-import io.protone.library.domain.LibMediaItem;
-import io.protone.library.service.LibMediaItemService;
+import io.protone.library.domain.LibFileItem;
+import io.protone.library.service.LibFileItemService;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.repository.TraMediaPlanRepository;
 import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
@@ -47,14 +47,14 @@ public class TraMediaPlanService {
     private TraMediaPlanPlaylistDateService traPlaylistService;
 
     @Inject
-    private LibMediaItemService libMediaItemService;
+    private LibFileItemService libFileItemService;
 
     @Transactional
     public TraMediaPlan saveMediaPlan(MultipartFile multipartFile, TraMediaPlanDescriptor traMediaPlanDescriptor, CorNetwork corNetwork, CorChannel corChannel) throws IOException, SAXException, TikaException, InvalidFormatException {
         TraMediaPlan mediaPlan = new TraMediaPlan();
         ByteArrayInputStream bais = new ByteArrayInputStream(multipartFile.getBytes());
-        LibMediaItem libMediaItem = libMediaItemService.upload(corNetwork.getShortcut(), MEDIA_PLAN_LIBRARY_SHORTCUT, multipartFile);
-        mediaPlan.mediaItem(libMediaItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getOrder().getAdvertisment().getCustomer()).name(multipartFile.getOriginalFilename());
+        LibFileItem libFileItem = libFileItemService.uploadFileItem(corNetwork.getShortcut(), MEDIA_PLAN_LIBRARY_SHORTCUT, multipartFile);
+        mediaPlan.fileItem(libFileItem).network(corNetwork).channel(corChannel).account(traMediaPlanDescriptor.getOrder().getAdvertisment().getCustomer()).name(multipartFile.getOriginalFilename());
         mediaPlan = traMediaPlanRepository.saveAndFlush(mediaPlan);
         TraMediaPlan finalMediaPlan = mediaPlan;
         traExcelMediaXlsPlan.parseMediaPlan(bais, mediaPlan, traMediaPlanDescriptor, corNetwork, corChannel);
@@ -78,7 +78,7 @@ public class TraMediaPlanService {
         if (traMediaPlan == null) {
             throw new EntityNotFoundException();
         }
-        libMediaItemService.deleteItem(traMediaPlan.getMediaItem());
+        libFileItemService.deleteFile(traMediaPlan.getLibFileItem());
         traMediaPlanRepository.delete(traMediaPlan);
 
     }
@@ -89,7 +89,7 @@ public class TraMediaPlanService {
 
         if (traMediaPlans != null) {
             traMediaPlans.stream().forEach(traMediaPlan -> {
-                libMediaItemService.deleteItem(traMediaPlan.getMediaItem());
+                libFileItemService.deleteFile(traMediaPlan.getLibFileItem());
                 traMediaPlanRepository.delete(traMediaPlan);
             });
         }

@@ -8,11 +8,10 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibMediaItem;
-import io.protone.library.domain.LibMediaLibrary;
-import io.protone.library.domain.enumeration.LibItemTypeEnum;
-import io.protone.library.repository.LibLibraryRepository;
-import io.protone.library.repository.LibMediaItemRepository;
+import io.protone.library.domain.LibFileItem;
+import io.protone.library.domain.LibFileLibrary;
+import io.protone.library.repository.LibFileItemRepository;
+import io.protone.library.repository.LibFileLibraryRepository;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.domain.TraMediaPlanPlaylistDate;
 import io.protone.traffic.repository.TraAdvertisementRepository;
@@ -61,10 +60,10 @@ public class TraMediaPlanPlaylistDateServiceTest {
     private CrmAccountRepository crmAccountRepository;
 
     @Autowired
-    private LibMediaItemRepository libMediaItemRepository;
+    private LibFileItemRepository libFileItemRepository;
 
     @Autowired
-    private LibLibraryRepository libLibraryRepository;
+    private LibFileLibraryRepository libFileLibraryRepository;
 
     @Autowired
     private TraMediaPlanRepository traMediaPlanRepository;
@@ -76,12 +75,12 @@ public class TraMediaPlanPlaylistDateServiceTest {
 
     private PodamFactory factory;
 
-    private LibMediaLibrary libMediaLibrary;
+    private LibFileLibrary libFileLibrary;
 
 
     private CrmAccount crmAccount;
 
-    private LibMediaItem libMediaItem;
+    private LibFileItem libFileItem;
 
     private TraMediaPlan traMediaPlan;
 
@@ -99,28 +98,27 @@ public class TraMediaPlanPlaylistDateServiceTest {
         corChannel.setShortcut("HHH");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
-        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
-        libMediaLibrary.setShortcut("ppp");
-        libMediaLibrary.network(corNetwork);
-        libMediaLibrary.addChannel(corChannel);
-        libMediaLibrary = libLibraryRepository.saveAndFlush(libMediaLibrary);
+        libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
+        libFileLibrary.setShortcut("ppp");
+        libFileLibrary.network(corNetwork);
+        libFileLibrary.addChannel(corChannel);
+        libFileLibrary = libFileLibraryRepository.saveAndFlush(libFileLibrary);
 
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
-        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
-        libMediaItem.setItemType(LibItemTypeEnum.IT_DOCUMENT);
-        libMediaItem.library(libMediaLibrary);
-        libMediaItem.network(corNetwork);
-        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+        libFileItem = factory.manufacturePojo(LibFileItem.class);
+        libFileItem.library(libFileLibrary);
+        libFileItem.network(corNetwork);
+        libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
 
         traMediaPlan = factory.manufacturePojo(TraMediaPlan.class);
         traMediaPlan.setId(null);
         traMediaPlan.channel(corChannel);
         traMediaPlan.network(corNetwork);
         traMediaPlan.account(crmAccount);
-        traMediaPlan.mediaItem(libMediaItem);
+        traMediaPlan.fileItem(libFileItem);
 
         traMediaPlan = traMediaPlanRepository.saveAndFlush(traMediaPlan);
 

@@ -10,9 +10,7 @@ import io.protone.traffic.repository.TraMediaPlanPlaylistDateRepository;
 import io.protone.traffic.repository.TraMediaPlanRepository;
 import io.protone.traffic.service.mediaplan.TraExcelMediaParserXlsPlan;
 import io.protone.traffic.service.mediaplan.descriptor.TraMediaPlanDescriptor;
-import org.assertj.core.util.Lists;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -91,7 +88,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).mediaItem(libMediaItemToShuffle).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_1.xls");
@@ -135,7 +132,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).mediaItem(libMediaItemToShuffle).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_2.xlsx");
@@ -178,7 +175,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
         mediaPlanDescriptor.setTraMediaPlanTemplate(traMediaPlanTemplate);
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).mediaItem(libMediaItemToShuffle).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_3.xls");
@@ -221,7 +218,7 @@ public class TraExcelMediaXlsPlanTest extends TraPlaylistBasedTest {
 
 
         //when
-        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).mediaItem(libMediaItemToShuffle).channel(corChannel).network(corNetwork);
+        TraMediaPlan traMediaPlan = factory.manufacturePojo(TraMediaPlan.class).account(crmAccount).network(corNetwork).fileItem(libFileItem).channel(corChannel).network(corNetwork);
         traMediaPlan.setId(null);
         traMediaPlan = traMediaPlanRepository.save(traMediaPlan);
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("mediaplan/SAMPLE_MEDIAPLAN_4.xls");

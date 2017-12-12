@@ -9,6 +9,7 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
+import io.protone.library.domain.LibFileItem;
 import io.protone.library.domain.LibMediaItem;
 import io.protone.library.domain.LibMediaLibrary;
 import io.protone.library.mapper.LibMediaItemMapper;
@@ -47,6 +48,7 @@ public class TraPlaylistBasedTest {
     protected TraOrderThinDTO traOrderThinDTO;
     protected TraAdvertisement advertisementToShuffle;
     protected LibMediaItem libMediaItemToShuffle;
+    protected LibFileItem libFileItem;
     protected LibMediaItemThinDTO libMediaItemToShuffleThinDTO;
     protected CrmAccount crmAccount;
     protected List<LibMediaItem> mediaItemList;

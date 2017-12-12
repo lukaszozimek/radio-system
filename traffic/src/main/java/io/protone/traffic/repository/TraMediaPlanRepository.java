@@ -19,7 +19,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
     @Query("select m  from TraMediaPlan as m " +
             "left join fetch m.network as n " +
             "left join fetch m.channel as cha " +
-            "left join fetch m.mediaItem as media " +
+            "left join fetch m.libFileItem as media " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
@@ -32,7 +32,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
     @Query("select m from TraMediaPlan as m " +
             "left join fetch m.network as n " +
             "left join fetch m.channel as cha " +
-            "left join fetch m.mediaItem as media " +
+            "left join fetch m.libFileItem as media " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +
@@ -45,7 +45,7 @@ public interface TraMediaPlanRepository extends JpaRepository<TraMediaPlan, Long
     @Query("select m  from TraMediaPlan as m " +
             "left join fetch m.network as n " +
             "left join fetch m.channel as cha " +
-            "left join fetch m.mediaItem as media " +
+            "left join fetch m.libFileItem as media " +
             "left join fetch m.account as c " +
             "left join fetch c.area as car " +
             "left join fetch c.size as cs " +

@@ -59,7 +59,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     public ResponseEntity<LibMediaItemDTO> updateItemWithImagesByNetworShortcutAndLibraryPrefixUsingPOST(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                          @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                                          @ApiParam(value = "idx", required = true) @PathVariable("idx") String idx,
-                                                                                                         @ApiParam(value = "mediaItem", required = true) @RequestPart("mediaItem") @Valid LibMediaItemDTO mediaItem,
+                                                                                                         @ApiParam(value = "fileItem", required = true) @RequestPart("fileItem") @Valid LibMediaItemDTO mediaItem,
                                                                                                          @ApiParam(value = "covers") @RequestPart("covers") MultipartFile[] covers) throws IOException {
         if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
@@ -91,7 +91,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     @Override
     public ResponseEntity<LibMediaItemDTO> updateItemByWithoutImagesNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                                            @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
-                                                                                                           @ApiParam(value = "mediaItem", required = true) @RequestBody @Valid LibMediaItemDTO mediaItem) throws IOException {
+                                                                                                           @ApiParam(value = "fileItem", required = true) @RequestBody @Valid LibMediaItemDTO mediaItem) throws IOException {
         if (mediaItem.getId() == null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("LibMediaItem", "missingID", "Can't edit Element if File doesn't exist")).body(null);
 
@@ -154,7 +154,7 @@ public class LibMediaItemResourceImpl implements LibMediaItemResource {
     public ResponseEntity<LibMediaItemDTO> updateItemByNetworShortcutAndLibraryPrefixUsingPUT(@ApiParam(value = "networkShortcut", required = true) @PathVariable("networkShortcut") String networkShortcut,
                                                                                               @ApiParam(value = "libraryPrefix", required = true) @PathVariable("libraryPrefix") String libraryPrefix,
                                                                                               @ApiParam(value = "channelShortcut", required = true) @PathVariable("channelShortcut") String channelShortcut,
-                                                                                              @ApiParam(value = "mediaItem", required = true) @RequestBody LibMediaItemDTO mediaItem) {
+                                                                                              @ApiParam(value = "fileItem", required = true) @RequestBody LibMediaItemDTO mediaItem) {
         return null;
     }
 
