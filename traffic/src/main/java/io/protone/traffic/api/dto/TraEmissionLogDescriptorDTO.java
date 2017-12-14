@@ -18,10 +18,13 @@ public class TraEmissionLogDescriptorDTO implements Serializable {
     @Valid
     private TraOrderThinDTO order;
 
-
     @NotNull
     @Valid
     private LibMediaItemThinDTO libMediaItemThinDTO;
+
+    private boolean firstPostion;
+
+    private boolean lasPosition;
 
     public TraOrderThinDTO getOrder() {
         return order;
@@ -35,7 +38,6 @@ public class TraEmissionLogDescriptorDTO implements Serializable {
         this.order = traOrderThinDTO;
         return this;
     }
-
 
 
     public LibMediaItemThinDTO getLibMediaItemThinDTO() {
@@ -72,5 +74,21 @@ public class TraEmissionLogDescriptorDTO implements Serializable {
                 "order=" + order +
                 ", libMediaItemThinDTO=" + libMediaItemThinDTO +
                 '}';
+    }
+
+    public boolean isFirstPostion() {
+        return firstPostion;
+    }
+
+    public void setFirstPostion(boolean firstPostion) {
+        this.firstPostion = firstPostion;
+    }
+
+    public boolean isLasPosition() {
+        return lasPosition;
+    }
+
+    public void setLasPosition(boolean lasPosition) {
+        this.lasPosition = lasPosition;
     }
 }

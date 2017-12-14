@@ -71,6 +71,9 @@ public class TraOrderService {
         return traOrderRepository.findByIdAndNetwork_Shortcut(id, corNetwork);
     }
 
+    public TraOrder getOrder(Long id) {
+        return traOrderRepository.findOne(id);
+    }
 
     public Slice<TraOrder> getCustomerOrders(String shortcut, String corNetwork, Pageable pageable) {
         return traOrderRepository.findSliceByCustomer_ShortNameAndNetwork_Shortcut(shortcut, corNetwork, pageable);

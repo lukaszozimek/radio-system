@@ -4,7 +4,7 @@ package io.protone.application.service.traffic;
 import io.protone.application.ProtoneApp;
 import io.protone.application.service.traffic.base.TraPlaylistBasedTest;
 import io.protone.application.util.TestUtil;
-import io.protone.library.service.LibMediaItemService;
+import io.protone.library.service.LibFileItemService;
 import io.protone.traffic.domain.*;
 import io.protone.traffic.repository.TraMediaPlanBlockRepository;
 import io.protone.traffic.repository.TraMediaPlanEmissionRepository;
@@ -69,7 +69,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
     private TraMediaPlanMapping traDefaultMediaPlanMapping;
 
     @Mock
-    private LibMediaItemService libMediaItemService;
+    private LibFileItemService libFileItemService;
 
     @Autowired
     private TraMediaPlanEmissionRepository traMediaPlanEmissionRepository;
@@ -108,13 +108,13 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
         mediaItemList = buildMediaItems();
         advertisements = buildAdvertisments();
         buildBlockConfiguration();
-        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libFileItemService", libFileItemService);
 
     }
 
     @Test
     public void bshouldMapFullMediaPlanWithPlaylistWhenPlaylistIsEmpty() throws Exception {
-        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
                 .sheetIndexOfMediaPlan(0)
@@ -164,7 +164,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
 
     @Test
     public void cshouldMapFullMediaPlanXlsxWithPlaylistWhenPlaylistIsEmptyAndInMediaPlanWeHaveMoreThanTwoCommercialInBlock() throws Exception {
-        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
                 .sheetIndexOfMediaPlan(0)
@@ -210,7 +210,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
 
     @Test
     public void ashouldMapFullMediaPlanEurozetWithPlaylistWhenPlaylistIsEmpty() throws Exception {
-        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate().sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")
@@ -267,7 +267,7 @@ public class TraPlaylistMediaPlanMappingServiceTest extends TraPlaylistBasedTest
             entiyPlaylists.add(buildTraPlaylistWithEmissions(localDate.plusDays(i)));
 
         }
-        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItemToShuffle);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItemToShuffle);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate().sheetIndexOfMediaPlan(0).sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")

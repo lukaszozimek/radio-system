@@ -55,6 +55,19 @@ public class TraPlaylistService {
     public List<TraPlaylist> getTraPlaylistListInRange(LocalDate from, LocalDate to, String networkshortcut, String channelShortcut) {
         long difference = ChronoUnit.DAYS.between(from, to);
         List<TraPlaylist> traPlaylists = Lists.newArrayList();
+        if(difference ==0){
+            TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(difference), networkshortcut, channelShortcut);
+            if (traPlaylist == null) {
+                TraPlaylist createdPlaylist = createPlaylistIfWasNotCreatedEarlier(from.plusDays(difference), networkshortcut, channelShortcut);
+                traPlaylists.add(createdPlaylist);
+            } else if (traPlaylist.getPlaylists().isEmpty()) {
+                TraPlaylist createdPlaylist = createPlaylistIfBlockConfigurationWasnNotProvided(from.plusDays(difference), traPlaylist);
+                traPlaylists.add(createdPlaylist);
+            } else {
+                traPlaylists.add(traPlaylist);
+
+            }
+        }
         for (int i = 0; i < difference; i++) {
             TraPlaylist traPlaylist = getTraPlaylistList(from.plusDays(i), networkshortcut, channelShortcut);
             if (traPlaylist == null) {

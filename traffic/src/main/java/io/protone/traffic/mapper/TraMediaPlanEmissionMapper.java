@@ -4,6 +4,7 @@ package io.protone.traffic.mapper;
 import io.protone.core.domain.CorChannel;
 import io.protone.core.domain.CorNetwork;
 import io.protone.traffic.api.dto.TraMediaPlanEmissionDTO;
+import io.protone.traffic.domain.TraLogEmission;
 import io.protone.traffic.domain.TraMediaPlanEmission;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Context;
@@ -22,7 +23,11 @@ public interface TraMediaPlanEmissionMapper {
 
     TraMediaPlanEmissionDTO DB2DTO(TraMediaPlanEmission traMediaPlanEmission);
 
-    List<TraMediaPlanEmissionDTO> DBs2DTOs(List<TraMediaPlanEmission> traMediaPlanEmissions);
+    List<TraMediaPlanEmissionDTO> DBs2DTOs(List<TraMediaPlanEmission> mediaPlanEmissions);
+
+    TraMediaPlanEmissionDTO DBTraLogEmission2DTO(TraLogEmission traMediaPlanEmission);
+
+    List<TraMediaPlanEmissionDTO> DBTraLogEmissions2DTOs(List<TraLogEmission> traLogEmissions);
 
     TraMediaPlanEmission DTO2DB(TraMediaPlanEmissionDTO traMediaPlanEmissionDTO, @Context CorNetwork network, @Context CorChannel corChannel);
 

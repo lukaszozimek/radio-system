@@ -9,13 +9,10 @@ import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
 import io.protone.library.api.dto.thin.LibMediaItemThinDTO;
-import io.protone.library.domain.LibFileItem;
-import io.protone.library.domain.LibMediaItem;
-import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.domain.*;
 import io.protone.library.mapper.LibMediaItemMapper;
 import io.protone.library.mapper.LibMediaItemThinMapper;
-import io.protone.library.repository.LibLibraryRepository;
-import io.protone.library.repository.LibMediaItemRepository;
+import io.protone.library.repository.*;
 import io.protone.traffic.api.dto.thin.TraOrderThinDTO;
 import io.protone.traffic.domain.*;
 import io.protone.traffic.mapper.TraOrderMapper;
@@ -48,13 +45,21 @@ public class TraPlaylistBasedTest {
     protected TraOrderThinDTO traOrderThinDTO;
     protected TraAdvertisement advertisementToShuffle;
     protected LibMediaItem libMediaItemToShuffle;
+    protected LibFileLibrary libFileLibrary;
     protected LibFileItem libFileItem;
+    protected LibCloudObject libCloudObject;
     protected LibMediaItemThinDTO libMediaItemToShuffleThinDTO;
     protected CrmAccount crmAccount;
     protected List<LibMediaItem> mediaItemList;
     protected List<TraAdvertisement> advertisements;
     protected List<TraPlaylist> traPlaylists;
     protected TraOrder traOrder;
+    @Inject
+    private LibCloudObjectRepository libCloudObjectRepository;
+    @Inject
+    protected LibFileLibraryRepository libFileLibraryRepository;
+    @Inject
+    protected LibFileItemRepository libFileItemRepository;
     @Inject
     private LibMediaItemMapper libMediaItemMapper;
     @Inject
@@ -239,7 +244,19 @@ public class TraPlaylistBasedTest {
         corChannel = corChannelRepository.saveAndFlush(corChannel);
         this.libMediaLibrary.setId(12L);
         this.libMediaLibrary.network(corNetwork);
+        this.libCloudObject = factory.manufacturePojo(LibCloudObject.class);
+        this.libCloudObject.network(corNetwork);
+        this.libCloudObject = libCloudObjectRepository.saveAndFlush(this.libCloudObject);
         this.libMediaLibrary = libLibraryRepository.saveAndFlush(this.libMediaLibrary);
+        this.libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
+        this.libFileLibrary.shortcut("mpl");
+        this.libFileLibrary.network(corNetwork);
+        this.libFileLibrary = libFileLibraryRepository.saveAndFlush(libFileLibrary);
+        this.libFileItem = factory.manufacturePojo(LibFileItem.class);
+        this.libFileItem.network(corNetwork);
+        this.libFileItem.setCloudObject(libCloudObject);
+        this.libFileItem.library(this.libFileLibrary);
+        this.libFileItem = this.libFileItemRepository.save(libFileItem);
 
         crmAccount.setNetwork(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);

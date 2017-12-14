@@ -21,7 +21,6 @@ public class TraMediaPlanDescriptorDTO implements Serializable {
     @Valid
     private TraOrderThinDTO order;
 
-
     @NotNull
     @Valid
     private LibMediaItemThinDTO libMediaItemThinDTO;

@@ -12,10 +12,12 @@ import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibMediaItem;
-import io.protone.library.domain.LibMediaLibrary;
+import io.protone.library.domain.*;
 import io.protone.library.domain.enumeration.LibItemTypeEnum;
+import io.protone.library.repository.LibCloudObjectRepository;
+import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.repository.LibMediaItemRepository;
+import io.protone.library.service.LibFileItemService;
 import io.protone.library.service.LibMediaItemService;
 import io.protone.traffic.api.dto.TraMediaPlanAdvertisementAssigneDTO;
 import io.protone.traffic.domain.TraAdvertisement;
@@ -104,6 +106,8 @@ public class TraMediaPlanMappingResourceImplTest {
 
     @Mock
     private LibMediaItemService libMediaItemService;
+    @Mock
+    private LibFileItemService libFileItemService;
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
@@ -139,6 +143,13 @@ public class TraMediaPlanMappingResourceImplTest {
     private TraAdvertisement traAdvertisement;
 
     private TraOrder traOrder;
+    private LibCloudObject libCloudObject;
+    private LibFileLibrary libFileLibrary;
+    @Autowired
+    private LibCloudObjectRepository libCloudObjectRepository;
+    private LibFileItem libFileItem;
+    @Autowired
+    private LibFileItemRepository libFileItemRepository;
 
     /**
      * Create an entity for this test.
@@ -161,6 +172,17 @@ public class TraMediaPlanMappingResourceImplTest {
         TraMediaPlanMappingResourceImpl traMediaPlanMappingResource = new TraMediaPlanMappingResourceImpl();
         libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
         libMediaLibrary.setId(1L);
+        libFileLibrary = new LibFileLibrary().shortcut("mpl").prefix("u");
+        libFileLibrary.setId(8L);
+        libCloudObject = factory.manufacturePojo(LibCloudObject.class);
+        libCloudObject.setNetwork(corNetwork);
+        libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
+
+        libFileItem = factory.manufacturePojo(LibFileItem.class);
+        libFileItem.library(libFileLibrary);
+        libFileItem.setCloudObject(libCloudObject);
+        libFileItem.network(corNetwork);
+        libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
@@ -180,7 +202,7 @@ public class TraMediaPlanMappingResourceImplTest {
         traOrder.setNetwork(corNetwork);
         traOrder = traOrderRepository.saveAndFlush(traOrder);
 
-        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libFileItemService", libFileItemService);
         ReflectionTestUtils.setField(traPlaylistMediaPlanMappingService, "libMediaItemService", libMediaItemService);
 
         ReflectionTestUtils.setField(traMediaPlanMappingResource, "traPlaylistMediaPlanMappingService", traPlaylistMediaPlanMappingService);
@@ -209,9 +231,9 @@ public class TraMediaPlanMappingResourceImplTest {
     @Transactional
     public void shouldMapMediaPlanWithPlaylist() throws Exception {
         when(libMediaItemService.getMediaItem(libMediaItem.getNetwork().getShortcut(), "com", libMediaItem.getIdx())).thenReturn(libMediaItem);
-        when(libMediaItemService.upload(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libMediaItem);
+        when(libFileItemService.uploadFileItem(anyString(), anyString(), any(MultipartFile.class))).thenReturn(libFileItem);
         TraMediaPlanDescriptor mediaPlanDescriptor = new TraMediaPlanDescriptor().order(traOrder).libMediaItem(libMediaItem);
-        ReflectionTestUtils.setField(traMediaPlanService, "libMediaItemService", libMediaItemService);
+        ReflectionTestUtils.setField(traMediaPlanService, "libFileItemService", libFileItemService);
         TraMediaPlanTemplate traMediaPlanTemplate = new TraMediaPlanTemplate()
                 .sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")

@@ -26,7 +26,6 @@ public class TraLogEmission implements Serializable {
 
     private Long timeStop;
 
-
     private BigDecimal price;
 
     private boolean fixedPosition;
@@ -250,5 +249,9 @@ public class TraLogEmission implements Serializable {
 
     public void setPlaylistDate(LocalDate playlistDate) {
         this.playlistDate = playlistDate;
+    }
+
+    public long getStartBlock() {
+        return this.traBlock.getStartBlock();
     }
 }

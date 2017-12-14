@@ -9,20 +9,13 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibFileItem;
-import io.protone.library.domain.LibFileLibrary;
-import io.protone.library.domain.LibMediaItem;
-import io.protone.library.domain.LibMediaLibrary;
-import io.protone.library.repository.LibFileItemRepository;
-import io.protone.library.repository.LibFileLibraryRepository;
-import io.protone.library.repository.LibMediaItemRepository;
+import io.protone.library.domain.*;
+import io.protone.library.repository.*;
 import io.protone.library.service.LibFileItemService;
-import io.protone.traffic.api.dto.thin.TraAdvertisementThinDTO;
 import io.protone.traffic.domain.TraAdvertisement;
 import io.protone.traffic.domain.TraMediaPlan;
 import io.protone.traffic.domain.TraMediaPlanTemplate;
 import io.protone.traffic.domain.TraOrder;
-import io.protone.traffic.mapper.TraAdvertisementMapper;
 import io.protone.traffic.repository.TraAdvertisementRepository;
 import io.protone.traffic.repository.TraMediaPlanRepository;
 import io.protone.traffic.repository.TraOrderRepository;
@@ -63,9 +56,6 @@ public class TraMediaPlanServiceTest {
     private TraMediaPlanService traMediaPlanService;
 
     @Autowired
-    private TraAdvertisementMapper traAdvertisementMapper;
-
-    @Autowired
     private CorNetworkRepository corNetworkRepository;
 
 
@@ -92,6 +82,10 @@ public class TraMediaPlanServiceTest {
 
     @Autowired
     private TraOrderRepository traOrderRepository;
+    @Autowired
+    private LibCloudObjectRepository libCloudObjectRepository;
+    @Autowired
+    private LibLibraryRepository libMediaLibraryRepository;
 
     @Mock
     private LibFileItemService libFileItemService;
@@ -108,13 +102,15 @@ public class TraMediaPlanServiceTest {
 
     private LibFileLibrary libFileLibrary;
 
+    private LibCloudObject libCloudObject;
+
+
     private LibMediaLibrary libMediaLibrary;
 
     private LibMediaItem libMediaItem;
 
     private TraOrder traOrder;
 
-    private TraAdvertisementThinDTO traAdvertisementThinDTO;
 
     @Before
     public void setup() {
@@ -130,6 +126,11 @@ public class TraMediaPlanServiceTest {
         corChannel.setShortcut("HHH");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
+        libMediaLibrary = factory.manufacturePojo(LibMediaLibrary.class);
+        libMediaLibrary.setShortcut("ppp");
+        libMediaLibrary.network(corNetwork);
+        libMediaLibrary.addChannel(corChannel);
+        libMediaLibrary = libMediaLibraryRepository.saveAndFlush(libMediaLibrary);
 
         libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
         libFileLibrary.setShortcut("ppp");
@@ -141,9 +142,14 @@ public class TraMediaPlanServiceTest {
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
+        libCloudObject = factory.manufacturePojo(LibCloudObject.class);
+        libCloudObject.network(corNetwork);
+        libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
+
         libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.library(libFileLibrary);
         libFileItem.network(corNetwork);
+        libFileItem.setCloudObject(libCloudObject);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
 
         traOrder = factory.manufacturePojo(TraOrder.class);

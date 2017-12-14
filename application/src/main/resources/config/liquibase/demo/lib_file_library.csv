@@ -2,3 +2,4 @@ id;prefix;shortcut;name;counter;description;network_id;created_by_id;last_modifi
 5;o;opr;OPR;1;Biliotek Logów Oprawy;1;1;1
 6;m;mus;rek;1;Biblioteka Logów Reklam;1;1;1
 7;r;rek;MUS;1;Biblioteka Logów Muzycznych;1;1;1
+8;u;mpl;MPL;1;Biblioteka Media Planów;1;1;1

@@ -11,11 +11,12 @@ import io.protone.core.service.CorChannelService;
 import io.protone.core.service.CorNetworkService;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
-import io.protone.library.domain.LibFileItem;
-import io.protone.library.domain.LibFileLibrary;
-import io.protone.library.mapper.LibMediaItemMapper;
+import io.protone.library.domain.*;
 import io.protone.library.mapper.LibMediaItemThinMapper;
+import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibFileItemRepository;
+import io.protone.library.repository.LibFileLibraryRepository;
+import io.protone.library.repository.LibMediaItemRepository;
 import io.protone.library.service.LibFileItemService;
 import io.protone.traffic.api.dto.TraMediaPlanDTO;
 import io.protone.traffic.api.dto.TraMediaPlanDescriptorDTO;
@@ -34,6 +35,7 @@ import io.protone.traffic.service.TraMediaPlanBlockService;
 import io.protone.traffic.service.TraMediaPlanEmissionService;
 import io.protone.traffic.service.TraMediaPlanPlaylistDateService;
 import io.protone.traffic.service.TraMediaPlanService;
+import org.assertj.core.util.Sets;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -126,6 +128,7 @@ public class TraMediaPlanResourceImplTest {
 
     @Autowired
     private LibFileItemRepository libFileItemRepository;
+
     @Autowired
     private TraOrderRepository traOrderRepository;
 
@@ -133,14 +136,22 @@ public class TraMediaPlanResourceImplTest {
     private TraOrderMapper traOrderMapper;
 
     @Autowired
-    private LibMediaItemMapper libMediaItemMapper;
-    @Autowired
-    private LibMediaItemThinMapper libMediaItemThinMapper;
+    private LibCloudObjectRepository libCloudObjectRepository;
+
     @Mock
     private LibFileItemService libFileItemService;
 
     @Autowired
+    private LibFileLibraryRepository libFileLibraryRepository;
+
+    @Autowired
+    private LibMediaItemRepository libMediaItemRepository;
+
+    @Autowired
     private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
+    private LibMediaItemThinMapper libMediaItemThinMapper;
 
     @Autowired
     private EntityManager em;
@@ -148,6 +159,7 @@ public class TraMediaPlanResourceImplTest {
     private MockMvc restTraMediaPlanMockMvc;
 
     private TraMediaPlan traMediaPlan;
+
     private CorNetwork corNetwork;
 
     private CorChannel corChannel;
@@ -156,14 +168,22 @@ public class TraMediaPlanResourceImplTest {
 
     private LibFileLibrary libFileLibrary;
 
+    private LibMediaLibrary libMediaLibrary;
+
     private PodamFactory factory;
 
     private CrmAccount crmAccount;
 
     private LibFileItem libFileItem;
 
+    private LibMediaItem libMediaItem;
+
     private TraAdvertisement traAdvertisement;
+
+    private LibCloudObject libCloudObject;
+
     private TraOrder traOrder;
+
 
     /**
      * Create an entity for this test.
@@ -184,18 +204,33 @@ public class TraMediaPlanResourceImplTest {
         factory = new PodamFactoryImpl();
 
         TraMediaPlanResourceImpl traMediaPlanResource = new TraMediaPlanResourceImpl();
-        libFileLibrary = new LibFileLibrary().shortcut("tes").network(corNetwork);
-        libFileLibrary.setId(1L);
+        libMediaLibrary = new LibMediaLibrary().shortcut("tes").network(corNetwork);
+        libMediaLibrary.setId(1L);
+
+
+            libFileLibrary = new LibFileLibrary().shortcut("mpl").prefix("u");
+            libFileLibrary.setId(8L);
 
         crmAccount = factory.manufacturePojo(CrmAccount.class);
         crmAccount.network(corNetwork);
         crmAccount = crmAccountRepository.saveAndFlush(crmAccount);
+
+        libCloudObject = factory.manufacturePojo(LibCloudObject.class);
+        libCloudObject.setNetwork(corNetwork);
+        libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
+
         libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.library(libFileLibrary);
+        libFileItem.setCloudObject(libCloudObject);
         libFileItem.network(corNetwork);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
+        libMediaItem = factory.manufacturePojo(LibMediaItem.class);
+        libMediaItem.library(libMediaLibrary);
 
-     //   traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(Sets.newHashSet(libFileItem));
+        libMediaItem.network(corNetwork);
+        libMediaItem = libMediaItemRepository.saveAndFlush(libMediaItem);
+
+        traAdvertisement = TraAdvertisementResourceImplTest.createEntity(em).customer(crmAccount).network(corNetwork).mediaItem(Sets.newLinkedHashSet(libMediaItem));
         traAdvertisement = traAdvertisementRepository.saveAndFlush(traAdvertisement);
         traOrder = factory.manufacturePojo(TraOrder.class);
         traOrder.setCustomer(crmAccount);
@@ -204,8 +239,8 @@ public class TraMediaPlanResourceImplTest {
         traOrder = traOrderRepository.saveAndFlush(traOrder);
         TraMediaPlanTemplateDTO traMediaPlanTemplateDTO = new TraMediaPlanTemplateDTO();
         mediaPlanDescriptor = new TraMediaPlanDescriptorDTO()
-                .order(traOrderMapper.DB2ThinDTO(traOrder));
-        //.libMediaItemThinDTO(libMediaItemThinMapper.DB2DTO(libFileItem));
+                .order(traOrderMapper.DB2ThinDTO(traOrder))
+                .libMediaItemThinDTO(libMediaItemThinMapper.DB2DTO(libMediaItem));
         traMediaPlanTemplateDTO.sheetIndexOfMediaPlan(0)
                 .playlistDatePattern("dd-MMM-yyyy")
                 .playlistDateStartColumn("G")

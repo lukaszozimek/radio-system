@@ -8,8 +8,10 @@ import io.protone.core.repository.CorChannelRepository;
 import io.protone.core.repository.CorNetworkRepository;
 import io.protone.crm.domain.CrmAccount;
 import io.protone.crm.repostiory.CrmAccountRepository;
+import io.protone.library.domain.LibCloudObject;
 import io.protone.library.domain.LibFileItem;
 import io.protone.library.domain.LibFileLibrary;
+import io.protone.library.repository.LibCloudObjectRepository;
 import io.protone.library.repository.LibFileItemRepository;
 import io.protone.library.repository.LibFileLibraryRepository;
 import io.protone.traffic.domain.TraMediaPlan;
@@ -68,6 +70,9 @@ public class TraMediaPlanPlaylistDateServiceTest {
     @Autowired
     private TraMediaPlanRepository traMediaPlanRepository;
 
+    @Autowired
+    private LibCloudObjectRepository libCloudObjectRepository;
+
 
     private CorNetwork corNetwork;
 
@@ -81,6 +86,8 @@ public class TraMediaPlanPlaylistDateServiceTest {
     private CrmAccount crmAccount;
 
     private LibFileItem libFileItem;
+
+    private LibCloudObject libCloudObject;
 
     private TraMediaPlan traMediaPlan;
 
@@ -98,6 +105,10 @@ public class TraMediaPlanPlaylistDateServiceTest {
         corChannel.setShortcut("HHH");
         corChannel.network(corNetwork);
         corChannelRepository.saveAndFlush(corChannel);
+        libCloudObject = factory.manufacturePojo(LibCloudObject.class);
+        libCloudObject.setNetwork(corNetwork);
+
+        libCloudObject = libCloudObjectRepository.saveAndFlush(libCloudObject);
         libFileLibrary = factory.manufacturePojo(LibFileLibrary.class);
         libFileLibrary.setShortcut("ppp");
         libFileLibrary.network(corNetwork);
@@ -111,6 +122,7 @@ public class TraMediaPlanPlaylistDateServiceTest {
         libFileItem = factory.manufacturePojo(LibFileItem.class);
         libFileItem.library(libFileLibrary);
         libFileItem.network(corNetwork);
+        libFileItem.setCloudObject(libCloudObject);
         libFileItem = libFileItemRepository.saveAndFlush(libFileItem);
 
         traMediaPlan = factory.manufacturePojo(TraMediaPlan.class);
